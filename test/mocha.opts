@@ -1,0 +1,4 @@
+--require ./test/setup-mocha-env.js
+--compilers js:babel-core/register,jsx:babel-core/register
+--extensions js,jsx
+ 

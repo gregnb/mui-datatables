@@ -1,0 +1,21 @@
+{
+  "env": {
+    "test": {
+      "plugins": ["istanbul"]
+    }
+  },
+  "presets": [
+    "react",
+    ["env", {
+      "targets": {
+        "browsers": ["> 1%", "iOS >= 8", "Android >= 4"],
+        "node": "6.10"
+      },
+      "debug": false
+    }]
+  ],
+  "plugins": [
+    "babel-plugin-transform-class-properties",
+    "transform-object-rest-spread"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "parser": "babel-eslint",
+  "settings": {
+    "import/extensions": [".js"],
+    "import/parser": "babel-eslint",
+    "import/resolver": {
+      "node": {
+        "extensions": [".js"]
+      },
+      "webpack": {
+        "config": "webpack.config.js"
+      }
+    }
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "allowImportExportEverywhere": true,
+    "ecmaFeatures": {
+      "jsx": true,
+      "experimentalObjectRestSpread": true
+    },
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "mocha": true,
+    "node": true
+  },
+  "rules": {
+    "no-console": "off",
+    "semi": 2,
+    "no-tabs": 2,
+  },
+  "plugins": [
+    "import",
+    "react",
+    "filenames"
+  ]
+}
