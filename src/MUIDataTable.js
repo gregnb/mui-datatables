@@ -8,6 +8,7 @@ import MUIDataTableFilterList from "./MUIDataTableFilterList";
 import MUIDataTableBody from "./MUIDataTableBody";
 import MUIDataTableHead from "./MUIDataTableHead";
 import MUIDataTablePagination from "./MUIDataTablePagination";
+import debounce from "lodash.debounce";
 import { getStyle, withDataStyles } from "./withDataStyles";
 
 const styles = theme => ({
@@ -50,6 +51,7 @@ class MUIDataTable extends React.Component {
     columns: [],
     filterData: [],
     filterList: [],
+    showResponsive: false,
     searchText: null,
   };
 
@@ -59,18 +61,39 @@ class MUIDataTable extends React.Component {
   }
 
   componentWillMount() {
-    this.setTableOptions(this.props);
-    this.setTableData(this.props);
+    this.initializeTable(this.props);
+
+    if (this.options.responsive) {
+      this.handleResize();
+    }
+  }
+
+  componentDidMount() {
+    if (this.options.responsive) {
+      this._debouncedResize = debounce(this.handleResize, 100);
+      window.addEventListener("resize", this._debouncedResize);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.options.responsive) {
+      window.removeEventListener("resize", this._debouncedResize);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.data !== nextProps.data || this.props.columns !== nextProps.columns) {
-      this.setTableOptions(nextProps);
-      this.setTableData(nextProps);
+      this.initializeTable(nextProps);
     }
   }
 
-  getDefaultOptions() {
+  initializeTable(props) {
+    this.getDefaultOptions(props);
+    this.setTableOptions(props);
+    this.setTableData(props);
+  }
+
+  getDefaultOptions(props) {
     const defaultOptions = {
       rowHover: true,
       sort: true,
@@ -82,10 +105,10 @@ class MUIDataTable extends React.Component {
       rowsPerPageOptions: [10, 15, 100],
       search: true,
       print: true,
-      responsive: false,
+      responsive: true,
     };
 
-    return { ...defaultOptions, ...this.props.options };
+    this.options = { ...defaultOptions, ...props.options };
   }
 
   setTableOptions(props) {
@@ -102,6 +125,17 @@ class MUIDataTable extends React.Component {
       }
     }
   }
+
+  handleResize = event => {
+    const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    const breakpoint = 960;
+
+    if ((this.state.showResponsive && width > breakpoint) || (!this.state.showResponsive && width < breakpoint)) {
+      this.setState(() => ({
+        showResponsive: width < breakpoint ? true : false,
+      }));
+    }
+  };
 
   /*
    *  Build the source table data
@@ -282,19 +316,17 @@ class MUIDataTable extends React.Component {
 
   render() {
     const { className, classes } = this.props;
-
     const { data, displayData, columns, page, filterData, filterList, searchText } = this.state;
 
-    const options = this.getDefaultOptions();
-    const rowsPerPage = this.state.rowsPerPage ? this.state.rowsPerPage : options.rowsPerPage;
+    const rowsPerPage = this.state.rowsPerPage ? this.state.rowsPerPage : this.options.rowsPerPage;
 
     return (
       <Paper elevation={4} ref={el => (this.tableContent = el)} className={className ? className : null}>
         <MUIDataTableToolbar
           data={data}
           columns={columns}
-          classes={getStyle(options, "toolbar")}
-          options={options}
+          classes={getStyle(this.options, "toolbar")}
+          options={this.options}
           tableRef={() => this.tableRef}
           filterUpdate={this.filterUpdate}
           resetFilters={this.resetFilters}
@@ -304,36 +336,36 @@ class MUIDataTable extends React.Component {
           toggleViewColumn={this.toggleViewColumn}
         />
         <MUIDataTableFilterList
-          classes={getStyle(options, "filterList")}
+          classes={getStyle(this.options, "filterList")}
           filterList={filterList}
           filterUpdate={this.filterUpdate}
         />
         <Table ref={el => (this.tableRef = el)} className={classes.table}>
           <MUIDataTableHead
             columns={columns}
-            classes={getStyle(options, "table.head")}
+            classes={getStyle(this.options, "table.head")}
             toggleSort={this.toggleSortColumn}
-            options={options}
+            options={this.options}
           />
           <MUIDataTableBody
             data={this.state.displayData}
             columns={columns}
-            classes={getStyle(options, "table.body")}
+            classes={getStyle(this.options, "table.body")}
             page={page}
             rowsPerPage={rowsPerPage}
-            options={options}
+            options={this.options}
             searchText={searchText}
             filterList={filterList}
           />
-          {options.pagination ? (
+          {this.options.pagination ? (
             <MUIDataTablePagination
               count={displayData.length}
-              classes={getStyle(options, "pagination")}
+              classes={getStyle(this.options, "pagination")}
               page={page}
               rowsPerPage={rowsPerPage}
               changeRowsPerPage={this.changeRowsPerPage}
               changePage={this.changePage}
-              options={options}
+              options={this.options}
             />
           ) : (
             false
