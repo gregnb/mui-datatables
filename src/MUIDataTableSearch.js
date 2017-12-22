@@ -52,10 +52,7 @@ class MUIDataTableSearch extends React.Component {
     const { classes, onHide, onSearch, options } = this.props;
 
     return (
-      <DataStyles
-        defaultStyles={defaultSearchStyles}
-        name="MUIDataTableSearch"
-        styles={getStyle(options, "search")}>
+      <DataStyles defaultStyles={defaultSearchStyles} name="MUIDataTableSearch" styles={getStyle(options, "search")}>
         {headStyles => (
           <Grow appear in={true} timeout={300}>
             <div className={headStyles.main} ref={el => (this.rootRef = el)}>

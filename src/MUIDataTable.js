@@ -12,8 +12,7 @@ import debounce from "lodash.debounce";
 import { getStyle, DataStyles } from "./DataStyles";
 
 const defaultTableStyles = {
-  main: {
-  }
+  main: {},
 };
 
 class MUIDataTable extends React.Component {
@@ -338,11 +337,7 @@ class MUIDataTable extends React.Component {
           styles={getStyle(this.options, "table.main")}>
           {tableStyles => (
             <Table ref={el => (this.tableRef = el)} className={tableStyles.main}>
-              <MUIDataTableHead
-                columns={columns}
-                toggleSort={this.toggleSortColumn}
-                options={this.options}
-              />
+              <MUIDataTableHead columns={columns} toggleSort={this.toggleSortColumn} options={this.options} />
               <MUIDataTableBody
                 data={this.state.displayData}
                 columns={columns}
@@ -366,7 +361,7 @@ class MUIDataTable extends React.Component {
               )}
             </Table>
           )}
-          </DataStyles>
+        </DataStyles>
       </Paper>
     );
   }

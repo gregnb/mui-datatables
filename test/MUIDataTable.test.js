@@ -21,12 +21,13 @@ describe("<MUIDataTable />", function() {
 
   it("should render a table", () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
-    assert.strictEqual(shallowWrapper.dive().name(), "MUIDataTable");
+    assert.strictEqual(shallowWrapper.dive().name(), "Paper");
   });
+
 
   it("should correctly build internal columns data structure", () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
-    const actualResult = shallowWrapper.dive().dive().state().columns;
+    const actualResult = shallowWrapper.state().columns;
     const expectedResult = [
       { display: true, name: "First Name", sort: "desc" },
       { display: true, name: "Company", sort: "desc" },
@@ -37,17 +38,17 @@ describe("<MUIDataTable />", function() {
     assert.deepEqual(actualResult, expectedResult);
   });
 
+
   it("should correctly build internal table data and displayData structure", () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
-    const state = shallowWrapper.dive().dive().state();
+    const state = shallowWrapper.state();
     assert.deepEqual(state.data, data);
     assert.deepEqual(state.displayData, data);    
   });
 
-
   it("should correctly build internal filterList structure", () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
-    const state = shallowWrapper.dive().dive().state();
+    const state = shallowWrapper.state();
     const expectedResult = [[],[],[],[]];
 
     assert.deepEqual(state.filterList, expectedResult);  
@@ -56,7 +57,7 @@ describe("<MUIDataTable />", function() {
 
   it("should correctly build internal unique column data for filterData structure", () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
-    const state = shallowWrapper.dive().dive().state();
+    const state = shallowWrapper.state();
     const expectedResult = [
       ["Joe James", "John Walsh", "Bob Herm", "James Houston"],
       ["Test Corp"],
@@ -75,7 +76,7 @@ describe("<MUIDataTable />", function() {
     };
 
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
-    const state = shallowWrapper.dive().dive().state();
+    const state = shallowWrapper.state();
     assert.strictEqual(state.rowsPerPage, 20);
 
   });
@@ -88,7 +89,7 @@ describe("<MUIDataTable />", function() {
     };
 
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
-    const state = shallowWrapper.dive().dive().state();
+    const state = shallowWrapper.state();
     assert.deepEqual(state.rowsPerPageOptions, [5, 10, 15]);
     
   });
@@ -122,7 +123,7 @@ describe("<MUIDataTable />", function() {
   it("should properly set internal filterList when calling filterUpdate method", () => {
 
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
-    const table = shallowWrapper.dive().dive();
+    const table = shallowWrapper;
     const instance = table.instance();
     instance.filterUpdate(0, "Joe James", "checkbox");
     table.update();
@@ -136,7 +137,7 @@ describe("<MUIDataTable />", function() {
 
     // set a filter
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
-    const table = shallowWrapper.dive().dive();
+    const table = shallowWrapper;
     const instance = table.instance();
     instance.filterUpdate(0, "Joe James", "checkbox");
     table.update();
@@ -155,7 +156,7 @@ describe("<MUIDataTable />", function() {
   it("should properly set searchText when calling searchTextUpdate method", () => {
 
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
-    const table = shallowWrapper.dive().dive();
+    const table = shallowWrapper;
     const instance = table.instance();
 
     instance.searchTextUpdate("Joe James");
@@ -165,6 +166,5 @@ describe("<MUIDataTable />", function() {
     assert.deepEqual(state.displayData, [["Joe James", "Test Corp", "Yonkers", "NY"]]);
 
   });
-
-
+  
 });

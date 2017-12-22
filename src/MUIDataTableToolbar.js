@@ -164,7 +164,6 @@ const defaultFilterStyles = {
   },
 };
 
-
 class MUIDataTableToolbar extends React.Component {
   state = {
     iconActive: null,
