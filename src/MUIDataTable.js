@@ -9,13 +9,12 @@ import MUIDataTableBody from "./MUIDataTableBody";
 import MUIDataTableHead from "./MUIDataTableHead";
 import MUIDataTablePagination from "./MUIDataTablePagination";
 import debounce from "lodash.debounce";
-import { getStyle, withDataStyles } from "./withDataStyles";
+import { getStyle, DataStyles } from "./DataStyles";
 
-const styles = theme => ({
-  table: {
-    fontFamily: "Roboto",
-  },
-});
+const defaultTableStyles = {
+  main: {
+  }
+};
 
 class MUIDataTable extends React.Component {
   static propTypes = {
@@ -38,8 +37,6 @@ class MUIDataTable extends React.Component {
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
-    /** Extend the style applied to components */
-    classes: PropTypes.object,
   };
 
   state = {
@@ -325,7 +322,6 @@ class MUIDataTable extends React.Component {
         <MUIDataTableToolbar
           data={data}
           columns={columns}
-          classes={getStyle(this.options, "toolbar")}
           options={this.options}
           tableRef={() => this.tableRef}
           filterUpdate={this.filterUpdate}
@@ -335,45 +331,45 @@ class MUIDataTable extends React.Component {
           searchTextUpdate={this.searchTextUpdate}
           toggleViewColumn={this.toggleViewColumn}
         />
-        <MUIDataTableFilterList
-          classes={getStyle(this.options, "filterList")}
-          filterList={filterList}
-          filterUpdate={this.filterUpdate}
-        />
-        <Table ref={el => (this.tableRef = el)} className={classes.table}>
-          <MUIDataTableHead
-            columns={columns}
-            classes={getStyle(this.options, "table.head")}
-            toggleSort={this.toggleSortColumn}
-            options={this.options}
-          />
-          <MUIDataTableBody
-            data={this.state.displayData}
-            columns={columns}
-            classes={getStyle(this.options, "table.body")}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            options={this.options}
-            searchText={searchText}
-            filterList={filterList}
-          />
-          {this.options.pagination ? (
-            <MUIDataTablePagination
-              count={displayData.length}
-              classes={getStyle(this.options, "pagination")}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              changeRowsPerPage={this.changeRowsPerPage}
-              changePage={this.changePage}
-              options={this.options}
-            />
-          ) : (
-            false
+        <MUIDataTableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />
+        <DataStyles
+          defaultStyles={defaultTableStyles}
+          name="MUIDataTable"
+          styles={getStyle(this.options, "table.main")}>
+          {tableStyles => (
+            <Table ref={el => (this.tableRef = el)} className={tableStyles.main}>
+              <MUIDataTableHead
+                columns={columns}
+                toggleSort={this.toggleSortColumn}
+                options={this.options}
+              />
+              <MUIDataTableBody
+                data={this.state.displayData}
+                columns={columns}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                options={this.options}
+                searchText={searchText}
+                filterList={filterList}
+              />
+              {this.options.pagination ? (
+                <MUIDataTablePagination
+                  count={displayData.length}
+                  page={page}
+                  rowsPerPage={rowsPerPage}
+                  changeRowsPerPage={this.changeRowsPerPage}
+                  changePage={this.changePage}
+                  options={this.options}
+                />
+              ) : (
+                false
+              )}
+            </Table>
           )}
-        </Table>
+          </DataStyles>
       </Paper>
     );
   }
 }
 
-export default withDataStyles(styles)(MUIDataTable);
+export default MUIDataTable;

@@ -4,16 +4,26 @@ import Table from "material-ui/Table";
 import Typography from "material-ui/Typography";
 import { TableBody, TableRow } from "material-ui/Table";
 import MUIDataTableBodyCell from "./MUIDataTableBodyCell";
-import { getStyle, withDataStyles } from "./withDataStyles";
+import { getStyle, DataStyles } from "./DataStyles";
 
-const bodyStyles = theme => ({
+const defaultBodyStyles = {
   root: {
     borderBottom: "solid 1px #bdbdbd",
   },
   emptyTitle: {
     textAlign: "center",
   },
-});
+};
+
+const defaultBodyRowStyles = {
+  root: {},
+};
+
+const defaultBodyCellStyles = {
+  root: {
+    border: "solid 1px #FF0000",
+  },
+};
 
 class MUIDataTableBody extends React.Component {
   static propTypes = {
@@ -32,52 +42,73 @@ class MUIDataTableBody extends React.Component {
   };
 
   buildRows() {
-    const { data, columns, options, page, rowsPerPage } = this.props;
+    const { data, page, rowsPerPage } = this.props;
 
-    const newRows = [];
+    let rows = [];
     const fromIndex = page === 0 ? 0 : page * rowsPerPage;
     const toIndex = Math.min(data.length, (page + 1) * rowsPerPage);
 
     for (let rowIndex = fromIndex; rowIndex < data.length && rowIndex < toIndex; rowIndex++) {
-      newRows.push(
-        <TableRow hover={options.rowHover ? true : false} key={rowIndex}>
-          {data[rowIndex].map(
-            (column, index) =>
-              columns[index].display ? (
-                <MUIDataTableBodyCell classes={getStyle(options, "table.body.cell")} key={index}>
-                  {column}
-                </MUIDataTableBodyCell>
-              ) : (
-                false
-              ),
-          )}
-        </TableRow>,
-      );
+      rows.push(data[rowIndex]);
     }
 
-    return newRows;
+    return rows.length ? rows : null;
   }
 
   render() {
-    const { columns, classes, options } = this.props;
+    const { columns, options } = this.props;
     const tableRows = this.buildRows();
 
     return (
-      <TableBody>
-        {tableRows.length ? (
-          tableRows
-        ) : (
-          <TableRow>
-            <MUIDataTableBodyCell classes={getStyle(options, "table.body.cell")} colSpan={columns.length}>
-              <Typography type="subheading" className={classes.emptyTitle}>
-                Sorry, no matching records found
-              </Typography>
-            </MUIDataTableBodyCell>
-          </TableRow>
+      <DataStyles
+        defaultStyles={defaultBodyStyles}
+        name="MUIDataTableBody"
+        styles={getStyle(options, "table.body.main")}>
+        {bodyStyles => (
+          <TableBody>
+            <DataStyles
+              defaultStyles={defaultBodyCellStyles}
+              name="MUIDataTableBodyRow"
+              styles={getStyle(options, "table.body.row")}>
+              {rowStyles => (
+                <DataStyles
+                  defaultStyles={defaultBodyCellStyles}
+                  name="MUIDataTableBodyCell"
+                  styles={getStyle(options, "table.body.cell")}>
+                  {cellStyles => {
+                    return tableRows ? (
+                      tableRows.map((row, rowIndex) => (
+                        <TableRow hover={options.rowHover ? true : false} className={rowStyles.root} key={rowIndex}>
+                          {row.map(
+                            (column, index) =>
+                              columns[index].display ? (
+                                <MUIDataTableBodyCell className={cellStyles.root} key={index}>
+                                  {column}
+                                </MUIDataTableBodyCell>
+                              ) : (
+                                false
+                              ),
+                          )}
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <MUIDataTableBodyCell className={cellStyles.root} colSpan={columns.length}>
+                          <Typography type="subheading" className={bodyStyles.emptyTitle}>
+                            Sorry, no matching records found
+                          </Typography>
+                        </MUIDataTableBodyCell>
+                      </TableRow>
+                    );
+                  }}
+                </DataStyles>
+              )}
+            </DataStyles>
+          </TableBody>
         )}
-      </TableBody>
+      </DataStyles>
     );
   }
 }
 
-export default withDataStyles(bodyStyles)(MUIDataTableBody);
+export default MUIDataTableBody;

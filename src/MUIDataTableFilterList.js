@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Chip from "material-ui/Chip";
-import { getStyle, withDataStyles } from "./withDataStyles";
+import { getStyle, DataStyles } from "./DataStyles";
 
-const styles = theme => ({
+const defaultFilterListStyles = {
   root: {
     display: "flex",
     justifyContent: "left",
@@ -13,7 +13,7 @@ const styles = theme => ({
   chip: {
     margin: "8px 8px 0px 0px",
   },
-});
+};
 
 class MUIDataTableFilterList extends React.Component {
   static propTypes = {
@@ -21,28 +21,33 @@ class MUIDataTableFilterList extends React.Component {
     filterList: PropTypes.array.isRequired,
     /** Callback to trigger filter update */
     onFilterUpdate: PropTypes.func,
-    /** Extend the style applied to components */
-    classes: PropTypes.object,
   };
 
   render() {
-    const { classes, filterList, filterUpdate } = this.props;
+    const { filterList, filterUpdate, options } = this.props;
 
     return (
-      <div className={classes.root}>
-        {filterList.map((item, index) =>
-          item.map((data, colIndex) => (
-            <Chip
-              label={data}
-              key={colIndex}
-              onRequestDelete={filterUpdate.bind(null, index, data, "checkbox")}
-              className={classes.chip}
-            />
-          )),
+      <DataStyles
+        defaultStyles={defaultFilterListStyles}
+        name="MUIDataTableFilterList"
+        styles={getStyle(options, "table.filterList")}>
+        {filterListStyles => (
+          <div className={filterListStyles.root}>
+            {filterList.map((item, index) =>
+              item.map((data, colIndex) => (
+                <Chip
+                  label={data}
+                  key={colIndex}
+                  onDelete={filterUpdate.bind(null, index, data, "checkbox")}
+                  className={filterListStyles.chip}
+                />
+              )),
+            )}
+          </div>
         )}
-      </div>
+      </DataStyles>
     );
   }
 }
 
-export default withDataStyles(styles)(MUIDataTableFilterList);
+export default MUIDataTableFilterList;

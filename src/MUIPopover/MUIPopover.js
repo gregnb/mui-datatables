@@ -156,7 +156,7 @@ class MUIPopover extends React.Component {
             key={index}
             elevation={2}
             open={this.state.open}
-            onRequestClose={this.handleRequestClose}
+            onClose={this.handleRequestClose}
             onExited={this.handleOnExit}
             anchorEl={this.anchorEl}
             ref={el => this.popoverEl}

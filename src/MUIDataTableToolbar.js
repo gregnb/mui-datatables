@@ -19,9 +19,9 @@ import PrintIcon from "material-ui-icons/Print";
 import ViewColumnIcon from "material-ui-icons/ViewColumn";
 import ClearIcon from "material-ui-icons/Clear";
 import FilterIcon from "material-ui-icons/FilterList";
-import { getStyle, withDataStyles } from "./withDataStyles";
+import { getStyle, DataStyles } from "./DataStyles";
 
-const styles = theme => ({
+const defaultToolbarStyles = {
   root: {},
   spacer: {
     flex: "1 1 100%",
@@ -41,23 +41,129 @@ const styles = theme => ({
   iconActive: {
     color: "#307BB0",
   },
-  search: {
-    display: "inline-flex",
-    flex: "1 0 auto",
-  },
   searchIcon: {
     display: "inline-flex",
     marginTop: "10px",
     marginRight: "8px",
   },
-  searchText: {
-    display: "inline-flex",
-    flex: "0.5 0",
+};
+
+const defaultViewColStyles = {
+  root: {
+    padding: "16px 24px 16px 24px",
+    fontFamily: "Roboto",
   },
-  clearIcon: {
-    display: "inline-flex",
+  title: {
+    marginLeft: "-7px",
+    fontSize: "14px",
+    color: "#424242",
+    textAlign: "left",
+    fontWeight: 500,
   },
-});
+  formGroup: {
+    marginTop: "8px",
+  },
+  formControl: {},
+  checkbox: {
+    color: "#027cb5",
+    width: "32px",
+    height: "32px",
+  },
+  label: {
+    fontSize: "15px",
+    marginLeft: "8px",
+    color: "#4a4a4a",
+  },
+};
+
+const defaultFilterStyles = {
+  root: {
+    padding: "16px 24px 16px 24px",
+    fontFamily: "Roboto",
+  },
+  header: {
+    flex: "0 0 auto",
+    marginBottom: "16px",
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  title: {
+    display: "inline-block",
+    marginLeft: "7px",
+    color: "#424242",
+    fontSize: "14px",
+    fontWeight: 500,
+  },
+  noMargin: {
+    marginLeft: "0px",
+  },
+  reset: {
+    alignSelf: "left",
+  },
+  resetLink: {
+    color: "#027cb5",
+    display: "inline-block",
+    marginLeft: "24px",
+    fontSize: "12px",
+    cursor: "pointer",
+    "&:hover": {
+      color: "#FF0000",
+    },
+  },
+  filtersSelected: {
+    alignSelf: "right",
+  },
+  /* checkbox */
+  checkboxList: {
+    flex: "1 1 100%",
+    display: "inline-flex",
+    marginRight: "24px",
+  },
+  checkboxListTitle: {
+    marginLeft: "7px",
+    marginBottom: "8px",
+    fontSize: "14px",
+    color: "#424242",
+    textAlign: "left",
+    fontWeight: 500,
+  },
+  checkboxFormGroup: {
+    marginTop: "8px",
+  },
+  checkboxFormControl: {
+    margin: "0px",
+  },
+  checkboxFormControlLabel: {
+    fontSize: "15px",
+    marginLeft: "8px",
+    color: "#4a4a4a",
+  },
+  checkboxIcon: {
+    //color: "#027cb5",
+    width: "32px",
+    height: "32px",
+  },
+  checked: {
+    color: "#027CB5",
+  },
+  /* selects */
+  selectRoot: {
+    display: "flex",
+    marginTop: "16px",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    width: "100%",
+    height: "80%",
+    justifyContent: "space-between",
+  },
+  selectFormControl: {
+    flex: "1 1 calc(50% - 24px)",
+    marginRight: "24px",
+    marginBottom: "24px",
+  },
+};
+
 
 class MUIDataTableToolbar extends React.Component {
   state = {
@@ -104,9 +210,8 @@ class MUIDataTableToolbar extends React.Component {
     }));
   };
 
-  getActiveIcon = iconName => {
-    const { classes } = this.props;
-    return this.state.iconActive !== iconName ? classes.icon : classes.iconActive;
+  getActiveIcon = (styles, iconName) => {
+    return this.state.iconActive !== iconName ? styles.icon : styles.iconActive;
   };
 
   hideSearch = () => {
@@ -137,79 +242,112 @@ class MUIDataTableToolbar extends React.Component {
     const { showSearch } = this.state;
 
     return (
-      <Toolbar className={classes.root}>
-        {showSearch === true ? (
-          <MUIDataTableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} />
-        ) : (
-          <div className={classes.titleRoot}>
-            <Typography type="title" className={classes.titleText}>
-              Title goes here and it should be really really long
-            </Typography>
-          </div>
+      <DataStyles
+        defaultStyles={defaultToolbarStyles}
+        name="MUIDataTableToolbar"
+        styles={getStyle(options, "table.toolbar")}>
+        {toolbarStyles => (
+          <Toolbar className={toolbarStyles.root}>
+            {showSearch === true ? (
+              <MUIDataTableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
+            ) : (
+              <div className={toolbarStyles.titleRoot}>
+                <Typography type="title" className={toolbarStyles.titleText}>
+                  Title goes here and it should be really really long
+                </Typography>
+              </div>
+            )}
+            {showSearch === false ? <div className={toolbarStyles.spacer} /> : false}
+            <div className={toolbarStyles.actions}>
+              <Tooltip title="Search">
+                <IconButton
+                  aria-label="Search"
+                  buttonRef={el => (this.searchButton = el)}
+                  classes={{ root: toolbarStyles.icon }}
+                  classes={{ root: this.getActiveIcon(toolbarStyles, "search") }}
+                  onClick={this.setActiveIcon.bind(null, "search")}>
+                  <SearchIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Download CSV">
+                <IconButton
+                  aria-label="Download CSV"
+                  classes={{ root: toolbarStyles.icon }}
+                  onClick={this.handleCSVDownload}>
+                  <DownloadIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Print">
+                <IconButton aria-label="Print" classes={{ root: toolbarStyles.icon }} onClick={this.handlePrint}>
+                  <PrintIcon />
+                </IconButton>
+              </Tooltip>
+
+              <DataStyles
+                defaultStyles={defaultViewColStyles}
+                name="MUIDataTableViewCol"
+                styles={getStyle(options, "viewColumns")}>
+                {viewColStyles => (
+                  <MUIPopover placement={"bottom-center"} refExit={this.setActiveIcon.bind(null)} arrow={false}>
+                    <MUIPopoverTarget>
+                      <Tooltip title="View Columns">
+                        <IconButton
+                          aria-label="View Columns"
+                          classes={{ root: this.getActiveIcon(toolbarStyles, "viewcolumns") }}
+                          onClick={this.setActiveIcon.bind(null, "viewcolumns")}>
+                          <ViewColumnIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </MUIPopoverTarget>
+                    <MUIPopoverContent>
+                      <MUIDataTableViewCol
+                        data={data}
+                        viewColStyles={viewColStyles}
+                        columns={columns}
+                        options={options}
+                        onColumnUpdate={toggleViewColumn}
+                      />
+                    </MUIPopoverContent>
+                  </MUIPopover>
+                )}
+              </DataStyles>
+
+              <DataStyles
+                defaultStyles={defaultFilterStyles}
+                name="MUIDataTableFilter"
+                styles={getStyle(options, "filterView")}>
+                {filterStyles => (
+                  <MUIPopover placement={"bottom-center"} refExit={this.setActiveIcon.bind(null)} arrow={false}>
+                    <MUIPopoverTarget>
+                      <Tooltip title="Filter Table">
+                        <IconButton
+                          aria-label="Filter Table"
+                          classes={{ root: this.getActiveIcon("filter") }}
+                          onClick={this.setActiveIcon.bind(null, "filter")}>
+                          <FilterIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </MUIPopoverTarget>
+                    <MUIPopoverContent>
+                      <MUIDataTableFilter
+                        columns={columns}
+                        options={options}
+                        filterStyles={filterStyles}
+                        filterList={filterList}
+                        filterData={filterData}
+                        onFilterUpdate={filterUpdate}
+                        onFilterReset={resetFilters}
+                      />
+                    </MUIPopoverContent>
+                  </MUIPopover>
+                )}
+              </DataStyles>
+            </div>
+          </Toolbar>
         )}
-        {showSearch === false ? <div className={classes.spacer} /> : false}
-        <div className={classes.actions}>
-          <Tooltip title="Search">
-            <IconButton
-              aria-label="Search"
-              buttonRef={el => (this.searchButton = el)}
-              classes={{ root: classes.icon }}
-              classes={{ root: this.getActiveIcon("search") }}
-              onClick={this.setActiveIcon.bind(null, "search")}>
-              <SearchIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Download CSV">
-            <IconButton aria-label="Download CSV" classes={{ root: classes.icon }} onClick={this.handleCSVDownload}>
-              <DownloadIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Print">
-            <IconButton aria-label="Print" classes={{ root: classes.icon }} onClick={this.handlePrint}>
-              <PrintIcon />
-            </IconButton>
-          </Tooltip>
-          <MUIPopover placement={"bottom-center"} refExit={this.setActiveIcon.bind(null)} arrow={false}>
-            <MUIPopoverTarget>
-              <Tooltip title="View Columns">
-                <IconButton
-                  aria-label="View Columns"
-                  classes={{ root: this.getActiveIcon("viewcolumns") }}
-                  onClick={this.setActiveIcon.bind(null, "viewcolumns")}>
-                  <ViewColumnIcon />
-                </IconButton>
-              </Tooltip>
-            </MUIPopoverTarget>
-            <MUIPopoverContent>
-              <MUIDataTableViewCol data={data} columns={columns} onColumnUpdate={toggleViewColumn} />
-            </MUIPopoverContent>
-          </MUIPopover>
-          <MUIPopover placement={"bottom-center"} refExit={this.setActiveIcon.bind(null)} arrow={false}>
-            <MUIPopoverTarget>
-              <Tooltip title="Filter Table">
-                <IconButton
-                  aria-label="Filter Table"
-                  classes={{ root: this.getActiveIcon("filter") }}
-                  onClick={this.setActiveIcon.bind(null, "filter")}>
-                  <FilterIcon />
-                </IconButton>
-              </Tooltip>
-            </MUIPopoverTarget>
-            <MUIPopoverContent>
-              <MUIDataTableFilter
-                columns={columns}
-                options={options}
-                filterList={filterList}
-                filterData={filterData}
-                onFilterUpdate={filterUpdate}
-                onFilterReset={resetFilters}
-              />
-            </MUIPopoverContent>
-          </MUIPopover>
-        </div>
-      </Toolbar>
+      </DataStyles>
     );
   }
 }
 
-export default withDataStyles(styles)(MUIDataTableToolbar);
+export default MUIDataTableToolbar;

@@ -76,7 +76,8 @@
     "material-ui": "^1.0.0-beta.22",
     "material-ui-icons": "^1.0.0-beta.17",
     "prop-types": "^15.6.0",
-    "react": "^16.0.0"
+    "react": "^16.0.0",
+    "react-popper": "^0.7.4"
   },
   "side-effects": false,
   "nyc": {

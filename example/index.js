@@ -79,7 +79,7 @@ class Example extends React.Component {
             
             cell: {
               root: {
-                },
+              },
               sortLabel: {
               },
             }
@@ -87,11 +87,18 @@ class Example extends React.Component {
           },
           body: {
 
-            row: {
+            main: {
 
+            },
+
+            row: {
+              root: {
+                color: "#FF0000"
+              }
             },
             cell: {
               root: {
+                color: "#000"
               }
             }
 
@@ -114,16 +121,10 @@ class Example extends React.Component {
           },
           iconActive: {
           },
-          search: {
-          },
           searchIcon: {
           },
-          searchText: {
-          },
-          clearIcon: {
-            color: "#000",
-            border: "solid 1px #000"
-          },
+        },
+        filterView: {
         },
         filterList: {
           root: {
@@ -134,7 +135,22 @@ class Example extends React.Component {
           },
         },
         pagination: {
+          root: {
+            border: "solid 1px #000"
+          }
+        },
+        viewColumns: {
 
+        },
+        search: {
+          main: {
+          },
+          searchIcon: {
+          },
+          searchText: {
+          },
+          clearIcon: {
+          },          
         }
       }
     };

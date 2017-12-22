@@ -1,15 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { TableRow, TableFooter, TablePagination } from "material-ui/Table";
-import { getStyle, withDataStyles } from "./withDataStyles";
+import { getStyle, DataStyles } from "./DataStyles";
 
-const styles = theme => ({
+const defaultPaginationStyles = {
   root: {
     "&:last-child": {
       padding: "0px 24px 0px 24px",
     },
   },
-});
+};
 
 class MUIDataTablePagination extends React.Component {
   static propTypes = {
@@ -23,8 +23,6 @@ class MUIDataTablePagination extends React.Component {
     rowsPerPage: PropTypes.number.isRequired,
     /** Callback to trigger rows per page change */
     changeRowsPerPage: PropTypes.func.isRequired,
-    /** Extend the style applied to components */
-    classes: PropTypes.object,
   };
 
   handleRowChange = event => {
@@ -37,23 +35,31 @@ class MUIDataTablePagination extends React.Component {
 
   render() {
     const { count, classes, options, rowsPerPage, page } = this.props;
+    const test = getStyle(options, "pagination");
 
     return (
-      <TableFooter>
-        <TableRow>
-          <TablePagination
-            className={classes.root}
-            count={count}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            rowsPerPageOptions={options.rowsPerPageOptions}
-            onChangePage={this.handlePageChange}
-            onChangeRowsPerPage={this.handleRowChange}
-          />
-        </TableRow>
-      </TableFooter>
+      <DataStyles
+        defaultStyles={defaultPaginationStyles}
+        name="MUIDataTablePagination"
+        styles={getStyle(options, "table.pagination")}>
+        {paginationStyles => (
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                className={paginationStyles.root}
+                count={count}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                rowsPerPageOptions={options.rowsPerPageOptions}
+                onChangePage={this.handlePageChange}
+                onChangeRowsPerPage={this.handleRowChange}
+              />
+            </TableRow>
+          </TableFooter>
+        )}
+      </DataStyles>
     );
   }
 }
 
-export default withDataStyles(styles)(MUIDataTablePagination);
+export default MUIDataTablePagination;
