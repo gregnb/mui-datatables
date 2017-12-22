@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 import Table from "material-ui/Table";
 import Typography from "material-ui/Typography";
 import { TableBody, TableRow } from "material-ui/Table";
@@ -7,9 +8,7 @@ import MUIDataTableBodyCell from "./MUIDataTableBodyCell";
 import { getStyle, DataStyles } from "./DataStyles";
 
 const defaultBodyStyles = {
-  root: {
-    borderBottom: "solid 1px #bdbdbd",
-  },
+  root: {},
   emptyTitle: {
     textAlign: "center",
   },
@@ -17,11 +16,30 @@ const defaultBodyStyles = {
 
 const defaultBodyRowStyles = {
   root: {},
+  responsiveStacked: {
+    "@media all and (max-width: 960px)": {
+      border: "solid 2px rgba(0, 0, 0, 0.15)",
+    },
+  },
 };
 
 const defaultBodyCellStyles = {
-  root: {
-    border: "solid 1px #FF0000",
+  root: {},
+  responsiveStacked: {
+    "@media all and (max-width: 960px)": {
+      display: "block",
+      fontSize: "16px",
+      position: "relative",
+      paddingLeft: "50%",
+      "&:before": {
+        position: "absolute",
+        top: "6px",
+        left: "6px",
+        width: "calc(45% - 10px)",
+        paddingRight: "10px",
+        whiteSpace: "nowrap",
+      },
+    },
   },
 };
 
@@ -41,6 +59,10 @@ class MUIDataTableBody extends React.Component {
     classes: PropTypes.object,
   };
 
+  componentDidMount() {
+    this.rRowStyles = this.getRowStyles();
+  }
+
   buildRows() {
     const { data, page, rowsPerPage } = this.props;
 
@@ -55,6 +77,25 @@ class MUIDataTableBody extends React.Component {
     return rows.length ? rows : null;
   }
 
+  getRowStyles() {
+    const { columns, options } = this.props;
+
+    if (!options.responsive && options.responsive !== "stacked") {
+      return defaultBodyRowStyles;
+    }
+
+    let stackStyles = defaultBodyRowStyles;
+    const breakpoint = "@media all and (max-width: 960px)";
+
+    columns.forEach((column, index) => {
+      stackStyles["responsiveStacked"][breakpoint]["& td:nth-of-type(" + (index + 1) + "):before"] = {
+        content: '"' + column.name + '"',
+      };
+    });
+
+    return stackStyles;
+  }
+
   render() {
     const { columns, options } = this.props;
     const tableRows = this.buildRows();
@@ -67,7 +108,7 @@ class MUIDataTableBody extends React.Component {
         {bodyStyles => (
           <TableBody>
             <DataStyles
-              defaultStyles={defaultBodyCellStyles}
+              defaultStyles={this.rRowStyles}
               name="MUIDataTableBodyRow"
               styles={getStyle(options, "table.body.row")}>
               {rowStyles => (
@@ -78,11 +119,22 @@ class MUIDataTableBody extends React.Component {
                   {cellStyles => {
                     return tableRows ? (
                       tableRows.map((row, rowIndex) => (
-                        <TableRow hover={options.rowHover ? true : false} className={rowStyles.root} key={rowIndex}>
+                        <TableRow
+                          hover={options.rowHover ? true : false}
+                          className={classNames({
+                            [rowStyles.root]: true,
+                            [rowStyles.responsiveStacked]: options.responsive === "stacked",
+                          })}
+                          key={rowIndex}>
                           {row.map(
                             (column, index) =>
                               columns[index].display ? (
-                                <MUIDataTableBodyCell className={cellStyles.root} key={index}>
+                                <MUIDataTableBodyCell
+                                  className={classNames({
+                                    [cellStyles.root]: true,
+                                    [cellStyles.responsiveStacked]: options.responsive === "stacked",
+                                  })}
+                                  key={index}>
                                   {column}
                                 </MUIDataTableBodyCell>
                               ) : (

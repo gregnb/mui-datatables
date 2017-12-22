@@ -12,7 +12,11 @@ import debounce from "lodash.debounce";
 import { getStyle, DataStyles } from "./DataStyles";
 
 const defaultTableStyles = {
-  main: {},
+  root: {},
+  responsiveScroll: {
+    display: "block",
+    overflowX: "auto",
+  },
 };
 
 class MUIDataTable extends React.Component {
@@ -317,26 +321,26 @@ class MUIDataTable extends React.Component {
     const rowsPerPage = this.state.rowsPerPage ? this.state.rowsPerPage : this.options.rowsPerPage;
 
     return (
-      <Paper elevation={4} ref={el => (this.tableContent = el)} className={className ? className : null}>
-        <MUIDataTableToolbar
-          data={data}
-          columns={columns}
-          options={this.options}
-          tableRef={() => this.tableRef}
-          filterUpdate={this.filterUpdate}
-          resetFilters={this.resetFilters}
-          filterData={filterData}
-          filterList={filterList}
-          searchTextUpdate={this.searchTextUpdate}
-          toggleViewColumn={this.toggleViewColumn}
-        />
-        <MUIDataTableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />
-        <DataStyles
-          defaultStyles={defaultTableStyles}
-          name="MUIDataTable"
-          styles={getStyle(this.options, "table.main")}>
-          {tableStyles => (
-            <Table ref={el => (this.tableRef = el)} className={tableStyles.main}>
+      <DataStyles defaultStyles={defaultTableStyles} name="MUIDataTable" styles={getStyle(this.options, "table.main")}>
+        {tableStyles => (
+          <Paper
+            elevation={4}
+            ref={el => (this.tableContent = el)}
+            className={this.options.responsive === "scroll" ? tableStyles.responsiveScroll : null}>
+            <MUIDataTableToolbar
+              data={data}
+              columns={columns}
+              options={this.options}
+              tableRef={() => this.tableRef}
+              filterUpdate={this.filterUpdate}
+              resetFilters={this.resetFilters}
+              filterData={filterData}
+              filterList={filterList}
+              searchTextUpdate={this.searchTextUpdate}
+              toggleViewColumn={this.toggleViewColumn}
+            />
+            <MUIDataTableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />
+            <Table ref={el => (this.tableRef = el)}>
               <MUIDataTableHead columns={columns} toggleSort={this.toggleSortColumn} options={this.options} />
               <MUIDataTableBody
                 data={this.state.displayData}
@@ -360,9 +364,9 @@ class MUIDataTable extends React.Component {
                 false
               )}
             </Table>
-          )}
-        </DataStyles>
-      </Paper>
+          </Paper>
+        )}
+      </DataStyles>
     );
   }
 }

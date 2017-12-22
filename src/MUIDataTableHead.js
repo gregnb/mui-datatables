@@ -1,16 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 import { TableHead, TableRow } from "material-ui/Table";
 import MUIDataTableHeadCell from "./MUIDataTableHeadCell";
 import { getStyle, DataStyles } from "./DataStyles";
 
-const defaultHeadStyles = {};
+const defaultHeadStyles = {
+  responsiveStacked: {
+    "@media all and (max-width: 960px)": {
+      display: "none",
+    },
+  },
+};
 
 const defaultHeadRowStyles = {};
 
-const defaultHeadCellStyles = {
-  root: {},
-};
+const defaultHeadCellStyles = {};
 
 class MUIDataTableHead extends React.Component {
   render() {
@@ -22,7 +27,7 @@ class MUIDataTableHead extends React.Component {
         name="MUIDataTableHead"
         styles={getStyle(options, "table.head.main")}>
         {headStyles => (
-          <TableHead>
+          <TableHead className={headStyles.responsiveStacked}>
             <DataStyles
               defaultStyles={defaultHeadRowStyles}
               name="MUIDataTableHeadRow"

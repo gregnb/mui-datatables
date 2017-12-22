@@ -19,19 +19,19 @@ import PrintIcon from "material-ui-icons/Print";
 import ViewColumnIcon from "material-ui-icons/ViewColumn";
 import ClearIcon from "material-ui-icons/Clear";
 import FilterIcon from "material-ui-icons/FilterList";
+import merge from "lodash.merge";
 import { getStyle, DataStyles } from "./DataStyles";
 
 const defaultToolbarStyles = {
   root: {},
-  spacer: {
-    flex: "1 1 100%",
+  left: {
+    flex: "1 1 55%",
   },
   actions: {
-    display: "inline-flex",
+    flex: "0 0 45%",
+    textAlign: "right",
   },
-  titleRoot: {
-    flex: "0 0 auto",
-  },
+  titleRoot: {},
   titleText: {},
   icon: {
     "&:hover": {
@@ -46,6 +46,41 @@ const defaultToolbarStyles = {
     marginTop: "10px",
     marginRight: "8px",
   },
+};
+
+const responsiveToolbarStyles = {
+  "@media all and (max-width: 960px)": {
+    titleRoot: {},
+    titleText: {
+      fontSize: "16px",
+    },
+    spacer: {
+      display: "none",
+    },
+    left: {
+      // flex: "1 1 40%",
+      padding: "8px 0px",
+    },
+    actions: {
+      // flex: "1 1 60%",
+      textAlign: "right",
+    },
+  },
+  "@media all and (max-width: 600px)": {
+    root: {
+      display: "block",
+    },
+    left: {
+      padding: "8px 0px 0px 0px",
+    },
+    titleText: {
+      textAlign: "center",
+    },
+    actions: {
+      textAlign: "center",
+    },
+  },
+  "@media all and (max-width: 480px)": {},
 };
 
 const defaultViewColStyles = {
@@ -170,6 +205,16 @@ class MUIDataTableToolbar extends React.Component {
     showSearch: false,
   };
 
+  constructor(props) {
+    super(props);
+
+    if (props.options.responsive && props.options.responsive === "stacked") {
+      this.tbarStyles = merge(defaultToolbarStyles, responsiveToolbarStyles);
+    } else {
+      this.tbarStyles = defaultToolbarStyles;
+    }
+  }
+
   handlePrint = () => {
     const tableEl = this.props.tableRef();
     const tableHTML = findDOMNode(tableEl).outerHTML;
@@ -242,21 +287,22 @@ class MUIDataTableToolbar extends React.Component {
 
     return (
       <DataStyles
-        defaultStyles={defaultToolbarStyles}
+        defaultStyles={this.tbarStyles}
         name="MUIDataTableToolbar"
         styles={getStyle(options, "table.toolbar")}>
         {toolbarStyles => (
           <Toolbar className={toolbarStyles.root}>
-            {showSearch === true ? (
-              <MUIDataTableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
-            ) : (
-              <div className={toolbarStyles.titleRoot}>
-                <Typography type="title" className={toolbarStyles.titleText}>
-                  Title goes here and it should be really really long
-                </Typography>
-              </div>
-            )}
-            {showSearch === false ? <div className={toolbarStyles.spacer} /> : false}
+            <div className={toolbarStyles.left}>
+              {showSearch === true ? (
+                <MUIDataTableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
+              ) : (
+                <div className={toolbarStyles.titleRoot}>
+                  <Typography type="title" className={toolbarStyles.titleText}>
+                    Title goes here and it should be really really long
+                  </Typography>
+                </div>
+              )}
+            </div>
             <div className={toolbarStyles.actions}>
               <Tooltip title="Search">
                 <IconButton

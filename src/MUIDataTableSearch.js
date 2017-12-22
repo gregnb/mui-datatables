@@ -20,7 +20,7 @@ const defaultSearchStyles = {
     marginRight: "8px",
   },
   searchText: {
-    flex: "0.5 0",
+    flex: "0.8 0",
   },
   clearIcon: {
     "&:hover": {

@@ -69,9 +69,20 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'checkbox',
+      responsive: 'stacked',
       styles: {
         table: {
           
+          main: {
+            root: {
+            },
+            responsiveScroll: {
+
+            },
+            responsiveStacked: {
+            }
+          },
+
           head: {
 
             row: {
@@ -93,12 +104,10 @@ class Example extends React.Component {
 
             row: {
               root: {
-                color: "#FF0000"
               }
             },
             cell: {
               root: {
-                color: "#000"
               }
             }
 

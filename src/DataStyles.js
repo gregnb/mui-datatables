@@ -26,6 +26,13 @@ const stylePass = (displayName, setFn) => {
   return result;
 };
 
+/**
+ * This wrapper was created because I needed the ability to pass styles as a prop that
+ * were extracted from an object that was a prop as well. In order to avoid name collisions
+ * I needed to be able to extract deeply with a dot notation from user suppplied styling.
+ *
+ */
+
 class DataStyles extends React.Component {
   state = {
     data: null,
@@ -49,6 +56,8 @@ class DataStyles extends React.Component {
   buildComponent(props) {
     const defaultStyles = props.defaultStyles ? props.defaultStyles : {};
     const finalStyles = merge(defaultStyles, props.styles);
+    console.log("fin styles");
+    console.log(finalStyles);
 
     // just a pass-through
     this.component = withStyles(finalStyles)(stylePass(props.name, this.setStyleClass));
