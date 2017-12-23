@@ -35,7 +35,6 @@ class MUIDataTablePagination extends React.Component {
 
   render() {
     const { count, classes, options, rowsPerPage, page } = this.props;
-    const test = getStyle(options, "pagination");
 
     return (
       <DataStyles

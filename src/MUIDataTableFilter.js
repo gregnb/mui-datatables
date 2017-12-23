@@ -14,6 +14,8 @@ class MUIDataTableFilter extends React.Component {
   static propTypes = {
     /** Data used to populate filter dropdown/checkbox */
     filterData: PropTypes.array.isRequired,
+    /** Data selected to be filtered against dropdown/checkbox */
+    filterList: PropTypes.array.isRequired,
     /** Options used to describe table */
     options: PropTypes.object.isRequired,
     /** Callback to trigger filter update */

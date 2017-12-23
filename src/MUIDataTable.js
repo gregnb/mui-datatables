@@ -38,7 +38,7 @@ class MUIDataTable extends React.Component {
       rowsPerPageOptions: PropTypes.array,
       search: PropTypes.bool,
       print: PropTypes.bool,
-      responsive: PropTypes.bool,
+      responsive: PropTypes.oneOf(["stacked", "scroll"]),
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
@@ -64,23 +64,12 @@ class MUIDataTable extends React.Component {
 
   componentWillMount() {
     this.initializeTable(this.props);
-
-    if (this.options.responsive) {
-      this.handleResize();
-    }
   }
 
   componentDidMount() {
-    if (this.options.responsive) {
-      this._debouncedResize = debounce(this.handleResize, 100);
-      window.addEventListener("resize", this._debouncedResize);
-    }
   }
 
   componentWillUnmount() {
-    if (this.options.responsive) {
-      window.removeEventListener("resize", this._debouncedResize);
-    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -107,7 +96,7 @@ class MUIDataTable extends React.Component {
       rowsPerPageOptions: [10, 15, 100],
       search: true,
       print: true,
-      responsive: true,
+      responsive: "stacked",
     };
 
     this.options = { ...defaultOptions, ...props.options };
@@ -127,17 +116,6 @@ class MUIDataTable extends React.Component {
       }
     }
   }
-
-  handleResize = event => {
-    const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    const breakpoint = 960;
-
-    if ((this.state.showResponsive && width > breakpoint) || (!this.state.showResponsive && width < breakpoint)) {
-      this.setState(() => ({
-        showResponsive: width < breakpoint ? true : false,
-      }));
-    }
-  };
 
   /*
    *  Build the source table data

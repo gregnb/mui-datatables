@@ -22,7 +22,7 @@ import FilterIcon from "material-ui-icons/FilterList";
 import merge from "lodash.merge";
 import { getStyle, DataStyles } from "./DataStyles";
 
-const defaultToolbarStyles = {
+export const defaultToolbarStyles = {
   root: {},
   left: {
     flex: "1 1 55%",
@@ -48,7 +48,7 @@ const defaultToolbarStyles = {
   },
 };
 
-const responsiveToolbarStyles = {
+export const responsiveToolbarStyles = {
   "@media all and (max-width: 960px)": {
     titleRoot: {},
     titleText: {
@@ -83,7 +83,7 @@ const responsiveToolbarStyles = {
   "@media all and (max-width: 480px)": {},
 };
 
-const defaultViewColStyles = {
+export const defaultViewColStyles = {
   root: {
     padding: "16px 24px 16px 24px",
     fontFamily: "Roboto",
@@ -111,7 +111,7 @@ const defaultViewColStyles = {
   },
 };
 
-const defaultFilterStyles = {
+export const defaultFilterStyles = {
   root: {
     padding: "16px 24px 16px 24px",
     fontFamily: "Roboto",

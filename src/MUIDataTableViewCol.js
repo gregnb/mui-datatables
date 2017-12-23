@@ -6,8 +6,6 @@ import { FormLabel, FormControl, FormGroup, FormControlLabel, FormHelperText } f
 
 class MUIDataTableViewCol extends React.Component {
   static propTypes = {
-    /** Data used to describe table */
-    data: PropTypes.array.isRequired,
     /** Columns used to describe table */
     columns: PropTypes.array.isRequired,
     /** Options used to describe table */
@@ -23,7 +21,7 @@ class MUIDataTableViewCol extends React.Component {
   };
 
   render() {
-    const { classes, columns, data, options, viewColStyles } = this.props;
+    const { classes, columns, options, viewColStyles } = this.props;
 
     return (
       <FormControl component={"fieldset"} className={viewColStyles.root}>
