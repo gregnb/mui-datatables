@@ -21,6 +21,8 @@ const defaultTableStyles = {
 
 class MUIDataTable extends React.Component {
   static propTypes = {
+    /** Title of the table */
+    title: PropTypes.string.isRequired,
     /** Data used to describe table */
     data: PropTypes.array.isRequired,
     /** Columns used to describe table */
@@ -184,7 +186,7 @@ class MUIDataTable extends React.Component {
       isSearchFound = false;
 
     for (let index = 0; index < row.length; index++) {
-      const column = row[index];
+      const column = typeof row[index] !== "string" ? row[index].toString() : row[index];
 
       if (filterList[index].length && filterList[index].indexOf(column) < 0) {
         isFiltered = true;
@@ -289,8 +291,8 @@ class MUIDataTable extends React.Component {
     return (colOne, colTwo) => {
       let comparison = 0;
 
-      const dataOne = colOne.data.toLowerCase();
-      const dataTwo = colTwo.data.toLowerCase();
+      const dataOne = typeof colOne.data === "string" ? colOne.data.toLowerCase() : colOne.data;
+      const dataTwo = typeof colTwo.data === "string" ? colTwo.data.toLowerCase() : colTwo.data;
 
       if (dataOne > dataTwo) {
         comparison = 1;
@@ -315,7 +317,7 @@ class MUIDataTable extends React.Component {
   }
 
   render() {
-    const { className, classes } = this.props;
+    const { className, classes, title } = this.props;
     const { data, displayData, columns, page, filterData, filterList, searchText } = this.state;
 
     const rowsPerPage = this.state.rowsPerPage ? this.state.rowsPerPage : this.options.rowsPerPage;
@@ -328,15 +330,16 @@ class MUIDataTable extends React.Component {
             ref={el => (this.tableContent = el)}
             className={this.options.responsive === "scroll" ? tableStyles.responsiveScroll : null}>
             <MUIDataTableToolbar
-              data={data}
               columns={columns}
-              options={this.options}
-              tableRef={() => this.tableRef}
-              filterUpdate={this.filterUpdate}
-              resetFilters={this.resetFilters}
+              data={data}
               filterData={filterData}
               filterList={filterList}
+              filterUpdate={this.filterUpdate}
+              options={this.options}
+              resetFilters={this.resetFilters}
               searchTextUpdate={this.searchTextUpdate}
+              tableRef={() => this.tableRef}
+              title={title}
               toggleViewColumn={this.toggleViewColumn}
             />
             <MUIDataTableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />

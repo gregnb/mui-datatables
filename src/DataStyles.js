@@ -56,8 +56,6 @@ class DataStyles extends React.Component {
   buildComponent(props) {
     const defaultStyles = props.defaultStyles ? props.defaultStyles : {};
     const finalStyles = merge(defaultStyles, props.styles);
-    console.log("fin styles");
-    console.log(finalStyles);
 
     // just a pass-through
     this.component = withStyles(finalStyles)(stylePass(props.name, this.setStyleClass));

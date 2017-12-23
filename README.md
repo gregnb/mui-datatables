@@ -11,6 +11,10 @@
 
 MUI-Datatables is a data tables component built on [Material-UI V1](https://www.material-ui-next.com).  It comes with features like filtering, view/hide columns, search, export to CSV download, printing, pagination, and sorting. On top of the ability to customize styling on most views, there is a responsive data stacking mode for mobile/tablet devices.
 
+<div align="center">
+	<img src="https://user-images.githubusercontent.com/19170080/34319732-406ab3e6-e7b7-11e7-97b6-eefc330f8cf7.gif" />
+</div>
+
 ## Install
 
 `npm install mui-datatables --save-dev `

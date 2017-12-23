@@ -281,6 +281,7 @@ class MUIDataTableToolbar extends React.Component {
       resetFilters,
       searchTextUpdate,
       toggleViewColumn,
+      title,
     } = this.props;
 
     const { showSearch } = this.state;
@@ -298,7 +299,7 @@ class MUIDataTableToolbar extends React.Component {
               ) : (
                 <div className={toolbarStyles.titleRoot}>
                   <Typography type="title" className={toolbarStyles.titleText}>
-                    Title goes here and it should be really really long
+                    {title}
                   </Typography>
                 </div>
               )}
@@ -308,7 +309,6 @@ class MUIDataTableToolbar extends React.Component {
                 <IconButton
                   aria-label="Search"
                   buttonRef={el => (this.searchButton = el)}
-                  classes={{ root: toolbarStyles.icon }}
                   classes={{ root: this.getActiveIcon(toolbarStyles, "search") }}
                   onClick={this.setActiveIcon.bind(null, "search")}>
                   <SearchIcon />
@@ -367,7 +367,7 @@ class MUIDataTableToolbar extends React.Component {
                       <Tooltip title="Filter Table">
                         <IconButton
                           aria-label="Filter Table"
-                          classes={{ root: this.getActiveIcon("filter") }}
+                          classes={{ root: this.getActiveIcon(toolbarStyles, "filter") }}
                           onClick={this.setActiveIcon.bind(null, "filter")}>
                           <FilterIcon />
                         </IconButton>
