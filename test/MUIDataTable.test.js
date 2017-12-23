@@ -16,14 +16,18 @@ describe("<MUIDataTable />", function() {
       ["Bob Herm", "Test Corp", "Tampa", "FL"],
       ["James Houston", "Test Corp", "Dallas", "TX"],
     ];
-
   });
 
   it("should render a table", () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
-    assert.strictEqual(shallowWrapper.dive().dive().name(), "MUIDataTable");
+    assert.strictEqual(
+      shallowWrapper
+        .dive()
+        .dive()
+        .name(),
+      "MUIDataTable",
+    );
   });
-
 
   it("should correctly build internal columns data structure", () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
@@ -34,26 +38,24 @@ describe("<MUIDataTable />", function() {
       { display: true, name: "City", sort: "desc" },
       { display: true, name: "State", sort: "desc" },
     ];
-    
+
     assert.deepEqual(actualResult, expectedResult);
   });
-
 
   it("should correctly build internal table data and displayData structure", () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const state = shallowWrapper.state();
     assert.deepEqual(state.data, data);
-    assert.deepEqual(state.displayData, data);    
+    assert.deepEqual(state.displayData, data);
   });
 
   it("should correctly build internal filterList structure", () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const state = shallowWrapper.state();
-    const expectedResult = [[],[],[],[]];
+    const expectedResult = [[], [], [], []];
 
-    assert.deepEqual(state.filterList, expectedResult);  
+    assert.deepEqual(state.filterList, expectedResult);
   });
-
 
   it("should correctly build internal unique column data for filterData structure", () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
@@ -65,63 +67,50 @@ describe("<MUIDataTable />", function() {
       ["NY", "CT", "FL", "TX"],
     ];
 
-    assert.deepEqual(state.filterData, expectedResult);  
+    assert.deepEqual(state.filterData, expectedResult);
   });
 
-
   it("should correctly build internal rowsPerPage when provided in options", () => {
-
     const options = {
-      rowsPerPage: 20
+      rowsPerPage: 20,
     };
 
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
     const state = shallowWrapper.state();
     assert.strictEqual(state.rowsPerPage, 20);
-
   });
 
-
   it("should correctly build internal rowsPerPageOptions when provided in options", () => {
-    
     const options = {
-      rowsPerPageOptions: [5, 10, 15]
+      rowsPerPageOptions: [5, 10, 15],
     };
 
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
     const state = shallowWrapper.state();
     assert.deepEqual(state.rowsPerPageOptions, [5, 10, 15]);
-    
   });
 
-
   it("should render pagination when enabled in options", () => {
-
     const options = {
-      pagination: true
+      pagination: true,
     };
 
     const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
     const actualResult = mountWrapper.find(MUIDataTablePagination);
     assert.lengthOf(actualResult, 1);
-
   });
 
   it("should not render pagination when disabled in options", () => {
-
     const options = {
-      pagination: false
+      pagination: false,
     };
 
     const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
     const actualResult = mountWrapper.find(MUIDataTablePagination);
     assert.lengthOf(actualResult, 0);
-
-
   });
 
   it("should properly set internal filterList when calling filterUpdate method", () => {
-
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const table = shallowWrapper;
     const instance = table.instance();
@@ -130,11 +119,9 @@ describe("<MUIDataTable />", function() {
 
     const state = table.state();
     assert.deepEqual(state.filterList, [["Joe James"], [], [], []]);
-
   });
 
   it("should properly reset internal filterList when calling resetFilters method", () => {
-
     // set a filter
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const table = shallowWrapper;
@@ -150,11 +137,9 @@ describe("<MUIDataTable />", function() {
     table.update();
     state = table.state();
     assert.deepEqual(state.filterList, [[], [], [], []]);
-
   });
 
   it("should properly set searchText when calling searchTextUpdate method", () => {
-
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const table = shallowWrapper;
     const instance = table.instance();
@@ -164,11 +149,9 @@ describe("<MUIDataTable />", function() {
     const state = table.state();
 
     assert.deepEqual(state.displayData, [["Joe James", "Test Corp", "Yonkers", "NY"]]);
-
   });
-  
-  it("should sort provided column when calling toggleSortColum method", () => {
 
+  it("should sort provided column when calling toggleSortColum method", () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const instance = shallowWrapper.instance();
 
@@ -184,11 +167,9 @@ describe("<MUIDataTable />", function() {
     ];
 
     assert.deepEqual(state.displayData, expectedResult);
-
   });
 
   it("should toggle provided column when calling toggleViewCol method", () => {
-
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const instance = shallowWrapper.instance();
 
@@ -204,12 +185,9 @@ describe("<MUIDataTable />", function() {
     ];
 
     assert.deepEqual(state.columns, expectedResult);
-
-
   });
 
   it("should get displayable data when calling getDisplayData method", () => {
-
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const instance = shallowWrapper.instance();
     const state = shallowWrapper.state();
@@ -223,34 +201,27 @@ describe("<MUIDataTable />", function() {
     ];
 
     assert.deepEqual(actualResult, expectedResult);
-
   });
 
   it("should update rowsPerPage when calling changeRowsPerPage method", () => {
-
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const instance = shallowWrapper.instance();
-    
+
     instance.changeRowsPerPage(10);
     shallowWrapper.update();
-    
+
     const state = shallowWrapper.state();
     assert.deepEqual(state.rowsPerPage, 10);
-
   });
 
   it("should update page position when calling changePage method", () => {
-
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const instance = shallowWrapper.instance();
-    
+
     instance.changePage(2);
     shallowWrapper.update();
-    
+
     const state = shallowWrapper.state();
     assert.deepEqual(state.page, 2);
-
   });
-
-
 });

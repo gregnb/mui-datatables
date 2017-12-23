@@ -66,11 +66,9 @@ class MUIDataTable extends React.Component {
     this.initializeTable(this.props);
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
-  componentWillUnmount() {
-  }
+  componentWillUnmount() {}
 
   componentWillReceiveProps(nextProps) {
     if (this.props.data !== nextProps.data || this.props.columns !== nextProps.columns) {

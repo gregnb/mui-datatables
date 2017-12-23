@@ -8,7 +8,7 @@
     "test": "mocha --require babel-register test/**/*.test.js",
     "coverage": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha --require babel-register test/*.js && nyc report --reporter=html | cat coverage/lcov.info | coveralls",
     "coverage:html": "cross-env NODE_ENV=test nyc check-coverage --lines 55 --reporter=html --reporter=text mocha --require babel-register test/*.js && nyc report --reporter=html",
-    "prettier": "find src/ -name \"*.js\" | xargs prettier --write",
+    "prettier": "find src/ test/ -name \"*.js\" | xargs prettier --write",
     "lint": "eslint src",
     "build": "cross-env NODE_ENV=production npm run prettier && rollup -c"
   },

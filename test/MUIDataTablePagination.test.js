@@ -10,39 +10,42 @@ describe("<MUIDataTablePagination />", function() {
 
   before(() => {
     options = {
-      rowsPerPageOptions: [5, 10, 15]
+      rowsPerPageOptions: [5, 10, 15],
     };
   });
 
   it("should render a table footer with pagination", () => {
-
     const mountWrapper = mount(<MUIDataTablePagination options={options} count={100} page={1} rowsPerPage={10} />);
 
     const actualResult = mountWrapper.find(TablePagination);
     assert.strictEqual(actualResult.length, 1);
-
   });
 
   it("should trigger changeRowsPerPage prop callback when calling method handleRowChange", () => {
-
     const changeRowsPerPage = spy();
-    const shallowWrapper = shallow(<MUIDataTablePagination options={options} count={100} page={1} rowsPerPage={10} changeRowsPerPage={changeRowsPerPage} />);
+    const shallowWrapper = shallow(
+      <MUIDataTablePagination
+        options={options}
+        count={100}
+        page={1}
+        rowsPerPage={10}
+        changeRowsPerPage={changeRowsPerPage}
+      />,
+    );
     const instance = shallowWrapper.instance();
 
-    instance.handleRowChange({ target: { value: "" }});
+    instance.handleRowChange({ target: { value: "" } });
     assert.strictEqual(changeRowsPerPage.callCount, 1);
-
   });
 
   it("should trigger changePage prop callback when calling method handlePageChange", () => {
-
     const changePage = spy();
-    const shallowWrapper = shallow(<MUIDataTablePagination options={options} count={100} page={1} rowsPerPage={10} changePage={changePage} />);
+    const shallowWrapper = shallow(
+      <MUIDataTablePagination options={options} count={100} page={1} rowsPerPage={10} changePage={changePage} />,
+    );
     const instance = shallowWrapper.instance();
 
     instance.handlePageChange(null, 1);
     assert.strictEqual(changePage.callCount, 1);
-
   });
-
 });
