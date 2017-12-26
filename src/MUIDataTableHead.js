@@ -15,11 +15,67 @@ const defaultHeadStyles = {
 
 const defaultHeadRowStyles = {};
 
-const defaultHeadCellStyles = {};
+const arrowIcon = {
+  width: "8px",
+  height: "5px",
+  display: "block",
+  paddingBottom: "1px",
+  "& svg": {
+    width: "100%",
+    "& path": {
+      fillOpacity: 0.35,
+    },
+  },
+};
+
+const defaultHeadCellStyles = {
+  tooltip: {
+    cursor: "pointer",
+  },
+  data: {
+    display: "inline-block",
+  },
+  sortAction: {
+    display: "inline-block",
+    verticalAlign: "top",
+    cursor: "pointer",
+    paddingLeft: "4px",
+    paddingTop: "2px",
+  },
+  arrowUp: {
+    ...arrowIcon,
+  },
+  arrowDown: {
+    ...arrowIcon,
+    transform: "rotate(180deg)",
+  },
+  arrowHidden: {
+    display: "none",
+  },
+  arrowActive: {
+    "& svg": {
+      "& path": {
+        fillOpacity: 1,
+      },
+    },
+  },
+};
 
 class MUIDataTableHead extends React.Component {
+  state = {
+    activeColumn: null,
+  };
+
+  handleToggleColumn = index => {
+    this.setState(() => ({
+      activeColumn: index,
+    }));
+    this.props.toggleSort(index);
+  };
+
   render() {
-    const { toggleSort, columns, options } = this.props;
+    const { columns, options } = this.props;
+    const { activeColumn } = this.state;
 
     return (
       <DataStyles
@@ -47,8 +103,9 @@ class MUIDataTableHead extends React.Component {
                                 key={index}
                                 index={index}
                                 classes={cellStyles}
+                                sortAria={activeColumn === index ? column.sort : null}
                                 sortDirection={column.sort}
-                                toggleSort={toggleSort}
+                                toggleSort={this.handleToggleColumn}
                                 options={options}>
                                 {column.name}
                               </MUIDataTableHeadCell>

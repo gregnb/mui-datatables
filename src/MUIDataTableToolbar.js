@@ -333,7 +333,7 @@ class MUIDataTableToolbar extends React.Component {
                 name="MUIDataTableViewCol"
                 styles={getStyle(options, "viewColumns")}>
                 {viewColStyles => (
-                  <MUIPopover placement={"bottom-center"} refExit={this.setActiveIcon.bind(null)} arrow={false}>
+                  <MUIPopover refExit={this.setActiveIcon.bind(null)} arrow={false}>
                     <MUIPopoverTarget>
                       <Tooltip title="View Columns">
                         <IconButton
@@ -362,7 +362,7 @@ class MUIDataTableToolbar extends React.Component {
                 name="MUIDataTableFilter"
                 styles={getStyle(options, "filterView")}>
                 {filterStyles => (
-                  <MUIPopover placement={"bottom-center"} refExit={this.setActiveIcon.bind(null)} arrow={false}>
+                  <MUIPopover refExit={this.setActiveIcon.bind(null)} arrow={false}>
                     <MUIPopoverTarget>
                       <Tooltip title="Filter Table">
                         <IconButton

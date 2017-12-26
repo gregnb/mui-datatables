@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 import Paper from "material-ui/Paper";
 import Table from "material-ui/Table";
 import MUIDataTableToolbar from "./MUIDataTableToolbar";
@@ -66,10 +65,6 @@ class MUIDataTable extends React.Component {
     this.initializeTable(this.props);
   }
 
-  componentDidMount() {}
-
-  componentWillUnmount() {}
-
   componentWillReceiveProps(nextProps) {
     if (this.props.data !== nextProps.data || this.props.columns !== nextProps.columns) {
       this.initializeTable(nextProps);
@@ -130,7 +125,7 @@ class MUIDataTable extends React.Component {
       columnData.push({
         name: columns[colIndex],
         display: true,
-        sort: "desc",
+        sort: null,
       });
 
       filterData[colIndex] = [];
@@ -201,10 +196,17 @@ class MUIDataTable extends React.Component {
 
   toggleSortColumn = index => {
     this.setState(prevState => {
-      const columns = [...prevState.columns];
+      let columns = [...prevState.columns];
       const displayData = prevState.displayData;
       const order = prevState.columns[index].sort;
-      columns[index].sort = columns[index].sort === "desc" ? "asc" : "desc";
+
+      for (let pos = 0; pos < columns.length; pos++) {
+        if (index !== pos) {
+          columns[pos].sort = null;
+        } else {
+          columns[pos].sort = columns[pos].sort === "asc" ? "desc" : "asc";
+        }
+      }
 
       return {
         columns: columns,
@@ -276,7 +278,7 @@ class MUIDataTable extends React.Component {
         comparison = -1;
       }
 
-      return order === "desc" ? comparison * -1 : comparison;
+      return order === "asc" ? comparison * -1 : comparison;
     };
   }
 
