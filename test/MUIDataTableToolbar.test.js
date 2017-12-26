@@ -6,22 +6,6 @@ import IconButton from "material-ui/IconButton";
 import MUIDataTableToolbar from "../src/MUIDataTableToolbar";
 import MUIDataTableSearch from "../src/MUIDataTableSearch";
 
-/*
-            <MUIDataTableToolbar
-              columns={columns}
-              data={data}
-              filterData={filterData}
-              filterList={filterList}
-              filterUpdate={this.filterUpdate}
-              options={this.options}
-              resetFilters={this.resetFilters}
-              searchTextUpdate={this.searchTextUpdate}
-              tableRef={() => this.tableRef}
-              title={title}
-              toggleViewColumn={this.toggleViewColumn}
-            />
-*/
-
 describe("<MUIDataTableToolbar />", function() {
   let data;
   let columns;
@@ -128,31 +112,4 @@ describe("<MUIDataTableToolbar />", function() {
     assert.strictEqual(removeSpy.callCount, 1);
   });
 
-  // setActiveIcon = iconName => {
-  //   this.setState(() => ({
-  //     iconActive: iconName,
-  //     showSearch: iconName === "search" ? true : false,
-  //   }));
-  // };
-
-  /* add this later */
-  // it("should render a toolbar with no search when options.", () => {
-  //   const options = {};
-  //   const mountWrapper = mount(<MUIDataTableToolbar columns={columns} data={data} options={options} />);
-  //   const actualResult = mountWrapper.find(IconButton);
-  //   assert.strictEqual(actualResult.length, 5);
-  // });
-
-  // it("should trigger handleTextChange prop callback when calling method handleTextChange", () => {
-  //   const options = {};
-  //   const onSearch = spy();
-  //   const onHide = () => {};
-
-  //   const shallowWrapper = shallow(<MUIDataTableSearch onSearch={onSearch} onHide={onHide} options={options} />);
-
-  //   const instance = shallowWrapper.instance();
-
-  //   instance.handleTextChange({ target: { value: "" } });
-  //   assert.strictEqual(onSearch.callCount, 1);
-  // });
 });
