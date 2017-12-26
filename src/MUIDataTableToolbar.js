@@ -305,88 +305,106 @@ class MUIDataTableToolbar extends React.Component {
               )}
             </div>
             <div className={toolbarStyles.actions}>
-              <Tooltip title="Search">
-                <IconButton
-                  aria-label="Search"
-                  buttonRef={el => (this.searchButton = el)}
-                  classes={{ root: this.getActiveIcon(toolbarStyles, "search") }}
-                  onClick={this.setActiveIcon.bind(null, "search")}>
-                  <SearchIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Download CSV">
-                <IconButton
-                  aria-label="Download CSV"
-                  classes={{ root: toolbarStyles.icon }}
-                  onClick={this.handleCSVDownload}>
-                  <DownloadIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Print">
-                <IconButton aria-label="Print" classes={{ root: toolbarStyles.icon }} onClick={this.handlePrint}>
-                  <PrintIcon />
-                </IconButton>
-              </Tooltip>
-
-              <DataStyles
-                defaultStyles={defaultViewColStyles}
-                name="MUIDataTableViewCol"
-                styles={getStyle(options, "viewColumns")}>
-                {viewColStyles => (
-                  <MUIPopover refExit={this.setActiveIcon.bind(null)} arrow={false}>
-                    <MUIPopoverTarget>
-                      <Tooltip title="View Columns">
-                        <IconButton
-                          aria-label="View Columns"
-                          classes={{ root: this.getActiveIcon(toolbarStyles, "viewcolumns") }}
-                          onClick={this.setActiveIcon.bind(null, "viewcolumns")}>
-                          <ViewColumnIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </MUIPopoverTarget>
-                    <MUIPopoverContent>
-                      <MUIDataTableViewCol
-                        data={data}
-                        viewColStyles={viewColStyles}
-                        columns={columns}
-                        options={options}
-                        onColumnUpdate={toggleViewColumn}
-                      />
-                    </MUIPopoverContent>
-                  </MUIPopover>
-                )}
-              </DataStyles>
-
-              <DataStyles
-                defaultStyles={defaultFilterStyles}
-                name="MUIDataTableFilter"
-                styles={getStyle(options, "filterView")}>
-                {filterStyles => (
-                  <MUIPopover refExit={this.setActiveIcon.bind(null)} arrow={false}>
-                    <MUIPopoverTarget>
-                      <Tooltip title="Filter Table">
-                        <IconButton
-                          aria-label="Filter Table"
-                          classes={{ root: this.getActiveIcon(toolbarStyles, "filter") }}
-                          onClick={this.setActiveIcon.bind(null, "filter")}>
-                          <FilterIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </MUIPopoverTarget>
-                    <MUIPopoverContent>
-                      <MUIDataTableFilter
-                        columns={columns}
-                        options={options}
-                        filterStyles={filterStyles}
-                        filterList={filterList}
-                        filterData={filterData}
-                        onFilterUpdate={filterUpdate}
-                        onFilterReset={resetFilters}
-                      />
-                    </MUIPopoverContent>
-                  </MUIPopover>
-                )}
-              </DataStyles>
+              {options.search ? (
+                <Tooltip title="Search">
+                  <IconButton
+                    aria-label="Search"
+                    buttonRef={el => (this.searchButton = el)}
+                    classes={{ root: this.getActiveIcon(toolbarStyles, "search") }}
+                    onClick={this.setActiveIcon.bind(null, "search")}>
+                    <SearchIcon />
+                  </IconButton>
+                </Tooltip>
+              ) : (
+                false
+              )}
+              {options.download ? (
+                <Tooltip title="Download CSV">
+                  <IconButton
+                    aria-label="Download CSV"
+                    classes={{ root: toolbarStyles.icon }}
+                    onClick={this.handleCSVDownload}>
+                    <DownloadIcon />
+                  </IconButton>
+                </Tooltip>
+              ) : (
+                false
+              )}
+              {options.print ? (
+                <Tooltip title="Print">
+                  <IconButton aria-label="Print" classes={{ root: toolbarStyles.icon }} onClick={this.handlePrint}>
+                    <PrintIcon />
+                  </IconButton>
+                </Tooltip>
+              ) : (
+                false
+              )}
+              {options.viewColumns ? (
+                <DataStyles
+                  defaultStyles={defaultViewColStyles}
+                  name="MUIDataTableViewCol"
+                  styles={getStyle(options, "viewColumns")}>
+                  {viewColStyles => (
+                    <MUIPopover refExit={this.setActiveIcon.bind(null)}>
+                      <MUIPopoverTarget>
+                        <Tooltip title="View Columns">
+                          <IconButton
+                            aria-label="View Columns"
+                            classes={{ root: this.getActiveIcon(toolbarStyles, "viewcolumns") }}
+                            onClick={this.setActiveIcon.bind(null, "viewcolumns")}>
+                            <ViewColumnIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </MUIPopoverTarget>
+                      <MUIPopoverContent>
+                        <MUIDataTableViewCol
+                          data={data}
+                          viewColStyles={viewColStyles}
+                          columns={columns}
+                          options={options}
+                          onColumnUpdate={toggleViewColumn}
+                        />
+                      </MUIPopoverContent>
+                    </MUIPopover>
+                  )}
+                </DataStyles>
+              ) : (
+                false
+              )}
+              {options.filter ? (
+                <DataStyles
+                  defaultStyles={defaultFilterStyles}
+                  name="MUIDataTableFilter"
+                  styles={getStyle(options, "filterView")}>
+                  {filterStyles => (
+                    <MUIPopover refExit={this.setActiveIcon.bind(null)}>
+                      <MUIPopoverTarget>
+                        <Tooltip title="Filter Table">
+                          <IconButton
+                            aria-label="Filter Table"
+                            classes={{ root: this.getActiveIcon(toolbarStyles, "filter") }}
+                            onClick={this.setActiveIcon.bind(null, "filter")}>
+                            <FilterIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </MUIPopoverTarget>
+                      <MUIPopoverContent>
+                        <MUIDataTableFilter
+                          columns={columns}
+                          options={options}
+                          filterStyles={filterStyles}
+                          filterList={filterList}
+                          filterData={filterData}
+                          onFilterUpdate={filterUpdate}
+                          onFilterReset={resetFilters}
+                        />
+                      </MUIPopoverContent>
+                    </MUIPopover>
+                  )}
+                </DataStyles>
+              ) : (
+                false
+              )}
             </div>
           </Toolbar>
         )}

@@ -29,23 +29,23 @@ const defaultSearchStyles = {
   },
 };
 
-/*
-  issues to work out:
-    - pass hooks from tabletoolbar to close this
-    - return focus back to the search icon
-    - WCAG issues. catch ESCAPE key to close
-
-    use the rootRef
-  
-    const doc = ownerDocument(ReactDOM.findDOMNode(this));
-    this.props.modalManager.add(this);
-    this.onDocumentKeyUpListener = addEventListener(doc, 'keyup', this.handleDocumentKeyUp);
-
-*/
-
 class MUIDataTableSearch extends React.Component {
   handleTextChange = event => {
     this.props.onSearch(event.target.value);
+  };
+
+  componentDidMount() {
+    document.addEventListener("keydown", this.onKeyDown, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.onKeyDown, false);
+  }
+
+  onKeyDown = event => {
+    if (event.keyCode == 27) {
+      this.props.onHide();
+    }
   };
 
   render() {

@@ -9,7 +9,7 @@
 [![dependencies Status](https://david-dm.org/gregnb/mui-datatables/status.svg)](https://david-dm.org/gregnb/mui-datatables)
 [![npm version](https://badge.fury.io/js/mui-datatables.svg)](https://badge.fury.io/js/mui-datatables)
 
-MUI-Datatables is a data tables component built on [Material-UI V1](https://www.material-ui-next.com).  It comes with features like filtering, view/hide columns, search, export to CSV download, printing, pagination, and sorting. On top of the ability to customize styling on most views, there is a responsive data stacking mode for mobile/tablet devices.
+MUI-Datatables is a data tables component built on [Material-UI V1](https://www.material-ui-next.com).  It comes with features like filtering, view/hide columns, search, export to CSV download, printing, pagination, and sorting. On top of the ability to customize styling on most views, there are two responsive modes "stacked" and "scroll" for mobile/tablet devices. 
 
 <div align="center">
 	<img src="https://user-images.githubusercontent.com/19170080/34346996-b59a8b3a-e9cb-11e7-80d5-591aef3dc1f4.gif" />
@@ -17,7 +17,7 @@ MUI-Datatables is a data tables component built on [Material-UI V1](https://www.
 
 ## Install
 
-`npm install mui-datatables --save-dev `
+`npm install mui-datatables --save`
 
 ## Demo
 
@@ -40,11 +40,15 @@ const data = [
 ];
 
 const options = {
-  filter: true,
   filterType: 'checkbox',
 };
 
-<MUIDataTable data={data} columns={columns} options={options} />
+<MUIDataTable 
+  title={"Employee List"} 
+  data={data} 
+  columns={columns} 
+  options={options} 
+/>
 
 ```
 
@@ -57,25 +61,26 @@ The component accepts the following props:
 
 |Name|Type|Description
 |:--:|:-----|:-----|
+|**`title`**|array|Title used to caption table
 |**`columns`**|array|Columns used to describe table. Must be an array of simple strings
 |**`data`**|array|Data used to describe table. Must be an array of simple strings
 |**`options`**|object|Options used to describe table
 
 #### Options:
-|Name|Type|Description
-|:--:|:-----|:-----|
-|**`styles`**|object|Extend or override default styling
-|**`filterType `**|string|Choice of filtering view. Options are "checkbox" or "dropdown" (default: checkbox)
-|**`pagination`**|boolean|Enable/disable pagination
-|**`responsive`**|boolean|Enable/disable responsive data stacking
-|**`rowsPerPage`**|number|Number of rows allowed per page
-|**`rowsPerPageOptions`**|array|Options to provide in pagination for number of rows a user can select
-|**`rowHover`**|boolean|Enable/disable hover style over rows
-|**`sort`**|boolean|Show/hide sort icon from toolbar
-|**`filter`**|boolean|Show/hide filter icon from toolbar
-|**`search`**|boolean|Show/hide search icon from toolbar
-|**`print`**|boolean|Show/hide print	 icon from toolbar
-|**`download`**|boolean|Show/hide download icon from toolbar
+|Name|Type|Default|Description
+|:--:|:-----|:--|:-----|
+|**`styles`**|object||Extend or override default styling
+|**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox" or "dropdown"
+|**`pagination`**|boolean|true|Enable/disable pagination
+|**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: 'stacked', 'scroll'
+|**`rowsPerPage`**|number|10|Number of rows allowed per page
+|**`rowsPerPageOptions`**|array|[10,15,20]|Options to provide in pagination for number of rows a user can select
+|**`rowHover`**|boolean|true|Enable/disable hover style over rows
+|**`sort`**|boolean|true|Show/hide sort icon from toolbar
+|**`filter`**|boolean|true|Show/hide filter icon from toolbar
+|**`search`**|boolean|true|Show/hide search icon from toolbar
+|**`print`**|boolean|true|Show/hide print	 icon from toolbar
+|**`download`**|boolean|true|Show/hide download icon from toolbar
 
 
 ## Customize Styling
@@ -109,12 +114,17 @@ const options = {
   }
 };
 
-<MUIDataTable data={data} columns={columns} options={options} />
+<MUIDataTable 
+  title={"some title"} 
+  data={data} 
+  columns={columns} 
+  options={options} 
+/>
 
 ```
 
 #### Styling Table
---
+---
 <a name="styletable"></a>
 
 
@@ -148,7 +158,7 @@ const options = {
 ```
 
 #### Styling Toolbar
---
+---
 <a name="styletoolbar"></a>
 
 ```js
@@ -184,7 +194,7 @@ const options = {
 ```
 
 #### Styling FilterList
---
+---
 <a name="stylefilterlist"></a>
 
 
@@ -205,7 +215,7 @@ const options = {
 ```
 
 #### Styling Pagination
---
+---
 <a name="stylepagination"></a>
 
 ```js

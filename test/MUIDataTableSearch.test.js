@@ -1,4 +1,5 @@
 import React from "react";
+import simulant from "simulant";
 import { spy, stub } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
@@ -29,4 +30,27 @@ describe("<MUIDataTableSearch />", function() {
     instance.handleTextChange({ target: { value: "" } });
     assert.strictEqual(onSearch.callCount, 1);
   });
+
+  it("should hide the search bar when hitting the ESCAPE key", () => {
+    const options = {};
+    const onHide = spy();
+
+    const mountWrapper = mount(<MUIDataTableSearch onHide={onHide} options={options} />, { attachTo: document.body });
+
+    simulant.fire(document.body.querySelector('input'), 'keydown', { keyCode: 27 });
+    assert.strictEqual(onHide.callCount, 1);
+
+  });
+
+  it("should hide not hide search bar when entering anything but the ESCAPE key", () => {
+    const options = {};
+    const onHide = spy();
+
+    const mountWrapper = mount(<MUIDataTableSearch onHide={onHide} options={options} />, { attachTo: document.body });
+
+    simulant.fire(document.body.querySelector('input'), 'keydown', { keyCode: 25 });
+    assert.strictEqual(onHide.callCount, 0);
+
+  });
+
 });

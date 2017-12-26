@@ -28,16 +28,18 @@ class MUIDataTable extends React.Component {
     columns: PropTypes.array.isRequired,
     /** Options used to describe table */
     options: PropTypes.shape({
-      sort: PropTypes.bool,
-      filter: PropTypes.bool,
+      responsive: PropTypes.oneOf(["stacked", "scroll"]),
       filterType: PropTypes.oneOf(["dropdown", "checkbox"]),
       pagination: PropTypes.bool,
       rowHover: PropTypes.bool,
       rowsPerPage: PropTypes.number,
       rowsPerPageOptions: PropTypes.array,
+      filter: PropTypes.bool,
+      sort: PropTypes.bool,
       search: PropTypes.bool,
       print: PropTypes.bool,
-      responsive: PropTypes.oneOf(["stacked", "scroll"]),
+      viewColumns: PropTypes.bool,
+      download: PropTypes.bool,
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
@@ -79,17 +81,18 @@ class MUIDataTable extends React.Component {
 
   getDefaultOptions(props) {
     const defaultOptions = {
-      rowHover: true,
-      sort: true,
-      filter: true,
+      responsive: "stacked",
       filterType: "checkbox",
       pagination: true,
       rowHover: true,
       rowsPerPage: 10,
       rowsPerPageOptions: [10, 15, 100],
+      filter: true,
+      sort: true,
       search: true,
       print: true,
-      responsive: "stacked",
+      viewColumns: true,
+      download: true,
     };
 
     this.options = { ...defaultOptions, ...props.options };
