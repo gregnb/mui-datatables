@@ -21,7 +21,7 @@ MUI-Datatables is a data tables component built on [Material-UI V1](https://www.
 
 ## Demo
 
-[![Edit react-to-print](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/edit-this)
+[![Edit react-to-print](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/wy2rl1nyzl)
 
 ## Usage
 
