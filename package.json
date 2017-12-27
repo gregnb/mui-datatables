@@ -1,8 +1,11 @@
 {
   "name": "mui-datatables",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Datatables for React using Material-UI",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server -d --progress --colors",
     "test": "mocha --require babel-register test/**/*.test.js",
@@ -60,8 +63,8 @@
     "rollup": "^0.52.0",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.2.6",
-    "rollup-plugin-env": "^0.21.4",
     "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-uglify": "^2.0.1",
     "simulant": "^0.2.2",
     "sinon": "^4.1.3",

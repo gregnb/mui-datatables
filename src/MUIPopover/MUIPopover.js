@@ -38,7 +38,7 @@ class MUIPopover extends React.Component {
   };
 
   componentWillMount() {
-    this.anchorEl = false;
+    this.anchorEl = null;
   }
 
   componentDidMount() {

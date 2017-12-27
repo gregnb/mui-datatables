@@ -1,12 +1,14 @@
 import babel from "rollup-plugin-babel";
 import commonjs from "rollup-plugin-commonjs";
+import replace from "rollup-plugin-replace";
 import uglify from "rollup-plugin-uglify";
-import env from "rollup-plugin-env";
 
 export default {
   input: 'src/index.js',
   plugins: [
-    env({ NODE_ENV: "production" }),
+    replace({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    }),
     commonjs({
       include: [
         'node_modules/**'
@@ -49,7 +51,7 @@ export default {
     })
   ],
   output: {
-    file: 'lib/index.js',
+    file: 'dist/index.js',
     format: 'cjs'
   },
   sourcemap: true
