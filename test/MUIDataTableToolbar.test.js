@@ -75,7 +75,7 @@ describe("<MUIDataTableToolbar />", function() {
     const mountWrapper = mount(<MUIDataTableToolbar columns={columns} data={data} options={newOptions} />);
     const actualResult = mountWrapper.find(FilterIcon);
     assert.strictEqual(actualResult.length, 0);
-  });  
+  });
 
   it("should render a toolbar with a search clicking search icon", () => {
     const mountWrapper = mount(<MUIDataTableToolbar columns={columns} data={data} options={options} />);

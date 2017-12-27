@@ -1,4 +1,5 @@
 import React from "react";
+import { spy } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import MUIDataTable from "../src/MUIDataTable";
@@ -47,6 +48,46 @@ describe("<MUIDataTable />", function() {
     const state = shallowWrapper.state();
     assert.deepEqual(state.data, data);
     assert.deepEqual(state.displayData, data);
+  });
+
+  it("should correctly re-build internal table data and displayData structure with prop change", () => {
+    const mountWrapper = mount(<MUIDataTable columns={columns} data={data} />);
+    let state = mountWrapper.state();
+    assert.deepEqual(state.data, data);
+    assert.deepEqual(state.displayData, data);
+
+    // now use updated props
+    let newData = data.map(item => [...item]);
+    newData[0][0] = "testing";
+    mountWrapper.setProps({ data: newData });
+    mountWrapper.update();
+
+    state = mountWrapper.state();
+    const expectedResult = [
+      ["testing", "Test Corp", "Yonkers", "NY"],
+      ["John Walsh", "Test Corp", "Hartford", "CT"],
+      ["Bob Herm", "Test Corp", "Tampa", "FL"],
+      ["James Houston", "Test Corp", "Dallas", "TX"],
+    ];
+
+    assert.deepEqual(state.data, expectedResult);
+  });
+
+  it("should not re-build internal table data and displayData structure with no prop change to data or columns", () => {
+    const initializeTableSpy = spy(MUIDataTable.prototype, "initializeTable");
+    const mountWrapper = mount(<MUIDataTable columns={columns} data={data} />);
+
+    let state = mountWrapper.state();
+    assert.deepEqual(state.data, data);
+    assert.deepEqual(state.displayData, data);
+
+    // now update props with no change
+    mountWrapper.setProps({});
+    mountWrapper.update();
+
+    state = mountWrapper.state();
+    assert.deepEqual(state.data, data);
+    assert.deepEqual(initializeTableSpy.callCount, 1);
   });
 
   it("should correctly build internal filterList structure", () => {
@@ -110,7 +151,7 @@ describe("<MUIDataTable />", function() {
     assert.lengthOf(actualResult, 0);
   });
 
-  it("should properly set internal filterList when calling filterUpdate method", () => {
+  it("should properly set internal filterList when calling filterUpdate method with type=checkbox", () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const table = shallowWrapper;
     const instance = table.instance();
@@ -119,6 +160,51 @@ describe("<MUIDataTable />", function() {
 
     const state = table.state();
     assert.deepEqual(state.filterList, [["Joe James"], [], [], []]);
+  });
+
+  it("should remove entry from filterList when calling filterUpdate method with type=checkbox and same arguments a second time", () => {
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
+    const table = shallowWrapper;
+    const instance = table.instance();
+    instance.filterUpdate(0, "Joe James", "checkbox");
+    table.update();
+
+    let state = table.state();
+    assert.deepEqual(state.filterList, [["Joe James"], [], [], []]);
+
+    instance.filterUpdate(0, "Joe James", "checkbox");
+    table.update();
+
+    state = table.state();
+    assert.deepEqual(state.filterList, [[], [], [], []]);
+  });
+
+  it("should properly set internal filterList when calling filterUpdate method with type=dropdown", () => {
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
+    const table = shallowWrapper;
+    const instance = table.instance();
+    instance.filterUpdate(0, "Joe James", "dropdown");
+    table.update();
+
+    const state = table.state();
+    assert.deepEqual(state.filterList, [["Joe James"], [], [], []]);
+  });
+
+  it("should remove entry from filterList when calling filterUpdate method with type=dropdown and same arguments a second time", () => {
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
+    const table = shallowWrapper;
+    const instance = table.instance();
+    instance.filterUpdate(0, "Joe James", "dropdown");
+    table.update();
+
+    let state = table.state();
+    assert.deepEqual(state.filterList, [["Joe James"], [], [], []]);
+
+    instance.filterUpdate(0, "Joe James", "dropdown");
+    table.update();
+
+    state = table.state();
+    assert.deepEqual(state.filterList, [[], [], [], []]);
   });
 
   it("should properly reset internal filterList when calling resetFilters method", () => {

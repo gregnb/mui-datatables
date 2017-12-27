@@ -37,9 +37,8 @@ describe("<MUIDataTableSearch />", function() {
 
     const mountWrapper = mount(<MUIDataTableSearch onHide={onHide} options={options} />, { attachTo: document.body });
 
-    simulant.fire(document.body.querySelector('input'), 'keydown', { keyCode: 27 });
+    simulant.fire(document.body.querySelector("input"), "keydown", { keyCode: 27 });
     assert.strictEqual(onHide.callCount, 1);
-
   });
 
   it("should hide not hide search bar when entering anything but the ESCAPE key", () => {
@@ -48,9 +47,7 @@ describe("<MUIDataTableSearch />", function() {
 
     const mountWrapper = mount(<MUIDataTableSearch onHide={onHide} options={options} />, { attachTo: document.body });
 
-    simulant.fire(document.body.querySelector('input'), 'keydown', { keyCode: 25 });
+    simulant.fire(document.body.querySelector("input"), "keydown", { keyCode: 25 });
     assert.strictEqual(onHide.callCount, 0);
-
   });
-
 });
