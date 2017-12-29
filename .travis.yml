@@ -3,9 +3,6 @@ node_js:
   - "node"
 
 script: 
- - npm run -s build
  - npm run -s lint
- - npm run -s test
-
-after_success: 
- - npm run coverage
+ - npm run -s coverage
+ - npm run -s build

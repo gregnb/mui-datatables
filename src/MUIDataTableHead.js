@@ -103,7 +103,6 @@ class MUIDataTableHead extends React.Component {
                                 key={index}
                                 index={index}
                                 classes={cellStyles}
-                                sortAria={activeColumn === index ? column.sort : null}
                                 sortDirection={column.sort}
                                 toggleSort={this.handleToggleColumn}
                                 options={options}>

@@ -14,12 +14,12 @@ const defaultPaginationStyles = {
   "@media screen and (max-width: 400px)": {
     toolbar: {
       "& span:nth-child(2)": {
-        display: "none"
-      }
+        display: "none",
+      },
     },
     selectRoot: {
-      marginRight: "8px"
-    }
+      marginRight: "8px",
+    },
   },
 };
 
@@ -61,7 +61,7 @@ class MUIDataTablePagination extends React.Component {
                 classes={{
                   caption: paginationStyles.caption,
                   toolbar: paginationStyles.toolbar,
-                  selectRoot: paginationStyles.selectRoot
+                  selectRoot: paginationStyles.selectRoot,
                 }}
                 count={count}
                 rowsPerPage={rowsPerPage}

@@ -16,6 +16,20 @@ const defaultTableStyles = {
     display: "block",
     overflowX: "auto",
   },
+  caption: {
+    position: "absolute",
+    left: "-1000px",
+  },
+  liveAnnounce: {
+    border: "0",
+    clip: "rect(0 0 0 0)",
+    height: "1px",
+    margin: "-1px",
+    overflow: "hidden",
+    padding: "0",
+    position: "absolute",
+    width: "1px",
+  },
 };
 
 class MUIDataTable extends React.Component {
@@ -47,6 +61,7 @@ class MUIDataTable extends React.Component {
 
   state = {
     open: false,
+    announceText: null,
     data: [],
     displayData: [],
     page: 0,
@@ -211,8 +226,12 @@ class MUIDataTable extends React.Component {
         }
       }
 
+      const orderLabel = columns[index].sort === "asc" ? "ascending" : "descending";
+      const announceText = `Table now sorted by ${columns[index].name} : ${orderLabel}`;
+
       return {
         columns: columns,
+        announceText: announceText,
         displayData: this.sortTable(displayData, index, order),
       };
     });
@@ -299,7 +318,7 @@ class MUIDataTable extends React.Component {
 
   render() {
     const { className, classes, title } = this.props;
-    const { data, displayData, columns, page, filterData, filterList, searchText } = this.state;
+    const { announceText, data, displayData, columns, page, filterData, filterList, searchText } = this.state;
 
     const rowsPerPage = this.state.rowsPerPage ? this.state.rowsPerPage : this.options.rowsPerPage;
 
@@ -324,7 +343,8 @@ class MUIDataTable extends React.Component {
               toggleViewColumn={this.toggleViewColumn}
             />
             <MUIDataTableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />
-            <Table ref={el => (this.tableRef = el)}>
+            <Table ref={el => (this.tableRef = el)} tabIndex={"0"} role={"grid"} aria-readonly={"true"}>
+              <caption className={tableStyles.caption}>{title}</caption>
               <MUIDataTableHead columns={columns} toggleSort={this.toggleSortColumn} options={this.options} />
               <MUIDataTableBody
                 data={this.state.displayData}
@@ -348,6 +368,9 @@ class MUIDataTable extends React.Component {
                 false
               )}
             </Table>
+            <div className={tableStyles.liveAnnounce} aria-live={"polite"} ref={el => (this.announceRef = el)}>
+              {announceText}
+            </div>
           </Paper>
         )}
       </DataStyles>

@@ -292,12 +292,12 @@ class MUIDataTableToolbar extends React.Component {
         name="MUIDataTableToolbar"
         styles={getStyle(options, "table.toolbar")}>
         {toolbarStyles => (
-          <Toolbar className={toolbarStyles.root}>
+          <Toolbar className={toolbarStyles.root} role={"toolbar"} aria-label={"Table Toolbar"}>
             <div className={toolbarStyles.left}>
               {showSearch === true ? (
                 <MUIDataTableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
               ) : (
-                <div className={toolbarStyles.titleRoot}>
+                <div className={toolbarStyles.titleRoot} aria-hidden={"true"}>
                   <Typography type="title" className={toolbarStyles.titleText}>
                     {title}
                   </Typography>

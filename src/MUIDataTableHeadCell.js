@@ -13,8 +13,6 @@ class MUIDataTableHeadCell extends React.Component {
     options: PropTypes.object.isRequired,
     /** Current sort direction */
     sortDirection: PropTypes.string,
-    /** Current aria-sort direction */
-    sortAria: PropTypes.string,
     /** Callback to trigger column sort */
     toggleSort: PropTypes.func.isRequired,
   };
@@ -24,10 +22,13 @@ class MUIDataTableHeadCell extends React.Component {
   };
 
   render() {
-    const { children, classes, index, options, sortDirection, sortAria } = this.props;
+    const { children, classes, index, options, sortDirection } = this.props;
+
+    let sortName = "descending";
+    if (sortDirection === "desc" || sortDirection === null) sortName = "ascending";
 
     return (
-      <TableCell className={classes.root} sortDirection={sortAria}>
+      <TableCell className={classes.root} scope={"col"} sortDirection={sortDirection}>
         {options.sort ? (
           <Tooltip
             title="Sort"
@@ -35,7 +36,7 @@ class MUIDataTableHeadCell extends React.Component {
             className={classes.tooltip}
             enterDelay={300}
             onClick={this.handleSortClick}>
-            <span>
+            <span role="button" tabIndex={0}>
               <div className={classes.data}>{children}</div>
               <div className={classes.sortAction}>
                 <span
@@ -66,7 +67,7 @@ class MUIDataTableHeadCell extends React.Component {
             </span>
           </Tooltip>
         ) : (
-          children
+          <span tabIndex={0}>{children}</span>
         )}
       </TableCell>
     );
