@@ -17,7 +17,7 @@ const defaultBodyStyles = {
 const defaultBodyRowStyles = {
   root: {},
   responsiveStacked: {
-    "@media all and (max-width: 960px)": {
+    "@media screen and (max-width: 960px)": {
       border: "solid 2px rgba(0, 0, 0, 0.15)",
     },
   },
@@ -26,11 +26,11 @@ const defaultBodyRowStyles = {
 const defaultBodyCellStyles = {
   root: {},
   responsiveStacked: {
-    "@media all and (max-width: 960px)": {
+    "@media screen and (max-width: 960px)": {
       display: "block",
       fontSize: "16px",
       position: "relative",
-      paddingLeft: "50%",
+      paddingLeft: "calc(50% - 8px)",
       "&:before": {
         position: "absolute",
         top: "6px",
@@ -85,7 +85,7 @@ class MUIDataTableBody extends React.Component {
     }
 
     let stackStyles = defaultBodyRowStyles;
-    const breakpoint = "@media all and (max-width: 960px)";
+    const breakpoint = "@media screen and (max-width: 960px)";
 
     columns.forEach((column, index) => {
       stackStyles["responsiveStacked"][breakpoint]["& td:nth-of-type(" + (index + 1) + "):before"] = {

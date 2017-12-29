@@ -49,7 +49,7 @@ export const defaultToolbarStyles = {
 };
 
 export const responsiveToolbarStyles = {
-  "@media all and (max-width: 960px)": {
+  "@media screen and (max-width: 960px)": {
     titleRoot: {},
     titleText: {
       fontSize: "16px",
@@ -66,7 +66,7 @@ export const responsiveToolbarStyles = {
       textAlign: "right",
     },
   },
-  "@media all and (max-width: 600px)": {
+  "@media screen and (max-width: 600px)": {
     root: {
       display: "block",
     },
@@ -80,7 +80,7 @@ export const responsiveToolbarStyles = {
       textAlign: "center",
     },
   },
-  "@media all and (max-width: 480px)": {},
+  "@media screen and (max-width: 480px)": {},
 };
 
 export const defaultViewColStyles = {

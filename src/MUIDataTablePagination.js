@@ -9,6 +9,18 @@ const defaultPaginationStyles = {
       padding: "0px 24px 0px 24px",
     },
   },
+  toolbar: {},
+  selectRoot: {},
+  "@media screen and (max-width: 400px)": {
+    toolbar: {
+      "& span:nth-child(2)": {
+        display: "none"
+      }
+    },
+    selectRoot: {
+      marginRight: "8px"
+    }
+  },
 };
 
 class MUIDataTablePagination extends React.Component {
@@ -46,6 +58,11 @@ class MUIDataTablePagination extends React.Component {
             <TableRow>
               <TablePagination
                 className={paginationStyles.root}
+                classes={{
+                  caption: paginationStyles.caption,
+                  toolbar: paginationStyles.toolbar,
+                  selectRoot: paginationStyles.selectRoot
+                }}
                 count={count}
                 rowsPerPage={rowsPerPage}
                 page={page}
