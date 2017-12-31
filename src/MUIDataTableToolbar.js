@@ -142,6 +142,7 @@ export const defaultFilterStyles = {
     marginLeft: "24px",
     fontSize: "12px",
     cursor: "pointer",
+    border: "none",
     "&:hover": {
       color: "#FF0000",
     },
@@ -282,6 +283,7 @@ class MUIDataTableToolbar extends React.Component {
       searchTextUpdate,
       toggleViewColumn,
       title,
+      tableRef,
     } = this.props;
 
     const { showSearch } = this.state;
@@ -345,7 +347,7 @@ class MUIDataTableToolbar extends React.Component {
                   name="MUIDataTableViewCol"
                   styles={getStyle(options, "viewColumns")}>
                   {viewColStyles => (
-                    <MUIPopover refExit={this.setActiveIcon.bind(null)}>
+                    <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
                       <MUIPopoverTarget>
                         <Tooltip title="View Columns">
                           <IconButton
@@ -377,7 +379,7 @@ class MUIDataTableToolbar extends React.Component {
                   name="MUIDataTableFilter"
                   styles={getStyle(options, "filterView")}>
                   {filterStyles => (
-                    <MUIPopover refExit={this.setActiveIcon.bind(null)}>
+                    <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
                       <MUIPopoverTarget>
                         <Tooltip title="Filter Table">
                           <IconButton

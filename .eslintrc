@@ -27,14 +27,21 @@
     "mocha": true,
     "node": true
   },
+  "extends": [
+   "plugin:jsx-a11y/recommended"
+  ],
   "rules": {
     "no-console": "off",
     "semi": 2,
     "no-tabs": 2,
+    "jsx-a11y/no-autofocus": [ 2, {
+      "ignoreNonDOM": true
+    }]
   },
   "plugins": [
     "import",
     "react",
+    "jsx-a11y",
     "filenames"
   ]
 }

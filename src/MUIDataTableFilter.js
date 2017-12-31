@@ -50,9 +50,9 @@ class MUIDataTableFilter extends React.Component {
               })}>
               FILTERS
             </Typography>
-            <a className={filterStyles.resetLink} tabIndex={0} aria-label="Reset Filters" onClick={onFilterReset}>
+            <button className={filterStyles.resetLink} tabIndex={0} aria-label="Reset Filters" onClick={onFilterReset}>
               RESET
-            </a>
+            </button>
           </div>
           <div className={filterStyles.filtersSelected} />
         </div>

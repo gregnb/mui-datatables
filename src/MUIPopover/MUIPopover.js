@@ -68,7 +68,9 @@ class MUIPopover extends React.Component {
   render() {
     let popoverRender = [];
 
-    React.Children.map(this.props.children, (child, index) => {
+    const { className, placement, refClose, refExit, children, ...providedProps } = this.props;
+
+    React.Children.map(children, (child, index) => {
       if (child.type === MUIPopoverContent) {
         const transformOriginSpecs = {
           vertical: "top",
@@ -90,7 +92,8 @@ class MUIPopover extends React.Component {
             anchorEl={this.anchorEl}
             ref={el => this.popoverEl}
             anchorOrigin={anchorOriginSpecs}
-            transformOrigin={transformOriginSpecs}>
+            transformOrigin={transformOriginSpecs}
+            {...providedProps}>
             {child}
           </Popover>
         );

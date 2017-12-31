@@ -7,7 +7,6 @@ import MUIDataTableFilterList from "./MUIDataTableFilterList";
 import MUIDataTableBody from "./MUIDataTableBody";
 import MUIDataTableHead from "./MUIDataTableHead";
 import MUIDataTablePagination from "./MUIDataTablePagination";
-import debounce from "lodash.debounce";
 import { getStyle, DataStyles } from "./DataStyles";
 
 const defaultTableStyles = {

@@ -67,7 +67,7 @@ class MUIDataTableHeadCell extends React.Component {
             </span>
           </Tooltip>
         ) : (
-          <span tabIndex={0}>{children}</span>
+          children
         )}
       </TableCell>
     );
