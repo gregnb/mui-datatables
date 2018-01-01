@@ -41,18 +41,6 @@ class Example extends React.Component {
       ["Mason Ray", "Computer Scientist", "San Francisco", 39, "$142,000"]
     ];
 
-    // options: PropTypes.shape({
-    //   sort: PropTypes.bool,
-    //   filter: PropTypes.bool,
-    //   filterType: PropTypes.oneOf(['dropdown', 'checkbox']),
-    //   pagination: PropTypes.bool,
-    //   rowHover: PropTypes.bool,
-    //   rowsPerPage: PropTypes.number,
-    //   rowsPerPageOptions: PropTypes.array,
-    //   search: PropTypes.bool,
-    //   print: PropTypes.bool,
-    //   responsive: PropTypes.bool      
-    // }),
 
     const options = {
       filter: true,

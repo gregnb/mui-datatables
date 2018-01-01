@@ -21,7 +21,9 @@ const arrowIcon = {
   display: "block",
   paddingBottom: "1px",
   "& svg": {
-    width: "100%",
+    width: "8px",
+    height: "5px",
+    verticalAlign: "top",
     "& path": {
       fillOpacity: 0.35,
     },
