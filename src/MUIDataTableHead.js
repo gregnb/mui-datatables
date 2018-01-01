@@ -28,6 +28,9 @@ const arrowIcon = {
       fillOpacity: 0.35,
     },
   },
+  "&:focus": {
+    outline: "none",
+  },
 };
 
 const defaultHeadCellStyles = {
@@ -43,16 +46,20 @@ const defaultHeadCellStyles = {
     cursor: "pointer",
     paddingLeft: "4px",
     paddingTop: "2px",
+    height: "10px",
   },
   arrowUp: {
     ...arrowIcon,
   },
   arrowDown: {
     ...arrowIcon,
-    transform: "rotate(180deg)",
   },
   arrowHidden: {
     display: "none",
+  },
+  toolButton: {
+    height: "10px",
+    outline: "none",
   },
   arrowActive: {
     "& svg": {

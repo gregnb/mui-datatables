@@ -66,6 +66,12 @@ class MUIDataTablePagination extends React.Component {
                 count={count}
                 rowsPerPage={rowsPerPage}
                 page={page}
+                backIconButtonProps={{
+                  "aria-label": "Previous Page",
+                }}
+                nextIconButtonProps={{
+                  "aria-label": "Next Page",
+                }}
                 rowsPerPageOptions={options.rowsPerPageOptions}
                 onChangePage={this.handlePageChange}
                 onChangeRowsPerPage={this.handleRowChange}
