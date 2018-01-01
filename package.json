@@ -1,6 +1,6 @@
 {
   "name": "mui-datatables",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Datatables for React using Material-UI",
   "main": "dist/index.js",
   "files": [
@@ -14,7 +14,6 @@
     "prettier": "find src/ test/ -name \"*.js\" | xargs prettier --write",
     "lint": "eslint src",
     "build": "cross-env NODE_ENV=production npm run prettier && rollup -c",
-    "prepublish": "npm run test && npm run build && npm version patch && conventional-changelog -i CHANGELOG.md -s"
   },
   "repository": {
     "type": "git",
