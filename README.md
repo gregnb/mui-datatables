@@ -72,6 +72,7 @@ The component accepts the following props:
 |**`styles`**|object||Extend or override default styling
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox" or "dropdown"
 |**`pagination`**|boolean|true|Enable/disable pagination
+|**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
 |**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: 'stacked', 'scroll'
 |**`rowsPerPage`**|number|10|Number of rows allowed per page
 |**`rowsPerPageOptions`**|array|[10,15,20]|Options to provide in pagination for number of rows a user can select

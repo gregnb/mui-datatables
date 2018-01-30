@@ -44,6 +44,7 @@ class MUIDataTable extends React.Component {
       responsive: PropTypes.oneOf(["stacked", "scroll"]),
       filterType: PropTypes.oneOf(["dropdown", "checkbox"]),
       pagination: PropTypes.bool,
+      caseSensitive: PropTypes.bool,
       rowHover: PropTypes.bool,
       rowsPerPage: PropTypes.number,
       rowsPerPageOptions: PropTypes.array,
@@ -97,7 +98,8 @@ class MUIDataTable extends React.Component {
     const defaultOptions = {
       responsive: "stacked",
       filterType: "checkbox",
-      pagination: true,
+      pagination: true, 
+      caseSensitive: false,
       rowHover: true,
       rowsPerPage: 10,
       rowsPerPageOptions: [10, 15, 100],
@@ -181,10 +183,13 @@ class MUIDataTable extends React.Component {
         break;
       }
 
-      if (searchText && column.indexOf(searchText) >= 0) {
+      const searchCase = !this.options.caseSensitive ? column.toString().toLowerCase() : column.toString();
+
+      if (searchText && searchCase.indexOf(searchText.toLowerCase()) >= 0) {
         isSearchFound = true;
         break;
       }
+
     }
 
     if (isFiltered || (searchText && !isSearchFound)) return false;
