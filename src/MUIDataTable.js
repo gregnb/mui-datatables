@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOMServer from 'react-dom/server';
 import PropTypes from "prop-types";
 import Paper from "material-ui/Paper";
 import Table from "material-ui/Table";
@@ -63,6 +64,7 @@ class MUIDataTable extends React.Component {
     open: false,
     announceText: null,
     data: [],
+    textData: [],
     displayData: [],
     page: 0,
     rowsPerPage: 0,
@@ -138,7 +140,8 @@ class MUIDataTable extends React.Component {
 
     let columnData = [],
       filterData = [],
-      filterList = [];
+      filterList = [],
+      textData = [];
 
     for (let colIndex = 0; colIndex < columns.length; colIndex++) {
       columnData.push({
@@ -151,9 +154,11 @@ class MUIDataTable extends React.Component {
       filterList[colIndex] = [];
 
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
-        const value = data[rowIndex][colIndex];
+        const value = this.getText(data[rowIndex][colIndex]);
 
         if (filterData[colIndex].indexOf(value) < 0) filterData[colIndex].push(value);
+        if (!textData[rowIndex]) textData[rowIndex] = [];
+        textData[rowIndex].push(value);
       }
     }
 
@@ -162,6 +167,7 @@ class MUIDataTable extends React.Component {
       columns: columnData,
       filterData: filterData,
       filterList: filterList,
+      textData: textData,
       data: data,
       displayData: this.getDisplayData(data, filterList, prevState.searchText),
     }));
@@ -176,7 +182,7 @@ class MUIDataTable extends React.Component {
       isSearchFound = false;
 
     for (let index = 0; index < row.length; index++) {
-      const column = typeof row[index] !== "string" ? row[index].toString() : row[index];
+      const column = this.getText(row[index]);
 
       if (filterList[index].length && filterList[index].indexOf(column) < 0) {
         isFiltered = true;
@@ -319,10 +325,15 @@ class MUIDataTable extends React.Component {
     const updatedTable = sortedData.map(item => data[item.position]);
     return updatedTable;
   }
+  
+  
+  getText(val) {
+    return typeof val !== "object" ? val : new DOMParser().parseFromString(ReactDOMServer.renderToStaticMarkup(val), 'text/html').body.textContent;
+  }
 
   render() {
     const { className, classes, title } = this.props;
-    const { announceText, data, displayData, columns, page, filterData, filterList, searchText } = this.state;
+    const { announceText, data, textData, displayData, columns, page, filterData, filterList, searchText } = this.state;
 
     const rowsPerPage = this.state.rowsPerPage ? this.state.rowsPerPage : this.options.rowsPerPage;
 
@@ -335,7 +346,7 @@ class MUIDataTable extends React.Component {
             className={this.options.responsive === "scroll" ? tableStyles.responsiveScroll : null}>
             <MUIDataTableToolbar
               columns={columns}
-              data={data}
+              data={textData}
               filterData={filterData}
               filterList={filterList}
               filterUpdate={this.filterUpdate}
