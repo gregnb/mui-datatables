@@ -64,7 +64,6 @@ class MUIDataTable extends React.Component {
     open: false,
     announceText: null,
     data: [],
-    textData: [],
     displayData: [],
     page: 0,
     rowsPerPage: 0,
@@ -141,7 +140,7 @@ class MUIDataTable extends React.Component {
     let columnData = [],
       filterData = [],
       filterList = [],
-      textData = [];
+      textData = data;
 
     for (let colIndex = 0; colIndex < columns.length; colIndex++) {
       columnData.push({
@@ -153,13 +152,13 @@ class MUIDataTable extends React.Component {
       filterData[colIndex] = [];
       filterList[colIndex] = [];
 
-      for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
-        const value = this.getText(data[rowIndex][colIndex]);
+      for (let rowIndex = 0; rowIndex < textData.length; rowIndex++) {
+        const value = this.getText(textData[rowIndex][colIndex]);
+        textData[rowIndex][colIndex] = { raw: textData[rowIndex][colIndex], text: value };
 
         if (filterData[colIndex].indexOf(value) < 0) filterData[colIndex].push(value);
-        if (!textData[rowIndex]) textData[rowIndex] = [];
-        textData[rowIndex].push(value);
       }
+      filterData[colIndex].sort();
     }
 
     /* set source data and display Data set source set */
@@ -167,9 +166,8 @@ class MUIDataTable extends React.Component {
       columns: columnData,
       filterData: filterData,
       filterList: filterList,
-      textData: textData,
-      data: data,
-      displayData: this.getDisplayData(data, filterList, prevState.searchText),
+      data: textData,
+      displayData: this.getDisplayData(textData, filterList, prevState.searchText),
     }));
   }
 
@@ -180,15 +178,15 @@ class MUIDataTable extends React.Component {
   isRowDisplayed(row, filterList, searchText) {
     let isFiltered = false,
       isSearchFound = false;
-
+    
     for (let index = 0; index < row.length; index++) {
-      const column = this.getText(row[index]);
+      const column = row[index].text;
 
       if (filterList[index].length && filterList[index].indexOf(column) < 0) {
         isFiltered = true;
         break;
       }
-
+      
       const searchCase = !this.options.caseSensitive ? column.toString().toLowerCase() : column.toString();
 
       if (searchText && searchCase.indexOf(searchText.toLowerCase()) >= 0) {
@@ -300,8 +298,8 @@ class MUIDataTable extends React.Component {
     return (colOne, colTwo) => {
       let comparison = 0;
 
-      const dataOne = typeof colOne.data === "string" ? colOne.data.toLowerCase() : colOne.data;
-      const dataTwo = typeof colTwo.data === "string" ? colTwo.data.toLowerCase() : colTwo.data;
+      const dataOne = typeof colOne.data.text === "string" ? colOne.data.text.toLowerCase() : colOne.data.text;
+      const dataTwo = typeof colTwo.data.text === "string" ? colTwo.data.text.toLowerCase() : colTwo.data.text;
 
       if (dataOne > dataTwo) {
         comparison = 1;
@@ -326,12 +324,12 @@ class MUIDataTable extends React.Component {
   }
 
   getText(val) {
-    return !React.isValidElement(val) ? val : new DOMParser().parseFromString(ReactDOMServer.renderToStaticMarkup(val), "text/html").body.textContent;
+    return !React.isValidElement(val) ? val : new DOMParser().parseFromString(ReactDOMServer.renderToStaticMarkup(val), "text/html").body.textContent.replace(/[^\x00-\x7F]/g, "");;
   }
 
   render() {
     const { title } = this.props;
-    const { announceText, textData, displayData, columns, page, filterData, filterList, searchText } = this.state;
+    const { announceText, data, displayData, columns, page, filterData, filterList, searchText } = this.state;
 
     const rowsPerPage = this.state.rowsPerPage ? this.state.rowsPerPage : this.options.rowsPerPage;
 
@@ -344,7 +342,7 @@ class MUIDataTable extends React.Component {
             className={this.options.responsive === "scroll" ? tableStyles.responsiveScroll : null}>
             <MUIDataTableToolbar
               columns={columns}
-              data={textData}
+              data={data}
               filterData={filterData}
               filterList={filterList}
               filterUpdate={this.filterUpdate}

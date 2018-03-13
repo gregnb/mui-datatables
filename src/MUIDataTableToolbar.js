@@ -229,7 +229,7 @@ class MUIDataTableToolbar extends React.Component {
     const { data, columns } = this.props;
 
     const CSVHead = columns.reduce((soFar, column) => soFar + '"' + column.name + '",', "").slice(0, -1) + "\r\n";
-    const CSVBody = data.reduce((soFar, row) => soFar + '"' + row.join('","') + '"\r\n', []).trim();
+    const CSVBody = data.reduce((soFar, row) => soFar + '"' + row.map(col => col.text).join('","') + '"\r\n', []).trim();
 
     let CSVLink = document.createElement("a");
     CSVLink.href = "data:text/csv;charset=utf-8;base64," + window.btoa(CSVHead + CSVBody);
@@ -293,7 +293,7 @@ class MUIDataTableToolbar extends React.Component {
                 <MUIDataTableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
               ) : (
                 <div className={toolbarStyles.titleRoot} aria-hidden={"true"}>
-                  <Typography type="title" className={toolbarStyles.titleText}>
+                  <Typography variant="title" className={toolbarStyles.titleText}>
                     {title}
                   </Typography>
                 </div>
