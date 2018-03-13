@@ -153,8 +153,12 @@ class MUIDataTable extends React.Component {
       filterList[colIndex] = [];
 
       for (let rowIndex = 0; rowIndex < textData.length; rowIndex++) {
-        const value = this.getText(textData[rowIndex][colIndex]);
-        textData[rowIndex][colIndex] = { raw: textData[rowIndex][colIndex], text: value };
+        const raw = textData[rowIndex][colIndex].raw ? textData[rowIndex][colIndex].raw : textData[rowIndex][colIndex];
+        const value = this.getText(raw);
+        textData[rowIndex][colIndex] = {
+          raw: raw,
+          text: value
+        };
 
         if (filterData[colIndex].indexOf(value) < 0) filterData[colIndex].push(value);
       }

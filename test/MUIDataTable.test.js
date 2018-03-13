@@ -64,10 +64,10 @@ describe("<MUIDataTable />", function() {
 
     state = mountWrapper.state();
     const expectedResult = [
-      ["testing", "Test Corp", "Yonkers", "NY"],
-      ["John Walsh", "Test Corp", "Hartford", "CT"],
-      ["Bob Herm", "Test Corp", "Tampa", "FL"],
-      ["James Houston", "Test Corp", "Dallas", "TX"],
+      [{ "raw": "testing", "text": "testing" }, { "raw": "Test Corp", "text": "Test Corp" }, { "raw": "Yonkers", "text": "Yonkers" }, { "raw": "NY", "text": "NY" }],
+      [{ "raw": "John Walsh", "text": "John Walsh" }, { "raw": "Test Corp", "text": "Test Corp" }, { "raw": "Hartford", "text": "Hartford" }, { "raw": "CT", "text": "CT" }],
+      [{ "raw": "Bob Herm", "text": "Bob Herm" }, { "raw": "Test Corp", "text": "Test Corp" }, { "raw": "Tampa", "text": "Tampa" }, { "raw": "FL", "text": "FL" }],
+      [{ "raw": "James Houston", "text": "James Houston" }, { "raw": "Test Corp", "text": "Test Corp" }, { "raw": "Dallas", "text": "Dallas" }, { "raw": "TX", "text": "TX" }],
     ];
 
     assert.deepEqual(state.data, expectedResult);
@@ -102,10 +102,10 @@ describe("<MUIDataTable />", function() {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const state = shallowWrapper.state();
     const expectedResult = [
-      ["Joe James", "John Walsh", "Bob Herm", "James Houston"],
+      ["Bob Herm", "James Houston", "Joe James", "John Walsh"],
       ["Test Corp"],
-      ["Yonkers", "Hartford", "Tampa", "Dallas"],
-      ["NY", "CT", "FL", "TX"],
+      ["Dallas", "Hartford", "Tampa", "Yonkers"],
+      ["CT", "FL", "NY", "TX"],
     ];
 
     assert.deepEqual(state.filterData, expectedResult);
@@ -234,7 +234,12 @@ describe("<MUIDataTable />", function() {
     table.update();
     const state = table.state();
 
-    assert.deepEqual(state.displayData, [["Joe James", "Test Corp", "Yonkers", "NY"]]);
+    assert.deepEqual(state.displayData, [[
+      { "raw": "Joe James", "text": "Joe James" },
+      { "raw": "Test Corp", "text": "Test Corp" },
+      { "raw": "Yonkers", "text": "Yonkers" },
+      { "raw": "NY", "text": "NY" }
+    ]]);
   });
 
   it("should sort provided column when calling toggleSortColum method", () => {
@@ -246,10 +251,10 @@ describe("<MUIDataTable />", function() {
     const state = shallowWrapper.state();
 
     const expectedResult = [
-      ["Bob Herm", "Test Corp", "Tampa", "FL"],
-      ["James Houston", "Test Corp", "Dallas", "TX"],
-      ["Joe James", "Test Corp", "Yonkers", "NY"],
-      ["John Walsh", "Test Corp", "Hartford", "CT"],
+      [{ "raw": "Bob Herm", "text": "Bob Herm" }, { "raw": "Test Corp", "text": "Test Corp" }, { "raw": "Tampa", "text": "Tampa" }, { "raw": "FL", "text": "FL" }],
+      [{ "raw": "James Houston", "text": "James Houston" }, { "raw": "Test Corp", "text": "Test Corp" }, { "raw": "Dallas", "text": "Dallas" }, { "raw": "TX", "text": "TX" }],
+      [{ "raw": "Joe James", "text": "Joe James" }, { "raw": "Test Corp", "text": "Test Corp" }, { "raw": "Yonkers", "text": "Yonkers" }, { "raw": "NY", "text": "NY" }],
+      [{ "raw": "John Walsh", "text": "John Walsh" }, { "raw": "Test Corp", "text": "Test Corp" }, { "raw": "Hartford", "text": "Hartford" }, { "raw": "CT", "text": "CT" }],
     ];
 
     assert.deepEqual(state.displayData, expectedResult);
@@ -280,10 +285,10 @@ describe("<MUIDataTable />", function() {
 
     const actualResult = instance.getDisplayData(data, state.filterList, "");
     const expectedResult = [
-      ["Joe James", "Test Corp", "Yonkers", "NY"],
-      ["John Walsh", "Test Corp", "Hartford", "CT"],
-      ["Bob Herm", "Test Corp", "Tampa", "FL"],
-      ["James Houston", "Test Corp", "Dallas", "TX"],
+      [{ "raw": "Joe James", "text": "Joe James" }, { "raw": "Test Corp", "text": "Test Corp" }, { "raw": "Yonkers", "text": "Yonkers" }, { "raw": "NY", "text": "NY" }],
+      [{ "raw": "John Walsh", "text": "John Walsh" }, { "raw": "Test Corp", "text": "Test Corp" }, { "raw": "Hartford", "text": "Hartford" }, { "raw": "CT", "text": "CT" }],
+      [{ "raw": "Bob Herm", "text": "Bob Herm" }, { "raw": "Test Corp", "text": "Test Corp" }, { "raw": "Tampa", "text": "Tampa" }, { "raw": "FL", "text": "FL" }],
+      [{ "raw": "James Houston", "text": "James Houston" }, { "raw": "Test Corp", "text": "Test Corp" }, { "raw": "Dallas", "text": "Dallas" }, { "raw": "TX", "text": "TX" }],      
     ];
 
     assert.deepEqual(actualResult, expectedResult);
