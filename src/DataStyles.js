@@ -13,7 +13,7 @@ const stylePass = (displayName, setFn) => {
       setFn(this.props.classes);
     }
 
-    componentWillReceieveProps(nextProps) {
+    componentWillReceiveProps(nextProps) {
       if (this.props.classes !== nextProps.classes) setFn(nextProps.classes);
     }
 
@@ -48,7 +48,7 @@ class DataStyles extends React.Component {
     this.buildComponent(props);
   }
 
-  componentWillReceieveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.styles !== this.props.styles) this.buildComponent(nextProps);
   }
 
