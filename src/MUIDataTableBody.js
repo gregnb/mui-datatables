@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import Table from "material-ui/Table";
 import Typography from "material-ui/Typography";
 import { TableBody, TableRow } from "material-ui/Table";
 import MUIDataTableBodyCell from "./MUIDataTableBodyCell";

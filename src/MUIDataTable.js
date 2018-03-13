@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOMServer from 'react-dom/server';
+import ReactDOMServer from "react-dom/server";
 import PropTypes from "prop-types";
 import Paper from "material-ui/Paper";
 import Table from "material-ui/Table";
@@ -100,7 +100,7 @@ class MUIDataTable extends React.Component {
     const defaultOptions = {
       responsive: "stacked",
       filterType: "checkbox",
-      pagination: true, 
+      pagination: true,
       caseSensitive: false,
       rowHover: true,
       rowsPerPage: 10,
@@ -136,7 +136,7 @@ class MUIDataTable extends React.Component {
    */
 
   setTableData(props) {
-    const { options, data, columns } = props;
+    const { data, columns } = props;
 
     let columnData = [],
       filterData = [],
@@ -195,7 +195,6 @@ class MUIDataTable extends React.Component {
         isSearchFound = true;
         break;
       }
-
     }
 
     if (isFiltered || (searchText && !isSearchFound)) return false;
@@ -325,15 +324,14 @@ class MUIDataTable extends React.Component {
     const updatedTable = sortedData.map(item => data[item.position]);
     return updatedTable;
   }
-  
-  
+
   getText(val) {
-    return typeof val !== "object" ? val : new DOMParser().parseFromString(ReactDOMServer.renderToStaticMarkup(val), 'text/html').body.textContent;
+    return !React.isValidElement(val) ? val : new DOMParser().parseFromString(ReactDOMServer.renderToStaticMarkup(val), "text/html").body.textContent;
   }
 
   render() {
-    const { className, classes, title } = this.props;
-    const { announceText, data, textData, displayData, columns, page, filterData, filterList, searchText } = this.state;
+    const { title } = this.props;
+    const { announceText, textData, displayData, columns, page, filterData, filterList, searchText } = this.state;
 
     const rowsPerPage = this.state.rowsPerPage ? this.state.rowsPerPage : this.options.rowsPerPage;
 

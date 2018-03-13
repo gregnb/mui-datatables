@@ -1,10 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { findDOMNode } from "react-dom";
-import Slide from "material-ui/transitions/Slide";
-import Grow from "material-ui/transitions/Grow";
-import Fade from "material-ui/transitions/Fade";
-import TextField from "material-ui/TextField";
 import Typography from "material-ui/Typography";
 import Toolbar from "material-ui/Toolbar";
 import Tooltip from "material-ui/Tooltip";
@@ -17,7 +12,6 @@ import SearchIcon from "material-ui-icons/Search";
 import DownloadIcon from "material-ui-icons/FileDownload";
 import PrintIcon from "material-ui-icons/Print";
 import ViewColumnIcon from "material-ui-icons/ViewColumn";
-import ClearIcon from "material-ui-icons/Clear";
 import FilterIcon from "material-ui-icons/FilterList";
 import merge from "lodash.merge";
 import { getStyle, DataStyles } from "./DataStyles";
@@ -273,7 +267,6 @@ class MUIDataTableToolbar extends React.Component {
   render() {
     const {
       data,
-      classes,
       options,
       columns,
       filterData,

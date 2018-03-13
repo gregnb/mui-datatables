@@ -1,6 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
 import { TableHead, TableRow } from "material-ui/Table";
 import MUIDataTableHeadCell from "./MUIDataTableHeadCell";
 import { getStyle, DataStyles } from "./DataStyles";
@@ -84,7 +82,7 @@ class MUIDataTableHead extends React.Component {
 
   render() {
     const { columns, options } = this.props;
-    const { activeColumn } = this.state;
+    //const { activeColumn } = this.state;
 
     return (
       <DataStyles
