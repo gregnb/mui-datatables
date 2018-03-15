@@ -160,7 +160,7 @@ const columns = [
 
 #### Column:
 |Name|Type|Description
-|:--:|:-----|:--|:-----|
+|:--:|:-----|:-----|
 |**`Name`**|string|Name of column (This field is required)
 |**`options`**|object|Options for customizing column
 
