@@ -140,7 +140,8 @@ class MUIDataTable extends React.Component {
     let columnData = [],
       filterData = [],
       filterList = [],
-      textData = data;
+      textData = data.slice(0);
+
 
     for (let colIndex = 0; colIndex < columns.length; colIndex++) {
       columnData.push({
@@ -162,7 +163,8 @@ class MUIDataTable extends React.Component {
 
         if (filterData[colIndex].indexOf(value) < 0) filterData[colIndex].push(value);
       }
-      filterData[colIndex].sort();
+      // turn this into an option that can be turned on/off
+      filterData[colIndex].sort(); 
     }
 
     /* set source data and display Data set source set */
@@ -328,7 +330,7 @@ class MUIDataTable extends React.Component {
   }
 
   getText(val) {
-    return !React.isValidElement(val) ? val : new DOMParser().parseFromString(ReactDOMServer.renderToStaticMarkup(val), "text/html").body.textContent.replace(/[^\x00-\x7F]/g, "");;
+    return !React.isValidElement(val) ? val : new DOMParser().parseFromString(ReactDOMServer.renderToStaticMarkup(val), "text/html").body.textContent.replace(/[^\x00-\x7F]/g, "");
   }
 
   render() {
