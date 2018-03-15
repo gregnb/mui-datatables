@@ -1,6 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
-import Table from "material-ui/Table";
 import { TableCell } from "material-ui/Table";
 
 class MUIDataTableBodyCell extends React.Component {

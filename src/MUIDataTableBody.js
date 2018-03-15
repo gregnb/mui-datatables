@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import Table from "material-ui/Table";
 import Typography from "material-ui/Typography";
 import { TableBody, TableRow } from "material-ui/Table";
 import MUIDataTableBodyCell from "./MUIDataTableBodyCell";
@@ -135,7 +134,7 @@ class MUIDataTableBody extends React.Component {
                                     [cellStyles.responsiveStacked]: options.responsive === "stacked",
                                   })}
                                   key={index}>
-                                  {column}
+                                  {column.raw}
                                 </MUIDataTableBodyCell>
                               ) : (
                                 false
@@ -146,7 +145,7 @@ class MUIDataTableBody extends React.Component {
                     ) : (
                       <TableRow>
                         <MUIDataTableBodyCell className={cellStyles.root} colSpan={columns.length}>
-                          <Typography type="subheading" className={bodyStyles.emptyTitle}>
+                          <Typography variant="subheading" className={bodyStyles.emptyTitle}>
                             Sorry, no matching records found
                           </Typography>
                         </MUIDataTableBodyCell>

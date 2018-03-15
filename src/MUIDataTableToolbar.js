@@ -1,10 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { findDOMNode } from "react-dom";
-import Slide from "material-ui/transitions/Slide";
-import Grow from "material-ui/transitions/Grow";
-import Fade from "material-ui/transitions/Fade";
-import TextField from "material-ui/TextField";
 import Typography from "material-ui/Typography";
 import Toolbar from "material-ui/Toolbar";
 import Tooltip from "material-ui/Tooltip";
@@ -17,7 +12,6 @@ import SearchIcon from "material-ui-icons/Search";
 import DownloadIcon from "material-ui-icons/FileDownload";
 import PrintIcon from "material-ui-icons/Print";
 import ViewColumnIcon from "material-ui-icons/ViewColumn";
-import ClearIcon from "material-ui-icons/Clear";
 import FilterIcon from "material-ui-icons/FilterList";
 import merge from "lodash.merge";
 import { getStyle, DataStyles } from "./DataStyles";
@@ -235,7 +229,7 @@ class MUIDataTableToolbar extends React.Component {
     const { data, columns } = this.props;
 
     const CSVHead = columns.reduce((soFar, column) => soFar + '"' + column.name + '",', "").slice(0, -1) + "\r\n";
-    const CSVBody = data.reduce((soFar, row) => soFar + '"' + row.join('","') + '"\r\n', []).trim();
+    const CSVBody = data.reduce((soFar, row) => soFar + '"' + row.map(col => col.text).join('","') + '"\r\n', []).trim();
 
     let CSVLink = document.createElement("a");
     CSVLink.href = "data:text/csv;charset=utf-8;base64," + window.btoa(CSVHead + CSVBody);
@@ -273,7 +267,6 @@ class MUIDataTableToolbar extends React.Component {
   render() {
     const {
       data,
-      classes,
       options,
       columns,
       filterData,
@@ -300,7 +293,7 @@ class MUIDataTableToolbar extends React.Component {
                 <MUIDataTableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
               ) : (
                 <div className={toolbarStyles.titleRoot} aria-hidden={"true"}>
-                  <Typography type="title" className={toolbarStyles.titleText}>
+                  <Typography variant="title" className={toolbarStyles.titleText}>
                     {title}
                   </Typography>
                 </div>

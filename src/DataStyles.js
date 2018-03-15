@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import merge from "lodash.merge";
 import get from "lodash.get";
 import { withStyles } from "material-ui/styles";
@@ -14,8 +13,8 @@ const stylePass = (displayName, setFn) => {
       setFn(this.props.classes);
     }
 
-    componentWillReceieveProps(nextProps) {
-      if (this.props.classes !== nextprops.classes) setFn(nextProps.classes);
+    componentWillReceiveProps(nextProps) {
+      if (this.props.classes !== nextProps.classes) setFn(nextProps.classes);
     }
 
     render() {
@@ -49,7 +48,7 @@ class DataStyles extends React.Component {
     this.buildComponent(props);
   }
 
-  componentWillReceieveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.styles !== this.props.styles) this.buildComponent(nextProps);
   }
 
@@ -62,7 +61,7 @@ class DataStyles extends React.Component {
   }
 
   render() {
-    const { children, defaultStyles } = this.props;
+    const { children } = this.props;
     const WrappedComponent = this.component;
 
     return <WrappedComponent>{this.state.styleData ? children(this.state.styleData) : false}</WrappedComponent>;

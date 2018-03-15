@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOMServer from "react-dom/server";
 import PropTypes from "prop-types";
 import Paper from "material-ui/Paper";
 import Table from "material-ui/Table";
@@ -98,7 +99,7 @@ class MUIDataTable extends React.Component {
     const defaultOptions = {
       responsive: "stacked",
       filterType: "checkbox",
-      pagination: true, 
+      pagination: true,
       caseSensitive: false,
       rowHover: true,
       rowsPerPage: 10,
@@ -134,11 +135,13 @@ class MUIDataTable extends React.Component {
    */
 
   setTableData(props) {
-    const { options, data, columns } = props;
+    const { data, columns } = props;
 
     let columnData = [],
       filterData = [],
-      filterList = [];
+      filterList = [],
+      textData = data.slice(0);
+
 
     for (let colIndex = 0; colIndex < columns.length; colIndex++) {
       columnData.push({
@@ -150,11 +153,18 @@ class MUIDataTable extends React.Component {
       filterData[colIndex] = [];
       filterList[colIndex] = [];
 
-      for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
-        const value = data[rowIndex][colIndex];
+      for (let rowIndex = 0; rowIndex < textData.length; rowIndex++) {
+        const raw = textData[rowIndex][colIndex].raw ? textData[rowIndex][colIndex].raw : textData[rowIndex][colIndex];
+        const value = this.getText(raw);
+        textData[rowIndex][colIndex] = {
+          raw: raw,
+          text: value
+        };
 
         if (filterData[colIndex].indexOf(value) < 0) filterData[colIndex].push(value);
       }
+      // turn this into an option that can be turned on/off
+      filterData[colIndex].sort(); 
     }
 
     /* set source data and display Data set source set */
@@ -162,8 +172,8 @@ class MUIDataTable extends React.Component {
       columns: columnData,
       filterData: filterData,
       filterList: filterList,
-      data: data,
-      displayData: this.getDisplayData(data, filterList, prevState.searchText),
+      data: textData,
+      displayData: this.getDisplayData(textData, filterList, prevState.searchText),
     }));
   }
 
@@ -174,22 +184,21 @@ class MUIDataTable extends React.Component {
   isRowDisplayed(row, filterList, searchText) {
     let isFiltered = false,
       isSearchFound = false;
-
+    
     for (let index = 0; index < row.length; index++) {
-      const column = typeof row[index] !== "string" ? row[index].toString() : row[index];
+      const column = row[index].text;
 
       if (filterList[index].length && filterList[index].indexOf(column) < 0) {
         isFiltered = true;
         break;
       }
-
+      
       const searchCase = !this.options.caseSensitive ? column.toString().toLowerCase() : column.toString();
 
       if (searchText && searchCase.indexOf(searchText.toLowerCase()) >= 0) {
         isSearchFound = true;
         break;
       }
-
     }
 
     if (isFiltered || (searchText && !isSearchFound)) return false;
@@ -295,8 +304,8 @@ class MUIDataTable extends React.Component {
     return (colOne, colTwo) => {
       let comparison = 0;
 
-      const dataOne = typeof colOne.data === "string" ? colOne.data.toLowerCase() : colOne.data;
-      const dataTwo = typeof colTwo.data === "string" ? colTwo.data.toLowerCase() : colTwo.data;
+      const dataOne = typeof colOne.data.text === "string" ? colOne.data.text.toLowerCase() : colOne.data.text;
+      const dataTwo = typeof colTwo.data.text === "string" ? colTwo.data.text.toLowerCase() : colTwo.data.text;
 
       if (dataOne > dataTwo) {
         comparison = 1;
@@ -320,8 +329,12 @@ class MUIDataTable extends React.Component {
     return updatedTable;
   }
 
+  getText(val) {
+    return !React.isValidElement(val) ? val : new DOMParser().parseFromString(ReactDOMServer.renderToStaticMarkup(val), "text/html").body.textContent.replace(/[^\x00-\x7F]/g, "");
+  }
+
   render() {
-    const { className, classes, title } = this.props;
+    const { title } = this.props;
     const { announceText, data, displayData, columns, page, filterData, filterList, searchText } = this.state;
 
     const rowsPerPage = this.state.rowsPerPage ? this.state.rowsPerPage : this.options.rowsPerPage;
@@ -342,7 +355,7 @@ class MUIDataTable extends React.Component {
               options={this.options}
               resetFilters={this.resetFilters}
               searchTextUpdate={this.searchTextUpdate}
-              tableRef={() => this.tableRef}
+              tableRef={() => this.tableContent}
               title={title}
               toggleViewColumn={this.toggleViewColumn}
             />

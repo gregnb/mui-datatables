@@ -2,13 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import Typography from "material-ui/Typography";
-import Button from "material-ui/Button";
-import { FormLabel, FormControl, FormGroup, FormControlLabel, FormHelperText } from "material-ui/Form";
+import { FormControl, FormGroup, FormControlLabel } from "material-ui/Form";
 import Input, { InputLabel } from "material-ui/Input";
 import { MenuItem } from "material-ui/Menu";
 import Select from "material-ui/Select";
 import Checkbox from "material-ui/Checkbox";
-import { getStyle, DataStyles } from "./DataStyles";
 
 class MUIDataTableFilter extends React.Component {
   static propTypes = {
@@ -36,7 +34,7 @@ class MUIDataTableFilter extends React.Component {
   };
 
   render() {
-    const { classes, columns, options, filterStyles, filterData, filterList, onFilterReset } = this.props;
+    const { columns, options, filterStyles, filterData, filterList, onFilterReset } = this.props;
 
     return (
       <div className={filterStyles.root}>
@@ -60,7 +58,7 @@ class MUIDataTableFilter extends React.Component {
           columns.map((column, index) => (
             <div className={filterStyles.checkboxList} key={index}>
               <FormGroup>
-                <Typography type="caption" className={filterStyles.checkboxListTitle}>
+                <Typography variant="caption" className={filterStyles.checkboxListTitle}>
                   {column.name}
                 </Typography>
                 {filterData[index].map((filterColumn, filterIndex) => (

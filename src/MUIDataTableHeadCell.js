@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { TableSortLabel } from "material-ui/Table";
 import { TableCell } from "material-ui/Table";
 import Tooltip from "material-ui/Tooltip";
 
@@ -22,10 +21,7 @@ class MUIDataTableHeadCell extends React.Component {
   };
 
   render() {
-    const { children, classes, index, options, sortDirection } = this.props;
-
-    let sortName = "descending";
-    if (sortDirection === "desc" || sortDirection === null) sortName = "ascending";
+    const { children, classes, options, sortDirection } = this.props;
 
     return (
       <TableCell className={classes.root} scope={"col"} sortDirection={sortDirection}>
