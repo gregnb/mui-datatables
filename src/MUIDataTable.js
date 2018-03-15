@@ -38,7 +38,19 @@ class MUIDataTable extends React.Component {
     /** Data used to describe table */
     data: PropTypes.array.isRequired,
     /** Columns used to describe table */
-    columns: PropTypes.array.isRequired,
+    columns: PropTypes.PropTypes.arrayOf(
+      PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.shape({
+          name: PropTypes.string.isRequired,
+          options: PropTypes.shape({
+            display: PropTypes.bool,
+            filter: PropTypes.bool,
+            sort: PropTypes.bool,
+          }),
+        }),
+      ]),
+    ).isRequired,
     /** Options used to describe table */
     options: PropTypes.shape({
       responsive: PropTypes.oneOf(["stacked", "scroll"]),
@@ -98,7 +110,7 @@ class MUIDataTable extends React.Component {
     const defaultOptions = {
       responsive: "stacked",
       filterType: "checkbox",
-      pagination: true, 
+      pagination: true,
       caseSensitive: false,
       rowHover: true,
       rowsPerPage: 10,
@@ -140,12 +152,25 @@ class MUIDataTable extends React.Component {
       filterData = [],
       filterList = [];
 
-    for (let colIndex = 0; colIndex < columns.length; colIndex++) {
-      columnData.push({
-        name: columns[colIndex],
+    columns.forEach((column, colIndex) => {
+      let columnOptions = {
         display: true,
-        sort: null,
-      });
+        filter: true,
+        sort: true,
+        sortDirection: null,
+      };
+
+      if (typeof column === "object") {
+        columnOptions = {
+          name: column.name,
+          ...columnOptions,
+          ...(column.options ? column.options : {}),
+        };
+      } else {
+        columnOptions = { ...columnOptions, name: column };
+      }
+
+      columnData.push(columnOptions);
 
       filterData[colIndex] = [];
       filterList[colIndex] = [];
@@ -155,7 +180,7 @@ class MUIDataTable extends React.Component {
 
         if (filterData[colIndex].indexOf(value) < 0) filterData[colIndex].push(value);
       }
-    }
+    });
 
     /* set source data and display Data set source set */
     this.setState(prevState => ({
@@ -189,7 +214,6 @@ class MUIDataTable extends React.Component {
         isSearchFound = true;
         break;
       }
-
     }
 
     if (isFiltered || (searchText && !isSearchFound)) return false;
@@ -220,17 +244,17 @@ class MUIDataTable extends React.Component {
     this.setState(prevState => {
       let columns = [...prevState.columns];
       const displayData = prevState.displayData;
-      const order = prevState.columns[index].sort;
+      const order = prevState.columns[index].sortDirection;
 
       for (let pos = 0; pos < columns.length; pos++) {
         if (index !== pos) {
-          columns[pos].sort = null;
+          columns[pos].sortDirection = null;
         } else {
-          columns[pos].sort = columns[pos].sort === "asc" ? "desc" : "asc";
+          columns[pos].sortDirection = columns[pos].sortDirection === "asc" ? "desc" : "asc";
         }
       }
 
-      const orderLabel = columns[index].sort === "asc" ? "ascending" : "descending";
+      const orderLabel = columns[index].sortDirection === "asc" ? "ascending" : "descending";
       const announceText = `Table now sorted by ${columns[index].name} : ${orderLabel}`;
 
       return {

@@ -1,12 +1,45 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import MUIDataTable from "../src/";
+import MUIDataTable from "../../src/";
 
 class Example extends React.Component {
 
   render() {
 
-    const columns = ["Name", "Title", "Location", "Age", "Salary"];
+    const columns = [
+      {
+        name: "Name",
+        options: {
+          filter: true,
+        }
+      },      
+      {
+        name: "Title",
+        options: {
+          filter: true,
+        }
+      },
+      {
+        name: "Location",
+        options: {
+          filter: false,
+        }
+      },
+      {
+        name: "Age",
+        options: {
+          filter: true,
+        }
+      },
+      {
+        name: "Salary",
+        options: {
+          filter: true,
+          sort: false
+        }
+      }      
+    ];
+
 
     const data = [
       ["Gabby George", "Business Analyst", "Minneapolis", 30, "$100,000"],
@@ -41,103 +74,10 @@ class Example extends React.Component {
       ["Mason Ray", "Computer Scientist", "San Francisco", 39, "$142,000"]
     ];
 
-
     const options = {
       filter: true,
       filterType: 'dropdown',
       responsive: 'stacked',
-      styles: {
-        table: {
-          
-          main: {
-            root: {
-            },
-            responsiveScroll: {
-
-            },
-            responsiveStacked: {
-            }
-          },
-
-          head: {
-
-            row: {
-            },
-            
-            cell: {
-              root: {
-              },
-              sortLabel: {
-              },
-            }
-
-          },
-          body: {
-
-            main: {
-
-            },
-
-            row: {
-              root: {
-              }
-            },
-            cell: {
-              root: {
-              }
-            }
-
-          },
-
-        },
-        toolbar: {
-          root: {},
-          spacer: {
-          },
-          actions: {
-          },
-          titleRoot: {
-          },
-          titleText: {
-          },
-          icon: {
-            "&:hover": {
-            },
-          },
-          iconActive: {
-          },
-          searchIcon: {
-          },
-        },
-        filterView: {
-        },
-        filterList: {
-          root: {
-            color: "#000"
-          },
-          chip: {
-            color: "#FEFEF0"
-          },
-        },
-        pagination: {
-          root: {
-            border: "solid 1px #000"
-          }
-        },
-        viewColumns: {
-
-        },
-        search: {
-          main: {
-          },
-          searchIcon: {
-          },
-          searchText: {
-          },
-          clearIcon: {
-          },          
-        }
-      }
     };
 
     return (

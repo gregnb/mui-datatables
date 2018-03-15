@@ -22,14 +22,14 @@ class MUIDataTableHeadCell extends React.Component {
   };
 
   render() {
-    const { children, classes, index, options, sortDirection } = this.props;
+    const { children, classes, index, options, sort, sortDirection } = this.props;
 
     let sortName = "descending";
     if (sortDirection === "desc" || sortDirection === null) sortName = "ascending";
 
     return (
       <TableCell className={classes.root} scope={"col"} sortDirection={sortDirection}>
-        {options.sort ? (
+        {options.sort && sort ? (
           <Tooltip
             title="Sort"
             placement={"bottom-end"}

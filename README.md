@@ -25,12 +25,70 @@ MUI-Datatables is a data tables component built on [Material-UI V1](https://www.
 
 ## Usage
 
+For a simple table:
 
 ```js
 
 import MUIDataTable from "mui-datatables";
 
 const columns = ["Name", "Company", "City", "State"];
+
+const data = [
+ ["Joe James", "Test Corp", "Yonkers", "NY"],
+ ["John Walsh", "Test Corp", "Hartford", "CT"],
+ ["Bob Herm", "Test Corp", "Tampa", "FL"],
+ ["James Houston", "Test Corp", "Dallas", "TX"],
+];
+
+const options = {
+  filterType: 'checkbox',
+};
+
+<MUIDataTable 
+  title={"Employee List"} 
+  data={data} 
+  columns={columns} 
+  options={options} 
+/>
+
+```
+
+Or customize columns:
+
+```js
+
+import MUIDataTable from "mui-datatables";
+
+const columns = [
+ {
+  name: "Name",
+  options: {
+   filter: true,
+   sort: true,
+  }
+ },      
+ {
+  name: "Company",
+  options: {
+   filter: true,
+   sort: false,
+  }
+ },
+ {
+  name: "City",
+  options: {
+   filter: true,
+   sort: false,
+  }
+ },  
+ {
+  name: "State",
+  options: {
+   filter: true,
+   sort: false,
+  }
+ },
+];
 
 const data = [
  ["Joe James", "Test Corp", "Yonkers", "NY"],
@@ -62,7 +120,7 @@ The component accepts the following props:
 |Name|Type|Description
 |:--:|:-----|:-----|
 |**`title`**|array|Title used to caption table
-|**`columns`**|array|Columns used to describe table. Must be an array of simple strings
+|**`columns`**|array|Columns used to describe table. Must be either an array of simple strings or objects describing a column
 |**`data`**|array|Data used to describe table. Must be an array of simple strings
 |**`options`**|object|Options used to describe table
 
@@ -77,12 +135,41 @@ The component accepts the following props:
 |**`rowsPerPage`**|number|10|Number of rows allowed per page
 |**`rowsPerPageOptions`**|array|[10,15,20]|Options to provide in pagination for number of rows a user can select
 |**`rowHover`**|boolean|true|Enable/disable hover style over rows
-|**`sort`**|boolean|true|Show/hide sort icon from toolbar
+|**`sort`**|boolean|true|Enable/disable sort on all columns
 |**`filter`**|boolean|true|Show/hide filter icon from toolbar
 |**`search`**|boolean|true|Show/hide search icon from toolbar
 |**`print`**|boolean|true|Show/hide print	 icon from toolbar
 |**`download`**|boolean|true|Show/hide download icon from toolbar
 
+## Customize Columns
+
+On each column object, you have the ability to customize columns to your liking with the 'options' property. Example:
+
+```js
+const columns = [
+ {
+  name: "Name",
+  options: {
+   filter: true,
+   sort: false
+  }
+ },
+ ...
+];  
+```
+
+#### Column:
+|Name|Type|Description
+|:--:|:-----|:--|:-----|
+|**`Name`**|string|Name of column (This field is required)
+|**`options`**|object|Options for customizing column
+
+
+#### Column Options:
+|Name|Type|Default|Description
+|:--:|:-----|:--|:-----|
+|**`filter`**|boolean|true|Display column in filter list
+|**`sort`**|boolean|true|Enable/disable sorting on column
 
 ## Customize Styling
 
