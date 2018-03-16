@@ -34,10 +34,10 @@ describe("<MUIDataTable />", function() {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const actualResult = shallowWrapper.state().columns;
     const expectedResult = [
-      { display: true, name: "First Name", sort: null },
-      { display: true, name: "Company", sort: null },
-      { display: true, name: "City", sort: null },
-      { display: true, name: "State", sort: null },
+      { display: true, name: "First Name", sort: true, filter: true, sortDirection: null },
+      { display: true, name: "Company", sort: true, filter: true, sortDirection: null },
+      { display: true, name: "City", sort: true, filter: true, sortDirection: null },
+      { display: true, name: "State", sort: true, filter: true, sortDirection: null },
     ];
 
     assert.deepEqual(actualResult, expectedResult);
@@ -264,10 +264,10 @@ describe("<MUIDataTable />", function() {
     const state = shallowWrapper.state();
 
     const expectedResult = [
-      { name: "First Name", display: false, sort: null },
-      { name: "Company", display: true, sort: null },
-      { name: "City", display: true, sort: null },
-      { name: "State", display: true, sort: null },
+      { name: "First Name", display: false, sort: true, filter: true, sortDirection: null },
+      { name: "Company", display: true, sort: true, filter: true, sortDirection: null },
+      { name: "City", display: true, sort: true, filter: true, sortDirection: null },
+      { name: "State", display: true, sort: true, filter: true, sortDirection: null },
     ];
 
     assert.deepEqual(state.columns, expectedResult);

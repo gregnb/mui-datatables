@@ -38,7 +38,7 @@ class MUIDataTableFilter extends React.Component {
   renderCheckbox(columns) {
     const { filterStyles, filterData, filterList } = this.props;
 
-    return columns.map((column, index) => {
+    return columns.map((column, index) => (
       <div className={filterStyles.checkboxList} key={index}>
         <FormGroup>
           <Typography type="caption" className={filterStyles.checkboxListTitle}>
@@ -66,8 +66,8 @@ class MUIDataTableFilter extends React.Component {
             />
           ))}
         </FormGroup>
-      </div>;
-    });
+      </div>
+    ));
   }
 
   renderSelect(columns) {

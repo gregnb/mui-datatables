@@ -19,7 +19,12 @@ describe("<MUIDataTableHeadCell />", function() {
     const toggleSort = () => {};
 
     const shallowWrapper = shallow(
-      <MUIDataTableHeadCell options={options} sortDirection={"asc"} toggleSort={toggleSort} classes={classes}>
+      <MUIDataTableHeadCell
+        options={options}
+        sortDirection={"asc"}
+        sort={true}
+        toggleSort={toggleSort}
+        classes={classes}>
         some content
       </MUIDataTableHeadCell>,
     );
@@ -33,7 +38,12 @@ describe("<MUIDataTableHeadCell />", function() {
     const toggleSort = () => {};
 
     const shallowWrapper = shallow(
-      <MUIDataTableHeadCell options={options} sortDirection={"asc"} toggleSort={toggleSort} classes={classes}>
+      <MUIDataTableHeadCell
+        options={options}
+        sortDirection={"asc"}
+        sort={true}
+        toggleSort={toggleSort}
+        classes={classes}>
         some content
       </MUIDataTableHeadCell>,
     );

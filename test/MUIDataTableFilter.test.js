@@ -14,10 +14,10 @@ describe("<MUIDataTableFilter />", function() {
 
   before(() => {
     columns = [
-      { name: "First Name", display: true, sort: "desc" },
-      { name: "Company", display: true, sort: "desc" },
-      { name: "City", display: true, sort: "desc" },
-      { name: "State", display: true, sort: "desc" },
+      { name: "First Name", display: true, sort: true, filter: true, sortDirection: "desc" },
+      { name: "Company", display: true, sort: true, filter: true, sortDirection: "desc" },
+      { name: "City", display: true, sort: true, filter: true, sortDirection: "desc" },
+      { name: "State", display: true, sort: true, filter: true, sortDirection: "desc" },
     ];
 
     data = [
