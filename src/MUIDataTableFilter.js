@@ -38,36 +38,41 @@ class MUIDataTableFilter extends React.Component {
   renderCheckbox(columns) {
     const { filterStyles, filterData, filterList } = this.props;
 
-    return columns.map((column, index) => (
-      <div className={filterStyles.checkboxList} key={index}>
-        <FormGroup>
-          <Typography type="caption" className={filterStyles.checkboxListTitle}>
-            {column.name}
-          </Typography>
-          {filterData[index].map((filterColumn, filterIndex) => (
-            <FormControlLabel
-              key={filterIndex}
-              classes={{
-                root: filterStyles.checkboxFormControl,
-                label: filterStyles.checkboxFormControlLabel,
-              }}
-              control={
-                <Checkbox
-                  className={filterStyles.checkboxIcon}
-                  onChange={this.handleCheckboxChange.bind(null, index, filterColumn)}
-                  checked={filterList[index].indexOf(filterColumn) >= 0 ? true : false}
+    return columns.map(
+      (column, index) =>
+        column.filter ? (
+          <div className={filterStyles.checkboxList} key={index}>
+            <FormGroup>
+              <Typography type="caption" className={filterStyles.checkboxListTitle}>
+                {column.name}
+              </Typography>
+              {filterData[index].map((filterColumn, filterIndex) => (
+                <FormControlLabel
+                  key={filterIndex}
                   classes={{
-                    checked: filterStyles.checked,
+                    root: filterStyles.checkboxFormControl,
+                    label: filterStyles.checkboxFormControlLabel,
                   }}
-                  value={filterColumn}
+                  control={
+                    <Checkbox
+                      className={filterStyles.checkboxIcon}
+                      onChange={this.handleCheckboxChange.bind(null, index, filterColumn)}
+                      checked={filterList[index].indexOf(filterColumn) >= 0 ? true : false}
+                      classes={{
+                        checked: filterStyles.checked,
+                      }}
+                      value={filterColumn}
+                    />
+                  }
+                  label={filterColumn}
                 />
-              }
-              label={filterColumn}
-            />
-          ))}
-        </FormGroup>
-      </div>
-    ));
+              ))}
+            </FormGroup>
+          </div>
+        ) : (
+          false
+        ),
+    );
   }
 
   renderSelect(columns) {
@@ -75,32 +80,36 @@ class MUIDataTableFilter extends React.Component {
 
     return (
       <div className={filterStyles.selectRoot}>
-        {columns.map((column, index) => (
-          <FormControl className={filterStyles.selectFormControl} key={index}>
-            <InputLabel htmlFor={column.name}>{column.name}</InputLabel>
-            <Select
-              value={filterList[index] && filterList[index][0] ? filterList[index][0] : "All"}
-              name={column.name}
-              onChange={event => this.handleDropdownChange(event, index)}
-              input={<Input name={column.name} id={column.name} />}>
-              <MenuItem value="All" key={0}>
-                All
-              </MenuItem>
-              {filterData[index].map((filterColumn, filterIndex) => (
-                <MenuItem value={filterColumn} key={filterIndex + 1}>
-                  {filterColumn}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        ))}
+        {columns.map(
+          (column, index) =>
+            column.filter ? (
+              <FormControl className={filterStyles.selectFormControl} key={index}>
+                <InputLabel htmlFor={column.name}>{column.name}</InputLabel>
+                <Select
+                  value={filterList[index] && filterList[index][0] ? filterList[index][0] : "All"}
+                  name={column.name}
+                  onChange={event => this.handleDropdownChange(event, index)}
+                  input={<Input name={column.name} id={column.name} />}>
+                  <MenuItem value="All" key={0}>
+                    All
+                  </MenuItem>
+                  {filterData[index].map((filterColumn, filterIndex) => (
+                    <MenuItem value={filterColumn} key={filterIndex + 1}>
+                      {filterColumn}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            ) : (
+              false
+            ),
+        )}
       </div>
     );
   }
 
   render() {
     const { columns, options, filterStyles, onFilterReset } = this.props;
-    const dislayColumns = columns.filter(item => item.filter);
 
     return (
       <div className={filterStyles.root}>
@@ -120,7 +129,7 @@ class MUIDataTableFilter extends React.Component {
           </div>
           <div className={filterStyles.filtersSelected} />
         </div>
-        {options.filterType === "checkbox" ? this.renderCheckbox(dislayColumns) : this.renderSelect(dislayColumns)}
+        {options.filterType === "checkbox" ? this.renderCheckbox(columns) : this.renderSelect(columns)}
       </div>
     );
   }

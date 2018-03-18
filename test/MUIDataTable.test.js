@@ -102,10 +102,10 @@ describe("<MUIDataTable />", function() {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const state = shallowWrapper.state();
     const expectedResult = [
-      ["Joe James", "John Walsh", "Bob Herm", "James Houston"],
+      ["Bob Herm", "James Houston", "Joe James", "John Walsh"],
       ["Test Corp"],
-      ["Yonkers", "Hartford", "Tampa", "Dallas"],
-      ["NY", "CT", "FL", "TX"],
+      ["Dallas", "Hartford", "Tampa", "Yonkers"],
+      ["CT", "FL", "NY", "TX"],
     ];
 
     assert.deepEqual(state.filterData, expectedResult);

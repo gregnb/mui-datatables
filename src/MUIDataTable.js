@@ -116,6 +116,7 @@ class MUIDataTable extends React.Component {
       rowsPerPage: 10,
       rowsPerPageOptions: [10, 15, 100],
       filter: true,
+      sortFilterList: true,
       sort: true,
       search: true,
       print: true,
@@ -146,7 +147,7 @@ class MUIDataTable extends React.Component {
    */
 
   setTableData(props) {
-    const { options, data, columns } = props;
+    const { data, columns } = props;
 
     let columnData = [],
       filterData = [],
@@ -179,6 +180,10 @@ class MUIDataTable extends React.Component {
         const value = data[rowIndex][colIndex];
 
         if (filterData[colIndex].indexOf(value) < 0) filterData[colIndex].push(value);
+      }
+
+      if (this.options.sortFilterList) {
+        filterData[colIndex].sort();
       }
     });
 
