@@ -15,24 +15,6 @@ const defaultHeadStyles = {
 
 const defaultHeadRowStyles = {};
 
-const arrowIcon = {
-  width: "8px",
-  height: "5px",
-  display: "block",
-  paddingBottom: "1px",
-  "& svg": {
-    width: "8px",
-    height: "5px",
-    verticalAlign: "top",
-    "& path": {
-      fillOpacity: 0.35,
-    },
-  },
-  "&:focus": {
-    outline: "none",
-  },
-};
-
 const defaultHeadCellStyles = {
   tooltip: {
     cursor: "pointer",
@@ -45,28 +27,14 @@ const defaultHeadCellStyles = {
     verticalAlign: "top",
     cursor: "pointer",
     paddingLeft: "4px",
-    paddingTop: "2px",
     height: "10px",
   },
-  arrowUp: {
-    ...arrowIcon,
-  },
-  arrowDown: {
-    ...arrowIcon,
-  },
-  arrowHidden: {
-    display: "none",
+  sortActive: {
+    color: "rgba(0, 0, 0, 0.87)",
   },
   toolButton: {
     height: "10px",
     outline: "none",
-  },
-  arrowActive: {
-    "& svg": {
-      "& path": {
-        fillOpacity: 1,
-      },
-    },
   },
 };
 
