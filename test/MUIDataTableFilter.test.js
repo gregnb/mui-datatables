@@ -83,7 +83,7 @@ describe("<MUIDataTableFilter />", function() {
         filterList={filterList}
         options={options}
       />,
-    );
+    ).dive();
     const instance = shallowWrapper.instance();
 
     //const event = { target: { value: 0 }};
@@ -105,7 +105,7 @@ describe("<MUIDataTableFilter />", function() {
         filterList={filterList}
         options={options}
       />,
-    );
+    ).dive();
     const instance = shallowWrapper.instance();
 
     const event = { target: { value: "All" } };

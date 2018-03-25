@@ -36,7 +36,7 @@ describe("<MUIDataTableViewCol />", function() {
         viewColStyles={defaultViewColStyles}
         options={options}
       />,
-    );
+    ).dive();
 
     const instance = shallowWrapper.instance();
 

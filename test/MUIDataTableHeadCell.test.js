@@ -27,7 +27,7 @@ describe("<MUIDataTableHeadCell />", function() {
         classes={classes}>
         some content
       </MUIDataTableHeadCell>,
-    );
+    ).dive();
 
     const actualResult = shallowWrapper.find(Tooltip);
     assert.strictEqual(actualResult.length, 1);
@@ -60,7 +60,7 @@ describe("<MUIDataTableHeadCell />", function() {
       <MUIDataTableHeadCell options={options} index={0} sortDirection={"asc"} toggleSort={toggleSort} classes={classes}>
         some content
       </MUIDataTableHeadCell>,
-    );
+    ).dive();
 
     const instance = shallowWrapper.instance();
 

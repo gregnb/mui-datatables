@@ -1,12 +1,60 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
+import { createMuiTheme, MuiThemeProvider, withStyles } from 'material-ui/styles';
 
 class Example extends React.Component {
 
+  getMuiTheme = () => createMuiTheme({
+    overrides: {
+      MUIDataTable: {
+        root: {
+          backgroundColor: "#FF000",
+        }
+      },
+      MUIDataTableBodyCell: {
+        root: {
+          backgroundColor: "#FFF"
+        }
+      }
+    }
+  })
+
   render() {
 
-    const columns = ["Name", "Title", "Location", "Age", "Salary"];
+    const columns = [
+      {
+        name: "Name",
+        options: {
+          filter: true,
+        }
+      },      
+      {
+        name: "Title",
+        options: {
+          filter: true,
+        }
+      },
+      {
+        name: "Location",
+        options: {
+          filter: false,
+        }
+      },
+      {
+        name: "Age",
+        options: {
+          filter: true,
+        }
+      },
+      {
+        name: "Salary",
+        options: {
+          filter: true,
+          sort: false
+        }
+      }      
+    ];
 
     const data = [
       ["Gabby George", "Business Analyst", "Minneapolis", 30, "$100,000"],
@@ -41,38 +89,16 @@ class Example extends React.Component {
       ["Mason Ray", "Computer Scientist", "San Francisco", 39, "$142,000"]
     ];
 
-
     const options = {
       filter: true,
       filterType: 'dropdown',
       responsive: 'stacked',
-       styles: {
-          table: {          
-            head: {
-              row: {
-              },            
-              cell: {
-                root: {
-                },
-                sortLabel: {
-                },
-              }
-            },
-            body: {
-              row: {
-                backgroundColor: "#FF0000"
-              },
-              cell: {
-                root: {
-                }
-              }
-            },
-          },
-        }
     };
 
     return (
-      <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+      <MuiThemeProvider theme={this.getMuiTheme()}>
+        <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+      </MuiThemeProvider>
     );
 
   }
