@@ -75,7 +75,7 @@ class MUIDataTable extends React.Component {
     title: "",
     options: {},
     data: [],
-    columns: []
+    columns: [],
   };
 
   state = {

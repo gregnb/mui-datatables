@@ -32,25 +32,25 @@ class MUIDataTableBodyCell extends React.Component {
   render() {
     const { children, classes, columnHeader, options, ...otherProps } = this.props;
 
-    return (
-      <React.Fragment>
-        <TableCell
-          className={classNames({
-            [classes.root]: true,
-            [classes.cellStacked]: true,
-          })}>
-          {columnHeader}
-        </TableCell>
-        <TableCell
-          className={classNames({
-            [classes.root]: true,
-            [classes.responsiveStacked]: options.responsive === "stacked",
-          })}
-          {...otherProps}>
-          {children}
-        </TableCell>
-      </React.Fragment>
-    );
+    return [
+      <TableCell
+        key={1}
+        className={classNames({
+          [classes.root]: true,
+          [classes.cellStacked]: true,
+        })}>
+        {columnHeader}
+      </TableCell>,
+      <TableCell
+        key={2}
+        className={classNames({
+          [classes.root]: true,
+          [classes.responsiveStacked]: options.responsive === "stacked",
+        })}
+        {...otherProps}>
+        {children}
+      </TableCell>,
+    ];
   }
 }
 
