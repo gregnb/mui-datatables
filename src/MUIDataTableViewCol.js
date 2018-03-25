@@ -50,11 +50,11 @@ class MUIDataTableViewCol extends React.Component {
   };
 
   render() {
-    const { classes, columns, options, viewColStyles } = this.props;
+    const { classes, columns, options } = this.props;
 
     return (
       <FormControl component={"fieldset"} className={classes.root} aria-label="Show/Hide Table Columns">
-        <Typography type="caption" className={classes.title}>
+        <Typography variant="caption" className={classes.title}>
           Show Columns
         </Typography>
         <FormGroup className={classes.formGroup}>

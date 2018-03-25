@@ -166,7 +166,7 @@ class MUIDataTableToolbar extends React.Component {
                 <MUIDataTableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
               ) : (
                 <div className={toolbarStyles.titleRoot} aria-hidden={"true"}>
-                  <Typography type="title" className={toolbarStyles.titleText}>
+                  <Typography variant="title" className={toolbarStyles.titleText}>
                     {title}
                   </Typography>
                 </div>
