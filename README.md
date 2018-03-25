@@ -12,7 +12,7 @@
 MUI-Datatables is a data tables component built on [Material-UI V1](https://www.material-ui-next.com).  It comes with features like filtering, view/hide columns, search, export to CSV download, printing, pagination, and sorting. On top of the ability to customize styling on most views, there are two responsive modes "stacked" and "scroll" for mobile/tablet devices. 
 
 <div align="center">
-	<img src="https://user-images.githubusercontent.com/19170080/34346996-b59a8b3a-e9cb-11e7-80d5-591aef3dc1f4.gif" />
+	<img src="https://user-images.githubusercontent.com/19170080/37877494-2bd7c264-302a-11e8-827a-cb4c87f0e28f.gif" />
 </div>
 
 ## Install
