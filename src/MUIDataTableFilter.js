@@ -150,7 +150,7 @@ class MUIDataTableFilter extends React.Component {
                       classes={{
                         checked: classes.checked,
                       }}
-                      value={filterColumn}
+                      value={filterColumn.toString()}
                     />
                   }
                   label={filterColumn}

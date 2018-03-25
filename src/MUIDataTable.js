@@ -71,6 +71,13 @@ class MUIDataTable extends React.Component {
     className: PropTypes.string,
   };
 
+  static defaultProps = {
+    title: "",
+    options: {},
+    data: [],
+    columns: []
+  };
+
   state = {
     open: false,
     announceText: null,
@@ -106,6 +113,9 @@ class MUIDataTable extends React.Component {
     this.setTableData(props);
   }
 
+  /*
+   * React currently does not support deep merge for defaultProps. Objects are overwritten
+   */
   getDefaultOptions(props) {
     const defaultOptions = {
       responsive: "stacked",
@@ -206,7 +216,7 @@ class MUIDataTable extends React.Component {
       isSearchFound = false;
 
     for (let index = 0; index < row.length; index++) {
-      const column = typeof row[index] !== "string" ? row[index].toString() : row[index];
+      const column = row[index];
 
       if (filterList[index].length && filterList[index].indexOf(column) < 0) {
         isFiltered = true;
@@ -406,7 +416,5 @@ class MUIDataTable extends React.Component {
     );
   }
 }
-
-export { MUIDataTable as MUIDataTableNaked };
 
 export default withStyles(defaultTableStyles, { name: "MUIDataTable" })(MUIDataTable);

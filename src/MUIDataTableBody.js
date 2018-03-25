@@ -69,7 +69,7 @@ class MUIDataTableBody extends React.Component {
         ) : (
           <MUIDataTableBodyRow options={options}>
             <MUIDataTableBodyCell colSpan={columns.length} options={options}>
-              <Typography type="subheading" className={classes.emptyTitle}>
+              <Typography variant="subheading" className={classes.emptyTitle}>
                 Sorry, no matching records found
               </Typography>
             </MUIDataTableBodyCell>
