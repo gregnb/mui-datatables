@@ -1,9 +1,32 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { TableSortLabel } from "material-ui/Table";
-import { TableCell } from "material-ui/Table";
+import { TableCell, TableSortLabel } from "material-ui/Table";
 import Tooltip from "material-ui/Tooltip";
+import { withStyles } from "material-ui/styles";
+
+const defaultHeadCellStyles = {
+  tooltip: {
+    cursor: "pointer",
+  },
+  data: {
+    display: "inline-block",
+  },
+  sortAction: {
+    display: "inline-block",
+    verticalAlign: "top",
+    cursor: "pointer",
+    paddingLeft: "4px",
+    height: "10px",
+  },
+  sortActive: {
+    color: "rgba(0, 0, 0, 0.87)",
+  },
+  toolButton: {
+    height: "10px",
+    outline: "none",
+  },
+};
 
 class MUIDataTableHeadCell extends React.Component {
   static propTypes = {
@@ -23,7 +46,12 @@ class MUIDataTableHeadCell extends React.Component {
 
   render() {
     const { children, classes, index, options, sortDirection } = this.props;
-    const sortActive = sortDirection !== null ? true : false;
+    const sortActive = sortDirection !== null && sortDirection !== undefined ? true : false;
+
+    const sortLabelProps = {
+      active: sortActive,
+      ...(sortDirection ? { direction: sortDirection } : {}),
+    };
 
     return (
       <TableCell className={classes.root} scope={"col"} sortDirection={sortDirection}>
@@ -43,7 +71,7 @@ class MUIDataTableHeadCell extends React.Component {
                 {children}
               </div>
               <div className={classes.sortAction}>
-                <TableSortLabel active={sortActive} direction={sortDirection} />
+                <TableSortLabel {...sortLabelProps} />
               </div>
             </span>
           </Tooltip>
@@ -55,4 +83,4 @@ class MUIDataTableHeadCell extends React.Component {
   }
 }
 
-export default MUIDataTableHeadCell;
+export default withStyles(defaultHeadCellStyles, { name: "MUIDataTableHeadCell" })(MUIDataTableHeadCell);

@@ -12,7 +12,7 @@
 MUI-Datatables is a data tables component built on [Material-UI V1](https://www.material-ui-next.com).  It comes with features like filtering, view/hide columns, search, export to CSV download, printing, pagination, and sorting. On top of the ability to customize styling on most views, there are two responsive modes "stacked" and "scroll" for mobile/tablet devices. 
 
 <div align="center">
-	<img src="https://user-images.githubusercontent.com/19170080/34346996-b59a8b3a-e9cb-11e7-80d5-591aef3dc1f4.gif" />
+	<img src="https://user-images.githubusercontent.com/19170080/37877494-2bd7c264-302a-11e8-827a-cb4c87f0e28f.gif" />
 </div>
 
 ## Install
@@ -127,7 +127,6 @@ The component accepts the following props:
 #### Options:
 |Name|Type|Default|Description
 |:--:|:-----|:--|:-----|
-|**`styles`**|object||Extend or override default styling
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox" or "dropdown"
 |**`pagination`**|boolean|true|Enable/disable pagination
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
@@ -174,147 +173,35 @@ const columns = [
 
 ## Customize Styling
 
-In the options object, you have the ability to customize styling to your liking with the 'styles' property.  Here are the following sections you can customize:
-
-#### Table of Contents
-
-- [Table](#styletable)
-- [Toolbar](#styletoolbar)
-- [FilterList](#stylefilterlist)
-- [Pagination](#stylepagination)
-  
-  
-An example of how we would target FilterList would look like:
+Using Material-UI theme overrides will allow you to customize styling to your liking. First, determine which component you would want to target and then lookup the override classname. Let's start with a simple example where we will change the background color of a body cell to be red:
 
 ```js
+import React from "react";
+import MUIDataTable from "mui-datatables";
+import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles';
 
-const options = {
-  filter: true,
-  filterType: 'checkbox',
-  styles: {
-    filterList: {
-      root: {
-        color: "#FF0000"
-      },
-      chip: {
-        color: "#FEFEF0"
-      },
-    },
-  }
-};
+class BodyCellExample extends React.Component {
 
-<MUIDataTable 
-  title={"some title"} 
-  data={data} 
-  columns={columns} 
-  options={options} 
-/>
-
-```
-
-#### Styling Table
----
-<a name="styletable"></a>
-
-
-```js
-
-const options = {
-  styles: {
-    table: {          
-      head: {
-        row: {
-        },            
-        cell: {
-          root: {
-          },
-          sortLabel: {
-          },
+  getMuiTheme = () => createMuiTheme({
+    overrides: {
+      MUIDataTableBodyCell: {
+        root: {
+          backgroundColor: "#FFF"
         }
-      },
-      body: {
-        row: {
-        },
-        cell: {
-          root: {
-          }
-        }
-      },
-    },
-  }
-};
-
-```
-
-#### Styling Toolbar
----
-<a name="styletoolbar"></a>
-
-```js
-
-const options = {
-  styles: {
-    toolbar: {
-      root: {},
-      spacer: {
-      },
-      actions: {
-      },
-      titleRoot: {
-      },
-      titleText: {
-      },
-      icon: {
-      },
-      iconActive: {
-      },
-      search: {
-      },
-      searchIcon: {
-      },
-      searchText: {
-      },
-      clearIcon: {
-      },
-    },
-  }
-};
-
-```
-
-#### Styling FilterList
----
-<a name="stylefilterlist"></a>
-
-
-
-```js
-
-const options = {
-  styles: {
-    filterList: {
-      root: {
-      },
-      chip: {
-      },
-    },
-  }
-};
-
-```
-
-#### Styling Pagination
----
-<a name="stylepagination"></a>
-
-```js
-
-const options = {
-  styles: {  
-    pagination: {
+      }
     }
+  })
+
+  render() {
+  
+    return (
+      <MuiThemeProvider theme={this.getMuiTheme()}>
+        <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+      </MuiThemeProvider>
+    );
+
   }
-};
+}
 
 ```
 

@@ -23,7 +23,7 @@ describe("<MUIDataTableSearch />", function() {
     const onSearch = spy();
     const onHide = () => {};
 
-    const shallowWrapper = shallow(<MUIDataTableSearch onSearch={onSearch} onHide={onHide} options={options} />);
+    const shallowWrapper = shallow(<MUIDataTableSearch onSearch={onSearch} onHide={onHide} options={options} />).dive();
 
     const instance = shallowWrapper.instance();
 

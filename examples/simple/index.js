@@ -46,6 +46,29 @@ class Example extends React.Component {
       filter: true,
       filterType: 'dropdown',
       responsive: 'stacked',
+       styles: {
+          table: {          
+            head: {
+              row: {
+              },            
+              cell: {
+                root: {
+                },
+                sortLabel: {
+                },
+              }
+            },
+            body: {
+              row: {
+                backgroundColor: "#FF0000"
+              },
+              cell: {
+                root: {
+                }
+              }
+            },
+          },
+        }
     };
 
     return (

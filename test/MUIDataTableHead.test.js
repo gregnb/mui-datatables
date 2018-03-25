@@ -41,7 +41,9 @@ describe("<MUIDataTableHead />", function() {
     const options = { sort: true };
     const toggleSort = spy();
 
-    const shallowWrapper = shallow(<MUIDataTableHead columns={columns} options={options} toggleSort={toggleSort} />);
+    const shallowWrapper = shallow(
+      <MUIDataTableHead columns={columns} options={options} toggleSort={toggleSort} />,
+    ).dive();
 
     const instance = shallowWrapper.instance();
     instance.handleToggleColumn(2);

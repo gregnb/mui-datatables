@@ -110,30 +110,6 @@ describe("<MUIDataTableToolbar />", function() {
     assert.strictEqual(actualResult.length, 0);
   });
 
-  it("should open new print window when calling method handlePrint", () => {
-    const node = window.document.createElement("div");
-    const tableRef = () => node;
-
-    const mountWrapper = mount(
-      <MUIDataTableToolbar columns={columns} data={data} options={options} tableRef={tableRef} />,
-    );
-    const instance = mountWrapper.instance();
-
-    const printSpy = spy();
-    const closeSpy = spy();
-
-    let stubOpen = stub(window, "open");
-    stubOpen.returns({
-      document: window.document,
-      print: printSpy,
-      close: closeSpy,
-    });
-
-    instance.handlePrint();
-    assert.strictEqual(printSpy.callCount, 1);
-    assert.strictEqual(closeSpy.callCount, 1);
-  });
-
   it("should set icon when calling method setActiveIcon", () => {
     const mountWrapper = mount(<MUIDataTableToolbar columns={columns} data={data} options={options} />);
     const instance = mountWrapper.instance();

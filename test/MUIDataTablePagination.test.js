@@ -31,7 +31,7 @@ describe("<MUIDataTablePagination />", function() {
         rowsPerPage={10}
         changeRowsPerPage={changeRowsPerPage}
       />,
-    );
+    ).dive();
     const instance = shallowWrapper.instance();
 
     instance.handleRowChange({ target: { value: "" } });
@@ -42,7 +42,7 @@ describe("<MUIDataTablePagination />", function() {
     const changePage = spy();
     const shallowWrapper = shallow(
       <MUIDataTablePagination options={options} count={100} page={1} rowsPerPage={10} changePage={changePage} />,
-    );
+    ).dive();
     const instance = shallowWrapper.instance();
 
     instance.handlePageChange(null, 1);

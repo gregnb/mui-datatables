@@ -8,7 +8,7 @@ import SearchIcon from "material-ui-icons/Search";
 import IconButton from "material-ui/IconButton";
 import ClearIcon from "material-ui-icons/Clear";
 import FilterIcon from "material-ui-icons/FilterList";
-import { getStyle, DataStyles } from "./DataStyles";
+import { withStyles } from "material-ui/styles";
 
 const defaultSearchStyles = {
   main: {
@@ -52,30 +52,26 @@ class MUIDataTableSearch extends React.Component {
     const { classes, onHide, onSearch, options } = this.props;
 
     return (
-      <DataStyles defaultStyles={defaultSearchStyles} name="MUIDataTableSearch" styles={getStyle(options, "search")}>
-        {headStyles => (
-          <Grow appear in={true} timeout={300}>
-            <div className={headStyles.main} ref={el => (this.rootRef = el)}>
-              <SearchIcon className={headStyles.searchIcon} />
-              <TextField
-                className={headStyles.searchText}
-                autoFocus={true}
-                InputProps={{
-                  "aria-label": "Search Table",
-                }}
-                onChange={this.handleTextChange}
-                fullWidth={true}
-                inputRef={el => (this.searchField = el)}
-              />
-              <IconButton className={headStyles.clearIcon} onClick={onHide}>
-                <ClearIcon />
-              </IconButton>
-            </div>
-          </Grow>
-        )}
-      </DataStyles>
+      <Grow appear in={true} timeout={300}>
+        <div className={classes.main} ref={el => (this.rootRef = el)}>
+          <SearchIcon className={classes.searchIcon} />
+          <TextField
+            className={classes.searchText}
+            autoFocus={true}
+            InputProps={{
+              "aria-label": "Search Table",
+            }}
+            onChange={this.handleTextChange}
+            fullWidth={true}
+            inputRef={el => (this.searchField = el)}
+          />
+          <IconButton className={classes.clearIcon} onClick={onHide}>
+            <ClearIcon />
+          </IconButton>
+        </div>
+      </Grow>
     );
   }
 }
 
-export default MUIDataTableSearch;
+export default withStyles(defaultSearchStyles, { name: "MUIDataTableSearch" })(MUIDataTableSearch);

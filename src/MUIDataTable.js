@@ -7,7 +7,7 @@ import MUIDataTableFilterList from "./MUIDataTableFilterList";
 import MUIDataTableBody from "./MUIDataTableBody";
 import MUIDataTableHead from "./MUIDataTableHead";
 import MUIDataTablePagination from "./MUIDataTablePagination";
-import { getStyle, DataStyles } from "./DataStyles";
+import { withStyles } from "material-ui/styles";
 
 const defaultTableStyles = {
   root: {},
@@ -71,6 +71,13 @@ class MUIDataTable extends React.Component {
     className: PropTypes.string,
   };
 
+  static defaultProps = {
+    title: "",
+    options: {},
+    data: [],
+    columns: []
+  };
+
   state = {
     open: false,
     announceText: null,
@@ -106,6 +113,9 @@ class MUIDataTable extends React.Component {
     this.setTableData(props);
   }
 
+  /*
+   * React currently does not support deep merge for defaultProps. Objects are overwritten
+   */
   getDefaultOptions(props) {
     const defaultOptions = {
       responsive: "stacked",
@@ -206,7 +216,7 @@ class MUIDataTable extends React.Component {
       isSearchFound = false;
 
     for (let index = 0; index < row.length; index++) {
-      const column = typeof row[index] !== "string" ? row[index].toString() : row[index];
+      const column = row[index];
 
       if (filterList[index].length && filterList[index].indexOf(column) < 0) {
         isFiltered = true;
@@ -356,59 +366,55 @@ class MUIDataTable extends React.Component {
     const rowsPerPage = this.state.rowsPerPage ? this.state.rowsPerPage : this.options.rowsPerPage;
 
     return (
-      <DataStyles defaultStyles={defaultTableStyles} name="MUIDataTable" styles={getStyle(this.options, "table.main")}>
-        {tableStyles => (
-          <Paper
-            elevation={4}
-            ref={el => (this.tableContent = el)}
-            className={this.options.responsive === "scroll" ? tableStyles.responsiveScroll : null}>
-            <MUIDataTableToolbar
-              columns={columns}
-              data={data}
-              filterData={filterData}
-              filterList={filterList}
-              filterUpdate={this.filterUpdate}
+      <Paper
+        elevation={4}
+        ref={el => (this.tableContent = el)}
+        className={this.options.responsive === "scroll" ? classes.responsiveScroll : null}>
+        <MUIDataTableToolbar
+          columns={columns}
+          data={data}
+          filterData={filterData}
+          filterList={filterList}
+          filterUpdate={this.filterUpdate}
+          options={this.options}
+          resetFilters={this.resetFilters}
+          searchTextUpdate={this.searchTextUpdate}
+          tableRef={() => this.tableContent}
+          title={title}
+          toggleViewColumn={this.toggleViewColumn}
+        />
+        <MUIDataTableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />
+        <Table ref={el => (this.tableRef = el)} tabIndex={"0"} role={"grid"} aria-readonly={"true"}>
+          <caption className={classes.caption}>{title}</caption>
+          <MUIDataTableHead columns={columns} toggleSort={this.toggleSortColumn} options={this.options} />
+          <MUIDataTableBody
+            data={this.state.displayData}
+            columns={columns}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            options={this.options}
+            searchText={searchText}
+            filterList={filterList}
+          />
+          {this.options.pagination ? (
+            <MUIDataTablePagination
+              count={displayData.length}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              changeRowsPerPage={this.changeRowsPerPage}
+              changePage={this.changePage}
               options={this.options}
-              resetFilters={this.resetFilters}
-              searchTextUpdate={this.searchTextUpdate}
-              tableRef={() => this.tableRef}
-              title={title}
-              toggleViewColumn={this.toggleViewColumn}
             />
-            <MUIDataTableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />
-            <Table ref={el => (this.tableRef = el)} tabIndex={"0"} role={"grid"} aria-readonly={"true"}>
-              <caption className={tableStyles.caption}>{title}</caption>
-              <MUIDataTableHead columns={columns} toggleSort={this.toggleSortColumn} options={this.options} />
-              <MUIDataTableBody
-                data={this.state.displayData}
-                columns={columns}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                options={this.options}
-                searchText={searchText}
-                filterList={filterList}
-              />
-              {this.options.pagination ? (
-                <MUIDataTablePagination
-                  count={displayData.length}
-                  page={page}
-                  rowsPerPage={rowsPerPage}
-                  changeRowsPerPage={this.changeRowsPerPage}
-                  changePage={this.changePage}
-                  options={this.options}
-                />
-              ) : (
-                false
-              )}
-            </Table>
-            <div className={tableStyles.liveAnnounce} aria-live={"polite"} ref={el => (this.announceRef = el)}>
-              {announceText}
-            </div>
-          </Paper>
-        )}
-      </DataStyles>
+          ) : (
+            false
+          )}
+        </Table>
+        <div className={classes.liveAnnounce} aria-live={"polite"} ref={el => (this.announceRef = el)}>
+          {announceText}
+        </div>
+      </Paper>
     );
   }
 }
 
-export default MUIDataTable;
+export default withStyles(defaultTableStyles, { name: "MUIDataTable" })(MUIDataTable);

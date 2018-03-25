@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { TableRow, TableFooter, TablePagination } from "material-ui/Table";
-import { getStyle, DataStyles } from "./DataStyles";
+import { withStyles } from "material-ui/styles";
 
 const defaultPaginationStyles = {
   root: {
@@ -49,39 +49,32 @@ class MUIDataTablePagination extends React.Component {
     const { count, classes, options, rowsPerPage, page } = this.props;
 
     return (
-      <DataStyles
-        defaultStyles={defaultPaginationStyles}
-        name="MUIDataTablePagination"
-        styles={getStyle(options, "table.pagination")}>
-        {paginationStyles => (
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                className={paginationStyles.root}
-                classes={{
-                  caption: paginationStyles.caption,
-                  toolbar: paginationStyles.toolbar,
-                  selectRoot: paginationStyles.selectRoot,
-                }}
-                count={count}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                backIconButtonProps={{
-                  "aria-label": "Previous Page",
-                }}
-                nextIconButtonProps={{
-                  "aria-label": "Next Page",
-                }}
-                rowsPerPageOptions={options.rowsPerPageOptions}
-                onChangePage={this.handlePageChange}
-                onChangeRowsPerPage={this.handleRowChange}
-              />
-            </TableRow>
-          </TableFooter>
-        )}
-      </DataStyles>
+      <TableFooter>
+        <TableRow>
+          <TablePagination
+            className={classes.root}
+            classes={{
+              caption: classes.caption,
+              toolbar: classes.toolbar,
+              selectRoot: classes.selectRoot,
+            }}
+            count={count}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            backIconButtonProps={{
+              "aria-label": "Previous Page",
+            }}
+            nextIconButtonProps={{
+              "aria-label": "Next Page",
+            }}
+            rowsPerPageOptions={options.rowsPerPageOptions}
+            onChangePage={this.handlePageChange}
+            onChangeRowsPerPage={this.handleRowChange}
+          />
+        </TableRow>
+      </TableFooter>
     );
   }
 }
 
-export default MUIDataTablePagination;
+export default withStyles(defaultPaginationStyles, { name: "MUIDataTablePagination" })(MUIDataTablePagination);

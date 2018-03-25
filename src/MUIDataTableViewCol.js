@@ -3,6 +3,35 @@ import PropTypes from "prop-types";
 import Checkbox from "material-ui/Checkbox";
 import Typography from "material-ui/Typography";
 import { FormLabel, FormControl, FormGroup, FormControlLabel, FormHelperText } from "material-ui/Form";
+import { withStyles } from "material-ui/styles";
+
+export const defaultViewColStyles = {
+  root: {
+    padding: "16px 24px 16px 24px",
+    fontFamily: "Roboto",
+  },
+  title: {
+    marginLeft: "-7px",
+    fontSize: "14px",
+    color: "#424242",
+    textAlign: "left",
+    fontWeight: 500,
+  },
+  formGroup: {
+    marginTop: "8px",
+  },
+  formControl: {},
+  checkbox: {
+    color: "#027cb5",
+    width: "32px",
+    height: "32px",
+  },
+  label: {
+    fontSize: "15px",
+    marginLeft: "8px",
+    color: "#4a4a4a",
+  },
+};
 
 class MUIDataTableViewCol extends React.Component {
   static propTypes = {
@@ -13,7 +42,7 @@ class MUIDataTableViewCol extends React.Component {
     /** Callback to trigger View column update */
     onColumnUpdate: PropTypes.func,
     /** Extend the style applied to components */
-    viewColStyles: PropTypes.object,
+    classes: PropTypes.object,
   };
 
   handleColChange = index => {
@@ -21,25 +50,25 @@ class MUIDataTableViewCol extends React.Component {
   };
 
   render() {
-    const { classes, columns, options, viewColStyles } = this.props;
+    const { classes, columns, options } = this.props;
 
     return (
-      <FormControl component={"fieldset"} className={viewColStyles.root} aria-label="Show/Hide Table Columns">
-        <Typography type="caption" className={viewColStyles.title}>
+      <FormControl component={"fieldset"} className={classes.root} aria-label="Show/Hide Table Columns">
+        <Typography variant="caption" className={classes.title}>
           Show Columns
         </Typography>
-        <FormGroup className={viewColStyles.formGroup}>
+        <FormGroup className={classes.formGroup}>
           {columns.map((column, index) => {
             return (
               <FormControlLabel
                 key={index}
                 classes={{
-                  root: viewColStyles.formControl,
-                  label: viewColStyles.label,
+                  root: classes.formControl,
+                  label: classes.label,
                 }}
                 control={
                   <Checkbox
-                    className={viewColStyles.checkbox}
+                    className={classes.checkbox}
                     onChange={this.handleColChange.bind(null, index)}
                     checked={column.display}
                     value={column.name}
@@ -55,4 +84,4 @@ class MUIDataTableViewCol extends React.Component {
   }
 }
 
-export default MUIDataTableViewCol;
+export default withStyles(defaultViewColStyles, { name: "MUIDataTableViewCol" })(MUIDataTableViewCol);

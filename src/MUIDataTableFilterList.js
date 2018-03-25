@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Chip from "material-ui/Chip";
-import { getStyle, DataStyles } from "./DataStyles";
+import { withStyles } from "material-ui/styles";
 
 const defaultFilterListStyles = {
   root: {
@@ -21,33 +21,28 @@ class MUIDataTableFilterList extends React.Component {
     filterList: PropTypes.array.isRequired,
     /** Callback to trigger filter update */
     onFilterUpdate: PropTypes.func,
+    /** Extend the style applied to components */
+    classes: PropTypes.object,
   };
 
   render() {
-    const { filterList, filterUpdate, options } = this.props;
-
+    const { classes, filterList, filterUpdate, options } = this.props;
+    
     return (
-      <DataStyles
-        defaultStyles={defaultFilterListStyles}
-        name="MUIDataTableFilterList"
-        styles={getStyle(options, "table.filterList")}>
-        {filterListStyles => (
-          <div className={filterListStyles.root}>
-            {filterList.map((item, index) =>
-              item.map((data, colIndex) => (
-                <Chip
-                  label={data}
-                  key={colIndex}
-                  onDelete={filterUpdate.bind(null, index, data, "checkbox")}
-                  className={filterListStyles.chip}
-                />
-              )),
-            )}
-          </div>
+      <div className={classes.root}>
+        {filterList.map((item, index) =>
+          item.map((data, colIndex) => (
+            <Chip
+              label={data}
+              key={colIndex}
+              onDelete={filterUpdate.bind(null, index, data, "checkbox")}
+              className={classes.chip}
+            />
+          )),
         )}
-      </DataStyles>
+      </div>
     );
   }
 }
 
-export default MUIDataTableFilterList;
+export default withStyles(defaultFilterListStyles, { name: "MUIDataTableFilterList" })(MUIDataTableFilterList);
