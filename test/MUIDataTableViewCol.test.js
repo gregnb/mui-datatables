@@ -4,7 +4,6 @@ import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import Checkbox from "material-ui/Checkbox";
 import MUIDataTableViewCol from "../src/MUIDataTableViewCol";
-import { defaultViewColStyles } from "../src/MUIDataTableToolbar";
 
 describe("<MUIDataTableViewCol />", function() {
   let columns;
@@ -17,9 +16,7 @@ describe("<MUIDataTableViewCol />", function() {
 
   it("should render view columns", () => {
     const options = {};
-    const mountWrapper = mount(
-      <MUIDataTableViewCol columns={columns} viewColStyles={defaultViewColStyles} options={options} />,
-    );
+    const mountWrapper = mount(<MUIDataTableViewCol columns={columns} options={options} />);
 
     const actualResult = mountWrapper.find(Checkbox);
     assert.strictEqual(actualResult.length, 4);
@@ -30,12 +27,7 @@ describe("<MUIDataTableViewCol />", function() {
     const onColumnUpdate = spy();
 
     const shallowWrapper = shallow(
-      <MUIDataTableViewCol
-        columns={columns}
-        onColumnUpdate={onColumnUpdate}
-        viewColStyles={defaultViewColStyles}
-        options={options}
-      />,
+      <MUIDataTableViewCol columns={columns} onColumnUpdate={onColumnUpdate} options={options} />,
     ).dive();
 
     const instance = shallowWrapper.instance();

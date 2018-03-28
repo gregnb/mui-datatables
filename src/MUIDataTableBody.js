@@ -3,9 +3,11 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import Table from "material-ui/Table";
 import Typography from "material-ui/Typography";
-import { TableBody, TableRow } from "material-ui/Table";
+import Checkbox from "material-ui/Checkbox";
+import { TableBody, TableCell, TableRow } from "material-ui/Table";
 import MUIDataTableBodyCell from "./MUIDataTableBodyCell";
 import MUIDataTableBodyRow from "./MUIDataTableBodyRow";
+import MUIDataTableSelectCell from "./MUIDataTableSelectCell";
 import { withStyles } from "material-ui/styles";
 
 const defaultBodyStyles = {
@@ -25,6 +27,10 @@ class MUIDataTableBody extends React.Component {
     options: PropTypes.object.isRequired,
     /** Data used to filter table against */
     filterList: PropTypes.array,
+    /** Table rows selected */
+    selectedRows: PropTypes.array,
+    /** Callback to trigger table row select */
+    selectRowUpdate: PropTypes.func,
     /** Data used to search table against */
     searchText: PropTypes.string,
     /** Extend the style applied to components */
@@ -45,15 +51,42 @@ class MUIDataTableBody extends React.Component {
     return rows.length ? rows : null;
   }
 
+  getRowIndex(index) {
+    const { page, rowsPerPage } = this.props;
+    const startIndex = page === 0 ? 0 : page * rowsPerPage;
+
+    return startIndex + index;
+  }
+
+  isRowSelected(index) {
+    const { selectedRows } = this.props;
+    return selectedRows.indexOf(this.getRowIndex(index)) >= 0 ? true : false;
+  }
+
+  handleRowSelect = index => {
+    this.props.selectRowUpdate("cell", this.getRowIndex(index));
+  };
+
   render() {
-    const { classes, columns, options } = this.props;
+    const { classes, columns, data, options, page, rowsPerPage } = this.props;
     const tableRows = this.buildRows();
 
     return (
       <TableBody>
         {tableRows ? (
           tableRows.map((row, rowIndex) => (
-            <MUIDataTableBodyRow options={options} key={rowIndex}>
+            <MUIDataTableBodyRow
+              options={options}
+              rowSelected={options.selectableRows ? this.isRowSelected(rowIndex) : false}
+              key={rowIndex}>
+              {options.selectableRows ? (
+                <MUIDataTableSelectCell
+                  onChange={this.handleRowSelect.bind(null, rowIndex)}
+                  checked={this.isRowSelected(rowIndex)}
+                />
+              ) : (
+                false
+              )}
               {row.map(
                 (column, index) =>
                   columns[index].display ? (

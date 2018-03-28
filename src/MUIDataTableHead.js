@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { TableHead } from "material-ui/Table";
 import MUIDataTableHeadRow from "./MUIDataTableHeadRow";
 import MUIDataTableHeadCell from "./MUIDataTableHeadCell";
+import MUIDataTableSelectCell from "./MUIDataTableSelectCell";
 import { withStyles } from "material-ui/styles";
 
 const defaultHeadStyles = {
@@ -18,7 +19,12 @@ const defaultHeadStyles = {
 class MUIDataTableHead extends React.Component {
   state = {
     activeColumn: null,
+    selectChecked: false,
   };
+
+  componentDidMount() {
+    this.props.handleHeadUpdateRef(this.handleUpdateCheck);
+  }
 
   handleToggleColumn = index => {
     this.setState(() => ({
@@ -27,13 +33,33 @@ class MUIDataTableHead extends React.Component {
     this.props.toggleSort(index);
   };
 
+  handleRowSelect = () => {
+    this.setState(
+      prevState => ({
+        selectChecked: !prevState.selectChecked,
+      }),
+      () => this.props.selectRowUpdate("head", this.state.selectChecked),
+    );
+  };
+
+  handleUpdateCheck = status => {
+    this.setState(() => ({
+      selectChecked: status,
+    }));
+  };
+
   render() {
     const { classes, columns, options } = this.props;
-    const { activeColumn } = this.state;
+    const { activeColumn, selectChecked } = this.state;
 
     return (
       <TableHead className={classNames({ [classes.responsiveStacked]: true, [classes.main]: true })}>
         <MUIDataTableHeadRow>
+          {options.selectableRows ? (
+            <MUIDataTableSelectCell onChange={this.handleRowSelect.bind(null)} checked={selectChecked} />
+          ) : (
+            false
+          )}
           {columns.map(
             (column, index) =>
               column.display ? (

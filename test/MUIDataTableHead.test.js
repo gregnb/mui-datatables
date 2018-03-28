@@ -8,6 +8,7 @@ import Tooltip from "material-ui/Tooltip";
 
 describe("<MUIDataTableHead />", function() {
   let columns;
+  let handleHeadUpdateRef;
 
   before(() => {
     columns = [
@@ -16,13 +17,22 @@ describe("<MUIDataTableHead />", function() {
       { name: "City", display: true, sort: null },
       { name: "State", display: true, sort: null },
     ];
+
+    handleHeadUpdateRef = () => {};
   });
 
   it("should render a table head", () => {
     const options = {};
     const toggleSort = () => {};
 
-    const mountWrapper = mount(<MUIDataTableHead columns={columns} options={options} toggleSort={toggleSort} />);
+    const mountWrapper = mount(
+      <MUIDataTableHead
+        columns={columns}
+        options={options}
+        handleHeadUpdateRef={handleHeadUpdateRef}
+        toggleSort={toggleSort}
+      />,
+    );
     const actualResult = mountWrapper.find(MUIDataTableHeadCell);
     assert.strictEqual(actualResult.length, 4);
   });
@@ -32,7 +42,14 @@ describe("<MUIDataTableHead />", function() {
     const toggleSort = () => {};
 
     const newColumns = columns.map(column => ({ ...column, display: false }));
-    const mountWrapper = mount(<MUIDataTableHead columns={newColumns} options={options} toggleSort={toggleSort} />);
+    const mountWrapper = mount(
+      <MUIDataTableHead
+        columns={newColumns}
+        options={options}
+        handleHeadUpdateRef={handleHeadUpdateRef}
+        toggleSort={toggleSort}
+      />,
+    );
     const actualResult = mountWrapper.find(MUIDataTableHeadCell);
     assert.strictEqual(actualResult.length, 0);
   });
@@ -42,7 +59,12 @@ describe("<MUIDataTableHead />", function() {
     const toggleSort = spy();
 
     const shallowWrapper = shallow(
-      <MUIDataTableHead columns={columns} options={options} toggleSort={toggleSort} />,
+      <MUIDataTableHead
+        columns={columns}
+        options={options}
+        handleHeadUpdateRef={handleHeadUpdateRef}
+        toggleSort={toggleSort}
+      />,
     ).dive();
 
     const instance = shallowWrapper.instance();
@@ -52,5 +74,27 @@ describe("<MUIDataTableHead />", function() {
     let state = shallowWrapper.state();
     assert.strictEqual(state.activeColumn, 2);
     assert.strictEqual(toggleSort.callCount, 1);
+  });
+
+  it("should trigger selectRowUpdate prop callback and selectChecked state update when calling method handleRowSelect", () => {
+    const options = { sort: true, selectableRows: true };
+    const rowSelectUpdate = spy();
+
+    const shallowWrapper = shallow(
+      <MUIDataTableHead
+        columns={columns}
+        options={options}
+        handleHeadUpdateRef={handleHeadUpdateRef}
+        selectRowUpdate={rowSelectUpdate}
+      />,
+    ).dive();
+
+    const instance = shallowWrapper.instance();
+    instance.handleRowSelect(2);
+    shallowWrapper.update();
+
+    let state = shallowWrapper.state();
+    assert.strictEqual(state.selectChecked, true);
+    assert.strictEqual(rowSelectUpdate.callCount, 1);
   });
 });

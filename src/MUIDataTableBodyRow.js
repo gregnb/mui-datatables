@@ -17,12 +17,14 @@ class MUIDataTableBodyRow extends React.Component {
   static propTypes = {
     /** Options used to describe table */
     options: PropTypes.object.isRequired,
+    /** Current row selected or not */
+    rowSelected: PropTypes.bool,
     /** Extend the style applied to components */
     classes: PropTypes.object,
   };
 
   render() {
-    const { classes, options } = this.props;
+    const { classes, options, rowSelected } = this.props;
 
     return (
       <TableRow
@@ -30,7 +32,8 @@ class MUIDataTableBodyRow extends React.Component {
         className={classNames({
           [classes.root]: true,
           [classes.responsiveStacked]: options.responsive === "stacked",
-        })}>
+        })}
+        selected={rowSelected}>
         {this.props.children}
       </TableRow>
     );
