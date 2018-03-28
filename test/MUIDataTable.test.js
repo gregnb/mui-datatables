@@ -2,7 +2,7 @@ import React from "react";
 import { spy } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
-import MUIDataTable, { MUIDataTableNaked } from "../src/MUIDataTable";
+import MUIDataTable from "../src/MUIDataTable";
 import MUIDataTablePagination from "../src/MUIDataTablePagination";
 
 describe("<MUIDataTable />", function() {
@@ -312,5 +312,27 @@ describe("<MUIDataTable />", function() {
 
     const state = shallowWrapper.state();
     assert.deepEqual(state.page, 2);
+  });
+
+  it("should update selectedRows when calling selectRowUpdate method with type=head", () => {
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.selectRowUpdate("head", 0);
+    shallowWrapper.update();
+
+    const state = shallowWrapper.state();
+    assert.deepEqual(state.selectedRows, [0, 1, 2, 3]);
+  });
+
+  it("should update selectedRows when calling selectRowUpdate method with type=cell", () => {
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.selectRowUpdate("cell", 0);
+    shallowWrapper.update();
+
+    const state = shallowWrapper.state();
+    assert.deepEqual(state.selectedRows, [0]);
   });
 });

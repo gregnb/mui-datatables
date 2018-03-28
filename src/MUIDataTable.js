@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Paper from "material-ui/Paper";
 import Table from "material-ui/Table";
 import MUIDataTableToolbar from "./MUIDataTableToolbar";
+import MUIDataTableToolbarSelect from "./MUIDataTableToolbarSelect";
 import MUIDataTableFilterList from "./MUIDataTableFilterList";
 import MUIDataTableBody from "./MUIDataTableBody";
 import MUIDataTableHead from "./MUIDataTableHead";
@@ -56,6 +57,7 @@ class MUIDataTable extends React.Component {
       responsive: PropTypes.oneOf(["stacked", "scroll"]),
       filterType: PropTypes.oneOf(["dropdown", "checkbox"]),
       pagination: PropTypes.bool,
+      selectableRows: PropTypes.bool,
       caseSensitive: PropTypes.bool,
       rowHover: PropTypes.bool,
       rowsPerPage: PropTypes.number,
@@ -88,6 +90,7 @@ class MUIDataTable extends React.Component {
     columns: [],
     filterData: [],
     filterList: [],
+    selectedRows: [],
     showResponsive: false,
     searchText: null,
   };
@@ -121,6 +124,7 @@ class MUIDataTable extends React.Component {
       responsive: "stacked",
       filterType: "checkbox",
       pagination: true,
+      selectableRows: true,
       caseSensitive: false,
       rowHover: true,
       rowsPerPage: 10,
@@ -202,6 +206,7 @@ class MUIDataTable extends React.Component {
       columns: columnData,
       filterData: filterData,
       filterList: filterList,
+      selectedRows: [],
       data: data,
       displayData: this.getDisplayData(data, filterList, prevState.searchText),
     }));
@@ -271,11 +276,12 @@ class MUIDataTable extends React.Component {
 
       const orderLabel = columns[index].sortDirection === "asc" ? "ascending" : "descending";
       const announceText = `Table now sorted by ${columns[index].name} : ${orderLabel}`;
+      const sortedData = this.sortTable(displayData, index, order);
 
       return {
         columns: columns,
         announceText: announceText,
-        displayData: this.sortTable(displayData, index, order),
+        ...sortedData,
       };
     });
   };
@@ -330,6 +336,76 @@ class MUIDataTable extends React.Component {
     });
   };
 
+  selectRowDelete = () => {
+    const cleanRows = this.state.data.filter((_, index) => this.state.selectedRows.indexOf(index) === -1);
+
+    if (this.options.onRowsDelete) {
+      this.options.onRowsDelete(this.state.selectedRows);
+    }
+
+    this.updateToolbarSelect(false);
+
+    this.setTableData({
+      columns: this.props.columns,
+      data: cleanRows,
+    });
+  };
+
+  selectRowUpdate = (type, value) => {
+    if (type === "head") {
+      this.setState(
+        prevState => {
+          const { data, page } = prevState;
+          const rowsPerPage = prevState.rowsPerPage ? prevState.rowsPerPage : this.options.rowsPerPage;
+
+          const fromIndex = page === 0 ? 0 : page * rowsPerPage;
+          const toIndex = Math.min(data.length, (page + 1) * rowsPerPage);
+          let selectedRows = Array(toIndex - fromIndex)
+            .fill()
+            .map((d, i) => i + fromIndex);
+
+          let newRows = [...prevState.selectedRows, ...selectedRows];
+
+          if (value === false) {
+            newRows = prevState.selectedRows.filter(val => selectedRows.indexOf(val) === -1);
+          }
+
+          return {
+            curSelectedRows: selectedRows,
+            selectedRows: newRows,
+          };
+        },
+        () => {
+          if (this.options.onRowsSelect) {
+            this.options.onRowsSelect(this.state.curSelectedRows, this.state.selectedRows);
+          }
+        },
+      );
+    } else if (type === "cell") {
+      this.setState(
+        prevState => {
+          let selectedRows = [...prevState.selectedRows];
+          const rowPos = selectedRows.indexOf(value);
+
+          if (rowPos >= 0) {
+            selectedRows.splice(rowPos, 1);
+          } else {
+            selectedRows.push(value);
+          }
+
+          return {
+            selectedRows: selectedRows,
+          };
+        },
+        () => {
+          if (this.options.onRowsSelect) {
+            this.options.onRowsSelect([value], this.state.selectedRows);
+          }
+        },
+      );
+    }
+  };
+
   sortCompare(order) {
     return (colOne, colTwo) => {
       let comparison = 0;
@@ -351,17 +427,41 @@ class MUIDataTable extends React.Component {
     let sortedData = data.map((row, index) => ({
       data: row[col],
       position: index,
+      rowSelected: this.state.selectedRows.indexOf(index) >= 0 ? true : false,
     }));
 
     sortedData.sort(this.sortCompare(order));
 
-    const updatedTable = sortedData.map(item => data[item.position]);
-    return updatedTable;
+    let tableData = [];
+    let selectedRows = [];
+
+    for (let i = 0; i < sortedData.length; i++) {
+      const row = sortedData[i];
+      tableData.push(data[row.position]);
+      if (row.rowSelected) {
+        selectedRows.push(i);
+      }
+    }
+
+    return {
+      displayData: tableData,
+      selectedRows: selectedRows,
+    };
   }
 
   render() {
     const { className, classes, title } = this.props;
-    const { announceText, data, displayData, columns, page, filterData, filterList, searchText } = this.state;
+    const {
+      announceText,
+      data,
+      displayData,
+      columns,
+      page,
+      filterData,
+      filterList,
+      selectedRows,
+      searchText,
+    } = this.state;
 
     const rowsPerPage = this.state.rowsPerPage ? this.state.rowsPerPage : this.options.rowsPerPage;
 
@@ -370,28 +470,44 @@ class MUIDataTable extends React.Component {
         elevation={4}
         ref={el => (this.tableContent = el)}
         className={this.options.responsive === "scroll" ? classes.responsiveScroll : null}>
-        <MUIDataTableToolbar
-          columns={columns}
-          data={data}
-          filterData={filterData}
-          filterList={filterList}
-          filterUpdate={this.filterUpdate}
-          options={this.options}
-          resetFilters={this.resetFilters}
-          searchTextUpdate={this.searchTextUpdate}
-          tableRef={() => this.tableContent}
-          title={title}
-          toggleViewColumn={this.toggleViewColumn}
-        />
+        {selectedRows.length ? (
+          <MUIDataTableToolbarSelect
+            options={this.options}
+            selectedRows={selectedRows}
+            onRowsDelete={this.selectRowDelete}
+          />
+        ) : (
+          <MUIDataTableToolbar
+            columns={columns}
+            data={data}
+            filterData={filterData}
+            filterList={filterList}
+            filterUpdate={this.filterUpdate}
+            options={this.options}
+            resetFilters={this.resetFilters}
+            searchTextUpdate={this.searchTextUpdate}
+            tableRef={() => this.tableContent}
+            title={title}
+            toggleViewColumn={this.toggleViewColumn}
+          />
+        )}
         <MUIDataTableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />
         <Table ref={el => (this.tableRef = el)} tabIndex={"0"} role={"grid"} aria-readonly={"true"}>
           <caption className={classes.caption}>{title}</caption>
-          <MUIDataTableHead columns={columns} toggleSort={this.toggleSortColumn} options={this.options} />
+          <MUIDataTableHead
+            columns={columns}
+            handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
+            selectRowUpdate={this.selectRowUpdate}
+            toggleSort={this.toggleSortColumn}
+            options={this.options}
+          />
           <MUIDataTableBody
             data={this.state.displayData}
             columns={columns}
             page={page}
             rowsPerPage={rowsPerPage}
+            selectedRows={selectedRows}
+            selectRowUpdate={this.selectRowUpdate}
             options={this.options}
             searchText={searchText}
             filterList={filterList}

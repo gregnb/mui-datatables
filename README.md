@@ -9,10 +9,10 @@
 [![dependencies Status](https://david-dm.org/gregnb/mui-datatables/status.svg)](https://david-dm.org/gregnb/mui-datatables)
 [![npm version](https://badge.fury.io/js/mui-datatables.svg)](https://badge.fury.io/js/mui-datatables)
 
-MUI-Datatables is a data tables component built on [Material-UI V1](https://www.material-ui-next.com).  It comes with features like filtering, view/hide columns, search, export to CSV download, printing, pagination, and sorting. On top of the ability to customize styling on most views, there are two responsive modes "stacked" and "scroll" for mobile/tablet devices. 
+MUI-Datatables is a data tables component built on [Material-UI V1](https://www.material-ui-next.com).  It comes with features like filtering, view/hide columns, search, export to CSV download, printing, selectable rows, pagination, and sorting. On top of the ability to customize styling on most views, there are two responsive modes "stacked" and "scroll" for mobile/tablet devices. 
 
 <div align="center">
-	<img src="https://user-images.githubusercontent.com/19170080/37877494-2bd7c264-302a-11e8-827a-cb4c87f0e28f.gif" />
+	<img src="https://user-images.githubusercontent.com/19170080/38026128-eac9d506-3258-11e8-92a7-b0d06e5faa82.gif" />
 </div>
 
 ## Install
@@ -129,17 +129,20 @@ The component accepts the following props:
 |:--:|:-----|:--|:-----|
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox" or "dropdown"
 |**`pagination`**|boolean|true|Enable/disable pagination
+|**`selectableRows`**|boolean|true|Enable/disable row selection
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
 |**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: 'stacked', 'scroll'
 |**`rowsPerPage`**|number|10|Number of rows allowed per page
 |**`rowsPerPageOptions`**|array|[10,15,20]|Options to provide in pagination for number of rows a user can select
 |**`rowHover`**|boolean|true|Enable/disable hover style over rows
-|**`sortFilterList`**|boolean|true|Enable/disable filter list sort
+|**`sortFilterList`**|boolean|true|Enable/disable alphanumeric sorting of filter lists
 |**`sort`**|boolean|true|Enable/disable sort on all columns
 |**`filter`**|boolean|true|Show/hide filter icon from toolbar
 |**`search`**|boolean|true|Show/hide search icon from toolbar
 |**`print`**|boolean|true|Show/hide print	 icon from toolbar
 |**`download`**|boolean|true|Show/hide download icon from toolbar
+|**`onRowsSelect`**|function||Callback function that triggers when row(s) are selected. `function(currentRowsSelected: array, rowsSelected: array) => void`
+|**`onRowsDelete`**|function||Callback function that triggers when row(s) are deleted. `function(rowsDeleted: array) => void`
 
 ## Customize Columns
 
@@ -186,7 +189,7 @@ class BodyCellExample extends React.Component {
     overrides: {
       MUIDataTableBodyCell: {
         root: {
-          backgroundColor: "#FFF"
+          backgroundColor: "#FF0000"
         }
       }
     }

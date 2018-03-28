@@ -5,14 +5,13 @@ import { assert, expect, should } from "chai";
 import Select from "material-ui/Select";
 import Checkbox from "material-ui/Checkbox";
 import MUIDataTableFilter from "../src/MUIDataTableFilter";
-import { defaultFilterStyles } from "../src/MUIDataTableToolbar";
 
 describe("<MUIDataTableFilter />", function() {
   let data;
   let columns;
   let filterData;
 
-  before(() => {
+  beforeEach(() => {
     columns = [
       { name: "First Name", display: true, sort: true, filter: true, sortDirection: "desc" },
       { name: "Company", display: true, sort: true, filter: true, sortDirection: "desc" },
@@ -39,34 +38,49 @@ describe("<MUIDataTableFilter />", function() {
     const options = { filterType: "checkbox" };
     const filterList = [[], [], [], []];
     const shallowWrapper = mount(
-      <MUIDataTableFilter
-        columns={columns}
-        filterStyles={defaultFilterStyles}
-        filterData={filterData}
-        filterList={filterList}
-        options={options}
-      />,
+      <MUIDataTableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
 
     const actualResult = shallowWrapper.find(Checkbox);
     assert.strictEqual(actualResult.length, 13);
   });
 
+  it("should data table filter view with no checkboxes if filter=false for each column", () => {
+    const options = { filterType: "checkbox" };
+    const filterList = [[], [], [], []];
+    columns = columns.map(item => (item.filter = false));
+
+    const shallowWrapper = mount(
+      <MUIDataTableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
+    );
+
+    const actualResult = shallowWrapper.find(Checkbox);
+    assert.strictEqual(actualResult.length, 0);
+  });
+
   it("should data table filter view with selects if filterType = 'select'", () => {
     const options = { filterType: "select" };
-    const filterList = [[], [], [], []];
+    const filterList = [["Joe James"], [], [], []];
+
     const mountWrapper = mount(
-      <MUIDataTableFilter
-        columns={columns}
-        filterStyles={defaultFilterStyles}
-        filterData={filterData}
-        filterList={filterList}
-        options={options}
-      />,
+      <MUIDataTableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
 
     const actualResult = mountWrapper.find(Select);
     assert.strictEqual(actualResult.length, 4);
+  });
+
+  it("should data table filter view no selects if filter=false for each column", () => {
+    const options = { filterType: "select" };
+    const filterList = [["Joe James"], [], [], []];
+    columns = columns.map(item => (item.filter = false));
+
+    const mountWrapper = mount(
+      <MUIDataTableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
+    );
+
+    const actualResult = mountWrapper.find(Select);
+    assert.strictEqual(actualResult.length, 0);
   });
 
   it("should trigger onFilterUpdate prop callback when calling method handleCheckboxChange", () => {
@@ -78,7 +92,6 @@ describe("<MUIDataTableFilter />", function() {
       <MUIDataTableFilter
         columns={columns}
         onFilterUpdate={onFilterUpdate}
-        filterStyles={defaultFilterStyles}
         filterData={filterData}
         filterList={filterList}
         options={options}
@@ -100,7 +113,6 @@ describe("<MUIDataTableFilter />", function() {
       <MUIDataTableFilter
         columns={columns}
         onFilterUpdate={onFilterUpdate}
-        filterStyles={defaultFilterStyles}
         filterData={filterData}
         filterList={filterList}
         options={options}
@@ -108,8 +120,12 @@ describe("<MUIDataTableFilter />", function() {
     ).dive();
     const instance = shallowWrapper.instance();
 
-    const event = { target: { value: "All" } };
+    let event = { target: { value: "All" } };
     instance.handleDropdownChange(event, 0);
     assert.strictEqual(onFilterUpdate.callCount, 1);
+
+    event = { target: { value: "test" } };
+    instance.handleDropdownChange(event, 0);
+    assert.strictEqual(onFilterUpdate.callCount, 2);
   });
 });
