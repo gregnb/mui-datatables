@@ -51,6 +51,12 @@ class Example extends React.Component {
       },
       onRowsDelete: (rowsDeleted) => {
         console.log(rowsDeleted, "were deleted!");
+      },
+      onChangePage: (numberRows) => {
+        console.log(numberRows);
+      },
+      onSearchChange: (searchText) => {
+        console.log(searchText);
       }
     };
 

@@ -287,15 +287,29 @@ class MUIDataTable extends React.Component {
   };
 
   changeRowsPerPage = rows => {
-    this.setState(() => ({
-      rowsPerPage: rows,
-    }));
+    this.setState(
+      () => ({
+        rowsPerPage: rows,
+      }),
+      () => {
+        if (this.options.onChangeRowsPerPage) {
+          this.options.onChangeRowsPerPage(this.state.rowsPerPage);
+        }
+      },
+    );
   };
 
   changePage = page => {
-    this.setState(() => ({
-      page: page,
-    }));
+    this.setState(
+      () => ({
+        page: page,
+      }),
+      () => {
+        if (this.options.onChangePage) {
+          this.options.onChangePage(this.state.page);
+        }
+      },
+    );
   };
 
   searchTextUpdate = text => {
