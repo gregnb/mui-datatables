@@ -63,6 +63,7 @@
     "jsdom-global": "^3.0.2",
     "mocha": "^4.0.1",
     "mocha-lcov-reporter": "^1.3.0",
+    "next": "^5.1.0",
     "nyc": "^11.3.0",
     "prettier": "^1.9.2",
     "prismjs": "^1.13.0",
@@ -92,7 +93,6 @@
     "lodash.merge": "^4.6.0",
     "material-ui": "^1.0.0-beta.38",
     "material-ui-icons": "^1.0.0-beta.36",
-    "next": "^5.1.0",
     "prop-types": "^15.6.0",
     "react-to-print": "^1.0.10"
   },
