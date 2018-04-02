@@ -25,6 +25,7 @@ const defaultHeadCellStyles = {
   toolButton: {
     height: "10px",
     outline: "none",
+    cursor: "pointer"
   },
 };
 
@@ -61,8 +62,8 @@ class MUIDataTableHeadCell extends React.Component {
             placement={"bottom-end"}
             className={classes.tooltip}
             enterDelay={300}
-            onClick={this.handleSortClick}>
-            <span role="button" className={classes.toolButton} tabIndex={0}>
+            >
+            <span role="button" onClick={this.handleSortClick} className={classes.toolButton} tabIndex={0}>
               <div
                 className={classNames({
                   [classes.data]: true,

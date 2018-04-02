@@ -215,14 +215,14 @@ class MUIDataTableToolbar extends React.Component {
               {options.viewColumns ? (
                 <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
                   <MUIPopoverTarget>
-                    <Tooltip title="View Columns">
                       <IconButton
                         aria-label="View Columns"
                         classes={{ root: this.getActiveIcon(toolbarStyles, "viewcolumns") }}
                         onClick={this.setActiveIcon.bind(null, "viewcolumns")}>
-                        <ViewColumnIcon />
-                      </IconButton>
-                    </Tooltip>
+                        <Tooltip title="View Columns">
+                          <ViewColumnIcon />
+                        </Tooltip>
+                      </IconButton>                    
                   </MUIPopoverTarget>
                   <MUIPopoverContent>
                     <MUIDataTableViewCol
@@ -238,15 +238,15 @@ class MUIDataTableToolbar extends React.Component {
               )}
               {options.filter ? (
                 <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
-                  <MUIPopoverTarget>
-                    <Tooltip title="Filter Table">
-                      <IconButton
-                        aria-label="Filter Table"
-                        classes={{ root: this.getActiveIcon(toolbarStyles, "filter") }}
-                        onClick={this.setActiveIcon.bind(null, "filter")}>
+                  <MUIPopoverTarget>                    
+                    <IconButton
+                      aria-label="Filter Table"
+                      classes={{ root: this.getActiveIcon(toolbarStyles, "filter") }}
+                      onClick={this.setActiveIcon.bind(null, "filter")}>
+                      <Tooltip title="Filter Table">
                         <FilterIcon />
-                      </IconButton>
-                    </Tooltip>
+                      </Tooltip>
+                    </IconButton>
                   </MUIPopoverTarget>
                   <MUIPopoverContent>
                     <MUIDataTableFilter
