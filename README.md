@@ -146,6 +146,9 @@ The component accepts the following props:
 |**`onChangePage`**|function||Callback function that triggers when a page has changed. `function(currentPage: number) => void`
 |**`onChangeRowsPerPage`**|function||Callback function that triggers when the number of rows per page has changed. `function(numberOfRows: number) => void`
 |**`onSearchChange`**|function||Callback function that triggers when the search text value has changed. `function(searchText: string) => void`
+|**`onFilterChange`**|function||Callback function that triggers when filters have changed. `function(changedColumn: string, filterList: array) => void`
+|**`onColumnSortChange`**|function||Callback function that triggers when a column has been sorted. `function(changedColumn: string, direction: string) => void`
+|**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
 
 
 ## Customize Columns

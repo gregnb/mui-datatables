@@ -61,8 +61,7 @@ class MUIDataTableHeadCell extends React.Component {
             title="Sort"
             placement={"bottom-end"}
             className={classes.tooltip}
-            enterDelay={300}
-            >
+            enterDelay={300}>
             <span role="button" onClick={this.handleSortClick} className={classes.toolButton} tabIndex={0}>
               <div
                 className={classNames({

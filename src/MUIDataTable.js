@@ -257,8 +257,17 @@ class MUIDataTable extends React.Component {
       return {
         columns: columns,
       };
+    }, 
+    () => {
+      if (this.options.onColumnViewChange) {
+        this.options.onColumnViewChange(this.state.columns[index].name, this.state.columns[index].display ? "add" : "remove");
+      }
     });
   };
+
+  getSortDirection(column) {
+    return column.sortDirection === "asc" ? "ascending" : "descending";
+  }
 
   toggleSortColumn = index => {
     this.setState(prevState => {
@@ -274,7 +283,7 @@ class MUIDataTable extends React.Component {
         }
       }
 
-      const orderLabel = columns[index].sortDirection === "asc" ? "ascending" : "descending";
+      const orderLabel = this.getSortDirection(columns[index]);
       const announceText = `Table now sorted by ${columns[index].name} : ${orderLabel}`;
       const sortedData = this.sortTable(displayData, index, order);
 
@@ -283,6 +292,11 @@ class MUIDataTable extends React.Component {
         announceText: announceText,
         ...sortedData,
       };
+    },
+    () => {
+      if (this.options.onColumnSortChange) {
+        this.options.onColumnSortChange(this.state.columns[index].name, this.getSortDirection(this.state.columns[index]));
+      }
     });
   };
 
@@ -327,6 +341,11 @@ class MUIDataTable extends React.Component {
         filterList: filterList,
         displayData: this.getDisplayData(prevState.data, filterList, prevState.searchText),
       };
+    },
+    () => {
+      if (this.options.onFilterChange) {
+        this.options.onFilterChange(null, this.state.filterList);
+      }
     });
   };
 
@@ -347,6 +366,11 @@ class MUIDataTable extends React.Component {
         filterList: filterList,
         displayData: this.getDisplayData(prevState.data, filterList, prevState.searchText),
       };
+    }, 
+    () => {
+      if (this.options.onFilterChange) {
+        this.options.onFilterChange(column, this.state.filterList);
+      }
     });
   };
 
