@@ -13,7 +13,7 @@ const defaultToolbarSelectStyles = {
     backgroundColor: "#f7f7f7",
     flex: "1 1 100%",
     display: "flex",
-    minHeight: "64px",
+    height: "64px",
     justifyContent: "space-between",
   },
   title: {
