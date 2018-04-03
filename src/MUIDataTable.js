@@ -191,7 +191,7 @@ class MUIDataTable extends React.Component {
       filterList[colIndex] = [];
 
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
-        const value = data[rowIndex][colIndex];
+        const value = typeof columnOptions.renderValue === "function" ? columnOptions.renderValue(data[rowIndex][colIndex]) : data[rowIndex][colIndex];
 
         if (filterData[colIndex].indexOf(value) < 0) filterData[colIndex].push(value);
       }
@@ -208,7 +208,7 @@ class MUIDataTable extends React.Component {
       filterList: filterList,
       selectedRows: [],
       data: data,
-      displayData: this.getDisplayData(data, filterList, prevState.searchText),
+      displayData: this.getDisplayData(columnData, data, filterList, prevState.searchText),
     }));
   }
 
@@ -216,12 +216,12 @@ class MUIDataTable extends React.Component {
    *  Build the table data used to display to the user (ie: after filter/search applied)
    */
 
-  isRowDisplayed(row, filterList, searchText) {
+  isRowDisplayed(columns, row, filterList, searchText) {
     let isFiltered = false,
       isSearchFound = false;
 
     for (let index = 0; index < row.length; index++) {
-      const column = row[index];
+      const column = typeof columns[index].renderValue === "function" ? columns[index].renderValue(row[index]) : row[index];
 
       if (filterList[index].length && filterList[index].indexOf(column) < 0) {
         isFiltered = true;
@@ -240,11 +240,15 @@ class MUIDataTable extends React.Component {
     else return true;
   }
 
-  getDisplayData(data, filterList, searchText) {
+  getDisplayData(columns, data, filterList, searchText) {
     let newRows = [];
 
     for (let index = 0; index < data.length; index++) {
-      if (this.isRowDisplayed(data[index], filterList, searchText)) newRows.push(data[index]);
+      if (this.isRowDisplayed(columns, data[index], filterList, searchText))
+        newRows.push(columns.map((column, colIndex) =>
+          typeof column.renderComponent === "function" ? column.renderComponent(index, data[index][colIndex]) : 
+            (typeof column.renderValue === "function" ? column.renderValue(data[index][colIndex]) : data[index][colIndex])
+        ));
     }
 
     return newRows;
@@ -263,7 +267,7 @@ class MUIDataTable extends React.Component {
   toggleSortColumn = index => {
     this.setState(prevState => {
       let columns = [...prevState.columns];
-      const displayData = prevState.displayData;
+      let data = prevState.data;
       const order = prevState.columns[index].sortDirection;
 
       for (let pos = 0; pos < columns.length; pos++) {
@@ -276,12 +280,13 @@ class MUIDataTable extends React.Component {
 
       const orderLabel = columns[index].sortDirection === "asc" ? "ascending" : "descending";
       const announceText = `Table now sorted by ${columns[index].name} : ${orderLabel}`;
-      const sortedData = this.sortTable(displayData, index, order);
+      const sortedData = this.sortTable(data, index, order);
 
       return {
         columns: columns,
         announceText: announceText,
-        ...sortedData,
+        displayData: this.getDisplayData(columns, sortedData.data, prevState.filterList, prevState.searchText),
+        selectedRows: sortedData.selectedRows
       };
     });
   };
@@ -315,7 +320,7 @@ class MUIDataTable extends React.Component {
   searchTextUpdate = text => {
     this.setState(prevState => ({
       searchText: text && text.length ? text : null,
-      displayData: this.getDisplayData(prevState.data, prevState.filterList, text),
+      displayData: this.getDisplayData(prevState.columns, prevState.data, prevState.filterList, text),
     }));
   };
 
@@ -325,7 +330,7 @@ class MUIDataTable extends React.Component {
 
       return {
         filterList: filterList,
-        displayData: this.getDisplayData(prevState.data, filterList, prevState.searchText),
+        displayData: this.getDisplayData(prevState.columns, prevState.data, filterList, prevState.searchText),
       };
     });
   };
@@ -345,7 +350,7 @@ class MUIDataTable extends React.Component {
 
       return {
         filterList: filterList,
-        displayData: this.getDisplayData(prevState.data, filterList, prevState.searchText),
+        displayData: this.getDisplayData(prevState.columns, prevState.data, filterList, prevState.searchText),
       };
     });
   };
@@ -421,20 +426,7 @@ class MUIDataTable extends React.Component {
   };
 
   sortCompare(order) {
-    return (colOne, colTwo) => {
-      let comparison = 0;
-
-      const dataOne = typeof colOne.data === "string" ? colOne.data.toLowerCase() : colOne.data;
-      const dataTwo = typeof colTwo.data === "string" ? colTwo.data.toLowerCase() : colTwo.data;
-
-      if (dataOne > dataTwo) {
-        comparison = 1;
-      } else if (dataOne < dataTwo) {
-        comparison = -1;
-      }
-
-      return order === "asc" ? comparison * -1 : comparison;
-    };
+    return (a,b) => (typeof a.data.localeCompare==="function" ? a.data.localeCompare(b.data) : a.data - b.data) * (order === "asc" ? 1 : -1);
   }
 
   sortTable(data, col, order) {
@@ -458,13 +450,13 @@ class MUIDataTable extends React.Component {
     }
 
     return {
-      displayData: tableData,
+      data: tableData,
       selectedRows: selectedRows,
     };
   }
 
   render() {
-    const { className, classes, title } = this.props;
+    const { classes, title } = this.props;
     const {
       announceText,
       data,
