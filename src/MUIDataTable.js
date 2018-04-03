@@ -426,7 +426,7 @@ class MUIDataTable extends React.Component {
   };
 
   sortCompare(order) {
-    return (a,b) => (typeof a.data.localeCompare==="function" ? a.data.localeCompare(b.data) : a.data - b.data) * (order === "asc" ? 1 : -1);
+    return (a,b) => (typeof a.data.localeCompare==="function" ? a.data.localeCompare(b.data) : a.data - b.data) * (order === "asc" ? -1 : 1);
   }
 
   sortTable(data, col, order) {

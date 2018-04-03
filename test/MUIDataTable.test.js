@@ -281,7 +281,7 @@ describe("<MUIDataTable />", function() {
     const instance = shallowWrapper.instance();
     const state = shallowWrapper.state();
 
-    const actualResult = instance.getDisplayData(data, state.filterList, "");
+    const actualResult = instance.getDisplayData(columns, data, state.filterList, "");
     const expectedResult = [
       ["Joe James", "Test Corp", "Yonkers", "NY"],
       ["John Walsh", "Test Corp", "Hartford", "CT"],
