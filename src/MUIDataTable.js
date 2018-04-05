@@ -191,7 +191,15 @@ class MUIDataTable extends React.Component {
       filterList[colIndex] = [];
 
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
-        const value = typeof columnOptions.renderValue === "function" ? columnOptions.renderValue(data[rowIndex][colIndex]) : data[rowIndex][colIndex];
+        // const value = typeof columnOptions.renderValue === "function" 
+        //   ? columnOptions.renderValue(data[rowIndex][colIndex]) 
+        //   : data[rowIndex][colIndex];
+
+        let value = data[rowIndex][colIndex];
+        if (typeof columnOptions.display === "function") {
+          const funcResult = columnOptions.display(data[rowIndex][colIndex]);
+          value = typeof funcResult === "string" ? funcResult : "";
+        }
 
         if (filterData[colIndex].indexOf(value) < 0) filterData[colIndex].push(value);
       }
@@ -221,7 +229,8 @@ class MUIDataTable extends React.Component {
       isSearchFound = false;
 
     for (let index = 0; index < row.length; index++) {
-      const column = typeof columns[index].renderValue === "function" ? columns[index].renderValue(row[index]) : row[index];
+      //const column = typeof columns[index].renderValue === "function" ? columns[index].renderValue(row[index]) : row[index];
+      const column = row[index];
 
       if (filterList[index].length && filterList[index].indexOf(column) < 0) {
         isFiltered = true;
@@ -240,14 +249,35 @@ class MUIDataTable extends React.Component {
     else return true;
   }
 
+  // but what about hydrating this state over if someone changes during the browser experience
+  // should we provide a callback? or let the user control all the data
+  // what if we did a 
+  //
+  // onDataChange(tableData) 
+  // onFilterListChange(filterList)
+  //
+  //
+
+  updateDataCol = (row, index, value) => {
+    this.setState(prevState => {
+      let changedData = [...prevState.data];
+      changedData[row][index] = value;
+      return {
+        data: changedData,
+        displayData: this.getDisplayData(prevState.columns, changedData, prevState.filterList, prevState.searchText),
+      };
+    });
+  }
+
   getDisplayData(columns, data, filterList, searchText) {
     let newRows = [];
 
     for (let index = 0; index < data.length; index++) {
       if (this.isRowDisplayed(columns, data[index], filterList, searchText))
         newRows.push(columns.map((column, colIndex) =>
-          typeof column.renderComponent === "function" ? column.renderComponent(index, data[index][colIndex]) : 
-            (typeof column.renderValue === "function" ? column.renderValue(data[index][colIndex]) : data[index][colIndex])
+          typeof column.display === "function" 
+            ? column.display(index, data[index][colIndex], this.updateDataCol.bind(null, index, colIndex))
+            : data[index][colIndex]
         ));
     }
 
