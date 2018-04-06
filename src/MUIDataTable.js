@@ -278,7 +278,7 @@ class MUIDataTable extends React.Component {
         newRows.push(columns.map((column, colIndex) => {
           return typeof column.customRender === "function" 
             ? column.customRender(index, data[index][colIndex], this.updateDataCol.bind(null, index, colIndex))
-            : data[index][colIndex]
+            : data[index][colIndex];
         }
         ));
     }
