@@ -48,6 +48,7 @@ class MUIDataTable extends React.Component {
             display: PropTypes.bool,
             filter: PropTypes.bool,
             sort: PropTypes.bool,
+            customRender: PropTypes.func
           }),
         }),
       ]),
@@ -196,9 +197,9 @@ class MUIDataTable extends React.Component {
         //   : data[rowIndex][colIndex];
 
         let value = data[rowIndex][colIndex];
-        if (typeof columnOptions.display === "function") {
-          const funcResult = columnOptions.display(data[rowIndex][colIndex]);
-          value = typeof funcResult === "string" ? funcResult : "";
+        if (typeof columnOptions.customRender === "function") {
+          const funcResult = columnOptions.customRender(rowIndex, data[rowIndex][colIndex]);
+          value = typeof funcResult === "string" ? funcResult : data[rowIndex][colIndex];
         }
 
         if (filterData[colIndex].indexOf(value) < 0) filterData[colIndex].push(value);
@@ -274,10 +275,11 @@ class MUIDataTable extends React.Component {
 
     for (let index = 0; index < data.length; index++) {
       if (this.isRowDisplayed(columns, data[index], filterList, searchText))
-        newRows.push(columns.map((column, colIndex) =>
-          typeof column.display === "function" 
-            ? column.display(index, data[index][colIndex], this.updateDataCol.bind(null, index, colIndex))
+        newRows.push(columns.map((column, colIndex) => {
+          return typeof column.customRender === "function" 
+            ? column.customRender(index, data[index][colIndex], this.updateDataCol.bind(null, index, colIndex))
             : data[index][colIndex]
+        }
         ));
     }
 

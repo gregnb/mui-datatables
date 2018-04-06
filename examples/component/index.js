@@ -6,64 +6,6 @@ import MUIDataTable from "../../src/";
 import Cities from "./cities";
 
 class Example extends React.Component {
-  state = {
-    data: [
-      ["Gabby George", "Business Analyst", "Minneapolis", 30, 100000, true],
-      ["Aiden Lloyd", "Business Consultant", "Dallas",  55, 200000, false],
-      ["Jaden Collins", "Attorney", "Santa Ana", 27, 500000, true],
-      ["Franky Rees", "Business Analyst", "St. Petersburg", 22, 50000, false],
-      ["Aaren Rose", "Business Consultant", "Toledo", 28, 75000, true],
-      ["Blake Duncan", "Business Management Analyst", "San Diego", 65, 94000, true],
-      ["Frankie Parry", "Agency Legal Counsel", "Jacksonville", 71, 210000, false],
-      ["Lane Wilson", "Commercial Specialist", "Omaha", 19, 65000, true],
-      ["Robin Duncan", "Business Analyst", "Los Angeles", 20, 77000, false],
-      ["Mel Brooks", "Business Consultant", "Oklahoma City", 37, 135000, true],
-      ["Harper White", "Attorney", "Pittsburgh", 52, 420000, false],
-      ["Kris Humphrey", "Agency Legal Counsel", "Laredo", 30, 150000, true],
-      ["Frankie Long", "Industrial Analyst", "Austin", 31, 170000, false],
-      ["Brynn Robbins", "Business Analyst", "Norfolk", 22, 90000, true],
-      ["Justice Mann", "Business Consultant", "Chicago", 24, 133000, false],
-      ["Addison Navarro", "Business Management Analyst", "New York", 50, 295000, true],
-      ["Jesse Welch", "Agency Legal Counsel", "Seattle", 28, 200000, false],
-      ["Eli Mejia", "Commercial Specialist", "Long Beach", 65, 400000, true],
-      ["Gene Leblanc", "Industrial Analyst", "Hartford", 34, 110000, false],
-      ["Danny Leon", "Computer Scientist", "Newark", 60, 220000, true],
-      ["Lane Lee", "Corporate Counselor", "Cincinnati", 52, 180000, false],
-      ["Jesse Hall", "Business Analyst", "Baltimore", 44, 99000, true],
-      ["Danni Hudson", "Agency Legal Counsel", "Tampa", 37, 90000, false],
-      ["Terry Macdonald", "Commercial Specialist", "Miami", 39, 140000, true],
-      ["Justice Mccarthy", "Attorney", "Tucson", 26, 330000, false],
-      ["Silver Carey", "Computer Scientist", "Memphis", 47, 250000, true],
-      ["Franky Miles", "Industrial Analyst", "Buffalo", 49, 190000, false],
-      ["Glen Nixon", "Corporate Counselor", "Arlington", 44, 80000, true],
-      ["Gabby Strickland", "Business Process Consultant", "Scottsdale", 26, 45000, false],
-      ["Mason Ray", "Computer Scientist", "San Francisco", 39, 142000, true]
-    ]
-  }
-
-  renderCities = (index, value) => (
-    <Cities
-      value={value}
-      index={index}
-      change={event => { console.log(event); return true;}}
-    />
-  );
-  
-  renderActive = (index, value) => (
-    <FormControlLabel
-      label={value ? "Yes" : "No"}
-      control={
-        <Switch color="primary" checked={value} value={value ? "Yes" : "No"} />
-      }
-      onChange={event => {
-        let data = this.state.data;
-        data[index][5] = event.target.value!=="Yes";
-        this.setState({
-          data: data
-        });
-      }}
-    />
-  );
 
   render() {
 
@@ -84,21 +26,12 @@ class Example extends React.Component {
         name: "Location",
         options: {
           filter: true,
-          display: (index, value, setValue) => {
-            
-            // setInitialValue(value);
-            //
-            // so each of these runs but that triggers a re-render
-            // which would be insane
-            // goal: gather all the inital data somehow without it being really expensive
-            //  
-            console.log(index, value);
-            
+          customRender: (index, value, updateValue) => {            
             return (
               <Cities
                 value={value}
                 index={index}
-                change={event => setValue(event)}
+                change={event => updateValue(event)}
               />
             );
           },         
@@ -114,27 +47,48 @@ class Example extends React.Component {
         name: "Salary",
         options: {
           filter: true,
-          //renderValue: (value) => value.toLocaleString('en-US', {style: 'currency', currency: 'USD'})
+          customRender: (index, value) => {
+
+            const nf = new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            });
+
+            return nf.format(value);
+          }
+        }
+      },
+      {
+        name: "Active",
+        options: {
+          filter: true,
+          customRender: (index, value, updateValue) => {
+            return (<FormControlLabel
+              label={value ? "Yes" : "No"}
+              control={
+                <Switch color="primary" checked={value} value={value ? "Yes" : "No"} />
+              }
+              onChange={event => {
+                const newValue = event.target.value === "Yes" ? false : true;
+                updateValue(newValue);
+              }}
+            />
+            );
+          }
         }
       }
     ];
 
     const data = [
-      ["Gabby George", "Business Analyst", "Minneapolis", 30, 100000],
-      ["Aiden Lloyd", "Business Consultant", "Dallas",  55, 200000],
-      ["Jaden Collins", "Attorney", "Santa Ana", 27, 500000],
-      ["Franky Rees", "Business Analyst", "St. Petersburg", 22, 50000],
-      ["Aaren Rose", "Business Consultant", "Toledo", 28, 75000],
-      ["Blake Duncan", "Business Management Analyst", "San Diego", 65, 94000],
-      ["Frankie Parry", "Agency Legal Counsel", "Jacksonville", 71, 210000],
-      ["Lane Wilson", "Commercial Specialist", "Omaha", 19, 65000],
-      // ["Robin Duncan", "Business Analyst", "Los Angeles", 20, 77000, false],
-      // ["Mel Brooks", "Business Consultant", "Oklahoma City", 37, 135000, true],
-      // ["Harper White", "Attorney", "Pittsburgh", 52, 420000, false],
-      // ["Kris Humphrey", "Agency Legal Counsel", "Laredo", 30, 150000, true],
-      // ["Frankie Long", "Industrial Analyst", "Austin", 31, 170000, false],
-      // ["Brynn Robbins", "Business Analyst", "Norfolk", 22, 90000, true],
-      // ["Justice Mann", "Business Consultant", "Chicago", 24, 133000, false],
+      ["Robin Duncan", "Business Analyst", "Los Angeles", 20, 77000, false],
+      ["Mel Brooks", "Business Consultant", "Oklahoma City", 37, 135000, true],
+      ["Harper White", "Attorney", "Pittsburgh", 52, 420000, false],
+      ["Kris Humphrey", "Agency Legal Counsel", "Laredo", 30, 150000, true],
+      ["Frankie Long", "Industrial Analyst", "Austin", 31, 170000, false],
+      ["Brynn Robbins", "Business Analyst", "Norfolk", 22, 90000, true],
+      ["Justice Mann", "Business Consultant", "Chicago", 24, 133000, false],
       // ["Addison Navarro", "Business Management Analyst", "New York", 50, 295000, true],
       // ["Jesse Welch", "Agency Legal Counsel", "Seattle", 28, 200000, false],
       // ["Eli Mejia", "Commercial Specialist", "Long Beach", 65, 400000, true],
@@ -159,7 +113,7 @@ class Example extends React.Component {
     };
 
     return (
-      <MUIDataTable title={"ACME Employee list"} data={this.state.data} columns={columns} options={options} />
+      <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
     );
 
   }
