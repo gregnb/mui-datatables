@@ -30,7 +30,7 @@ const defaultBodyCellStyles = {
 class MUIDataTableBodyCell extends React.Component {
   render() {
     const { children, classes, columnHeader, options, ...otherProps } = this.props;
-    
+
     return [
       <TableCell
         key={1}

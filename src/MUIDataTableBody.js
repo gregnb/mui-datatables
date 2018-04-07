@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Typography from "material-ui/Typography";
-import { TableBody} from "material-ui/Table";
+import { TableBody } from "material-ui/Table";
 import MUIDataTableBodyCell from "./MUIDataTableBodyCell";
 import MUIDataTableBodyRow from "./MUIDataTableBodyRow";
 import MUIDataTableSelectCell from "./MUIDataTableSelectCell";

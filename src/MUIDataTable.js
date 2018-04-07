@@ -49,7 +49,7 @@ class MUIDataTable extends React.Component {
             display: PropTypes.bool,
             filter: PropTypes.bool,
             sort: PropTypes.bool,
-            customRender: PropTypes.func
+            customRender: PropTypes.func,
           }),
         }),
       ]),
@@ -193,7 +193,6 @@ class MUIDataTable extends React.Component {
       filterList[colIndex] = [];
 
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
-
         let value = data[rowIndex][colIndex];
         if (typeof columnOptions.customRender === "function") {
           const funcResult = columnOptions.customRender(rowIndex, data[rowIndex][colIndex]);
@@ -204,10 +203,9 @@ class MUIDataTable extends React.Component {
       }
 
       if (this.options.sortFilterList) {
-        const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+        const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
         filterData[colIndex].sort(collator.compare);
       }
-
     });
 
     /* set source data and display Data set source set */
@@ -249,47 +247,46 @@ class MUIDataTable extends React.Component {
     else return true;
   }
 
-
   //
   // possible place for future callbacks:
-  //  - onDataChange(tableData) 
+  //  - onDataChange(tableData)
   //  - onFilterListChange(filterList)
   //
-   
+
   updateDataCol = (row, index, value) => {
     this.setState(prevState => {
-
       let changedData = cloneDeep(prevState.data);
       let filterData = cloneDeep(prevState.filterData);
-      const prevFilterIndex = filterData[index].indexOf(prevState['data'][row][index]);
+      const prevFilterIndex = filterData[index].indexOf(prevState["data"][row][index]);
 
       changedData[row][index] = value;
       filterData[index].splice(prevFilterIndex, 1, value);
-      
+
       if (this.options.sortFilterList) {
-        const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+        const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
         filterData[row].sort(collator.compare);
       }
-      
+
       return {
         data: changedData,
         filterData: filterData,
         displayData: this.getDisplayData(prevState.columns, changedData, prevState.filterList, prevState.searchText),
       };
     });
-  }
+  };
 
   getDisplayData(columns, data, filterList, searchText) {
     let newRows = [];
 
     for (let index = 0; index < data.length; index++) {
       if (this.isRowDisplayed(columns, data[index], filterList, searchText))
-        newRows.push(columns.map((column, colIndex) => {
-          return typeof column.customRender === "function" 
-            ? column.customRender(index, data[index][colIndex], this.updateDataCol.bind(null, index, colIndex))
-            : data[index][colIndex];
-        }
-        ));
+        newRows.push(
+          columns.map((column, colIndex) => {
+            return typeof column.customRender === "function"
+              ? column.customRender(index, data[index][colIndex], this.updateDataCol.bind(null, index, colIndex))
+              : data[index][colIndex];
+          }),
+        );
     }
 
     return newRows;
@@ -327,7 +324,7 @@ class MUIDataTable extends React.Component {
         columns: columns,
         announceText: announceText,
         displayData: this.getDisplayData(columns, sortedData.data, prevState.filterList, prevState.searchText),
-        selectedRows: sortedData.selectedRows
+        selectedRows: sortedData.selectedRows,
       };
     });
   };
@@ -467,7 +464,9 @@ class MUIDataTable extends React.Component {
   };
 
   sortCompare(order) {
-    return (a,b) => (typeof a.data.localeCompare==="function" ? a.data.localeCompare(b.data) : a.data - b.data) * (order === "asc" ? -1 : 1);
+    return (a, b) =>
+      (typeof a.data.localeCompare === "function" ? a.data.localeCompare(b.data) : a.data - b.data) *
+      (order === "asc" ? -1 : 1);
   }
 
   sortTable(data, col, order) {

@@ -17,7 +17,7 @@ describe("<MUIDataTable />", function() {
       { name: "First Name" },
       { name: "Company" },
       { name: "City", options: { renderComponent: this.renderCities, renderValue: this.renderCityValue } },
-      { name: "State" }
+      { name: "State" },
     ];
     data = [
       ["Joe James", "Test Corp", "Yonkers", "NY"],
@@ -25,14 +25,8 @@ describe("<MUIDataTable />", function() {
       ["Bob Herm", "Test Corp", "Tampa", "FL"],
       ["James Houston", "Test Corp", "Dallas", "TX"],
     ];
-    renderCities = (index, value) => (
-      <Cities
-        value={value}
-        index={index}
-        change={event => true}
-      />
-    );
-    renderCityValue = (value) => value+" ";
+    renderCities = (index, value) => <Cities value={value} index={index} change={event => true} />;
+    renderCityValue = value => value + " ";
   });
 
   it("should render a table", () => {
@@ -53,7 +47,15 @@ describe("<MUIDataTable />", function() {
     const expectedResult = [
       { display: true, name: "First Name", sort: true, filter: true, sortDirection: null },
       { display: true, name: "Company", sort: true, filter: true, sortDirection: null },
-      { display: true, name: "City", sort: true, filter: true, sortDirection: null, renderComponent: this.renderCities, renderValue: this.renderCityValue },
+      {
+        display: true,
+        name: "City",
+        sort: true,
+        filter: true,
+        sortDirection: null,
+        renderComponent: this.renderCities,
+        renderValue: this.renderCityValue,
+      },
       { display: true, name: "State", sort: true, filter: true, sortDirection: null },
     ];
 
@@ -285,7 +287,15 @@ describe("<MUIDataTable />", function() {
     const expectedResult = [
       { name: "First Name", display: false, sort: true, filter: true, sortDirection: null },
       { name: "Company", display: true, sort: true, filter: true, sortDirection: null },
-      { name: "City", display: true, sort: true, filter: true, sortDirection: null, renderComponent: this.renderCities, renderValue: this.renderCityValue },
+      {
+        name: "City",
+        display: true,
+        sort: true,
+        filter: true,
+        sortDirection: null,
+        renderComponent: this.renderCities,
+        renderValue: this.renderCityValue,
+      },
       { name: "State", display: true, sort: true, filter: true, sortDirection: null },
     ];
 
