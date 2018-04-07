@@ -8,6 +8,7 @@ import MUIDataTableFilterList from "./MUIDataTableFilterList";
 import MUIDataTableBody from "./MUIDataTableBody";
 import MUIDataTableHead from "./MUIDataTableHead";
 import MUIDataTablePagination from "./MUIDataTablePagination";
+import cloneDeep from "lodash.clonedeep";
 import { withStyles } from "material-ui/styles";
 
 const defaultTableStyles = {
@@ -192,9 +193,6 @@ class MUIDataTable extends React.Component {
       filterList[colIndex] = [];
 
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
-        // const value = typeof columnOptions.renderValue === "function" 
-        //   ? columnOptions.renderValue(data[rowIndex][colIndex]) 
-        //   : data[rowIndex][colIndex];
 
         let value = data[rowIndex][colIndex];
         if (typeof columnOptions.customRender === "function") {
@@ -206,8 +204,10 @@ class MUIDataTable extends React.Component {
       }
 
       if (this.options.sortFilterList) {
-        filterData[colIndex].sort();
+        const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+        filterData[colIndex].sort(collator.compare);
       }
+
     });
 
     /* set source data and display Data set source set */
@@ -230,7 +230,6 @@ class MUIDataTable extends React.Component {
       isSearchFound = false;
 
     for (let index = 0; index < row.length; index++) {
-      //const column = typeof columns[index].renderValue === "function" ? columns[index].renderValue(row[index]) : row[index];
       const column = row[index];
 
       if (filterList[index].length && filterList[index].indexOf(column) < 0) {
@@ -250,21 +249,31 @@ class MUIDataTable extends React.Component {
     else return true;
   }
 
-  // but what about hydrating this state over if someone changes during the browser experience
-  // should we provide a callback? or let the user control all the data
-  // what if we did a 
-  //
-  // onDataChange(tableData) 
-  // onFilterListChange(filterList)
-  //
-  //
 
+  //
+  // possible place for future callbacks:
+  //  - onDataChange(tableData) 
+  //  - onFilterListChange(filterList)
+  //
+   
   updateDataCol = (row, index, value) => {
     this.setState(prevState => {
-      let changedData = [...prevState.data];
+
+      let changedData = cloneDeep(prevState.data);
+      let filterData = cloneDeep(prevState.filterData);
+      const prevFilterIndex = filterData[index].indexOf(prevState['data'][row][index]);
+
       changedData[row][index] = value;
+      filterData[index].splice(prevFilterIndex, 1, value);
+      
+      if (this.options.sortFilterList) {
+        const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+        filterData[row].sort(collator.compare);
+      }
+      
       return {
         data: changedData,
+        filterData: filterData,
         displayData: this.getDisplayData(prevState.columns, changedData, prevState.filterList, prevState.searchText),
       };
     });
@@ -288,7 +297,7 @@ class MUIDataTable extends React.Component {
 
   toggleViewColumn = index => {
     this.setState(prevState => {
-      const columns = [...prevState.columns];
+      const columns = cloneDeep(prevState.columns);
       columns[index].display = !columns[index].display;
       return {
         columns: columns,
@@ -298,7 +307,7 @@ class MUIDataTable extends React.Component {
 
   toggleSortColumn = index => {
     this.setState(prevState => {
-      let columns = [...prevState.columns];
+      let columns = cloneDeep(prevState.columns);
       let data = prevState.data;
       const order = prevState.columns[index].sortDirection;
 
@@ -369,7 +378,7 @@ class MUIDataTable extends React.Component {
 
   filterUpdate = (index, column, type) => {
     this.setState(prevState => {
-      const filterList = [...prevState.filterList];
+      const filterList = cloneDeep(prevState.filterList);
       const filterPos = filterList[index].indexOf(column);
 
       if (filterPos >= 0) {
