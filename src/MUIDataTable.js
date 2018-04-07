@@ -48,7 +48,6 @@ class MUIDataTable extends React.Component {
             display: PropTypes.bool,
             filter: PropTypes.bool,
             sort: PropTypes.bool,
-            customRender: PropTypes.func
           }),
         }),
       ]),
@@ -192,15 +191,7 @@ class MUIDataTable extends React.Component {
       filterList[colIndex] = [];
 
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
-        // const value = typeof columnOptions.renderValue === "function" 
-        //   ? columnOptions.renderValue(data[rowIndex][colIndex]) 
-        //   : data[rowIndex][colIndex];
-
-        let value = data[rowIndex][colIndex];
-        if (typeof columnOptions.customRender === "function") {
-          const funcResult = columnOptions.customRender(rowIndex, data[rowIndex][colIndex]);
-          value = typeof funcResult === "string" ? funcResult : data[rowIndex][colIndex];
-        }
+        const value = data[rowIndex][colIndex];
 
         if (filterData[colIndex].indexOf(value) < 0) filterData[colIndex].push(value);
       }
@@ -217,7 +208,7 @@ class MUIDataTable extends React.Component {
       filterList: filterList,
       selectedRows: [],
       data: data,
-      displayData: this.getDisplayData(columnData, data, filterList, prevState.searchText),
+      displayData: this.getDisplayData(data, filterList, prevState.searchText),
     }));
   }
 
@@ -225,12 +216,11 @@ class MUIDataTable extends React.Component {
    *  Build the table data used to display to the user (ie: after filter/search applied)
    */
 
-  isRowDisplayed(columns, row, filterList, searchText) {
+  isRowDisplayed(row, filterList, searchText) {
     let isFiltered = false,
       isSearchFound = false;
 
     for (let index = 0; index < row.length; index++) {
-      //const column = typeof columns[index].renderValue === "function" ? columns[index].renderValue(row[index]) : row[index];
       const column = row[index];
 
       if (filterList[index].length && filterList[index].indexOf(column) < 0) {
@@ -250,37 +240,11 @@ class MUIDataTable extends React.Component {
     else return true;
   }
 
-  // but what about hydrating this state over if someone changes during the browser experience
-  // should we provide a callback? or let the user control all the data
-  // what if we did a 
-  //
-  // onDataChange(tableData) 
-  // onFilterListChange(filterList)
-  //
-  //
-
-  updateDataCol = (row, index, value) => {
-    this.setState(prevState => {
-      let changedData = [...prevState.data];
-      changedData[row][index] = value;
-      return {
-        data: changedData,
-        displayData: this.getDisplayData(prevState.columns, changedData, prevState.filterList, prevState.searchText),
-      };
-    });
-  }
-
-  getDisplayData(columns, data, filterList, searchText) {
+  getDisplayData(data, filterList, searchText) {
     let newRows = [];
 
     for (let index = 0; index < data.length; index++) {
-      if (this.isRowDisplayed(columns, data[index], filterList, searchText))
-        newRows.push(columns.map((column, colIndex) => {
-          return typeof column.customRender === "function" 
-            ? column.customRender(index, data[index][colIndex], this.updateDataCol.bind(null, index, colIndex))
-            : data[index][colIndex];
-        }
-        ));
+      if (this.isRowDisplayed(data[index], filterList, searchText)) newRows.push(data[index]);
     }
 
     return newRows;
@@ -299,7 +263,7 @@ class MUIDataTable extends React.Component {
   toggleSortColumn = index => {
     this.setState(prevState => {
       let columns = [...prevState.columns];
-      let data = prevState.data;
+      const displayData = prevState.displayData;
       const order = prevState.columns[index].sortDirection;
 
       for (let pos = 0; pos < columns.length; pos++) {
@@ -312,13 +276,12 @@ class MUIDataTable extends React.Component {
 
       const orderLabel = columns[index].sortDirection === "asc" ? "ascending" : "descending";
       const announceText = `Table now sorted by ${columns[index].name} : ${orderLabel}`;
-      const sortedData = this.sortTable(data, index, order);
+      const sortedData = this.sortTable(displayData, index, order);
 
       return {
         columns: columns,
         announceText: announceText,
-        displayData: this.getDisplayData(columns, sortedData.data, prevState.filterList, prevState.searchText),
-        selectedRows: sortedData.selectedRows
+        ...sortedData,
       };
     });
   };
@@ -352,7 +315,7 @@ class MUIDataTable extends React.Component {
   searchTextUpdate = text => {
     this.setState(prevState => ({
       searchText: text && text.length ? text : null,
-      displayData: this.getDisplayData(prevState.columns, prevState.data, prevState.filterList, text),
+      displayData: this.getDisplayData(prevState.data, prevState.filterList, text),
     }));
   };
 
@@ -362,7 +325,7 @@ class MUIDataTable extends React.Component {
 
       return {
         filterList: filterList,
-        displayData: this.getDisplayData(prevState.columns, prevState.data, filterList, prevState.searchText),
+        displayData: this.getDisplayData(prevState.data, filterList, prevState.searchText),
       };
     });
   };
@@ -382,7 +345,7 @@ class MUIDataTable extends React.Component {
 
       return {
         filterList: filterList,
-        displayData: this.getDisplayData(prevState.columns, prevState.data, filterList, prevState.searchText),
+        displayData: this.getDisplayData(prevState.data, filterList, prevState.searchText),
       };
     });
   };
@@ -458,7 +421,20 @@ class MUIDataTable extends React.Component {
   };
 
   sortCompare(order) {
-    return (a,b) => (typeof a.data.localeCompare==="function" ? a.data.localeCompare(b.data) : a.data - b.data) * (order === "asc" ? -1 : 1);
+    return (colOne, colTwo) => {
+      let comparison = 0;
+
+      const dataOne = typeof colOne.data === "string" ? colOne.data.toLowerCase() : colOne.data;
+      const dataTwo = typeof colTwo.data === "string" ? colTwo.data.toLowerCase() : colTwo.data;
+
+      if (dataOne > dataTwo) {
+        comparison = 1;
+      } else if (dataOne < dataTwo) {
+        comparison = -1;
+      }
+
+      return order === "asc" ? comparison * -1 : comparison;
+    };
   }
 
   sortTable(data, col, order) {
@@ -482,13 +458,13 @@ class MUIDataTable extends React.Component {
     }
 
     return {
-      data: tableData,
+      displayData: tableData,
       selectedRows: selectedRows,
     };
   }
 
   render() {
-    const { classes, title } = this.props;
+    const { className, classes, title } = this.props;
     const {
       announceText,
       data,

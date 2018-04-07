@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    app: "./examples/component/index.js"
+    app: "./examples/selectable-rows/index.js"
   },
   stats: "verbose",
   context: __dirname,

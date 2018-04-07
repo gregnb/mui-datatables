@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 import Paper from "material-ui/Paper";
 import IconButton from "material-ui/IconButton";
 import Tooltip from "material-ui/Tooltip";
@@ -46,7 +47,7 @@ class MUIDataTableToolbarSelect extends React.Component {
   };
 
   render() {
-    const { classes, onRowsDelete, selectedRows } = this.props;
+    const { classes, options, onRowsDelete, selectedRows } = this.props;
 
     return (
       <Paper className={classes.root}>

@@ -1,7 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
+import Table from "material-ui/Table";
 import Typography from "material-ui/Typography";
-import { TableBody} from "material-ui/Table";
+import Checkbox from "material-ui/Checkbox";
+import { TableBody, TableCell, TableRow } from "material-ui/Table";
 import MUIDataTableBodyCell from "./MUIDataTableBodyCell";
 import MUIDataTableBodyRow from "./MUIDataTableBodyRow";
 import MUIDataTableSelectCell from "./MUIDataTableSelectCell";
@@ -65,7 +68,7 @@ class MUIDataTableBody extends React.Component {
   };
 
   render() {
-    const { classes, columns, options } = this.props;
+    const { classes, columns, data, options, page, rowsPerPage } = this.props;
     const tableRows = this.buildRows();
 
     return (

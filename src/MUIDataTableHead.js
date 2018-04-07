@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import classNames from "classnames";
 import { TableHead } from "material-ui/Table";
 import MUIDataTableHeadRow from "./MUIDataTableHeadRow";
@@ -49,7 +50,7 @@ class MUIDataTableHead extends React.Component {
 
   render() {
     const { classes, columns, options } = this.props;
-    const { selectChecked } = this.state;
+    const { activeColumn, selectChecked } = this.state;
 
     return (
       <TableHead className={classNames({ [classes.responsiveStacked]: true, [classes.main]: true })}>

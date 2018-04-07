@@ -46,7 +46,7 @@ class MUIDataTableHeadCell extends React.Component {
   };
 
   render() {
-    const { children, classes, options, sortDirection } = this.props;
+    const { children, classes, index, options, sortDirection } = this.props;
     const sortActive = sortDirection !== null && sortDirection !== undefined ? true : false;
 
     const sortLabelProps = {

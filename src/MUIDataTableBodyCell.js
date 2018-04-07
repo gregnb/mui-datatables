@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import classNames from "classnames";
 import { TableCell } from "material-ui/Table";
 import { withStyles } from "material-ui/styles";
@@ -30,7 +31,7 @@ const defaultBodyCellStyles = {
 class MUIDataTableBodyCell extends React.Component {
   render() {
     const { children, classes, columnHeader, options, ...otherProps } = this.props;
-    
+
     return [
       <TableCell
         key={1}

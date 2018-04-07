@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 class MUIPopoverTarget extends React.Component {
   render() {
