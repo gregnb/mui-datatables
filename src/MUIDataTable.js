@@ -343,7 +343,7 @@ class MUIDataTable extends React.Component {
           filterList[index] = column === "" ? [] : column;
           break;
         default:
-          filterList[index] = column === "" ? [] : [column];
+          filterList[index] = filterPos >= 0 || column === "" ? [] : [column];
       }
 
       return {
