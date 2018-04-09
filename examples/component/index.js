@@ -67,6 +67,7 @@ class Example extends React.Component {
           customRender: (index, value, updateValue) => (
             <FormControlLabel
               label={value ? "Yes" : "No"}
+              value={value ? "Yes" : "No"}
               control={
                 <Switch color="primary" checked={value} value={value ? "Yes" : "No"} />
               }

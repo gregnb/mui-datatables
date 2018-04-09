@@ -196,7 +196,7 @@ class MUIDataTable extends React.Component {
         let value = data[rowIndex][colIndex];
         if (typeof columnOptions.customRender === "function") {
           const funcResult = columnOptions.customRender(rowIndex, data[rowIndex][colIndex]);
-          value = typeof funcResult === "string" ? funcResult : data[rowIndex][colIndex];
+          value = typeof funcResult === "string" ? funcResult : funcResult.props && funcResult.props.value ? funcResult.props.value : data[rowIndex][colIndex];
         }
 
         if (filterData[colIndex].indexOf(value) < 0) filterData[colIndex].push(value);
@@ -228,13 +228,18 @@ class MUIDataTable extends React.Component {
       isSearchFound = false;
 
     for (let index = 0; index < row.length; index++) {
-      const column = row[index];
-
+      let column = row[index];
+      
+      if (columns[index].customRender) {
+        const funcResult = columns[index].customRender(index, column);
+        column = typeof funcResult === "string" ? funcResult : funcResult.props && funcResult.props.value ? funcResult.props.value : column;
+      }
+      
       if (filterList[index].length && filterList[index].indexOf(column) < 0) {
         isFiltered = true;
         break;
       }
-
+      
       const searchCase = !this.options.caseSensitive ? column.toString().toLowerCase() : column.toString();
 
       if (searchText && searchCase.indexOf(searchText.toLowerCase()) >= 0) {
