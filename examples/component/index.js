@@ -64,19 +64,17 @@ class Example extends React.Component {
         name: "Active",
         options: {
           filter: true,
-          customRender: (index, value, updateValue) => {
-            return (<FormControlLabel
+          customRender: (index, value, updateValue) => (
+            <FormControlLabel
               label={value ? "Yes" : "No"}
               control={
                 <Switch color="primary" checked={value} value={value ? "Yes" : "No"} />
               }
               onChange={event => {
-                const newValue = event.target.value === "Yes" ? false : true;
-                updateValue(newValue);
+                updateValue(event.target.value === "Yes" ? false : true);
               }}
             />
-            );
-          }
+          )
         }
       }
     ];

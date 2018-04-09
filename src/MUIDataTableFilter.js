@@ -183,7 +183,7 @@ class MUIDataTableFilter extends React.Component {
                   </MenuItem>
                   {filterData[index].map((filterColumn, filterIndex) => (
                     <MenuItem value={filterColumn} key={filterIndex + 1}>
-                      {filterColumn}
+                      {filterColumn.toString()}
                     </MenuItem>
                   ))}
                 </Select>
