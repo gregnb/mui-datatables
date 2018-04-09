@@ -127,7 +127,7 @@ The component accepts the following props:
 #### Options:
 |Name|Type|Default|Description
 |:--:|:-----|:--|:-----|
-|**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox" or "dropdown"
+|**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox", "dropdown", or "multiselect"
 |**`pagination`**|boolean|true|Enable/disable pagination
 |**`selectableRows`**|boolean|true|Enable/disable row selection
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
