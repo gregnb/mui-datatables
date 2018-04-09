@@ -323,6 +323,7 @@ class MUIDataTable extends React.Component {
       return {
         columns: columns,
         announceText: announceText,
+        data: sortedData.data,
         displayData: this.getDisplayData(columns, sortedData.data, prevState.filterList, prevState.searchText),
         selectedRows: sortedData.selectedRows,
       };
