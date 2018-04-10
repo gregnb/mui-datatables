@@ -3,20 +3,21 @@ import { spy } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import MUIDataTable from "../src/MUIDataTable";
+import MUIDataTableFilterList from "../src/MUIDataTableFilterList";
 import MUIDataTablePagination from "../src/MUIDataTablePagination";
+import Chip from "material-ui/Chip";
 import Cities from "../examples/component/cities";
 
 describe("<MUIDataTable />", function() {
   let data;
   let columns;
   let renderCities;
-  let renderCityValue;
 
   before(() => {
     columns = [
       { name: "First Name" },
       { name: "Company" },
-      { name: "City", options: { renderComponent: this.renderCities, renderValue: this.renderCityValue } },
+      { name: "City", options: { customRender: this.renderCities } },
       { name: "State" },
     ];
     data = [
@@ -25,8 +26,7 @@ describe("<MUIDataTable />", function() {
       ["Bob Herm", "Test Corp", "Tampa", "FL"],
       ["James Houston", "Test Corp", "Dallas", "TX"],
     ];
-    renderCities = (index, value) => <Cities value={value} index={index} change={event => true} />;
-    renderCityValue = value => value + " ";
+    renderCities = (index, value, updateValue) => <Cities value={value} index={index} change={event => updateValue(event)} />;
   });
 
   it("should render a table", () => {
@@ -53,8 +53,7 @@ describe("<MUIDataTable />", function() {
         sort: true,
         filter: true,
         sortDirection: null,
-        renderComponent: this.renderCities,
-        renderValue: this.renderCityValue,
+        customRender: this.renderCities,
       },
       { display: true, name: "State", sort: true, filter: true, sortDirection: null },
     ];
@@ -210,6 +209,14 @@ describe("<MUIDataTable />", function() {
     const state = table.state();
     assert.deepEqual(state.filterList, [["Joe James"], [], [], []]);
   });
+  
+  it("should create Chip when filterList is populated", () => {
+    const filterList = [["Joe James"], [], [], []];
+    
+    const mountWrapper = mount(<MUIDataTableFilterList filterList={filterList} filterUpdate={() => true} />);
+    const actualResult = mountWrapper.find(Chip);
+    assert.strictEqual(actualResult.length, 1);
+  });
 
   it("should remove entry from filterList when calling filterUpdate method with type=dropdown and same arguments a second time", () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
@@ -293,8 +300,7 @@ describe("<MUIDataTable />", function() {
         sort: true,
         filter: true,
         sortDirection: null,
-        renderComponent: this.renderCities,
-        renderValue: this.renderCityValue,
+        customRender: this.renderCities,
       },
       { name: "State", display: true, sort: true, filter: true, sortDirection: null },
     ];

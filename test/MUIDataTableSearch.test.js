@@ -8,7 +8,7 @@ import MUIDataTableSearch from "../src/MUIDataTableSearch";
 
 describe("<MUIDataTableSearch />", function() {
   it("should render a search bar", () => {
-    const options = {};
+    const options = { };
     const onSearch = () => {};
     const onHide = () => {};
 
@@ -19,7 +19,7 @@ describe("<MUIDataTableSearch />", function() {
   });
 
   it("should trigger handleTextChange prop callback when calling method handleTextChange", () => {
-    const options = {};
+    const options = { onSearchChange: () => true };
     const onSearch = spy();
     const onHide = () => {};
 
