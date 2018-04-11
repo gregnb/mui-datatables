@@ -55,7 +55,7 @@ class MUIDataTable extends React.Component {
     /** Options used to describe table */
     options: PropTypes.shape({
       responsive: PropTypes.oneOf(["stacked", "scroll"]),
-      filterType: PropTypes.oneOf(["dropdown", "checkbox"]),
+      filterType: PropTypes.oneOf(["dropdown", "checkbox", "multiselect"]),
       pagination: PropTypes.bool,
       selectableRows: PropTypes.bool,
       caseSensitive: PropTypes.bool,
@@ -334,13 +334,16 @@ class MUIDataTable extends React.Component {
     this.setState(prevState => {
       const filterList = [...prevState.filterList];
       const filterPos = filterList[index].indexOf(column);
-
-      if (filterPos >= 0) {
-        if (type === "checkbox") filterList[index].splice(filterPos, 1);
-        else filterList[index] = [];
-      } else {
-        if (type === "checkbox") filterList[index].push(column);
-        else filterList[index] = column === "" ? [] : [column];
+      
+      switch (type) {
+        case "checkbox":
+          filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(column);
+          break;
+        case "multiselect":
+          filterList[index] = column === "" ? [] : column;
+          break;
+        default:
+          filterList[index] = filterPos >= 0 || column === "" ? [] : [column];
       }
 
       return {
