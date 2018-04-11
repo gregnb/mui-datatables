@@ -1,13 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { findDOMNode } from "react-dom";
 import Grow from "material-ui/transitions/Grow";
 import TextField from "material-ui/TextField";
-import Typography from "material-ui/Typography";
 import SearchIcon from "material-ui-icons/Search";
 import IconButton from "material-ui/IconButton";
 import ClearIcon from "material-ui-icons/Clear";
-import FilterIcon from "material-ui-icons/FilterList";
 import { withStyles } from "material-ui/styles";
 
 const defaultSearchStyles = {
@@ -49,13 +45,13 @@ class MUIDataTableSearch extends React.Component {
   }
 
   onKeyDown = event => {
-    if (event.keyCode == 27) {
+    if (event.keyCode === 27) {
       this.props.onHide();
     }
   };
 
   render() {
-    const { classes, onHide, onSearch, options } = this.props;
+    const { classes, onHide } = this.props;
 
     return (
       <Grow appear in={true} timeout={300}>

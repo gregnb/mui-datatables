@@ -19,7 +19,7 @@ describe("<MUIDataTableSearch />", function() {
   });
 
   it("should trigger handleTextChange prop callback when calling method handleTextChange", () => {
-    const options = {};
+    const options = { onSearchChange: () => true };
     const onSearch = spy();
     const onHide = () => {};
 

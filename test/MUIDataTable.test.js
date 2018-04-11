@@ -3,20 +3,39 @@ import { spy } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import MUIDataTable from "../src/MUIDataTable";
+import MUIDataTableFilterList from "../src/MUIDataTableFilterList";
 import MUIDataTablePagination from "../src/MUIDataTablePagination";
+import Chip from "material-ui/Chip";
+import Cities from "../examples/component/cities";
 
 describe("<MUIDataTable />", function() {
   let data;
+  let displayData;
   let columns;
+  let renderCities = (index, value, updateValue) => <Cities value={value} index={index} change={event => updateValue(event)} />;
+  let renderName = (index, value) => value.split(" ")[1]+", "+value.split(" ")[0];
 
   before(() => {
-    columns = ["First Name", "Company", "City", "State"];
+    columns = [
+      { name: "Name", options: { customRender: renderName } },
+      "Company",
+      { name: "City", options: { customRender: renderCities } },
+      { name: "State" },
+    ];
+    displayData = JSON.stringify([
+      ["James, Joe", "Test Corp", renderCities(0, "Yonkers"), "NY"],
+      ["Walsh, John", "Test Corp", renderCities(1, "Hartford"), "CT"],
+      ["Herm, Bob", "Test Corp", renderCities(2, "Tampa"), "FL"],
+      ["Houston, James", "Test Corp", renderCities(3, "Dallas"), "TX"],
+    ]);
     data = [
       ["Joe James", "Test Corp", "Yonkers", "NY"],
       ["John Walsh", "Test Corp", "Hartford", "CT"],
       ["Bob Herm", "Test Corp", "Tampa", "FL"],
       ["James Houston", "Test Corp", "Dallas", "TX"],
     ];
+    renderCities = renderCities;
+    renderName = renderName;
   });
 
   it("should render a table", () => {
@@ -35,9 +54,16 @@ describe("<MUIDataTable />", function() {
     const actualResult = shallowWrapper.dive().state().columns;
 
     const expectedResult = [
-      { display: true, name: "First Name", sort: true, filter: true, sortDirection: null },
+      { display: true, name: "Name", sort: true, filter: true, sortDirection: null, customRender: renderName },
       { display: true, name: "Company", sort: true, filter: true, sortDirection: null },
-      { display: true, name: "City", sort: true, filter: true, sortDirection: null },
+      {
+        display: true,
+        name: "City",
+        sort: true,
+        filter: true,
+        sortDirection: null,
+        customRender: renderCities,
+      },
       { display: true, name: "State", sort: true, filter: true, sortDirection: null },
     ];
 
@@ -48,7 +74,7 @@ describe("<MUIDataTable />", function() {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const state = shallowWrapper.dive().state();
     assert.deepEqual(state.data, data);
-    assert.deepEqual(state.displayData, data);
+    assert.deepEqual(JSON.stringify(state.displayData), displayData);
   });
 
   it("should correctly re-build internal table data and displayData structure with prop change", () => {
@@ -56,7 +82,7 @@ describe("<MUIDataTable />", function() {
     let state = shallowWrapper.dive().state();
 
     assert.deepEqual(state.data, data);
-    assert.deepEqual(state.displayData, data);
+    assert.deepEqual(JSON.stringify(state.displayData), displayData);
 
     // now use updated props
     let newData = data.map(item => [...item]);
@@ -81,7 +107,7 @@ describe("<MUIDataTable />", function() {
 
     let state = mountWrapper.state();
     assert.deepEqual(state.data, data);
-    assert.deepEqual(state.displayData, data);
+    assert.deepEqual(JSON.stringify(state.displayData), displayData);
 
     // now update props with no change
     mountWrapper.setProps({});
@@ -105,7 +131,7 @@ describe("<MUIDataTable />", function() {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const state = shallowWrapper.dive().state();
     const expectedResult = [
-      ["Bob Herm", "James Houston", "Joe James", "John Walsh"],
+      ["Herm, Bob", "Houston, James", "James, Joe", "Walsh, John"],
       ["Test Corp"],
       ["Dallas", "Hartford", "Tampa", "Yonkers"],
       ["CT", "FL", "NY", "TX"],
@@ -193,6 +219,14 @@ describe("<MUIDataTable />", function() {
     assert.deepEqual(state.filterList, [["Joe James"], [], [], []]);
   });
 
+  it("should create Chip when filterList is populated", () => {
+    const filterList = [["Joe James"], [], [], []];
+
+    const mountWrapper = mount(<MUIDataTableFilterList filterList={filterList} filterUpdate={() => true} />);
+    const actualResult = mountWrapper.find(Chip);
+    assert.strictEqual(actualResult.length, 1);
+  });
+
   it("should remove entry from filterList when calling filterUpdate method with type=dropdown and same arguments a second time", () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const table = shallowWrapper.dive();
@@ -233,11 +267,13 @@ describe("<MUIDataTable />", function() {
     const table = shallowWrapper.dive();
     const instance = table.instance();
 
-    instance.searchTextUpdate("Joe James");
+    instance.searchTextUpdate("Joe");
     table.update();
     const state = table.state();
 
-    assert.deepEqual(state.displayData, [["Joe James", "Test Corp", "Yonkers", "NY"]]);
+    const expectedResult = JSON.stringify([["James, Joe", "Test Corp", renderCities(0, "Yonkers"), "NY"]]);
+
+    assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
   });
 
   it("should sort provided column when calling toggleSortColum method", () => {
@@ -248,14 +284,14 @@ describe("<MUIDataTable />", function() {
     shallowWrapper.update();
     const state = shallowWrapper.state();
 
-    const expectedResult = [
-      ["Bob Herm", "Test Corp", "Tampa", "FL"],
-      ["James Houston", "Test Corp", "Dallas", "TX"],
-      ["Joe James", "Test Corp", "Yonkers", "NY"],
-      ["John Walsh", "Test Corp", "Hartford", "CT"],
-    ];
+    const expectedResult = JSON.stringify([
+      ["Herm, Bob", "Test Corp", renderCities(0, "Tampa"), "FL"],
+      ["Houston, James", "Test Corp", renderCities(1, "Dallas"), "TX"],
+      ["James, Joe", "Test Corp", renderCities(2, "Yonkers"), "NY"],
+      ["Walsh, John", "Test Corp", renderCities(3, "Hartford"), "CT"],
+    ]);
 
-    assert.deepEqual(state.displayData, expectedResult);
+    assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
   });
 
   it("should toggle provided column when calling toggleViewCol method", () => {
@@ -267,9 +303,16 @@ describe("<MUIDataTable />", function() {
     const state = shallowWrapper.state();
 
     const expectedResult = [
-      { name: "First Name", display: false, sort: true, filter: true, sortDirection: null },
+      { name: "Name", display: false, sort: true, filter: true, sortDirection: null, customRender: renderName },
       { name: "Company", display: true, sort: true, filter: true, sortDirection: null },
-      { name: "City", display: true, sort: true, filter: true, sortDirection: null },
+      {
+        name: "City",
+        display: true,
+        sort: true,
+        filter: true,
+        sortDirection: null,
+        customRender: renderCities,
+      },
       { name: "State", display: true, sort: true, filter: true, sortDirection: null },
     ];
 
@@ -281,7 +324,7 @@ describe("<MUIDataTable />", function() {
     const instance = shallowWrapper.instance();
     const state = shallowWrapper.state();
 
-    const actualResult = instance.getDisplayData(data, state.filterList, "");
+    const actualResult = instance.getDisplayData(columns, data, state.filterList, "");
     const expectedResult = [
       ["Joe James", "Test Corp", "Yonkers", "NY"],
       ["John Walsh", "Test Corp", "Hartford", "CT"],
@@ -334,5 +377,16 @@ describe("<MUIDataTable />", function() {
 
     const state = shallowWrapper.state();
     assert.deepEqual(state.selectedRows, [0]);
+  });
+  
+  it("should update value when calling updateValue method in customRender", () => {
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.updateDataCol(0, 2, "Las Vegas");
+    shallowWrapper.update();
+
+    const state = shallowWrapper.state();
+    assert.deepEqual(state.data[0][2], "Las Vegas");
   });
 });

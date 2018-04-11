@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Checkbox from "material-ui/Checkbox";
 import Typography from "material-ui/Typography";
-import { FormLabel, FormControl, FormGroup, FormControlLabel, FormHelperText } from "material-ui/Form";
+import { FormControl, FormGroup, FormControlLabel } from "material-ui/Form";
 import { withStyles } from "material-ui/styles";
 
 export const defaultViewColStyles = {
@@ -50,7 +50,7 @@ class MUIDataTableViewCol extends React.Component {
   };
 
   render() {
-    const { classes, columns, options } = this.props;
+    const { classes, columns } = this.props;
 
     return (
       <FormControl component={"fieldset"} className={classes.root} aria-label="Show/Hide Table Columns">

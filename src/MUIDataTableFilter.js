@@ -2,8 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import Typography from "material-ui/Typography";
-import Button from "material-ui/Button";
-import { FormLabel, FormControl, FormGroup, FormControlLabel, FormHelperText } from "material-ui/Form";
+import { FormControl, FormGroup, FormControlLabel } from "material-ui/Form";
 import Input, { InputLabel } from "material-ui/Input";
 import { MenuItem } from "material-ui/Menu";
 import Select from "material-ui/Select";
@@ -190,7 +189,7 @@ class MUIDataTableFilter extends React.Component {
                   </MenuItem>
                   {filterData[index].map((filterColumn, filterIndex) => (
                     <MenuItem value={filterColumn} key={filterIndex + 1}>
-                      {filterColumn}
+                      {filterColumn.toString()}
                     </MenuItem>
                   ))}
                 </Select>
