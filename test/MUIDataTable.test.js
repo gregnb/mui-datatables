@@ -13,13 +13,7 @@ describe("<MUIDataTable />", function() {
   let displayData;
   let columns;
   let renderCities;
-  renderCities = (index, value, updateValue) => (
-    <Cities
-      value={value}
-      index={index}
-      change={event => true}
-    />
-  );
+  renderCities = (index, value, updateValue) => <Cities value={value} index={index} change={event => true} />;
 
   before(() => {
     columns = [
@@ -223,10 +217,10 @@ describe("<MUIDataTable />", function() {
     const state = table.state();
     assert.deepEqual(state.filterList, [["Joe James"], [], [], []]);
   });
-  
+
   it("should create Chip when filterList is populated", () => {
     const filterList = [["Joe James"], [], [], []];
-    
+
     const mountWrapper = mount(<MUIDataTableFilterList filterList={filterList} filterUpdate={() => true} />);
     const actualResult = mountWrapper.find(Chip);
     assert.strictEqual(actualResult.length, 1);
@@ -275,7 +269,7 @@ describe("<MUIDataTable />", function() {
     instance.searchTextUpdate("Joe James");
     table.update();
     const state = table.state();
-    
+
     const expectedResult = JSON.stringify([["Joe James", "Test Corp", renderCities(0, "Yonkers"), "NY"]]);
 
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
@@ -289,7 +283,7 @@ describe("<MUIDataTable />", function() {
     shallowWrapper.update();
     const state = shallowWrapper.state();
 
-    const expectedResult =  JSON.stringify([
+    const expectedResult = JSON.stringify([
       ["Bob Herm", "Test Corp", renderCities(0, "Tampa"), "FL"],
       ["James Houston", "Test Corp", renderCities(1, "Dallas"), "TX"],
       ["Joe James", "Test Corp", renderCities(2, "Yonkers"), "NY"],

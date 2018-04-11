@@ -8,7 +8,7 @@ import MUIDataTableSearch from "../src/MUIDataTableSearch";
 
 describe("<MUIDataTableSearch />", function() {
   it("should render a search bar", () => {
-    const options = { };
+    const options = {};
     const onSearch = () => {};
     const onHide = () => {};
 

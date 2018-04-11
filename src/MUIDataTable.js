@@ -196,7 +196,12 @@ class MUIDataTable extends React.Component {
         let value = data[rowIndex][colIndex];
         if (typeof columnOptions.customRender === "function") {
           const funcResult = columnOptions.customRender(rowIndex, data[rowIndex][colIndex]);
-          value = typeof funcResult === "string" ? funcResult : funcResult.props && funcResult.props.value ? funcResult.props.value : data[rowIndex][colIndex];
+
+          if (React.isValidElement(funcResult) && funcResult.props.value) {
+            value = funcResult.props.value;
+          } else if (typeof funcResult === "string") {
+            value = funcResult;
+          }
         }
 
         if (filterData[colIndex].indexOf(value) < 0) filterData[colIndex].push(value);
@@ -229,17 +234,20 @@ class MUIDataTable extends React.Component {
 
     for (let index = 0; index < row.length; index++) {
       let column = row[index];
-      
+
       if (columns[index].customRender) {
         const funcResult = columns[index].customRender(index, column);
-        column = typeof funcResult === "string" ? funcResult : funcResult.props && funcResult.props.value ? funcResult.props.value : column;
+        column =
+          typeof funcResult === "string"
+            ? funcResult
+            : funcResult.props && funcResult.props.value ? funcResult.props.value : column;
       }
-      
+
       if (filterList[index].length && filterList[index].indexOf(column) < 0) {
         isFiltered = true;
         break;
       }
-      
+
       const searchCase = !this.options.caseSensitive ? column.toString().toLowerCase() : column.toString();
 
       if (searchText && searchCase.indexOf(searchText.toLowerCase()) >= 0) {
@@ -262,14 +270,22 @@ class MUIDataTable extends React.Component {
     this.setState(prevState => {
       let changedData = cloneDeep(prevState.data);
       let filterData = cloneDeep(prevState.filterData);
-      const prevFilterIndex = filterData[index].indexOf(prevState["data"][row][index]);
+
+      const funcResult = prevState.columns[index].customRender(index, value);
+
+      const filterValue =
+        React.isValidElement(funcResult) && funcResult.props.value
+          ? funcResult.props.value
+          : prevState["data"][row][index];
+
+      const prevFilterIndex = filterData[index].indexOf(filterValue);
+      filterData[index].splice(prevFilterIndex, 1, filterValue);
 
       changedData[row][index] = value;
-      filterData[index].splice(prevFilterIndex, 1, value);
 
       if (this.options.sortFilterList) {
         const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
-        filterData[row].sort(collator.compare);
+        filterData[index].sort(collator.compare);
       }
 
       return {
