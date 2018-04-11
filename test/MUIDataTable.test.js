@@ -12,21 +12,21 @@ describe("<MUIDataTable />", function() {
   let data;
   let displayData;
   let columns;
-  let renderCities;
-  renderCities = (index, value, updateValue) => <Cities value={value} index={index} change={event => true} />;
+  let renderCities = (index, value, updateValue) => <Cities value={value} index={index} change={event => true} />;
+  let renderName = (index, value) => value.split(" ")[1]+", "+value.split(" ")[0];
 
   before(() => {
     columns = [
-      { name: "First Name" },
+      { name: "Name", options: { customRender: renderName } },
       { name: "Company" },
       { name: "City", options: { customRender: renderCities } },
       { name: "State" },
     ];
     displayData = JSON.stringify([
-      ["Joe James", "Test Corp", renderCities(0, "Yonkers"), "NY"],
-      ["John Walsh", "Test Corp", renderCities(1, "Hartford"), "CT"],
-      ["Bob Herm", "Test Corp", renderCities(2, "Tampa"), "FL"],
-      ["James Houston", "Test Corp", renderCities(3, "Dallas"), "TX"],
+      ["James, Joe", "Test Corp", renderCities(0, "Yonkers"), "NY"],
+      ["Walsh, John", "Test Corp", renderCities(1, "Hartford"), "CT"],
+      ["Herm, Bob", "Test Corp", renderCities(2, "Tampa"), "FL"],
+      ["Houston, James", "Test Corp", renderCities(3, "Dallas"), "TX"],
     ]);
     data = [
       ["Joe James", "Test Corp", "Yonkers", "NY"],
@@ -35,6 +35,7 @@ describe("<MUIDataTable />", function() {
       ["James Houston", "Test Corp", "Dallas", "TX"],
     ];
     renderCities = renderCities;
+    renderName = renderName;
   });
 
   it("should render a table", () => {
@@ -53,7 +54,7 @@ describe("<MUIDataTable />", function() {
     const actualResult = shallowWrapper.dive().state().columns;
 
     const expectedResult = [
-      { display: true, name: "First Name", sort: true, filter: true, sortDirection: null },
+      { display: true, name: "Name", sort: true, filter: true, sortDirection: null, customRender: renderName },
       { display: true, name: "Company", sort: true, filter: true, sortDirection: null },
       {
         display: true,
@@ -130,7 +131,7 @@ describe("<MUIDataTable />", function() {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const state = shallowWrapper.dive().state();
     const expectedResult = [
-      ["Bob Herm", "James Houston", "Joe James", "John Walsh"],
+      ["Herm, Bob", "Houston, James", "James, Joe", "Walsh, John"],
       ["Test Corp"],
       ["Dallas", "Hartford", "Tampa", "Yonkers"],
       ["CT", "FL", "NY", "TX"],
@@ -266,11 +267,11 @@ describe("<MUIDataTable />", function() {
     const table = shallowWrapper.dive();
     const instance = table.instance();
 
-    instance.searchTextUpdate("Joe James");
+    instance.searchTextUpdate("Joe");
     table.update();
     const state = table.state();
 
-    const expectedResult = JSON.stringify([["Joe James", "Test Corp", renderCities(0, "Yonkers"), "NY"]]);
+    const expectedResult = JSON.stringify([["James, Joe", "Test Corp", renderCities(0, "Yonkers"), "NY"]]);
 
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
   });
@@ -284,10 +285,10 @@ describe("<MUIDataTable />", function() {
     const state = shallowWrapper.state();
 
     const expectedResult = JSON.stringify([
-      ["Bob Herm", "Test Corp", renderCities(0, "Tampa"), "FL"],
-      ["James Houston", "Test Corp", renderCities(1, "Dallas"), "TX"],
-      ["Joe James", "Test Corp", renderCities(2, "Yonkers"), "NY"],
-      ["John Walsh", "Test Corp", renderCities(3, "Hartford"), "CT"],
+      ["Herm, Bob", "Test Corp", renderCities(0, "Tampa"), "FL"],
+      ["Houston, James", "Test Corp", renderCities(1, "Dallas"), "TX"],
+      ["James, Joe", "Test Corp", renderCities(2, "Yonkers"), "NY"],
+      ["Walsh, John", "Test Corp", renderCities(3, "Hartford"), "CT"],
     ]);
 
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
@@ -302,7 +303,7 @@ describe("<MUIDataTable />", function() {
     const state = shallowWrapper.state();
 
     const expectedResult = [
-      { name: "First Name", display: false, sort: true, filter: true, sortDirection: null },
+      { name: "Name", display: false, sort: true, filter: true, sortDirection: null, customRender: renderName },
       { name: "Company", display: true, sort: true, filter: true, sortDirection: null },
       {
         name: "City",
