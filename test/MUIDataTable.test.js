@@ -12,8 +12,10 @@ describe("<MUIDataTable />", function() {
   let data;
   let displayData;
   let columns;
-  let renderCities = (index, value, updateValue) => <Cities value={value} index={index} change={event => updateValue(event)} />;
-  let renderName = (index, value) => value.split(" ")[1]+", "+value.split(" ")[0];
+  let renderCities = (index, value, updateValue) => (
+    <Cities value={value} index={index} change={event => updateValue(event)} />
+  );
+  let renderName = (index, value) => value.split(" ")[1] + ", " + value.split(" ")[0];
 
   before(() => {
     columns = [
@@ -378,7 +380,7 @@ describe("<MUIDataTable />", function() {
     const state = shallowWrapper.state();
     assert.deepEqual(state.selectedRows, [0]);
   });
-  
+
   it("should update value when calling updateValue method in customRender", () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
     const instance = shallowWrapper.instance();

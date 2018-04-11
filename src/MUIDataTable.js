@@ -399,7 +399,7 @@ class MUIDataTable extends React.Component {
     this.setState(prevState => {
       const filterList = cloneDeep(prevState.filterList);
       const filterPos = filterList[index].indexOf(column);
-      
+
       switch (type) {
         case "checkbox":
           filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(column);

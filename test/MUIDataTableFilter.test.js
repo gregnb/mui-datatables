@@ -82,10 +82,10 @@ describe("<MUIDataTableFilter />", function() {
     const actualResult = mountWrapper.find(Select);
     assert.strictEqual(actualResult.length, 0);
   });
-  
+
   it("should data table filter view with checkbox selects if filterType = 'multiselect'", () => {
     const options = { filterType: "multiselect" };
-    const filterList = [["Joe James","John Walsh"], [], [], []];
+    const filterList = [["Joe James", "John Walsh"], [], [], []];
 
     const mountWrapper = mount(
       <MUIDataTableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
