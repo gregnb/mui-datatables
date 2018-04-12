@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import merge from "lodash.merge";
 import get from "lodash.get";
 import { withStyles } from "material-ui/styles";

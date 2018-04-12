@@ -2,13 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
 import Typography from "material-ui/Typography";
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import IconButton from 'material-ui/IconButton';
-import MenuIcon from 'material-ui-icons/Menu';
-import Tooltip from 'material-ui/Tooltip';
-import GitHub from '../icons/GitHub';
-import withRoot from '../utils/withRoot';
+import AppBar from "material-ui/AppBar";
+import Toolbar from "material-ui/Toolbar";
+import IconButton from "material-ui/IconButton";
+import MenuIcon from "material-ui-icons/Menu";
+import Tooltip from "material-ui/Tooltip";
+import GitHub from "../icons/GitHub";
+import withRoot from "../utils/withRoot";
 import { withStyles } from "material-ui/styles";
 
 /* eslint-disable import/no-webpack-loader-syntax  */
@@ -19,13 +19,13 @@ const styles = theme => ({
     backgroundColor: "#23232f",
   },
   toolBar: {
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   logo: {
     display: "block",
     height: "56px",
     position: "relative",
-    top: "5px"
+    top: "5px",
   },
   wrapper: {
     flex: "1 0 100%",
@@ -40,8 +40,8 @@ const styles = theme => ({
   },
   footer: {
     flex: "1 0 100%",
-    marginTop: "32px"
-  }
+    marginTop: "32px",
+  },
 });
 
 class Layout extends React.Component {
@@ -61,11 +61,8 @@ class Layout extends React.Component {
     return (
       <div className={classes.wrapper}>
         <AppBar classes={{ root: classes.appBar }}>
-          <Toolbar classes={{ root: classes.toolBar}}>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-            >
+          <Toolbar classes={{ root: classes.toolBar }}>
+            <IconButton color="inherit" aria-label="open drawer">
               <MenuIcon />
             </IconButton>
             <a href="/">
@@ -76,18 +73,16 @@ class Layout extends React.Component {
                 component="a"
                 color="inherit"
                 href="https://github.com/gregnb/mui-datatables"
-                aria-labelledby="appbar-github"
-              >
+                aria-labelledby="appbar-github">
                 <GitHub />
               </IconButton>
             </Tooltip>
           </Toolbar>
         </AppBar>
         <main id="main-content" className={classes.content}>
-          {children}  
+          {children}
         </main>
-        <footer className={classes.footer}>
-        </footer>
+        <footer className={classes.footer} />
       </div>
     );
   }

@@ -44,7 +44,7 @@ class Example extends React.Component {
     const options = {
       filter: true,
       selectableRows: true,
-      filterType: 'dropdown',
+      filterType: 'multiselect',
       responsive: 'stacked',
       onRowsSelect: (rowsSelected, allRows) => {
         console.log(rowsSelected, allRows);

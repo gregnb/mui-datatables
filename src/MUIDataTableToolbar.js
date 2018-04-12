@@ -1,7 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { findDOMNode } from "react-dom";
-import TextField from "material-ui/TextField";
 import Typography from "material-ui/Typography";
 import Toolbar from "material-ui/Toolbar";
 import Tooltip from "material-ui/Tooltip";
@@ -14,7 +11,6 @@ import SearchIcon from "material-ui-icons/Search";
 import DownloadIcon from "material-ui-icons/FileDownload";
 import PrintIcon from "material-ui-icons/Print";
 import ViewColumnIcon from "material-ui-icons/ViewColumn";
-import ClearIcon from "material-ui-icons/Clear";
 import FilterIcon from "material-ui-icons/FilterList";
 import merge from "lodash.merge";
 import ReactToPrint from "react-to-print";
@@ -139,7 +135,6 @@ class MUIDataTableToolbar extends React.Component {
   render() {
     const {
       data,
-      classes,
       options,
       columns,
       filterData,
@@ -199,30 +194,30 @@ class MUIDataTableToolbar extends React.Component {
                 false
               )}
               {options.print ? (
-                <Tooltip title="Print">
-                  <ReactToPrint
-                    trigger={() => (
+                <ReactToPrint
+                  trigger={() => (
+                    <Tooltip title="Print">
                       <IconButton aria-label="Print" classes={{ root: toolbarStyles.icon }}>
                         <PrintIcon />
                       </IconButton>
-                    )}
-                    content={() => this.props.tableRef()}
-                  />
-                </Tooltip>
+                    </Tooltip>
+                  )}
+                  content={() => this.props.tableRef()}
+                />
               ) : (
                 false
               )}
               {options.viewColumns ? (
                 <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
                   <MUIPopoverTarget>
-                      <IconButton
-                        aria-label="View Columns"
-                        classes={{ root: this.getActiveIcon(toolbarStyles, "viewcolumns") }}
-                        onClick={this.setActiveIcon.bind(null, "viewcolumns")}>
-                        <Tooltip title="View Columns">
-                          <ViewColumnIcon />
-                        </Tooltip>
-                      </IconButton>                    
+                    <IconButton
+                      aria-label="View Columns"
+                      classes={{ root: this.getActiveIcon(toolbarStyles, "viewcolumns") }}
+                      onClick={this.setActiveIcon.bind(null, "viewcolumns")}>
+                      <Tooltip title="View Columns">
+                        <ViewColumnIcon />
+                      </Tooltip>
+                    </IconButton>
                   </MUIPopoverTarget>
                   <MUIPopoverContent>
                     <MUIDataTableViewCol
@@ -238,7 +233,7 @@ class MUIDataTableToolbar extends React.Component {
               )}
               {options.filter ? (
                 <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
-                  <MUIPopoverTarget>                    
+                  <MUIPopoverTarget>
                     <IconButton
                       aria-label="Filter Table"
                       classes={{ root: this.getActiveIcon(toolbarStyles, "filter") }}

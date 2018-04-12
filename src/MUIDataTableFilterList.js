@@ -26,7 +26,7 @@ class MUIDataTableFilterList extends React.Component {
   };
 
   render() {
-    const { classes, filterList, filterUpdate, options } = this.props;
+    const { classes, filterList, filterUpdate } = this.props;
 
     return (
       <div className={classes.root}>

@@ -15,7 +15,7 @@ class MUIDataTableHeadRow extends React.Component {
   };
 
   render() {
-    const { classes, options } = this.props;
+    const { classes } = this.props;
 
     return (
       <TableRow

@@ -2,12 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import Typography from "material-ui/Typography";
-import Button from "material-ui/Button";
-import { FormLabel, FormControl, FormGroup, FormControlLabel, FormHelperText } from "material-ui/Form";
+import { FormControl, FormGroup, FormControlLabel } from "material-ui/Form";
 import Input, { InputLabel } from "material-ui/Input";
 import { MenuItem } from "material-ui/Menu";
 import Select from "material-ui/Select";
 import Checkbox from "material-ui/Checkbox";
+import { ListItemText } from "material-ui/List";
 import { withStyles } from "material-ui/styles";
 
 export const defaultFilterStyles = {
@@ -124,6 +124,10 @@ class MUIDataTableFilter extends React.Component {
     this.props.onFilterUpdate(index, value, "dropdown");
   };
 
+  handleMultiselectChange = (index, column) => {
+    this.props.onFilterUpdate(index, column, "multiselect");
+  };
+
   renderCheckbox(columns) {
     const { classes, filterData, filterList } = this.props;
 
@@ -165,7 +169,7 @@ class MUIDataTableFilter extends React.Component {
   }
 
   renderSelect(columns) {
-    const { classes, filterData, filterList } = this.props;
+    const { classes, filterData, filterList, options } = this.props;
 
     return (
       <div className={classes.selectRoot}>
@@ -175,7 +179,7 @@ class MUIDataTableFilter extends React.Component {
               <FormControl className={classes.selectFormControl} key={index}>
                 <InputLabel htmlFor={column.name}>{column.name}</InputLabel>
                 <Select
-                  value={filterList[index] && filterList[index][0] ? filterList[index][0] : "All"}
+                  value={filterList[index].toString() || "All"}
                   name={column.name}
                   onChange={event => this.handleDropdownChange(event, index)}
                   input={<Input name={column.name} id={column.name} />}>
@@ -184,7 +188,47 @@ class MUIDataTableFilter extends React.Component {
                   </MenuItem>
                   {filterData[index].map((filterColumn, filterIndex) => (
                     <MenuItem value={filterColumn} key={filterIndex + 1}>
-                      {filterColumn}
+                      {filterColumn.toString()}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            ) : (
+              false
+            ),
+        )}
+      </div>
+    );
+  }
+
+  renderMultiselect(columns) {
+    const { classes, filterData, filterList, options } = this.props;
+
+    return (
+      <div className={classes.selectRoot}>
+        {columns.map(
+          (column, index) =>
+            column.filter ? (
+              <FormControl className={classes.selectFormControl} key={index}>
+                <InputLabel htmlFor={column.name}>{column.name}</InputLabel>
+                <Select
+                  multiple
+                  value={filterList[index] || []}
+                  renderValue={selected => selected.join(", ")}
+                  name={column.name}
+                  onChange={event => this.handleMultiselectChange(index, event.target.value)}
+                  input={<Input name={column.name} id={column.name} />}>
+                  {filterData[index].map((filterColumn, filterIndex) => (
+                    <MenuItem value={filterColumn} key={filterIndex + 1}>
+                      <Checkbox
+                        checked={filterList[index].indexOf(filterColumn) >= 0 ? true : false}
+                        value={filterColumn.toString()}
+                        className={classes.checkboxIcon}
+                        classes={{
+                          checked: classes.checked,
+                        }}
+                      />
+                      <ListItemText primary={filterColumn} />
                     </MenuItem>
                   ))}
                 </Select>
@@ -208,7 +252,7 @@ class MUIDataTableFilter extends React.Component {
               variant="caption"
               className={classNames({
                 [classes.title]: true,
-                [classes.noMargin]: options.filterType === "dropdown" ? true : false,
+                [classes.noMargin]: options.filterType !== "checkbox" ? true : false,
               })}>
               FILTERS
             </Typography>
@@ -218,7 +262,9 @@ class MUIDataTableFilter extends React.Component {
           </div>
           <div className={classes.filtersSelected} />
         </div>
-        {options.filterType === "checkbox" ? this.renderCheckbox(columns) : this.renderSelect(columns)}
+        {options.filterType === "checkbox"
+          ? this.renderCheckbox(columns)
+          : options.filterType === "multiselect" ? this.renderMultiselect(columns) : this.renderSelect(columns)}
       </div>
     );
   }
