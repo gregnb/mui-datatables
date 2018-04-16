@@ -86,7 +86,7 @@ class MUIDataTableToolbar extends React.Component {
   constructor(props) {
     super(props);
 
-    if (props.options.responsive && props.options.responsive === "stacked") {
+    if (props.options.responsive) {
       this.tbarStyles = merge(defaultToolbarStyles, responsiveToolbarStyles);
     } else {
       this.tbarStyles = defaultToolbarStyles;

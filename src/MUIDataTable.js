@@ -14,7 +14,6 @@ import { withStyles } from "material-ui/styles";
 const defaultTableStyles = {
   root: {},
   responsiveScroll: {
-    display: "block",
     overflowX: "auto",
   },
   caption: {
@@ -540,7 +539,7 @@ class MUIDataTable extends React.Component {
       <Paper
         elevation={4}
         ref={el => (this.tableContent = el)}
-        className={this.options.responsive === "scroll" ? classes.responsiveScroll : null}>
+      >
         {selectedRows.length ? (
           <MUIDataTableToolbarSelect
             options={this.options}
@@ -563,26 +562,30 @@ class MUIDataTable extends React.Component {
           />
         )}
         <MUIDataTableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />
-        <Table ref={el => (this.tableRef = el)} tabIndex={"0"} role={"grid"} aria-readonly={"true"}>
-          <caption className={classes.caption}>{title}</caption>
-          <MUIDataTableHead
-            columns={columns}
-            handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
-            selectRowUpdate={this.selectRowUpdate}
-            toggleSort={this.toggleSortColumn}
-            options={this.options}
-          />
-          <MUIDataTableBody
-            data={this.state.displayData}
-            columns={columns}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            selectedRows={selectedRows}
-            selectRowUpdate={this.selectRowUpdate}
-            options={this.options}
-            searchText={searchText}
-            filterList={filterList}
-          />
+        <div className={this.options.responsive === "scroll" ? classes.responsiveScroll : null}>
+          <Table ref={el => (this.tableRef = el)} tabIndex={"0"} role={"grid"} >
+            <caption className={classes.caption}>{title}</caption>
+            <MUIDataTableHead
+              columns={columns}
+              handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
+              selectRowUpdate={this.selectRowUpdate}
+              toggleSort={this.toggleSortColumn}
+              options={this.options}
+            />
+            <MUIDataTableBody
+              data={this.state.displayData}
+              columns={columns}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              selectedRows={selectedRows}
+              selectRowUpdate={this.selectRowUpdate}
+              options={this.options}
+              searchText={searchText}
+              filterList={filterList}
+            />
+          </Table>
+        </div>
+        <Table>
           {this.options.pagination ? (
             <MUIDataTablePagination
               count={displayData.length}
@@ -590,6 +593,7 @@ class MUIDataTable extends React.Component {
               rowsPerPage={rowsPerPage}
               changeRowsPerPage={this.changeRowsPerPage}
               changePage={this.changePage}
+              component="div"
               options={this.options}
             />
           ) : (
