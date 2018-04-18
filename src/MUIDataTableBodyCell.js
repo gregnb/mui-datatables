@@ -5,8 +5,10 @@ import { withStyles } from "material-ui/styles";
 
 const defaultBodyCellStyles = {
   root: {},
-  cellStacked: {
+  cellHide: {
     display: "none",
+  },
+  cellStacked: {
     "@media screen and (max-width: 960px)": {
       display: "inline-block",
       backgroundColor: "#FFF",
@@ -36,7 +38,8 @@ class MUIDataTableBodyCell extends React.Component {
         key={1}
         className={classNames({
           [classes.root]: true,
-          [classes.cellStacked]: true,
+          [classes.cellHide]: true,
+          [classes.cellStacked]: options.responsive === "stacked",
         })}>
         {columnHeader}
       </TableCell>,
