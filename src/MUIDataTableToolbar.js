@@ -194,16 +194,18 @@ class MUIDataTableToolbar extends React.Component {
                 false
               )}
               {options.print ? (
-                <ReactToPrint
-                  trigger={() => (
-                    <Tooltip title="Print">
-                      <IconButton aria-label="Print" classes={{ root: toolbarStyles.icon }}>
-                        <PrintIcon />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                  content={() => this.props.tableRef()}
-                />
+                <Tooltip title="Print">
+                  <span>
+                    <ReactToPrint
+                      trigger={() => (
+                        <IconButton aria-label="Print" classes={{ root: toolbarStyles.icon }}>
+                          <PrintIcon />
+                        </IconButton>
+                      )}
+                      content={() => this.props.tableRef()}
+                    />
+                  </span>
+                </Tooltip>
               ) : (
                 false
               )}
