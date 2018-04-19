@@ -52,7 +52,8 @@ class MUIDataTableHead extends React.Component {
     const { selectChecked } = this.state;
 
     return (
-      <TableHead className={classNames({ [classes.responsiveStacked]: options.responsive==="stacked", [classes.main]: true })}>
+      <TableHead
+        className={classNames({ [classes.responsiveStacked]: options.responsive === "stacked", [classes.main]: true })}>
         <MUIDataTableHeadRow>
           {options.selectableRows ? (
             <MUIDataTableSelectCell onChange={this.handleRowSelect.bind(null)} checked={selectChecked} />

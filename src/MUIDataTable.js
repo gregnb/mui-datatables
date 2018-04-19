@@ -239,7 +239,9 @@ class MUIDataTable extends React.Component {
         column =
           typeof funcResult === "string"
             ? funcResult
-            : funcResult.props && funcResult.props.value ? funcResult.props.value : column;
+            : funcResult.props && funcResult.props.value
+              ? funcResult.props.value
+              : column;
       }
 
       if (filterList[index].length && filterList[index].indexOf(column) < 0) {
@@ -313,18 +315,23 @@ class MUIDataTable extends React.Component {
   }
 
   toggleViewColumn = index => {
-    this.setState(prevState => {
-      const columns = cloneDeep(prevState.columns);
-      columns[index].display = !columns[index].display;
-      return {
-        columns: columns,
-      };
-    }, 
-    () => {
-      if (this.options.onColumnViewChange) {
-        this.options.onColumnViewChange(this.state.columns[index].name, this.state.columns[index].display ? "add" : "remove");
-      }
-    });
+    this.setState(
+      prevState => {
+        const columns = cloneDeep(prevState.columns);
+        columns[index].display = !columns[index].display;
+        return {
+          columns: columns,
+        };
+      },
+      () => {
+        if (this.options.onColumnViewChange) {
+          this.options.onColumnViewChange(
+            this.state.columns[index].name,
+            this.state.columns[index].display ? "add" : "remove",
+          );
+        }
+      },
+    );
   };
 
   getSortDirection(column) {
@@ -332,36 +339,41 @@ class MUIDataTable extends React.Component {
   }
 
   toggleSortColumn = index => {
-    this.setState(prevState => {
-      let columns = cloneDeep(prevState.columns);
-      let data = prevState.data;
-      const order = prevState.columns[index].sortDirection;
+    this.setState(
+      prevState => {
+        let columns = cloneDeep(prevState.columns);
+        let data = prevState.data;
+        const order = prevState.columns[index].sortDirection;
 
-      for (let pos = 0; pos < columns.length; pos++) {
-        if (index !== pos) {
-          columns[pos].sortDirection = null;
-        } else {
-          columns[pos].sortDirection = columns[pos].sortDirection === "asc" ? "desc" : "asc";
+        for (let pos = 0; pos < columns.length; pos++) {
+          if (index !== pos) {
+            columns[pos].sortDirection = null;
+          } else {
+            columns[pos].sortDirection = columns[pos].sortDirection === "asc" ? "desc" : "asc";
+          }
         }
-      }
 
-      const orderLabel = this.getSortDirection(columns[index]);
-      const announceText = `Table now sorted by ${columns[index].name} : ${orderLabel}`;
-      const sortedData = this.sortTable(data, index, order);
+        const orderLabel = this.getSortDirection(columns[index]);
+        const announceText = `Table now sorted by ${columns[index].name} : ${orderLabel}`;
+        const sortedData = this.sortTable(data, index, order);
 
-      return {
-        columns: columns,
-        announceText: announceText,
-        data: sortedData.data,
-        displayData: this.getDisplayData(columns, sortedData.data, prevState.filterList, prevState.searchText),
-        selectedRows: sortedData.selectedRows,
-      };
-    },
-    () => {
-      if (this.options.onColumnSortChange) {
-        this.options.onColumnSortChange(this.state.columns[index].name, this.getSortDirection(this.state.columns[index]));
-      }
-    });
+        return {
+          columns: columns,
+          announceText: announceText,
+          data: sortedData.data,
+          displayData: this.getDisplayData(columns, sortedData.data, prevState.filterList, prevState.searchText),
+          selectedRows: sortedData.selectedRows,
+        };
+      },
+      () => {
+        if (this.options.onColumnSortChange) {
+          this.options.onColumnSortChange(
+            this.state.columns[index].name,
+            this.getSortDirection(this.state.columns[index]),
+          );
+        }
+      },
+    );
   };
 
   changeRowsPerPage = rows => {
@@ -398,47 +410,51 @@ class MUIDataTable extends React.Component {
   };
 
   resetFilters = () => {
-    this.setState(prevState => {
-      const filterList = prevState.columns.map((column, index) => []);
+    this.setState(
+      prevState => {
+        const filterList = prevState.columns.map((column, index) => []);
 
-      return {
-        filterList: filterList,
-        displayData: this.getDisplayData(prevState.columns, prevState.data, filterList, prevState.searchText),
-      };
-    },
-    () => {
-      if (this.options.onFilterChange) {
-        this.options.onFilterChange(null, this.state.filterList);
-      }
-    });
+        return {
+          filterList: filterList,
+          displayData: this.getDisplayData(prevState.columns, prevState.data, filterList, prevState.searchText),
+        };
+      },
+      () => {
+        if (this.options.onFilterChange) {
+          this.options.onFilterChange(null, this.state.filterList);
+        }
+      },
+    );
   };
 
   filterUpdate = (index, column, type) => {
-    this.setState(prevState => {
-      const filterList = cloneDeep(prevState.filterList);
-      const filterPos = filterList[index].indexOf(column);
+    this.setState(
+      prevState => {
+        const filterList = cloneDeep(prevState.filterList);
+        const filterPos = filterList[index].indexOf(column);
 
-      switch (type) {
-        case "checkbox":
-          filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(column);
-          break;
-        case "multiselect":
-          filterList[index] = column === "" ? [] : column;
-          break;
-        default:
-          filterList[index] = filterPos >= 0 || column === "" ? [] : [column];
-      }
+        switch (type) {
+          case "checkbox":
+            filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(column);
+            break;
+          case "multiselect":
+            filterList[index] = column === "" ? [] : column;
+            break;
+          default:
+            filterList[index] = filterPos >= 0 || column === "" ? [] : [column];
+        }
 
-      return {
-        filterList: filterList,
-        displayData: this.getDisplayData(prevState.columns, prevState.data, filterList, prevState.searchText),
-      };
-    }, 
-    () => {
-      if (this.options.onFilterChange) {
-        this.options.onFilterChange(column, this.state.filterList);
-      }
-    });
+        return {
+          filterList: filterList,
+          displayData: this.getDisplayData(prevState.columns, prevState.data, filterList, prevState.searchText),
+        };
+      },
+      () => {
+        if (this.options.onFilterChange) {
+          this.options.onFilterChange(column, this.state.filterList);
+        }
+      },
+    );
   };
 
   selectRowDelete = () => {
@@ -560,10 +576,7 @@ class MUIDataTable extends React.Component {
     const rowsPerPage = this.state.rowsPerPage ? this.state.rowsPerPage : this.options.rowsPerPage;
 
     return (
-      <Paper
-        elevation={4}
-        ref={el => (this.tableContent = el)}
-      >
+      <Paper elevation={4} ref={el => (this.tableContent = el)}>
         {selectedRows.length ? (
           <MUIDataTableToolbarSelect
             options={this.options}
@@ -587,7 +600,7 @@ class MUIDataTable extends React.Component {
         )}
         <MUIDataTableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />
         <div className={this.options.responsive === "scroll" ? classes.responsiveScroll : null}>
-          <Table ref={el => (this.tableRef = el)} tabIndex={"0"} role={"grid"} >
+          <Table ref={el => (this.tableRef = el)} tabIndex={"0"} role={"grid"}>
             <caption className={classes.caption}>{title}</caption>
             <MUIDataTableHead
               columns={columns}

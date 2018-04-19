@@ -12,7 +12,7 @@ const defaultHeadCellStyles = {
   mypopper: {
     "&[data-x-out-of-boundaries]": {
       display: "none",
-    }
+    },
   },
   data: {
     display: "inline-block",
@@ -62,7 +62,12 @@ class MUIDataTableHeadCell extends React.Component {
     return (
       <TableCell className={classes.root} scope={"col"} sortDirection={sortDirection}>
         {options.sort ? (
-          <Tooltip title="Sort" placement={"bottom-end"} className={classes.tooltip} enterDelay={300} classes={{ popper: classes.mypopper }}>
+          <Tooltip
+            title="Sort"
+            placement={"bottom-end"}
+            className={classes.tooltip}
+            enterDelay={300}
+            classes={{ popper: classes.mypopper }}>
             <span
               role="button"
               onKeyUp={this.handleClickSort}
