@@ -86,7 +86,7 @@ class MUIDataTableToolbar extends React.Component {
   constructor(props) {
     super(props);
 
-    if (props.options.responsive && props.options.responsive === "stacked") {
+    if (props.options.responsive) {
       this.tbarStyles = merge(defaultToolbarStyles, responsiveToolbarStyles);
     } else {
       this.tbarStyles = defaultToolbarStyles;
@@ -194,16 +194,18 @@ class MUIDataTableToolbar extends React.Component {
                 false
               )}
               {options.print ? (
-                <ReactToPrint
-                  trigger={() => (
-                    <Tooltip title="Print">
-                      <IconButton aria-label="Print" classes={{ root: toolbarStyles.icon }}>
-                        <PrintIcon />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                  content={() => this.props.tableRef()}
-                />
+                <Tooltip title="Print">
+                  <span>
+                    <ReactToPrint
+                      trigger={() => (
+                        <IconButton aria-label="Print" classes={{ root: toolbarStyles.icon }}>
+                          <PrintIcon />
+                        </IconButton>
+                      )}
+                      content={() => this.props.tableRef()}
+                    />
+                  </span>
+                </Tooltip>
               ) : (
                 false
               )}
