@@ -57,6 +57,15 @@ class Example extends React.Component {
       },
       onSearchChange: (searchText) => {
         console.log(searchText);
+      },
+      onColumnSortChange: (column, direction) => {
+        console.log(column, direction);
+      },
+      onColumnViewChange: (column, action) => {
+        console.log(column, action);
+      },
+      onFilterChange: (column, filters) => {
+        console.log(column, filters);
       }
     };
 

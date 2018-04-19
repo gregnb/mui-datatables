@@ -79,9 +79,12 @@ export const defaultFilterStyles = {
     width: "32px",
     height: "32px",
   },
-  checked: {
-    color: "#027CB5",
+  checkbox: {
+    "&$checked": {
+      color: "#027cB5",
+    },
   },
+  checked: {},
   /* selects */
   selectRoot: {
     display: "flex",
@@ -152,6 +155,7 @@ class MUIDataTableFilter extends React.Component {
                       onChange={this.handleCheckboxChange.bind(null, index, filterColumn)}
                       checked={filterList[index].indexOf(filterColumn) >= 0 ? true : false}
                       classes={{
+                        root: classes.checkbox,
                         checked: classes.checked,
                       }}
                       value={filterColumn.toString()}
@@ -225,6 +229,7 @@ class MUIDataTableFilter extends React.Component {
                         value={filterColumn.toString()}
                         className={classes.checkboxIcon}
                         classes={{
+                          root: classes.checkbox,
                           checked: classes.checked,
                         }}
                       />
@@ -264,7 +269,9 @@ class MUIDataTableFilter extends React.Component {
         </div>
         {options.filterType === "checkbox"
           ? this.renderCheckbox(columns)
-          : options.filterType === "multiselect" ? this.renderMultiselect(columns) : this.renderSelect(columns)}
+          : options.filterType === "multiselect"
+            ? this.renderMultiselect(columns)
+            : this.renderSelect(columns)}
       </div>
     );
   }

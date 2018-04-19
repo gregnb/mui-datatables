@@ -22,10 +22,15 @@ export const defaultViewColStyles = {
   },
   formControl: {},
   checkbox: {
-    color: "#027cb5",
     width: "32px",
     height: "32px",
   },
+  checkboxRoot: {
+    "&$checked": {
+      color: "#027cb5",
+    },
+  },
+  checked: {},
   label: {
     fontSize: "15px",
     marginLeft: "8px",
@@ -69,6 +74,10 @@ class MUIDataTableViewCol extends React.Component {
                 control={
                   <Checkbox
                     className={classes.checkbox}
+                    classes={{
+                      root: classes.checkboxRoot,
+                      checked: classes.checked,
+                    }}
                     onChange={this.handleColChange.bind(null, index)}
                     checked={column.display}
                     value={column.name}
