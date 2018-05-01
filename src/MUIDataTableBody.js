@@ -38,8 +38,19 @@ class MUIDataTableBody extends React.Component {
     const { data, page, rowsPerPage } = this.props;
 
     let rows = [];
+    const totalPages = Math.floor(data.length / rowsPerPage);
     const fromIndex = page === 0 ? 0 : page * rowsPerPage;
     const toIndex = Math.min(data.length, (page + 1) * rowsPerPage);
+
+    if (page > totalPages) {
+      throw new Error(
+        "Provided options.page of `" +
+          page +
+          "` is greater than the total available page length of `" +
+          totalPages +
+          "`",
+      );
+    }
 
     for (let rowIndex = fromIndex; rowIndex < data.length && rowIndex < toIndex; rowIndex++) {
       rows.push(data[rowIndex]);

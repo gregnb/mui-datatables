@@ -127,6 +127,8 @@ The component accepts the following props:
 #### Options:
 |Name|Type|Default|Description
 |:--:|:-----|:--|:-----|
+|**`page`**|number||User provided starting page for pagination
+|**`filterList`**|array||User provided filter list
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox", "dropdown", or "multiselect"
 |**`pagination`**|boolean|true|Enable/disable pagination
 |**`selectableRows`**|boolean|true|Enable/disable row selection

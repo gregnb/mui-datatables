@@ -61,6 +61,8 @@ class MUIDataTable extends React.Component {
       selectableRows: PropTypes.bool,
       caseSensitive: PropTypes.bool,
       rowHover: PropTypes.bool,
+      page: PropTypes.number,
+      filterList: PropTypes.array,
       rowsPerPage: PropTypes.number,
       rowsPerPageOptions: PropTypes.array,
       filter: PropTypes.bool,
@@ -143,18 +145,16 @@ class MUIDataTable extends React.Component {
   }
 
   setTableOptions(props) {
-    if (props.options) {
-      if (props.options.rowsPerPageOptions) {
-        this.setState(() => ({
-          rowsPerPageOptions: props.options.rowsPerPageOptions,
-        }));
+    const optionNames = ["rowsPerPage", "page", "filterList", "rowsPerPageOptions"];
+    const optState = optionNames.reduce((acc, cur) => {
+      if (props.options[cur]) {
+        let val = props.options[cur];
+        if (cur === "page") val--;
+        acc[cur] = val;
       }
-      if (props.options.rowsPerPage) {
-        this.setState(() => ({
-          rowsPerPage: props.options.rowsPerPage,
-        }));
-      }
-    }
+      return acc;
+    }, {});
+    this.setState(optState);
   }
 
   /*
@@ -162,7 +162,7 @@ class MUIDataTable extends React.Component {
    */
 
   setTableData(props) {
-    const { data, columns } = props;
+    const { data, columns, options } = props;
 
     let columnData = [],
       filterData = [],
@@ -212,6 +212,12 @@ class MUIDataTable extends React.Component {
       }
     });
 
+    if (options.filterList) filterList = options.filterList;
+
+    if (filterList.length !== columns.length) {
+      throw new Error("Provided options.filterList does not match the column length");
+    }
+
     /* set source data and display Data set source set */
     this.setState(prevState => ({
       columns: columnData,
@@ -260,12 +266,6 @@ class MUIDataTable extends React.Component {
     if (isFiltered || (searchText && !isSearchFound)) return false;
     else return true;
   }
-
-  //
-  // possible place for future callbacks:
-  //  - onDataChange(tableData)
-  //  - onFilterListChange(filterList)
-  //
 
   updateDataCol = (row, index, value) => {
     this.setState(prevState => {
@@ -469,6 +469,9 @@ class MUIDataTable extends React.Component {
     this.setTableData({
       columns: this.props.columns,
       data: cleanRows,
+      options: {
+        filterList: this.state.filterList,
+      },
     });
   };
 
@@ -569,11 +572,10 @@ class MUIDataTable extends React.Component {
       page,
       filterData,
       filterList,
+      rowsPerPage,
       selectedRows,
       searchText,
     } = this.state;
-
-    const rowsPerPage = this.state.rowsPerPage ? this.state.rowsPerPage : this.options.rowsPerPage;
 
     return (
       <Paper elevation={4} ref={el => (this.tableContent = el)}>
@@ -630,7 +632,7 @@ class MUIDataTable extends React.Component {
               rowsPerPage={rowsPerPage}
               changeRowsPerPage={this.changeRowsPerPage}
               changePage={this.changePage}
-              component="div"
+              component={"div"}
               options={this.options}
             />
           ) : (
