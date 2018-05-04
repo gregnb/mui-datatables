@@ -100,7 +100,7 @@ class MUIDataTableToolbar extends React.Component {
     const CSVBody = data.reduce((soFar, row) => soFar + '"' + row.join('","') + '"\r\n', []).trim();
 
     let CSVLink = document.createElement("a");
-    CSVLink.href = "data:text/csv;charset=utf-8;base64," + window.btoa(CSVHead + CSVBody);
+    CSVLink.href = "data:text/csv;charset=utf-8;base64," + window.btoa(unescape(encodeURIComponent(CSVHead + CSVBody)));
     CSVLink.target = "_blank";
     CSVLink.download = "myFile.csv";
 
