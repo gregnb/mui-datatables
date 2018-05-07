@@ -4,12 +4,12 @@ import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import IconButton from "material-ui/IconButton";
 
-import SearchIcon from "material-ui-icons/Search";
-import DownloadIcon from "material-ui-icons/FileDownload";
-import PrintIcon from "material-ui-icons/Print";
-import ViewColumnIcon from "material-ui-icons/ViewColumn";
-import ClearIcon from "material-ui-icons/Clear";
-import FilterIcon from "material-ui-icons/FilterList";
+import SearchIcon from "@material-ui/icons/Search";
+import DownloadIcon from "@material-ui/icons/FileDownload";
+import PrintIcon from "@material-ui/icons/Print";
+import ViewColumnIcon from "@material-ui/icons/ViewColumn";
+import ClearIcon from "@material-ui/icons/Clear";
+import FilterIcon from "@material-ui/icons/FilterList";
 
 import MUIDataTableToolbar from "../src/MUIDataTableToolbar";
 import MUIDataTableSearch from "../src/MUIDataTableSearch";

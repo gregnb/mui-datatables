@@ -2,7 +2,7 @@ import React from "react";
 import { spy, stub } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
-import DeleteIcon from "material-ui-icons/Delete";
+import DeleteIcon from "@material-ui/icons/Delete";
 import MUIDataTableToolbarSelect from "../src/MUIDataTableToolbarSelect";
 
 describe("<MUIDataTableSelectCell />", function() {

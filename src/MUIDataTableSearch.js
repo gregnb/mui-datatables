@@ -1,9 +1,9 @@
 import React from "react";
 import Grow from "material-ui/transitions/Grow";
 import TextField from "material-ui/TextField";
-import SearchIcon from "material-ui-icons/Search";
+import SearchIcon from "@material-ui/icons/Search";
 import IconButton from "material-ui/IconButton";
-import ClearIcon from "material-ui-icons/Clear";
+import ClearIcon from "@material-ui/icons/Clear";
 import { withStyles } from "material-ui/styles";
 
 const defaultSearchStyles = {
