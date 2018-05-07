@@ -4,7 +4,7 @@ import Paper from "material-ui/Paper";
 import IconButton from "material-ui/IconButton";
 import Tooltip from "material-ui/Tooltip";
 import Typography from "material-ui/Typography";
-import DeleteIcon from "material-ui-icons/Delete";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { withStyles } from "material-ui/styles";
 
 const defaultToolbarSelectStyles = {

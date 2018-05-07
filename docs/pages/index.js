@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import Typography from "material-ui/Typography";
 import IconButton from "material-ui/IconButton";
 import Tooltip from "material-ui/Tooltip";
-import FileDownloadIcon from "material-ui-icons/FileDownload";
-import BuildIcon from "material-ui-icons/Build"; // eslint-disable-line import/no-unresolved
+import FileDownloadIcon from "@material-ui/icons/FileDownload";
+import BuildIcon from "@material-ui/icons/Build"; // eslint-disable-line import/no-unresolved
 import CodeSnippet from "../utils/CodeSnippet";
 import Layout from "../utils/layout";
 import withRoot from "../utils/withRoot";
