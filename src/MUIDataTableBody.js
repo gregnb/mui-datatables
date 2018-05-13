@@ -42,7 +42,7 @@ class MUIDataTableBody extends React.Component {
     const fromIndex = page === 0 ? 0 : page * rowsPerPage;
     const toIndex = Math.min(data.length, (page + 1) * rowsPerPage);
 
-    if (page > totalPages) {
+    if (page > totalPages && totalPages !== 0) {
       throw new Error(
         "Provided options.page of `" +
           page +

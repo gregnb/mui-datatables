@@ -82,7 +82,7 @@ class MUIPopover extends React.Component {
     const { className, placement, refClose, refExit, children, ...providedProps } = this.props;
 
     React.Children.map(children, (child, index) => {
-      if (child.type === MUIPopoverContent) {
+      if (child.type === MUIPopoverContent || child.type === <MUIPopoverContent />.type) {
         const transformOriginSpecs = {
           vertical: "top",
           horizontal: "center",
@@ -111,7 +111,7 @@ class MUIPopover extends React.Component {
         );
 
         popoverRender.push(popoverContent);
-      } else if (child.type === MUIPopoverTarget) {
+      } else if (child.type === MUIPopoverTarget || child.type === <MUIPopoverTarget />.type) {
         const targetContent = React.cloneElement(child, {
           key: index,
           targetRef: el => (this.anchorEl = el),
