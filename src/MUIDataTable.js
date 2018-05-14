@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Paper from "material-ui/Paper";
-import Table from "material-ui/Table";
+import Paper from "@material-ui/core/Paper";
+import Table from "@material-ui/core/Table";
 import MUIDataTableToolbar from "./MUIDataTableToolbar";
 import MUIDataTableToolbarSelect from "./MUIDataTableToolbarSelect";
 import MUIDataTableFilterList from "./MUIDataTableFilterList";
@@ -11,7 +11,7 @@ import MUIDataTablePagination from "./MUIDataTablePagination";
 import cloneDeep from "lodash.clonedeep";
 import merge from "lodash.merge";
 import textLabels from "./textLabels";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const defaultTableStyles = {
   root: {},

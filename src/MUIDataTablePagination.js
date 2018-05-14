@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { TableRow, TableFooter, TablePagination } from "material-ui/Table";
-import { withStyles } from "material-ui/styles";
+import TableRow from "@material-ui/core/TableRow";
+import TableFooter from "@material-ui/core/TableFooter";
+import TablePagination from "@material-ui/core/TablePagination";
+import { withStyles } from "@material-ui/core/styles";
 
 const defaultPaginationStyles = {
   root: {

@@ -4,7 +4,7 @@ import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import MUIDataTableHead from "../src/MUIDataTableHead";
 import MUIDataTableHeadCell from "../src/MUIDataTableHeadCell";
-import Tooltip from "material-ui/Tooltip";
+import Tooltip from "@material-ui/core/Tooltip";
 
 describe("<MUIDataTableHead />", function() {
   let columns;

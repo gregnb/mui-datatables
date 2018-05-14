@@ -4,7 +4,7 @@ import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import textLabels from "../src/textLabels";
 import MUIDataTableHeadCell from "../src/MUIDataTableHeadCell";
-import Tooltip from "material-ui/Tooltip";
+import Tooltip from "@material-ui/core/Tooltip";
 
 describe("<MUIDataTableHeadCell />", function() {
   let classes;

@@ -1,7 +1,7 @@
 import React from "react";
 import merge from "lodash.merge";
 import get from "lodash.get";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const getStyle = (obj, name) => {
   return get(obj, "styles." + name, null);

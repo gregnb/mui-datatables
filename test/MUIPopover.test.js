@@ -3,7 +3,7 @@ import { spy, stub } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import { MUIPopover, MUIPopoverTarget, MUIPopoverContent } from "../src/MUIPopover";
-import Popover from "material-ui/Popover";
+import Popover from "@material-ui/core/Popover";
 
 describe("<MUIPopover />", function() {
   it("should render a popover", () => {

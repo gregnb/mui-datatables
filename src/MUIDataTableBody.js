@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Typography from "material-ui/Typography";
-import { TableBody } from "material-ui/Table";
+import Typography from "@material-ui/core/Typography";
+import TableBody from "@material-ui/core/TableBody";
 import MUIDataTableBodyCell from "./MUIDataTableBodyCell";
 import MUIDataTableBodyRow from "./MUIDataTableBodyRow";
 import MUIDataTableSelectCell from "./MUIDataTableSelectCell";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const defaultBodyStyles = {
   root: {},

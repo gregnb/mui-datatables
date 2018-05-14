@@ -2,7 +2,7 @@ import React from "react";
 import { spy, stub } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
-import Checkbox from "material-ui/Checkbox";
+import Checkbox from "@material-ui/core/Checkbox";
 import MUIDataTableSelectCell from "../src/MUIDataTableSelectCell";
 
 describe("<MUIDataTableSelectCell />", function() {
