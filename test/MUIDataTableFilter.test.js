@@ -3,8 +3,8 @@ import { spy, stub } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import textLabels from "../src/textLabels";
-import Select from "material-ui/Select";
-import Checkbox from "material-ui/Checkbox";
+import Select from "@material-ui/core/Select";
+import Checkbox from "@material-ui/core/Checkbox";
 import MUIDataTableFilter from "../src/MUIDataTableFilter";
 
 describe("<MUIDataTableFilter />", function() {

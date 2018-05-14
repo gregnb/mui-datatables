@@ -2,7 +2,7 @@ import React from "react";
 import { spy, stub } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
-import Checkbox from "material-ui/Checkbox";
+import Checkbox from "@material-ui/core/Checkbox";
 import MUIDataTableViewCol from "../src/MUIDataTableViewCol";
 import textLabels from "../src/textLabels";
 

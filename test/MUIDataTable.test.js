@@ -6,7 +6,7 @@ import MUIDataTable from "../src/MUIDataTable";
 import MUIDataTableFilterList from "../src/MUIDataTableFilterList";
 import MUIDataTablePagination from "../src/MUIDataTablePagination";
 import textLabels from "../src/textLabels";
-import Chip from "material-ui/Chip";
+import Chip from "@material-ui/core/Chip";
 import Cities from "../examples/component/cities";
 
 describe("<MUIDataTable />", function() {

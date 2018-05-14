@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Popover from "material-ui/Popover";
+import Popover from "@material-ui/core/Popover";
 import MUIPopoverContent from "./MUIPopoverContent";
 import MUIPopoverTarget from "./MUIPopoverTarget";
 import { findDOMNode } from "react-dom";

@@ -1,8 +1,8 @@
 import React from "react";
-import Typography from "material-ui/Typography";
-import Toolbar from "material-ui/Toolbar";
-import Tooltip from "material-ui/Tooltip";
-import IconButton from "material-ui/IconButton";
+import Typography from "@material-ui/core/Typography";
+import Toolbar from "@material-ui/core/Toolbar";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
 import { MUIPopover, MUIPopoverTarget, MUIPopoverContent } from "./MUIPopover";
 import MUIDataTableFilter from "./MUIDataTableFilter";
 import MUIDataTableViewCol from "./MUIDataTableViewCol";

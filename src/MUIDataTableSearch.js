@@ -1,10 +1,10 @@
 import React from "react";
-import Grow from "material-ui/transitions/Grow";
-import TextField from "material-ui/TextField";
+import Grow from "@material-ui/core/Grow";
+import TextField from "@material-ui/core/TextField";
 import SearchIcon from "@material-ui/icons/Search";
-import IconButton from "material-ui/IconButton";
+import IconButton from "@material-ui/core/IconButton";
 import ClearIcon from "@material-ui/icons/Clear";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const defaultSearchStyles = {
   main: {

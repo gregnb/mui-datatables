@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { TableRow } from "material-ui/Table";
-import { withStyles } from "material-ui/styles";
+import TableRow from "@material-ui/core/TableRow";
+import { withStyles } from "@material-ui/core/styles";
 
 const defaultBodyRowStyles = {
   root: {},
