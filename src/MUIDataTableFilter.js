@@ -174,6 +174,7 @@ class MUIDataTableFilter extends React.Component {
 
   renderSelect(columns) {
     const { classes, filterData, filterList, options } = this.props;
+    const textLabels = options.textLabels.filter;
 
     return (
       <div className={classes.selectRoot}>
@@ -183,12 +184,12 @@ class MUIDataTableFilter extends React.Component {
               <FormControl className={classes.selectFormControl} key={index}>
                 <InputLabel htmlFor={column.name}>{column.name}</InputLabel>
                 <Select
-                  value={filterList[index].toString() || "All"}
+                  value={filterList[index].toString() || textLabels.all}
                   name={column.name}
                   onChange={event => this.handleDropdownChange(event, index)}
                   input={<Input name={column.name} id={column.name} />}>
-                  <MenuItem value="All" key={0}>
-                    All
+                  <MenuItem value={textLabels.all} key={0}>
+                    {textLabels.all}
                   </MenuItem>
                   {filterData[index].map((filterColumn, filterIndex) => (
                     <MenuItem value={filterColumn} key={filterIndex + 1}>
@@ -248,6 +249,7 @@ class MUIDataTableFilter extends React.Component {
 
   render() {
     const { classes, columns, options, onFilterReset } = this.props;
+    const textLabels = options.textLabels.filter;
 
     return (
       <div className={classes.root}>
@@ -259,10 +261,10 @@ class MUIDataTableFilter extends React.Component {
                 [classes.title]: true,
                 [classes.noMargin]: options.filterType !== "checkbox" ? true : false,
               })}>
-              FILTERS
+              {textLabels.title}
             </Typography>
-            <button className={classes.resetLink} tabIndex={0} aria-label="Reset Filters" onClick={onFilterReset}>
-              RESET
+            <button className={classes.resetLink} tabIndex={0} aria-label={textLabels.reset} onClick={onFilterReset}>
+              {textLabels.reset}
             </button>
           </div>
           <div className={classes.filtersSelected} />

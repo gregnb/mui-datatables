@@ -5,10 +5,11 @@ import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import TextField from "material-ui/TextField";
 import MUIDataTableSearch from "../src/MUIDataTableSearch";
+import textLabels from "../src/textLabels";
 
 describe("<MUIDataTableSearch />", function() {
   it("should render a search bar", () => {
-    const options = {};
+    const options = { textLabels };
     const onSearch = () => {};
     const onHide = () => {};
 
@@ -19,7 +20,7 @@ describe("<MUIDataTableSearch />", function() {
   });
 
   it("should trigger handleTextChange prop callback when calling method handleTextChange", () => {
-    const options = { onSearchChange: () => true };
+    const options = { onSearchChange: () => true, textLabels };
     const onSearch = spy();
     const onHide = () => {};
 
@@ -32,7 +33,7 @@ describe("<MUIDataTableSearch />", function() {
   });
 
   it("should hide the search bar when hitting the ESCAPE key", () => {
-    const options = {};
+    const options = { textLabels };
     const onHide = spy();
 
     const mountWrapper = mount(<MUIDataTableSearch onHide={onHide} options={options} />, { attachTo: document.body });
@@ -42,7 +43,7 @@ describe("<MUIDataTableSearch />", function() {
   });
 
   it("should hide not hide search bar when entering anything but the ESCAPE key", () => {
-    const options = {};
+    const options = { textLabels };
     const onHide = spy();
 
     const mountWrapper = mount(<MUIDataTableSearch onHide={onHide} options={options} />, { attachTo: document.body });

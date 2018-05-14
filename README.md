@@ -130,6 +130,7 @@ The component accepts the following props:
 |**`page`**|number||User provided starting page for pagination
 |**`filterList`**|array||User provided filter list
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox", "dropdown", or "multiselect"
+|**`textLabels `**|object||User provided labels to localize text
 |**`pagination`**|boolean|true|Enable/disable pagination
 |**`selectableRows`**|boolean|true|Enable/disable row selection
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
@@ -219,6 +220,49 @@ class BodyCellExample extends React.Component {
 
 ```
 
+## Localization
+
+This package decided that the cost of bringing in another library to perform localizations would be too expensive. Instead the ability to override all text labels (which aren't many) is offered through the options property `textLabels`.  The available strings:
+
+```
+const options = {
+  ...
+  textLabels: {
+    body: {
+      noMatch: "Sorry, no matching records found",
+      toolTip: "Sort",
+    },
+    pagination: {
+      next: "Next Page",
+      previous: "Previous Page",
+      rowsPerPage: "Rows per page:",
+      displayRows: "of",
+    },
+    toolbar: {
+      search: "Search",
+      downloadCsv: "Download CSV",
+      print: "Print",
+      viewColumns: "View Columns",
+      filterTable: "Filter Table",
+    },
+    filter: {
+      all: "All",
+      title: "FILTERS",
+      reset: "RESET",
+    },
+    viewColumns: {
+      title: "Show Columns",
+      titleAria: "Show/Hide Table Columns",
+    },
+    selectedRows: {
+      text: "rows(s) deleted",
+      delete: "Delete",
+      deleteAria: "Delete Selected Rows",
+    },
+  }
+  ... 
+}
+```
 
 ## License
 The files included in this repository are licensed under the MIT license.

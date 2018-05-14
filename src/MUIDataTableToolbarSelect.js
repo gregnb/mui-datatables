@@ -46,17 +46,18 @@ class MUIDataTableToolbarSelect extends React.Component {
   };
 
   render() {
-    const { classes, onRowsDelete, selectedRows } = this.props;
+    const { classes, onRowsDelete, selectedRows, options } = this.props;
+    const textLabels = options.textLabels.selectedRows;
 
     return (
       <Paper className={classes.root}>
         <div>
           <Typography variant="subheading" className={classes.title}>
-            {selectedRows.length} row(s) selected
+            {selectedRows.length} {textLabels.text}
           </Typography>
         </div>
-        <Tooltip title="Delete">
-          <IconButton className={classes.iconButton} onClick={onRowsDelete} aria-label="Delete Selected Rows">
+        <Tooltip title={textLabels.delete}>
+          <IconButton className={classes.iconButton} onClick={onRowsDelete} aria-label={textLabels.deleteAria}>
             <DeleteIcon className={classes.deleteIcon} />
           </IconButton>
         </Tooltip>

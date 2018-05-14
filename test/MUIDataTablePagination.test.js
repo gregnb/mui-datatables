@@ -3,6 +3,7 @@ import { spy, stub } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import { TableRow, TableFooter, TablePagination } from "material-ui/Table";
+import textLabels from "../src/textLabels";
 import MUIDataTablePagination from "../src/MUIDataTablePagination";
 
 describe("<MUIDataTablePagination />", function() {
@@ -11,6 +12,7 @@ describe("<MUIDataTablePagination />", function() {
   before(() => {
     options = {
       rowsPerPageOptions: [5, 10, 15],
+      textLabels,
     };
   });
 

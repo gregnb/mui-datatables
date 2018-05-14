@@ -63,7 +63,7 @@ class MUIDataTableHeadCell extends React.Component {
       <TableCell className={classes.root} scope={"col"} sortDirection={sortDirection}>
         {options.sort ? (
           <Tooltip
-            title="Sort"
+            title={options.textLabels.body.toolTip}
             placement={"bottom-end"}
             className={classes.tooltip}
             enterDelay={300}

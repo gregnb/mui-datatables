@@ -4,6 +4,7 @@ import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import Checkbox from "material-ui/Checkbox";
 import MUIDataTableViewCol from "../src/MUIDataTableViewCol";
+import textLabels from "../src/textLabels";
 
 describe("<MUIDataTableViewCol />", function() {
   let columns;
@@ -11,11 +12,12 @@ describe("<MUIDataTableViewCol />", function() {
 
   before(() => {
     columns = ["a", "b", "c", "d"];
-    options = {};
+    options = {
+      textLabels,
+    };
   });
 
   it("should render view columns", () => {
-    const options = {};
     const mountWrapper = mount(<MUIDataTableViewCol columns={columns} options={options} />);
 
     const actualResult = mountWrapper.find(Checkbox);
@@ -23,7 +25,6 @@ describe("<MUIDataTableViewCol />", function() {
   });
 
   it("should trigger onColumnUpdate prop callback when calling method handleColChange", () => {
-    const options = {};
     const onColumnUpdate = spy();
 
     const shallowWrapper = shallow(
