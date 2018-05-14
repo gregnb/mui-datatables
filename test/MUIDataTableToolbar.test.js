@@ -13,6 +13,7 @@ import FilterIcon from "@material-ui/icons/FilterList";
 
 import MUIDataTableToolbar from "../src/MUIDataTableToolbar";
 import MUIDataTableSearch from "../src/MUIDataTableSearch";
+import textLabels from "../src/textLabels";
 
 describe("<MUIDataTableToolbar />", function() {
   let data;
@@ -26,6 +27,7 @@ describe("<MUIDataTableToolbar />", function() {
       search: true,
       filter: true,
       viewColumns: true,
+      textLabels,
     };
     columns = ["First Name", "Company", "City", "State"];
     data = [

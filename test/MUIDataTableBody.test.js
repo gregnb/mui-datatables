@@ -2,6 +2,7 @@ import React from "react";
 import { spy, stub } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
+import textLabels from "../src/textLabels";
 import MUIDataTableBody from "../src/MUIDataTableBody";
 import MUIDataTableSelectCell from "../src/MUIDataTableSelectCell";
 
@@ -42,7 +43,7 @@ describe("<MUIDataTableBody />", function() {
   });
 
   it("should render a table body with no records if no data provided", () => {
-    const options = { selectableRows: false };
+    const options = { selectableRows: false, textLabels };
     const selectRowUpdate = () => {};
 
     const mountWrapper = mount(

@@ -9,6 +9,8 @@ import MUIDataTableBody from "./MUIDataTableBody";
 import MUIDataTableHead from "./MUIDataTableHead";
 import MUIDataTablePagination from "./MUIDataTablePagination";
 import cloneDeep from "lodash.clonedeep";
+import merge from "lodash.merge";
+import textLabels from "./textLabels";
 import { withStyles } from "material-ui/styles";
 
 const defaultTableStyles = {
@@ -57,6 +59,7 @@ class MUIDataTable extends React.Component {
     options: PropTypes.shape({
       responsive: PropTypes.oneOf(["stacked", "scroll"]),
       filterType: PropTypes.oneOf(["dropdown", "checkbox", "multiselect"]),
+      textLabels: PropTypes.object,
       pagination: PropTypes.bool,
       selectableRows: PropTypes.bool,
       caseSensitive: PropTypes.bool,
@@ -127,6 +130,7 @@ class MUIDataTable extends React.Component {
       responsive: "stacked",
       filterType: "checkbox",
       pagination: true,
+      textLabels,
       selectableRows: true,
       caseSensitive: false,
       rowHover: true,
@@ -141,7 +145,7 @@ class MUIDataTable extends React.Component {
       download: true,
     };
 
-    this.options = { ...defaultOptions, ...props.options };
+    this.options = merge(defaultOptions, props.options);
   }
 
   setTableOptions(props) {

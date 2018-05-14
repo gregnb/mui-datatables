@@ -47,6 +47,7 @@ class MUIDataTablePagination extends React.Component {
 
   render() {
     const { count, classes, options, rowsPerPage, page } = this.props;
+    const textLabels = options.textLabels.pagination;
 
     return (
       <TableFooter>
@@ -61,11 +62,13 @@ class MUIDataTablePagination extends React.Component {
             count={count}
             rowsPerPage={rowsPerPage}
             page={page}
+            labelRowsPerPage={textLabels.rowsPerPage}
+            labelDisplayedRows={({ from, to, count }) => `${from}-${to} ${textLabels.displayRows} ${count}`}
             backIconButtonProps={{
-              "aria-label": "Previous Page",
+              "aria-label": textLabels.previous,
             }}
             nextIconButtonProps={{
-              "aria-label": "Next Page",
+              "aria-label": textLabels.next,
             }}
             rowsPerPageOptions={options.rowsPerPageOptions}
             onChangePage={this.handlePageChange}

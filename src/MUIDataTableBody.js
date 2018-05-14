@@ -109,9 +109,9 @@ class MUIDataTableBody extends React.Component {
           ))
         ) : (
           <MUIDataTableBodyRow options={options}>
-            <MUIDataTableBodyCell colSpan={columns.length} options={options}>
+            <MUIDataTableBodyCell colSpan={options.selectableRows ? columns.length + 1 : columns} options={options}>
               <Typography variant="subheading" className={classes.emptyTitle}>
-                Sorry, no matching records found
+                {options.textLabels.body.noMatch}
               </Typography>
             </MUIDataTableBodyCell>
           </MUIDataTableBodyRow>

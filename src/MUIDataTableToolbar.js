@@ -147,6 +147,7 @@ class MUIDataTableToolbar extends React.Component {
       tableRef,
     } = this.props;
 
+    const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;
     const { showSearch } = this.state;
 
     return (
@@ -169,9 +170,9 @@ class MUIDataTableToolbar extends React.Component {
             </div>
             <div className={toolbarStyles.actions}>
               {options.search ? (
-                <Tooltip title="Search">
+                <Tooltip title={search}>
                   <IconButton
-                    aria-label="Search"
+                    aria-label={search}
                     buttonRef={el => (this.searchButton = el)}
                     classes={{ root: this.getActiveIcon(toolbarStyles, "search") }}
                     onClick={this.setActiveIcon.bind(null, "search")}>
@@ -182,9 +183,9 @@ class MUIDataTableToolbar extends React.Component {
                 false
               )}
               {options.download ? (
-                <Tooltip title="Download CSV">
+                <Tooltip title={downloadCsv}>
                   <IconButton
-                    aria-label="Download CSV"
+                    aria-label={downloadCsv}
                     classes={{ root: toolbarStyles.icon }}
                     onClick={this.handleCSVDownload}>
                     <DownloadIcon />
@@ -194,11 +195,11 @@ class MUIDataTableToolbar extends React.Component {
                 false
               )}
               {options.print ? (
-                <Tooltip title="Print">
+                <Tooltip title={print}>
                   <span>
                     <ReactToPrint
                       trigger={() => (
-                        <IconButton aria-label="Print" classes={{ root: toolbarStyles.icon }}>
+                        <IconButton aria-label={print} classes={{ root: toolbarStyles.icon }}>
                           <PrintIcon />
                         </IconButton>
                       )}
@@ -213,10 +214,10 @@ class MUIDataTableToolbar extends React.Component {
                 <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
                   <MUIPopoverTarget>
                     <IconButton
-                      aria-label="View Columns"
+                      aria-label={viewColumns}
                       classes={{ root: this.getActiveIcon(toolbarStyles, "viewcolumns") }}
                       onClick={this.setActiveIcon.bind(null, "viewcolumns")}>
-                      <Tooltip title="View Columns">
+                      <Tooltip title={viewColumns}>
                         <ViewColumnIcon />
                       </Tooltip>
                     </IconButton>
@@ -237,10 +238,10 @@ class MUIDataTableToolbar extends React.Component {
                 <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
                   <MUIPopoverTarget>
                     <IconButton
-                      aria-label="Filter Table"
+                      aria-label={filterTable}
                       classes={{ root: this.getActiveIcon(toolbarStyles, "filter") }}
                       onClick={this.setActiveIcon.bind(null, "filter")}>
-                      <Tooltip title="Filter Table">
+                      <Tooltip title={filterTable}>
                         <FilterIcon />
                       </Tooltip>
                     </IconButton>

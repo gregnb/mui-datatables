@@ -5,6 +5,7 @@ import { assert, expect, should } from "chai";
 import MUIDataTable from "../src/MUIDataTable";
 import MUIDataTableFilterList from "../src/MUIDataTableFilterList";
 import MUIDataTablePagination from "../src/MUIDataTablePagination";
+import textLabels from "../src/textLabels";
 import Chip from "material-ui/Chip";
 import Cities from "../examples/component/cities";
 
@@ -145,6 +146,7 @@ describe("<MUIDataTable />", function() {
   it("should correctly build internal rowsPerPage when provided in options", () => {
     const options = {
       rowsPerPage: 20,
+      textLabels,
     };
 
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);

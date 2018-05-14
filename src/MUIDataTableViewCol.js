@@ -55,12 +55,13 @@ class MUIDataTableViewCol extends React.Component {
   };
 
   render() {
-    const { classes, columns } = this.props;
+    const { classes, columns, options } = this.props;
+    const textLabels = options.textLabels.viewColumns;
 
     return (
-      <FormControl component={"fieldset"} className={classes.root} aria-label="Show/Hide Table Columns">
+      <FormControl component={"fieldset"} className={classes.root} aria-label={textLabels.titleAria}>
         <Typography variant="caption" className={classes.title}>
-          Show Columns
+          {textLabels.title}
         </Typography>
         <FormGroup className={classes.formGroup}>
           {columns.map((column, index) => {

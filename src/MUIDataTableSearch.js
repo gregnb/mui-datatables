@@ -51,7 +51,7 @@ class MUIDataTableSearch extends React.Component {
   };
 
   render() {
-    const { classes, onHide } = this.props;
+    const { classes, options, onHide } = this.props;
 
     return (
       <Grow appear in={true} timeout={300}>
@@ -61,7 +61,7 @@ class MUIDataTableSearch extends React.Component {
             className={classes.searchText}
             autoFocus={true}
             InputProps={{
-              "aria-label": "Search Table",
+              "aria-label": options.textLabels.toolbar.search,
             }}
             onChange={this.handleTextChange}
             fullWidth={true}
