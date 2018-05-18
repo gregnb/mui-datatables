@@ -56,11 +56,15 @@ class MUIDataTableToolbarSelect extends React.Component {
             {selectedRows.length} {textLabels.text}
           </Typography>
         </div>
-        <Tooltip title={textLabels.delete}>
-          <IconButton className={classes.iconButton} onClick={onRowsDelete} aria-label={textLabels.deleteAria}>
-            <DeleteIcon className={classes.deleteIcon} />
-          </IconButton>
-        </Tooltip>
+        {options.customToolbarSelect ? (
+          options.customToolbarSelect(selectedRows)
+        ) : (
+          <Tooltip title={textLabels.delete}>
+            <IconButton className={classes.iconButton} onClick={onRowsDelete} aria-label={textLabels.deleteAria}>
+              <DeleteIcon className={classes.deleteIcon} />
+            </IconButton>
+          </Tooltip>
+        )}
       </Paper>
     );
   }

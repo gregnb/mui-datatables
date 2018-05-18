@@ -61,6 +61,7 @@ class MUIDataTable extends React.Component {
       filterType: PropTypes.oneOf(["dropdown", "checkbox", "multiselect"]),
       textLabels: PropTypes.object,
       pagination: PropTypes.bool,
+      customToolbarSelect: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       selectableRows: PropTypes.bool,
       caseSensitive: PropTypes.bool,
       rowHover: PropTypes.bool,
