@@ -25,7 +25,7 @@ class MUIDataTableBody extends React.Component {
     /** Data used to filter table against */
     filterList: PropTypes.array,
     /** Table rows selected */
-    selectedRows: PropTypes.array,
+    selectedRows: PropTypes.object,
     /** Callback to trigger table row select */
     selectRowUpdate: PropTypes.func,
     /** Data used to search table against */
@@ -68,11 +68,11 @@ class MUIDataTableBody extends React.Component {
 
   isRowSelected(index) {
     const { selectedRows } = this.props;
-    return selectedRows.indexOf(this.getRowIndex(index)) >= 0 ? true : false;
+    return selectedRows.lookup && selectedRows.lookup[index] ? true : false;
   }
 
-  handleRowSelect = index => {
-    this.props.selectRowUpdate("cell", this.getRowIndex(index));
+  handleRowSelect = data => {
+    this.props.selectRowUpdate("cell", data);
   };
 
   render() {
@@ -82,15 +82,15 @@ class MUIDataTableBody extends React.Component {
     return (
       <TableBody>
         {tableRows ? (
-          tableRows.map((row, rowIndex) => (
+          tableRows.map(({ data: row, dataIndex }, rowIndex) => (
             <MUIDataTableBodyRow
               options={options}
               rowSelected={options.selectableRows ? this.isRowSelected(rowIndex) : false}
               key={rowIndex}>
               {options.selectableRows ? (
                 <MUIDataTableSelectCell
-                  onChange={this.handleRowSelect.bind(null, rowIndex)}
-                  checked={this.isRowSelected(rowIndex)}
+                  onChange={this.handleRowSelect.bind(null, { index: this.getRowIndex(rowIndex), dataIndex: dataIndex })}
+                  checked={this.isRowSelected(this.getRowIndex(rowIndex))}
                 />
               ) : (
                 false

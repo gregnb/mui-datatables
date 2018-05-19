@@ -9,7 +9,7 @@ class Example extends React.Component {
 
     const columns = ["Name", "Title", "Location", "Age", "Salary"];
 
-    const data = [
+    let data = [
       ["Gabby George", "Business Analyst", "Minneapolis", 30, 100000],
       ["Aiden Lloyd", "Business Consultant", "Dallas",  55, 200000],
       ["Jaden Collins", "Attorney", "Santa Ana", 27, 500000],
@@ -42,13 +42,19 @@ class Example extends React.Component {
       ["Mason Ray", "Computer Scientist", "San Francisco", 39, 142000]
     ];
 
+    for (let i = 0; i < 100000; i++) {
+      data.push(["Mason Ray", "Computer Scientist", "San Francisco", 39, 142000]);
+    }
+
     const options = {
       filter: true,
       selectableRows: true,
       filterType: 'dropdown',
       responsive: 'stacked',
       rowsPerPage: 10,
-      customToolbarSelect: (selectedRows) => <CustomToolbarSelect selectedRows={selectedRows} />
+      onRowsSelect: (rowsSelected, allRows) => {
+        console.log(rowsSelected, allRows);
+      },
     };
 
     return (

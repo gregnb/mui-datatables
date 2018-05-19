@@ -53,7 +53,7 @@ class MUIDataTableToolbarSelect extends React.Component {
       <Paper className={classes.root}>
         <div>
           <Typography variant="subheading" className={classes.title}>
-            {selectedRows.length} {textLabels.text}
+            {selectedRows.data.length} {textLabels.text}
           </Typography>
         </div>
         {options.customToolbarSelect ? (
