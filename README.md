@@ -184,7 +184,8 @@ const columns = [
 |**`display`**|boolean|true|Display column in table
 |**`filter`**|boolean|true|Display column in filter list
 |**`sort`**|boolean|true|Enable/disable sorting on column
-|**`customRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(index: number, value: any, updateValue: function) => string`&#124;` React Component`
+|**`customRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(index: number, value: any, updateValue: function) => string`&#124;` React Component` [Examples](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
+
 
 ## Customize Styling
 
