@@ -121,7 +121,7 @@ The component accepts the following props:
 |:--:|:-----|:-----|
 |**`title`**|array|Title used to caption table
 |**`columns`**|array|Columns used to describe table. Must be either an array of simple strings or objects describing a column
-|**`data`**|array|Data used to describe table. Must be an array of simple strings
+|**`data`**|array|Data used to describe table. Must be an array of non-null simple strings
 |**`options`**|object|Options used to describe table
 
 #### Options:
