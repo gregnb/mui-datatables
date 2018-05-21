@@ -121,7 +121,7 @@ The component accepts the following props:
 |:--:|:-----|:-----|
 |**`title`**|array|Title used to caption table
 |**`columns`**|array|Columns used to describe table. Must be either an array of simple strings or objects describing a column
-|**`data`**|array|Data used to describe table. Must be an array of non-null simple strings
+|**`data`**|array|Data used to describe table. Must be an array of strings or numbers
 |**`options`**|object|Options used to describe table
 
 #### Options:
@@ -184,7 +184,7 @@ const columns = [
 |**`display`**|boolean|true|Display column in table
 |**`filter`**|boolean|true|Display column in filter list
 |**`sort`**|boolean|true|Enable/disable sorting on column
-|**`customRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(index: number, value: any, updateValue: function) => string`&#124;` React Component` [Examples](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
+|**`customRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(index: number, value: any, updateValue: function) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
 
 
 ## Customize Styling
