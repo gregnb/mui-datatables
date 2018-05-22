@@ -12,7 +12,7 @@ describe("<MUIDataTableSelectCell />", function() {
   it("should render table toolbar select", () => {
     const onRowsDelete = () => {};
     const mountWrapper = mount(
-      <MUIDataTableToolbarSelect options={{ textLabels }} selectedRows={[1]} onRowsDelete={onRowsDelete} />,
+      <MUIDataTableToolbarSelect options={{ textLabels }} selectedRows={{ data: [1] }} onRowsDelete={onRowsDelete} />,
     );
 
     const actualResult = mountWrapper.find(DeleteIcon);

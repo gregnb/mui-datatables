@@ -89,7 +89,10 @@ class MUIDataTableBody extends React.Component {
               key={rowIndex}>
               {options.selectableRows ? (
                 <MUIDataTableSelectCell
-                  onChange={this.handleRowSelect.bind(null, { index: this.getRowIndex(rowIndex), dataIndex: dataIndex })}
+                  onChange={this.handleRowSelect.bind(null, {
+                    index: this.getRowIndex(rowIndex),
+                    dataIndex: dataIndex,
+                  })}
                   checked={this.isRowSelected(this.getRowIndex(rowIndex))}
                 />
               ) : (

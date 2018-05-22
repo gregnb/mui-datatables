@@ -36,7 +36,7 @@ const defaultTableStyles = {
 
 const TABLE_LOAD = {
   INITIAL: 1,
-  UPDATE: 2
+  UPDATE: 2,
 };
 
 class MUIDataTable extends React.Component {
@@ -91,7 +91,7 @@ class MUIDataTable extends React.Component {
     data: [],
     columns: [],
   };
-  
+
   state = {
     open: false,
     announceText: null,
@@ -104,7 +104,7 @@ class MUIDataTable extends React.Component {
     filterList: [],
     selectedRows: {
       data: [],
-      lookup: {}
+      lookup: {},
     },
     showResponsive: false,
     searchText: null,
@@ -206,16 +206,15 @@ class MUIDataTable extends React.Component {
       filterList[colIndex] = [];
 
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
-
-        let value = (status === TABLE_LOAD.INITIAL) ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
+        let value = status === TABLE_LOAD.INITIAL ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
 
         if (tableData[rowIndex] === undefined) {
           tableData.push({
-            index: (status === TABLE_LOAD.INITIAL) ? rowIndex : data[rowIndex].index,
-            data: (status === TABLE_LOAD.INITIAL) ? data[rowIndex] : data[rowIndex].data
+            index: status === TABLE_LOAD.INITIAL ? rowIndex : data[rowIndex].index,
+            data: status === TABLE_LOAD.INITIAL ? data[rowIndex] : data[rowIndex].data,
           });
         }
-        
+
         if (typeof columnOptions.customRender === "function") {
           const funcResult = columnOptions.customRender(rowIndex, value);
 
@@ -248,7 +247,7 @@ class MUIDataTable extends React.Component {
       filterList: filterList,
       selectedRows: {
         data: [],
-        lookup: {}
+        lookup: {},
       },
       data: tableData,
       displayData: this.getDisplayData(columnData, tableData, filterList, prevState.searchText),
@@ -329,7 +328,6 @@ class MUIDataTable extends React.Component {
     for (let index = 0; index < data.length; index++) {
       const value = data[index].data;
       if (this.isRowDisplayed(columns, value, filterList, searchText)) {
-
         const columnData = columns.map((column, colIndex) => {
           return typeof column.customRender === "function"
             ? column.customRender(index, value[colIndex], this.updateDataCol.bind(null, index, colIndex))
@@ -490,7 +488,6 @@ class MUIDataTable extends React.Component {
   };
 
   selectRowDelete = () => {
-
     const { selectedRows, data, filterList } = this.state;
 
     const selectedMap = this.buildSelectedMap(selectedRows.data);
@@ -502,21 +499,24 @@ class MUIDataTable extends React.Component {
 
     this.updateToolbarSelect(false);
 
-    this.setTableData({
-      columns: this.props.columns,
-      data: cleanRows,
-      options: {
-        filterList: filterList,
+    this.setTableData(
+      {
+        columns: this.props.columns,
+        data: cleanRows,
+        options: {
+          filterList: filterList,
+        },
       },
-    }, TABLE_LOAD.UPDATE);
+      TABLE_LOAD.UPDATE,
+    );
   };
 
-  buildSelectedMap = (rows) => {
+  buildSelectedMap = rows => {
     return rows.reduce((accum, { index }) => {
       accum[index] = true;
       return accum;
     }, {});
-  }
+  };
 
   selectRowUpdate = (type, value) => {
     if (type === "head") {
@@ -543,7 +543,7 @@ class MUIDataTable extends React.Component {
             curSelectedRows: selectedRows,
             selectedRows: {
               data: newRows,
-              lookup: selectedMap
+              lookup: selectedMap,
             },
           };
         },
@@ -556,7 +556,6 @@ class MUIDataTable extends React.Component {
     } else if (type === "cell") {
       this.setState(
         prevState => {
-          
           const { index, dataIndex } = value;
           let selectedRows = [...prevState.selectedRows.data];
           let rowPos = -1;
@@ -573,12 +572,12 @@ class MUIDataTable extends React.Component {
           } else {
             selectedRows.push(value);
           }
-          
+
           return {
             selectedRows: {
               lookup: this.buildSelectedMap(selectedRows),
               data: selectedRows,
-            }
+            },
           };
         },
         () => {
@@ -600,7 +599,6 @@ class MUIDataTable extends React.Component {
   // revisit if this can be optimzed
   //
   sortTable(data, col, order) {
-
     let sortedData = data.map((row, sIndex) => ({
       data: row.data[col],
       position: sIndex,
@@ -625,12 +623,12 @@ class MUIDataTable extends React.Component {
       selectedRows: {
         lookup: this.buildSelectedMap(selectedRows),
         data: selectedRows,
-      }
+      },
     };
   }
 
   render() {
-    const { classes, title,  } = this.props;
+    const { classes, title } = this.props;
     const {
       announceText,
       data,
@@ -644,8 +642,7 @@ class MUIDataTable extends React.Component {
       searchText,
     } = this.state;
 
-    if (!data.length)
-      return false;
+    if (!data.length) return false;
 
     return (
       <Paper elevation={4} ref={el => (this.tableContent = el)}>
