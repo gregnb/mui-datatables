@@ -129,10 +129,12 @@ The component accepts the following props:
 |:--:|:-----|:--|:-----|
 |**`page`**|number||User provided starting page for pagination
 |**`filterList`**|array||User provided filter list
+|**`rowsSelected`**|array||User provided selected rows
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox", "dropdown", or "multiselect"
 |**`textLabels `**|object||User provided labels to localize text
 |**`pagination`**|boolean|true|Enable/disable pagination
 |**`selectableRows`**|boolean|true|Enable/disable row selection
+|**`customToolbarSelect`**|function||Render a custom selected rows toolbar
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
 |**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: 'stacked', 'scroll'
 |**`rowsPerPage`**|number|10|Number of rows allowed per page
