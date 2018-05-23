@@ -48,6 +48,7 @@ class Example extends React.Component {
       responsive: 'stacked',
       rowsPerPage: 10,
       page: 1,
+      rowsSelected: [2, 5],
       filterList: [
         ["Aaren Rose"],
         [],

@@ -129,6 +129,7 @@ The component accepts the following props:
 |:--:|:-----|:--|:-----|
 |**`page`**|number||User provided starting page for pagination
 |**`filterList`**|array||User provided filter list
+|**`rowsSelected`**|array||User provided selected rows
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox", "dropdown", or "multiselect"
 |**`textLabels `**|object||User provided labels to localize text
 |**`pagination`**|boolean|true|Enable/disable pagination

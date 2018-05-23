@@ -72,6 +72,7 @@ class MUIDataTable extends React.Component {
       rowHover: PropTypes.bool,
       page: PropTypes.number,
       filterList: PropTypes.array,
+      rowsSelected: PropTypes.array,
       rowsPerPage: PropTypes.number,
       rowsPerPageOptions: PropTypes.array,
       filter: PropTypes.bool,
@@ -240,15 +241,26 @@ class MUIDataTable extends React.Component {
       throw new Error("Provided options.filterList does not match the column length");
     }
 
+    let selectedRowsData = {
+      data: [],
+      lookup: {},
+    };
+
+    if (TABLE_LOAD.INITIAL) {
+      if (options.rowsSelected && options.rowsSelected.length) {
+        options.rowsSelected.forEach(row => {
+          selectedRowsData.data.push({ index: row, dataIndex: row });
+          selectedRowsData.lookup[row] = true;
+        });
+      }
+    }
+
     /* set source data and display Data set source set */
     this.setState(prevState => ({
       columns: columnData,
       filterData: filterData,
       filterList: filterList,
-      selectedRows: {
-        data: [],
-        lookup: {},
-      },
+      selectedRows: selectedRowsData,
       data: tableData,
       displayData: this.getDisplayData(columnData, tableData, filterList, prevState.searchText),
     }));
