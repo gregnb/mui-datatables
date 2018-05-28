@@ -97,17 +97,22 @@ class MUIDataTableToolbar extends React.Component {
     const { data, columns } = this.props;
 
     const CSVHead = columns.reduce((soFar, column) => soFar + '"' + column.name + '",', "").slice(0, -1) + "\r\n";
-    const CSVBody = data.reduce((soFar, row) => soFar + '"' + row.join('","') + '"\r\n', []).trim();
+    const CSVBody = data.reduce((soFar, row) => soFar + '"' + row.data.join('","') + '"\r\n', []).trim();
 
-    let CSVLink = document.createElement("a");
-    CSVLink.href = "data:text/csv;charset=utf-8;base64," + window.btoa(unescape(encodeURIComponent(CSVHead + CSVBody)));
-    CSVLink.target = "_blank";
-    CSVLink.download = "myFile.csv";
+    /* taken from react-csv */
+    const csv = `${CSVHead}\n${CSVBody}`;
+    const blob = new Blob([csv], { type: "text/csv" });
+    const dataURI = `data:text/csv;charset=utf-8,${csv}`;
 
-    document.body.appendChild(CSVLink);
-    CSVLink.click();
+    const URL = window.URL || window.webkitURL;
+    const downloadURI = typeof URL.createObjectURL === "undefined" ? dataURI : URL.createObjectURL(blob);
 
-    CSVLink.parentNode.removeChild(CSVLink);
+    let link = document.createElement("a");
+    link.setAttribute("href", downloadURI);
+    link.setAttribute("download", "tableDownload.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   setActiveIcon = iconName => {

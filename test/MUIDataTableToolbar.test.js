@@ -29,10 +29,22 @@ describe("<MUIDataTableToolbar />", function() {
     };
     columns = ["First Name", "Company", "City", "State"];
     data = [
-      ["Joe James", "Test Corp", "Yonkers", "NY"],
-      ["John Walsh", "Test Corp", "Hartford", "CT"],
-      ["Bob Herm", "Test Corp", "Tampa", "FL"],
-      ["James Houston", "Test Corp", "Dallas", "TX"],
+      {
+        data: ["Joe James", "Test Corp", "Yonkers", "NY"],
+        dataIndex: 0,
+      },
+      {
+        data: ["John Walsh", "Test Corp", "Hartford", "CT"],
+        dataIndex: 1,
+      },
+      {
+        data: ["Bob Herm", "Test Corp", "Tampa", "FL"],
+        dataIndex: 2,
+      },
+      {
+        data: ["James Houston", "Test Corp", "Dallas", "TX"],
+        dataIndex: 3,
+      },
     ];
   });
 
