@@ -208,7 +208,7 @@ class MUIDataTable extends React.Component {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
         let value = status === TABLE_LOAD.INITIAL ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
 
-        if (tableData[rowIndex] === undefined) {
+        if (typeof tableData[rowIndex] === "undefined") {
           tableData.push({
             index: status === TABLE_LOAD.INITIAL ? rowIndex : data[rowIndex].index,
             data: status === TABLE_LOAD.INITIAL ? data[rowIndex] : data[rowIndex].data,
@@ -216,7 +216,6 @@ class MUIDataTable extends React.Component {
         }
 
         if (typeof columnOptions.customRender === "function") {
-
           const tableMeta = this.getCustomRenderMeta(rowIndex, colIndex, value, [], columnData, this.state);
           const funcResult = columnOptions.customRender(value, tableMeta);
 
@@ -299,7 +298,7 @@ class MUIDataTable extends React.Component {
             ? funcResult
             : funcResult.props && funcResult.props.value
               ? funcResult.props.value
-              : column;
+              : columnValue;
       }
 
       displayRow.push(columnDisplay);
