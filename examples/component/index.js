@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { FormControlLabel } from 'material-ui/Form';
-import Switch from 'material-ui/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 import MUIDataTable from "../../src/";
 import Cities from "./cities";
 
@@ -26,11 +26,11 @@ class Example extends React.Component {
         name: "Location",
         options: {
           filter: true,
-          customRender: (index, value, updateValue) => {            
+          customRender: (value, tableMeta, updateValue) => {
             return (
               <Cities
                 value={value}
-                index={index}
+                index={tableMeta.columnIndex}
                 change={event => updateValue(event)}
               />
             );
@@ -47,7 +47,7 @@ class Example extends React.Component {
         name: "Salary",
         options: {
           filter: true,
-          customRender: (index, value) => {
+          customRender: (value, tableMeta, updateValue) => {
 
             const nf = new Intl.NumberFormat('en-US', {
               style: 'currency',
@@ -64,18 +64,22 @@ class Example extends React.Component {
         name: "Active",
         options: {
           filter: true,
-          customRender: (index, value, updateValue) => (
-            <FormControlLabel
-              label={value ? "Yes" : "No"}
-              value={value ? "Yes" : "No"}
-              control={
-                <Switch color="primary" checked={value} value={value ? "Yes" : "No"} />
-              }
-              onChange={event => {
-                updateValue(event.target.value === "Yes" ? false : true);
-              }}
-            />
-          )
+          customRender: (value, tableMeta, updateValue) => {
+
+            return (
+              <FormControlLabel
+                label={value ? "Yes" : "No"}
+                value={value ? "Yes" : "No"}
+                control={
+                  <Switch color="primary" checked={value} value={value ? "Yes" : "No"} />
+                }
+                onChange={event => {
+                  updateValue(event.target.value === "Yes" ? false : true);
+                }}
+              />
+            );
+
+          }
         }
       }
     ];
