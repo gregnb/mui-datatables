@@ -94,7 +94,6 @@ class MUIDataTable extends React.Component {
   };
 
   state = {
-    open: false,
     announceText: null,
     data: [],
     displayData: [],
@@ -209,7 +208,7 @@ class MUIDataTable extends React.Component {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
         let value = status === TABLE_LOAD.INITIAL ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
 
-        if (tableData[rowIndex] === undefined) {
+        if (typeof tableData[rowIndex] === "undefined") {
           tableData.push({
             index: status === TABLE_LOAD.INITIAL ? rowIndex : data[rowIndex].index,
             data: status === TABLE_LOAD.INITIAL ? data[rowIndex] : data[rowIndex].data,
@@ -217,7 +216,8 @@ class MUIDataTable extends React.Component {
         }
 
         if (typeof columnOptions.customRender === "function") {
-          const funcResult = columnOptions.customRender(rowIndex, value);
+          const tableMeta = this.getCustomRenderMeta(rowIndex, colIndex, value, [], columnData, this.state);
+          const funcResult = columnOptions.customRender(value, tableMeta);
 
           if (React.isValidElement(funcResult) && funcResult.props.value) {
             value = funcResult.props.value;
@@ -269,39 +269,53 @@ class MUIDataTable extends React.Component {
   /*
    *  Build the table data used to display to the user (ie: after filter/search applied)
    */
-
-  isRowDisplayed(columns, row, filterList, searchText) {
-    let isFiltered = false,
-      isSearchFound = false;
+  computeDisplayRow(columns, row, rowIndex, filterList, searchText) {
+    let isFiltered = false;
+    let isSearchFound = false;
+    let displayRow = [];
 
     for (let index = 0; index < row.length; index++) {
-      let column = row[index];
+      let columnDisplay = row[index];
+      let columnValue = row[index];
 
       if (columns[index].customRender) {
-        const funcResult = columns[index].customRender(index, column);
-        column =
+        const tableMeta = this.getCustomRenderMeta(rowIndex, index, row, columns[index], this.state.data, {
+          ...this.state,
+          filterList: filterList,
+          searchText: searchText,
+        });
+
+        const funcResult = columns[index].customRender(
+          columnValue,
+          tableMeta,
+          this.updateDataCol.bind(null, rowIndex, index),
+        );
+        columnDisplay = funcResult;
+
+        /* drill down to get the value of a cell */
+        columnValue =
           typeof funcResult === "string"
             ? funcResult
             : funcResult.props && funcResult.props.value
               ? funcResult.props.value
-              : column;
+              : columnValue;
       }
 
-      if (filterList[index].length && filterList[index].indexOf(column) < 0) {
+      displayRow.push(columnDisplay);
+
+      if (filterList[index].length && filterList[index].indexOf(columnValue) < 0) {
         isFiltered = true;
-        break;
       }
 
-      const searchCase = !this.options.caseSensitive ? column.toString().toLowerCase() : column.toString();
+      const searchCase = !this.options.caseSensitive ? columnValue.toString().toLowerCase() : columnValue.toString();
 
       if (searchText && searchCase.indexOf(searchText.toLowerCase()) >= 0) {
         isSearchFound = true;
-        break;
       }
     }
 
-    if (isFiltered || (searchText && !isSearchFound)) return false;
-    else return true;
+    if (isFiltered || (searchText && !isSearchFound)) return null;
+    else return displayRow;
   }
 
   updateDataCol = (row, index, value) => {
@@ -309,7 +323,8 @@ class MUIDataTable extends React.Component {
       let changedData = cloneDeep(prevState.data);
       let filterData = cloneDeep(prevState.filterData);
 
-      const funcResult = prevState.columns[index].customRender(index, value);
+      const tableMeta = this.getCustomRenderMeta(row, index, row, prevState.columns[index], prevState.data, prevState);
+      const funcResult = prevState.columns[index].customRender(value, tableMeta);
 
       const filterValue =
         React.isValidElement(funcResult) && funcResult.props.value
@@ -319,7 +334,7 @@ class MUIDataTable extends React.Component {
       const prevFilterIndex = filterData[index].indexOf(filterValue);
       filterData[index].splice(prevFilterIndex, 1, filterValue);
 
-      changedData[row][index] = value;
+      changedData[row].data[index] = value;
 
       if (this.options.sortFilterList) {
         const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
@@ -334,20 +349,29 @@ class MUIDataTable extends React.Component {
     });
   };
 
+  getCustomRenderMeta = (rowIndex, colIndex, rowData, columnData, tableData, curState) => {
+    const { columns, data, displayData, filterData, ...tableState } = curState;
+
+    return {
+      rowIndex: rowIndex,
+      columnIndex: colIndex,
+      columnData: columnData,
+      rowData: rowData,
+      tableData: tableData,
+      tableState: tableState,
+    };
+  };
+
   getDisplayData(columns, data, filterList, searchText) {
     let newRows = [];
 
     for (let index = 0; index < data.length; index++) {
       const value = data[index].data;
-      if (this.isRowDisplayed(columns, value, filterList, searchText)) {
-        const columnData = columns.map((column, colIndex) => {
-          return typeof column.customRender === "function"
-            ? column.customRender(index, value[colIndex], this.updateDataCol.bind(null, index, colIndex))
-            : value[colIndex];
-        });
+      const displayRow = this.computeDisplayRow(columns, value, index, filterList, searchText);
 
+      if (displayRow) {
         newRows.push({
-          data: columnData,
+          data: displayRow,
           dataIndex: data[index].index,
         });
       }
@@ -607,9 +631,6 @@ class MUIDataTable extends React.Component {
       (order === "asc" ? -1 : 1);
   }
 
-  //
-  // revisit if this can be optimzed
-  //
   sortTable(data, col, order) {
     let sortedData = data.map((row, sIndex) => ({
       data: row.data[col],

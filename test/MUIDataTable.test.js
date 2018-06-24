@@ -14,10 +14,10 @@ describe("<MUIDataTable />", function() {
   let displayData;
   let columns;
   let tableData;
-  let renderCities = (index, value, updateValue) => (
-    <Cities value={value} index={index} change={event => updateValue(event)} />
+  let renderCities = (value, tableMeta, updateValueFn) => (
+    <Cities value={value} index={tableMeta.rowIndex} change={event => updateValueFn(event)} />
   );
-  let renderName = (index, value) => value.split(" ")[1] + ", " + value.split(" ")[0];
+  let renderName = value => value.split(" ")[1] + ", " + value.split(" ")[0];
 
   before(() => {
     columns = [
@@ -35,27 +35,27 @@ describe("<MUIDataTable />", function() {
     // internal table data built from source data provided
     displayData = JSON.stringify([
       {
-        data: ["James, Joe", "Test Corp", renderCities(0, "Yonkers"), "NY"],
+        data: ["James, Joe", "Test Corp", renderCities("Yonkers", { rowIndex: 0 }), "NY"],
         dataIndex: 0,
       },
       {
-        data: ["Walsh, John", "Test Corp", renderCities(1, "Hartford"), "CT"],
+        data: ["Walsh, John", "Test Corp", renderCities("Hartford", { rowIndex: 1 }), "CT"],
         dataIndex: 1,
       },
       {
-        data: ["Herm, Bob", "Test Corp", renderCities(2, "Tampa"), "FL"],
+        data: ["Herm, Bob", "Test Corp", renderCities("Tampa", { rowIndex: 2 }), "FL"],
         dataIndex: 2,
       },
       {
-        data: ["Houston, James", "Test Corp", renderCities(3, "Dallas"), "TX"],
+        data: ["Houston, James", "Test Corp", renderCities("Dallas", { rowIndex: 3 }), "TX"],
         dataIndex: 3,
       },
     ]);
     tableData = [
-      { index: 0, data: ["James, Joe", "Test Corp", renderCities(0, "Yonkers"), "NY"] },
-      { index: 1, data: ["Walsh, John", "Test Corp", renderCities(1, "Hartford"), "CT"] },
-      { index: 2, data: ["Herm, Bob", "Test Corp", renderCities(2, "Tampa"), "FL"] },
-      { index: 3, data: ["Houston, James", "Test Corp", renderCities(3, "Dallas"), "TX"] },
+      { index: 0, data: ["James, Joe", "Test Corp", renderCities("Yonkers", { rowIndex: 0 }), "NY"] },
+      { index: 1, data: ["Walsh, John", "Test Corp", renderCities("Hartford", { rowIndex: 1 }), "CT"] },
+      { index: 2, data: ["Herm, Bob", "Test Corp", renderCities("Tampa", { rowIndex: 2 }), "FL"] },
+      { index: 3, data: ["Houston, James", "Test Corp", renderCities("Dallas", { rowIndex: 3 }), "TX"] },
     ];
     renderCities = renderCities;
     renderName = renderName;
@@ -294,7 +294,7 @@ describe("<MUIDataTable />", function() {
     const state = table.state();
 
     const expectedResult = JSON.stringify([
-      { data: ["James, Joe", "Test Corp", renderCities(0, "Yonkers"), "NY"], dataIndex: 0 },
+      { data: ["James, Joe", "Test Corp", renderCities("Yonkers", { rowIndex: 0 }), "NY"], dataIndex: 0 },
     ]);
 
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
@@ -309,10 +309,10 @@ describe("<MUIDataTable />", function() {
     const state = shallowWrapper.state();
 
     const expectedResult = JSON.stringify([
-      { data: ["Herm, Bob", "Test Corp", renderCities(0, "Tampa"), "FL"], dataIndex: 2 },
-      { data: ["Houston, James", "Test Corp", renderCities(1, "Dallas"), "TX"], dataIndex: 3 },
-      { data: ["James, Joe", "Test Corp", renderCities(2, "Yonkers"), "NY"], dataIndex: 0 },
-      { data: ["Walsh, John", "Test Corp", renderCities(3, "Hartford"), "CT"], dataIndex: 1 },
+      { data: ["Herm, Bob", "Test Corp", renderCities("Tampa", { rowIndex: 0 }), "FL"], dataIndex: 2 },
+      { data: ["Houston, James", "Test Corp", renderCities("Dallas", { rowIndex: 1 }), "TX"], dataIndex: 3 },
+      { data: ["James, Joe", "Test Corp", renderCities("Yonkers", { rowIndex: 2 }), "NY"], dataIndex: 0 },
+      { data: ["Walsh, John", "Test Corp", renderCities("Hartford", { rowIndex: 3 }), "CT"], dataIndex: 1 },
     ]);
 
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
@@ -405,6 +405,6 @@ describe("<MUIDataTable />", function() {
     shallowWrapper.update();
 
     const state = shallowWrapper.state();
-    assert.deepEqual(state.data[0][2], "Las Vegas");
+    assert.deepEqual(state.data[0].data[2], "Las Vegas");
   });
 });

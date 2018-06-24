@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    app: "./examples/customize-toolbarselect/index.js"
+    app: "./examples/component/index.js"
   },
   stats: "verbose",
   context: __dirname,
@@ -23,7 +23,10 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /(node_modules)/,
-        use: 'babel-loader'
+        use: [
+          'babel-loader',
+          'eslint-loader'
+        ]
       }
     ]
   },
