@@ -67,6 +67,9 @@ class Example extends React.Component {
       },
       onFilterChange: (column, filters) => {
         console.log(column, filters);
+      },
+      onCellClick: (cellIndex, rowIndex) => {
+        console.log(cellIndex, rowIndex);
       }
     };
 

@@ -18,6 +18,8 @@ class MUIDataTableBody extends React.Component {
   static propTypes = {
     /** Data used to describe table */
     data: PropTypes.array.isRequired,
+    /** Total number of data rows */
+    count: PropTypes.number.isRequired,
     /** Columns used to describe table */
     columns: PropTypes.array.isRequired,
     /** Options used to describe table */
@@ -35,12 +37,12 @@ class MUIDataTableBody extends React.Component {
   };
 
   buildRows() {
-    const { data, page, rowsPerPage } = this.props;
+    const { data, page, rowsPerPage, count } = this.props;
 
     let rows = [];
-    const totalPages = Math.floor(data.length / rowsPerPage);
+    const totalPages = Math.floor(count / rowsPerPage);
     const fromIndex = page === 0 ? 0 : page * rowsPerPage;
-    const toIndex = Math.min(data.length, (page + 1) * rowsPerPage);
+    const toIndex = Math.min(count, (page + 1) * rowsPerPage);
 
     if (page > totalPages && totalPages !== 0) {
       throw new Error(
@@ -52,8 +54,8 @@ class MUIDataTableBody extends React.Component {
       );
     }
 
-    for (let rowIndex = fromIndex; rowIndex < data.length && rowIndex < toIndex; rowIndex++) {
-      rows.push(data[rowIndex]);
+    for (let rowIndex = fromIndex; rowIndex < count && rowIndex < toIndex; rowIndex++) {
+      if (data[rowIndex] !== undefined) rows.push(data[rowIndex]);
     }
 
     return rows.length ? rows : null;
@@ -101,7 +103,12 @@ class MUIDataTableBody extends React.Component {
               {row.map(
                 (column, index) =>
                   columns[index].display ? (
-                    <MUIDataTableBodyCell columnHeader={columns[index].name} options={options} key={index}>
+                    <MUIDataTableBodyCell
+                      rowIndex={rowIndex}
+                      colIndex={index}
+                      columnHeader={columns[index].name}
+                      options={options}
+                      key={index}>
                       {column}
                     </MUIDataTableBodyCell>
                   ) : (
@@ -115,6 +122,8 @@ class MUIDataTableBody extends React.Component {
             <MUIDataTableBodyCell
               colSpan={options.selectableRows ? columns.length + 1 : columns.length}
               options={options}>
+              colIndex={0}
+              rowIndex={0}
               <Typography variant="subheading" className={classes.emptyTitle}>
                 {options.textLabels.body.noMatch}
               </Typography>

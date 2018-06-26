@@ -30,8 +30,15 @@ const defaultBodyCellStyles = {
 };
 
 class MUIDataTableBodyCell extends React.Component {
+  handleClick = () => {
+    const { colIndex, options, rowIndex } = this.props;
+    if (options.onCellClick) {
+      options.onCellClick(colIndex, rowIndex);
+    }
+  };
+
   render() {
-    const { children, classes, columnHeader, options, ...otherProps } = this.props;
+    const { children, classes, colIndex, columnHeader, options, rowIndex, ...otherProps } = this.props;
 
     return [
       <TableCell
@@ -45,6 +52,7 @@ class MUIDataTableBodyCell extends React.Component {
       </TableCell>,
       <TableCell
         key={2}
+        onClick={this.handleClick}
         className={classNames({
           [classes.root]: true,
           [classes.responsiveStacked]: options.responsive === "stacked",

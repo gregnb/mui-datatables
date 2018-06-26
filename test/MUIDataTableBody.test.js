@@ -46,6 +46,7 @@ describe("<MUIDataTableBody />", function() {
     const mountWrapper = mount(
       <MUIDataTableBody
         data={displayData}
+        count={displayData.length}
         columns={columns}
         page={0}
         rowsPerPage={10}
@@ -90,6 +91,7 @@ describe("<MUIDataTableBody />", function() {
     const mountWrapper = mount(
       <MUIDataTableBody
         data={displayData}
+        count={displayData.length}
         columns={columns}
         page={0}
         rowsPerPage={10}
@@ -112,6 +114,7 @@ describe("<MUIDataTableBody />", function() {
     const shallowWrapper = shallow(
       <MUIDataTableBody
         data={displayData}
+        count={displayData.length}
         columns={columns}
         page={1}
         rowsPerPage={2}
@@ -136,6 +139,7 @@ describe("<MUIDataTableBody />", function() {
     const shallowWrapper = shallow(
       <MUIDataTableBody
         data={displayData}
+        count={displayData.length}
         columns={columns}
         page={0}
         rowsPerPage={15}
@@ -160,6 +164,7 @@ describe("<MUIDataTableBody />", function() {
     const shallowWrapper = shallow(
       <MUIDataTableBody
         data={displayData}
+        count={displayData.length}
         columns={columns}
         page={0}
         rowsPerPage={10}
