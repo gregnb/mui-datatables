@@ -40,6 +40,7 @@ export const defaultFilterStyles = {
   },
   resetLink: {
     color: "#027cb5",
+    backgroundColor: "#FFF",
     display: "inline-block",
     marginLeft: "24px",
     fontSize: "12px",
