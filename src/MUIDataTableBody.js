@@ -124,6 +124,7 @@ class MUIDataTableBody extends React.Component {
               options={options}>
               colIndex={0}
               rowIndex={0}
+            >
               <Typography variant="subheading" className={classes.emptyTitle}>
                 {options.textLabels.body.noMatch}
               </Typography>
