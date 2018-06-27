@@ -71,6 +71,7 @@ class MUIDataTable extends React.Component {
       caseSensitive: PropTypes.bool,
       rowHover: PropTypes.bool,
       page: PropTypes.number,
+      count: PropTypes.number,
       filterList: PropTypes.array,
       rowsSelected: PropTypes.array,
       rowsPerPage: PropTypes.number,
@@ -675,7 +676,8 @@ class MUIDataTable extends React.Component {
       searchText,
     } = this.state;
 
-    if (!data.length) return false;
+    const rowCount = this.options.count || displayData.length;
+    if (!rowCount) return false;
 
     return (
       <Paper elevation={4} ref={el => (this.tableContent = el)}>
@@ -713,6 +715,7 @@ class MUIDataTable extends React.Component {
             />
             <MUIDataTableBody
               data={this.state.displayData}
+              count={rowCount}
               columns={columns}
               page={page}
               rowsPerPage={rowsPerPage}
@@ -727,7 +730,7 @@ class MUIDataTable extends React.Component {
         <Table>
           {this.options.pagination ? (
             <MUIDataTablePagination
-              count={displayData.length}
+              count={rowCount}
               page={page}
               rowsPerPage={rowsPerPage}
               changeRowsPerPage={this.changeRowsPerPage}

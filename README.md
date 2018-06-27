@@ -128,6 +128,7 @@ The component accepts the following props:
 |Name|Type|Default|Description
 |:--:|:-----|:--|:-----|
 |**`page`**|number||User provided starting page for pagination
+|**`count`**|number||User provided override for total number of rows
 |**`filterList`**|array||User provided filter list
 |**`rowsSelected`**|array||User provided selected rows
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox", "dropdown", or "multiselect"
@@ -149,6 +150,7 @@ The component accepts the following props:
 |**`viewColumns`**|boolean|true|Show/hide viewColumns icon from toolbar
 |**`onRowsSelect`**|function||Callback function that triggers when row(s) are selected. `function(currentRowsSelected: array, rowsSelected: array) => void`
 |**`onRowsDelete`**|function||Callback function that triggers when row(s) are deleted. `function(rowsDeleted: array) => void`
+|**`onCellClick`**|function||Callback function that triggers when a cell is clicked. `function(colIndex: number, rowIndex: number) => void`
 |**`onChangePage`**|function||Callback function that triggers when a page has changed. `function(currentPage: number) => void`
 |**`onChangeRowsPerPage`**|function||Callback function that triggers when the number of rows per page has changed. `function(numberOfRows: number) => void`
 |**`onSearchChange`**|function||Callback function that triggers when the search text value has changed. `function(searchText: string) => void`
