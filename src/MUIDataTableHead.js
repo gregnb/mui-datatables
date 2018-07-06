@@ -18,7 +18,6 @@ const defaultHeadStyles = {
 class MUIDataTableHead extends React.Component {
   state = {
     activeColumn: null,
-    selectChecked: false,
   };
 
   componentDidMount() {
@@ -33,30 +32,26 @@ class MUIDataTableHead extends React.Component {
   };
 
   handleRowSelect = () => {
-    this.setState(
-      prevState => ({
-        selectChecked: !prevState.selectChecked,
-      }),
-      () => this.props.selectRowUpdate("head", this.state.selectChecked),
-    );
-  };
-
-  handleUpdateCheck = status => {
-    this.setState(() => ({
-      selectChecked: status,
-    }));
+    this.props.selectRowUpdate("head", null);
   };
 
   render() {
-    const { classes, columns, options } = this.props;
-    const { selectChecked } = this.state;
+    const { classes, columns, count, options, data, page, selectedRows } = this.props;
+
+    const numSelected = (selectedRows && selectedRows.data.length) || 0;
+    const isDeterminate = numSelected > 0 && numSelected < count;
+    const isChecked = numSelected === count ? true : false;
 
     return (
       <TableHead
         className={classNames({ [classes.responsiveStacked]: options.responsive === "stacked", [classes.main]: true })}>
         <MUIDataTableHeadRow>
           {options.selectableRows ? (
-            <MUIDataTableSelectCell onChange={this.handleRowSelect.bind(null)} checked={selectChecked} />
+            <MUIDataTableSelectCell
+              onChange={this.handleRowSelect.bind(null)}
+              indeterminate={isDeterminate}
+              checked={isChecked}
+            />
           ) : (
             false
           )}
@@ -66,6 +61,7 @@ class MUIDataTableHead extends React.Component {
                 <MUIDataTableHeadCell
                   key={index}
                   index={index}
+                  type={"cell"}
                   sort={column.sort}
                   sortDirection={column.sortDirection}
                   toggleSort={this.handleToggleColumn}

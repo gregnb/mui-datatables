@@ -94,7 +94,6 @@ describe("<MUIDataTableHead />", function() {
     shallowWrapper.update();
 
     let state = shallowWrapper.state();
-    assert.strictEqual(state.selectChecked, true);
     assert.strictEqual(rowSelectUpdate.callCount, 1);
   });
 });
