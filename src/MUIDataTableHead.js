@@ -38,7 +38,7 @@ class MUIDataTableHead extends React.Component {
   render() {
     const { classes, columns, count, options, data, page, selectedRows } = this.props;
 
-    const numSelected = selectedRows && selectedRows.data.length || 0;
+    const numSelected = (selectedRows && selectedRows.data.length) || 0;
     const isDeterminate = numSelected > 0 && numSelected < count;
     const isChecked = numSelected === count ? true : false;
 
@@ -47,15 +47,19 @@ class MUIDataTableHead extends React.Component {
         className={classNames({ [classes.responsiveStacked]: options.responsive === "stacked", [classes.main]: true })}>
         <MUIDataTableHeadRow>
           {options.selectableRows ? (
-            <MUIDataTableSelectCell onChange={this.handleRowSelect.bind(null)} indeterminate={isDeterminate} checked={isChecked} />
+            <MUIDataTableSelectCell
+              onChange={this.handleRowSelect.bind(null)}
+              indeterminate={isDeterminate}
+              checked={isChecked}
+            />
           ) : (
             false
           )}
           {columns.map(
             (column, index) =>
               column.display ? (
-                <MUIDataTableHeadCell                  
-                  key={index}                  
+                <MUIDataTableHeadCell
+                  key={index}
                   index={index}
                   type={"cell"}
                   sort={column.sort}

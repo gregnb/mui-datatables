@@ -561,8 +561,9 @@ class MUIDataTable extends React.Component {
         prevState => {
           const { data } = prevState;
           const selectedRowsLen = prevState.selectedRows.data.length;
-          const isDeselect = selectedRowsLen === data.length || selectedRowsLen < data.length && selectedRowsLen > 0 ? true : false;
-          
+          const isDeselect =
+            selectedRowsLen === data.length || (selectedRowsLen < data.length && selectedRowsLen > 0) ? true : false;
+
           let selectedRows = Array(data.length)
             .fill()
             .map((d, i) => ({ index: i }));
@@ -711,7 +712,7 @@ class MUIDataTable extends React.Component {
               count={rowCount}
               columns={columns}
               page={page}
-              rowsPerPage={rowsPerPage}              
+              rowsPerPage={rowsPerPage}
               handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
               selectedRows={selectedRows}
               selectRowUpdate={this.selectRowUpdate}
