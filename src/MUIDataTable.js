@@ -559,19 +559,18 @@ class MUIDataTable extends React.Component {
     if (type === "head") {
       this.setState(
         prevState => {
-          const { data, page } = prevState;
-          const rowsPerPage = prevState.rowsPerPage ? prevState.rowsPerPage : this.options.rowsPerPage;
-
-          const fromIndex = page === 0 ? 0 : page * rowsPerPage;
-          const toIndex = Math.min(data.length, (page + 1) * rowsPerPage);
-          let selectedRows = Array(toIndex - fromIndex)
+          const { data } = prevState;
+          const selectedRowsLen = prevState.selectedRows.data.length;
+          const isDeselect = selectedRowsLen === data.length || selectedRowsLen < data.length && selectedRowsLen > 0 ? true : false;
+          
+          let selectedRows = Array(data.length)
             .fill()
-            .map((d, i) => ({ index: i + fromIndex }));
+            .map((d, i) => ({ index: i }));
 
           let newRows = [...prevState.selectedRows, ...selectedRows];
           let selectedMap = this.buildSelectedMap(newRows);
 
-          if (value === false) {
+          if (isDeselect) {
             newRows = prevState.selectedRows.data.filter(({ index }) => !selectedMap[index]);
             selectedMap = this.buildSelectedMap(newRows);
           }
@@ -708,7 +707,13 @@ class MUIDataTable extends React.Component {
             <caption className={classes.caption}>{title}</caption>
             <MUIDataTableHead
               columns={columns}
+              data={this.state.displayData}
+              count={rowCount}
+              columns={columns}
+              page={page}
+              rowsPerPage={rowsPerPage}              
               handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
+              selectedRows={selectedRows}
               selectRowUpdate={this.selectRowUpdate}
               toggleSort={this.toggleSortColumn}
               options={this.options}
