@@ -680,7 +680,7 @@ class MUIDataTable extends React.Component {
     if (!rowCount) return false;
 
     return (
-      <Paper elevation={4} ref={el => (this.tableContent = el)}  className={classes.paper}>
+      <Paper elevation={4} ref={el => (this.tableContent = el)} className={classes.paper}>
         {selectedRows.data.length ? (
           <MUIDataTableToolbarSelect
             options={this.options}
