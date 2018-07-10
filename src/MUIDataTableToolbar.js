@@ -265,6 +265,7 @@ class MUIDataTableToolbar extends React.Component {
               ) : (
                 false
               )}
+              {options.customToolbar ? options.customToolbar() : false}
             </div>
           </Toolbar>
         )}
