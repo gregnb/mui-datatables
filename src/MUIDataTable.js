@@ -67,7 +67,7 @@ class MUIDataTable extends React.Component {
       textLabels: PropTypes.object,
       pagination: PropTypes.bool,
       customToolbar: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
-      customToolbarSelect: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),      
+      customToolbarSelect: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       selectableRows: PropTypes.bool,
       caseSensitive: PropTypes.bool,
       rowHover: PropTypes.bool,
