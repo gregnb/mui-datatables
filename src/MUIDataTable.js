@@ -535,8 +535,6 @@ class MUIDataTable extends React.Component {
       this.options.onRowsDelete(selectedRows);
     }
 
-    this.updateToolbarSelect(false);
-
     this.setTableData(
       {
         columns: this.props.columns,
