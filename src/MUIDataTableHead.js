@@ -1,6 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import TableHead from "@material-ui/core/TableHead";
+import TableCell from "@material-ui/core/TableCell";
 import MUIDataTableHeadRow from "./MUIDataTableHeadRow";
 import MUIDataTableHeadCell from "./MUIDataTableHeadCell";
 import MUIDataTableSelectCell from "./MUIDataTableSelectCell";
@@ -47,11 +48,15 @@ class MUIDataTableHead extends React.Component {
         className={classNames({ [classes.responsiveStacked]: options.responsive === "stacked", [classes.main]: true })}>
         <MUIDataTableHeadRow>
           {options.selectableRows ? (
-            <MUIDataTableSelectCell
-              onChange={this.handleRowSelect.bind(null)}
-              indeterminate={isDeterminate}
-              checked={isChecked}
-            />
+            options.radio ? (
+              <TableCell />
+            ) : (
+              <MUIDataTableSelectCell
+                onChange={this.handleRowSelect.bind(null)}
+                indeterminate={isDeterminate}
+                checked={isChecked}
+              />
+            )
           ) : (
             false
           )}
