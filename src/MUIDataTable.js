@@ -675,9 +675,9 @@ class MUIDataTable extends React.Component {
       searchText,
     } = this.state;
 
-    const rowCount = this.options.count || displayData.length;
+    const rowCount = this.options.count || data.length;
     if (!rowCount) return false;
-
+    
     return (
       <Paper elevation={4} ref={el => (this.tableContent = el)} className={classes.paper}>
         {selectedRows.data.length ? (

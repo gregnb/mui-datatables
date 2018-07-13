@@ -121,7 +121,7 @@ class MUIDataTableBody extends React.Component {
           <MUIDataTableBodyRow options={options}>
             <MUIDataTableBodyCell
               colSpan={options.selectableRows ? columns.length + 1 : columns.length}
-              options={options}>
+              options={options}
               colIndex={0}
               rowIndex={0}
               >
