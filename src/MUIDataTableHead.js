@@ -9,6 +9,12 @@ import { withStyles } from "@material-ui/core/styles";
 
 const defaultHeadStyles = {
   main: {},
+  radioButton: {
+    "@media screen and (max-width: 960px)": {
+      display: "none",
+    },
+    width: "56px",
+  },
   responsiveStacked: {
     "@media screen and (max-width: 960px)": {
       display: "none",
@@ -49,7 +55,7 @@ class MUIDataTableHead extends React.Component {
         <MUIDataTableHeadRow>
           {options.selectableRows ? (
             options.radio ? (
-              <TableCell />
+              <TableCell className={classes.radioButton} />
             ) : (
               <MUIDataTableSelectCell
                 onChange={this.handleRowSelect.bind(null)}
