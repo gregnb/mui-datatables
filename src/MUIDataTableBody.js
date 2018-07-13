@@ -123,8 +123,7 @@ class MUIDataTableBody extends React.Component {
               colSpan={options.selectableRows ? columns.length + 1 : columns.length}
               options={options}
               colIndex={0}
-              rowIndex={0}
-              >
+              rowIndex={0}>
               <Typography variant="subheading" className={classes.emptyTitle}>
                 {options.textLabels.body.noMatch}
               </Typography>
