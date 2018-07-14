@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Checkbox from "@material-ui/core/Checkbox";
+import Radio from "@material-ui/core/Radio";
 import TableCell from "@material-ui/core/TableCell";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -9,6 +10,7 @@ const defaultSelectCellStyles = {
     "@media screen and (max-width: 960px)": {
       display: "none",
     },
+    width: "56px",
   },
   checkboxRoot: {
     "&$checked": {
@@ -30,18 +32,22 @@ class MUIDataTableSelectCell extends React.Component {
   };
 
   render() {
-    const { classes, ...otherProps } = this.props;
+    const { classes, radio, ...otherProps } = this.props;
 
     return (
       <TableCell className={classes.root} padding="checkbox">
-        <Checkbox
-          classes={{
-            root: classes.checkboxRoot,
-            checked: classes.checked,
-            disabled: classes.disabled,
-          }}
-          {...otherProps}
-        />
+        {radio ? (
+          <Radio {...otherProps} />
+        ) : (
+          <Checkbox
+            classes={{
+              root: classes.checkboxRoot,
+              checked: classes.checked,
+              disabled: classes.disabled,
+            }}
+            {...otherProps}
+          />
+        )}
       </TableCell>
     );
   }

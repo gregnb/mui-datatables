@@ -1,6 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import TableHead from "@material-ui/core/TableHead";
+import TableCell from "@material-ui/core/TableCell";
 import MUIDataTableHeadRow from "./MUIDataTableHeadRow";
 import MUIDataTableHeadCell from "./MUIDataTableHeadCell";
 import MUIDataTableSelectCell from "./MUIDataTableSelectCell";
@@ -8,6 +9,12 @@ import { withStyles } from "@material-ui/core/styles";
 
 const defaultHeadStyles = {
   main: {},
+  radioButton: {
+    "@media screen and (max-width: 960px)": {
+      display: "none",
+    },
+    width: "56px",
+  },
   responsiveStacked: {
     "@media screen and (max-width: 960px)": {
       display: "none",
@@ -47,11 +54,15 @@ class MUIDataTableHead extends React.Component {
         className={classNames({ [classes.responsiveStacked]: options.responsive === "stacked", [classes.main]: true })}>
         <MUIDataTableHeadRow>
           {options.selectableRows ? (
-            <MUIDataTableSelectCell
-              onChange={this.handleRowSelect.bind(null)}
-              indeterminate={isDeterminate}
-              checked={isChecked}
-            />
+            options.radio ? (
+              <TableCell className={classes.radioButton} />
+            ) : (
+              <MUIDataTableSelectCell
+                onChange={this.handleRowSelect.bind(null)}
+                indeterminate={isDeterminate}
+                checked={isChecked}
+              />
+            )
           ) : (
             false
           )}
