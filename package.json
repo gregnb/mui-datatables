@@ -7,6 +7,7 @@
     "dist"
   ],
   "scripts": {
+    "prepare": "npm run build",
     "dev": "cross-env NODE_ENV=development webpack-dev-server -d --progress --colors",
     "test": "mocha --require babel-register test/**/*.test.js",
     "docs:dev": "next docs",
