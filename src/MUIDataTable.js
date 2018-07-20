@@ -12,6 +12,7 @@ import cloneDeep from "lodash.clonedeep";
 import merge from "lodash.merge";
 import textLabels from "./textLabels";
 import { withStyles } from "@material-ui/core/styles";
+import classNames from "classnames";
 
 const defaultTableStyles = {
   root: {},
@@ -677,9 +678,9 @@ class MUIDataTable extends React.Component {
 
     const rowCount = this.options.count || data.length;
     if (!rowCount) return false;
-
+    
     return (
-      <Paper elevation={4} ref={el => (this.tableContent = el)} className={classes.paper}>
+      <Paper elevation={4} ref={el => (this.tableContent = el)} className={classNames(classes.root, className)}>
         {selectedRows.data.length ? (
           <MUIDataTableToolbarSelect
             options={this.options}
