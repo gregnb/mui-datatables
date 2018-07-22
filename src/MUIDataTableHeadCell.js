@@ -66,7 +66,9 @@ class MUIDataTableHeadCell extends React.Component {
           <Tooltip
             title={options.textLabels.body.toolTip}
             placement={"bottom-end"}
-            className={classes.tooltip}
+            classes={{
+              tooltip: classes.tooltip
+            }}
             enterDelay={300}
             classes={{ popper: classes.mypopper }}>
             <span
