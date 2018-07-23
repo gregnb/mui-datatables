@@ -4,7 +4,7 @@ import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
-import DownloadIcon from "@material-ui/icons/FileDownload";
+import DownloadIcon from "@material-ui/icons/CloudDownload";
 import PrintIcon from "@material-ui/icons/Print";
 import ViewColumnIcon from "@material-ui/icons/ViewColumn";
 import ClearIcon from "@material-ui/icons/Clear";
