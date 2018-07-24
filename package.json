@@ -37,7 +37,7 @@
   "homepage": "https://github.com/gregnb/mui-datatables#readme",
   "devDependencies": {
     "@material-ui/core": "^1.4.0",
-    "@material-ui/icons": "^1.1.0",
+    "@material-ui/icons": "^2.0.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.3",
@@ -86,7 +86,7 @@
   },
   "peerDependencies": {
     "@material-ui/core": "^1.4.0",
-    "@material-ui/icons": "^1.1.0",
+    "@material-ui/icons": "^2.0.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
   },

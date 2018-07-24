@@ -8,7 +8,7 @@ import MUIDataTableFilter from "./MUIDataTableFilter";
 import MUIDataTableViewCol from "./MUIDataTableViewCol";
 import MUIDataTableSearch from "./MUIDataTableSearch";
 import SearchIcon from "@material-ui/icons/Search";
-import DownloadIcon from "@material-ui/icons/FileDownload";
+import DownloadIcon from "@material-ui/icons/CloudDownload";
 import PrintIcon from "@material-ui/icons/Print";
 import ViewColumnIcon from "@material-ui/icons/ViewColumn";
 import FilterIcon from "@material-ui/icons/FilterList";
