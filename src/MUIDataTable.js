@@ -81,6 +81,7 @@ class MUIDataTable extends React.Component {
       sort: PropTypes.bool,
       search: PropTypes.bool,
       print: PropTypes.bool,
+      delete: PropTypes.bool,
       viewColumns: PropTypes.bool,
       download: PropTypes.bool,
     }),
@@ -152,6 +153,7 @@ class MUIDataTable extends React.Component {
       sort: true,
       search: true,
       print: true,
+      delete: true,
       viewColumns: true,
       download: true,
     };
@@ -682,7 +684,7 @@ class MUIDataTable extends React.Component {
 
     return (
       <Paper elevation={4} ref={el => (this.tableContent = el)} className={classes.paper}>
-        {selectedRows.data.length ? (
+        {selectedRows.data.length && this.options.delete ? (
           <MUIDataTableToolbarSelect
             options={this.options}
             selectedRows={selectedRows}
