@@ -21,9 +21,9 @@ describe("<MUIDataTable />", function() {
 
   before(() => {
     columns = [
-      { name: "Name", options: { customRender: renderName } },
+      { name: "Name", options: { customBodyRender: renderName } },
       "Company",
-      { name: "City", options: { customRender: renderCities } },
+      { name: "City", options: { customBodyRender: renderCities } },
       { name: "State" },
     ];
     data = [
@@ -77,7 +77,7 @@ describe("<MUIDataTable />", function() {
     const actualResult = shallowWrapper.dive().state().columns;
 
     const expectedResult = [
-      { display: true, name: "Name", sort: true, filter: true, sortDirection: null, customRender: renderName },
+      { display: true, name: "Name", sort: true, filter: true, sortDirection: null, customBodyRender: renderName },
       { display: true, name: "Company", sort: true, filter: true, sortDirection: null },
       {
         display: true,
@@ -85,7 +85,7 @@ describe("<MUIDataTable />", function() {
         sort: true,
         filter: true,
         sortDirection: null,
-        customRender: renderCities,
+        customBodyRender: renderCities,
       },
       { display: true, name: "State", sort: true, filter: true, sortDirection: null },
     ];
@@ -327,7 +327,7 @@ describe("<MUIDataTable />", function() {
     const state = shallowWrapper.state();
 
     const expectedResult = [
-      { name: "Name", display: false, sort: true, filter: true, sortDirection: null, customRender: renderName },
+      { name: "Name", display: false, sort: true, filter: true, sortDirection: null, customBodyRender: renderName },
       { name: "Company", display: true, sort: true, filter: true, sortDirection: null },
       {
         name: "City",
@@ -335,7 +335,7 @@ describe("<MUIDataTable />", function() {
         sort: true,
         filter: true,
         sortDirection: null,
-        customRender: renderCities,
+        customBodyRender: renderCities,
       },
       { name: "State", display: true, sort: true, filter: true, sortDirection: null },
     ];
@@ -397,7 +397,7 @@ describe("<MUIDataTable />", function() {
     assert.deepEqual(state.selectedRows.data, [0]);
   });
 
-  it("should update value when calling updateValue method in customRender", () => {
+  it("should update value when calling updateValue method in customBodyRender", () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
     const instance = shallowWrapper.instance();
 

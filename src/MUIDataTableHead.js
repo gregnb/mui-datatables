@@ -57,7 +57,7 @@ class MUIDataTableHead extends React.Component {
             (column, index) =>
               column.display && (
                 column.customHeadRender ? (
-                  column.customHeadRender(column, this.handleToggleColumn)
+                  column.customHeadRender({ index, ...column }, this.handleToggleColumn)
                 ) : (
                   <MUIDataTableHeadCell
                     key={index}
