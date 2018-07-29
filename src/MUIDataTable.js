@@ -56,7 +56,7 @@ class MUIDataTable extends React.Component {
             filter: PropTypes.bool,
             sort: PropTypes.bool,
             customHeadRender: PropTypes.func,
-            customBodyRender: PropTypes.func
+            customBodyRender: PropTypes.func,
           }),
         }),
       ]),
@@ -735,21 +735,19 @@ class MUIDataTable extends React.Component {
           </Table>
         </div>
         <Table>
-          {this.options.customFooter ? (
-            this.options.customFooter(rowCount, page, rowsPerPage, this.changeRowsPerPage, this.changePage)
-          ) : (            
-            this.options.pagination && (
-              <MUIDataTablePagination
-                count={rowCount}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                changeRowsPerPage={this.changeRowsPerPage}
-                changePage={this.changePage}
-                component={"div"}
-                options={this.options}
-              />
-            )
-          )}
+          {this.options.customFooter
+            ? this.options.customFooter(rowCount, page, rowsPerPage, this.changeRowsPerPage, this.changePage)
+            : this.options.pagination && (
+                <MUIDataTablePagination
+                  count={rowCount}
+                  page={page}
+                  rowsPerPage={rowsPerPage}
+                  changeRowsPerPage={this.changeRowsPerPage}
+                  changePage={this.changePage}
+                  component={"div"}
+                  options={this.options}
+                />
+              )}
         </Table>
         <div className={classes.liveAnnounce} aria-live={"polite"} ref={el => (this.announceRef = el)}>
           {announceText}

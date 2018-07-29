@@ -55,22 +55,21 @@ class MUIDataTableHead extends React.Component {
           )}
           {columns.map(
             (column, index) =>
-              column.display && (
-                column.customHeadRender ? (
-                  column.customHeadRender({ index, ...column }, this.handleToggleColumn)
-                ) : (
-                  <MUIDataTableHeadCell
-                    key={index}
-                    index={index}
-                    type={"cell"}
-                    sort={column.sort}
-                    sortDirection={column.sortDirection}
-                    toggleSort={this.handleToggleColumn}
-                    options={options}>
-                    {column.name}
-                  </MUIDataTableHeadCell>
-                )
-              ),
+              column.display &&
+              (column.customHeadRender ? (
+                column.customHeadRender({ index, ...column }, this.handleToggleColumn)
+              ) : (
+                <MUIDataTableHeadCell
+                  key={index}
+                  index={index}
+                  type={"cell"}
+                  sort={column.sort}
+                  sortDirection={column.sortDirection}
+                  toggleSort={this.handleToggleColumn}
+                  options={options}>
+                  {column.name}
+                </MUIDataTableHeadCell>
+              )),
           )}
         </MUIDataTableHeadRow>
       </TableHead>
