@@ -137,6 +137,7 @@ The component accepts the following props:
 |**`selectableRows`**|boolean|true|Enable/disable row selection
 |**`customToolbar`**|function||Render a custom toolbar
 |**`customToolbarSelect`**|function||Render a custom selected rows toolbar
+|**`customFooter`**|function||Render a custom table footer. `function(count, page, rowsPerPage, changeRowsPerPage, changePage) => string`&#124;` React Component`
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
 |**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: 'stacked', 'scroll'
 |**`rowsPerPage`**|number|10|Number of rows allowed per page
@@ -190,12 +191,25 @@ const columns = [
 |**`display`**|boolean|true|Display column in table
 |**`filter`**|boolean|true|Display column in filter list
 |**`sort`**|boolean|true|Enable/disable sorting on column
-|**`customRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
+|**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(value, tableMeta, updateValue) => string`&#124;`
+|**`customBodyRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
 
-`customRender` is called with these arguments:
+`customHeadRender` is called with these arguments:
 
 ```
-customRender(value: any, tableMeta: {
+function(columnMeta: {
+  display: bool,
+  filter: bool,
+  sort: bool,
+  sortDirection: bool,
+}, updateDirection: function)
+```
+
+
+`customBodyRender` is called with these arguments:
+
+```
+function(value: any, tableMeta: {
   rowIndex: number,
   columnIndex: number,
   columnData: array, // Columns Options object
