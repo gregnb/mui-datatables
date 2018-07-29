@@ -26,7 +26,7 @@ class Example extends React.Component {
         name: "Location",
         options: {
           filter: true,
-          customRender: (value, tableMeta, updateValue) => {
+          customBodyRender: (value, tableMeta, updateValue) => {
             return (
               <Cities
                 value={value}
@@ -47,7 +47,7 @@ class Example extends React.Component {
         name: "Salary",
         options: {
           filter: true,
-          customRender: (value, tableMeta, updateValue) => {
+          customBodyRender: (value, tableMeta, updateValue) => {
 
             const nf = new Intl.NumberFormat('en-US', {
               style: 'currency',
@@ -64,7 +64,7 @@ class Example extends React.Component {
         name: "Active",
         options: {
           filter: true,
-          customRender: (value, tableMeta, updateValue) => {
+          customBodyRender: (value, tableMeta, updateValue) => {
 
             return (
               <FormControlLabel

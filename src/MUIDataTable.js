@@ -55,7 +55,8 @@ class MUIDataTable extends React.Component {
             display: PropTypes.bool,
             filter: PropTypes.bool,
             sort: PropTypes.bool,
-            customRender: PropTypes.func,
+            customHeadRender: PropTypes.func,
+            customBodyRender: PropTypes.func
           }),
         }),
       ]),
@@ -68,6 +69,7 @@ class MUIDataTable extends React.Component {
       pagination: PropTypes.bool,
       customToolbar: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customToolbarSelect: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+      customFooter: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       selectableRows: PropTypes.bool,
       caseSensitive: PropTypes.bool,
       rowHover: PropTypes.bool,
@@ -217,9 +219,9 @@ class MUIDataTable extends React.Component {
           });
         }
 
-        if (typeof columnOptions.customRender === "function") {
+        if (typeof columnOptions.customBodyRender === "function") {
           const tableMeta = this.getCustomRenderMeta(rowIndex, colIndex, value, [], columnData, this.state);
-          const funcResult = columnOptions.customRender(value, tableMeta);
+          const funcResult = columnOptions.customBodyRender(value, tableMeta);
 
           if (React.isValidElement(funcResult) && funcResult.props.value) {
             value = funcResult.props.value;
@@ -280,14 +282,14 @@ class MUIDataTable extends React.Component {
       let columnDisplay = row[index];
       let columnValue = row[index];
 
-      if (columns[index].customRender) {
+      if (columns[index].customBodyRender) {
         const tableMeta = this.getCustomRenderMeta(rowIndex, index, row, columns[index], this.state.data, {
           ...this.state,
           filterList: filterList,
           searchText: searchText,
         });
 
-        const funcResult = columns[index].customRender(
+        const funcResult = columns[index].customBodyRender(
           columnValue,
           tableMeta,
           this.updateDataCol.bind(null, rowIndex, index),
@@ -326,7 +328,7 @@ class MUIDataTable extends React.Component {
       let filterData = cloneDeep(prevState.filterData);
 
       const tableMeta = this.getCustomRenderMeta(row, index, row, prevState.columns[index], prevState.data, prevState);
-      const funcResult = prevState.columns[index].customRender(value, tableMeta);
+      const funcResult = prevState.columns[index].customBodyRender(value, tableMeta);
 
       const filterValue =
         React.isValidElement(funcResult) && funcResult.props.value
@@ -733,18 +735,20 @@ class MUIDataTable extends React.Component {
           </Table>
         </div>
         <Table>
-          {this.options.pagination ? (
-            <MUIDataTablePagination
-              count={rowCount}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              changeRowsPerPage={this.changeRowsPerPage}
-              changePage={this.changePage}
-              component={"div"}
-              options={this.options}
-            />
-          ) : (
-            false
+          {this.options.customFooter ? (
+            this.options.customFooter(rowCount, page, rowsPerPage, this.changeRowsPerPage, this.changePage)
+          ) : (            
+            this.options.pagination && (
+              <MUIDataTablePagination
+                count={rowCount}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                changeRowsPerPage={this.changeRowsPerPage}
+                changePage={this.changePage}
+                component={"div"}
+                options={this.options}
+              />
+            )
           )}
         </Table>
         <div className={classes.liveAnnounce} aria-live={"polite"} ref={el => (this.announceRef = el)}>
