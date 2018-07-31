@@ -182,4 +182,52 @@ describe("<MUIDataTableBody />", function() {
 
     assert.strictEqual(selectRowUpdate.callCount, 1);
   });
+  it("should display only a page of data with default options", () => {
+    const selectRowUpdate = () => {};
+
+    const shallowWrapper = shallow(
+      <MUIDataTableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={2}
+        selectedRows={[1, 2, 3]}
+        selectRowUpdate={selectRowUpdate}
+        options={{}}
+        searchText={""}
+        filterList={[]}
+      />,
+    ).dive();
+
+    const instance = shallowWrapper.instance();
+    const actualResult = instance.buildRows();
+
+    assert.deepEqual(actualResult, displayData.slice(0, 2));
+  });
+
+  it("should display all data if externalPaging is set", () => {
+    const options = { externalPagination: true };
+    const selectRowUpdate = () => {};
+
+    const shallowWrapper = shallow(
+      <MUIDataTableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={2}
+        selectedRows={[1, 2, 3]}
+        selectRowUpdate={selectRowUpdate}
+        options={options}
+        searchText={""}
+        filterList={[]}
+      />,
+    ).dive();
+
+    const instance = shallowWrapper.instance();
+    const actualResult = instance.buildRows();
+
+    assert.deepEqual(actualResult, displayData);
+  });
 });

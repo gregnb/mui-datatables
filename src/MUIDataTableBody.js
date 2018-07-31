@@ -6,6 +6,7 @@ import MUIDataTableBodyCell from "./MUIDataTableBodyCell";
 import MUIDataTableBodyRow from "./MUIDataTableBodyRow";
 import MUIDataTableSelectCell from "./MUIDataTableSelectCell";
 import { withStyles } from "@material-ui/core/styles";
+import { isUndefined, isNullOrUndefined } from "util";
 
 const defaultBodyStyles = {
   root: {},
@@ -37,7 +38,11 @@ class MUIDataTableBody extends React.Component {
   };
 
   buildRows() {
-    const { data, page, rowsPerPage, count } = this.props;
+    const { data, page, rowsPerPage, count, options } = this.props;
+
+    if (options.externalPagination) {
+      return data.filter(row => !isNullOrUndefined(row));
+    }
 
     let rows = [];
     const totalPages = Math.floor(count / rowsPerPage);
