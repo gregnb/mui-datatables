@@ -134,6 +134,7 @@ The component accepts the following props:
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox", "dropdown", or "multiselect"
 |**`textLabels `**|object||User provided labels to localize text
 |**`pagination`**|boolean|true|Enable/disable pagination
+|**`externalPagination`**|boolean|false|Disables built-in pagination for cases where user provides already paginated data
 |**`selectableRows`**|boolean|true|Enable/disable row selection
 |**`customToolbar`**|function||Render a custom toolbar
 |**`customToolbarSelect`**|function||Render a custom selected rows toolbar

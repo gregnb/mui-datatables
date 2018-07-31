@@ -85,6 +85,7 @@ class MUIDataTable extends React.Component {
       print: PropTypes.bool,
       viewColumns: PropTypes.bool,
       download: PropTypes.bool,
+      externalPagination: PropTypes.bool,
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
