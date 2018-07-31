@@ -12,11 +12,6 @@ const defaultSelectCellStyles = {
     },
     width: "56px",
   },
-  checkboxRoot: {
-    "&$checked": {
-      color: "#027cb5",
-    },
-  },
   checked: {},
   disabled: {},
 };
@@ -37,11 +32,11 @@ class MUIDataTableSelectCell extends React.Component {
     return (
       <TableCell className={classes.root} padding="checkbox">
         {radio ? (
-          <Radio {...otherProps} />
+          <Radio color="primary" {...otherProps} />
         ) : (
           <Checkbox
+            color="primary"
             classes={{
-              root: classes.checkboxRoot,
               checked: classes.checked,
               disabled: classes.disabled,
             }}
