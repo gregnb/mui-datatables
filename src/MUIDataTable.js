@@ -311,7 +311,8 @@ class MUIDataTable extends React.Component {
         isFiltered = true;
       }
 
-      const searchCase = !this.options.caseSensitive ? columnValue.toString().toLowerCase() : columnValue.toString();
+      const columnVal = columnValue === null ? '' : columnValue.toString();
+      const searchCase = !this.options.caseSensitive ? columnVal.toLowerCase() : columnVal.toString();
 
       if (searchText && searchCase.indexOf(searchText.toLowerCase()) >= 0) {
         isSearchFound = true;
@@ -677,8 +678,11 @@ class MUIDataTable extends React.Component {
       searchText,
     } = this.state;
 
-    const rowCount = this.options.count || data.length;
-    if (!rowCount) return false;
+    if (!data.length) {
+      return false;
+    }
+
+    const rowCount = this.options.count || displayData.length;
 
     return (
       <Paper elevation={4} ref={el => (this.tableContent = el)} className={classes.paper}>
