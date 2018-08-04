@@ -311,7 +311,7 @@ class MUIDataTable extends React.Component {
         isFiltered = true;
       }
 
-      const columnVal = columnValue === null ? '' : columnValue.toString();
+      const columnVal = columnValue === null ? "" : columnValue.toString();
       const searchCase = !this.options.caseSensitive ? columnVal.toLowerCase() : columnVal.toString();
 
       if (searchText && searchCase.indexOf(searchText.toLowerCase()) >= 0) {
