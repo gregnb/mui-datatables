@@ -26,6 +26,8 @@ class MUIDataTableBody extends React.Component {
     options: PropTypes.object.isRequired,
     /** Data used to filter table against */
     filterList: PropTypes.array,
+    /** Callback to execute when row is clicked */
+    onRowClick: PropTypes.func,
     /** Table rows selected */
     selectedRows: PropTypes.object,
     /** Callback to trigger table row select */
@@ -78,7 +80,7 @@ class MUIDataTableBody extends React.Component {
   };
 
   render() {
-    const { classes, columns, options } = this.props;
+    const { classes, columns, options, onRowClick } = this.props;
     const tableRows = this.buildRows();
 
     return (
@@ -88,6 +90,8 @@ class MUIDataTableBody extends React.Component {
             <MUIDataTableBodyRow
               options={options}
               rowSelected={options.selectableRows ? this.isRowSelected(rowIndex) : false}
+              onClick={() => onRowClick(row)}
+              id={"MUIDataTableBodyRow-" + dataIndex}
               key={rowIndex}>
               {options.selectableRows ? (
                 <MUIDataTableSelectCell
