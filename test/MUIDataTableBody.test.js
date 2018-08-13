@@ -204,7 +204,12 @@ describe("<MUIDataTableBody />", function() {
       />,
     );
 
-    console.log(t.find("#MUIDataTableBodyRow-2").first().simulate("click"))
+    console.log(
+      t
+        .find("#MUIDataTableBodyRow-2")
+        .first()
+        .simulate("click"),
+    );
 
     assert.strictEqual(onRowClick.callCount, 1);
     assert(onRowClick.calledWith(data[2]), 1);
