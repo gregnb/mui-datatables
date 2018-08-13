@@ -1,4 +1,5 @@
 import React from "react";
+import XLSX from "xlsx";
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -96,23 +97,10 @@ class MUIDataTableToolbar extends React.Component {
   handleCSVDownload = () => {
     const { data, columns } = this.props;
 
-    const CSVHead = columns.reduce((soFar, column) => soFar + '"' + column.name + '",', "").slice(0, -1) + "\r\n";
-    const CSVBody = data.reduce((soFar, row) => soFar + '"' + row.data.join('","') + '"\r\n', []).trim();
-
-    /* taken from react-csv */
-    const csv = `${CSVHead}${CSVBody}`;
-    const blob = new Blob([csv], { type: "text/csv" });
-    const dataURI = `data:text/csv;charset=utf-8,${csv}`;
-
-    const URL = window.URL || window.webkitURL;
-    const downloadURI = typeof URL.createObjectURL === "undefined" ? dataURI : URL.createObjectURL(blob);
-
-    let link = document.createElement("a");
-    link.setAttribute("href", downloadURI);
-    link.setAttribute("download", "tableDownload.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.aoa_to_sheet([columns.map(r => r.name)].concat(data.map(r => r.data)));
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Tabela Exportada");
+    XLSX.writeFile(workbook, "TabelaExportada.xls", { compression: true });
   };
 
   setActiveIcon = iconName => {

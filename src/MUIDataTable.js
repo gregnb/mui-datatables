@@ -595,9 +595,7 @@ class MUIDataTable extends React.Component {
       this.setState(
         prevState => {
           const { index, dataIndex } = value;
-          let selectedRows = this.props.options.radio
-            ? []
-            : [...prevState.selectedRows.data];
+          let selectedRows = this.props.options.radio ? [] : [...prevState.selectedRows.data];
           let rowPos = -1;
 
           for (let cIndex = 0; cIndex < selectedRows.length; cIndex++) {
