@@ -6,6 +6,7 @@ import MUIDataTableToolbar from "./MUIDataTableToolbar";
 import MUIDataTableToolbarSelect from "./MUIDataTableToolbarSelect";
 import MUIDataTableFilterList from "./MUIDataTableFilterList";
 import MUIDataTableBody from "./MUIDataTableBody";
+import MUIDataTableResize from "./MUIDataTableResize";
 import MUIDataTableHead from "./MUIDataTableHead";
 import MUIDataTablePagination from "./MUIDataTablePagination";
 import cloneDeep from "lodash.clonedeep";
@@ -70,6 +71,7 @@ class MUIDataTable extends React.Component {
       customToolbar: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customToolbarSelect: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customFooter: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+      resizableColumns: PropTypes.bool,
       selectableRows: PropTypes.bool,
       caseSensitive: PropTypes.bool,
       rowHover: PropTypes.bool,
@@ -117,10 +119,16 @@ class MUIDataTable extends React.Component {
   constructor() {
     super();
     this.tableRef = false;
+    this.headCellRefs = {};
+    this.setHeadResizeable = () => {};
   }
 
   componentWillMount() {
     this.initializeTable(this.props);
+  }
+
+  componentDidMount() {
+    this.setHeadResizeable(this.headCellRefs, this.tableRef);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -144,6 +152,7 @@ class MUIDataTable extends React.Component {
       filterType: "checkbox",
       pagination: true,
       textLabels,
+      resizableColumns: false,
       selectableRows: true,
       caseSensitive: false,
       rowHover: true,
@@ -173,6 +182,10 @@ class MUIDataTable extends React.Component {
     }, {});
     this.setState(optState);
   }
+
+  setHeadCellRef = (index, el) => {
+    this.headCellRefs[index] = el;
+  };
 
   /*
    *  Build the source table data
@@ -713,7 +726,10 @@ class MUIDataTable extends React.Component {
           />
         )}
         <MUIDataTableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />
-        <div className={this.options.responsive === "scroll" ? classes.responsiveScroll : null}>
+        <div
+          style={{ position: "relative" }}
+          className={this.options.responsive === "scroll" ? classes.responsiveScroll : null}>
+          {this.options.resizableColumns && <MUIDataTableResize setResizeable={fn => (this.setHeadResizeable = fn)} />}
           <Table ref={el => (this.tableRef = el)} tabIndex={"0"} role={"grid"}>
             <caption className={classes.caption}>{title}</caption>
             <MUIDataTableHead
@@ -727,6 +743,7 @@ class MUIDataTable extends React.Component {
               selectedRows={selectedRows}
               selectRowUpdate={this.selectRowUpdate}
               toggleSort={this.toggleSortColumn}
+              setCellRef={this.setHeadCellRef}
               options={this.options}
             />
             <MUIDataTableBody
