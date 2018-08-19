@@ -152,7 +152,7 @@ class MUIDataTable extends React.Component {
       filterType: "checkbox",
       pagination: true,
       textLabels,
-      resizableColumns: true,
+      resizableColumns: false,
       selectableRows: true,
       caseSensitive: false,
       rowHover: true,
