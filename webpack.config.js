@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    app: "./examples/simple/index.js"
+    app: "./examples/resizable-columns/index.js"
   },
   stats: "verbose",
   context: __dirname,
