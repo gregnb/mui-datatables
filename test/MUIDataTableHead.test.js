@@ -29,6 +29,7 @@ describe("<MUIDataTableHead />", function() {
       <MUIDataTableHead
         columns={columns}
         options={options}
+        setCellRef={() => {}}
         handleHeadUpdateRef={handleHeadUpdateRef}
         toggleSort={toggleSort}
       />,
@@ -46,6 +47,7 @@ describe("<MUIDataTableHead />", function() {
       <MUIDataTableHead
         columns={newColumns}
         options={options}
+        setCellRef={() => {}}
         handleHeadUpdateRef={handleHeadUpdateRef}
         toggleSort={toggleSort}
       />,
@@ -62,6 +64,7 @@ describe("<MUIDataTableHead />", function() {
       <MUIDataTableHead
         columns={columns}
         options={options}
+        setCellRef={() => {}}
         handleHeadUpdateRef={handleHeadUpdateRef}
         toggleSort={toggleSort}
       />,
@@ -84,6 +87,7 @@ describe("<MUIDataTableHead />", function() {
       <MUIDataTableHead
         columns={columns}
         options={options}
+        setCellRef={() => {}}
         handleHeadUpdateRef={handleHeadUpdateRef}
         selectRowUpdate={rowSelectUpdate}
       />,

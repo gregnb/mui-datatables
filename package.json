@@ -93,7 +93,6 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "lodash.clonedeep": "^4.5.0",
-    "lodash.debounce": "^4.0.8",
     "lodash.get": "^4.4.2",
     "lodash.memoize": "^4.1.2",
     "lodash.merge": "^4.6.0",

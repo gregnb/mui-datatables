@@ -6,14 +6,14 @@ class Example extends React.Component {
 
   render() {
 
-    const columns = ["Name", "Title", "Location", "Age", "Salary"];
+    const columns = ["Name", "Title", "Location"];
 
     const data = [
-      ["Gabby George", "Business Analyst", "Minneapolis", 30, "$100,000"],
-      ["Aiden Lloyd", "Business Consultant", "Dallas",  55, "$200,000"],
-      ["Jaden Collins", "Attorney", "Santa Ana", 27, "$500,000"],
-      ["Franky Rees", "Business Analyst", "St. Petersburg", 22, "$50,000"],
-      ["Aaren Rose", null, "Toledo", 28, "$75,000"]
+      ["Gabby George", "Business Analyst", "Minneapolis"],
+      ["Aiden Lloyd", "Business Consultant", "Dallas"],
+      ["Jaden Collins", "Attorney", "Santa Ana"],
+      ["Franky Rees", "Business Analyst", "St. Petersburg"],
+      ["Aaren Rose", null, "Toledo"]
     ];
 
 
