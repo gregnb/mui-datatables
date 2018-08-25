@@ -96,9 +96,21 @@ class MUIDataTableToolbar extends React.Component {
 
   handleCSVDownload = () => {
     const { data, columns } = this.props;
+    const downloadableData = [columns.map(r => r.name)].concat(data.map(r => r.data));
+
+    // Sanitize data that is impossible to serialize
+    downloadableData.forEach(r => {
+      r.forEach((c, i) => {
+        r[i] = r[i] || '';
+
+        if (typeof c === "object") {
+          r[i] = '';
+        }
+      });
+    });
 
     const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.aoa_to_sheet([columns.map(r => r.name)].concat(data.map(r => r.data)));
+    const worksheet = XLSX.utils.aoa_to_sheet(downloadableData);
     XLSX.utils.book_append_sheet(workbook, worksheet, "Tabela Exportada");
     XLSX.writeFile(workbook, "TabelaExportada.xls", { compression: true });
   };
