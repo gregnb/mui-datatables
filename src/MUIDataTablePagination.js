@@ -44,6 +44,7 @@ class MUIDataTablePagination extends React.Component {
   };
 
   handlePageChange = (_, page) => {
+    const { options } = this.props;
     this.props.changePage(page);
   };
 

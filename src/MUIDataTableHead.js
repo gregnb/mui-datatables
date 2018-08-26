@@ -17,18 +17,11 @@ const defaultHeadStyles = {
 };
 
 class MUIDataTableHead extends React.Component {
-  state = {
-    activeColumn: null,
-  };
-
   componentDidMount() {
     this.props.handleHeadUpdateRef(this.handleUpdateCheck);
   }
 
   handleToggleColumn = index => {
-    this.setState(() => ({
-      activeColumn: index,
-    }));
     this.props.toggleSort(index);
   };
 

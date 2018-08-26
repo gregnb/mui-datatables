@@ -73,6 +73,7 @@ class MUIDataTable extends React.Component {
       customFooter: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       resizableColumns: PropTypes.bool,
       selectableRows: PropTypes.bool,
+      serverSide: PropTypes.bool,
       caseSensitive: PropTypes.bool,
       rowHover: PropTypes.bool,
       page: PropTypes.number,
@@ -101,6 +102,7 @@ class MUIDataTable extends React.Component {
 
   state = {
     announceText: null,
+    activeColumn: null,
     data: [],
     displayData: [],
     page: 0,
@@ -155,6 +157,7 @@ class MUIDataTable extends React.Component {
       resizableColumns: false,
       selectableRows: true,
       caseSensitive: false,
+      serverSide: false,
       rowHover: true,
       rowsPerPage: 10,
       rowsPerPageOptions: [10, 15, 100],
@@ -170,16 +173,29 @@ class MUIDataTable extends React.Component {
     this.options = merge(defaultOptions, props.options);
   }
 
+  validateOptions(options) {
+    if (options.serverSide && options.onServerRequest === undefined) {
+      throw Error("onServerRequest callback must be provided when using serverSide option");
+    }
+  }
+
+  setServerRequest = action => {
+    if (this.options.serverSide) {
+      this.options.onServerRequest(action, this.state);
+    }
+  };
+
   setTableOptions(props) {
     const optionNames = ["rowsPerPage", "page", "filterList", "rowsPerPageOptions"];
     const optState = optionNames.reduce((acc, cur) => {
       if (this.options[cur]) {
         let val = this.options[cur];
-        if (cur === "page") val--;
         acc[cur] = val;
       }
       return acc;
     }, {});
+
+    this.validateOptions(optState);
     this.setState(optState);
   }
 
@@ -439,17 +455,35 @@ class MUIDataTable extends React.Component {
 
         const orderLabel = this.getSortDirection(columns[index]);
         const announceText = `Table now sorted by ${columns[index].name} : ${orderLabel}`;
-        const sortedData = this.sortTable(data, index, order);
 
-        return {
+        let newState = {
           columns: columns,
           announceText: announceText,
-          data: sortedData.data,
-          displayData: this.getDisplayData(columns, sortedData.data, prevState.filterList, prevState.searchText),
-          selectedRows: sortedData.selectedRows,
+          activeColumn: index,
         };
+
+        if (this.options.serverSide) {
+          newState = {
+            ...newState,
+            data: prevState.data,
+            displayData: prevState.displayData,
+            selectedRows: prevState.selectedRows,
+          };
+        } else {
+          const sortedData = this.sortTable(data, index, order);
+
+          newState = {
+            ...newState,
+            data: sortedData.data,
+            displayData: this.getDisplayData(columns, sortedData.data, prevState.filterList, prevState.searchText),
+            selectedRows: sortedData.selectedRows,
+          };
+        }
+
+        return newState;
       },
       () => {
+        this.setServerRequest("sort");
         if (this.options.onColumnSortChange) {
           this.options.onColumnSortChange(
             this.state.columns[index].name,
@@ -466,6 +500,7 @@ class MUIDataTable extends React.Component {
         rowsPerPage: rows,
       }),
       () => {
+        this.setServerRequest("changeRowsPerPage");
         if (this.options.onChangeRowsPerPage) {
           this.options.onChangeRowsPerPage(this.state.rowsPerPage);
         }
@@ -479,6 +514,7 @@ class MUIDataTable extends React.Component {
         page: page,
       }),
       () => {
+        this.setServerRequest("changePage");
         if (this.options.onChangePage) {
           this.options.onChangePage(this.state.page);
         }
@@ -487,10 +523,17 @@ class MUIDataTable extends React.Component {
   };
 
   searchTextUpdate = text => {
-    this.setState(prevState => ({
-      searchText: text && text.length ? text : null,
-      displayData: this.getDisplayData(prevState.columns, prevState.data, prevState.filterList, text),
-    }));
+    this.setState(
+      prevState => ({
+        searchText: text && text.length ? text : null,
+        displayData: this.options.serverSide
+          ? prevState.displayData
+          : this.getDisplayData(prevState.columns, prevState.data, prevState.filterList, text),
+      }),
+      () => {
+        this.setServerRequest("search");
+      },
+    );
   };
 
   resetFilters = () => {
@@ -500,10 +543,13 @@ class MUIDataTable extends React.Component {
 
         return {
           filterList: filterList,
-          displayData: this.getDisplayData(prevState.columns, prevState.data, filterList, prevState.searchText),
+          displayData: this.options.serverSide
+            ? prevState.displayData
+            : this.getDisplayData(prevState.columns, prevState.data, filterList, prevState.searchText),
         };
       },
       () => {
+        this.setServerRequest("resetFilters");
         if (this.options.onFilterChange) {
           this.options.onFilterChange(null, this.state.filterList);
         }
@@ -530,10 +576,13 @@ class MUIDataTable extends React.Component {
 
         return {
           filterList: filterList,
-          displayData: this.getDisplayData(prevState.columns, prevState.data, filterList, prevState.searchText),
+          displayData: this.options.serverSide
+            ? prevState.displayData
+            : this.getDisplayData(prevState.columns, prevState.data, filterList, prevState.searchText),
         };
       },
       () => {
+        this.setServerRequest("filterChange");
         if (this.options.onFilterChange) {
           this.options.onFilterChange(column, this.state.filterList);
         }
@@ -685,6 +734,7 @@ class MUIDataTable extends React.Component {
     const { classes, title } = this.props;
     const {
       announceText,
+      activeColumn,
       data,
       displayData,
       columns,
@@ -734,6 +784,7 @@ class MUIDataTable extends React.Component {
             <caption className={classes.caption}>{title}</caption>
             <MUIDataTableHead
               columns={columns}
+              activeColumn={activeColumn}
               data={this.state.displayData}
               count={rowCount}
               columns={columns}

@@ -74,8 +74,6 @@ describe("<MUIDataTableHead />", function() {
     instance.handleToggleColumn(2);
     shallowWrapper.update();
 
-    let state = shallowWrapper.state();
-    assert.strictEqual(state.activeColumn, 2);
     assert.strictEqual(toggleSort.callCount, 1);
   });
 
