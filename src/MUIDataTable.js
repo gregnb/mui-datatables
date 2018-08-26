@@ -601,7 +601,8 @@ class MUIDataTable extends React.Component {
         },
         () => {
           if (this.options.onRowsSelect) {
-            this.options.onRowsSelect(this.state.curSelectedRows.data, this.state.selectedRows.data);
+            console.log(this.state.curSelectedRows);
+            this.options.onRowsSelect(this.state.curSelectedRows.data[0], this.state.selectedRows.data);
           }
         },
       );
