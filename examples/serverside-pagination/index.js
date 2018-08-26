@@ -66,15 +66,15 @@ class Example extends React.Component {
       serverSide: true,
       count: count,
       page: page,
-      onServerRequest: (action, state) => {
+      onServerRequest: (action, tableState) => {
 
-        console.log(action, state);
+        console.log(action, tableState);
         // a developer could react to change on an action basis or 
         // examine the state as a whole and do whatever they want
-        
+
         switch (action) {
           case 'changePage':
-            this.changePage(state.page);
+            this.changePage(tableState.page);
             break;
         }
       }

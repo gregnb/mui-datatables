@@ -189,8 +189,7 @@ class MUIDataTable extends React.Component {
     const optionNames = ["rowsPerPage", "page", "filterList", "rowsPerPageOptions"];
     const optState = optionNames.reduce((acc, cur) => {
       if (this.options[cur]) {
-        let val = this.options[cur];
-        acc[cur] = val;
+        acc[cur] = this.options[cur];
       }
       return acc;
     }, {});

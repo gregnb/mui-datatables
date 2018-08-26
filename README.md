@@ -265,6 +265,23 @@ class BodyCellExample extends React.Component {
 
 ```
 
+## Remote Data 
+
+If you are looking to work with remote data sets or handle pagination, filtering, and sorting on a remote server you can do that with the following options:
+
+```
+const options = {
+  serverSide: true,
+  onServerRequest: (action, tableState) => {
+    this.xhrRequest('my.api.com/tableData', result => {
+      this.setState({ data: result });
+    });
+  }
+};
+```
+
+To see an example **[Click Here](https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-pagination/index.js)**
+
 ## Localization
 
 This package decided that the cost of bringing in another library to perform localizations would be too expensive. Instead the ability to override all text labels (which aren't many) is offered through the options property `textLabels`.  The available strings:
