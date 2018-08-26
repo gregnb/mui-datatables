@@ -13,7 +13,7 @@ import PrintIcon from "@material-ui/icons/Print";
 import ViewColumnIcon from "@material-ui/icons/ViewColumn";
 import FilterIcon from "@material-ui/icons/FilterList";
 import ReactToPrint from "react-to-print";
-import styled from './styled';
+import styled from "./styled";
 
 export const defaultToolbarStyles = (theme, props) => ({
   root: {},
@@ -39,7 +39,7 @@ export const defaultToolbarStyles = (theme, props) => ({
     marginTop: "10px",
     marginRight: "8px",
   },
-  ...props.options.responsive ? {...responsiveToolbarStyles} : {} 
+  ...(props.options.responsive ? { ...responsiveToolbarStyles } : {}),
 });
 
 export const responsiveToolbarStyles = {
@@ -118,7 +118,7 @@ class MUIDataTableToolbar extends React.Component {
 
   hideSearch = () => {
     const { onSearchClose } = this.props.options;
-    
+
     if (onSearchClose) onSearchClose();
     this.props.searchTextUpdate(null);
 
@@ -178,10 +178,7 @@ class MUIDataTableToolbar extends React.Component {
           )}
           {options.download ? (
             <Tooltip title={downloadCsv}>
-              <IconButton
-                aria-label={downloadCsv}
-                classes={{ root: classes.icon }}
-                onClick={this.handleCSVDownload}>
+              <IconButton aria-label={downloadCsv} classes={{ root: classes.icon }} onClick={this.handleCSVDownload}>
                 <DownloadIcon />
               </IconButton>
             </Tooltip>

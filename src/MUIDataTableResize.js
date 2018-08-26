@@ -34,7 +34,7 @@ class MUIDataTableResize extends React.Component {
   handleReize = () => {
     if (window.innerWidth !== this.windowWidth) {
       this.windowWidth = window.innerWidth;
-      this.setDividers();      
+      this.setDividers();
     }
   };
 

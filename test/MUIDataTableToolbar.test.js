@@ -90,12 +90,15 @@ describe("<MUIDataTableToolbar />", function() {
   });
 
   it("should render a toolbar with a search clicking search icon", () => {
-    const shallowWrapper = shallow(<MUIDataTableToolbar columns={columns} data={data} options={options} />).dive().dive().dive();
+    const shallowWrapper = shallow(<MUIDataTableToolbar columns={columns} data={data} options={options} />)
+      .dive()
+      .dive()
+      .dive();
     const instance = shallowWrapper.instance();
 
     instance.setActiveIcon("search");
     shallowWrapper.update();
-    
+
     const actualResult = shallowWrapper.find(MUIDataTableSearch);
     assert.strictEqual(actualResult.length, 1);
   });
@@ -104,11 +107,14 @@ describe("<MUIDataTableToolbar />", function() {
     const searchTextUpdate = () => {};
     const shallowWrapper = shallow(
       <MUIDataTableToolbar searchTextUpdate={searchTextUpdate} columns={columns} data={data} options={options} />,
-    ).dive().dive().dive();
+    )
+      .dive()
+      .dive()
+      .dive();
     const instance = shallowWrapper.instance();
 
     instance.searchButton = {
-      focus: () => {}
+      focus: () => {},
     };
 
     // display search
@@ -127,7 +133,10 @@ describe("<MUIDataTableToolbar />", function() {
   });
 
   it("should set icon when calling method setActiveIcon", () => {
-    const shallowWrapper = shallow(<MUIDataTableToolbar columns={columns} data={data} options={options} />).dive().dive().dive();
+    const shallowWrapper = shallow(<MUIDataTableToolbar columns={columns} data={data} options={options} />)
+      .dive()
+      .dive()
+      .dive();
     const instance = shallowWrapper.instance();
 
     instance.setActiveIcon("filter");
@@ -139,7 +148,11 @@ describe("<MUIDataTableToolbar />", function() {
 
   it("should download CSV when calling method handleCSVDownload", () => {
     const shallowWrapper = shallow(<MUIDataTableToolbar columns={columns} data={data} options={options} />);
-    const instance = shallowWrapper.dive().dive().dive().instance();
+    const instance = shallowWrapper
+      .dive()
+      .dive()
+      .dive()
+      .instance();
 
     const appendSpy = spy(document.body, "appendChild");
     const removeSpy = spy(document.body, "removeChild");
