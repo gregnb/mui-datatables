@@ -78,46 +78,62 @@ class MUIDataTableBody extends React.Component {
   };
 
   render() {
-    const { classes, columns, options } = this.props;
+    const { classes, columns, options, totals } = this.props;
     const tableRows = this.buildRows();
 
     return (
       <TableBody>
         {tableRows ? (
-          tableRows.map(({ data: row, dataIndex }, rowIndex) => (
-            <MUIDataTableBodyRow
-              options={options}
-              rowSelected={options.selectableRows ? this.isRowSelected(rowIndex) : false}
-              key={rowIndex}>
-              {options.selectableRows ? (
-                <MUIDataTableSelectCell
-                  radio={options.radio}
-                  onChange={this.handleRowSelect.bind(null, {
-                    index: this.getRowIndex(rowIndex),
-                    dataIndex: dataIndex,
-                  })}
-                  checked={this.isRowSelected(this.getRowIndex(rowIndex))}
-                />
-              ) : (
-                false
-              )}
-              {row.map(
-                (column, index) =>
-                  columns[index].display ? (
-                    <MUIDataTableBodyCell
-                      rowIndex={rowIndex}
-                      colIndex={index}
-                      columnHeader={columns[index].name}
-                      options={options}
-                      key={index}>
-                      {column}
-                    </MUIDataTableBodyCell>
-                  ) : (
-                    false
-                  ),
-              )}
-            </MUIDataTableBodyRow>
-          ))
+          <React.Fragment>
+            {tableRows.map(({ data: row, dataIndex }, rowIndex) => (
+              <MUIDataTableBodyRow
+                options={options}
+                rowSelected={options.selectableRows ? this.isRowSelected(rowIndex) : false}
+                key={rowIndex}>
+                {options.selectableRows ? (
+                  <MUIDataTableSelectCell
+                    radio={options.radio}
+                    onChange={this.handleRowSelect.bind(null, {
+                      index: this.getRowIndex(rowIndex),
+                      dataIndex: dataIndex,
+                    })}
+                    checked={this.isRowSelected(this.getRowIndex(rowIndex))}
+                  />
+                ) : (
+                  false
+                )}
+                {row.map(
+                  (column, index) =>
+                    columns[index].display ? (
+                      <MUIDataTableBodyCell
+                        rowIndex={rowIndex}
+                        colIndex={index}
+                        columnHeader={columns[index].name}
+                        options={options}
+                        key={index}>
+                        {column}
+                      </MUIDataTableBodyCell>
+                    ) : (
+                      false
+                    ),
+                )}
+              </MUIDataTableBodyRow>
+            ))}
+            {totals && (
+              <MUIDataTableBodyRow options={options} totalled>
+                {totals.map((column, index) => (
+                  <MUIDataTableBodyCell
+                    rowIndex={tableRows.length}
+                    colIndex={index}
+                    columnHeader={"Total"}
+                    options={options}
+                    key={index}>
+                    {column}
+                  </MUIDataTableBodyCell>
+                ))}
+              </MUIDataTableBodyRow>
+            )}
+          </React.Fragment>
         ) : (
           <MUIDataTableBodyRow options={options}>
             <MUIDataTableBodyCell

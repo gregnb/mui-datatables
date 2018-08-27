@@ -184,7 +184,8 @@ class MUIDataTable extends React.Component {
     let columnData = [],
       filterData = [],
       filterList = [],
-      tableData = [];
+      tableData = [],
+      totals = columns.map(() => 0);
 
     columns.forEach((column, colIndex) => {
       let columnOptions = {
@@ -212,6 +213,12 @@ class MUIDataTable extends React.Component {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
         let value = status === TABLE_LOAD.INITIAL ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
 
+        if (typeof value === "number") {
+          totals[colIndex] += value;
+        } else {
+          totals[colIndex] = window._ ? window._("Total:") : "Total:";
+        }
+
         if (typeof tableData[rowIndex] === "undefined") {
           tableData.push({
             index: status === TABLE_LOAD.INITIAL ? rowIndex : data[rowIndex].index,
@@ -236,6 +243,14 @@ class MUIDataTable extends React.Component {
       if (this.options.sortFilterList) {
         const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
         filterData[colIndex].sort(collator.compare);
+      }
+
+      if (typeof columnOptions.customRender === "function" && typeof totals[colIndex] === "number") {
+        totals[colIndex] = columnOptions.customRender(totals[colIndex]);
+      }
+
+      if (!columnOptions.display) {
+        totals[colIndex] = "";
       }
     });
 
@@ -266,6 +281,7 @@ class MUIDataTable extends React.Component {
       filterList: filterList,
       selectedRows: selectedRowsData,
       data: tableData,
+      totals: totals.filter(v => v !== ""),
       displayData: this.getDisplayData(columnData, tableData, filterList, prevState.searchText),
     }));
   }
@@ -663,7 +679,7 @@ class MUIDataTable extends React.Component {
   }
 
   render() {
-    const { classes, title, height } = this.props;
+    const { classes, title, height, totalled } = this.props;
     const {
       announceText,
       data,
@@ -675,6 +691,7 @@ class MUIDataTable extends React.Component {
       rowsPerPage,
       selectedRows,
       searchText,
+      totals,
     } = this.state;
 
     const rowCount = this.options.count || data.length;
@@ -732,6 +749,7 @@ class MUIDataTable extends React.Component {
                 options={this.options}
                 searchText={searchText}
                 filterList={filterList}
+                totals={totalled && totals}
               />
             </Table>
           </div>
@@ -762,6 +780,7 @@ class MUIDataTable extends React.Component {
                 options={this.options}
                 searchText={searchText}
                 filterList={filterList}
+                totals={totalled && totals}
               />
             </Table>
           </div>
@@ -838,6 +857,7 @@ class MUIDataTable extends React.Component {
               options={this.options}
               searchText={searchText}
               filterList={filterList}
+              totals={totalled && totals}
             />
           </Table>
         </div>
