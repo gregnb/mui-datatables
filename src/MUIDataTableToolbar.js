@@ -101,10 +101,10 @@ class MUIDataTableToolbar extends React.Component {
     // Sanitize data that is impossible to serialize
     downloadableData.forEach(r => {
       r.forEach((c, i) => {
-        r[i] = r[i] || '';
+        r[i] = r[i] || "";
 
         if (typeof c === "object") {
-          r[i] = '';
+          r[i] = "";
         }
       });
     });
