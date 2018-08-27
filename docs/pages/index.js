@@ -38,7 +38,12 @@ class Homepage extends React.Component {
             selectable rows, pagination, and sorting. On top of the ability to customize styling on most views, there
             are two responsive modes "stacked" and "scroll" for mobile/tablet devices.
           </p>
-          <img src="/static/mui-datatables-main.jpg" className={classes.mainImage} border="0" alt="The look of the component" />
+          <img
+            src="/static/mui-datatables-main.jpg"
+            className={classes.mainImage}
+            border="0"
+            alt="The look of the component"
+          />
 
           <div className={classes.stepWrapper}>
             <DownloadIcon className={classes.stepIcon} />

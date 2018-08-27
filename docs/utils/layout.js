@@ -46,10 +46,9 @@ const styles = theme => ({
 });
 
 class Layout extends React.Component {
-
   state = {
-    drawerIsOpen: false
-  }
+    drawerIsOpen: false,
+  };
 
   componentDidMount() {
     const styleNode = document.createElement("style");
@@ -64,7 +63,7 @@ class Layout extends React.Component {
   toggleDrawer = () => {
     const drawerIsOpen = this.state.drawerIsOpen ? false : true;
     this.setState({ drawerIsOpen });
-  }
+  };
 
   render() {
     const { classes, children } = this.props;
@@ -72,10 +71,7 @@ class Layout extends React.Component {
 
     return (
       <div className={classes.wrapper}>
-        <Menu
-          isOpen={drawerIsOpen}
-          toggle={this.toggleDrawer}
-        />
+        <Menu isOpen={drawerIsOpen} toggle={this.toggleDrawer} />
         <AppBar classes={{ root: classes.appBar }}>
           <Toolbar classes={{ root: classes.toolBar }}>
             <IconButton onClick={this.toggleDrawer} color="inherit" aria-label="open drawer">
