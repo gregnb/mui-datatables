@@ -129,6 +129,7 @@ The component accepts the following props:
 |:--:|:-----|:--|:-----|
 |**`page`**|number||User provided starting page for pagination
 |**`count`**|number||User provided override for total number of rows
+|**`serverSide`**|boolean|false|Enable remote data source
 |**`filterList`**|array||User provided filter list
 |**`rowsSelected`**|array||User provided selected rows
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox", "dropdown", or "multiselect"
@@ -157,10 +158,10 @@ The component accepts the following props:
 |**`onChangePage`**|function||Callback function that triggers when a page has changed. `function(currentPage: number) => void`
 |**`onChangeRowsPerPage`**|function||Callback function that triggers when the number of rows per page has changed. `function(numberOfRows: number) => void`
 |**`onSearchChange`**|function||Callback function that triggers when the search text value has changed. `function(searchText: string) => void`
-|**`onSearchClose`**|function||Callback function that triggers when the search input is closed. `function() => void`
 |**`onFilterChange`**|function||Callback function that triggers when filters have changed. `function(changedColumn: string, filterList: array) => void`
 |**`onColumnSortChange`**|function||Callback function that triggers when a column has been sorted. `function(changedColumn: string, direction: string) => void`
 |**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
+|**`onServerRequest`**|function||Callback function that triggers when the 'serverSide' option is enabled and table state has changed. `function(action: string, tableState: object) => void`
 
 
 ## Customize Columns
@@ -265,6 +266,23 @@ class BodyCellExample extends React.Component {
 }
 
 ```
+
+## Remote Data 
+
+If you are looking to work with remote data sets or handle pagination, filtering, and sorting on a remote server you can do that with the following options:
+
+```
+const options = {
+  serverSide: true,
+  onServerRequest: (action, tableState) => {
+    this.xhrRequest('my.api.com/tableData', result => {
+      this.setState({ data: result });
+    });
+  }
+};
+```
+
+To see an example **[Click Here](https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-pagination/index.js)**
 
 ## Localization
 
