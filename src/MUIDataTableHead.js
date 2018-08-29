@@ -1,4 +1,5 @@
 import React from "react";
+import { findDOMNode } from "react-dom";
 import classNames from "classnames";
 import TableHead from "@material-ui/core/TableHead";
 import MUIDataTableHeadRow from "./MUIDataTableHeadRow";
@@ -16,18 +17,11 @@ const defaultHeadStyles = {
 };
 
 class MUIDataTableHead extends React.Component {
-  state = {
-    activeColumn: null,
-  };
-
   componentDidMount() {
     this.props.handleHeadUpdateRef(this.handleUpdateCheck);
   }
 
   handleToggleColumn = index => {
-    this.setState(() => ({
-      activeColumn: index,
-    }));
     this.props.toggleSort(index);
   };
 
@@ -36,7 +30,7 @@ class MUIDataTableHead extends React.Component {
   };
 
   render() {
-    const { classes, columns, count, options, data, page, selectedRows } = this.props;
+    const { classes, columns, count, options, data, page, setCellRef, selectedRows } = this.props;
 
     const numSelected = (selectedRows && selectedRows.data.length) || 0;
     const isDeterminate = numSelected > 0 && numSelected < count;
@@ -48,6 +42,7 @@ class MUIDataTableHead extends React.Component {
         <MUIDataTableHeadRow>
           {options.selectableRows && (
             <MUIDataTableSelectCell
+              ref={el => setCellRef(0, findDOMNode(el))}
               onChange={this.handleRowSelect.bind(null)}
               indeterminate={isDeterminate}
               checked={isChecked}
@@ -63,6 +58,7 @@ class MUIDataTableHead extends React.Component {
                   key={index}
                   index={index}
                   type={"cell"}
+                  ref={el => setCellRef(index + 1, findDOMNode(el))}
                   sort={column.sort}
                   sortDirection={column.sortDirection}
                   toggleSort={this.handleToggleColumn}

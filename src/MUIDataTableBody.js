@@ -41,6 +41,8 @@ class MUIDataTableBody extends React.Component {
   buildRows() {
     const { data, page, rowsPerPage, count } = this.props;
 
+    if (this.props.options.serverSide) return data;
+
     let rows = [];
     const totalPages = Math.floor(count / rowsPerPage);
     const fromIndex = page === 0 ? 0 : page * rowsPerPage;

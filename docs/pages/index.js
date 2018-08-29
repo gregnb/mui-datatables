@@ -1,14 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Typography from "material-ui/Typography";
-import IconButton from "material-ui/IconButton";
-import Tooltip from "material-ui/Tooltip";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import BuildIcon from "@material-ui/icons/Build"; // eslint-disable-line import/no-unresolved
 import CodeSnippet from "../utils/CodeSnippet";
 import Layout from "../utils/layout";
 import withRoot from "../utils/withRoot";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
   stepIcon: {
@@ -38,7 +38,12 @@ class Homepage extends React.Component {
             selectable rows, pagination, and sorting. On top of the ability to customize styling on most views, there
             are two responsive modes "stacked" and "scroll" for mobile/tablet devices.
           </p>
-          <img src="/static/mui-datatables-main.jpg" className={classes.mainImage} border="0" />
+          <img
+            src="/static/mui-datatables-main.jpg"
+            className={classes.mainImage}
+            border="0"
+            alt="The look of the component"
+          />
 
           <div className={classes.stepWrapper}>
             <DownloadIcon className={classes.stepIcon} />
