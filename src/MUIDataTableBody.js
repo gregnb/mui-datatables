@@ -90,7 +90,7 @@ class MUIDataTableBody extends React.Component {
             <MUIDataTableBodyRow
               options={options}
               rowSelected={options.selectableRows ? this.isRowSelected(rowIndex) : false}
-              onClick={() => onRowClick(row)}
+              onClick={() => onRowClick(dataIndex, row, rowIndex)}
               id={"MUIDataTableBodyRow-" + dataIndex}
               key={rowIndex}>
               {options.selectableRows ? (
