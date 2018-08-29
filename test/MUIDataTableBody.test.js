@@ -182,4 +182,36 @@ describe("<MUIDataTableBody />", function() {
 
     assert.strictEqual(selectRowUpdate.callCount, 1);
   });
+
+  it("should call onRowClick when Row is clicked", () => {
+    const options = { selectableRows: true };
+    const selectRowUpdate = stub();
+    const onRowClick = spy();
+
+    const t = mount(
+      <MUIDataTableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        onRowClick={onRowClick}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={[]}
+        selectRowUpdate={selectRowUpdate}
+        options={options}
+        searchText={""}
+        filterList={[]}
+      />,
+    );
+
+    console.log(
+      t
+        .find("#MUIDataTableBodyRow-2")
+        .first()
+        .simulate("click"),
+    );
+
+    assert.strictEqual(onRowClick.callCount, 1);
+    assert(onRowClick.calledWith(data[2], { rowIndex: 2, dataIndex: 2 }));
+  });
 });

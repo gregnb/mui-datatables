@@ -17,6 +17,8 @@ class MUIDataTableBodyRow extends React.Component {
   static propTypes = {
     /** Options used to describe table */
     options: PropTypes.object.isRequired,
+    /** Callback to execute when row is clicked */
+    onClick: PropTypes.func,
     /** Current row selected or not */
     rowSelected: PropTypes.bool,
     /** Extend the style applied to components */
@@ -24,11 +26,12 @@ class MUIDataTableBodyRow extends React.Component {
   };
 
   render() {
-    const { classes, options, rowSelected } = this.props;
+    const { classes, options, rowSelected, onClick } = this.props;
 
     return (
       <TableRow
         hover={options.rowHover ? true : false}
+        onClick={onClick}
         className={classNames({
           [classes.root]: true,
           [classes.responsiveStacked]: options.responsive === "stacked",

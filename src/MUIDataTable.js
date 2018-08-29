@@ -71,6 +71,7 @@ class MUIDataTable extends React.Component {
       customToolbar: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customToolbarSelect: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customFooter: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+      onRowClick: PropTypes.func,
       resizableColumns: PropTypes.bool,
       selectableRows: PropTypes.bool,
       serverSide: PropTypes.bool,
@@ -799,6 +800,7 @@ class MUIDataTable extends React.Component {
             />
             <MUIDataTableBody
               data={this.state.displayData}
+              onRowClick={this.options.onRowClick}
               count={rowCount}
               columns={columns}
               page={page}
