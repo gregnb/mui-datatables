@@ -212,6 +212,6 @@ describe("<MUIDataTableBody />", function() {
     );
 
     assert.strictEqual(onRowClick.callCount, 1);
-    assert(onRowClick.calledWith(2, data[2], 2));
+    assert(onRowClick.calledWith(data[2], { rowIndex: 2, dataIndex: 2 }));
   });
 });
