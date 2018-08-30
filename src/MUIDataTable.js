@@ -714,7 +714,7 @@ class MUIDataTable extends React.Component {
     }))
   }
 
-  sortTable = (data, col, order, props, state) => {
+  sortTable = (data, col, order) => {
     let {props, state} = this,
     sortedData = this.options.sortedData(data, col, order, props, state);
     sortedData.sort(this.options.sortCompare(order));
