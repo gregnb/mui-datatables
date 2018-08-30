@@ -641,7 +641,7 @@ class MUIDataTable extends React.Component {
           }
 
           return {
-            curSelectedRows: selectedRows,
+            curSelectedRows: newRows,
             selectedRows: {
               data: newRows,
               lookup: selectedMap,
@@ -650,8 +650,7 @@ class MUIDataTable extends React.Component {
         },
         () => {
           if (this.options.onRowsSelect) {
-            console.log(this.state.curSelectedRows);
-            this.options.onRowsSelect(this.state.curSelectedRows.data[0], this.state.selectedRows.data);
+            this.options.onRowsSelect(this.state.curSelectedRows, this.state.selectedRows.data);
           }
         },
       );
@@ -800,7 +799,6 @@ class MUIDataTable extends React.Component {
             />
             <MUIDataTableBody
               data={this.state.displayData}
-              onRowClick={this.options.onRowClick}
               count={rowCount}
               columns={columns}
               page={page}

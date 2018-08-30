@@ -184,16 +184,14 @@ describe("<MUIDataTableBody />", function() {
   });
 
   it("should call onRowClick when Row is clicked", () => {
-    const options = { selectableRows: true };
+    const options = { selectableRows: true, onRowClick: spy() };
     const selectRowUpdate = stub();
-    const onRowClick = spy();
 
     const t = mount(
       <MUIDataTableBody
         data={displayData}
         count={displayData.length}
         columns={columns}
-        onRowClick={onRowClick}
         page={0}
         rowsPerPage={10}
         selectedRows={[]}
@@ -204,14 +202,11 @@ describe("<MUIDataTableBody />", function() {
       />,
     );
 
-    console.log(
-      t
-        .find("#MUIDataTableBodyRow-2")
-        .first()
-        .simulate("click"),
-    );
+    t.find("#MUIDataTableBodyRow-2")
+      .first()
+      .simulate("click");
 
-    assert.strictEqual(onRowClick.callCount, 1);
-    assert(onRowClick.calledWith(data[2], { rowIndex: 2, dataIndex: 2 }));
+    assert.strictEqual(options.onRowClick.callCount, 1);
+    assert(options.onRowClick.calledWith(data[2], { rowIndex: 2, dataIndex: 2 }));
   });
 });
