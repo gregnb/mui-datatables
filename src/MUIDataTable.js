@@ -711,7 +711,7 @@ class MUIDataTable extends React.Component {
       data: row.data[col],
       position: sIndex,
       rowSelected: this.state.selectedRows.lookup[sIndex] ? true : false,
-    }))
+    }));
   }
 
   sortTable = (data, col, order) => {
