@@ -70,6 +70,9 @@ class Example extends React.Component {
       },
       onCellClick: (cellIndex, rowIndex) => {
         console.log(cellIndex, rowIndex);
+      },
+      onRowClick: (rowData, rowState) => {
+        console.log(rowData, rowState);
       }
     };
 
