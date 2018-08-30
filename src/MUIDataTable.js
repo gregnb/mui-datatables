@@ -85,6 +85,8 @@ class MUIDataTable extends React.Component {
       rowsPerPageOptions: PropTypes.array,
       filter: PropTypes.bool,
       sort: PropTypes.bool,
+      sortCompare: PropTypes.func,
+      sortedData: PropTypes.func,
       search: PropTypes.bool,
       print: PropTypes.bool,
       viewColumns: PropTypes.bool,
@@ -165,6 +167,8 @@ class MUIDataTable extends React.Component {
       filter: true,
       sortFilterList: true,
       sort: true,
+      sortCompare: this.sortCompare,
+      sortedData: this.sortedData,
       search: true,
       print: true,
       viewColumns: true,
@@ -691,7 +695,7 @@ class MUIDataTable extends React.Component {
     }
   };
 
-  sortCompare(order) {
+  sortCompare = (order) => {
     return (a, b) => {
       if (a.data === null) a.data = "";
       if (b.data === null) b.data = "";
@@ -702,13 +706,18 @@ class MUIDataTable extends React.Component {
     };
   }
 
-  sortTable(data, col, order) {
-    let sortedData = data.map((row, sIndex) => ({
+  sortedData = (data, col, order, props, state) => {
+    return data.map((row, sIndex) => ({
       data: row.data[col],
       position: sIndex,
       rowSelected: this.state.selectedRows.lookup[sIndex] ? true : false,
-    }));
+    }))
+  }
 
+  sortTable = (data, col, order, props, state) => {
+    let {props, state} = this,
+    sortedData = this.options.sortedData(data, col, order, props, state);
+    sortedData.sort(this.options.sortCompare(order));
     sortedData.sort(this.sortCompare(order));
 
     let tableData = [];
