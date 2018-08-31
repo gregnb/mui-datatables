@@ -703,7 +703,6 @@ class MUIDataTable extends React.Component {
   }
 
   sortTable(data, col, order) {
-
     let dataSrc = this.options.customSort ? this.options.customSort(data, col, order) : data;
 
     let sortedData = dataSrc.map((row, sIndex) => ({
