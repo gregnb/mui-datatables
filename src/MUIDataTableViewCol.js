@@ -68,26 +68,28 @@ class MUIDataTableViewCol extends React.Component {
         <FormGroup className={classes.formGroup}>
           {columns.map((column, index) => {
             return (
-              <FormControlLabel
-                key={index}
-                classes={{
-                  root: classes.formControl,
-                  label: classes.label,
-                }}
-                control={
-                  <Checkbox
-                    className={classes.checkbox}
-                    classes={{
-                      root: classes.checkboxRoot,
-                      checked: classes.checked,
-                    }}
-                    onChange={this.handleColChange.bind(null, index)}
-                    checked={column.display}
-                    value={column.name}
-                  />
-                }
-                label={column.name}
-              />
+              column.display !== "excluded" && (
+                <FormControlLabel
+                  key={index}
+                  classes={{
+                    root: classes.formControl,
+                    label: classes.label,
+                  }}
+                  control={
+                    <Checkbox
+                      className={classes.checkbox}
+                      classes={{
+                        root: classes.checkboxRoot,
+                        checked: classes.checked,
+                      }}
+                      onChange={this.handleColChange.bind(null, index)}
+                      checked={column.display === "true"}
+                      value={column.name}
+                    />
+                  }
+                  label={column.name}
+                />
+              )
             );
           })}
         </FormGroup>

@@ -11,6 +11,7 @@ class Example extends React.Component {
         name: "Name",
         options: {
           filter: true,
+          display: 'excluded',
         }
       },      
       {

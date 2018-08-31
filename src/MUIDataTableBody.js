@@ -108,7 +108,7 @@ class MUIDataTableBody extends React.Component {
               )}
               {row.map(
                 (column, index) =>
-                  columns[index].display ? (
+                  columns[index].display === "true" ? (
                     <MUIDataTableBodyCell
                       rowIndex={rowIndex}
                       colIndex={index}

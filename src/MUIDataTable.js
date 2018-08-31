@@ -53,7 +53,7 @@ class MUIDataTable extends React.Component {
         PropTypes.shape({
           name: PropTypes.string.isRequired,
           options: PropTypes.shape({
-            display: PropTypes.bool,
+            display: PropTypes.string, // enum('true', 'false', 'excluded')
             filter: PropTypes.bool,
             sort: PropTypes.bool,
             customHeadRender: PropTypes.func,
@@ -217,13 +217,17 @@ class MUIDataTable extends React.Component {
 
     columns.forEach((column, colIndex) => {
       let columnOptions = {
-        display: true,
+        display: "true",
         filter: true,
         sort: true,
         sortDirection: null,
       };
 
       if (typeof column === "object") {
+        if (column.options && column.options.display !== undefined) {
+          column.options.display = column.options.display.toString();
+        }
+
         columnOptions = {
           name: column.name,
           ...columnOptions,
@@ -418,7 +422,7 @@ class MUIDataTable extends React.Component {
     this.setState(
       prevState => {
         const columns = cloneDeep(prevState.columns);
-        columns[index].display = !columns[index].display;
+        columns[index].display = columns[index].display === "true" ? "false" : "true";
         return {
           columns: columns,
         };
@@ -427,7 +431,7 @@ class MUIDataTable extends React.Component {
         if (this.options.onColumnViewChange) {
           this.options.onColumnViewChange(
             this.state.columns[index].name,
-            this.state.columns[index].display ? "add" : "remove",
+            this.state.columns[index].display === "true" ? "add" : "remove",
           );
         }
       },
