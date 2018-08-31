@@ -84,10 +84,17 @@ class MUIDataTableToolbar extends React.Component {
   };
 
   handleCSVDownload = () => {
-    const { data, columns } = this.props;
+    const { data, columns, options } = this.props;
+    console.log(columns);
 
-    const CSVHead = columns.reduce((soFar, column) => soFar + '"' + column.name + '",', "").slice(0, -1) + "\r\n";
-    const CSVBody = data.reduce((soFar, row) => soFar + '"' + row.data.join('","') + '"\r\n', []).trim();
+    const CSVHead = columns.reduce(
+      (soFar, column) =>
+        column.download ? soFar + '"' + column.name + '"' + options.downloadOptions.separator : "", "")
+      .slice(0, -1) + "\r\n";
+    const CSVBody = data.reduce(
+      (soFar, row) => soFar + '"' + row.data.filter((field, index) => columns[index].download)
+        .join('"' + options.downloadOptions.separator + '"') + '"\r\n', [])
+      .trim();
 
     /* taken from react-csv */
     const csv = `${CSVHead}${CSVBody}`;
@@ -99,7 +106,7 @@ class MUIDataTableToolbar extends React.Component {
 
     let link = document.createElement("a");
     link.setAttribute("href", downloadURI);
-    link.setAttribute("download", "tableDownload.csv");
+    link.setAttribute("download", options.downloadOptions.filename);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
