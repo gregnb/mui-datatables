@@ -86,13 +86,25 @@ class MUIDataTableToolbar extends React.Component {
   handleCSVDownload = () => {
     const { data, columns, options } = this.props;
 
-    const CSVHead = columns.reduce(
-      (soFar, column) =>
-        column.download ? soFar + '"' + column.name + '"' + options.downloadOptions.separator : "", "")
-      .slice(0, -1) + "\r\n";
-    const CSVBody = data.reduce(
-      (soFar, row) => soFar + '"' + row.data.filter((field, index) => columns[index].download)
-        .join('"' + options.downloadOptions.separator + '"') + '"\r\n', [])
+    const CSVHead =
+      columns
+        .reduce(
+          (soFar, column) =>
+            column.download ? soFar + '"' + column.name + '"' + options.downloadOptions.separator : soFar,
+          "",
+        )
+        .slice(0, -1) + "\r\n";
+    const CSVBody = data
+      .reduce(
+        (soFar, row) =>
+          soFar +
+          '"' +
+          row.data
+            .filter((field, index) => columns[index].download)
+            .join('"' + options.downloadOptions.separator + '"') +
+          '"\r\n',
+        [],
+      )
       .trim();
 
     /* taken from react-csv */
