@@ -18,7 +18,7 @@
     "coverage:html": "cross-env NODE_ENV=test nyc check-coverage --lines 55 --reporter=html --reporter=text mocha --require babel-register test/*.js && nyc report --reporter=html",
     "prettier": "find src/ docs/ test/ -type f -name \"*.js\" ! -path \"*/.next/*\" | xargs prettier --write",
     "lint": "eslint src",
-    "build": "cross-env NODE_ENV=production npm run prettier && rollup -c",
+    "build": "cross-env NODE_ENV=production npm run prettier && rollup -c"
   },
   "repository": {
     "type": "git",
