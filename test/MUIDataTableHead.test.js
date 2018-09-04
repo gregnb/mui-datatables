@@ -12,10 +12,10 @@ describe("<MUIDataTableHead />", function() {
 
   before(() => {
     columns = [
-      { name: "First Name", display: true, sort: null },
-      { name: "Company", display: true, sort: null },
-      { name: "City", display: true, sort: null },
-      { name: "State", display: true, sort: null },
+      { name: "First Name", display: "true", sort: null },
+      { name: "Company", display: "true", sort: null },
+      { name: "City", display: "true", sort: null },
+      { name: "State", display: "true", sort: null },
     ];
 
     handleHeadUpdateRef = () => {};

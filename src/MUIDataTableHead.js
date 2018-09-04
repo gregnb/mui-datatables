@@ -50,7 +50,7 @@ class MUIDataTableHead extends React.Component {
           )}
           {columns.map(
             (column, index) =>
-              column.display &&
+              column.display === "true" &&
               (column.customHeadRender ? (
                 column.customHeadRender({ index, ...column }, this.handleToggleColumn)
               ) : (
