@@ -66,10 +66,15 @@ class MUIDataTableBody extends React.Component {
   }
 
   getRowIndex(index) {
-    const { page, rowsPerPage } = this.props;
-    const startIndex = page === 0 ? 0 : page * rowsPerPage;
+    const { page, rowsPerPage, options } = this.props;
 
+    if (options.serverSide) {
+      return index;
+    }
+
+    const startIndex = page === 0 ? 0 : page * rowsPerPage;
     return startIndex + index;
+
   }
 
   isRowSelected(index) {
