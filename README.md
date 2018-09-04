@@ -192,7 +192,7 @@ const columns = [
 #### Column Options:
 |Name|Type|Default|Description
 |:--:|:-----|:--|:-----|
-|**`display`**|enum|'true'|Display column in table. `enum('true', 'false', 'excluded')`
+|**`display`**|string|'true'|Display column in table. `enum('true', 'false', 'excluded')`
 |**`filter`**|boolean|true|Display column in filter list
 |**`sort`**|boolean|true|Enable/disable sorting on column
 |**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(value, tableMeta, updateValue) => string`&#124;`
