@@ -66,9 +66,13 @@ class MUIDataTableBody extends React.Component {
   }
 
   getRowIndex(index) {
-    const { page, rowsPerPage } = this.props;
-    const startIndex = page === 0 ? 0 : page * rowsPerPage;
+    const { page, rowsPerPage, options } = this.props;
 
+    if (options.serverSide) {
+      return index;
+    }
+
+    const startIndex = page === 0 ? 0 : page * rowsPerPage;
     return startIndex + index;
   }
 
@@ -108,7 +112,7 @@ class MUIDataTableBody extends React.Component {
               )}
               {row.map(
                 (column, index) =>
-                  columns[index].display ? (
+                  columns[index].display === "true" ? (
                     <MUIDataTableBodyCell
                       rowIndex={rowIndex}
                       colIndex={index}

@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    app: "./examples/csv-export/index.js"
+    app: "./examples/customize-columns/index.js"
   },
   stats: "verbose",
   context: __dirname,

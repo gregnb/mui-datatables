@@ -193,7 +193,7 @@ const columns = [
 #### Column Options:
 |Name|Type|Default|Description
 |:--:|:-----|:--|:-----|
-|**`display`**|boolean|true|Display column in table
+|**`display`**|string|'true'|Display column in table. `enum('true', 'false', 'excluded')`
 |**`filter`**|boolean|true|Display column in filter list
 |**`sort`**|boolean|true|Enable/disable sorting on column
 |**`download`**|boolean|true|Display column in CSV download file
@@ -204,7 +204,7 @@ const columns = [
 
 ```
 function(columnMeta: {
-  display: bool,
+  display: enum('true', 'false', 'excluded'),
   filter: bool,
   sort: bool,
   sortDirection: bool,
