@@ -74,7 +74,6 @@ class MUIDataTableBody extends React.Component {
 
     const startIndex = page === 0 ? 0 : page * rowsPerPage;
     return startIndex + index;
-
   }
 
   isRowSelected(index) {
