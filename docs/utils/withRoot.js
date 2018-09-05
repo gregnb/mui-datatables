@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { MuiThemeProvider } from "material-ui/styles";
+import { MuiThemeProvider } from "@material-ui/core/styles";
 import getPageContext from "./getPageContext";
 
 function withRoot(Component) {

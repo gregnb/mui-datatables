@@ -9,7 +9,7 @@
 [![dependencies Status](https://david-dm.org/gregnb/mui-datatables/status.svg)](https://david-dm.org/gregnb/mui-datatables)
 [![npm version](https://badge.fury.io/js/mui-datatables.svg)](https://badge.fury.io/js/mui-datatables)
 
-MUI-Datatables is a data tables component built on [Material-UI V1](https://www.material-ui-next.com).  It comes with features like filtering, resizable + view/hide columns, search, export to CSV download, printing, selectable rows, pagination, and sorting. On top of the ability to customize styling on most views, there are two responsive modes "stacked" and "scroll" for mobile/tablet devices. 
+MUI-Datatables is a data tables component built on [Material-UI V1](https://www.material-ui-next.com).  It comes with features like filtering, resizable + view/hide columns, search, export to CSV download, printing, selectable rows, pagination, and sorting. On top of the ability to customize styling on most views, there are two responsive modes "stacked" and "scroll" for mobile/tablet devices.
 
 <div align="center">
 	<img src="https://user-images.githubusercontent.com/19170080/38026128-eac9d506-3258-11e8-92a7-b0d06e5faa82.gif" />
@@ -44,11 +44,11 @@ const options = {
   filterType: 'checkbox',
 };
 
-<MUIDataTable 
-  title={"Employee List"} 
-  data={data} 
-  columns={columns} 
-  options={options} 
+<MUIDataTable
+  title={"Employee List"}
+  data={data}
+  columns={columns}
+  options={options}
 />
 
 ```
@@ -101,11 +101,11 @@ const options = {
   filterType: 'checkbox',
 };
 
-<MUIDataTable 
-  title={"Employee List"} 
-  data={data} 
-  columns={columns} 
-  options={options} 
+<MUIDataTable
+  title={"Employee List"}
+  data={data}
+  columns={columns}
+  options={options}
 />
 
 ```
@@ -129,6 +129,7 @@ The component accepts the following props:
 |:--:|:-----|:--|:-----|
 |**`page`**|number||User provided starting page for pagination
 |**`count`**|number||User provided override for total number of rows
+|**`serverSide`**|boolean|false|Enable remote data source
 |**`filterList`**|array||User provided filter list
 |**`rowsSelected`**|array||User provided selected rows
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox", "dropdown", or "multiselect"
@@ -150,17 +151,19 @@ The component accepts the following props:
 |**`search`**|boolean|true|Show/hide search icon from toolbar
 |**`print`**|boolean|true|Show/hide print	 icon from toolbar
 |**`download`**|boolean|true|Show/hide download icon from toolbar
+|**`downloadOptions`**|object||Options to change the output of the CSV file. Default options: `{filename: 'tableDownload.csv', separator: ','}`
 |**`viewColumns`**|boolean|true|Show/hide viewColumns icon from toolbar
 |**`onRowsSelect`**|function||Callback function that triggers when row(s) are selected. `function(currentRowsSelected: array, rowsSelected: array) => void`
 |**`onRowsDelete`**|function||Callback function that triggers when row(s) are deleted. `function(rowsDeleted: array) => void`
+|**`onRowClick`**|function||Callback function that triggers when a row is clicked. `function(rowData: string[], rowMeta: { dataIndex: number, rowIndex: number }) => void`
 |**`onCellClick`**|function||Callback function that triggers when a cell is clicked. `function(colIndex: number, rowIndex: number) => void`
 |**`onChangePage`**|function||Callback function that triggers when a page has changed. `function(currentPage: number) => void`
 |**`onChangeRowsPerPage`**|function||Callback function that triggers when the number of rows per page has changed. `function(numberOfRows: number) => void`
 |**`onSearchChange`**|function||Callback function that triggers when the search text value has changed. `function(searchText: string) => void`
-|**`onSearchClose`**|function||Callback function that triggers when the search input is closed. `function() => void`
 |**`onFilterChange`**|function||Callback function that triggers when filters have changed. `function(changedColumn: string, filterList: array) => void`
 |**`onColumnSortChange`**|function||Callback function that triggers when a column has been sorted. `function(changedColumn: string, direction: string) => void`
 |**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
+|**`onServerRequest`**|function||Callback function that triggers when the 'serverSide' option is enabled and table state has changed. `function(action: string, tableState: object) => void`
 
 
 ## Customize Columns
@@ -190,9 +193,10 @@ const columns = [
 #### Column Options:
 |Name|Type|Default|Description
 |:--:|:-----|:--|:-----|
-|**`display`**|boolean|true|Display column in table
+|**`display`**|string|'true'|Display column in table. `enum('true', 'false', 'excluded')`
 |**`filter`**|boolean|true|Display column in filter list
 |**`sort`**|boolean|true|Enable/disable sorting on column
+|**`download`**|boolean|true|Display column in CSV download file
 |**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(value, tableMeta, updateValue) => string`&#124;`
 |**`customBodyRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
 
@@ -200,7 +204,7 @@ const columns = [
 
 ```
 function(columnMeta: {
-  display: bool,
+  display: enum('true', 'false', 'excluded'),
   filter: bool,
   sort: bool,
   sortDirection: bool,
@@ -254,7 +258,7 @@ class BodyCellExample extends React.Component {
   })
 
   render() {
-  
+
     return (
       <MuiThemeProvider theme={this.getMuiTheme()}>
         <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
@@ -265,6 +269,23 @@ class BodyCellExample extends React.Component {
 }
 
 ```
+
+## Remote Data
+
+If you are looking to work with remote data sets or handle pagination, filtering, and sorting on a remote server you can do that with the following options:
+
+```
+const options = {
+  serverSide: true,
+  onServerRequest: (action, tableState) => {
+    this.xhrRequest('my.api.com/tableData', result => {
+      this.setState({ data: result });
+    });
+  }
+};
+```
+
+To see an example **[Click Here](https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-pagination/index.js)**
 
 ## Localization
 
@@ -306,7 +327,7 @@ const options = {
       deleteAria: "Delete Selected Rows",
     },
   }
-  ... 
+  ...
 }
 ```
 

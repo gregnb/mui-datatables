@@ -17,18 +17,11 @@ const defaultHeadStyles = {
 };
 
 class MUIDataTableHead extends React.Component {
-  state = {
-    activeColumn: null,
-  };
-
   componentDidMount() {
     this.props.handleHeadUpdateRef(this.handleUpdateCheck);
   }
 
   handleToggleColumn = index => {
-    this.setState(() => ({
-      activeColumn: index,
-    }));
     this.props.toggleSort(index);
   };
 
@@ -57,7 +50,7 @@ class MUIDataTableHead extends React.Component {
           )}
           {columns.map(
             (column, index) =>
-              column.display &&
+              column.display === "true" &&
               (column.customHeadRender ? (
                 column.customHeadRender({ index, ...column }, this.handleToggleColumn)
               ) : (

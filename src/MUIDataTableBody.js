@@ -26,6 +26,8 @@ class MUIDataTableBody extends React.Component {
     options: PropTypes.object.isRequired,
     /** Data used to filter table against */
     filterList: PropTypes.array,
+    /** Callback to execute when row is clicked */
+    onRowClick: PropTypes.func,
     /** Table rows selected */
     selectedRows: PropTypes.object,
     /** Callback to trigger table row select */
@@ -38,6 +40,8 @@ class MUIDataTableBody extends React.Component {
 
   buildRows() {
     const { data, page, rowsPerPage, count } = this.props;
+
+    if (this.props.options.serverSide) return data;
 
     let rows = [];
     const totalPages = Math.floor(count / rowsPerPage);
@@ -62,9 +66,13 @@ class MUIDataTableBody extends React.Component {
   }
 
   getRowIndex(index) {
-    const { page, rowsPerPage } = this.props;
-    const startIndex = page === 0 ? 0 : page * rowsPerPage;
+    const { page, rowsPerPage, options } = this.props;
 
+    if (options.serverSide) {
+      return index;
+    }
+
+    const startIndex = page === 0 ? 0 : page * rowsPerPage;
     return startIndex + index;
   }
 
@@ -88,6 +96,8 @@ class MUIDataTableBody extends React.Component {
             <MUIDataTableBodyRow
               options={options}
               rowSelected={options.selectableRows ? this.isRowSelected(rowIndex) : false}
+              onClick={options.onRowClick ? options.onRowClick.bind(null, row, { rowIndex, dataIndex }) : null}
+              id={"MUIDataTableBodyRow-" + dataIndex}
               key={rowIndex}>
               {options.selectableRows ? (
                 <MUIDataTableSelectCell
@@ -102,7 +112,7 @@ class MUIDataTableBody extends React.Component {
               )}
               {row.map(
                 (column, index) =>
-                  columns[index].display ? (
+                  columns[index].display === "true" ? (
                     <MUIDataTableBodyCell
                       rowIndex={rowIndex}
                       colIndex={index}

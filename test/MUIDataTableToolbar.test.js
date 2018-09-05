@@ -26,6 +26,10 @@ describe("<MUIDataTableToolbar />", function() {
       filter: true,
       viewColumns: true,
       textLabels,
+      downloadOptions: {
+          separator: ',',
+          filename: 'tableDownload.csv',
+      }
     };
     columns = ["First Name", "Company", "City", "State"];
     data = [
@@ -90,52 +94,69 @@ describe("<MUIDataTableToolbar />", function() {
   });
 
   it("should render a toolbar with a search clicking search icon", () => {
-    const mountWrapper = mount(<MUIDataTableToolbar columns={columns} data={data} options={options} />);
-    const instance = mountWrapper.instance();
+    const shallowWrapper = shallow(<MUIDataTableToolbar columns={columns} data={data} options={options} />)
+      .dive()
+      .dive()
+      .dive();
+    const instance = shallowWrapper.instance();
 
     instance.setActiveIcon("search");
-    mountWrapper.update();
+    shallowWrapper.update();
 
-    const actualResult = mountWrapper.find(MUIDataTableSearch);
+    const actualResult = shallowWrapper.find(MUIDataTableSearch);
     assert.strictEqual(actualResult.length, 1);
   });
 
   it("should hide search after clicking cancel icon", () => {
     const searchTextUpdate = () => {};
-    const mountWrapper = mount(
+    const shallowWrapper = shallow(
       <MUIDataTableToolbar searchTextUpdate={searchTextUpdate} columns={columns} data={data} options={options} />,
-    );
-    const instance = mountWrapper.instance();
+    )
+      .dive()
+      .dive()
+      .dive();
+    const instance = shallowWrapper.instance();
+
+    instance.searchButton = {
+      focus: () => {},
+    };
 
     // display search
     instance.setActiveIcon("search");
-    mountWrapper.update();
+    shallowWrapper.update();
 
-    let actualResult = mountWrapper.find(MUIDataTableSearch);
+    let actualResult = shallowWrapper.find(MUIDataTableSearch);
     assert.strictEqual(actualResult.length, 1);
 
     // now hide it and test
     instance.hideSearch();
-    mountWrapper.update();
+    shallowWrapper.update();
 
-    actualResult = mountWrapper.find(MUIDataTableSearch);
+    actualResult = shallowWrapper.find(MUIDataTableSearch);
     assert.strictEqual(actualResult.length, 0);
   });
 
   it("should set icon when calling method setActiveIcon", () => {
-    const mountWrapper = mount(<MUIDataTableToolbar columns={columns} data={data} options={options} />);
-    const instance = mountWrapper.instance();
+    const shallowWrapper = shallow(<MUIDataTableToolbar columns={columns} data={data} options={options} />)
+      .dive()
+      .dive()
+      .dive();
+    const instance = shallowWrapper.instance();
 
     instance.setActiveIcon("filter");
-    mountWrapper.update();
+    shallowWrapper.update();
 
-    const state = mountWrapper.state();
+    const state = shallowWrapper.state();
     assert.strictEqual(state.iconActive, "filter");
   });
 
   it("should download CSV when calling method handleCSVDownload", () => {
-    const mountWrapper = mount(<MUIDataTableToolbar columns={columns} data={data} options={options} />);
-    const instance = mountWrapper.instance();
+    const shallowWrapper = shallow(<MUIDataTableToolbar columns={columns} data={data} options={options} />);
+    const instance = shallowWrapper
+      .dive()
+      .dive()
+      .dive()
+      .instance();
 
     const appendSpy = spy(document.body, "appendChild");
     const removeSpy = spy(document.body, "removeChild");

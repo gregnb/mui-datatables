@@ -12,11 +12,10 @@ import DownloadIcon from "@material-ui/icons/CloudDownload";
 import PrintIcon from "@material-ui/icons/Print";
 import ViewColumnIcon from "@material-ui/icons/ViewColumn";
 import FilterIcon from "@material-ui/icons/FilterList";
-import merge from "lodash.merge";
 import ReactToPrint from "react-to-print";
-import { getStyle, DataStyles } from "./DataStyles";
+import styled from "./styled";
 
-export const defaultToolbarStyles = {
+export const defaultToolbarStyles = (theme, props) => ({
   root: {},
   left: {
     flex: "1 1 55%",
@@ -40,7 +39,8 @@ export const defaultToolbarStyles = {
     marginTop: "10px",
     marginRight: "8px",
   },
-};
+  ...(props.options.responsive ? { ...responsiveToolbarStyles } : {}),
+});
 
 export const responsiveToolbarStyles = {
   "@media screen and (max-width: 960px)": {
@@ -83,21 +83,30 @@ class MUIDataTableToolbar extends React.Component {
     showSearch: false,
   };
 
-  constructor(props) {
-    super(props);
-
-    if (props.options.responsive) {
-      this.tbarStyles = merge(defaultToolbarStyles, responsiveToolbarStyles);
-    } else {
-      this.tbarStyles = defaultToolbarStyles;
-    }
-  }
-
   handleCSVDownload = () => {
-    const { data, columns } = this.props;
+    const { data, columns, options } = this.props;
 
-    const CSVHead = columns.reduce((soFar, column) => soFar + '"' + column.name + '",', "").slice(0, -1) + "\r\n";
-    const CSVBody = data.length ? data.reduce((soFar, row) => soFar + '"' + row.data.join('","') + '"\r\n', []).trim() : "";
+    const CSVHead =
+      columns
+        .reduce(
+          (soFar, column) =>
+            column.download ? soFar + '"' + column.name + '"' + options.downloadOptions.separator : soFar,
+          "",
+        )
+        .slice(0, -1) + "\r\n";
+  
+    const CSVBody = data
+      .reduce(
+        (soFar, row) =>
+          soFar +
+          '"' +
+          row.data
+            .filter((field, index) => columns[index].download)
+            .join('"' + options.downloadOptions.separator + '"') +
+          '"\r\n',
+        [],
+      )
+      .trim();
 
     /* taken from react-csv */
     const csv = `${CSVHead}${CSVBody}`;
@@ -109,7 +118,7 @@ class MUIDataTableToolbar extends React.Component {
 
     let link = document.createElement("a");
     link.setAttribute("href", downloadURI);
-    link.setAttribute("download", "tableDownload.csv");
+    link.setAttribute("download", options.downloadOptions.filename);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -128,7 +137,7 @@ class MUIDataTableToolbar extends React.Component {
 
   hideSearch = () => {
     const { onSearchClose } = this.props.options;
-    
+
     if (onSearchClose) onSearchClose();
     this.props.searchTextUpdate(null);
 
@@ -144,6 +153,7 @@ class MUIDataTableToolbar extends React.Component {
     const {
       data,
       options,
+      classes,
       columns,
       filterData,
       filterList,
@@ -159,122 +169,112 @@ class MUIDataTableToolbar extends React.Component {
     const { showSearch } = this.state;
 
     return (
-      <DataStyles
-        defaultStyles={this.tbarStyles}
-        name="MUIDataTableToolbar"
-        styles={getStyle(options, "table.toolbar")}>
-        {toolbarStyles => (
-          <Toolbar className={toolbarStyles.root} role={"toolbar"} aria-label={"Table Toolbar"}>
-            <div className={toolbarStyles.left}>
-              {showSearch === true ? (
-                <MUIDataTableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
-              ) : (
-                <div className={toolbarStyles.titleRoot} aria-hidden={"true"}>
-                  <Typography variant="title" className={toolbarStyles.titleText}>
-                    {title}
-                  </Typography>
-                </div>
-              )}
+      <Toolbar className={classes.root} role={"toolbar"} aria-label={"Table Toolbar"}>
+        <div className={classes.left}>
+          {showSearch === true ? (
+            <MUIDataTableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
+          ) : (
+            <div className={classes.titleRoot} aria-hidden={"true"}>
+              <Typography variant="title" className={classes.titleText}>
+                {title}
+              </Typography>
             </div>
-            <div className={toolbarStyles.actions}>
-              {options.search ? (
-                <Tooltip title={search}>
-                  <IconButton
-                    aria-label={search}
-                    buttonRef={el => (this.searchButton = el)}
-                    classes={{ root: this.getActiveIcon(toolbarStyles, "search") }}
-                    onClick={this.setActiveIcon.bind(null, "search")}>
-                    <SearchIcon />
-                  </IconButton>
-                </Tooltip>
-              ) : (
-                false
-              )}
-              {options.download ? (
-                <Tooltip title={downloadCsv}>
-                  <IconButton
-                    aria-label={downloadCsv}
-                    classes={{ root: toolbarStyles.icon }}
-                    onClick={this.handleCSVDownload}>
-                    <DownloadIcon />
-                  </IconButton>
-                </Tooltip>
-              ) : (
-                false
-              )}
-              {options.print ? (
-                <Tooltip title={print}>
-                  <span>
-                    <ReactToPrint
-                      trigger={() => (
-                        <IconButton aria-label={print} classes={{ root: toolbarStyles.icon }}>
-                          <PrintIcon />
-                        </IconButton>
-                      )}
-                      content={() => this.props.tableRef()}
-                    />
-                  </span>
-                </Tooltip>
-              ) : (
-                false
-              )}
-              {options.viewColumns ? (
-                <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
-                  <MUIPopoverTarget>
-                    <IconButton
-                      aria-label={viewColumns}
-                      classes={{ root: this.getActiveIcon(toolbarStyles, "viewcolumns") }}
-                      onClick={this.setActiveIcon.bind(null, "viewcolumns")}>
-                      <Tooltip title={viewColumns}>
-                        <ViewColumnIcon />
-                      </Tooltip>
+          )}
+        </div>
+        <div className={classes.actions}>
+          {options.search ? (
+            <Tooltip title={search}>
+              <IconButton
+                aria-label={search}
+                buttonRef={el => (this.searchButton = el)}
+                classes={{ root: this.getActiveIcon(classes, "search") }}
+                onClick={this.setActiveIcon.bind(null, "search")}>
+                <SearchIcon />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            false
+          )}
+          {options.download ? (
+            <Tooltip title={downloadCsv}>
+              <IconButton aria-label={downloadCsv} classes={{ root: classes.icon }} onClick={this.handleCSVDownload}>
+                <DownloadIcon />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            false
+          )}
+          {options.print ? (
+            <Tooltip title={print}>
+              <span>
+                <ReactToPrint
+                  trigger={() => (
+                    <IconButton aria-label={print} classes={{ root: classes.icon }}>
+                      <PrintIcon />
                     </IconButton>
-                  </MUIPopoverTarget>
-                  <MUIPopoverContent>
-                    <MUIDataTableViewCol
-                      data={data}
-                      columns={columns}
-                      options={options}
-                      onColumnUpdate={toggleViewColumn}
-                    />
-                  </MUIPopoverContent>
-                </MUIPopover>
-              ) : (
-                false
-              )}
-              {options.filter ? (
-                <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
-                  <MUIPopoverTarget>
-                    <IconButton
-                      aria-label={filterTable}
-                      classes={{ root: this.getActiveIcon(toolbarStyles, "filter") }}
-                      onClick={this.setActiveIcon.bind(null, "filter")}>
-                      <Tooltip title={filterTable}>
-                        <FilterIcon />
-                      </Tooltip>
-                    </IconButton>
-                  </MUIPopoverTarget>
-                  <MUIPopoverContent>
-                    <MUIDataTableFilter
-                      columns={columns}
-                      options={options}
-                      filterList={filterList}
-                      filterData={filterData}
-                      onFilterUpdate={filterUpdate}
-                      onFilterReset={resetFilters}
-                    />
-                  </MUIPopoverContent>
-                </MUIPopover>
-              ) : (
-                false
-              )}
-              {options.customToolbar ? options.customToolbar() : false}
-            </div>
-          </Toolbar>
-        )}
-      </DataStyles>
+                  )}
+                  content={() => this.props.tableRef()}
+                />
+              </span>
+            </Tooltip>
+          ) : (
+            false
+          )}
+          {options.viewColumns ? (
+            <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
+              <MUIPopoverTarget>
+                <IconButton
+                  aria-label={viewColumns}
+                  classes={{ root: this.getActiveIcon(classes, "viewcolumns") }}
+                  onClick={this.setActiveIcon.bind(null, "viewcolumns")}>
+                  <Tooltip title={viewColumns}>
+                    <ViewColumnIcon />
+                  </Tooltip>
+                </IconButton>
+              </MUIPopoverTarget>
+              <MUIPopoverContent>
+                <MUIDataTableViewCol
+                  data={data}
+                  columns={columns}
+                  options={options}
+                  onColumnUpdate={toggleViewColumn}
+                />
+              </MUIPopoverContent>
+            </MUIPopover>
+          ) : (
+            false
+          )}
+          {options.filter ? (
+            <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
+              <MUIPopoverTarget>
+                <IconButton
+                  aria-label={filterTable}
+                  classes={{ root: this.getActiveIcon(classes, "filter") }}
+                  onClick={this.setActiveIcon.bind(null, "filter")}>
+                  <Tooltip title={filterTable}>
+                    <FilterIcon />
+                  </Tooltip>
+                </IconButton>
+              </MUIPopoverTarget>
+              <MUIPopoverContent>
+                <MUIDataTableFilter
+                  columns={columns}
+                  options={options}
+                  filterList={filterList}
+                  filterData={filterData}
+                  onFilterUpdate={filterUpdate}
+                  onFilterReset={resetFilters}
+                />
+              </MUIPopoverContent>
+            </MUIPopover>
+          ) : (
+            false
+          )}
+          {options.customToolbar ? options.customToolbar() : false}
+        </div>
+      </Toolbar>
     );
   }
 }
 
-export default MUIDataTableToolbar;
+export default styled(MUIDataTableToolbar)(defaultToolbarStyles, { name: "MUIDataTableToolbar" });

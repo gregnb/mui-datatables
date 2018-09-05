@@ -77,17 +77,18 @@ describe("<MUIDataTable />", function() {
     const actualResult = shallowWrapper.dive().state().columns;
 
     const expectedResult = [
-      { display: true, name: "Name", sort: true, filter: true, sortDirection: null, customBodyRender: renderName },
-      { display: true, name: "Company", sort: true, filter: true, sortDirection: null },
+      { display: "true", name: "Name", sort: true, filter: true, download: true, sortDirection: null, customBodyRender: renderName },
+      { display: "true", name: "Company", sort: true, filter: true, download: true, sortDirection: null },
       {
-        display: true,
+        display: "true",
         name: "City",
         sort: true,
         filter: true,
+        download: true,
         sortDirection: null,
         customBodyRender: renderCities,
       },
-      { display: true, name: "State", sort: true, filter: true, sortDirection: null },
+      { display: "true", name: "State", sort: true, filter: true, download: true, sortDirection: null },
     ];
 
     assert.deepEqual(actualResult, expectedResult);
@@ -327,17 +328,18 @@ describe("<MUIDataTable />", function() {
     const state = shallowWrapper.state();
 
     const expectedResult = [
-      { name: "Name", display: false, sort: true, filter: true, sortDirection: null, customBodyRender: renderName },
-      { name: "Company", display: true, sort: true, filter: true, sortDirection: null },
+      { name: "Name", display: "false", sort: true, filter: true, download: true, sortDirection: null, customBodyRender: renderName },
+      { name: "Company", display: "true", sort: true, filter: true, download: true, sortDirection: null },
       {
         name: "City",
-        display: true,
+        display: "true",
         sort: true,
         filter: true,
+        download: true,
         sortDirection: null,
         customBodyRender: renderCities,
       },
-      { name: "State", display: true, sort: true, filter: true, sortDirection: null },
+      { name: "State", display: "true", sort: true, filter: true, download: true, sortDirection: null },
     ];
 
     assert.deepEqual(state.columns, expectedResult);
