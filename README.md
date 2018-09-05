@@ -9,7 +9,7 @@
 [![dependencies Status](https://david-dm.org/gregnb/mui-datatables/status.svg)](https://david-dm.org/gregnb/mui-datatables)
 [![npm version](https://badge.fury.io/js/mui-datatables.svg)](https://badge.fury.io/js/mui-datatables)
 
-MUI-Datatables is a data tables component built on [Material-UI V1](https://www.material-ui-next.com).  It comes with features like filtering, resizable + view/hide columns, search, export to CSV download, printing, selectable rows, pagination, and sorting. On top of the ability to customize styling on most views, there are two responsive modes "stacked" and "scroll" for mobile/tablet devices. 
+MUI-Datatables is a data tables component built on [Material-UI V1](https://www.material-ui-next.com).  It comes with features like filtering, resizable + view/hide columns, search, export to CSV download, printing, selectable rows, pagination, and sorting. On top of the ability to customize styling on most views, there are two responsive modes "stacked" and "scroll" for mobile/tablet devices.
 
 <div align="center">
 	<img src="https://user-images.githubusercontent.com/19170080/38026128-eac9d506-3258-11e8-92a7-b0d06e5faa82.gif" />
@@ -44,11 +44,11 @@ const options = {
   filterType: 'checkbox',
 };
 
-<MUIDataTable 
-  title={"Employee List"} 
-  data={data} 
-  columns={columns} 
-  options={options} 
+<MUIDataTable
+  title={"Employee List"}
+  data={data}
+  columns={columns}
+  options={options}
 />
 
 ```
@@ -101,11 +101,11 @@ const options = {
   filterType: 'checkbox',
 };
 
-<MUIDataTable 
-  title={"Employee List"} 
-  data={data} 
-  columns={columns} 
-  options={options} 
+<MUIDataTable
+  title={"Employee List"}
+  data={data}
+  columns={columns}
+  options={options}
 />
 
 ```
@@ -151,6 +151,7 @@ The component accepts the following props:
 |**`search`**|boolean|true|Show/hide search icon from toolbar
 |**`print`**|boolean|true|Show/hide print	 icon from toolbar
 |**`download`**|boolean|true|Show/hide download icon from toolbar
+|**`downloadOptions`**|object||Options to change the output of the CSV file. Default options: `{filename: 'tableDownload.csv', separator: ','}`
 |**`viewColumns`**|boolean|true|Show/hide viewColumns icon from toolbar
 |**`onRowsSelect`**|function||Callback function that triggers when row(s) are selected. `function(currentRowsSelected: array, rowsSelected: array) => void`
 |**`onRowsDelete`**|function||Callback function that triggers when row(s) are deleted. `function(rowsDeleted: array) => void`
@@ -195,6 +196,7 @@ const columns = [
 |**`display`**|string|'true'|Display column in table. `enum('true', 'false', 'excluded')`
 |**`filter`**|boolean|true|Display column in filter list
 |**`sort`**|boolean|true|Enable/disable sorting on column
+|**`download`**|boolean|true|Display column in CSV download file
 |**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(value, tableMeta, updateValue) => string`&#124;`
 |**`customBodyRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
 
@@ -256,7 +258,7 @@ class BodyCellExample extends React.Component {
   })
 
   render() {
-  
+
     return (
       <MuiThemeProvider theme={this.getMuiTheme()}>
         <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
@@ -268,7 +270,7 @@ class BodyCellExample extends React.Component {
 
 ```
 
-## Remote Data 
+## Remote Data
 
 If you are looking to work with remote data sets or handle pagination, filtering, and sorting on a remote server you can do that with the following options:
 
@@ -325,7 +327,7 @@ const options = {
       deleteAria: "Delete Selected Rows",
     },
   }
-  ... 
+  ...
 }
 ```
 

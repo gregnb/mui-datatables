@@ -56,6 +56,7 @@ class MUIDataTable extends React.Component {
             display: PropTypes.string, // enum('true', 'false', 'excluded')
             filter: PropTypes.bool,
             sort: PropTypes.bool,
+            download: PropTypes.bool,
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,
           }),
@@ -89,6 +90,10 @@ class MUIDataTable extends React.Component {
       print: PropTypes.bool,
       viewColumns: PropTypes.bool,
       download: PropTypes.bool,
+      downloadOptions: PropTypes.shape({
+        filename: PropTypes.string,
+        separator: PropTypes.string,
+      }),
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
@@ -169,6 +174,10 @@ class MUIDataTable extends React.Component {
       print: true,
       viewColumns: true,
       download: true,
+      downloadOptions: {
+        filename: 'tableDownload.csv',
+        separator: ',',
+      },
     };
 
     this.options = merge(defaultOptions, props.options);
@@ -220,6 +229,7 @@ class MUIDataTable extends React.Component {
         display: "true",
         filter: true,
         sort: true,
+        download: true,
         sortDirection: null,
       };
 
