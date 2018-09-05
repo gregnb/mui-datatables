@@ -711,7 +711,9 @@ class MUIDataTable extends React.Component {
       rowSelected: this.state.selectedRows.lookup[sIndex] ? true : false,
     }));
 
-    sortedData.sort(this.sortCompare(order));
+    if (!this.options.customSort) {
+      sortedData.sort(this.sortCompare(order));
+    }
 
     let tableData = [];
     let selectedRows = [];
