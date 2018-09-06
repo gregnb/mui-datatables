@@ -760,10 +760,6 @@ class MUIDataTable extends React.Component {
       searchText,
     } = this.state;
 
-    if (!data.length) {
-      return false;
-    }
-
     const rowCount = this.options.count || displayData.length;
 
     return (
