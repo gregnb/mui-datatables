@@ -153,7 +153,7 @@ The component accepts the following props:
 |**`download`**|boolean|true|Show/hide download icon from toolbar
 |**`downloadOptions`**|object||Options to change the output of the CSV file. Default options: `{filename: 'tableDownload.csv', separator: ','}`
 |**`viewColumns`**|boolean|true|Show/hide viewColumns icon from toolbar
-|**`onRowsSelect`**|function||Callback function that triggers when row(s) are selected. `function(currentRowsSelected: array, rowsSelected: array) => void`
+|**`onRowsSelect`**|function||Callback function that triggers when row(s) are selected. `function(currentRowsSelected: array, allRowsSelected: array) => void`
 |**`onRowsDelete`**|function||Callback function that triggers when row(s) are deleted. `function(rowsDeleted: array) => void`
 |**`onRowClick`**|function||Callback function that triggers when a row is clicked. `function(rowData: string[], rowMeta: { dataIndex: number, rowIndex: number }) => void`
 |**`onCellClick`**|function||Callback function that triggers when a cell is clicked. `function(colIndex: number, rowIndex: number) => void`
