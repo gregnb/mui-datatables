@@ -94,7 +94,7 @@ class MUIDataTableToolbar extends React.Component {
           "",
         )
         .slice(0, -1) + "\r\n";
-  
+
     const CSVBody = data
       .reduce(
         (soFar, row) =>

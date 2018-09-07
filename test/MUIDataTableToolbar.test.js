@@ -27,9 +27,9 @@ describe("<MUIDataTableToolbar />", function() {
       viewColumns: true,
       textLabels,
       downloadOptions: {
-          separator: ',',
-          filename: 'tableDownload.csv',
-      }
+        separator: ",",
+        filename: "tableDownload.csv",
+      },
     };
     columns = ["First Name", "Company", "City", "State"];
     data = [
