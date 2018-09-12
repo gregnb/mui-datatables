@@ -12,10 +12,10 @@ describe("<MUIDataTableHead />", function() {
 
   before(() => {
     columns = [
-      { name: "First Name", display: true, sort: null },
-      { name: "Company", display: true, sort: null },
-      { name: "City", display: true, sort: null },
-      { name: "State", display: true, sort: null },
+      { name: "First Name", display: "true", sort: null },
+      { name: "Company", display: "true", sort: null },
+      { name: "City", display: "true", sort: null },
+      { name: "State", display: "true", sort: null },
     ];
 
     handleHeadUpdateRef = () => {};
@@ -29,6 +29,7 @@ describe("<MUIDataTableHead />", function() {
       <MUIDataTableHead
         columns={columns}
         options={options}
+        setCellRef={() => {}}
         handleHeadUpdateRef={handleHeadUpdateRef}
         toggleSort={toggleSort}
       />,
@@ -46,6 +47,7 @@ describe("<MUIDataTableHead />", function() {
       <MUIDataTableHead
         columns={newColumns}
         options={options}
+        setCellRef={() => {}}
         handleHeadUpdateRef={handleHeadUpdateRef}
         toggleSort={toggleSort}
       />,
@@ -62,6 +64,7 @@ describe("<MUIDataTableHead />", function() {
       <MUIDataTableHead
         columns={columns}
         options={options}
+        setCellRef={() => {}}
         handleHeadUpdateRef={handleHeadUpdateRef}
         toggleSort={toggleSort}
       />,
@@ -71,8 +74,6 @@ describe("<MUIDataTableHead />", function() {
     instance.handleToggleColumn(2);
     shallowWrapper.update();
 
-    let state = shallowWrapper.state();
-    assert.strictEqual(state.activeColumn, 2);
     assert.strictEqual(toggleSort.callCount, 1);
   });
 
@@ -84,6 +85,7 @@ describe("<MUIDataTableHead />", function() {
       <MUIDataTableHead
         columns={columns}
         options={options}
+        setCellRef={() => {}}
         handleHeadUpdateRef={handleHeadUpdateRef}
         selectRowUpdate={rowSelectUpdate}
       />,

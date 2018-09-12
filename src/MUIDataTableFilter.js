@@ -162,7 +162,7 @@ class MUIDataTableFilter extends React.Component {
                         root: classes.checkbox,
                         checked: classes.checked,
                       }}
-                      value={filterColumn.toString()}
+                      value={filterColumn !== null ? filterColumn.toString() : ""}
                     />
                   }
                   label={filterColumn}
@@ -197,7 +197,7 @@ class MUIDataTableFilter extends React.Component {
                   </MenuItem>
                   {filterData[index].map((filterColumn, filterIndex) => (
                     <MenuItem value={filterColumn} key={filterIndex + 1}>
-                      {filterColumn.toString()}
+                      {filterColumn !== null ? filterColumn.toString() : ""}
                     </MenuItem>
                   ))}
                 </Select>
