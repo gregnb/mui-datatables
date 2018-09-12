@@ -296,7 +296,7 @@ class MUIDataTable extends React.Component {
         totals[colIndex] = render(totals[colIndex], tableMeta);
       }
 
-      if (!columnOptions.display) {
+      if (columnOptions.display !== "true") {
         totals[colIndex] = "";
       }
     });
@@ -792,123 +792,15 @@ class MUIDataTable extends React.Component {
 
     const rowCount = this.options.count || displayData.length;
 
+    let divStyle = {
+      position: "relative",
+    };
     if (height) {
-      return (
-        <Paper elevation={4} ref={el => (this.tableContent = el)} className={classes.paper}>
-          {selectedRows.data.length && this.options.delete ? (
-            <MUIDataTableToolbarSelect
-              options={this.options}
-              selectedRows={selectedRows}
-              onRowsDelete={this.selectRowDelete}
-            />
-          ) : (
-            <MUIDataTableToolbar
-              columns={columns}
-              data={data}
-              filterData={filterData}
-              filterList={filterList}
-              filterUpdate={this.filterUpdate}
-              options={this.options}
-              resetFilters={this.resetFilters}
-              searchTextUpdate={this.searchTextUpdate}
-              tableRef={() => this.tableContent}
-              title={title}
-              toggleViewColumn={this.toggleViewColumn}
-            />
-          )}
-          <MUIDataTableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />
-          <div className="header-only">
-            <Table ref={el => (this.tableRef = el)} tabIndex={"0"} role={"grid"}>
-              <caption className={classes.caption}>{title}</caption>
-              <MUIDataTableHead
-                columns={columns}
-                activeColumn={activeColumn}
-                data={this.state.displayData}
-                count={rowCount}
-                columns={columns}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
-                selectedRows={selectedRows}
-                selectRowUpdate={this.selectRowUpdate}
-                toggleSort={this.toggleSortColumn}
-                setCellRef={this.setHeadCellRef}
-                options={this.options}
-              />
-              <MUIDataTableBody
-                data={this.state.displayData}
-                count={rowCount}
-                columns={columns}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                selectedRows={selectedRows}
-                selectRowUpdate={this.selectRowUpdate}
-                options={this.options}
-                searchText={searchText}
-                filterList={filterList}
-                totals={totalled && totals}
-              />
-            </Table>
-          </div>
-          <div
-            style={{ position: "relative" }}
-            className={"body-only " + this.options.responsive === "scroll" ? classes.responsiveScroll : ""}
-            style={{ overflowY: "auto", height }}>
-            {this.options.resizableColumns && (
-              <MUIDataTableResize key={rowCount} setResizeable={fn => (this.setHeadResizeable = fn)} />
-            )}
-            <Table ref={el => (this.tableRef = el)} tabIndex={"0"} role={"grid"}>
-              <caption className={classes.caption}>{title}</caption>
-              <MUIDataTableHead
-                columns={columns}
-                activeColumn={activeColumn}
-                data={this.state.displayData}
-                count={rowCount}
-                columns={columns}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
-                selectedRows={selectedRows}
-                selectRowUpdate={this.selectRowUpdate}
-                toggleSort={this.toggleSortColumn}
-                setCellRef={this.setHeadCellRef}
-                options={this.options}
-              />
-              <MUIDataTableBody
-                data={this.state.displayData}
-                count={rowCount}
-                columns={columns}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                selectedRows={selectedRows}
-                selectRowUpdate={this.selectRowUpdate}
-                options={this.options}
-                searchText={searchText}
-                filterList={filterList}
-                totals={totalled && totals}
-              />
-            </Table>
-          </div>
-          <Table>
-            {this.options.customFooter
-              ? this.options.customFooter(rowCount, page, rowsPerPage, this.changeRowsPerPage, this.changePage)
-              : this.options.pagination && (
-                  <MUIDataTablePagination
-                    count={rowCount}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    changeRowsPerPage={this.changeRowsPerPage}
-                    changePage={this.changePage}
-                    component={"div"}
-                    options={this.options}
-                  />
-                )}
-          </Table>
-          <div className={classes.liveAnnounce} aria-live={"polite"} ref={el => (this.announceRef = el)}>
-            {announceText}
-          </div>
-        </Paper>
-      );
+      divStyle = {
+        ...divStyle,
+        overflowY: "auto",
+        height,
+      };
     }
 
     return (
@@ -935,9 +827,7 @@ class MUIDataTable extends React.Component {
           />
         )}
         <MUIDataTableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />
-        <div
-          style={{ position: "relative" }}
-          className={this.options.responsive === "scroll" ? classes.responsiveScroll : null}>
+        <div style={divStyle} className={this.options.responsive === "scroll" ? classes.responsiveScroll : null}>
           {this.options.resizableColumns && (
             <MUIDataTableResize key={rowCount} setResizeable={fn => (this.setHeadResizeable = fn)} />
           )}

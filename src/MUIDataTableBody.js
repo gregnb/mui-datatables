@@ -8,7 +8,9 @@ import MUIDataTableSelectCell from "./MUIDataTableSelectCell";
 import { withStyles } from "@material-ui/core/styles";
 
 const defaultBodyStyles = {
-  root: {},
+  root: {
+    overflowY: "auto",
+  },
   emptyTitle: {
     textAlign: "center",
   },

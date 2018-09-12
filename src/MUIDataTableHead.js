@@ -10,11 +10,21 @@ import { withStyles } from "@material-ui/core/styles";
 
 const defaultHeadStyles = {
   main: {},
-  radioButton: {
+  emptyCell: {
     "@media screen and (max-width: 960px)": {
       display: "none",
     },
     width: "56px",
+    maxWidth: "56px",
+    backgroundColor: "#F4F7FA",
+    position: "sticky",
+    top: 0,
+    zIndex: 10,
+  },
+  sticky: {
+    position: "sticky",
+    top: 0,
+    zIndex: 10,
   },
   responsiveStacked: {
     "@media screen and (max-width: 960px)": {
@@ -46,16 +56,17 @@ class MUIDataTableHead extends React.Component {
     return (
       <TableHead
         className={classNames({ [classes.responsiveStacked]: options.responsive === "stacked", [classes.main]: true })}>
-        <MUIDataTableHeadRow>
+        <MUIDataTableHeadRow className={classes.sticky}>
           {options.selectableRows ? (
             options.radio ? (
-              <TableCell className={classes.radioButton} />
+              <TableCell className={classes.emptyCell} />
             ) : (
               <MUIDataTableSelectCell
                 ref={el => setCellRef(0, findDOMNode(el))}
                 onChange={this.handleRowSelect.bind(null)}
                 indeterminate={isDeterminate}
                 checked={isChecked}
+                sticky
               />
             )
           ) : (

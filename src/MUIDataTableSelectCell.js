@@ -1,4 +1,5 @@
 import React from "react";
+import classNames from "classnames";
 import PropTypes from "prop-types";
 import Checkbox from "@material-ui/core/Checkbox";
 import Radio from "@material-ui/core/Radio";
@@ -10,7 +11,14 @@ const defaultSelectCellStyles = {
     "@media screen and (max-width: 960px)": {
       display: "none",
     },
+  },
+  sticky: {
     width: "56px",
+    maxWidth: "56px",
+    backgroundColor: "#F4F7FA",
+    position: "sticky",
+    top: 0,
+    zIndex: 10,
   },
   checked: {},
   disabled: {},
@@ -27,10 +35,13 @@ class MUIDataTableSelectCell extends React.Component {
   };
 
   render() {
-    const { classes, radio, ...otherProps } = this.props;
+    const { classes, radio, sticky, ...otherProps } = this.props;
 
     return (
-      <TableCell className={classes.root} padding="checkbox">
+      <TableCell
+        className={classNames(classes.root, {[classes.sticky]: sticky})}
+        padding="checkbox"
+      >
         {radio ? (
           <Radio color="primary" {...otherProps} />
         ) : (

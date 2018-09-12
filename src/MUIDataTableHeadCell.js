@@ -7,6 +7,12 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "@material-ui/core/styles";
 
 const defaultHeadCellStyles = {
+  root: {
+    position: "sticky",
+    top: 0,
+    zIndex: 10,
+    backgroundColor: "#F4F7FA",
+  },
   tooltip: {
     cursor: "pointer",
   },
