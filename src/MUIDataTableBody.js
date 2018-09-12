@@ -102,6 +102,7 @@ class MUIDataTableBody extends React.Component {
                 key={rowIndex}>
                 {options.selectableRows ? (
                   <MUIDataTableSelectCell
+                    radio={options.radio}
                     onChange={this.handleRowSelect.bind(null, {
                       index: this.getRowIndex(rowIndex),
                       dataIndex: dataIndex,

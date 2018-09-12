@@ -290,9 +290,9 @@ class MUIDataTable extends React.Component {
         filterData[colIndex].sort(collator.compare);
       }
 
-      if (typeof columnOptions.customRender === "function" && typeof totals[colIndex] === "number") {
+      if (typeof columnOptions.customBodyRender === "function" && typeof totals[colIndex] === "number") {
         const tableMeta = this.getCustomRenderMeta(data.length, colIndex, totals[colIndex], [], columnData, this.state);
-        const render = columnOptions.totalRender || columnOptions.customRender;
+        const render = columnOptions.totalRender || columnOptions.customBodyRender;
         totals[colIndex] = render(totals[colIndex], tableMeta);
       }
 
@@ -822,6 +822,7 @@ class MUIDataTable extends React.Component {
               <caption className={classes.caption}>{title}</caption>
               <MUIDataTableHead
                 columns={columns}
+                activeColumn={activeColumn}
                 data={this.state.displayData}
                 count={rowCount}
                 columns={columns}
@@ -831,6 +832,7 @@ class MUIDataTable extends React.Component {
                 selectedRows={selectedRows}
                 selectRowUpdate={this.selectRowUpdate}
                 toggleSort={this.toggleSortColumn}
+                setCellRef={this.setHeadCellRef}
                 options={this.options}
               />
               <MUIDataTableBody
@@ -848,11 +850,18 @@ class MUIDataTable extends React.Component {
               />
             </Table>
           </div>
-          <div className="body-only" style={{ overflowY: "auto", height }}>
+          <div
+            style={{ position: "relative" }}
+            className={"body-only " + this.options.responsive === "scroll" ? classes.responsiveScroll : ""}
+            style={{ overflowY: "auto", height }}>
+            {this.options.resizableColumns && (
+              <MUIDataTableResize key={rowCount} setResizeable={fn => (this.setHeadResizeable = fn)} />
+            )}
             <Table ref={el => (this.tableRef = el)} tabIndex={"0"} role={"grid"}>
               <caption className={classes.caption}>{title}</caption>
               <MUIDataTableHead
                 columns={columns}
+                activeColumn={activeColumn}
                 data={this.state.displayData}
                 count={rowCount}
                 columns={columns}
@@ -862,6 +871,7 @@ class MUIDataTable extends React.Component {
                 selectedRows={selectedRows}
                 selectRowUpdate={this.selectRowUpdate}
                 toggleSort={this.toggleSortColumn}
+                setCellRef={this.setHeadCellRef}
                 options={this.options}
               />
               <MUIDataTableBody
@@ -880,19 +890,19 @@ class MUIDataTable extends React.Component {
             </Table>
           </div>
           <Table>
-            {this.options.pagination ? (
-              <MUIDataTablePagination
-                count={rowCount}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                changeRowsPerPage={this.changeRowsPerPage}
-                changePage={this.changePage}
-                component={"div"}
-                options={this.options}
-              />
-            ) : (
-              false
-            )}
+            {this.options.customFooter
+              ? this.options.customFooter(rowCount, page, rowsPerPage, this.changeRowsPerPage, this.changePage)
+              : this.options.pagination && (
+                  <MUIDataTablePagination
+                    count={rowCount}
+                    page={page}
+                    rowsPerPage={rowsPerPage}
+                    changeRowsPerPage={this.changeRowsPerPage}
+                    changePage={this.changePage}
+                    component={"div"}
+                    options={this.options}
+                  />
+                )}
           </Table>
           <div className={classes.liveAnnounce} aria-live={"polite"} ref={el => (this.announceRef = el)}>
             {announceText}
