@@ -400,7 +400,12 @@ describe("<MUIDataTable />", function() {
     shallowWrapper.update();
 
     const state = shallowWrapper.state();
-    const expectedResult = [{ index: 0 }, { index: 1 }, { index: 2 }, { index: 3 }];
+    const expectedResult = [
+      { index: 0, dataIndex: 0 },
+      { index: 1, dataIndex: 1 },
+      { index: 2, dataIndex: 2 },
+      { index: 3, dataIndex: 3 },
+    ];
     assert.deepEqual(state.selectedRows.data, expectedResult);
   });
 

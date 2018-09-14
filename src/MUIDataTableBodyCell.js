@@ -31,14 +31,14 @@ const defaultBodyCellStyles = {
 
 class MUIDataTableBodyCell extends React.Component {
   handleClick = () => {
-    const { colIndex, options, rowIndex } = this.props;
+    const { colIndex, options, children, dataIndex, rowIndex } = this.props;
     if (options.onCellClick) {
-      options.onCellClick(colIndex, rowIndex);
+      options.onCellClick(children, { colIndex, rowIndex });
     }
   };
 
   render() {
-    const { children, classes, colIndex, columnHeader, options, rowIndex, ...otherProps } = this.props;
+    const { children, classes, colIndex, columnHeader, options, dataIndex, rowIndex, ...otherProps } = this.props;
 
     return [
       <TableCell

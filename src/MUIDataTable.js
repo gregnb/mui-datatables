@@ -263,7 +263,7 @@ class MUIDataTable extends React.Component {
         }
 
         if (typeof columnOptions.customBodyRender === "function") {
-          const tableMeta = this.getCustomRenderMeta(rowIndex, colIndex, value, [], columnData, this.state);
+          const tableMeta = this.getTableMeta(rowIndex, colIndex, value, [], columnData, this.state);
           const funcResult = columnOptions.customBodyRender(value, tableMeta);
 
           if (React.isValidElement(funcResult) && funcResult.props.value) {
@@ -326,7 +326,7 @@ class MUIDataTable extends React.Component {
       let columnValue = row[index];
 
       if (columns[index].customBodyRender) {
-        const tableMeta = this.getCustomRenderMeta(rowIndex, index, row, columns[index], this.state.data, {
+        const tableMeta = this.getTableMeta(rowIndex, index, row, columns[index], this.state.data, {
           ...this.state,
           filterList: filterList,
           searchText: searchText,
@@ -380,7 +380,7 @@ class MUIDataTable extends React.Component {
       let changedData = cloneDeep(prevState.data);
       let filterData = cloneDeep(prevState.filterData);
 
-      const tableMeta = this.getCustomRenderMeta(row, index, row, prevState.columns[index], prevState.data, prevState);
+      const tableMeta = this.getTableMeta(row, index, row, prevState.columns[index], prevState.data, prevState);
       const funcResult = prevState.columns[index].customBodyRender(value, tableMeta);
 
       const filterValue =
@@ -406,7 +406,7 @@ class MUIDataTable extends React.Component {
     });
   };
 
-  getCustomRenderMeta = (rowIndex, colIndex, rowData, columnData, tableData, curState) => {
+  getTableMeta = (rowIndex, colIndex, rowData, columnData, tableData, curState) => {
     const { columns, data, displayData, filterData, ...tableState } = curState;
 
     return {
@@ -653,7 +653,7 @@ class MUIDataTable extends React.Component {
 
           let selectedRows = Array(data.length)
             .fill()
-            .map((d, i) => ({ index: i }));
+            .map((d, i) => ({ index: i, dataIndex: data[i].index }));
 
           let newRows = [...prevState.selectedRows, ...selectedRows];
           let selectedMap = this.buildSelectedMap(newRows);
@@ -798,7 +798,9 @@ class MUIDataTable extends React.Component {
         <div
           style={{ position: "relative" }}
           className={this.options.responsive === "scroll" ? classes.responsiveScroll : null}>
-          {this.options.resizableColumns && <MUIDataTableResize key={rowCount} setResizeable={fn => (this.setHeadResizeable = fn)} />}
+          {this.options.resizableColumns && (
+            <MUIDataTableResize key={rowCount} setResizeable={fn => (this.setHeadResizeable = fn)} />
+          )}
           <Table ref={el => (this.tableRef = el)} tabIndex={"0"} role={"grid"}>
             <caption className={classes.caption}>{title}</caption>
             <MUIDataTableHead
