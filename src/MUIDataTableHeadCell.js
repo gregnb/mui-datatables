@@ -84,9 +84,11 @@ class MUIDataTableHeadCell extends React.Component {
                 })}>
                 {children}
               </div>
-              <div className={classes.sortAction}>
-                <TableSortLabel {...sortLabelProps} />
-              </div>
+              {sortActive &&
+                <div className={classes.sortAction}>
+                  <TableSortLabel {...sortLabelProps} />
+                </div>
+              }
             </span>
           </Tooltip>
         ) : (
