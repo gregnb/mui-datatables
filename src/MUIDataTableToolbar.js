@@ -1,5 +1,6 @@
 import React from "react";
-import XLSX from "xlsx";
+import ExcelJS from "exceljs/dist/es5/exceljs.browser";
+import FileSaver from "file-saver";
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -96,23 +97,76 @@ class MUIDataTableToolbar extends React.Component {
 
   handleCSVDownload = () => {
     const { data, columns } = this.props;
-    const downloadableData = [columns.map(r => r.name)].concat(data.map(r => r.data));
 
-    // Sanitize data that is impossible to serialize
-    downloadableData.forEach(r => {
-      r.forEach((c, i) => {
-        r[i] = r[i] || "";
-
-        if (typeof c === "object") {
-          r[i] = "";
-        }
-      });
+    var workbook = new ExcelJS.Workbook();
+    var ws = workbook.addWorksheet("Data");
+    const cols = [];
+    const toDownload = columns.map(r => {
+      const exelCol = { header: r.name, width: Math.max(10, r.name.length + 2) };
+      if (r.downloadFormatter !== null) {
+        cols.push(exelCol);
+      }
+      return {
+        formatter: r.downloadFormatter,
+        name: r.name,
+        exelCol: exelCol,
+      };
     });
 
-    const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.aoa_to_sheet(downloadableData);
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Tabela Exportada");
-    XLSX.writeFile(workbook, "TabelaExportada.xls", { compression: true });
+    const rows = [];
+    // Sanitize data that is impossible to serialize
+    data.forEach(r => {
+      const row = [];
+      r.data.forEach((c, i) => {
+        const cData = toDownload[i];
+        if (cData.formatter === null) {
+          return;
+        }
+
+        let formatter = cData.formatter || function(d) {
+          if (typeof d === "object") {
+            return "";
+          }
+          return d || "";
+        };
+        const formatted = formatter(c);
+        cData.exelCol.width = Math.max(
+          cData.exelCol.width,
+          formatted.toString().length + 2,
+        );
+        row.push(formatted);
+      });
+      rows.push(row);
+    });
+
+    ws.columns = cols;
+    rows.forEach(r => ws.addRow(r));
+    ws.eachRow(r => r.eachCell(cell => {
+      cell.border = {
+        top: {style:'thin'},
+        left: {style:'thin'},
+        bottom: {style:'thin'},
+        right: {style:'thin'},
+      };
+    }));
+    // Apply styles to the header row
+    ws.getRow(1).eachCell(cell => {
+      cell.fill = {
+        type: "pattern",
+        pattern: "lightGrid",
+        fgColor: { argb: "d3d3d3" },
+        bgColor: { argb: "ffffff" },
+      };
+      cell.font = {
+        bold: true,
+      };
+    });
+
+    workbook.xlsx
+      .writeBuffer()
+      .then(b => FileSaver.saveAs(
+        new Blob([b], {type: "application/octet-stream"}), "Report.xlsx")
+      );
   };
 
   setActiveIcon = iconName => {
