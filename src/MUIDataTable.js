@@ -675,6 +675,7 @@ class MUIDataTable extends React.Component {
           };
         },
         () => {
+          this.setTableAction("rowsSelect");
           if (this.options.onRowsSelect) {
             this.options.onRowsSelect(this.state.curSelectedRows, this.state.selectedRows.data);
           }
@@ -708,6 +709,7 @@ class MUIDataTable extends React.Component {
           };
         },
         () => {
+          this.setTableAction("rowsSelect");
           if (this.options.onRowsSelect) {
             this.options.onRowsSelect([value], this.state.selectedRows.data);
           }
