@@ -189,9 +189,12 @@ class MUIDataTable extends React.Component {
     }
   }
 
-  setServerRequest = action => {
+  setTableAction = action => {
     if (this.options.serverSide) {
       this.options.onServerRequest(action, this.state);
+    }
+    if (this.options.onTableChange) {
+      this.options.onTableChange(action, this.state);
     }
   };
 
@@ -506,7 +509,7 @@ class MUIDataTable extends React.Component {
         return newState;
       },
       () => {
-        this.setServerRequest("sort");
+        this.setTableAction("sort");
         if (this.options.onColumnSortChange) {
           this.options.onColumnSortChange(
             this.state.columns[index].name,
@@ -523,7 +526,7 @@ class MUIDataTable extends React.Component {
         rowsPerPage: rows,
       }),
       () => {
-        this.setServerRequest("changeRowsPerPage");
+        this.setTableAction("changeRowsPerPage");
         if (this.options.onChangeRowsPerPage) {
           this.options.onChangeRowsPerPage(this.state.rowsPerPage);
         }
@@ -537,7 +540,7 @@ class MUIDataTable extends React.Component {
         page: page,
       }),
       () => {
-        this.setServerRequest("changePage");
+        this.setTableAction("changePage");
         if (this.options.onChangePage) {
           this.options.onChangePage(this.state.page);
         }
@@ -554,7 +557,7 @@ class MUIDataTable extends React.Component {
           : this.getDisplayData(prevState.columns, prevState.data, prevState.filterList, text),
       }),
       () => {
-        this.setServerRequest("search");
+        this.setTableAction("search");
       },
     );
   };
@@ -572,7 +575,7 @@ class MUIDataTable extends React.Component {
         };
       },
       () => {
-        this.setServerRequest("resetFilters");
+        this.setTableAction("resetFilters");
         if (this.options.onFilterChange) {
           this.options.onFilterChange(null, this.state.filterList);
         }
@@ -605,7 +608,7 @@ class MUIDataTable extends React.Component {
         };
       },
       () => {
-        this.setServerRequest("filterChange");
+        this.setTableAction("filterChange");
         if (this.options.onFilterChange) {
           this.options.onFilterChange(column, this.state.filterList);
         }

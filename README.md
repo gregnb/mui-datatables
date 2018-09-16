@@ -66,7 +66,7 @@ const columns = [
    filter: true,
    sort: true,
   }
- },      
+ },
  {
   name: "Company",
   options: {
@@ -80,7 +80,7 @@ const columns = [
    filter: true,
    sort: false,
   }
- },  
+ },
  {
   name: "State",
   options: {
@@ -164,6 +164,7 @@ The component accepts the following props:
 |**`onColumnSortChange`**|function||Callback function that triggers when a column has been sorted. `function(changedColumn: string, direction: string) => void`
 |**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
 |**`onServerRequest`**|function||Callback function that triggers when the 'serverSide' option is enabled and table state has changed. `function(action: string, tableState: object) => void`
+|**`onTableChange`**|function||Callback function that triggers for any action with the resulting table state. `function(action: string, tableState: object) => void`
 
 
 ## Customize Columns
@@ -180,7 +181,7 @@ const columns = [
   }
  },
  ...
-];  
+];
 ```
 
 #### Column:
