@@ -193,7 +193,7 @@ class MUIDataTable extends React.Component {
     if (this.options.serverSide) {
       this.options.onServerRequest(action, this.state);
     }
-    if (this.options.onTableChange) {
+    if (typeof this.options.onTableChange === 'function') {
       this.options.onTableChange(action, this.state);
     }
   };
