@@ -219,7 +219,7 @@ class MUIDataTable extends React.Component {
    *  Build the source table data
    */
 
-  setTableData(props, status, callback = ()=>{}) {
+  setTableData(props, status, callback = () => {}) {
     const { data, columns, options } = props;
 
     let columnData = [],
@@ -306,14 +306,17 @@ class MUIDataTable extends React.Component {
     }
 
     /* set source data and display Data set source set */
-    this.setState(prevState => ({
-      columns: columnData,
-      filterData: filterData,
-      filterList: filterList,
-      selectedRows: selectedRowsData,
-      data: tableData,
-      displayData: this.getDisplayData(columnData, tableData, filterList, prevState.searchText),
-    }), callback);
+    this.setState(
+      prevState => ({
+        columns: columnData,
+        filterData: filterData,
+        filterList: filterList,
+        selectedRows: selectedRowsData,
+        data: tableData,
+        displayData: this.getDisplayData(columnData, tableData, filterList, prevState.searchText),
+      }),
+      callback,
+    );
   }
 
   /*
@@ -638,7 +641,7 @@ class MUIDataTable extends React.Component {
       TABLE_LOAD.UPDATE,
       () => {
         this.setTableAction("rowDelete", true);
-      }
+      },
     );
   };
 
