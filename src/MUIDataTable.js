@@ -189,11 +189,11 @@ class MUIDataTable extends React.Component {
     }
   }
 
-  setTableAction = action => {
-    if (this.options.serverSide) {
+  setTableAction = (action, local = false) => {
+    if (!local && this.options.serverSide) {
       this.options.onServerRequest(action, this.state);
     }
-    if (typeof this.options.onTableChange === 'function') {
+    if (typeof this.options.onTableChange === "function") {
       this.options.onTableChange(action, this.state);
     }
   };
@@ -219,7 +219,7 @@ class MUIDataTable extends React.Component {
    *  Build the source table data
    */
 
-  setTableData(props, status) {
+  setTableData(props, status, callback = ()=>{}) {
     const { data, columns, options } = props;
 
     let columnData = [],
@@ -313,7 +313,7 @@ class MUIDataTable extends React.Component {
       selectedRows: selectedRowsData,
       data: tableData,
       displayData: this.getDisplayData(columnData, tableData, filterList, prevState.searchText),
-    }));
+    }), callback);
   }
 
   /*
@@ -450,6 +450,7 @@ class MUIDataTable extends React.Component {
         };
       },
       () => {
+        this.setTableAction("columnViewChange", true);
         if (this.options.onColumnViewChange) {
           this.options.onColumnViewChange(
             this.state.columns[index].name,
@@ -635,6 +636,9 @@ class MUIDataTable extends React.Component {
         },
       },
       TABLE_LOAD.UPDATE,
+      () => {
+        this.setTableAction("rowDelete", true);
+      }
     );
   };
 
@@ -675,7 +679,7 @@ class MUIDataTable extends React.Component {
           };
         },
         () => {
-          this.setTableAction("rowsSelect");
+          this.setTableAction("rowsSelect", true);
           if (this.options.onRowsSelect) {
             this.options.onRowsSelect(this.state.curSelectedRows, this.state.selectedRows.data);
           }
@@ -709,7 +713,7 @@ class MUIDataTable extends React.Component {
           };
         },
         () => {
-          this.setTableAction("rowsSelect");
+          this.setTableAction("rowsSelect", true);
           if (this.options.onRowsSelect) {
             this.options.onRowsSelect([value], this.state.selectedRows.data);
           }
