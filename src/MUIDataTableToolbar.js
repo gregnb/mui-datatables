@@ -123,17 +123,16 @@ class MUIDataTableToolbar extends React.Component {
           return;
         }
 
-        let formatter = cData.formatter || function(d) {
-          if (typeof d === "object") {
-            return "";
-          }
-          return d || "";
-        };
+        let formatter =
+          cData.formatter ||
+          function(d) {
+            if (typeof d === "object") {
+              return "";
+            }
+            return d || "";
+          };
         const formatted = formatter(c);
-        cData.exelCol.width = Math.max(
-          cData.exelCol.width,
-          formatted.toString().length + 2,
-        );
+        cData.exelCol.width = Math.max(cData.exelCol.width, formatted.toString().length + 2);
         row.push(formatted);
       });
       rows.push(row);
@@ -141,14 +140,16 @@ class MUIDataTableToolbar extends React.Component {
 
     ws.columns = cols;
     rows.forEach(r => ws.addRow(r));
-    ws.eachRow(r => r.eachCell(cell => {
-      cell.border = {
-        top: {style:'thin'},
-        left: {style:'thin'},
-        bottom: {style:'thin'},
-        right: {style:'thin'},
-      };
-    }));
+    ws.eachRow(r =>
+      r.eachCell(cell => {
+        cell.border = {
+          top: { style: "thin" },
+          left: { style: "thin" },
+          bottom: { style: "thin" },
+          right: { style: "thin" },
+        };
+      }),
+    );
     // Apply styles to the header row
     ws.getRow(1).eachCell(cell => {
       cell.fill = {
@@ -164,9 +165,7 @@ class MUIDataTableToolbar extends React.Component {
 
     workbook.xlsx
       .writeBuffer()
-      .then(b => FileSaver.saveAs(
-        new Blob([b], {type: "application/octet-stream"}), "Report.xlsx")
-      );
+      .then(b => FileSaver.saveAs(new Blob([b], { type: "application/octet-stream" }), "Report.xlsx"));
   };
 
   setActiveIcon = iconName => {

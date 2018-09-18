@@ -84,11 +84,11 @@ class MUIDataTableHeadCell extends React.Component {
                 })}>
                 {children}
               </div>
-              {sortActive &&
+              {sortActive && (
                 <div className={classes.sortAction}>
                   <TableSortLabel {...sortLabelProps} />
                 </div>
-              }
+              )}
             </span>
           </Tooltip>
         ) : (

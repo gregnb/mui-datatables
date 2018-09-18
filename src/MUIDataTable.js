@@ -13,6 +13,64 @@ import merge from "lodash.merge";
 import textLabels from "./textLabels";
 import { withStyles } from "@material-ui/core/styles";
 
+function equals(a, b) {
+  if (typeof a !== typeof b) {
+    return false;
+  }
+
+  // Naively assume functions to be equal
+  if (typeof a === "function") {
+    return true;
+  }
+
+  if (
+    typeof a === "number" ||
+    typeof a === "string" ||
+    a === null ||
+    a === undefined ||
+    b === null ||
+    b === undefined ||
+    typeof a === "boolean"
+  ) {
+    return a === b;
+  }
+
+  if (Array.isArray(a)) {
+    if (!Array.isArray(b) || a.length !== b.length) {
+      return false;
+    }
+
+    return a.every((x, i) => equals(a[i], b[i]));
+  }
+
+  if (typeof a === "object") {
+    if (Object.keys(a).length !== Object.keys(b).length) {
+      return false;
+    }
+
+    let keys = Object.keys(a);
+    for (let i = 0; i < keys.length; i++) {
+      const k = keys[i];
+      const equal = equals(a[k], b[k]);
+      if (!equal) {
+        return false;
+      }
+    }
+
+    keys = Object.keys(b);
+    for (let i = 0; i < keys.length; i++) {
+      const k = keys[i];
+      const equal = equals(a[k], b[k]);
+      if (!equal) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  return false;
+}
+
 const defaultTableStyles = {
   root: {},
   responsiveScroll: {
@@ -123,7 +181,7 @@ class MUIDataTable extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.data !== nextProps.data || this.props.columns !== nextProps.columns) {
+    if (!equals(this.props.data, nextProps.data) || !equals(this.props.columns, nextProps.columns)) {
       this.initializeTable(nextProps);
     }
   }
