@@ -163,8 +163,7 @@ The component accepts the following props:
 |**`onFilterChange`**|function||Callback function that triggers when filters have changed. `function(changedColumn: string, filterList: array) => void`
 |**`onColumnSortChange`**|function||Callback function that triggers when a column has been sorted. `function(changedColumn: string, direction: string) => void`
 |**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
-|**`onServerRequest`**|function||Callback function that triggers when the 'serverSide' option is enabled and table state has changed. `function(action: string, tableState: object) => void`
-|**`onTableChange`**|function||Callback function that triggers for any action with the resulting table state. `function(action: string, tableState: object) => void`
+|**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
 
 
 ## Customize Columns
@@ -278,7 +277,7 @@ If you are looking to work with remote data sets or handle pagination, filtering
 ```
 const options = {
   serverSide: true,
-  onServerRequest: (action, tableState) => {
+  onTableChange: (action, tableState) => {
     this.xhrRequest('my.api.com/tableData', result => {
       this.setState({ data: result });
     });

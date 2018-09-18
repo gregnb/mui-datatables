@@ -76,6 +76,7 @@ class MUIDataTable extends React.Component {
       resizableColumns: PropTypes.bool,
       selectableRows: PropTypes.bool,
       serverSide: PropTypes.bool,
+      onTableChange: PropTypes.func,
       caseSensitive: PropTypes.bool,
       rowHover: PropTypes.bool,
       page: PropTypes.number,
@@ -184,15 +185,12 @@ class MUIDataTable extends React.Component {
   }
 
   validateOptions(options) {
-    if (options.serverSide && options.onServerRequest === undefined) {
-      throw Error("onServerRequest callback must be provided when using serverSide option");
+    if (options.serverSide && options.onTableChange === undefined) {
+      throw Error("onTableChange callback must be provided when using serverSide option");
     }
   }
 
-  setTableAction = (action, local = false) => {
-    if (!local && this.options.serverSide) {
-      this.options.onServerRequest(action, this.state);
-    }
+  setTableAction = (action) => {
     if (typeof this.options.onTableChange === "function") {
       this.options.onTableChange(action, this.state);
     }
@@ -453,7 +451,7 @@ class MUIDataTable extends React.Component {
         };
       },
       () => {
-        this.setTableAction("columnViewChange", true);
+        this.setTableAction("columnViewChange");
         if (this.options.onColumnViewChange) {
           this.options.onColumnViewChange(
             this.state.columns[index].name,
@@ -640,7 +638,7 @@ class MUIDataTable extends React.Component {
       },
       TABLE_LOAD.UPDATE,
       () => {
-        this.setTableAction("rowDelete", true);
+        this.setTableAction("rowDelete");
       },
     );
   };
@@ -682,7 +680,7 @@ class MUIDataTable extends React.Component {
           };
         },
         () => {
-          this.setTableAction("rowsSelect", true);
+          this.setTableAction("rowsSelect");
           if (this.options.onRowsSelect) {
             this.options.onRowsSelect(this.state.curSelectedRows, this.state.selectedRows.data);
           }
@@ -716,7 +714,7 @@ class MUIDataTable extends React.Component {
           };
         },
         () => {
-          this.setTableAction("rowsSelect", true);
+          this.setTableAction("rowsSelect");
           if (this.options.onRowsSelect) {
             this.options.onRowsSelect([value], this.state.selectedRows.data);
           }

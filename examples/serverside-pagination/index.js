@@ -33,13 +33,13 @@ class Example extends React.Component {
         ["Aaren Rose", "Business Analyst", "Toledo"]
       ];
 
-      const maxRound =  Math.floor(Math.random() * 2) + 1;    
+      const maxRound =  Math.floor(Math.random() * 2) + 1;
       const data = [...Array(maxRound)].reduce(acc => acc.push(...srcData) && acc, []);
       data.sort((a, b) => 0.5 - Math.random());
 
       setTimeout(() => {
         resolve(data);
-      }, 250); 
+      }, 250);
 
     });
 
@@ -47,7 +47,7 @@ class Example extends React.Component {
 
   changePage = (page) => {
     this.xhrRequest(`/myApiServer?page=${page}`).then(data => {
-      this.setState({ 
+      this.setState({
         page: page,
         data
       });
@@ -66,10 +66,10 @@ class Example extends React.Component {
       serverSide: true,
       count: count,
       page: page,
-      onServerRequest: (action, tableState) => {
+      onTableChange: (action, tableState) => {
 
         console.log(action, tableState);
-        // a developer could react to change on an action basis or 
+        // a developer could react to change on an action basis or
         // examine the state as a whole and do whatever they want
 
         switch (action) {
