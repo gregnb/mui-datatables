@@ -1,5 +1,5 @@
 import React from "react";
-import { spy } from "sinon";
+import { spy, stub } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import MUIDataTable from "../src/MUIDataTable";
@@ -429,5 +429,36 @@ describe("<MUIDataTable />", function() {
 
     const state = shallowWrapper.state();
     assert.deepEqual(state.data[0].data[2], "Las Vegas");
+  });
+  it("should call onTableChange when calling selectRowUpdate method with type=head", () => {
+    const options = { selectableRows: true, onTableChange: spy() };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.selectRowUpdate("head", 0);
+    shallowWrapper.update();
+
+    const state = shallowWrapper.state();
+    const expectedResult = [
+      { index: 0, dataIndex: 0 },
+      { index: 1, dataIndex: 1 },
+      { index: 2, dataIndex: 2 },
+      { index: 3, dataIndex: 3 },
+    ];
+    assert.deepEqual(state.selectedRows.data, expectedResult);
+    assert.strictEqual(options.onTableChange.callCount, 1);
+  });
+  it("should call onTableChange when calling selectRowUpdate method with type=cell", () => {
+    const options = { selectableRows: true, onTableChange: spy() };
+
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.selectRowUpdate("cell", 0);
+    shallowWrapper.update();
+
+    const state = shallowWrapper.state();
+    assert.deepEqual(state.selectedRows.data, [0]);
+    assert.strictEqual(options.onTableChange.callCount, 1);
   });
 });

@@ -76,6 +76,7 @@ class MUIDataTable extends React.Component {
       resizableColumns: PropTypes.bool,
       selectableRows: PropTypes.bool,
       serverSide: PropTypes.bool,
+      onTableChange: PropTypes.func,
       caseSensitive: PropTypes.bool,
       rowHover: PropTypes.bool,
       page: PropTypes.number,
@@ -184,14 +185,14 @@ class MUIDataTable extends React.Component {
   }
 
   validateOptions(options) {
-    if (options.serverSide && options.onServerRequest === undefined) {
-      throw Error("onServerRequest callback must be provided when using serverSide option");
+    if (options.serverSide && options.onTableChange === undefined) {
+      throw Error("onTableChange callback must be provided when using serverSide option");
     }
   }
 
-  setServerRequest = action => {
-    if (this.options.serverSide) {
-      this.options.onServerRequest(action, this.state);
+  setTableAction = (action) => {
+    if (typeof this.options.onTableChange === "function") {
+      this.options.onTableChange(action, this.state);
     }
   };
 
@@ -216,7 +217,7 @@ class MUIDataTable extends React.Component {
    *  Build the source table data
    */
 
-  setTableData(props, status) {
+  setTableData(props, status, callback = () => {}) {
     const { data, columns, options } = props;
 
     let columnData = [],
@@ -303,14 +304,17 @@ class MUIDataTable extends React.Component {
     }
 
     /* set source data and display Data set source set */
-    this.setState(prevState => ({
-      columns: columnData,
-      filterData: filterData,
-      filterList: filterList,
-      selectedRows: selectedRowsData,
-      data: tableData,
-      displayData: this.getDisplayData(columnData, tableData, filterList, prevState.searchText),
-    }));
+    this.setState(
+      prevState => ({
+        columns: columnData,
+        filterData: filterData,
+        filterList: filterList,
+        selectedRows: selectedRowsData,
+        data: tableData,
+        displayData: this.getDisplayData(columnData, tableData, filterList, prevState.searchText),
+      }),
+      callback,
+    );
   }
 
   /*
@@ -447,6 +451,7 @@ class MUIDataTable extends React.Component {
         };
       },
       () => {
+        this.setTableAction("columnViewChange");
         if (this.options.onColumnViewChange) {
           this.options.onColumnViewChange(
             this.state.columns[index].name,
@@ -506,7 +511,7 @@ class MUIDataTable extends React.Component {
         return newState;
       },
       () => {
-        this.setServerRequest("sort");
+        this.setTableAction("sort");
         if (this.options.onColumnSortChange) {
           this.options.onColumnSortChange(
             this.state.columns[index].name,
@@ -523,7 +528,7 @@ class MUIDataTable extends React.Component {
         rowsPerPage: rows,
       }),
       () => {
-        this.setServerRequest("changeRowsPerPage");
+        this.setTableAction("changeRowsPerPage");
         if (this.options.onChangeRowsPerPage) {
           this.options.onChangeRowsPerPage(this.state.rowsPerPage);
         }
@@ -537,7 +542,7 @@ class MUIDataTable extends React.Component {
         page: page,
       }),
       () => {
-        this.setServerRequest("changePage");
+        this.setTableAction("changePage");
         if (this.options.onChangePage) {
           this.options.onChangePage(this.state.page);
         }
@@ -554,7 +559,7 @@ class MUIDataTable extends React.Component {
           : this.getDisplayData(prevState.columns, prevState.data, prevState.filterList, text),
       }),
       () => {
-        this.setServerRequest("search");
+        this.setTableAction("search");
       },
     );
   };
@@ -572,7 +577,7 @@ class MUIDataTable extends React.Component {
         };
       },
       () => {
-        this.setServerRequest("resetFilters");
+        this.setTableAction("resetFilters");
         if (this.options.onFilterChange) {
           this.options.onFilterChange(null, this.state.filterList);
         }
@@ -605,7 +610,7 @@ class MUIDataTable extends React.Component {
         };
       },
       () => {
-        this.setServerRequest("filterChange");
+        this.setTableAction("filterChange");
         if (this.options.onFilterChange) {
           this.options.onFilterChange(column, this.state.filterList);
         }
@@ -632,6 +637,9 @@ class MUIDataTable extends React.Component {
         },
       },
       TABLE_LOAD.UPDATE,
+      () => {
+        this.setTableAction("rowDelete");
+      },
     );
   };
 
@@ -672,6 +680,7 @@ class MUIDataTable extends React.Component {
           };
         },
         () => {
+          this.setTableAction("rowsSelect");
           if (this.options.onRowsSelect) {
             this.options.onRowsSelect(this.state.curSelectedRows, this.state.selectedRows.data);
           }
@@ -705,6 +714,7 @@ class MUIDataTable extends React.Component {
           };
         },
         () => {
+          this.setTableAction("rowsSelect");
           if (this.options.onRowsSelect) {
             this.options.onRowsSelect([value], this.state.selectedRows.data);
           }
