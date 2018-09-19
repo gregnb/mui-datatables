@@ -190,7 +190,7 @@ class MUIDataTable extends React.Component {
     }
   }
 
-  setTableAction = (action) => {
+  setTableAction = action => {
     if (typeof this.options.onTableChange === "function") {
       this.options.onTableChange(action, this.state);
     }
