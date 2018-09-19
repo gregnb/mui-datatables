@@ -174,6 +174,7 @@ class MUIDataTable extends React.Component {
   constructor() {
     super();
     this.tableRef = false;
+    this.toolbar = React.createRef();
   }
 
   componentWillMount() {
@@ -765,6 +766,7 @@ class MUIDataTable extends React.Component {
               options={this.options}
               selectedRows={selectedRows}
               onRowsDelete={this.selectRowDelete}
+              ref={this.toolbar}
             />
           ) : (
             <MUIDataTableToolbar
@@ -777,6 +779,7 @@ class MUIDataTable extends React.Component {
               resetFilters={this.resetFilters}
               searchTextUpdate={this.searchTextUpdate}
               tableRef={() => this.tableContent}
+              ref={this.toolbar}
               title={title}
               toggleViewColumn={this.toggleViewColumn}
             />
@@ -873,6 +876,7 @@ class MUIDataTable extends React.Component {
             options={this.options}
             selectedRows={selectedRows}
             onRowsDelete={this.selectRowDelete}
+            ref={this.toolbar}
           />
         ) : (
           <MUIDataTableToolbar
@@ -884,6 +888,7 @@ class MUIDataTable extends React.Component {
             options={this.options}
             resetFilters={this.resetFilters}
             searchTextUpdate={this.searchTextUpdate}
+            ref={this.toolbar}
             tableRef={() => this.tableContent}
             title={title}
             toggleViewColumn={this.toggleViewColumn}
