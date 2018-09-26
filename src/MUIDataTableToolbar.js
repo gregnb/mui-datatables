@@ -227,6 +227,7 @@ class MUIDataTableToolbar extends React.Component {
               )}
             </div>
             <div className={toolbarStyles.actions}>
+              {options.customToolbarStart ? options.customToolbarStart() : false}
               {options.search ? (
                 <Tooltip title={search}>
                   <IconButton
