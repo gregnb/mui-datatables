@@ -24,7 +24,7 @@ class MUIDataTableBodyRow extends React.Component {
   };
 
   render() {
-    const { classes, options, rowSelected, totalled } = this.props;
+    const { classes, options, row, rowSelected, totalled } = this.props;
 
     return (
       <TableRow
@@ -33,6 +33,7 @@ class MUIDataTableBodyRow extends React.Component {
           [classes.root]: true,
           [classes.responsiveStacked]: options.responsive === "stacked",
           totalled,
+          ...(options.customTrClass && row ? options.customTrClass(row) : {}),
         })}
         selected={rowSelected}>
         {this.props.children}

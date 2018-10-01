@@ -36,7 +36,7 @@ class MUIDataTableBody extends React.Component {
     classes: PropTypes.object,
   };
 
-  buildRows() {
+  buildRows(attr = "data") {
     const { data, page, rowsPerPage, count } = this.props;
 
     let rows = [];
@@ -55,7 +55,7 @@ class MUIDataTableBody extends React.Component {
     }
 
     for (let rowIndex = fromIndex; rowIndex < count && rowIndex < toIndex; rowIndex++) {
-      if (data[rowIndex] !== undefined) rows.push(data[rowIndex]);
+      if (this.props[attr][rowIndex] !== undefined) rows.push(this.props[attr][rowIndex]);
     }
 
     return rows.length ? rows : null;
@@ -80,6 +80,7 @@ class MUIDataTableBody extends React.Component {
   render() {
     const { classes, columns, options, totals } = this.props;
     const tableRows = this.buildRows();
+    const originalRows = this.buildRows("tableData");
 
     return (
       <TableBody>
@@ -89,6 +90,7 @@ class MUIDataTableBody extends React.Component {
               <MUIDataTableBodyRow
                 options={options}
                 rowSelected={options.selectableRows ? this.isRowSelected(rowIndex) : false}
+                row={originalRows[rowIndex]}
                 key={rowIndex}>
                 {options.selectableRows ? (
                   <MUIDataTableSelectCell

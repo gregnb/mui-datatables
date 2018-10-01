@@ -791,6 +791,7 @@ class MUIDataTable extends React.Component {
               <MUIDataTableHead
                 columns={columns}
                 data={this.state.displayData}
+                tableData={this.state.data}
                 count={rowCount}
                 columns={columns}
                 page={page}
@@ -803,6 +804,7 @@ class MUIDataTable extends React.Component {
               />
               <MUIDataTableBody
                 data={this.state.displayData}
+                tableData={this.state.data}
                 count={rowCount}
                 columns={columns}
                 page={page}
@@ -822,6 +824,7 @@ class MUIDataTable extends React.Component {
               <MUIDataTableHead
                 columns={columns}
                 data={this.state.displayData}
+                tableData={this.state.data}
                 count={rowCount}
                 columns={columns}
                 page={page}
@@ -834,6 +837,7 @@ class MUIDataTable extends React.Component {
               />
               <MUIDataTableBody
                 data={this.state.displayData}
+                tableData={this.state.data}
                 count={rowCount}
                 columns={columns}
                 page={page}
@@ -901,6 +905,7 @@ class MUIDataTable extends React.Component {
             <MUIDataTableHead
               columns={columns}
               data={this.state.displayData}
+              tableData={this.state.data}
               count={rowCount}
               columns={columns}
               page={page}
@@ -913,6 +918,7 @@ class MUIDataTable extends React.Component {
             />
             <MUIDataTableBody
               data={this.state.displayData}
+              tableData={this.state.data}
               count={rowCount}
               columns={columns}
               page={page}
