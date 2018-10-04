@@ -375,7 +375,7 @@ class MUIDataTable extends React.Component {
       }
     }
 
-    if (isFiltered || (searchText && !isSearchFound)) return null;
+    if (isFiltered || (!this.options.serverSide && searchText && !isSearchFound)) return null;
     else return displayRow;
   }
 
