@@ -33,7 +33,7 @@ class MUIDataTableBodyCell extends React.Component {
   handleClick = () => {
     const { colIndex, options, children, dataIndex, rowIndex } = this.props;
     if (options.onCellClick) {
-      options.onCellClick(children, { colIndex, rowIndex });
+      options.onCellClick(children, { colIndex, rowIndex, dataIndex });
     }
   };
 
