@@ -202,7 +202,7 @@ const columns = [
 
 `customHeadRender` is called with these arguments:
 
-```
+```js
 function(columnMeta: {
   display: enum('true', 'false', 'excluded'),
   filter: bool,
@@ -214,7 +214,7 @@ function(columnMeta: {
 
 `customBodyRender` is called with these arguments:
 
-```
+```js
 function(value: any, tableMeta: {
   rowIndex: number,
   columnIndex: number,
@@ -274,7 +274,7 @@ class BodyCellExample extends React.Component {
 
 If you are looking to work with remote data sets or handle pagination, filtering, and sorting on a remote server you can do that with the following options:
 
-```
+```js
 const options = {
   serverSide: true,
   onTableChange: (action, tableState) => {
@@ -291,7 +291,7 @@ To see an example **[Click Here](https://github.com/gregnb/mui-datatables/blob/m
 
 This package decided that the cost of bringing in another library to perform localizations would be too expensive. Instead the ability to override all text labels (which aren't many) is offered through the options property `textLabels`.  The available strings:
 
-```
+```js
 const options = {
   ...
   textLabels: {
