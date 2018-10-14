@@ -793,6 +793,7 @@ class MUIDataTable extends React.Component {
           <MUIDataTableToolbar
             columns={columns}
             data={data}
+            displayData={displayData}
             filterData={filterData}
             filterList={filterList}
             filterUpdate={this.filterUpdate}
