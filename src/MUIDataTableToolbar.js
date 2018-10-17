@@ -111,17 +111,21 @@ class MUIDataTableToolbar extends React.Component {
     /* taken from react-csv */
     const csv = `${CSVHead}${CSVBody}`;
     const blob = new Blob([csv], { type: "text/csv" });
-    const dataURI = `data:text/csv;charset=utf-8,${csv}`;
 
-    const URL = window.URL || window.webkitURL;
-    const downloadURI = typeof URL.createObjectURL === "undefined" ? dataURI : URL.createObjectURL(blob);
+    if (navigator && navigator.msSaveOrOpenBlob) {
+      navigator.msSaveOrOpenBlob(blob, options.downloadOptions.filename);
+    } else {
+      const dataURI = `data:text/csv;charset=utf-8,${csv}`;
+      const URL = window.URL || window.webkitURL;
+      const downloadURI = typeof URL.createObjectURL === "undefined" ? dataURI : URL.createObjectURL(blob);
 
-    let link = document.createElement("a");
-    link.setAttribute("href", downloadURI);
-    link.setAttribute("download", options.downloadOptions.filename);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+      let link = document.createElement("a");
+      link.setAttribute("href", downloadURI);
+      link.setAttribute("download", options.downloadOptions.filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   setActiveIcon = iconName => {
@@ -174,12 +178,12 @@ class MUIDataTableToolbar extends React.Component {
           {showSearch === true ? (
             <MUIDataTableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
           ) : (
-            <div className={classes.titleRoot} aria-hidden={"true"}>
-              <Typography variant="h6" className={classes.titleText}>
-                {title}
-              </Typography>
-            </div>
-          )}
+              <div className={classes.titleRoot} aria-hidden={"true"}>
+                <Typography variant="h6" className={classes.titleText}>
+                  {title}
+                </Typography>
+              </div>
+            )}
         </div>
         <div className={classes.actions}>
           {options.search ? (
@@ -193,8 +197,8 @@ class MUIDataTableToolbar extends React.Component {
               </IconButton>
             </Tooltip>
           ) : (
-            false
-          )}
+              false
+            )}
           {options.download ? (
             <Tooltip title={downloadCsv}>
               <IconButton aria-label={downloadCsv} classes={{ root: classes.icon }} onClick={this.handleCSVDownload}>
@@ -202,8 +206,8 @@ class MUIDataTableToolbar extends React.Component {
               </IconButton>
             </Tooltip>
           ) : (
-            false
-          )}
+              false
+            )}
           {options.print ? (
             <Tooltip title={print}>
               <span>
@@ -218,8 +222,8 @@ class MUIDataTableToolbar extends React.Component {
               </span>
             </Tooltip>
           ) : (
-            false
-          )}
+              false
+            )}
           {options.viewColumns ? (
             <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
               <MUIPopoverTarget>
@@ -242,8 +246,8 @@ class MUIDataTableToolbar extends React.Component {
               </MUIPopoverContent>
             </MUIPopover>
           ) : (
-            false
-          )}
+              false
+            )}
           {options.filter ? (
             <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
               <MUIPopoverTarget>
@@ -268,8 +272,8 @@ class MUIDataTableToolbar extends React.Component {
               </MUIPopoverContent>
             </MUIPopover>
           ) : (
-            false
-          )}
+              false
+            )}
           {options.customToolbar ? options.customToolbar() : false}
         </div>
       </Toolbar>
