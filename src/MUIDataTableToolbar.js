@@ -179,12 +179,12 @@ class MUIDataTableToolbar extends React.Component {
           {showSearch === true ? (
             <MUIDataTableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
           ) : (
-              <div className={classes.titleRoot} aria-hidden={"true"}>
-                <Typography variant="h6" className={classes.titleText}>
-                  {title}
-                </Typography>
-              </div>
-            )}
+            <div className={classes.titleRoot} aria-hidden={"true"}>
+              <Typography variant="h6" className={classes.titleText}>
+                {title}
+              </Typography>
+            </div>
+          )}
         </div>
         <div className={classes.actions}>
           {options.search ? (
@@ -198,8 +198,8 @@ class MUIDataTableToolbar extends React.Component {
               </IconButton>
             </Tooltip>
           ) : (
-              false
-            )}
+            false
+          )}
           {options.download ? (
             <Tooltip title={downloadCsv}>
               <IconButton aria-label={downloadCsv} classes={{ root: classes.icon }} onClick={this.handleCSVDownload}>
@@ -207,8 +207,8 @@ class MUIDataTableToolbar extends React.Component {
               </IconButton>
             </Tooltip>
           ) : (
-              false
-            )}
+            false
+          )}
           {options.print ? (
             <Tooltip title={print}>
               <span>
@@ -223,8 +223,8 @@ class MUIDataTableToolbar extends React.Component {
               </span>
             </Tooltip>
           ) : (
-              false
-            )}
+            false
+          )}
           {options.viewColumns ? (
             <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
               <MUIPopoverTarget>
@@ -247,8 +247,8 @@ class MUIDataTableToolbar extends React.Component {
               </MUIPopoverContent>
             </MUIPopover>
           ) : (
-              false
-            )}
+            false
+          )}
           {options.filter ? (
             <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
               <MUIPopoverTarget>
@@ -273,8 +273,8 @@ class MUIDataTableToolbar extends React.Component {
               </MUIPopoverContent>
             </MUIPopover>
           ) : (
-              false
-            )}
+            false
+          )}
           {options.customToolbar ? options.customToolbar() : false}
         </div>
       </Toolbar>
