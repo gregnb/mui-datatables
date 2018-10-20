@@ -218,8 +218,7 @@ class MUIDataTable extends React.Component {
    *  Build the source table data
    */
 
-  buildColumns = (newColumns) => {
-
+  buildColumns = newColumns => {
     let columnData = [];
     let filterData = [];
     let filterList = [];
@@ -256,22 +255,18 @@ class MUIDataTable extends React.Component {
 
       filterData[colIndex] = [];
       filterList[colIndex] = [];
-
     });
 
     return { columns: columnData, filterData, filterList };
-
   };
 
   setTableData(props, status, callback = () => {}) {
-    
     const { data, options } = props;
 
     let tableData = [];
     let { columns, filterData, filterList } = this.buildColumns(props.columns);
 
     columns.forEach((column, colIndex) => {
-
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
         let value = status === TABLE_LOAD.INITIAL ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
 
