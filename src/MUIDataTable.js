@@ -11,6 +11,7 @@ import MUIDataTableHead from "./MUIDataTableHead";
 import MUIDataTablePagination from "./MUIDataTablePagination";
 import cloneDeep from "lodash.clonedeep";
 import merge from "lodash.merge";
+import isEqual from "lodash.isequal";
 import textLabels from "./textLabels";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -217,15 +218,18 @@ class MUIDataTable extends React.Component {
    *  Build the source table data
    */
 
-  setTableData(props, status, callback = () => {}) {
-    const { data, columns, options } = props;
+  buildColumns = (newColumns) => {
 
-    let columnData = [],
-      filterData = [],
-      filterList = [],
-      tableData = [];
+    let columnData = [];
+    let filterData = [];
+    let filterList = [];
 
-    columns.forEach((column, colIndex) => {
+    if (this.state.columns.length && isEqual(newColumns, this.props.columns)) {
+      const { columns, filterList, filterData } = this.state;
+      return { columns, filterList, filterData };
+    }
+
+    newColumns.forEach((column, colIndex) => {
       let columnOptions = {
         display: "true",
         filter: true,
@@ -253,6 +257,21 @@ class MUIDataTable extends React.Component {
       filterData[colIndex] = [];
       filterList[colIndex] = [];
 
+    });
+
+    return { columns: columnData, filterData, filterList };
+
+  };
+
+  setTableData(props, status, callback = () => {}) {
+    
+    const { data, options } = props;
+
+    let tableData = [];
+    let { columns, filterData, filterList } = this.buildColumns(props.columns);
+
+    columns.forEach((column, colIndex) => {
+
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
         let value = status === TABLE_LOAD.INITIAL ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
 
@@ -263,9 +282,9 @@ class MUIDataTable extends React.Component {
           });
         }
 
-        if (typeof columnOptions.customBodyRender === "function") {
-          const tableMeta = this.getTableMeta(rowIndex, colIndex, value, [], columnData, this.state);
-          const funcResult = columnOptions.customBodyRender(value, tableMeta);
+        if (typeof column.customBodyRender === "function") {
+          const tableMeta = this.getTableMeta(rowIndex, colIndex, value, [], column, this.state);
+          const funcResult = column.customBodyRender(value, tableMeta);
 
           if (React.isValidElement(funcResult) && funcResult.props.value) {
             value = funcResult.props.value;
@@ -306,12 +325,12 @@ class MUIDataTable extends React.Component {
     /* set source data and display Data set source set */
     this.setState(
       prevState => ({
-        columns: columnData,
+        columns: columns,
         filterData: filterData,
         filterList: filterList,
         selectedRows: selectedRowsData,
         data: tableData,
-        displayData: this.getDisplayData(columnData, tableData, filterList, prevState.searchText),
+        displayData: this.getDisplayData(columns, tableData, filterList, prevState.searchText),
       }),
       callback,
     );
