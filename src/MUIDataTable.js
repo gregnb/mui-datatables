@@ -637,7 +637,7 @@ class MUIDataTable extends React.Component {
     const { selectedRows, data, filterList } = this.state;
 
     const selectedMap = this.buildSelectedMap(selectedRows.data);
-    const cleanRows = data.filter((_, index) => !selectedMap[index]);
+    const cleanRows = data.filter(({ index }) => !selectedMap[index]);
 
     if (this.options.onRowsDelete) {
       this.options.onRowsDelete(selectedRows);
@@ -659,8 +659,8 @@ class MUIDataTable extends React.Component {
   };
 
   buildSelectedMap = rows => {
-    return rows.reduce((accum, { index }) => {
-      accum[index] = true;
+    return rows.reduce((accum, { dataIndex }) => {
+      accum[dataIndex] = true;
       return accum;
     }, {});
   };
@@ -669,20 +669,22 @@ class MUIDataTable extends React.Component {
     if (type === "head") {
       this.setState(
         prevState => {
-          const { data } = prevState;
+          const { displayData } = prevState;
           const selectedRowsLen = prevState.selectedRows.data.length;
           const isDeselect =
-            selectedRowsLen === data.length || (selectedRowsLen < data.length && selectedRowsLen > 0) ? true : false;
+            selectedRowsLen === displayData.length || (selectedRowsLen < displayData.length && selectedRowsLen > 0)
+              ? true
+              : false;
 
-          let selectedRows = Array(data.length)
+          let selectedRows = Array(displayData.length)
             .fill()
-            .map((d, i) => ({ index: i, dataIndex: data[i].index }));
+            .map((d, i) => ({ index: i, dataIndex: displayData[i].dataIndex }));
 
           let newRows = [...prevState.selectedRows, ...selectedRows];
           let selectedMap = this.buildSelectedMap(newRows);
 
           if (isDeselect) {
-            newRows = prevState.selectedRows.data.filter(({ index }) => !selectedMap[index]);
+            newRows = prevState.selectedRows.data.filter(({ dataIndex }) => !selectedMap[dataIndex]);
             selectedMap = this.buildSelectedMap(newRows);
           }
 
@@ -811,6 +813,7 @@ class MUIDataTable extends React.Component {
         ) : (
           <MUIDataTableToolbar
             columns={columns}
+            displayData={displayData}
             data={data}
             filterData={filterData}
             filterList={filterList}
@@ -835,7 +838,7 @@ class MUIDataTable extends React.Component {
             <MUIDataTableHead
               columns={columns}
               activeColumn={activeColumn}
-              data={this.state.displayData}
+              data={displayData}
               count={rowCount}
               columns={columns}
               page={page}
@@ -848,7 +851,7 @@ class MUIDataTable extends React.Component {
               options={this.options}
             />
             <MUIDataTableBody
-              data={this.state.displayData}
+              data={displayData}
               count={rowCount}
               columns={columns}
               page={page}
