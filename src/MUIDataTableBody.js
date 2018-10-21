@@ -66,9 +66,13 @@ class MUIDataTableBody extends React.Component {
   }
 
   getRowIndex(index) {
-    const { page, rowsPerPage } = this.props;
-    const startIndex = page === 0 ? 0 : page * rowsPerPage;
+    const { page, rowsPerPage, options } = this.props;
 
+    if (options.serverSide) {
+      return index;
+    }
+
+    const startIndex = page === 0 ? 0 : page * rowsPerPage;
     return startIndex + index;
   }
 
@@ -82,7 +86,7 @@ class MUIDataTableBody extends React.Component {
   };
 
   render() {
-    const { classes, columns, options, onRowClick } = this.props;
+    const { classes, columns, options } = this.props;
     const tableRows = this.buildRows();
 
     return (
@@ -92,7 +96,7 @@ class MUIDataTableBody extends React.Component {
             <MUIDataTableBodyRow
               options={options}
               rowSelected={options.selectableRows ? this.isRowSelected(rowIndex) : false}
-              onClick={() => onRowClick(row, { rowIndex, dataIndex })}
+              onClick={options.onRowClick ? options.onRowClick.bind(null, row, { rowIndex, dataIndex }) : null}
               id={"MUIDataTableBodyRow-" + dataIndex}
               key={rowIndex}>
               {options.selectableRows ? (
@@ -108,8 +112,9 @@ class MUIDataTableBody extends React.Component {
               )}
               {row.map(
                 (column, index) =>
-                  columns[index].display ? (
+                  columns[index].display === "true" ? (
                     <MUIDataTableBodyCell
+                      dataIndex={dataIndex}
                       rowIndex={rowIndex}
                       colIndex={index}
                       columnHeader={columns[index].name}
@@ -130,7 +135,7 @@ class MUIDataTableBody extends React.Component {
               options={options}
               colIndex={0}
               rowIndex={0}>
-              <Typography variant="subheading" className={classes.emptyTitle}>
+              <Typography variant="subtitle1" className={classes.emptyTitle}>
                 {options.textLabels.body.noMatch}
               </Typography>
             </MUIDataTableBodyCell>

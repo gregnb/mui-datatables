@@ -6,7 +6,18 @@ class Example extends React.Component {
 
   render() {
 
-    const columns = ["Name", "Title", "Location", "Age", "Salary"];
+    const columns = [
+      "Name",
+      "Title",
+      "Location",
+      "Age",
+      {
+          name: "Salary",
+          options: {
+              download: false,
+          }
+      },
+    ];
 
     const data = [
       ["Gabby George", "Business Analyst", "Minneapolis", 30, 100000],
@@ -38,7 +49,7 @@ class Example extends React.Component {
       ["Franky Miles", "Industrial Analyst", "Buffalo", 49, 190000],
       ["Glen Nixon", "Corporate Counselor", "Arlington", 44, 80000],
       ["Gabby Strickland", "Business Process Consultant", "Scottsdale", 26, 45000],
-      ["Mason Ray", "Computer Scientist", "San Francisco", 39, 142000]
+      ["Mason Ray", "Computer Scientist", "San Francisco", 39, 142000],
     ];
 
     const options = {
@@ -47,6 +58,10 @@ class Example extends React.Component {
       filterType: 'dropdown',
       responsive: 'stacked',
       rowsPerPage: 10,
+      downloadOptions: {
+          filename: 'excel-format.csv',
+          separator: ';',
+      },
       onRowsSelect: (rowsSelected, allRows) => {
         console.log(rowsSelected, allRows);
       },
@@ -77,7 +92,7 @@ class Example extends React.Component {
     };
 
     return (
-      <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+      <MUIDataTable title={"ACME Employee list CSV"} data={data} columns={columns} options={options} />
     );
 
   }

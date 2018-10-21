@@ -84,25 +84,49 @@ class MUIDataTableToolbar extends React.Component {
   };
 
   handleCSVDownload = () => {
-    const { data, columns } = this.props;
+    const { data, columns, options } = this.props;
 
-    const CSVHead = columns.reduce((soFar, column) => soFar + '"' + column.name + '",', "").slice(0, -1) + "\r\n";
-    const CSVBody = data.reduce((soFar, row) => soFar + '"' + row.data.join('","') + '"\r\n', []).trim();
+    const CSVHead =
+      columns
+        .reduce(
+          (soFar, column) =>
+            column.download ? soFar + '"' + column.name + '"' + options.downloadOptions.separator : soFar,
+          "",
+        )
+        .slice(0, -1) + "\r\n";
+
+    const CSVBody = data
+      .reduce(
+        (soFar, row) =>
+          soFar +
+          '"' +
+          row.data
+            .filter((field, index) => columns[index].download)
+            .join('"' + options.downloadOptions.separator + '"') +
+          '"\r\n',
+        [],
+      )
+      .trim();
 
     /* taken from react-csv */
     const csv = `${CSVHead}${CSVBody}`;
     const blob = new Blob([csv], { type: "text/csv" });
-    const dataURI = `data:text/csv;charset=utf-8,${csv}`;
 
-    const URL = window.URL || window.webkitURL;
-    const downloadURI = typeof URL.createObjectURL === "undefined" ? dataURI : URL.createObjectURL(blob);
+    if (navigator && navigator.msSaveOrOpenBlob) {
+      navigator.msSaveOrOpenBlob(blob, options.downloadOptions.filename);
+    } else {
+      const dataURI = `data:text/csv;charset=utf-8,${csv}`;
 
-    let link = document.createElement("a");
-    link.setAttribute("href", downloadURI);
-    link.setAttribute("download", "tableDownload.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+      const URL = window.URL || window.webkitURL;
+      const downloadURI = typeof URL.createObjectURL === "undefined" ? dataURI : URL.createObjectURL(blob);
+
+      let link = document.createElement("a");
+      link.setAttribute("href", downloadURI);
+      link.setAttribute("download", options.downloadOptions.filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   setActiveIcon = iconName => {
@@ -156,7 +180,7 @@ class MUIDataTableToolbar extends React.Component {
             <MUIDataTableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
           ) : (
             <div className={classes.titleRoot} aria-hidden={"true"}>
-              <Typography variant="title" className={classes.titleText}>
+              <Typography variant="h6" className={classes.titleText}>
                 {title}
               </Typography>
             </div>
