@@ -140,6 +140,7 @@ The component accepts the following props:
 |**`customToolbar`**|function||Render a custom toolbar
 |**`customToolbarSelect`**|function||Render a custom selected rows toolbar
 |**`customFooter`**|function||Render a custom table footer. `function(count, page, rowsPerPage, changeRowsPerPage, changePage) => string`&#124;` React Component`
+|**`customSort`**|function||Override default sorting with custom function. `function(data: array, col: number, order: string|null ) => array`
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
 |**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: 'stacked', 'scroll'
 |**`rowsPerPage`**|number|10|Number of rows allowed per page
@@ -161,7 +162,6 @@ The component accepts the following props:
 |**`onSearchChange`**|function||Callback function that triggers when the search text value has changed. `function(searchText: string) => void`
 |**`onFilterChange`**|function||Callback function that triggers when filters have changed. `function(changedColumn: string, filterList: array) => void`
 |**`onColumnSortChange`**|function||Callback function that triggers when a column has been sorted. `function(changedColumn: string, direction: string) => void`
-|**`customSort`**|function||Callback function that allows custom sorting. `function(data: array, col: number, order: string|null ) => void`
 |**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
 |**`onServerRequest`**|function||Callback function that triggers when the 'serverSide' option is enabled and table state has changed. `function(action: string, tableState: object) => void`
 
