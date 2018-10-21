@@ -808,6 +808,7 @@ class MUIDataTable extends React.Component {
         ) : (
           <MUIDataTableToolbar
             columns={columns}
+            displayData={displayData}
             data={data}
             filterData={filterData}
             filterList={filterList}
@@ -832,7 +833,7 @@ class MUIDataTable extends React.Component {
             <MUIDataTableHead
               columns={columns}
               activeColumn={activeColumn}
-              data={this.state.displayData}
+              data={displayData}
               count={rowCount}
               columns={columns}
               page={page}
@@ -845,7 +846,7 @@ class MUIDataTable extends React.Component {
               options={this.options}
             />
             <MUIDataTableBody
-              data={this.state.displayData}
+              data={displayData}
               count={rowCount}
               columns={columns}
               page={page}
