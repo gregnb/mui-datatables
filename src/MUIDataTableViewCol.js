@@ -24,6 +24,7 @@ export const defaultViewColStyles = {
   },
   formControl: {},
   checkbox: {
+    padding: "0px",
     width: "32px",
     height: "32px",
   },

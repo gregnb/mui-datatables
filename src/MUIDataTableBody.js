@@ -76,9 +76,9 @@ class MUIDataTableBody extends React.Component {
     return startIndex + index;
   }
 
-  isRowSelected(index) {
+  isRowSelected(dataIndex) {
     const { selectedRows } = this.props;
-    return selectedRows.lookup && selectedRows.lookup[index] ? true : false;
+    return selectedRows.lookup && selectedRows.lookup[dataIndex] ? true : false;
   }
 
   handleRowSelect = data => {
@@ -95,7 +95,7 @@ class MUIDataTableBody extends React.Component {
           tableRows.map(({ data: row, dataIndex }, rowIndex) => (
             <MUIDataTableBodyRow
               options={options}
-              rowSelected={options.selectableRows ? this.isRowSelected(rowIndex) : false}
+              rowSelected={options.selectableRows ? this.isRowSelected(dataIndex) : false}
               onClick={options.onRowClick ? options.onRowClick.bind(null, row, { rowIndex, dataIndex }) : null}
               id={"MUIDataTableBodyRow-" + dataIndex}
               key={rowIndex}>
@@ -105,7 +105,7 @@ class MUIDataTableBody extends React.Component {
                     index: this.getRowIndex(rowIndex),
                     dataIndex: dataIndex,
                   })}
-                  checked={this.isRowSelected(this.getRowIndex(rowIndex))}
+                  checked={this.isRowSelected(dataIndex)}
                 />
               ) : (
                 false
