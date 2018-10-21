@@ -140,7 +140,7 @@ The component accepts the following props:
 |**`customToolbar`**|function||Render a custom toolbar
 |**`customToolbarSelect`**|function||Render a custom selected rows toolbar
 |**`customFooter`**|function||Render a custom table footer. `function(count, page, rowsPerPage, changeRowsPerPage, changePage) => string`&#124;` React Component`
-|**`customSort`**|function||Override default sorting with custom function. `function(data: array, col: number, order: string|null ) => array`
+|**`customSort`**|function||Override default sorting with custom function. `function(data: array, colIndex: number, order: string) => array`
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
 |**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: 'stacked', 'scroll'
 |**`rowsPerPage`**|number|10|Number of rows allowed per page
