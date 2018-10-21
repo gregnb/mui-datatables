@@ -161,6 +161,7 @@ The component accepts the following props:
 |**`onSearchChange`**|function||Callback function that triggers when the search text value has changed. `function(searchText: string) => void`
 |**`onFilterChange`**|function||Callback function that triggers when filters have changed. `function(changedColumn: string, filterList: array) => void`
 |**`onColumnSortChange`**|function||Callback function that triggers when a column has been sorted. `function(changedColumn: string, direction: string) => void`
+|**`customSort`**|function||Callback function that allows custom sorting. `function(data: array, col: number, order: string|null ) => void`
 |**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
 |**`onServerRequest`**|function||Callback function that triggers when the 'serverSide' option is enabled and table state has changed. `function(action: string, tableState: object) => void`
 
