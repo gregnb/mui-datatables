@@ -88,6 +88,7 @@ class MUIDataTable extends React.Component {
       rowsPerPageOptions: PropTypes.array,
       filter: PropTypes.bool,
       sort: PropTypes.bool,
+      customSort: PropTypes.func,
       search: PropTypes.bool,
       print: PropTypes.bool,
       viewColumns: PropTypes.bool,
@@ -749,13 +750,17 @@ class MUIDataTable extends React.Component {
   }
 
   sortTable(data, col, order) {
-    let sortedData = data.map((row, sIndex) => ({
+    let dataSrc = this.options.customSort ? this.options.customSort(data, col, order || "asc") : data;
+
+    let sortedData = dataSrc.map((row, sIndex) => ({
       data: row.data[col],
       position: sIndex,
       rowSelected: this.state.selectedRows.lookup[sIndex] ? true : false,
     }));
 
-    sortedData.sort(this.sortCompare(order));
+    if (!this.options.customSort) {
+      sortedData.sort(this.sortCompare(order));
+    }
 
     let tableData = [];
     let selectedRows = [];
