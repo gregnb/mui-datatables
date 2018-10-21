@@ -1,6 +1,6 @@
 {
   "name": "mui-datatables",
-  "version": "2.0.0-beta-25",
+  "version": "2.0.0-beta-35",
   "description": "Datatables for React using Material-UI",
   "main": "dist/index.js",
   "files": [
@@ -36,8 +36,8 @@
   },
   "homepage": "https://github.com/gregnb/mui-datatables#readme",
   "devDependencies": {
-    "@material-ui/core": "^1.4.0",
-    "@material-ui/icons": "^2.0.0",
+    "@material-ui/core": "^3.2.0",
+    "@material-ui/icons": "^3.0.1",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.3",
@@ -85,8 +85,8 @@
     "webpack-dev-server": "^2.9.5"
   },
   "peerDependencies": {
-    "@material-ui/core": "^1.4.0",
-    "@material-ui/icons": "^2.0.0",
+    "@material-ui/core": "^3.2.0",
+    "@material-ui/icons": "^3.0.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
   },
@@ -94,6 +94,7 @@
     "classnames": "^2.2.5",
     "lodash.clonedeep": "^4.5.0",
     "lodash.get": "^4.4.2",
+    "lodash.isequal": "^4.5.0",
     "lodash.memoize": "^4.1.2",
     "lodash.merge": "^4.6.0",
     "prop-types": "^15.6.0",

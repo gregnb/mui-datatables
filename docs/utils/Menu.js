@@ -50,7 +50,9 @@ class Menu extends React.Component {
                 Examples
               </ListSubheader>
             }>
-            {sandboxes.map(item => <SandboxItem href={item.href} name={item.name} />)}
+            {sandboxes.map(item => (
+              <SandboxItem href={item.href} name={item.name} />
+            ))}
           </List>
         </div>
       </Drawer>

@@ -29,7 +29,7 @@ const textLabels = {
     titleAria: "Show/Hide Table Columns",
   },
   selectedRows: {
-    text: "rows(s) selected",
+    text: "row(s) selected",
     delete: "Delete",
     deleteAria: "Delete Selected Rows",
   },
