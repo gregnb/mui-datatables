@@ -67,6 +67,10 @@ class MUIDataTableViewCol extends React.Component {
         </Typography>
         <FormGroup className={classes.formGroup}>
           {columns.map((column, index) => {
+            if (!column.showable) {
+              return null;
+            }
+
             return (
               <FormControlLabel
                 key={index}
