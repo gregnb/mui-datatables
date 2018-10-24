@@ -96,7 +96,7 @@ class MUIDataTableToolbar extends React.Component {
   }
 
   handleCSVDownload = () => {
-    const { data, columns } = this.props;
+    const { data, columns, options } = this.props;
 
     var workbook = new ExcelJS.Workbook();
     var ws = workbook.addWorksheet("Data");
@@ -164,6 +164,11 @@ class MUIDataTableToolbar extends React.Component {
         bold: true,
       };
     });
+
+    // A chance to modify the download content before submitting it
+    if (options.customDownload) {
+      workbook = options.customDownload(workbook);
+    }
 
     workbook.xlsx
       .writeBuffer()
