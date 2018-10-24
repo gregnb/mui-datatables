@@ -137,6 +137,7 @@ class MUIDataTableToolbar extends React.Component {
 
   showSearch = () => {
     !!this.props.options.onSearchOpen && this.props.options.onSearchOpen();
+    this.props.setTableAction("onSearchOpen");
     return true;
   }
 
