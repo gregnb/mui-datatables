@@ -103,11 +103,13 @@ class MUIDataTableToolbar extends React.Component {
     const cols = [];
     const toDownload = columns.map(r => {
       const exelCol = { header: r.name, width: Math.max(10, r.name.length + 2) };
-      if (r.downloadFormatter !== null && (!r.noExportOnNoDisplay || r.display)) {
+      const export_ = r.downloadFormatter !== null && (!r.noExportOnNoDisplay || r.display);
+      if (export_) {
         cols.push(exelCol);
       }
       return {
         formatter: r.downloadFormatter,
+        export_: export_,
         name: r.name,
         exelCol: exelCol,
       };
@@ -119,7 +121,7 @@ class MUIDataTableToolbar extends React.Component {
       const row = [];
       r.data.forEach((c, i) => {
         const cData = toDownload[i];
-        if (cData.formatter === null) {
+        if (!cData.export_) {
           return;
         }
 
