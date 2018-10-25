@@ -271,13 +271,14 @@ class MUIDataTable extends React.Component {
       filterData[colIndex] = [];
       filterList[colIndex] = [];
 
+      totals[colIndex] = window._ ? window._("Total:") : "Total:";
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
         let value = status === TABLE_LOAD.INITIAL ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
 
-        if (typeof value === "number") {
-          totals[colIndex] += value;
-        } else {
-          totals[colIndex] = window._ ? window._("Total:") : "Total:";
+        const v = parseFloat(value);
+        if (typeof value === "number" || v === 0 || v) {
+          totals[colIndex] = parseFloat(totals[colIndex]) || 0;
+          totals[colIndex] += v;
         }
 
         if (typeof tableData[rowIndex] === "undefined") {
