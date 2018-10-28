@@ -41,11 +41,12 @@ class MUIDataTableHead extends React.Component {
         className={classNames({ [classes.responsiveStacked]: options.responsive === "stacked", [classes.main]: true })}>
         <MUIDataTableHeadRow>
           {options.selectableRows && (
-            <MUIDataTableSelectCell
+            <MUIDataTableSelectCell              
               ref={el => setCellRef(0, findDOMNode(el))}
               onChange={this.handleRowSelect.bind(null)}
               indeterminate={isDeterminate}
               checked={isChecked}
+              fixedHeader={options.fixedHeader}
             />
           )}
           {columns.map(
