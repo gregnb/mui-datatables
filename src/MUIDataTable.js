@@ -22,7 +22,7 @@ const defaultTableStyles = {
   },
   caption: {
     position: "absolute",
-    left: "-1000px",
+    left: "-3000px",
   },
   liveAnnounce: {
     border: "0",
