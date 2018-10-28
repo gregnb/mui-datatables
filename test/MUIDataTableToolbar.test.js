@@ -151,7 +151,9 @@ describe("<MUIDataTableToolbar />", function() {
   });
 
   it("should download CSV when calling method handleCSVDownload", () => {
-    const shallowWrapper = shallow(<MUIDataTableToolbar columns={columns} displayData={data} data={data} options={options} />);
+    const shallowWrapper = shallow(
+      <MUIDataTableToolbar columns={columns} displayData={data} data={data} options={options} />,
+    );
     const instance = shallowWrapper
       .dive()
       .dive()

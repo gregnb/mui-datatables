@@ -12,11 +12,11 @@ const defaultSelectCellStyles = {
     },
   },
   fixedHeader: {
-    position: 'sticky',
-    top: '0px',
-    left: '0px',
+    position: "sticky",
+    top: "0px",
+    left: "0px",
     zIndex: 100,
-    backgroundColor: '#FFF'
+    backgroundColor: "#FFF",
   },
   checkboxRoot: {
     "&$checked": {
@@ -44,7 +44,7 @@ class MUIDataTableSelectCell extends React.Component {
 
     const cellClass = classNames({
       [classes.root]: true,
-      [classes.fixedHeader]: fixedHeader
+      [classes.fixedHeader]: fixedHeader,
     });
 
     return (

@@ -7,14 +7,13 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "@material-ui/core/styles";
 
 const defaultHeadCellStyles = {
-  root: {
-  },
+  root: {},
   fixedHeader: {
-    position: 'sticky',
-    top: '0px',
-    left: '0px',
+    position: "sticky",
+    top: "0px",
+    left: "0px",
     zIndex: 100,
-    backgroundColor: '#FFF'
+    backgroundColor: "#FFF",
   },
   tooltip: {
     cursor: "pointer",
@@ -73,7 +72,7 @@ class MUIDataTableHeadCell extends React.Component {
 
     const cellClass = classNames({
       [classes.root]: true,
-      [classes.fixedHeader]: options.fixedHeader
+      [classes.fixedHeader]: options.fixedHeader,
     });
 
     return (
