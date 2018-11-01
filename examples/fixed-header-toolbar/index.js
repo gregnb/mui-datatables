@@ -49,38 +49,9 @@ class Example extends React.Component {
     const options = {
       fixedToolbar: this.state.fixedToolbar,
       fixedHeader: this.state.fixedHeader,
-      filter: true,
       selectableRows: true,
-      filterType: 'dropdown',
       responsive: 'stacked',
       rowsPerPage: 50,
-      onRowsSelect: (rowsSelected, allRows) => {
-        console.log(rowsSelected, allRows);
-      },
-      onRowsDelete: (rowsDeleted) => {
-        console.log(rowsDeleted, "were deleted!");
-      },
-      onChangePage: (numberRows) => {
-        console.log(numberRows);
-      },
-      onSearchChange: (searchText) => {
-        console.log(searchText);
-      },
-      onColumnSortChange: (column, direction) => {
-        console.log(column, direction);
-      },
-      onColumnViewChange: (column, action) => {
-        console.log(column, action);
-      },
-      onFilterChange: (column, filters) => {
-        console.log(column, filters);
-      },
-      onCellClick: (cellIndex, rowIndex) => {
-        console.log(cellIndex, rowIndex);
-      },
-      onRowClick: (rowData, rowState) => {
-        console.log(rowData, rowState);
-      }
     };
 
     return (
