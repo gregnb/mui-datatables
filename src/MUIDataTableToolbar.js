@@ -14,9 +14,16 @@ import ViewColumnIcon from "@material-ui/icons/ViewColumn";
 import FilterIcon from "@material-ui/icons/FilterList";
 import ReactToPrint from "react-to-print";
 import styled from "./styled";
+import classnames from "classnames";
 
 export const defaultToolbarStyles = (theme, props) => ({
   root: {},
+  fixedToolbar: {
+    backgroundColor: "#fff",
+    zIndex: 5,
+    top: 0,
+    position: "sticky",
+  },
   left: {
     flex: "1 1 55%",
   },
@@ -173,8 +180,16 @@ class MUIDataTableToolbar extends React.Component {
     const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;
     const { showSearch } = this.state;
 
+    console.log(classes.root);
+
     return (
-      <Toolbar className={classes.root} role={"toolbar"} aria-label={"Table Toolbar"}>
+      <Toolbar
+        className={classnames({
+          [classes.root]: true,
+          [classes.fixedToolbar]: options.fixedToolbar === true,
+        })}
+        role={"toolbar"}
+        aria-label={"Table Toolbar"}>
         <div className={classes.left}>
           {showSearch === true ? (
             <MUIDataTableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />

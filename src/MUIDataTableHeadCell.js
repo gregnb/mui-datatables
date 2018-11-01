@@ -5,50 +5,55 @@ import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "@material-ui/core/styles";
+import { OptionPropTypes } from "./propTypes";
+import styled from "./styled";
 
-const defaultHeadCellStyles = {
+const defaultHeadCellStyles = (theme, props) => ({
   root: {},
-  fixedHeader: {
-    position: "sticky",
-    top: "0px",
-    left: "0px",
-    zIndex: 100,
-    backgroundColor: "#FFF",
-  },
-  tooltip: {
-    cursor: "pointer",
-  },
-  mypopper: {
-    "&[data-x-out-of-boundaries]": {
-      display: "none",
+    fixedHeader: {
+      position: "sticky",
+      top: "0px",
+      left: "0px",
+      zIndex: 100,
+      backgroundColor: "#FFF",
     },
-  },
-  data: {
-    display: "inline-block",
-  },
-  sortAction: {
-    display: "inline-block",
-    verticalAlign: "top",
-    cursor: "pointer",
-    paddingLeft: "4px",
-    height: "10px",
-  },
-  sortActive: {
-    color: "rgba(0, 0, 0, 0.87)",
-  },
-  toolButton: {
-    height: "10px",
-    outline: "none",
-    cursor: "pointer",
-  },
-};
+    fixedHeaderAndToolbar: {
+      top: "64px",
+    },
+    tooltip: {
+      cursor: "pointer",
+    },
+    mypopper: {
+      "&[data-x-out-of-boundaries]": {
+        display: "none",
+      },
+    },
+    data: {
+      display: "inline-block",
+    },
+    sortAction: {
+      display: "inline-block",
+      verticalAlign: "top",
+      cursor: "pointer",
+      paddingLeft: "4px",
+      height: "10px",
+    },
+    sortActive: {
+      color: "rgba(0, 0, 0, 0.87)",
+    },
+    toolButton: {
+      height: "10px",
+      outline: "none",
+      cursor: "pointer",
+    },
+  });
 
 class MUIDataTableHeadCell extends React.Component {
   static propTypes = {
     /** Extend the style applied to components */
     classes: PropTypes.object,
     /** Options used to describe table */
-    options: PropTypes.object.isRequired,
+    options: OptionPropTypes,
     /** Current sort direction */
     sortDirection: PropTypes.string,
     /** Callback to trigger column sort */
@@ -73,6 +78,7 @@ class MUIDataTableHeadCell extends React.Component {
     const cellClass = classNames({
       [classes.root]: true,
       [classes.fixedHeader]: options.fixedHeader,
+      [classes.fixedHeaderAndToolbar]: options.fixedHeader && options.fixedToolbar,
     });
 
     return (
@@ -112,4 +118,4 @@ class MUIDataTableHeadCell extends React.Component {
   }
 }
 
-export default withStyles(defaultHeadCellStyles, { name: "MUIDataTableHeadCell" })(MUIDataTableHeadCell);
+export default styled(MUIDataTableHeadCell)(defaultHeadCellStyles, { name: "MUIDataTableHeadCell" });

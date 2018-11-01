@@ -47,6 +47,7 @@ class MUIDataTableHead extends React.Component {
               indeterminate={isDeterminate}
               checked={isChecked}
               fixedHeader={options.fixedHeader}
+              fixedToolbar={options.fixedToolbar}
             />
           )}
           {columns.map(

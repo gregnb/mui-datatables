@@ -4,27 +4,34 @@ import classNames from "classnames";
 import Checkbox from "@material-ui/core/Checkbox";
 import TableCell from "@material-ui/core/TableCell";
 import { withStyles } from "@material-ui/core/styles";
+import { OptionPropTypes } from "./propTypes";
+import styled from "./styled";
 
-const defaultSelectCellStyles = {
-  root: {
-    "@media screen and (max-width: 960px)": {
-      display: "none",
+const defaultSelectCellStyles = (theme, props) => {
+  return {
+    root: {
+      "@media screen and (max-width: 960px)": {
+        display: "none",
+      },
     },
-  },
-  fixedHeader: {
-    position: "sticky",
-    top: "0px",
-    left: "0px",
-    zIndex: 100,
-    backgroundColor: "#FFF",
-  },
-  checkboxRoot: {
-    "&$checked": {
-      color: "#027cb5",
+    fixedHeader: {
+      position: "sticky",
+      top: "0px",
+      left: "0px",
+      zIndex: 100,
+      backgroundColor: "#FFF",
     },
-  },
-  checked: {},
-  disabled: {},
+    fixedHeaderAndToolbar: {
+      top: "64px",
+    },
+    checkboxRoot: {
+      "&$checked": {
+        color: "#027cb5",
+      },
+    },
+    checked: {},
+    disabled: {},
+  };
 };
 
 class MUIDataTableSelectCell extends React.Component {
@@ -37,14 +44,16 @@ class MUIDataTableSelectCell extends React.Component {
     onChange: PropTypes.func,
     /** Extend the style applied to components */
     classes: PropTypes.object,
+    fixedToolbar: PropTypes.bool.isRequired,
   };
 
   render() {
-    const { classes, fixedHeader, ...otherProps } = this.props;
+    const { classes, fixedHeader, fixedToolbar, ...otherProps } = this.props;
 
     const cellClass = classNames({
       [classes.root]: true,
       [classes.fixedHeader]: fixedHeader,
+      [classes.fixedHeaderAndToolbar]: fixedHeader && fixedToolbar,
     });
 
     return (
@@ -62,4 +71,4 @@ class MUIDataTableSelectCell extends React.Component {
   }
 }
 
-export default withStyles(defaultSelectCellStyles, { name: "MUIDataTableSelectCell" })(MUIDataTableSelectCell);
+export default styled(MUIDataTableSelectCell)(defaultSelectCellStyles, { name: "MUIDataTableSelectCell" });

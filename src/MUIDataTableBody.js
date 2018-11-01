@@ -106,6 +106,8 @@ class MUIDataTableBody extends React.Component {
                     dataIndex: dataIndex,
                   })}
                   checked={this.isRowSelected(dataIndex)}
+                  fixedToolbar={false}
+                  fixedHeader={false}
                 />
               ) : (
                 false
