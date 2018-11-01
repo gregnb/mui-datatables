@@ -180,8 +180,6 @@ class MUIDataTableToolbar extends React.Component {
     const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;
     const { showSearch } = this.state;
 
-    console.log(classes.root);
-
     return (
       <Toolbar
         className={classnames({
