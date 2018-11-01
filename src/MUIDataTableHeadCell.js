@@ -10,43 +10,43 @@ import styled from "./styled";
 
 const defaultHeadCellStyles = {
   root: {},
-    fixedHeader: {
-      position: "sticky",
-      top: "0px",
-      left: "0px",
-      zIndex: 100,
-      backgroundColor: "#FFF",
+  fixedHeader: {
+    position: "sticky",
+    top: "0px",
+    left: "0px",
+    zIndex: 100,
+    backgroundColor: "#FFF",
+  },
+  fixedHeaderAndToolbar: {
+    top: "64px",
+  },
+  tooltip: {
+    cursor: "pointer",
+  },
+  mypopper: {
+    "&[data-x-out-of-boundaries]": {
+      display: "none",
     },
-    fixedHeaderAndToolbar: {
-      top: "64px",
-    },
-    tooltip: {
-      cursor: "pointer",
-    },
-    mypopper: {
-      "&[data-x-out-of-boundaries]": {
-        display: "none",
-      },
-    },
-    data: {
-      display: "inline-block",
-    },
-    sortAction: {
-      display: "inline-block",
-      verticalAlign: "top",
-      cursor: "pointer",
-      paddingLeft: "4px",
-      height: "10px",
-    },
-    sortActive: {
-      color: "rgba(0, 0, 0, 0.87)",
-    },
-    toolButton: {
-      height: "10px",
-      outline: "none",
-      cursor: "pointer",
-    },
-  };
+  },
+  data: {
+    display: "inline-block",
+  },
+  sortAction: {
+    display: "inline-block",
+    verticalAlign: "top",
+    cursor: "pointer",
+    paddingLeft: "4px",
+    height: "10px",
+  },
+  sortActive: {
+    color: "rgba(0, 0, 0, 0.87)",
+  },
+  toolButton: {
+    height: "10px",
+    outline: "none",
+    cursor: "pointer",
+  },
+};
 
 class MUIDataTableHeadCell extends React.Component {
   static propTypes = {

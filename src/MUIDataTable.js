@@ -14,7 +14,7 @@ import merge from "lodash.merge";
 import isEqual from "lodash.isequal";
 import textLabels from "./textLabels";
 import { withStyles } from "@material-ui/core/styles";
-import {MUIDataTablePropTypes} from './propTypes';
+import { MUIDataTablePropTypes } from "./propTypes";
 
 const defaultTableStyles = {
   root: {},
