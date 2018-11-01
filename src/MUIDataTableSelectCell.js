@@ -7,8 +7,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { OptionPropTypes } from "./propTypes";
 import styled from "./styled";
 
-const defaultSelectCellStyles = (theme, props) => {
-  return {
+const defaultSelectCellStyles = ({
     root: {
       "@media screen and (max-width: 960px)": {
         display: "none",
@@ -31,8 +30,7 @@ const defaultSelectCellStyles = (theme, props) => {
     },
     checked: {},
     disabled: {},
-  };
-};
+  });
 
 class MUIDataTableSelectCell extends React.Component {
   static propTypes = {
@@ -71,4 +69,4 @@ class MUIDataTableSelectCell extends React.Component {
   }
 }
 
-export default styled(MUIDataTableSelectCell)(defaultSelectCellStyles, { name: "MUIDataTableSelectCell" });
+export default withStyles(defaultSelectCellStyles, { name: "MUIDataTableSelectCell" })(MUIDataTableSelectCell);

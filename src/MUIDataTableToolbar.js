@@ -184,7 +184,7 @@ class MUIDataTableToolbar extends React.Component {
       <Toolbar
         className={classnames({
           [classes.root]: true,
-          [classes.fixedToolbar]: options.fixedToolbar === true,
+          [classes.fixedToolbar]: options.fixedToolbar,
         })}
         role={"toolbar"}
         aria-label={"Table Toolbar"}>

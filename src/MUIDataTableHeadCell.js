@@ -8,7 +8,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { OptionPropTypes } from "./propTypes";
 import styled from "./styled";
 
-const defaultHeadCellStyles = (theme, props) => ({
+const defaultHeadCellStyles = {
   root: {},
     fixedHeader: {
       position: "sticky",
@@ -46,7 +46,7 @@ const defaultHeadCellStyles = (theme, props) => ({
       outline: "none",
       cursor: "pointer",
     },
-  });
+  };
 
 class MUIDataTableHeadCell extends React.Component {
   static propTypes = {
@@ -118,4 +118,4 @@ class MUIDataTableHeadCell extends React.Component {
   }
 }
 
-export default styled(MUIDataTableHeadCell)(defaultHeadCellStyles, { name: "MUIDataTableHeadCell" });
+export default withStyles(defaultHeadCellStyles, { name: "MUIDataTableHeadCell" })(MUIDataTableHeadCell);
