@@ -381,6 +381,18 @@ describe("<MUIDataTable />", function() {
     assert.deepEqual(state.rowsPerPage, 10);
   });
 
+  it("should recalculate page when calling changeRowsPerPage method", () => {
+    const data = new Array(29).fill("").map(() => ["Joe James", "Test Corp", "Yonkers", "NY"]);
+    const mountWrapper = mount(shallow(<MUIDataTable columns={columns} data={data} />).get(0));
+    const instance = mountWrapper.instance();
+
+    instance.changePage(2);
+    instance.changeRowsPerPage(15);
+
+    const state = mountWrapper.state();
+    assert.equal(state.page, 1);
+  });
+
   it("should update page position when calling changePage method", () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
     const instance = shallowWrapper.instance();

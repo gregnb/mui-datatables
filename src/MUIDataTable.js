@@ -540,9 +540,17 @@ class MUIDataTable extends React.Component {
   };
 
   changeRowsPerPage = rows => {
+    /**
+     * After changing rows per page recalculate totalPages and checks its if current page not higher.
+     * Otherwise sets current page the value of nextTotalPages
+     */
+    const rowCount = this.options.count || this.state.displayData.length;
+    const nextTotalPages = Math.floor(rowCount / rows);
+
     this.setState(
       () => ({
         rowsPerPage: rows,
+        page: this.state.page > nextTotalPages ? nextTotalPages : this.state.page,
       }),
       () => {
         this.setTableAction("changeRowsPerPage");
