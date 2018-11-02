@@ -10,6 +10,9 @@ npm-debug.log*
 *.sublime-project
 *.sublime-workspace
 
+# vscode project
+.vscode
+
 # Runtime data
 pids
 *.pid
