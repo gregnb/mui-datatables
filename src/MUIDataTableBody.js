@@ -88,6 +88,7 @@ class MUIDataTableBody extends React.Component {
   render() {
     const { classes, columns, options } = this.props;
     const tableRows = this.buildRows();
+    console.log(options);
 
     return (
       <TableBody>
@@ -105,6 +106,7 @@ class MUIDataTableBody extends React.Component {
                     index: this.getRowIndex(rowIndex),
                     dataIndex: dataIndex,
                   })}
+                  fixedHeader={options.fixedHeader}
                   checked={this.isRowSelected(dataIndex)}
                 />
               ) : (
