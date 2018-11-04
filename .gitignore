@@ -13,6 +13,9 @@ npm-debug.log*
 # vscode project
 .vscode
 
+# idea project
+.idea
+
 # Runtime data
 pids
 *.pid
