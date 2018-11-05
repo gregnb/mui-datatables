@@ -5,8 +5,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "@material-ui/core/styles";
-import { OptionPropTypes } from "./propTypes";
-import styled from "./styled";
+import MUIDataTable from "./MUIDataTable";
 
 const defaultHeadCellStyles = {
   root: {},
@@ -53,7 +52,7 @@ class MUIDataTableHeadCell extends React.Component {
     /** Extend the style applied to components */
     classes: PropTypes.object,
     /** Options used to describe table */
-    options: OptionPropTypes,
+    options: PropTypes.object.isRequired,
     /** Current sort direction */
     sortDirection: PropTypes.string,
     /** Callback to trigger column sort */
