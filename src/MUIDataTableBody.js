@@ -88,7 +88,7 @@ class MUIDataTableBody extends React.Component {
   render() {
     const { classes, columns, options } = this.props;
     const tableRows = this.buildRows();
-    
+
     return (
       <TableBody>
         {tableRows ? (
