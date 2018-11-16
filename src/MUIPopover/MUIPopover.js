@@ -51,7 +51,7 @@ class MUIPopover extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    /*  
+    /*
      * Update Popover position if a filter removes data from the table because
      * it affects the window height which would cause the Popover to in the wrong place
      */
