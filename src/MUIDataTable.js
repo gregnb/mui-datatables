@@ -374,8 +374,8 @@ class MUIDataTable extends React.Component {
           typeof funcResult === "string"
             ? funcResult
             : funcResult.props && funcResult.props.value
-              ? funcResult.props.value
-              : columnValue;
+            ? funcResult.props.value
+            : columnValue;
       }
 
       displayRow.push(columnDisplay);

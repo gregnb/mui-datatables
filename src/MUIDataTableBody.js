@@ -111,21 +111,20 @@ class MUIDataTableBody extends React.Component {
               ) : (
                 false
               )}
-              {row.map(
-                (column, index) =>
-                  columns[index].display === "true" ? (
-                    <MUIDataTableBodyCell
-                      dataIndex={dataIndex}
-                      rowIndex={rowIndex}
-                      colIndex={index}
-                      columnHeader={columns[index].name}
-                      options={options}
-                      key={index}>
-                      {column}
-                    </MUIDataTableBodyCell>
-                  ) : (
-                    false
-                  ),
+              {row.map((column, index) =>
+                columns[index].display === "true" ? (
+                  <MUIDataTableBodyCell
+                    dataIndex={dataIndex}
+                    rowIndex={rowIndex}
+                    colIndex={index}
+                    columnHeader={columns[index].name}
+                    options={options}
+                    key={index}>
+                    {column}
+                  </MUIDataTableBodyCell>
+                ) : (
+                  false
+                ),
               )}
             </MUIDataTableBodyRow>
           ))
