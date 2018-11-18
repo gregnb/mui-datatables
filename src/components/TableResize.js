@@ -18,7 +18,7 @@ const defaultResizeStyles = {
   },
 };
 
-class MUIDataTableResize extends React.Component {
+class TableResize extends React.Component {
   static propTypes = {
     /** Extend the style applied to components */
     classes: PropTypes.object,
@@ -141,4 +141,4 @@ class MUIDataTableResize extends React.Component {
   }
 }
 
-export default withStyles(defaultResizeStyles, { name: "MUIDataTableResize" })(MUIDataTableResize);
+export default withStyles(defaultResizeStyles, { name: "MUIDataTableResize" })(TableResize);

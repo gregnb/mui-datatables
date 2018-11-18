@@ -29,7 +29,7 @@ const defaultBodyCellStyles = {
   },
 };
 
-class MUIDataTableBodyCell extends React.Component {
+class TableBodyCell extends React.Component {
   handleClick = () => {
     const { colIndex, options, children, dataIndex, rowIndex } = this.props;
     if (options.onCellClick) {
@@ -64,4 +64,4 @@ class MUIDataTableBodyCell extends React.Component {
   }
 }
 
-export default withStyles(defaultBodyCellStyles, { name: "MUIDataTableBodyCell" })(MUIDataTableBodyCell);
+export default withStyles(defaultBodyCellStyles, { name: "MUIDataTableBodyCell" })(TableBodyCell);

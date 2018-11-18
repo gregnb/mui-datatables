@@ -2,9 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import TableBody from "@material-ui/core/TableBody";
-import MUIDataTableBodyCell from "./MUIDataTableBodyCell";
-import MUIDataTableBodyRow from "./MUIDataTableBodyRow";
-import MUIDataTableSelectCell from "./MUIDataTableSelectCell";
+import TableBodyCell from "./TableBodyCell";
+import TableBodyRow from "./TableBodyRow";
+import TableSelectCell from "./TableSelectCell";
 import { withStyles } from "@material-ui/core/styles";
 
 const defaultBodyStyles = {
@@ -14,7 +14,7 @@ const defaultBodyStyles = {
   },
 };
 
-class MUIDataTableBody extends React.Component {
+class TableBody extends React.Component {
   static propTypes = {
     /** Data used to describe table */
     data: PropTypes.array.isRequired,
@@ -93,14 +93,14 @@ class MUIDataTableBody extends React.Component {
       <TableBody>
         {tableRows ? (
           tableRows.map(({ data: row, dataIndex }, rowIndex) => (
-            <MUIDataTableBodyRow
+            <TableBodyRow
               options={options}
               rowSelected={options.selectableRows ? this.isRowSelected(dataIndex) : false}
               onClick={options.onRowClick ? options.onRowClick.bind(null, row, { rowIndex, dataIndex }) : null}
               id={"MUIDataTableBodyRow-" + dataIndex}
               key={rowIndex}>
               {options.selectableRows ? (
-                <MUIDataTableSelectCell
+                <TableSelectCell
                   onChange={this.handleRowSelect.bind(null, {
                     index: this.getRowIndex(rowIndex),
                     dataIndex: dataIndex,
@@ -113,7 +113,7 @@ class MUIDataTableBody extends React.Component {
               )}
               {row.map((column, index) =>
                 columns[index].display === "true" ? (
-                  <MUIDataTableBodyCell
+                  <TableBodyCell
                     dataIndex={dataIndex}
                     rowIndex={rowIndex}
                     colIndex={index}
@@ -121,16 +121,16 @@ class MUIDataTableBody extends React.Component {
                     options={options}
                     key={index}>
                     {column}
-                  </MUIDataTableBodyCell>
+                  </TableBodyCell>
                 ) : (
                   false
                 ),
               )}
-            </MUIDataTableBodyRow>
+            </TableBodyRow>
           ))
         ) : (
-          <MUIDataTableBodyRow options={options}>
-            <MUIDataTableBodyCell
+          <TableBodyRow options={options}>
+            <TableBodyCell
               colSpan={options.selectableRows ? columns.length + 1 : columns.length}
               options={options}
               colIndex={0}
@@ -138,12 +138,12 @@ class MUIDataTableBody extends React.Component {
               <Typography variant="subheading" className={classes.emptyTitle}>
                 {options.textLabels.body.noMatch}
               </Typography>
-            </MUIDataTableBodyCell>
-          </MUIDataTableBodyRow>
+            </TableBodyCell>
+          </TableBodyRow>
         )}
       </TableBody>
     );
   }
 }
 
-export default withStyles(defaultBodyStyles, { name: "MUIDataTableBody" })(MUIDataTableBody);
+export default withStyles(defaultBodyStyles, { name: "MUIDataTableBody" })(TableBody);

@@ -25,7 +25,7 @@ const defaultSearchStyles = {
   },
 };
 
-class MUIDataTableSearch extends React.Component {
+class TableSearch extends React.Component {
   handleTextChange = event => {
     const { onSearchChange } = this.props.options;
 
@@ -76,4 +76,4 @@ class MUIDataTableSearch extends React.Component {
   }
 }
 
-export default withStyles(defaultSearchStyles, { name: "MUIDataTableSearch" })(MUIDataTableSearch);
+export default withStyles(defaultSearchStyles, { name: "MUIDataTableSearch" })(TableSearch);

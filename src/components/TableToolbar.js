@@ -4,9 +4,9 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import { MUIPopover, MUIPopoverTarget, MUIPopoverContent } from "./MUIPopover";
-import MUIDataTableFilter from "./MUIDataTableFilter";
-import MUIDataTableViewCol from "./MUIDataTableViewCol";
-import MUIDataTableSearch from "./MUIDataTableSearch";
+import TableFilter from "./TableFilter";
+import TableViewCol from "./TableViewCol";
+import TableSearch from "./TableSearch";
 import SearchIcon from "@material-ui/icons/Search";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import PrintIcon from "@material-ui/icons/Print";
@@ -77,7 +77,7 @@ export const responsiveToolbarStyles = {
   "@media screen and (max-width: 480px)": {},
 };
 
-class MUIDataTableToolbar extends React.Component {
+class TableToolbar extends React.Component {
   state = {
     iconActive: null,
     showSearch: false,
@@ -177,7 +177,7 @@ class MUIDataTableToolbar extends React.Component {
       <Toolbar className={classes.root} role={"toolbar"} aria-label={"Table Toolbar"}>
         <div className={classes.left}>
           {showSearch === true ? (
-            <MUIDataTableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
+            <TableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
           ) : (
             <div className={classes.titleRoot} aria-hidden={"true"}>
               <Typography variant="title" className={classes.titleText}>
@@ -238,7 +238,7 @@ class MUIDataTableToolbar extends React.Component {
                 </IconButton>
               </MUIPopoverTarget>
               <MUIPopoverContent>
-                <MUIDataTableViewCol
+                <TableViewCol
                   data={data}
                   columns={columns}
                   options={options}
@@ -262,7 +262,7 @@ class MUIDataTableToolbar extends React.Component {
                 </IconButton>
               </MUIPopoverTarget>
               <MUIPopoverContent>
-                <MUIDataTableFilter
+                <TableFilter
                   columns={columns}
                   options={options}
                   filterList={filterList}
@@ -282,4 +282,4 @@ class MUIDataTableToolbar extends React.Component {
   }
 }
 
-export default styled(MUIDataTableToolbar)(defaultToolbarStyles, { name: "MUIDataTableToolbar" });
+export default styled(TableToolbar)(defaultToolbarStyles, { name: "MUIDataTableToolbar" });

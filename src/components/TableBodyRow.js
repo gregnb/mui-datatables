@@ -13,7 +13,7 @@ const defaultBodyRowStyles = {
   },
 };
 
-class MUIDataTableBodyRow extends React.Component {
+class TableBodyRow extends React.Component {
   static propTypes = {
     /** Options used to describe table */
     options: PropTypes.object.isRequired,
@@ -43,4 +43,4 @@ class MUIDataTableBodyRow extends React.Component {
   }
 }
 
-export default withStyles(defaultBodyRowStyles, { name: "MUIDataTableBodyRow" })(MUIDataTableBodyRow);
+export default withStyles(defaultBodyRowStyles, { name: "MUIDataTableBodyRow" })(TableBodyRow);

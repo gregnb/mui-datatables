@@ -25,7 +25,7 @@ const defaultPaginationStyles = {
   },
 };
 
-class MUIDataTablePagination extends React.Component {
+class TablePagination extends React.Component {
   static propTypes = {
     /** Total number of table rows */
     count: PropTypes.number.isRequired,
@@ -83,4 +83,4 @@ class MUIDataTablePagination extends React.Component {
   }
 }
 
-export default withStyles(defaultPaginationStyles, { name: "MUIDataTablePagination" })(MUIDataTablePagination);
+export default withStyles(defaultPaginationStyles, { name: "MUIDataTablePagination" })(TablePagination);
