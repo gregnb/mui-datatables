@@ -138,7 +138,7 @@ The component accepts the following props:
 |**`selectableRows`**|boolean|true|Enable/disable row selection
 |**`resizableColumns`**|boolean|false|Enable/disable resizable columns
 |**`customToolbar`**|function||Render a custom toolbar
-|**`customToolbarSelect`**|function||Render a custom selected rows toolbar
+|**`customToolbarSelect`**|function||Render a custom selected rows toolbar. `function(selectedRows, displayData, setSelectedRows) => void`
 |**`customFooter`**|function||Render a custom table footer. `function(count, page, rowsPerPage, changeRowsPerPage, changePage) => string`&#124;` React Component`
 |**`customSort`**|function||Override default sorting with custom function. `function(data: array, colIndex: number, order: string) => array`
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
@@ -167,6 +167,19 @@ The component accepts the following props:
 |**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
 |**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
 
+`customToolbarSelect` is called with these arguments:
+
+```js
+function(
+    selectedRows:  
+      {
+        data: Array<{index: number, dataIndex: number}>, 
+        lookup: Object
+      }, 
+    displayData: Array<{data: any, dataIndex: number}>,
+    setSelectedRows: (nextSelectedRows: number[]) => void
+  )
+```
 
 ## Customize Columns
 
