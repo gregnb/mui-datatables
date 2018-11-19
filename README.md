@@ -167,20 +167,6 @@ The component accepts the following props:
 |**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
 |**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
 
-`customToolbarSelect` is called with these arguments:
-
-```js
-function(
-    selectedRows:  
-      {
-        data: Array<{index: number, dataIndex: number}>, 
-        lookup: Object
-      }, 
-    displayData: Array<{data: any, dataIndex: number}>,
-    setSelectedRows: (nextSelectedRows: number[]) => void
-  )
-```
-
 ## Customize Columns
 
 On each column object, you have the ability to customize columns to your liking with the 'options' property. Example:
