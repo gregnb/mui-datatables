@@ -4,14 +4,12 @@ import MUIDataTable from "../../src/";
 import CustomToolbarSelect from "./CustomToolbarSelect";
 
 class Example extends React.Component {
-
   render() {
-
     const columns = ["Name", "Title", "Location", "Age", "Salary"];
 
     let data = [
       ["Gabby George", "Business Analyst", "Minneapolis", 30, 100000],
-      ["Aiden Lloyd", "Business Consultant", "Dallas",  55, 200000],
+      ["Aiden Lloyd", "Business Consultant", "Dallas", 55, 200000],
       ["Jaden Collins", "Attorney", "Santa Ana", 27, 500000],
       ["Franky Rees", "Business Analyst", "St. Petersburg", 22, 50000],
       ["Aaren Rose", "Business Consultant", "Toledo", 28, 75000],
@@ -39,26 +37,21 @@ class Example extends React.Component {
       ["Franky Miles", "Industrial Analyst", "Buffalo", 49, 190000],
       ["Glen Nixon", "Corporate Counselor", "Arlington", 44, 80000],
       ["Gabby Strickland", "Business Process Consultant", "Scottsdale", 26, 45000],
-      ["Mason Ray", "Computer Scientist", "San Francisco", 39, 142000]
+      ["Mason Ray", "Computer Scientist", "San Francisco", 39, 142000],
     ];
-
-    for (let i = 0; i < 100000; i++) {
-      data.push(["Mason Ray", "Computer Scientist", "San Francisco", 39, 142000]);
-    }
 
     const options = {
       filter: true,
       selectableRows: true,
-      filterType: 'dropdown',
-      responsive: 'stacked',
+      filterType: "dropdown",
+      responsive: "stacked",
       rowsPerPage: 10,
-      customToolbarSelect: (selectedRows) => <CustomToolbarSelect selectedRows={selectedRows} />
+      customToolbarSelect: (selectedRows, displayData, setSelectedRows) => (
+        <CustomToolbarSelect selectedRows={selectedRows} displayData={displayData} setSelectedRows={setSelectedRows} />
+      ),
     };
 
-    return (
-      <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
-    );
-
+    return <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />;
   }
 }
 
