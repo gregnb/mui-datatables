@@ -45,8 +45,23 @@ class MUIDataTableToolbarSelect extends React.Component {
     classes: PropTypes.object,
   };
 
+  /**
+   * @param {number[]} selectedRows Array of rows indexes that are selected, e.g. [0, 2] will select first and third rows in table
+   */
+  handleCustomSelectedRows = selectedRows => {
+    if (!Array.isArray(selectedRows)) {
+      throw new TypeError(`"selectedRows" must be an "array", but it's "${typeof selectedRows}"`);
+    }
+
+    if (selectedRows.some(row => typeof row !== "number")) {
+      throw new TypeError(`Array "selectedRows" must contain only numbers`);
+    }
+
+    this.props.selectRowUpdate("custom", selectedRows);
+  };
+
   render() {
-    const { classes, onRowsDelete, selectedRows, options } = this.props;
+    const { classes, onRowsDelete, selectedRows, options, displayData } = this.props;
     const textLabels = options.textLabels.selectedRows;
 
     return (
@@ -57,7 +72,7 @@ class MUIDataTableToolbarSelect extends React.Component {
           </Typography>
         </div>
         {options.customToolbarSelect ? (
-          options.customToolbarSelect(selectedRows)
+          options.customToolbarSelect(selectedRows, displayData, this.handleCustomSelectedRows)
         ) : (
           <Tooltip title={textLabels.delete}>
             <IconButton className={classes.iconButton} onClick={onRowsDelete} aria-label={textLabels.deleteAria}>

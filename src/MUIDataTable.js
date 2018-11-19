@@ -756,6 +756,23 @@ class MUIDataTable extends React.Component {
           }
         },
       );
+    } else if (type === "custom") {
+      const { displayData } = this.state;
+
+      const data = value.map(row => ({ index: row, dataIndex: displayData[row].dataIndex }));
+      const lookup = this.buildSelectedMap(data);
+
+      this.setState(
+        {
+          selectedRows: { data, lookup },
+        },
+        () => {
+          this.setTableAction("rowsSelect");
+          if (this.options.onRowsSelect) {
+            this.options.onRowsSelect(this.state.selectedRows.data, this.state.selectedRows.data);
+          }
+        },
+      );
     }
   };
 
@@ -828,6 +845,8 @@ class MUIDataTable extends React.Component {
             options={this.options}
             selectedRows={selectedRows}
             onRowsDelete={this.selectRowDelete}
+            displayData={displayData}
+            selectRowUpdate={this.selectRowUpdate}
           />
         ) : (
           <MUIDataTableToolbar
