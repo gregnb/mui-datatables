@@ -7,14 +7,14 @@ import MUIDataTableHeadCell from "./MUIDataTableHeadCell";
 import MUIDataTableSelectCell from "./MUIDataTableSelectCell";
 import { withStyles } from "@material-ui/core/styles";
 
-const defaultHeadStyles = {
+const defaultHeadStyles = theme => ({
   main: {},
   responsiveStacked: {
-    "@media screen and (max-width: 960px)": {
+    [theme.breakpoints.down("sm")]: {
       display: "none",
     },
   },
-};
+});
 
 class MUIDataTableHead extends React.Component {
   componentDidMount() {

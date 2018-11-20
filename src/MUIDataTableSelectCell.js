@@ -5,9 +5,9 @@ import Checkbox from "@material-ui/core/Checkbox";
 import TableCell from "@material-ui/core/TableCell";
 import { withStyles } from "@material-ui/core/styles";
 
-const defaultSelectCellStyles = {
+const defaultSelectCellStyles = theme => ({
   root: {
-    "@media screen and (max-width: 960px)": {
+    [theme.breakpoints.down("sm")]: {
       display: "none",
     },
   },
@@ -25,7 +25,7 @@ const defaultSelectCellStyles = {
   },
   checked: {},
   disabled: {},
-};
+});
 
 class MUIDataTableSelectCell extends React.Component {
   static propTypes = {
