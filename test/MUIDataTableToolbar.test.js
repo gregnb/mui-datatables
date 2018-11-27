@@ -53,7 +53,7 @@ describe("<MUIDataTableToolbar />", function() {
   });
 
   it("should render a toolbar", () => {
-    const mountWrapper = mount(<MUIDataTableToolbar columns={columns} data={data} options={options} />);
+    const mountWrapper = mount(<MUIDataTableToolbar setTableAction={() => {}} columns={columns} data={data} options={options} />);
     const actualResult = mountWrapper.find(IconButton);
     assert.strictEqual(actualResult.length, 5);
   });
@@ -94,7 +94,7 @@ describe("<MUIDataTableToolbar />", function() {
   });
 
   it("should render a toolbar with a search clicking search icon", () => {
-    const shallowWrapper = shallow(<MUIDataTableToolbar columns={columns} data={data} options={options} />)
+    const shallowWrapper = shallow(<MUIDataTableToolbar columns={columns} setTableAction={() => {}} data={data} options={options} />)
       .dive()
       .dive()
       .dive();
@@ -110,7 +110,7 @@ describe("<MUIDataTableToolbar />", function() {
   it("should hide search after clicking cancel icon", () => {
     const searchTextUpdate = () => {};
     const shallowWrapper = shallow(
-      <MUIDataTableToolbar searchTextUpdate={searchTextUpdate} columns={columns} data={data} options={options} />,
+      <MUIDataTableToolbar searchTextUpdate={searchTextUpdate} setTableAction={() => {}} columns={columns} data={data} options={options} />,
     )
       .dive()
       .dive()

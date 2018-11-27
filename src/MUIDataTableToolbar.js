@@ -132,7 +132,7 @@ class MUIDataTableToolbar extends React.Component {
   setActiveIcon = iconName => {
     this.setState(() => ({
       iconActive: iconName,
-      showSearch: iconName === "search" ? this.showSearch() : false,
+      showSearch: iconName === "search" ? this.handleShowSearch() : false,
     }));
   };
 
@@ -140,11 +140,11 @@ class MUIDataTableToolbar extends React.Component {
     return this.state.iconActive !== iconName ? styles.icon : styles.iconActive;
   };
 
-  showSearch = () => {
+  handleShowSearch = () => {
     !!this.props.options.onSearchOpen && this.props.options.onSearchOpen();
     this.props.setTableAction("onSearchOpen");
     return true;
-  }
+  };
 
   hideSearch = () => {
     const { onSearchClose } = this.props.options;
