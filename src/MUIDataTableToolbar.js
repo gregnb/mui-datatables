@@ -84,7 +84,7 @@ class MUIDataTableToolbar extends React.Component {
   };
 
   handleCSVDownload = () => {
-    const { displayData, columns, options } = this.props;
+    const { data, columns, options } = this.props;
 
     const CSVHead =
       columns
@@ -95,7 +95,7 @@ class MUIDataTableToolbar extends React.Component {
         )
         .slice(0, -1) + "\r\n";
 
-    const CSVBody = displayData
+    const CSVBody = data
       .reduce(
         (soFar, row) =>
           soFar +
