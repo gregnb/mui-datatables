@@ -862,6 +862,7 @@ class MUIDataTable extends React.Component {
             tableRef={() => this.tableContent}
             title={title}
             toggleViewColumn={this.toggleViewColumn}
+            setTableAction={this.setTableAction}
           />
         )}
         <MUIDataTableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />
