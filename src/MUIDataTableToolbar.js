@@ -39,11 +39,11 @@ export const defaultToolbarStyles = (theme, props) => ({
     marginTop: "10px",
     marginRight: "8px",
   },
-  ...(props.options.responsive ? { ...responsiveToolbarStyles } : {}),
+  ...(props.options.responsive ? { ...responsiveToolbarStyles(theme) } : {}),
 });
 
-export const responsiveToolbarStyles = {
-  "@media screen and (max-width: 960px)": {
+export const responsiveToolbarStyles = theme => ({
+  [theme.breakpoints.down("sm")]: {
     titleRoot: {},
     titleText: {
       fontSize: "16px",
@@ -60,7 +60,7 @@ export const responsiveToolbarStyles = {
       textAlign: "right",
     },
   },
-  "@media screen and (max-width: 600px)": {
+  [theme.breakpoints.down("xs")]: {
     root: {
       display: "block",
     },
@@ -75,7 +75,7 @@ export const responsiveToolbarStyles = {
     },
   },
   "@media screen and (max-width: 480px)": {},
-};
+});
 
 class MUIDataTableToolbar extends React.Component {
   state = {

@@ -4,14 +4,14 @@ import classNames from "classnames";
 import TableRow from "@material-ui/core/TableRow";
 import { withStyles } from "@material-ui/core/styles";
 
-const defaultBodyRowStyles = {
+const defaultBodyRowStyles = theme => ({
   root: {},
   responsiveStacked: {
-    "@media screen and (max-width: 960px)": {
+    [theme.breakpoints.down("sm")]: {
       border: "solid 2px rgba(0, 0, 0, 0.15)",
     },
   },
-};
+});
 
 class MUIDataTableBodyRow extends React.Component {
   static propTypes = {
