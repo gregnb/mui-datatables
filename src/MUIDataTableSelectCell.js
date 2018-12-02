@@ -16,7 +16,6 @@ const defaultSelectCellStyles = theme => ({
     top: "0px",
     left: "0px",
     zIndex: 100,
-    backgroundColor: "#FFF",
   },
   checkboxRoot: {
     "&$checked": {

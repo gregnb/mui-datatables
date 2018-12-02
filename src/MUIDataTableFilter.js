@@ -12,9 +12,11 @@ import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
 import ListItemText from "@material-ui/core/ListItemText";
 import { withStyles } from "@material-ui/core/styles";
+import Button from '@material-ui/core/Button';
 
-export const defaultFilterStyles = {
+export const defaultFilterStyles = theme => ({
   root: {
+    backgroundColor: theme.palette.background.default,
     padding: "16px 24px 16px 24px",
     fontFamily: "Roboto",
   },
@@ -28,7 +30,7 @@ export const defaultFilterStyles = {
   title: {
     display: "inline-block",
     marginLeft: "7px",
-    color: "#424242",
+    color: theme.palette.text.primary,
     fontSize: "14px",
     fontWeight: 500,
   },
@@ -39,16 +41,9 @@ export const defaultFilterStyles = {
     alignSelf: "left",
   },
   resetLink: {
-    color: "#027cb5",
-    backgroundColor: "#FFF",
-    display: "inline-block",
-    marginLeft: "24px",
+    marginLeft: "16px",
     fontSize: "12px",
     cursor: "pointer",
-    border: "none",
-    "&:hover": {
-      color: "#FF0000",
-    },
   },
   filtersSelected: {
     alignSelf: "right",
@@ -63,7 +58,7 @@ export const defaultFilterStyles = {
     marginLeft: "7px",
     marginBottom: "8px",
     fontSize: "14px",
-    color: "#424242",
+    color: theme.palette.text.secondary,
     textAlign: "left",
     fontWeight: 500,
   },
@@ -76,10 +71,9 @@ export const defaultFilterStyles = {
   checkboxFormControlLabel: {
     fontSize: "15px",
     marginLeft: "8px",
-    color: "#4a4a4a",
+    color: theme.palette.text.primary,
   },
   checkboxIcon: {
-    //color: "#027cb5",
     width: "32px",
     height: "32px",
   },
@@ -104,7 +98,7 @@ export const defaultFilterStyles = {
     marginRight: "24px",
     marginBottom: "24px",
   },
-};
+});
 
 class MUIDataTableFilter extends React.Component {
   static propTypes = {
@@ -170,8 +164,8 @@ class MUIDataTableFilter extends React.Component {
           </FormGroup>
         </div>
       ) : (
-        false
-      ),
+          false
+        ),
     );
   }
 
@@ -201,8 +195,8 @@ class MUIDataTableFilter extends React.Component {
               </Select>
             </FormControl>
           ) : (
-            false
-          ),
+              false
+            ),
         )}
       </div>
     );
@@ -241,8 +235,8 @@ class MUIDataTableFilter extends React.Component {
               </Select>
             </FormControl>
           ) : (
-            false
-          ),
+              false
+            ),
         )}
       </div>
     );
@@ -264,17 +258,17 @@ class MUIDataTableFilter extends React.Component {
               })}>
               {textLabels.title}
             </Typography>
-            <button className={classes.resetLink} tabIndex={0} aria-label={textLabels.reset} onClick={onFilterReset}>
+            <Button color="primary" className={classes.resetLink} tabIndex={0} aria-label={textLabels.reset} onClick={onFilterReset}>
               {textLabels.reset}
-            </button>
+            </Button>
           </div>
           <div className={classes.filtersSelected} />
         </div>
         {options.filterType === "checkbox"
           ? this.renderCheckbox(columns)
           : options.filterType === "multiselect"
-          ? this.renderMultiselect(columns)
-          : this.renderSelect(columns)}
+            ? this.renderMultiselect(columns)
+            : this.renderSelect(columns)}
       </div>
     );
   }

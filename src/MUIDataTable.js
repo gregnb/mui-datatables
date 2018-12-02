@@ -17,6 +17,9 @@ import { withStyles } from "@material-ui/core/styles";
 
 const defaultTableStyles = {
   root: {},
+  tableRoot: {
+    outline: "none",
+  },
   responsiveScroll: {
     overflowX: "auto",
   },
@@ -872,7 +875,7 @@ class MUIDataTable extends React.Component {
           {this.options.resizableColumns && (
             <MUIDataTableResize key={rowCount} setResizeable={fn => (this.setHeadResizeable = fn)} />
           )}
-          <Table ref={el => (this.tableRef = el)} tabIndex={"0"} role={"grid"}>
+          <Table ref={el => (this.tableRef = el)} tabIndex={"0"} role={"grid"} className={classes.tableRoot}>
             <caption className={classes.caption}>{title}</caption>
             <MUIDataTableHead
               columns={columns}

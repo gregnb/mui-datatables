@@ -6,14 +6,14 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "@material-ui/core/styles";
 
-const defaultHeadCellStyles = {
+const defaultHeadCellStyles = theme => ({
   root: {},
   fixedHeader: {
     position: "sticky",
     top: "0px",
     left: "0px",
     zIndex: 100,
-    backgroundColor: "#FFF",
+    backgroundColor: theme.palette.background.paper,
   },
   tooltip: {
     cursor: "pointer",
@@ -41,7 +41,7 @@ const defaultHeadCellStyles = {
     outline: "none",
     cursor: "pointer",
   },
-};
+});
 
 class MUIDataTableHeadCell extends React.Component {
   static propTypes = {
@@ -105,8 +105,8 @@ class MUIDataTableHeadCell extends React.Component {
             </span>
           </Tooltip>
         ) : (
-          children
-        )}
+            children
+          )}
       </TableCell>
     );
   }
