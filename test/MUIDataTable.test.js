@@ -1,13 +1,53 @@
 import React from "react";
-import { spy, stub } from "sinon";
+import { spy } from "sinon";
 import { mount, shallow } from "enzyme";
-import { assert, expect, should } from "chai";
-import MUIDataTable from "../src/MUIDataTable";
+import { assert, expect } from "chai";
+import MUIDataTable, { fallbackComparator, getCollatzComparator } from "../src/MUIDataTable";
 import MUIDataTableFilterList from "../src/MUIDataTableFilterList";
 import MUIDataTablePagination from "../src/MUIDataTablePagination";
 import textLabels from "../src/textLabels";
 import Chip from "@material-ui/core/Chip";
 import Cities from "../examples/component/cities";
+
+describe("fallbackComparator", () => {
+  
+  it("correctly compares two equal strings", () => {
+    expect(fallbackComparator("testString", "testString")).to.equal(0);
+  });
+
+  it("correctly compares two different strings", () => {
+    expect(fallbackComparator("testStringA", "testStringB")).to.equal(-1);
+  });
+
+});
+
+describe("getCollatzComparator", () => {
+
+  describe("when Intl is available", () => {
+    it("returns a collator object", () => {
+      const comparator = getCollatzComparator();
+
+      expect(comparator).not.to.equal(fallbackComparator);
+    });
+
+  });
+
+  describe("when Intl is not available", () => {
+    
+    it("returns the fallback comparator", () => {
+      const _intl = global.Intl;
+      global.Intl = undefined;
+
+      const comparator = getCollatzComparator();
+
+      global.Intl = _intl;
+
+      expect(comparator).to.equal(fallbackComparator);
+    });
+
+  });
+
+});
 
 describe("<MUIDataTable />", function() {
   let data;
