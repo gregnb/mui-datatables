@@ -15,6 +15,17 @@ import isEqual from "lodash.isequal";
 import textLabels from "./textLabels";
 import { withStyles } from "@material-ui/core/styles";
 
+const standardCollator = (a, b) => a.localeCompare(b);
+
+const getCollatorComparison = () => {
+  if (!!Intl) {
+    const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
+    return collator.compare;
+  }
+
+  return standardCollator;
+}
+
 const defaultTableStyles = {
   root: {},
   responsiveScroll: {
@@ -304,8 +315,8 @@ class MUIDataTable extends React.Component {
       }
 
       if (this.options.sortFilterList) {
-        const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
-        filterData[colIndex].sort(collator.compare);
+        const comparator = getCollatorComparison();
+        filterData[colIndex].sort(comparator);
       }
     });
 
@@ -424,8 +435,8 @@ class MUIDataTable extends React.Component {
       changedData[row].data[index] = value;
 
       if (this.options.sortFilterList) {
-        const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
-        filterData[index].sort(collator.compare);
+        const comparator = getCollatorComparison();
+        filterData[index].sort(comparator);
       }
 
       return {
