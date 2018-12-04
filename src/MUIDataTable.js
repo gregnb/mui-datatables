@@ -15,17 +15,6 @@ import isEqual from "lodash.isequal";
 import textLabels from "./textLabels";
 import { withStyles } from "@material-ui/core/styles";
 
-export const fallbackComparator = (a, b) => a.localeCompare(b);
-
-export const getCollatzComparator = () => {
-  if (!!Intl) {
-    const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
-    return collator.compare;
-  }
-
-  return fallbackComparator;
-}
-
 const defaultTableStyles = {
   root: {},
   responsiveScroll: {
@@ -164,6 +153,17 @@ class MUIDataTable extends React.Component {
     this.getDefaultOptions(props);
     this.setTableOptions(props);
     this.setTableData(props, TABLE_LOAD.INITIAL);
+  }
+
+  static fallbackComparator = (a, b) => a.localeCompare(b);
+
+  static getCollatzComparator = () => {
+    if (!!Intl) {
+      const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
+      return collator.compare;
+    }
+
+    return MUIDataTable.fallbackComparator;
   }
 
   /*
@@ -315,7 +315,7 @@ class MUIDataTable extends React.Component {
       }
 
       if (this.options.sortFilterList) {
-        const comparator = getCollatzComparator();
+        const comparator = MUIDataTable.getCollatzComparator();
         filterData[colIndex].sort(comparator);
       }
     });
@@ -435,7 +435,7 @@ class MUIDataTable extends React.Component {
       changedData[row].data[index] = value;
 
       if (this.options.sortFilterList) {
-        const comparator = getCollatzComparator();
+        const comparator = MUIDataTable.getCollatzComparator();
         filterData[index].sort(comparator);
       }
 
