@@ -25,19 +25,21 @@ class Example extends React.Component {
           customFilterFn: (filterValue, columnValue) => {
             return new Date(filterValue).getTime() >= new Date(columnValue).getTime();
           },
-          customFilterRender: (column, index, props) => (
-            <TextField
-              id={column.name}
-              key={column.name}
-              label={column.name}
-              type="date"
-              defaultValue="1995-05-09"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              onChange={(e) => props.onFilterUpdate(index, e.target.value, "dropdown")}
-            />
-          ),
+          customFilterRender: (column, index, props) =>
+            (
+              <TextField
+                id={column.name}
+                key={column.name}
+                label={column.name}
+                type="date"
+                defaultValue="1995-05-09"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                /* DO NOT FORGET TO CALL THE `onFilterUpdate` METHOD! */
+                onChange={(e) => props.onFilterUpdate(index, e.target.value, "dropdown")}
+              />
+            ),
         }
       },
       {
