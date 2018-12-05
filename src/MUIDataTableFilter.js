@@ -176,7 +176,7 @@ class MUIDataTableFilter extends React.Component {
   }
 
   renderSelectItem(column, index) {
-    const {classes, filterData, filterList, options} = this.props;
+    const { classes, filterData, filterList, options } = this.props;
     const textLabels = options.textLabels.filter;
 
     if (column.customFilterRender) {
@@ -190,7 +190,7 @@ class MUIDataTableFilter extends React.Component {
           value={filterList[index].toString() || textLabels.all}
           name={column.name}
           onChange={event => this.handleDropdownChange(event, index, column)}
-          input={<Input name={column.name} id={column.name}/>}>
+          input={<Input name={column.name} id={column.name} />}>
           <MenuItem value={textLabels.all} key={0}>
             {textLabels.all}
           </MenuItem>
@@ -205,18 +205,16 @@ class MUIDataTableFilter extends React.Component {
   }
 
   renderSelect(columns) {
-    const {classes, filterData, filterList, options} = this.props;
+    const { classes, filterData, filterList, options } = this.props;
     const textLabels = options.textLabels.filter;
 
     return (
-      <div className={classes.selectRoot}>
-        {columns.map((column, index) => this.renderSelectItem(column, index))}
-      </div>
+      <div className={classes.selectRoot}>{columns.map((column, index) => this.renderSelectItem(column, index))}</div>
     );
   }
 
   renderMultiselect(columns) {
-    const {classes, filterData, filterList, options} = this.props;
+    const { classes, filterData, filterList, options } = this.props;
 
     return (
       <div className={classes.selectRoot}>
@@ -229,7 +227,7 @@ class MUIDataTableFilter extends React.Component {
               renderValue={selected => selected.join(", ")}
               name={column.name}
               onChange={event => this.handleMultiselectChange(index, event.target.value)}
-              input={<Input name={column.name} id={column.name}/>}>
+              input={<Input name={column.name} id={column.name} />}>
               {filterData[index].map((filterColumn, filterIndex) => (
                 <MenuItem value={filterColumn} key={filterIndex + 1}>
                   <Checkbox
@@ -241,7 +239,7 @@ class MUIDataTableFilter extends React.Component {
                       checked: classes.checked,
                     }}
                   />
-                  <ListItemText primary={filterColumn}/>
+                  <ListItemText primary={filterColumn} />
                 </MenuItem>
               ))}
             </Select>
@@ -255,9 +253,9 @@ class MUIDataTableFilter extends React.Component {
     const filteredColumns = columns.filter(x => x.filter);
 
     switch (type) {
-      case 'checkbox':
+      case "checkbox":
         return this.renderCheckbox(filteredColumns);
-      case 'multiselect':
+      case "multiselect":
         return this.renderMultiselect(filteredColumns);
       default:
         return this.renderSelect(filteredColumns);
@@ -265,7 +263,7 @@ class MUIDataTableFilter extends React.Component {
   }
 
   render() {
-    const {classes, columns, options, onFilterReset} = this.props;
+    const { classes, columns, options, onFilterReset } = this.props;
     const textLabels = options.textLabels.filter;
 
     return (
@@ -284,7 +282,7 @@ class MUIDataTableFilter extends React.Component {
               {textLabels.reset}
             </button>
           </div>
-          <div className={classes.filtersSelected}/>
+          <div className={classes.filtersSelected} />
         </div>
         {this.renderFilters(options.filterType, columns)}
       </div>
@@ -292,4 +290,4 @@ class MUIDataTableFilter extends React.Component {
   }
 }
 
-export default withStyles(defaultFilterStyles, {name: "MUIDataTableFilter"})(MUIDataTableFilter);
+export default withStyles(defaultFilterStyles, { name: "MUIDataTableFilter" })(MUIDataTableFilter);
