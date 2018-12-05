@@ -205,6 +205,7 @@ const columns = [
 |**`customFilterRender`**|function||Function that returns a string or React component. Used to render a custom filter control for the columns filter. `function (column, index, props) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filtering/index.js)
 |**`customFilterFn`**|function||Function that returns a boolean. Used to implement custom filter logic for this column and its filter. Return `true` to filter a row out, `false` to keep it. `(filterValue, columnValue) => boolean` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filtering/index.js)
 |**`customFilterValueRender`**|function||Function that returns a string or React component. Used customize rendering of the filters value in the filter list, e.g. for custom date format. `(columnValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filtering/index.js)
+##### Custom Filter Methods currently only work for filterType "dropdown"!
 
 `customHeadRender` is called with these arguments:
 
