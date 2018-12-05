@@ -180,7 +180,7 @@ class MUIDataTableFilter extends React.Component {
     const textLabels = options.textLabels.filter;
 
     if (column.customFilterRender) {
-      return column.customFilterRender(column, index, this.props);
+      return column.customFilterRender(column, index, this.props.onFilterUpdate, classes.selectFormControl);
     }
 
     return (
@@ -209,7 +209,7 @@ class MUIDataTableFilter extends React.Component {
     const textLabels = options.textLabels.filter;
 
     return (
-      <div className={classes.selectRoot}>{columns.map((column, index) => this.renderSelectItem(column, index))}</div>
+      <div className={classes.selectRoot}>{columns.map((column, index) => column.filter && this.renderSelectItem(column, index))}</div>
     );
   }
 
@@ -250,15 +250,13 @@ class MUIDataTableFilter extends React.Component {
   }
 
   renderFilters(type, columns) {
-    const filteredColumns = columns.filter(x => x.filter);
-
     switch (type) {
       case "checkbox":
-        return this.renderCheckbox(filteredColumns);
+        return this.renderCheckbox(columns);
       case "multiselect":
-        return this.renderMultiselect(filteredColumns);
+        return this.renderMultiselect(columns);
       default:
-        return this.renderSelect(filteredColumns);
+        return this.renderSelect(columns);
     }
   }
 

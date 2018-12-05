@@ -11,7 +11,7 @@ class Example extends React.Component {
       {
         name: "Name",
         options: {
-          filter: true,
+          filter: false,
           sort: true,
         }
       },
@@ -25,19 +25,20 @@ class Example extends React.Component {
           customFilterFn: (filterValue, columnValue) => {
             return new Date(filterValue).getTime() >= new Date(columnValue).getTime();
           },
-          customFilterRender: (column, index, props) =>
+          customFilterRender: (column, index, onChange, className) =>
             (
               <TextField
                 id={column.name}
                 key={column.name}
                 label={column.name}
+                className={className}
                 type="date"
                 defaultValue="1995-05-09"
                 InputLabelProps={{
                   shrink: true,
                 }}
                 /* DO NOT FORGET TO CALL THE `onFilterUpdate` METHOD! */
-                onChange={(e) => props.onFilterUpdate(index, e.target.value, "dropdown")}
+                onChange={(e) => onChange(index, e.target.value, "dropdown")}
               />
             ),
         }

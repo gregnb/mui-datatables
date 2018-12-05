@@ -202,7 +202,7 @@ const columns = [
 |**`download`**|boolean|true|Display column in CSV download file
 |**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(value, tableMeta, updateValue) => string`&#124;
 |**`customBodyRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
-|**`customFilterRender`**|function||Function that returns a string or React component. Used to render a custom filter control for the columns filter. `function (column, index, props) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filtering/index.js)
+|**`customFilterRender`**|function||Function that returns a string or React component. Used to render a custom filter control for the columns filter. `function (column, index, onChange, className) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filtering/index.js)
 |**`customFilterFn`**|function||Function that returns a boolean. Used to implement custom filter logic for this column and its filter. Return `true` to filter a row out, `false` to keep it. `(filterValue, columnValue) => boolean` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filtering/index.js)
 |**`customFilterValueRender`**|function||Function that returns a string or React component. Used customize rendering of the filters value in the filter list, e.g. for custom date format. `(columnValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filtering/index.js)
 ##### Custom Filter Methods currently only work for filterType "dropdown"!
@@ -257,21 +257,8 @@ function(
         "sortDirection": null
       }, 
       index: number,
-      props: {
-        "columns": [{
-          "name": "Name",
-          "display": "true",
-          "filter": true,
-          "sort": true,
-          "download": true,
-          "sortDirection": null
-          ...
-        }],
-        "options": TableOptions,
-        "filterList": array
-        "filterData": array
-        "classes": object
-      }
+      onChange: (index,value,"dropdown"|"multiselect"|"checkbox")=>void,
+      className:string, // apply this to your custom form control to get the same styling as the other filter
     );
 ```
 
