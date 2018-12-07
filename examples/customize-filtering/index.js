@@ -3,6 +3,13 @@ import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
 import TextField from "@material-ui/core/TextField";
 
+/**
+ * Get the filter value text from the react element
+ */
+function getFilterValueFromReactElement(input) {
+  return input ? input.props.children : undefined;
+}
+
 class Example extends React.Component {
 
   render() {
@@ -20,27 +27,37 @@ class Example extends React.Component {
         options: {
           filter: true,
           sort: true,
-          customBodyRender: (x) => new Date(x).toISOString(),
-          customFilterValueRender: (columnValue) => <b>{new Date(columnValue).toISOString()}</b>,
-          customFilterFn: (filterValue, columnValue) => {
-            return new Date(filterValue).getTime() >= new Date(columnValue).getTime();
+          customBodyRender: (x) => <b>{new Date(x).toISOString()}</b>,
+          customFilterValueRender: (columnValue) => {
+            // If we return a ReactComponent instead of a string here,
+            // we need to extract the value in the customFilterRender and customFilterFn
+            return <b>{new Date(columnValue).toISOString().split('T')[0]}</b>;
           },
-          customFilterRender: (column, index, onChange, className) =>
-            (
+          customFilterFn: (filterValue, columnValue) => {
+            if(!filterValue) return false;
+
+            const date = getFilterValueFromReactElement(filterValue);
+            return new Date(date).getTime() >= new Date(columnValue).getTime();
+          },
+          customFilterRender: (filterValue, onChange, className) => {
+            const date = getFilterValueFromReactElement(filterValue) || "1995-05-01";
+
+            return (
               <TextField
-                id={column.name}
-                key={column.name}
-                label={column.name}
+                id="Birthday"
+                key="Birthday"
+                label="Birthday"
                 className={className}
                 type="date"
-                defaultValue="1995-05-09"
+                value={date}
                 InputLabelProps={{
                   shrink: true,
                 }}
-                /* DO NOT FORGET TO CALL THE `onFilterUpdate` METHOD! */
-                onChange={(e) => onChange(index, e.target.value, "dropdown")}
+                /* DO NOT FORGET TO CALL THE `onChange` METHOD! */
+                onChange={(e) => onChange(e.target.value)}
               />
-            ),
+            );
+          },
         }
       },
       {

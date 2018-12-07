@@ -248,16 +248,8 @@ function(value: any, tableMeta: {
 
 ```js
 function(
-      column: {
-        "name": "Birthday",
-        "display": "true",
-        "filter": true,
-        "sort": true,
-        "download": true,
-        "sortDirection": null
-      }, 
-      index: number,
-      onChange: (index,value,"dropdown"|"multiselect"|"checkbox")=>void,
+      filterValue: undefined | string | ReactComponent, // NOTE: if you have a custom customFilterValueRender returning a React component, you will need to extract the filter value here  
+      onChange: (value)=>void,
       className:string, // apply this to your custom form control to get the same styling as the other filter
     );
 ```

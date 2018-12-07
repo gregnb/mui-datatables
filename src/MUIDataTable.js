@@ -415,7 +415,7 @@ class MUIDataTable extends React.Component {
 
   filterValue(filterValue, columnValue, columnOptions) {
     if (columnOptions.customFilterFn) {
-      return columnOptions.customFilterFn(filterValue, columnValue);
+      return columnOptions.customFilterFn(filterValue[0], columnValue);
     }
 
     return filterValue.length && filterValue.indexOf(columnValue) < 0;

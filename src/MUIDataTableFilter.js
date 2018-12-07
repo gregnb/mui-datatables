@@ -180,7 +180,7 @@ class MUIDataTableFilter extends React.Component {
     const textLabels = options.textLabels.filter;
 
     if (column.customFilterRender) {
-      return column.customFilterRender(column, index, this.props.onFilterUpdate, classes.selectFormControl);
+      return column.customFilterRender(filterList[index][0], (value)=>this.props.onFilterUpdate(index,value,"dropdown"), classes.selectFormControl);
     }
 
     return (
