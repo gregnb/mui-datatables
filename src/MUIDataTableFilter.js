@@ -127,7 +127,7 @@ class MUIDataTableFilter extends React.PureComponent {
   };
 
   handleDropdownChange = (index, value) => {
-    value = value === "All" ? "" : value;
+    value = value === this.props.options.textLabels.filter.all ? "" : value;
     this.props.onFilterUpdate(index, value, "dropdown");
   };
 

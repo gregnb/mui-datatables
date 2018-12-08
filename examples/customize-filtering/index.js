@@ -79,7 +79,7 @@ class Example extends React.Component {
 
     const options = {
       filter: true,
-      filterType: 'multiselect',
+      filterType: 'dropdown',
       responsive: 'stacked',
       customSort: (data, colIndex, order) => {
         return data.sort((a, b) => {
