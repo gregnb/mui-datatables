@@ -183,7 +183,7 @@ class MUIDataTableFilter extends React.PureComponent {
     if (column.customFilterRender) {
       return column.customFilterRender(
         filterValues,
-        value => this.props.handleDropdownChange(index, value),
+        value => this.handleDropdownChange(index, value),
         classes.selectFormControl,
       );
     }
