@@ -31,14 +31,16 @@ class MUIDataTableFilterList extends React.Component {
     return (
       <div className={classes.root}>
         {filterList.map((item, index) =>
-          item.map((data, colIndex) => (
-            <Chip
-              label={data}
-              key={colIndex}
-              onDelete={filterUpdate.bind(null, index, data, "checkbox")}
-              className={classes.chip}
-            />
-          )),
+          item.map((data, colIndex) => {
+            return (
+              <Chip
+                label={data}
+                key={colIndex}
+                onDelete={filterUpdate.bind(null, index, data.props.rawValue, "checkbox")}
+                className={classes.chip}
+              />
+            );
+          }),
         )}
       </div>
     );

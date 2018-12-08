@@ -202,10 +202,10 @@ const columns = [
 |**`download`**|boolean|true|Display column in CSV download file
 |**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(value, tableMeta, updateValue) => string`&#124;
 |**`customBodyRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
-|**`customFilterRender`**|function||Function that returns a string or React component. Used to render a custom filter control for the columns filter. `function (column, index, onChange, className) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filtering/index.js)
+|**`customFilterRender`**|function||Function that returns a string or React component. Used to render a custom filter control for the columns filter. `function (value, onChange, className) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filtering/index.js)
 |**`customFilterFn`**|function||Function that returns a boolean. Used to implement custom filter logic for this column and its filter. Return `true` to filter a row out, `false` to keep it. `(filterValue, columnValue) => boolean` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filtering/index.js)
 |**`customFilterValueRender`**|function||Function that returns a string or React component. Used customize rendering of the filters value in the filter list, e.g. for custom date format. `(columnValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filtering/index.js)
-##### Custom Filter Methods currently only work for filterType "dropdown"!
+##### Custom Filter Methods currently only work for filterType "dropdown" and "multiselect""!
 
 `customHeadRender` is called with these arguments:
 
@@ -248,7 +248,7 @@ function(value: any, tableMeta: {
 
 ```js
 function(
-      filterValue: undefined | string | ReactComponent, // NOTE: if you have a custom customFilterValueRender returning a React component, you will need to extract the filter value here  
+      filterValue: undefined | string[],  
       onChange: (value)=>void,
       className:string, // apply this to your custom form control to get the same styling as the other filter
     );
@@ -257,13 +257,13 @@ function(
 `customFilterFn` is called with these arguments:
 
 ```js
-function(filterValue:string, columnValue:string);
+function(filterValues:string[], columnValue:string);
 ```
 
 `customFilterValueRender` is called with these arguments:
 
 ```js
-function(columnValue:string);
+function(filterValue:string);
 ```
 
 ## Customize Styling

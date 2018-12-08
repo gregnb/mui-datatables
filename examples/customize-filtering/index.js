@@ -3,13 +3,6 @@ import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
 import TextField from "@material-ui/core/TextField";
 
-/**
- * Get the filter value text from the react element
- */
-function getFilterValueFromReactElement(input) {
-  return input ? input.props.children : undefined;
-}
-
 class Example extends React.Component {
 
   render() {
@@ -28,20 +21,13 @@ class Example extends React.Component {
           filter: true,
           sort: true,
           customBodyRender: (x) => <b>{new Date(x).toISOString()}</b>,
-          customFilterValueRender: (columnValue) => {
-            // If we return a ReactComponent instead of a string here,
-            // we need to extract the value in the customFilterRender and customFilterFn
-            return <b>{new Date(columnValue).toISOString().split('T')[0]}</b>;
+          customFilterValueRender: (filterValue) => {
+            return <b>{new Date(filterValue).toISOString().split('T')[0]}</b>;
           },
-          customFilterFn: (filterValue, columnValue) => {
-            if(!filterValue) return false;
-
-            const date = getFilterValueFromReactElement(filterValue);
-            return new Date(date).getTime() >= new Date(columnValue).getTime();
+          customFilterFn: (filterValues, columnValue) => {
+            return new Date(filterValues[0]).getTime() >= new Date(columnValue).getTime();
           },
-          customFilterRender: (filterValue, onChange, className) => {
-            const date = getFilterValueFromReactElement(filterValue) || "1995-05-01";
-
+          customFilterRender: (filterValues, onChange, className) => {
             return (
               <TextField
                 id="Birthday"
@@ -49,12 +35,13 @@ class Example extends React.Component {
                 label="Birthday"
                 className={className}
                 type="date"
-                value={date}
+                value={filterValues[0] || "1995-05-01"}
                 InputLabelProps={{
                   shrink: true,
                 }}
                 /* DO NOT FORGET TO CALL THE `onChange` METHOD! */
-                onChange={(e) => onChange(e.target.value)}
+                /* TYPE MULTISELECT MUST RETURN AN ARRAY!! */
+                onChange={(e) => onChange([e.target.value])}
               />
             );
           },
@@ -92,7 +79,7 @@ class Example extends React.Component {
 
     const options = {
       filter: true,
-      filterType: 'dropdown',
+      filterType: 'multiselect',
       responsive: 'stacked',
       customSort: (data, colIndex, order) => {
         return data.sort((a, b) => {

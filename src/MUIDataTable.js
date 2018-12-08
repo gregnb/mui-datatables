@@ -41,6 +41,11 @@ const TABLE_LOAD = {
   UPDATE: 2,
 };
 
+// Wrapper Component to keep the rawValue
+function FilterValue(props) {
+  return props.children;
+}
+
 class MUIDataTable extends React.Component {
   static propTypes = {
     /** Title of the table */
@@ -386,7 +391,9 @@ class MUIDataTable extends React.Component {
 
       displayRow.push(columnDisplay);
 
-      if (this.filterValue(filterList[index], columnValue, columns[index])) {
+      const filterValues = filterList[index].map(x => x ? x.props.rawValue : undefined);
+
+      if (this.filterValue(filterValues, columnValue, columns[index])) {
         isFiltered = true;
       }
       const columnVal = columnValue === null ? "" : columnValue.toString();
@@ -413,12 +420,11 @@ class MUIDataTable extends React.Component {
     }
   }
 
-  filterValue(filterValue, columnValue, columnOptions) {
+  filterValue(filterValues, columnValue, columnOptions) {
     if (columnOptions.customFilterFn) {
-      return columnOptions.customFilterFn(filterValue[0], columnValue);
+      return columnOptions.customFilterFn(filterValues, columnValue);
     }
-
-    return filterValue.length && filterValue.indexOf(columnValue) < 0;
+    return filterValues.length && filterValues.indexOf(columnValue) < 0;
   }
 
   updateDataCol = (row, index, value) => {
@@ -635,25 +641,45 @@ class MUIDataTable extends React.Component {
     );
   };
 
-  filterUpdate = (index, column, type) => {
+  filterUpdate = (index, filterValue, type) => {
     this.setState(
       prevState => {
         const filterList = cloneDeep(prevState.filterList);
-        const filterPos = filterList[index].indexOf(column);
+        const filterPos = filterList[index].findIndex((x)=> x && x.props.rawValue === filterValue);
+
         const columnOptions = this.props.columns[index].options;
-        const filterValue = columnOptions.customFilterValueRender
-          ? columnOptions.customFilterValueRender(column)
-          : column;
+
+
+        const renderFilterValue = (value) => columnOptions.customFilterValueRender ? columnOptions.customFilterValueRender(value) : value;
+        const isFilterEmpty = !filterValue;
 
         switch (type) {
-          case "checkbox":
-            filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(filterValue);
+          case "checkbox": {
+            const wrappedValue = React.createElement(FilterValue, {
+              children: renderFilterValue(filterValue),
+              // attach the raw input value, so we can retrieve it later
+              rawValue: filterValue
+            });
+            filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(wrappedValue);
+          }
             break;
-          case "multiselect":
-            filterList[index] = filterValue === "" ? [] : filterValue;
+          case "multiselect": {
+            const wrappedValue = filterValue.map(x => React.createElement(FilterValue, {
+              children: renderFilterValue(x),
+              // attach the raw input value, so we can retrieve it later
+              rawValue: x
+            }));
+            filterList[index] = isFilterEmpty ? [] : wrappedValue;
             break;
-          default:
-            filterList[index] = filterPos >= 0 || filterValue === "" ? [] : [filterValue];
+          }
+          default: {
+           const wrappedValue = React.createElement(FilterValue, {
+              children: renderFilterValue(filterValue),
+              // attach the raw input value, so we can retrieve it later
+              rawValue: filterValue
+            });
+          filterList[index] = filterPos >= 0 || isFilterEmpty ? [] : [wrappedValue];
+          }
         }
 
         return {
@@ -666,7 +692,7 @@ class MUIDataTable extends React.Component {
       () => {
         this.setTableAction("filterChange");
         if (this.options.onFilterChange) {
-          this.options.onFilterChange(column, this.state.filterList);
+          this.options.onFilterChange(filterValue, this.state.filterList);
         }
       },
     );

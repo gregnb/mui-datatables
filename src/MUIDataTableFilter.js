@@ -106,7 +106,7 @@ export const defaultFilterStyles = {
   },
 };
 
-class MUIDataTableFilter extends React.Component {
+class MUIDataTableFilter extends React.PureComponent {
   static propTypes = {
     /** Data used to populate filter dropdown/checkbox */
     filterData: PropTypes.array.isRequired,
@@ -126,8 +126,8 @@ class MUIDataTableFilter extends React.Component {
     this.props.onFilterUpdate(index, column, "checkbox");
   };
 
-  handleDropdownChange = (event, index) => {
-    const value = event.target.value === "All" ? "" : event.target.value;
+  handleDropdownChange = (index, value) => {
+    value = value === "All" ? "" : value;
     this.props.onFilterUpdate(index, value, "dropdown");
   };
 
@@ -178,18 +178,23 @@ class MUIDataTableFilter extends React.Component {
   renderSelectItem(column, index) {
     const { classes, filterData, filterList, options } = this.props;
     const textLabels = options.textLabels.filter;
+    const filterValues = filterList[index].map(x => x ? x.props.rawValue : undefined);
 
     if (column.customFilterRender) {
-      return column.customFilterRender(filterList[index][0], (value)=>this.props.onFilterUpdate(index,value,"dropdown"), classes.selectFormControl);
+      return column.customFilterRender(
+        filterValues,
+        (value) => this.props.handleDropdownChange(index, value),
+        classes.selectFormControl,
+      );
     }
 
     return (
       <FormControl className={classes.selectFormControl} key={index}>
         <InputLabel htmlFor={column.name}>{column.name}</InputLabel>
         <Select
-          value={filterList[index].toString() || textLabels.all}
+          value={filterValues.toString() || textLabels.all}
           name={column.name}
-          onChange={event => this.handleDropdownChange(event, index, column)}
+          onChange={event => this.handleDropdownChange(index, event.target.value)}
           input={<Input name={column.name} id={column.name} />}>
           <MenuItem value={textLabels.all} key={0}>
             {textLabels.all}
@@ -205,49 +210,64 @@ class MUIDataTableFilter extends React.Component {
   }
 
   renderSelect(columns) {
-    const { classes, filterData, filterList, options } = this.props;
-    const textLabels = options.textLabels.filter;
+    const { classes } = this.props;
 
     return (
       <div className={classes.selectRoot}>{columns.map((column, index) => column.filter && this.renderSelectItem(column, index))}</div>
     );
   }
 
-  renderMultiselect(columns) {
-    const { classes, filterData, filterList, options } = this.props;
+  renderMultiselectItem(column, index) {
+    const {classes, filterData, filterList} = this.props;
+    const filterValues = filterList[index].map(x=>x ? x.props.rawValue : undefined);
+
+
+    if (column.customFilterRender) {
+      return column.customFilterRender(
+        filterValues,
+        (value) => this.handleMultiselectChange(index, value),
+        classes.selectFormControl,
+      );
+    }
 
     return (
-      <div className={classes.selectRoot}>
-        {columns.map((column, index) => (
-          <FormControl className={classes.selectFormControl} key={index}>
-            <InputLabel htmlFor={column.name}>{column.name}</InputLabel>
-            <Select
-              multiple
-              value={filterList[index] || []}
-              renderValue={selected => selected.join(", ")}
-              name={column.name}
-              onChange={event => this.handleMultiselectChange(index, event.target.value)}
-              input={<Input name={column.name} id={column.name} />}>
-              {filterData[index].map((filterColumn, filterIndex) => (
-                <MenuItem value={filterColumn} key={filterIndex + 1}>
-                  <Checkbox
-                    checked={filterList[index].indexOf(filterColumn) >= 0 ? true : false}
-                    value={filterColumn.toString()}
-                    className={classes.checkboxIcon}
-                    classes={{
-                      root: classes.checkbox,
-                      checked: classes.checked,
-                    }}
-                  />
-                  <ListItemText primary={filterColumn} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        ))}
-      </div>
+      <FormControl className={classes.selectFormControl} key={index}>
+        <InputLabel htmlFor={column.name}>{column.name}</InputLabel>
+        <Select
+          multiple
+          value={filterValues || []}
+          renderValue={selected => selected.join(", ")}
+          name={column.name}
+          onChange={event => this.handleMultiselectChange(index, event.target.value)}
+          input={<Input name={column.name} id={column.name}/>}>
+          {filterData[index].map((filterColumn, filterIndex) => (
+            <MenuItem value={filterColumn} key={filterIndex + 1}>
+              <Checkbox
+                checked={filterValues.indexOf(filterColumn) >= 0 ? true : false}
+                value={filterColumn.toString()}
+                className={classes.checkboxIcon}
+                classes={{
+                  root: classes.checkbox,
+                  checked: classes.checked,
+                }}
+              />
+              <ListItemText primary={filterColumn}/>
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     );
   }
+
+  renderMultiselect(columns) {
+    const {classes} = this.props;
+
+    return (
+      <div
+        className={classes.selectRoot}>{columns.map((column, index) => column.filter && this.renderMultiselectItem(column, index))}</div>
+    );
+  }
+
 
   renderFilters(type, columns) {
     switch (type) {
