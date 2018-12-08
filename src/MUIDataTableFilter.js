@@ -178,12 +178,12 @@ class MUIDataTableFilter extends React.PureComponent {
   renderSelectItem(column, index) {
     const { classes, filterData, filterList, options } = this.props;
     const textLabels = options.textLabels.filter;
-    const filterValues = filterList[index].map(x => x ? x.props.rawValue : undefined);
+    const filterValues = filterList[index].map(x => (x ? x.props.rawValue : undefined));
 
     if (column.customFilterRender) {
       return column.customFilterRender(
         filterValues,
-        (value) => this.props.handleDropdownChange(index, value),
+        value => this.props.handleDropdownChange(index, value),
         classes.selectFormControl,
       );
     }
@@ -213,19 +213,20 @@ class MUIDataTableFilter extends React.PureComponent {
     const { classes } = this.props;
 
     return (
-      <div className={classes.selectRoot}>{columns.map((column, index) => column.filter && this.renderSelectItem(column, index))}</div>
+      <div className={classes.selectRoot}>
+        {columns.map((column, index) => column.filter && this.renderSelectItem(column, index))}
+      </div>
     );
   }
 
   renderMultiselectItem(column, index) {
-    const {classes, filterData, filterList} = this.props;
-    const filterValues = filterList[index].map(x=>x ? x.props.rawValue : undefined);
-
+    const { classes, filterData, filterList } = this.props;
+    const filterValues = filterList[index].map(x => (x ? x.props.rawValue : undefined));
 
     if (column.customFilterRender) {
       return column.customFilterRender(
         filterValues,
-        (value) => this.handleMultiselectChange(index, value),
+        value => this.handleMultiselectChange(index, value),
         classes.selectFormControl,
       );
     }
@@ -239,7 +240,7 @@ class MUIDataTableFilter extends React.PureComponent {
           renderValue={selected => selected.join(", ")}
           name={column.name}
           onChange={event => this.handleMultiselectChange(index, event.target.value)}
-          input={<Input name={column.name} id={column.name}/>}>
+          input={<Input name={column.name} id={column.name} />}>
           {filterData[index].map((filterColumn, filterIndex) => (
             <MenuItem value={filterColumn} key={filterIndex + 1}>
               <Checkbox
@@ -251,7 +252,7 @@ class MUIDataTableFilter extends React.PureComponent {
                   checked: classes.checked,
                 }}
               />
-              <ListItemText primary={filterColumn}/>
+              <ListItemText primary={filterColumn} />
             </MenuItem>
           ))}
         </Select>
@@ -260,14 +261,14 @@ class MUIDataTableFilter extends React.PureComponent {
   }
 
   renderMultiselect(columns) {
-    const {classes} = this.props;
+    const { classes } = this.props;
 
     return (
-      <div
-        className={classes.selectRoot}>{columns.map((column, index) => column.filter && this.renderMultiselectItem(column, index))}</div>
+      <div className={classes.selectRoot}>
+        {columns.map((column, index) => column.filter && this.renderMultiselectItem(column, index))}
+      </div>
     );
   }
-
 
   renderFilters(type, columns) {
     switch (type) {

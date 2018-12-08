@@ -391,7 +391,7 @@ class MUIDataTable extends React.Component {
 
       displayRow.push(columnDisplay);
 
-      const filterValues = filterList[index].map(x => x ? x.props.rawValue : undefined);
+      const filterValues = filterList[index].map(x => (x ? x.props.rawValue : undefined));
 
       if (this.filterValue(filterValues, columnValue, columns[index])) {
         isFiltered = true;
@@ -645,40 +645,43 @@ class MUIDataTable extends React.Component {
     this.setState(
       prevState => {
         const filterList = cloneDeep(prevState.filterList);
-        const filterPos = filterList[index].findIndex((x)=> x && x.props.rawValue === filterValue);
+        const filterPos = filterList[index].findIndex(x => x && x.props.rawValue === filterValue);
 
         const columnOptions = this.props.columns[index].options;
 
-
-        const renderFilterValue = (value) => columnOptions.customFilterValueRender ? columnOptions.customFilterValueRender(value) : value;
+        const renderFilterValue = value =>
+          columnOptions.customFilterValueRender ? columnOptions.customFilterValueRender(value) : value;
         const isFilterEmpty = !filterValue;
 
         switch (type) {
-          case "checkbox": {
-            const wrappedValue = React.createElement(FilterValue, {
-              children: renderFilterValue(filterValue),
-              // attach the raw input value, so we can retrieve it later
-              rawValue: filterValue
-            });
-            filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(wrappedValue);
-          }
+          case "checkbox":
+            {
+              const wrappedValue = React.createElement(FilterValue, {
+                children: renderFilterValue(filterValue),
+                // attach the raw input value, so we can retrieve it later
+                rawValue: filterValue,
+              });
+              filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(wrappedValue);
+            }
             break;
           case "multiselect": {
-            const wrappedValue = filterValue.map(x => React.createElement(FilterValue, {
-              children: renderFilterValue(x),
-              // attach the raw input value, so we can retrieve it later
-              rawValue: x
-            }));
+            const wrappedValue = filterValue.map(x =>
+              React.createElement(FilterValue, {
+                children: renderFilterValue(x),
+                // attach the raw input value, so we can retrieve it later
+                rawValue: x,
+              }),
+            );
             filterList[index] = isFilterEmpty ? [] : wrappedValue;
             break;
           }
           default: {
-           const wrappedValue = React.createElement(FilterValue, {
+            const wrappedValue = React.createElement(FilterValue, {
               children: renderFilterValue(filterValue),
               // attach the raw input value, so we can retrieve it later
-              rawValue: filterValue
+              rawValue: filterValue,
             });
-          filterList[index] = filterPos >= 0 || isFilterEmpty ? [] : [wrappedValue];
+            filterList[index] = filterPos >= 0 || isFilterEmpty ? [] : [wrappedValue];
           }
         }
 
