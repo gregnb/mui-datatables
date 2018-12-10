@@ -102,7 +102,6 @@ class MUIPopover extends React.Component {
             onClose={this.handleRequestClose}
             onExited={this.handleOnExit}
             anchorEl={this.anchorEl}
-            ref={el => this.popoverEl}
             anchorOrigin={anchorOriginSpecs}
             transformOrigin={transformOriginSpecs}
             {...providedProps}>

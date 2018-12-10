@@ -131,6 +131,7 @@ class MUIDataTable extends React.Component {
   constructor() {
     super();
     this.tableRef = false;
+    this.tableContent = React.createRef();
     this.headCellRefs = {};
     this.setHeadResizeable = () => {};
   }
@@ -820,6 +821,12 @@ class MUIDataTable extends React.Component {
     };
   }
 
+  // must be arrow function on local field to refer to the correct instance when passed around
+  // assigning it as arrow function in the JSX would cause hard to track re-render errors
+  getTableContentRef = () => {
+    return this.tableContent.current;
+  };
+
   render() {
     const { classes, title } = this.props;
     const {
@@ -839,7 +846,7 @@ class MUIDataTable extends React.Component {
     const rowCount = this.options.count || displayData.length;
 
     return (
-      <Paper elevation={4} ref={el => (this.tableContent = el)} className={classes.paper}>
+      <Paper elevation={4} ref={this.tableContent} className={classes.paper}>
         {selectedRows.data.length ? (
           <MUIDataTableToolbarSelect
             options={this.options}
@@ -859,7 +866,7 @@ class MUIDataTable extends React.Component {
             options={this.options}
             resetFilters={this.resetFilters}
             searchTextUpdate={this.searchTextUpdate}
-            tableRef={() => this.tableContent}
+            tableRef={this.getTableContentRef}
             title={title}
             toggleViewColumn={this.toggleViewColumn}
             setTableAction={this.setTableAction}
