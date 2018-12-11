@@ -156,6 +156,17 @@ class MUIDataTable extends React.Component {
     this.setTableData(props, TABLE_LOAD.INITIAL);
   }
 
+  static fallbackComparator = (a, b) => a.localeCompare(b);
+
+  static getCollatzComparator = () => {
+    if (!!Intl) {
+      const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
+      return collator.compare;
+    }
+
+    return MUIDataTable.fallbackComparator;
+  }
+
   /*
    * React currently does not support deep merge for defaultProps. Objects are overwritten
    */
@@ -305,8 +316,8 @@ class MUIDataTable extends React.Component {
       }
 
       if (this.options.sortFilterList) {
-        const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
-        filterData[colIndex].sort(collator.compare);
+        const comparator = MUIDataTable.getCollatzComparator();
+        filterData[colIndex].sort(comparator);
       }
     });
 
@@ -425,8 +436,8 @@ class MUIDataTable extends React.Component {
       changedData[row].data[index] = value;
 
       if (this.options.sortFilterList) {
-        const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
-        filterData[index].sort(collator.compare);
+        const comparator = MUIDataTable.getCollatzComparator();
+        filterData[index].sort(comparator);
       }
 
       return {
