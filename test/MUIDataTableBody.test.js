@@ -209,4 +209,31 @@ describe("<MUIDataTableBody />", function() {
     assert.strictEqual(options.onRowClick.callCount, 1);
     assert(options.onRowClick.calledWith(data[2], { rowIndex: 2, dataIndex: 2 }));
   });
+
+  it("should add className to rows if 'getRowClassName' provided", () => {
+    const options = { getRowClassName: stub().returns("testClass") };
+    const selectRowUpdate = stub();
+
+    const t = mount(
+      <MUIDataTableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={[]}
+        selectRowUpdate={selectRowUpdate}
+        options={options}
+        searchText={""}
+        filterList={[]}
+      />,
+    );
+
+    t.find("#MUIDataTableBodyRow-1")
+      .first()
+      .simulate("click");
+
+    assert.isAtLeast(options.getRowClassName.callCount, 1);
+    assert(options.getRowClassName.calledWith(data[1]));
+  });
 });

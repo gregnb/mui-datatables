@@ -163,11 +163,11 @@ The component accepts the following props:
 |**`onChangeRowsPerPage`**|function||Callback function that triggers when the number of rows per page has changed. `function(numberOfRows: number) => void`
 |**`onSearchChange`**|function||Callback function that triggers when the search text value has changed. `function(searchText: string) => void`
 |**`onSearchOpen`**|function||Callback function that triggers when the searchbox opens. `function() => void`
-|**`onFilterChange`**|function||Callback function that triggers when filters have changed. `function(changedColumn: string, filterList: array) => 
-void`
+|**`onFilterChange`**|function||Callback function that triggers when filters have changed. `function(changedColumn: string, filterList: array) => void`
 |**`onColumnSortChange`**|function||Callback function that triggers when a column has been sorted. `function(changedColumn: string, direction: string) => void`
 |**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
 |**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
+|**`getRowClassName`**|function||Is called for each row and allows to return custom className for this row based on its data. `function(row: array) => string`
 
 ## Customize Columns
 
@@ -202,6 +202,7 @@ const columns = [
 |**`download`**|boolean|true|Display column in CSV download file
 |**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(value, tableMeta, updateValue) => string`&#124;`
 |**`customBodyRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
+|**`getCellClassName`**|function||Is called for each cell and allows to return custom className for this cell based on its data. `function(cellValue: string) => string`
 
 `customHeadRender` is called with these arguments:
 
