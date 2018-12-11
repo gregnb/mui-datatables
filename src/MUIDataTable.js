@@ -60,6 +60,12 @@ class MUIDataTable extends React.Component {
             download: PropTypes.bool,
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,
+            field: function(props, propName, componentName) {
+              console.log("props===", props);
+              if (props["options"]["rowDataSource"] == "object" && props[propName] == undefined) {
+                return new Error(`${propName} is required when rowDataSource is object in ${componentName}.`);
+              }
+            },
           }),
         }),
       ]),
@@ -98,6 +104,7 @@ class MUIDataTable extends React.Component {
         filename: PropTypes.string,
         separator: PropTypes.string,
       }),
+      rowDataSource: PropTypes.oneOf(["object", "array"]),
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
@@ -277,10 +284,16 @@ class MUIDataTable extends React.Component {
 
     let tableData = [];
     let { columns, filterData, filterList } = this.buildColumns(props.columns);
+    let rowDataSource = this.props.options.rowDataSource;
 
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
-        let value = status === TABLE_LOAD.INITIAL ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
+        let value = "";
+        if (rowDataSource === "object") {
+          value = status === TABLE_LOAD.INITIAL ? data[rowIndex][column.field] : data[rowIndex].data[column.field];
+        } else {
+          value = status === TABLE_LOAD.INITIAL ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
+        }
 
         if (typeof tableData[rowIndex] === "undefined") {
           tableData.push({
@@ -347,15 +360,18 @@ class MUIDataTable extends React.Component {
    *  Build the table data used to display to the user (ie: after filter/search applied)
    */
   computeDisplayRow(columns, row, rowIndex, filterList, searchText) {
+    let rowDataSource = this.props.options.rowDataSource;
     let isFiltered = false;
     let isSearchFound = false;
     let displayRow = [];
 
-    for (let index = 0; index < row.length; index++) {
-      let columnDisplay = row[index];
-      let columnValue = row[index];
+    displayRow = rowDataSource === "object" ? {} : [];
 
-      if (columns[index].customBodyRender) {
+    Object.keys(row).forEach((key, index) => {
+      let columnDisplay = row[key];
+      let columnValue = row[key];
+
+      if (columns[index] && columns[index].customBodyRender) {
         const tableMeta = this.getTableMeta(rowIndex, index, row, columns[index], this.state.data, {
           ...this.state,
           filterList: filterList,
@@ -377,10 +393,13 @@ class MUIDataTable extends React.Component {
             ? funcResult.props.value
             : columnValue;
       }
+      if (rowDataSource === "object") {
+        displayRow[key] = columnDisplay;
+      } else {
+        displayRow.push(columnDisplay);
+      }
 
-      displayRow.push(columnDisplay);
-
-      if (filterList[index].length && filterList[index].indexOf(columnValue) < 0) {
+      if (filterList[index] && filterList[index].length && filterList[index].indexOf(columnValue) < 0) {
         isFiltered = true;
       }
 
@@ -399,7 +418,7 @@ class MUIDataTable extends React.Component {
           isSearchFound = true;
         }
       }
-    }
+    });
 
     if (isFiltered || (!this.options.serverSide && searchText && !isSearchFound)) return null;
     else return displayRow;
@@ -451,7 +470,6 @@ class MUIDataTable extends React.Component {
 
   getDisplayData(columns, data, filterList, searchText) {
     let newRows = [];
-
     for (let index = 0; index < data.length; index++) {
       const value = data[index].data;
       const displayRow = this.computeDisplayRow(columns, value, index, filterList, searchText);
@@ -524,7 +542,8 @@ class MUIDataTable extends React.Component {
             selectedRows: prevState.selectedRows,
           };
         } else {
-          const sortedData = this.sortTable(data, index, order);
+          let sortField = this.props.options.rowDataSource === "object" ? prevState.columns[index].field : index;
+          const sortedData = this.sortTable(data, sortField, order);
 
           newState = {
             ...newState,

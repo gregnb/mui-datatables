@@ -111,7 +111,8 @@ class MUIDataTableBody extends React.Component {
               ) : (
                 false
               )}
-              {row.map((column, index) =>
+
+              {columns.map((column, index) =>
                 columns[index].display === "true" ? (
                   <MUIDataTableBodyCell
                     dataIndex={dataIndex}
@@ -120,7 +121,7 @@ class MUIDataTableBody extends React.Component {
                     columnHeader={columns[index].name}
                     options={options}
                     key={index}>
-                    {column}
+                    {Array.isArray(row) ? row[index] : row[column.field]}
                   </MUIDataTableBodyCell>
                 ) : (
                   false

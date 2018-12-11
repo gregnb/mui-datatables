@@ -94,14 +94,15 @@ class MUIDataTableToolbar extends React.Component {
           "",
         )
         .slice(0, -1) + "\r\n";
+    const colsIdxToDownload = Object.keys(columns).filter(index => columns[index].download);
 
     const CSVBody = displayData
       .reduce(
         (soFar, row) =>
           soFar +
           '"' +
-          row.data
-            .filter((field, index) => columns[index].download)
+          colsIdxToDownload
+            .map(index => (Array.isArray(row.data) ? row.data[index] : row.data[columns[index].field]))
             .join('"' + options.downloadOptions.separator + '"') +
           '"\r\n',
         [],
