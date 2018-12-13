@@ -61,7 +61,6 @@ class MUIDataTable extends React.Component {
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,
             field: function(props, propName, componentName) {
-              console.log("props===", props);
               if (props["options"]["rowDataSource"] == "object" && props[propName] == undefined) {
                 return new Error(`${propName} is required when rowDataSource is object in ${componentName}.`);
               }
@@ -365,9 +364,10 @@ class MUIDataTable extends React.Component {
     let isSearchFound = false;
     let displayRow = [];
 
-    displayRow = rowDataSource === "object" ? {} : [];
+    displayRow = [];
 
-    Object.keys(row).forEach((key, index) => {
+    columns.forEach((key, index) => {
+      key = rowDataSource === "object" ? key.field : index;
       let columnDisplay = row[key];
       let columnValue = row[key];
 
@@ -393,11 +393,8 @@ class MUIDataTable extends React.Component {
             ? funcResult.props.value
             : columnValue;
       }
-      if (rowDataSource === "object") {
-        displayRow[key] = columnDisplay;
-      } else {
-        displayRow.push(columnDisplay);
-      }
+
+      displayRow.push(columnDisplay);
 
       if (filterList[index] && filterList[index].length && filterList[index].indexOf(columnValue) < 0) {
         isFiltered = true;
