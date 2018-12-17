@@ -5,6 +5,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "@material-ui/core/styles";
+import HelpIcon from '@material-ui/icons/Help';
 
 const defaultHeadCellStyles = {
   root: {},
@@ -55,6 +56,8 @@ class MUIDataTableHeadCell extends React.Component {
     toggleSort: PropTypes.func.isRequired,
     /** Sort enabled / disabled for this column **/
     sort: PropTypes.bool.isRequired,
+    /** Hint tooltip text */
+    hint: PropTypes.string,
   };
 
   handleSortClick = () => {
@@ -62,7 +65,7 @@ class MUIDataTableHeadCell extends React.Component {
   };
 
   render() {
-    const { children, classes, options, sortDirection, sort } = this.props;
+    const { children, classes, options, sortDirection, sort, hint } = this.props;
     const sortActive = sortDirection !== null && sortDirection !== undefined ? true : false;
 
     const sortLabelProps = {
@@ -107,6 +110,18 @@ class MUIDataTableHeadCell extends React.Component {
         ) : (
           children
         )}
+        { hint &&
+          <Tooltip
+            title={hint}
+            placement={"bottom-end"}
+            classes={{
+              tooltip: classes.tooltip,
+            }}
+            enterDelay={300}
+            classes={{ popper: classes.mypopper }}>
+              <HelpIcon fontSize="small" />
+          </Tooltip>
+        }
       </TableCell>
     );
   }
