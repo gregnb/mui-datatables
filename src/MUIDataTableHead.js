@@ -63,6 +63,7 @@ class MUIDataTableHead extends React.Component {
                   sort={column.sort}
                   sortDirection={column.sortDirection}
                   toggleSort={this.handleToggleColumn}
+                  hint={column.hint}
                   options={options}>
                   {column.name}
                 </MUIDataTableHeadCell>
