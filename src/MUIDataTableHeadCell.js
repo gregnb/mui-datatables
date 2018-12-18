@@ -5,7 +5,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "@material-ui/core/styles";
-import HelpIcon from '@material-ui/icons/Help';
+import HelpIcon from "@material-ui/icons/Help";
 
 const defaultHeadCellStyles = {
   root: {},
@@ -110,7 +110,7 @@ class MUIDataTableHeadCell extends React.Component {
         ) : (
           children
         )}
-        { hint &&
+        {hint && (
           <Tooltip
             title={hint}
             placement={"bottom-end"}
@@ -119,9 +119,9 @@ class MUIDataTableHeadCell extends React.Component {
             }}
             enterDelay={300}
             classes={{ popper: classes.mypopper }}>
-              <HelpIcon fontSize="small" />
+            <HelpIcon fontSize="small" />
           </Tooltip>
-        }
+        )}
       </TableCell>
     );
   }

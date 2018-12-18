@@ -58,10 +58,7 @@ describe("<MUIDataTableHeadCell />", function() {
     const options = { sort: true, textLabels };
 
     const shallowWrapper = shallow(
-      <MUIDataTableHeadCell
-        options={options}
-        hint={"hint text"}
-        classes={classes}>
+      <MUIDataTableHeadCell options={options} hint={"hint text"} classes={classes}>
         some content
       </MUIDataTableHeadCell>,
     ).dive();
@@ -74,9 +71,7 @@ describe("<MUIDataTableHeadCell />", function() {
     const options = { sort: true, textLabels };
 
     const shallowWrapper = shallow(
-      <MUIDataTableHeadCell
-        options={options}
-        classes={classes}>
+      <MUIDataTableHeadCell options={options} classes={classes}>
         some content
       </MUIDataTableHeadCell>,
     ).dive();

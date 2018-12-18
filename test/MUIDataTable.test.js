@@ -504,10 +504,7 @@ describe("<MUIDataTable />", function() {
     assert.strictEqual(options.onTableChange.callCount, 1);
   });
 
-
-
   describe("fallbackComparator", () => {
-    
     it("correctly compares two equal strings", () => {
       expect(MUIDataTable.fallbackComparator("testString", "testString")).to.equal(0);
     });
@@ -515,35 +512,28 @@ describe("<MUIDataTable />", function() {
     it("correctly compares two different strings", () => {
       expect(MUIDataTable.fallbackComparator("testStringA", "testStringB")).to.equal(-1);
     });
-
   });
 
   describe("getCollatzComparator", () => {
-
     describe("when Intl is available", () => {
       it("returns a collator object", () => {
         const comparator = MUIDataTable.getCollatzComparator();
-  
+
         expect(comparator).not.to.equal(MUIDataTable.fallbackComparator);
       });
-  
     });
-  
+
     describe("when Intl is not available", () => {
-      
       it("returns the fallback comparator", () => {
         const _intl = global.Intl;
         global.Intl = undefined;
 
         const comparator = MUIDataTable.getCollatzComparator();
-  
+
         global.Intl = _intl;
-  
+
         expect(comparator).to.equal(MUIDataTable.fallbackComparator);
       });
-  
     });
-  
   });
-
 });
