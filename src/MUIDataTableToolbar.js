@@ -3,7 +3,6 @@ import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
-import { MUIPopover, MUIPopoverTarget, MUIPopoverContent } from "./MUIPopover";
 import MUIDataTableFilter from "./MUIDataTableFilter";
 import MUIDataTableViewCol from "./MUIDataTableViewCol";
 import MUIDataTableSearch from "./MUIDataTableSearch";
@@ -14,6 +13,7 @@ import ViewColumnIcon from "@material-ui/icons/ViewColumn";
 import FilterIcon from "@material-ui/icons/FilterList";
 import ReactToPrint from "react-to-print";
 import styled from "./styled";
+import MUIDataTablePopoverWrapper from "./MUIPopover/MUIDataTablePopoverWrapper";
 
 export const defaultToolbarStyles = (theme, props) => ({
   root: {},
@@ -193,7 +193,7 @@ class MUIDataTableToolbar extends React.Component {
           )}
         </div>
         <div className={classes.actions}>
-          {options.search ? (
+          {options.search && (
             <Tooltip title={search}>
               <IconButton
                 aria-label={search}
@@ -203,19 +203,17 @@ class MUIDataTableToolbar extends React.Component {
                 <SearchIcon />
               </IconButton>
             </Tooltip>
-          ) : (
-            false
           )}
-          {options.download ? (
+
+          {options.download && (
             <Tooltip title={downloadCsv}>
               <IconButton aria-label={downloadCsv} classes={{ root: classes.icon }} onClick={this.handleCSVDownload}>
                 <DownloadIcon />
               </IconButton>
             </Tooltip>
-          ) : (
-            false
           )}
-          {options.print ? (
+
+          {options.print && (
             <Tooltip title={print}>
               <span>
                 <ReactToPrint
@@ -228,58 +226,37 @@ class MUIDataTableToolbar extends React.Component {
                 />
               </span>
             </Tooltip>
-          ) : (
-            false
           )}
-          {options.viewColumns ? (
-            <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
-              <MUIPopoverTarget>
-                <IconButton
-                  aria-label={viewColumns}
-                  classes={{ root: this.getActiveIcon(classes, "viewcolumns") }}
-                  onClick={this.setActiveIcon.bind(null, "viewcolumns")}>
-                  <Tooltip title={viewColumns}>
-                    <ViewColumnIcon />
-                  </Tooltip>
-                </IconButton>
-              </MUIPopoverTarget>
-              <MUIPopoverContent>
-                <MUIDataTableViewCol
-                  data={data}
-                  columns={columns}
-                  options={options}
-                  onColumnUpdate={toggleViewColumn}
-                />
-              </MUIPopoverContent>
-            </MUIPopover>
-          ) : (
-            false
+
+          {options.viewColumns && (
+            <MUIDataTablePopoverWrapper
+              label={viewColumns}
+              tableRef={tableRef}
+              onClick={this.setActiveIcon.bind(null, "viewcolumns")}
+              buttonRoot={this.getActiveIcon(classes, "viewcolumns")}
+              icon={<ViewColumnIcon />}
+              classes={classes}>
+              <MUIDataTableViewCol data={data} columns={columns} options={options} onColumnUpdate={toggleViewColumn} />
+            </MUIDataTablePopoverWrapper>
           )}
-          {options.filter ? (
-            <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
-              <MUIPopoverTarget>
-                <IconButton
-                  aria-label={filterTable}
-                  classes={{ root: this.getActiveIcon(classes, "filter") }}
-                  onClick={this.setActiveIcon.bind(null, "filter")}>
-                  <Tooltip title={filterTable}>
-                    <FilterIcon />
-                  </Tooltip>
-                </IconButton>
-              </MUIPopoverTarget>
-              <MUIPopoverContent>
-                <MUIDataTableFilter
-                  columns={columns}
-                  options={options}
-                  filterList={filterList}
-                  filterData={filterData}
-                  onFilterUpdate={filterUpdate}
-                  onFilterReset={resetFilters}
-                />
-              </MUIPopoverContent>
-            </MUIPopover>
-          ) : (
-            false
+
+          {options.filter && (
+            <MUIDataTablePopoverWrapper
+              label={filterTable}
+              tableRef={tableRef}
+              onClick={this.setActiveIcon.bind(null, "filter")}
+              buttonRoot={this.getActiveIcon(classes, "filter")}
+              icon={<FilterIcon />}
+              classes={classes}>
+              <MUIDataTableFilter
+                columns={columns}
+                options={options}
+                filterList={filterList}
+                filterData={filterData}
+                onFilterUpdate={filterUpdate}
+                onFilterReset={resetFilters}
+              />
+            </MUIDataTablePopoverWrapper>
           )}
           {options.customToolbar ? options.customToolbar() : false}
         </div>
