@@ -170,7 +170,7 @@ class MUIDataTable extends React.Component {
     }
 
     return MUIDataTable.fallbackComparator;
-  }
+  };
 
   /*
    * React currently does not support deep merge for defaultProps. Objects are overwritten
@@ -296,6 +296,8 @@ class MUIDataTable extends React.Component {
 
     let tableData = [];
     let { columns, filterData, filterList } = this.buildColumns(props.columns);
+    let sortIndex = null;
+    let sortDirection = null;
 
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
@@ -328,6 +330,11 @@ class MUIDataTable extends React.Component {
         const comparator = MUIDataTable.getCollatzComparator();
         filterData[colIndex].sort(comparator);
       }
+
+      if (column.sortDirection !== null) {
+        sortIndex = colIndex;
+        sortDirection = column.sortDirection === "asc" ? "desc" : "asc";
+      }
     });
 
     if (options.filterList) {
@@ -350,6 +357,11 @@ class MUIDataTable extends React.Component {
           selectedRowsData.lookup[row] = true;
         });
       }
+    }
+
+    if (sortIndex !== null) {
+      const sortedData = this.sortTable(tableData, sortIndex, sortDirection);
+      tableData = sortedData.data;
     }
 
     /* set source data and display Data set source set */
