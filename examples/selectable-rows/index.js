@@ -6,7 +6,13 @@ class Example extends React.Component {
 
   render() {
 
-    const columns = ["Name", "Title", "Location", "Age", "Salary"];
+    const columns = [
+      "Name",
+      "Title",
+      "Location",
+      "Age",
+      { name: "Salary", options: { hint: "USD / year"}}
+    ];
 
     const data = [
       ["Gabby George", "Business Analyst", "Minneapolis", 30, 100000],
