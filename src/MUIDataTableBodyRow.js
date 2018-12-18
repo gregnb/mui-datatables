@@ -26,7 +26,7 @@ class MUIDataTableBodyRow extends React.Component {
   };
 
   render() {
-    const { classes, options, rowSelected, onClick, className } = this.props;
+    const { classes, options, rowSelected, onClick, className, ...rest } = this.props;
 
     return (
       <TableRow
@@ -39,7 +39,8 @@ class MUIDataTableBodyRow extends React.Component {
           },
           className,
         )}
-        selected={rowSelected}>
+        selected={rowSelected}
+        {...rest}>
         {this.props.children}
       </TableRow>
     );

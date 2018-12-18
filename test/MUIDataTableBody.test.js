@@ -1,18 +1,23 @@
 import React from "react";
-import { spy, stub } from "sinon";
-import { mount, shallow } from "enzyme";
-import { assert, expect, should } from "chai";
+import {spy, stub} from "sinon";
+import {mount, shallow} from "enzyme";
+import {assert, expect, should} from "chai";
 import textLabels from "../src/textLabels";
 import MUIDataTableBody from "../src/MUIDataTableBody";
 import MUIDataTableSelectCell from "../src/MUIDataTableSelectCell";
 
-describe("<MUIDataTableBody />", function() {
+describe("<MUIDataTableBody />", function () {
   let data;
   let displayData;
   let columns;
 
   before(() => {
-    columns = ["First Name", "Company", "City", "State"];
+    columns = [
+      {name: "First Name"},
+      {name: "Company"},
+      {name: "City"},
+      {name: "State"},
+    ];
     data = [
       ["Joe James", "Test Corp", "Yonkers", "NY"],
       ["John Walsh", "Test Corp", "Hartford", "CT"],
@@ -40,8 +45,9 @@ describe("<MUIDataTableBody />", function() {
   });
 
   it("should render a table body with no selectable cells if selectableRows = false", () => {
-    const options = { selectableRows: false };
-    const selectRowUpdate = () => {};
+    const options = {selectableRows: false};
+    const selectRowUpdate = () => {
+    };
 
     const mountWrapper = mount(
       <MUIDataTableBody
@@ -63,8 +69,9 @@ describe("<MUIDataTableBody />", function() {
   });
 
   it("should render a table body with no records if no data provided", () => {
-    const options = { selectableRows: false, textLabels };
-    const selectRowUpdate = () => {};
+    const options = {selectableRows: false, textLabels};
+    const selectRowUpdate = () => {
+    };
 
     const mountWrapper = mount(
       <MUIDataTableBody
@@ -85,8 +92,9 @@ describe("<MUIDataTableBody />", function() {
   });
 
   it("should render a table body with selectable cells if selectableRows = true", () => {
-    const options = { selectableRows: true };
-    const selectRowUpdate = () => {};
+    const options = {selectableRows: true};
+    const selectRowUpdate = () => {
+    };
 
     const mountWrapper = mount(
       <MUIDataTableBody
@@ -108,8 +116,9 @@ describe("<MUIDataTableBody />", function() {
   });
 
   it("should return the correct rowIndex when calling instance method getRowIndex", () => {
-    const options = { sort: true, selectableRows: true };
-    const selectRowUpdate = () => {};
+    const options = {sort: true, selectableRows: true};
+    const selectRowUpdate = () => {
+    };
 
     const shallowWrapper = shallow(
       <MUIDataTableBody
@@ -133,8 +142,9 @@ describe("<MUIDataTableBody />", function() {
   });
 
   it("should return correctly if row exists in selectedRows when calling instance method isRowSelected", () => {
-    const options = { sort: true, selectableRows: true };
-    const selectRowUpdate = () => {};
+    const options = {sort: true, selectableRows: true};
+    const selectRowUpdate = () => {
+    };
 
     const shallowWrapper = shallow(
       <MUIDataTableBody
@@ -158,7 +168,7 @@ describe("<MUIDataTableBody />", function() {
   });
 
   it("should trigger selectRowUpdate prop callback when calling method handleRowSelect", () => {
-    const options = { sort: true, selectableRows: true };
+    const options = {sort: true, selectableRows: true};
     const selectRowUpdate = spy();
 
     const shallowWrapper = shallow(
@@ -184,7 +194,7 @@ describe("<MUIDataTableBody />", function() {
   });
 
   it("should call onRowClick when Row is clicked", () => {
-    const options = { selectableRows: true, onRowClick: spy() };
+    const options = {selectableRows: true, onRowClick: spy()};
     const selectRowUpdate = stub();
 
     const t = mount(
@@ -203,15 +213,15 @@ describe("<MUIDataTableBody />", function() {
     );
 
     t.find("#MUIDataTableBodyRow-2")
-      .first()
-      .simulate("click");
+     .first()
+     .simulate("click");
 
     assert.strictEqual(options.onRowClick.callCount, 1);
-    assert(options.onRowClick.calledWith(data[2], { rowIndex: 2, dataIndex: 2 }));
+    assert(options.onRowClick.calledWith(data[2], {rowIndex: 2, dataIndex: 2}));
   });
 
-  it("should add className to rows if 'getRowClassName' provided", () => {
-    const options = { getRowClassName: stub().returns("testClass") };
+  it("should add custom props to rows if 'setRowProps' provided", () => {
+    const options = {setRowProps: stub().returns({className: "testClass"})};
     const selectRowUpdate = stub();
 
     const t = mount(
@@ -229,11 +239,12 @@ describe("<MUIDataTableBody />", function() {
       />,
     );
 
-    t.find("#MUIDataTableBodyRow-1")
-      .first()
-      .simulate("click");
+    const props = t.find("#MUIDataTableBodyRow-1")
+                   .first()
+                   .props();
 
-    assert.isAtLeast(options.getRowClassName.callCount, 1);
-    assert(options.getRowClassName.calledWith(data[1]));
+    assert.strictEqual(props.className, "testClass");
+    assert.isAtLeast(options.setRowProps.callCount, 1);
+    assert(options.setRowProps.calledWith(data[1]));
   });
 });

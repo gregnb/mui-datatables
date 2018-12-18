@@ -94,7 +94,7 @@ class MUIDataTableBody extends React.Component {
         <TableBody>
           {tableRows.map(({ data: row, dataIndex }, rowIndex) => (
             <MUIDataTableBodyRow
-              className={options.getRowClassName ? options.getRowClassName(row) : null}
+              {...(options.setRowProps ? options.setRowProps(row,dataIndex) : {})}
               options={options}
               rowSelected={options.selectableRows ? this.isRowSelected(dataIndex) : false}
               onClick={options.onRowClick ? options.onRowClick.bind(null, row, { rowIndex, dataIndex }) : null}
@@ -111,16 +111,16 @@ class MUIDataTableBody extends React.Component {
                 />
               )}
               {row.map(
-                (column, index) =>
-                  columns[index].display === "true" && (
+                (column, columnIndex) =>
+                  columns[columnIndex].display === "true" && (
                     <MUIDataTableBodyCell
-                      className={columns[index].getCellClassName ? columns[index].getCellClassName(column) : null}
+                      {...(columns[columnIndex].setCellProps ? columns[columnIndex].setCellProps(column, dataIndex, columnIndex) : {})}
                       dataIndex={dataIndex}
                       rowIndex={rowIndex}
-                      colIndex={index}
-                      columnHeader={columns[index].name}
+                      colIndex={columnIndex}
+                      columnHeader={columns[columnIndex].name}
                       options={options}
-                      key={index}>
+                      key={columnIndex}>
                       {column}
                     </MUIDataTableBodyCell>
                   ),

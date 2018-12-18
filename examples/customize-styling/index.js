@@ -39,10 +39,14 @@ class Example extends React.Component {
         name: "Name",
         options: {
           filter: true,
-          getCellClassName: (value) => classnames(
-            {
-              [this.props.classes.NameCell]: value === "Mel Brooks"
-            })
+          setCellProps: (value) => {
+            return {
+              className: classnames(
+                {
+                  [this.props.classes.NameCell]: value === "Mel Brooks"
+                })
+            };
+          }
         }
       },
       {
@@ -109,10 +113,15 @@ class Example extends React.Component {
       filter: true,
       filterType: 'dropdown',
       responsive: 'stacked',
-      getRowClassName: (row) => classnames(
-        {
-          [this.props.classes.BusinessAnalystRow]: row[1] === "Business Analyst"
-        })
+      setRowProps: (row) => {
+        return {
+          className: classnames(
+            {
+              [this.props.classes.BusinessAnalystRow]: row[1] === "Business Analyst"
+            }),
+          style: {border: '3px solid blue',}
+        };
+      }
 
     };
 
