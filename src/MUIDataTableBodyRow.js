@@ -26,17 +26,21 @@ class MUIDataTableBodyRow extends React.Component {
   };
 
   render() {
-    const { classes, options, rowSelected, onClick } = this.props;
+    const { classes, options, rowSelected, onClick, className, ...rest } = this.props;
 
     return (
       <TableRow
         hover={options.rowHover ? true : false}
         onClick={onClick}
-        className={classNames({
-          [classes.root]: true,
-          [classes.responsiveStacked]: options.responsive === "stacked",
-        })}
-        selected={rowSelected}>
+        className={classNames(
+          {
+            [classes.root]: true,
+            [classes.responsiveStacked]: options.responsive === "stacked",
+          },
+          className,
+        )}
+        selected={rowSelected}
+        {...rest}>
         {this.props.children}
       </TableRow>
     );
