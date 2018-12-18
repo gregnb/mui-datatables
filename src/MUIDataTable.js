@@ -225,8 +225,11 @@ class MUIDataTable extends React.Component {
     const optState = optionNames.reduce((acc, cur) => {
       if (this.options[cur]) {
         let val = this.options[cur];
-        if (cur === "page") val--;
         acc[cur] = val;
+      }
+
+      if (cur === "page") {
+        acc[cur] = 0;
       }
       return acc;
     }, {});
