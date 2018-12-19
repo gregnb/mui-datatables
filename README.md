@@ -193,6 +193,7 @@ const columns = [
 |Name|Type|Description
 |:--:|:-----|:-----|
 |**`Name`**|string|Name of column (This field is required)
+|**`label`**|string|Column Header Name override
 |**`options`**|object|Options for customizing column
 
 
