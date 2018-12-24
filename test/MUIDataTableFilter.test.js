@@ -5,9 +5,9 @@ import { assert, expect, should } from "chai";
 import textLabels from "../src/textLabels";
 import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
-import MUIDataTableFilter from "../src/MUIDataTableFilter";
+import TableFilter from "../src/components/TableFilter";
 
-describe("<MUIDataTableFilter />", function() {
+describe("<TableFilter />", function() {
   let data;
   let columns;
   let filterData;
@@ -39,7 +39,7 @@ describe("<MUIDataTableFilter />", function() {
     const options = { filterType: "checkbox", textLabels };
     const filterList = [[], [], [], []];
     const shallowWrapper = mount(
-      <MUIDataTableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
+      <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
 
     const actualResult = shallowWrapper.find(Checkbox);
@@ -52,7 +52,7 @@ describe("<MUIDataTableFilter />", function() {
     columns = columns.map(item => (item.filter = false));
 
     const shallowWrapper = mount(
-      <MUIDataTableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
+      <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
 
     const actualResult = shallowWrapper.find(Checkbox);
@@ -64,7 +64,7 @@ describe("<MUIDataTableFilter />", function() {
     const filterList = [["Joe James"], [], [], []];
 
     const mountWrapper = mount(
-      <MUIDataTableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
+      <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
 
     const actualResult = mountWrapper.find(Select);
@@ -77,7 +77,7 @@ describe("<MUIDataTableFilter />", function() {
     columns = columns.map(item => (item.filter = false));
 
     const mountWrapper = mount(
-      <MUIDataTableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
+      <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
 
     const actualResult = mountWrapper.find(Select);
@@ -89,7 +89,7 @@ describe("<MUIDataTableFilter />", function() {
     const filterList = [["Joe James", "John Walsh"], [], [], []];
 
     const mountWrapper = mount(
-      <MUIDataTableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
+      <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
 
     const actualResult = mountWrapper.find(Select);
@@ -102,7 +102,7 @@ describe("<MUIDataTableFilter />", function() {
     const onFilterUpdate = spy();
 
     const shallowWrapper = shallow(
-      <MUIDataTableFilter
+      <TableFilter
         columns={columns}
         onFilterUpdate={onFilterUpdate}
         filterData={filterData}
@@ -123,7 +123,7 @@ describe("<MUIDataTableFilter />", function() {
     const onFilterUpdate = spy();
 
     const shallowWrapper = shallow(
-      <MUIDataTableFilter
+      <TableFilter
         columns={columns}
         onFilterUpdate={onFilterUpdate}
         filterData={filterData}

@@ -3,10 +3,10 @@ import { spy, stub } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import Checkbox from "@material-ui/core/Checkbox";
-import MUIDataTableViewCol from "../src/MUIDataTableViewCol";
+import TableViewCol from "../src/components/TableViewCol";
 import textLabels from "../src/textLabels";
 
-describe("<MUIDataTableViewCol />", function() {
+describe("<TableViewCol />", function() {
   let columns;
   let options;
 
@@ -18,7 +18,7 @@ describe("<MUIDataTableViewCol />", function() {
   });
 
   it("should render view columns", () => {
-    const mountWrapper = mount(<MUIDataTableViewCol columns={columns} options={options} />);
+    const mountWrapper = mount(<TableViewCol columns={columns} options={options} />);
 
     const actualResult = mountWrapper.find(Checkbox);
     assert.strictEqual(actualResult.length, 4);
@@ -28,7 +28,7 @@ describe("<MUIDataTableViewCol />", function() {
     const onColumnUpdate = spy();
 
     const shallowWrapper = shallow(
-      <MUIDataTableViewCol columns={columns} onColumnUpdate={onColumnUpdate} options={options} />,
+      <TableViewCol columns={columns} onColumnUpdate={onColumnUpdate} options={options} />,
     ).dive();
 
     const instance = shallowWrapper.instance();

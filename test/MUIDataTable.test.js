@@ -3,8 +3,8 @@ import { spy, stub } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import MUIDataTable from "../src/MUIDataTable";
-import MUIDataTableFilterList from "../src/MUIDataTableFilterList";
-import MUIDataTablePagination from "../src/MUIDataTablePagination";
+import TableFilterList from "../src/components/TableFilterList";
+import TablePagination from "../src/components/TablePagination";
 import textLabels from "../src/textLabels";
 import Chip from "@material-ui/core/Chip";
 import Cities from "../examples/component/cities";
@@ -197,7 +197,7 @@ describe("<MUIDataTable />", function() {
     };
 
     const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
-    const actualResult = mountWrapper.find(MUIDataTablePagination);
+    const actualResult = mountWrapper.find(TablePagination);
     assert.lengthOf(actualResult, 1);
   });
 
@@ -207,7 +207,7 @@ describe("<MUIDataTable />", function() {
     };
 
     const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
-    const actualResult = mountWrapper.find(MUIDataTablePagination);
+    const actualResult = mountWrapper.find(TablePagination);
     assert.lengthOf(actualResult, 0);
   });
 
@@ -253,7 +253,7 @@ describe("<MUIDataTable />", function() {
   it("should create Chip when filterList is populated", () => {
     const filterList = [["Joe James"], [], [], []];
 
-    const mountWrapper = mount(<MUIDataTableFilterList filterList={filterList} filterUpdate={() => true} />);
+    const mountWrapper = mount(<TableFilterList filterList={filterList} filterUpdate={() => true} />);
     const actualResult = mountWrapper.find(Chip);
     assert.strictEqual(actualResult.length, 1);
   });

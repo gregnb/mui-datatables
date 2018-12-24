@@ -446,7 +446,7 @@ class MUIDataTable extends React.Component {
       changedData[row].data[index] = value;
 
       if (this.options.sortFilterList) {
-        const comparator = MUIDataTable.getCollatzComparator();
+        const comparator = getCollatorComparator();
         filterData[index].sort(comparator);
       }
 

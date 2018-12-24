@@ -3,10 +3,10 @@ import { spy, stub } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import textLabels from "../src/textLabels";
-import MUIDataTableBody from "../src/MUIDataTableBody";
-import MUIDataTableSelectCell from "../src/MUIDataTableSelectCell";
+import TableBody from "../src/components/TableBody";
+import TableSelectCell from "../src/components/TableSelectCell";
 
-describe("<MUIDataTableBody />", function() {
+describe("<TableBody />", function() {
   let data;
   let displayData;
   let columns;
@@ -44,7 +44,7 @@ describe("<MUIDataTableBody />", function() {
     const selectRowUpdate = () => {};
 
     const mountWrapper = mount(
-      <MUIDataTableBody
+      <TableBody
         data={displayData}
         count={displayData.length}
         columns={columns}
@@ -58,7 +58,7 @@ describe("<MUIDataTableBody />", function() {
       />,
     );
 
-    const actualResult = mountWrapper.find(MUIDataTableSelectCell);
+    const actualResult = mountWrapper.find(TableSelectCell);
     assert.strictEqual(actualResult.length, 0);
   });
 
@@ -67,7 +67,7 @@ describe("<MUIDataTableBody />", function() {
     const selectRowUpdate = () => {};
 
     const mountWrapper = mount(
-      <MUIDataTableBody
+      <TableBody
         data={[]}
         columns={columns}
         page={0}
@@ -89,7 +89,7 @@ describe("<MUIDataTableBody />", function() {
     const selectRowUpdate = () => {};
 
     const mountWrapper = mount(
-      <MUIDataTableBody
+      <TableBody
         data={displayData}
         count={displayData.length}
         columns={columns}
@@ -103,7 +103,7 @@ describe("<MUIDataTableBody />", function() {
       />,
     );
 
-    const actualResult = mountWrapper.find(MUIDataTableSelectCell);
+    const actualResult = mountWrapper.find(TableSelectCell);
     assert.strictEqual(actualResult.length, 4);
   });
 
@@ -112,7 +112,7 @@ describe("<MUIDataTableBody />", function() {
     const selectRowUpdate = () => {};
 
     const shallowWrapper = shallow(
-      <MUIDataTableBody
+      <TableBody
         data={displayData}
         count={displayData.length}
         columns={columns}
@@ -137,7 +137,7 @@ describe("<MUIDataTableBody />", function() {
     const selectRowUpdate = () => {};
 
     const shallowWrapper = shallow(
-      <MUIDataTableBody
+      <TableBody
         data={displayData}
         count={displayData.length}
         columns={columns}
@@ -162,7 +162,7 @@ describe("<MUIDataTableBody />", function() {
     const selectRowUpdate = spy();
 
     const shallowWrapper = shallow(
-      <MUIDataTableBody
+      <TableBody
         data={displayData}
         count={displayData.length}
         columns={columns}
@@ -188,7 +188,7 @@ describe("<MUIDataTableBody />", function() {
     const selectRowUpdate = stub();
 
     const t = mount(
-      <MUIDataTableBody
+      <TableBody
         data={displayData}
         count={displayData.length}
         columns={columns}
@@ -202,7 +202,7 @@ describe("<MUIDataTableBody />", function() {
       />,
     );
 
-    t.find("#MUIDataTableBodyRow-2")
+    t.find("#TableBodyRow-2")
       .first()
       .simulate("click");
 

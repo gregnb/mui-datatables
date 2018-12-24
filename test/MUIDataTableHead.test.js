@@ -2,11 +2,11 @@ import React from "react";
 import { spy, stub } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
-import MUIDataTableHead from "../src/MUIDataTableHead";
-import MUIDataTableHeadCell from "../src/MUIDataTableHeadCell";
+import TableHead from "../src/components/TableHead";
+import TableHeadCell from "../src/components/TableHeadCell";
 import Tooltip from "@material-ui/core/Tooltip";
 
-describe("<MUIDataTableHead />", function() {
+describe("<TableHead />", function() {
   let columns;
   let handleHeadUpdateRef;
 
@@ -26,7 +26,7 @@ describe("<MUIDataTableHead />", function() {
     const toggleSort = () => {};
 
     const mountWrapper = mount(
-      <MUIDataTableHead
+      <TableHead
         columns={columns}
         options={options}
         setCellRef={() => {}}
@@ -34,7 +34,7 @@ describe("<MUIDataTableHead />", function() {
         toggleSort={toggleSort}
       />,
     );
-    const actualResult = mountWrapper.find(MUIDataTableHeadCell);
+    const actualResult = mountWrapper.find(TableHeadCell);
     assert.strictEqual(actualResult.length, 4);
   });
 
@@ -44,7 +44,7 @@ describe("<MUIDataTableHead />", function() {
 
     const newColumns = columns.map(column => ({ ...column, display: false }));
     const mountWrapper = mount(
-      <MUIDataTableHead
+      <TableHead
         columns={newColumns}
         options={options}
         setCellRef={() => {}}
@@ -52,7 +52,7 @@ describe("<MUIDataTableHead />", function() {
         toggleSort={toggleSort}
       />,
     );
-    const actualResult = mountWrapper.find(MUIDataTableHeadCell);
+    const actualResult = mountWrapper.find(TableHeadCell);
     assert.strictEqual(actualResult.length, 0);
   });
 
@@ -61,7 +61,7 @@ describe("<MUIDataTableHead />", function() {
     const toggleSort = spy();
 
     const shallowWrapper = shallow(
-      <MUIDataTableHead
+      <TableHead
         columns={columns}
         options={options}
         setCellRef={() => {}}
@@ -82,7 +82,7 @@ describe("<MUIDataTableHead />", function() {
     const rowSelectUpdate = spy();
 
     const shallowWrapper = shallow(
-      <MUIDataTableHead
+      <TableHead
         columns={columns}
         options={options}
         setCellRef={() => {}}

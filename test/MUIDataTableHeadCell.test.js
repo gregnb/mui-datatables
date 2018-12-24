@@ -3,11 +3,11 @@ import { spy, stub } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import textLabels from "../src/textLabels";
-import MUIDataTableHeadCell from "../src/MUIDataTableHeadCell";
+import TableHeadCell from "../src/components/TableHeadCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import HelpIcon from "@material-ui/icons/Help";
 
-describe("<MUIDataTableHeadCell />", function() {
+describe("<TableHeadCell />", function() {
   let classes;
 
   before(() => {
@@ -21,14 +21,14 @@ describe("<MUIDataTableHeadCell />", function() {
     const toggleSort = () => {};
 
     const shallowWrapper = shallow(
-      <MUIDataTableHeadCell
+      <TableHeadCell
         options={options}
         sortDirection={"asc"}
         sort={true}
         toggleSort={toggleSort}
         classes={classes}>
         some content
-      </MUIDataTableHeadCell>,
+      </TableHeadCell>,
     ).dive();
 
     const actualResult = shallowWrapper.find(TableSortLabel);
@@ -40,14 +40,14 @@ describe("<MUIDataTableHeadCell />", function() {
     const toggleSort = () => {};
 
     const shallowWrapper = shallow(
-      <MUIDataTableHeadCell
+      <TableHeadCell
         options={options}
         sortDirection={"asc"}
         sort={true}
         toggleSort={toggleSort}
         classes={classes}>
         some content
-      </MUIDataTableHeadCell>,
+      </TableHeadCell>,
     );
 
     const actualResult = shallowWrapper.find(TableSortLabel);
@@ -58,12 +58,12 @@ describe("<MUIDataTableHeadCell />", function() {
     const options = { sort: true, textLabels };
 
     const shallowWrapper = shallow(
-      <MUIDataTableHeadCell
+      <TableHeadCell
         options={options}
         hint={"hint text"}
         classes={classes}>
         some content
-      </MUIDataTableHeadCell>,
+      </TableHeadCell>,
     ).dive();
 
     const actualResult = shallowWrapper.find(HelpIcon);
@@ -74,11 +74,11 @@ describe("<MUIDataTableHeadCell />", function() {
     const options = { sort: true, textLabels };
 
     const shallowWrapper = shallow(
-      <MUIDataTableHeadCell
+      <TableHeadCell
         options={options}
         classes={classes}>
         some content
-      </MUIDataTableHeadCell>,
+      </TableHeadCell>,
     ).dive();
 
     const actualResult = shallowWrapper.find(HelpIcon);
@@ -90,9 +90,9 @@ describe("<MUIDataTableHeadCell />", function() {
     const toggleSort = spy();
 
     const shallowWrapper = shallow(
-      <MUIDataTableHeadCell options={options} index={0} sortDirection={"asc"} toggleSort={toggleSort} classes={classes}>
+      <TableHeadCell options={options} index={0} sortDirection={"asc"} toggleSort={toggleSort} classes={classes}>
         some content
-      </MUIDataTableHeadCell>,
+      </TableHeadCell>,
     ).dive();
 
     const instance = shallowWrapper.instance();
