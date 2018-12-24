@@ -161,17 +161,6 @@ class MUIDataTable extends React.Component {
     this.setTableData(props, TABLE_LOAD.INITIAL);
   }
 
-  static fallbackComparator = (a, b) => a.localeCompare(b);
-
-  static getCollatzComparator = () => {
-    if (!!Intl) {
-      const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
-      return collator.compare;
-    }
-
-    return MUIDataTable.fallbackComparator;
-  };
-
   /*
    * React currently does not support deep merge for defaultProps. Objects are overwritten
    */
