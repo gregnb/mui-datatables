@@ -89,17 +89,18 @@ class MUIDataTableBody extends React.Component {
     const { classes, columns, options } = this.props;
     const tableRows = this.buildRows();
 
-    return (
-      <TableBody>
-        {tableRows ? (
-          tableRows.map(({ data: row, dataIndex }, rowIndex) => (
+    if (tableRows) {
+      return (
+        <TableBody>
+          {tableRows.map(({ data: row, dataIndex }, rowIndex) => (
             <MUIDataTableBodyRow
+              {...(options.setRowProps ? options.setRowProps(row, dataIndex) : {})}
               options={options}
               rowSelected={options.selectableRows ? this.isRowSelected(dataIndex) : false}
               onClick={options.onRowClick ? options.onRowClick.bind(null, row, { rowIndex, dataIndex }) : null}
               id={"MUIDataTableBodyRow-" + dataIndex}
               key={rowIndex}>
-              {options.selectableRows ? (
+              {options.selectableRows && (
                 <MUIDataTableSelectCell
                   onChange={this.handleRowSelect.bind(null, {
                     index: this.getRowIndex(rowIndex),
@@ -108,27 +109,33 @@ class MUIDataTableBody extends React.Component {
                   fixedHeader={options.fixedHeader}
                   checked={this.isRowSelected(dataIndex)}
                 />
-              ) : (
-                false
               )}
-              {row.map((column, index) =>
-                columns[index].display === "true" ? (
-                  <MUIDataTableBodyCell
-                    dataIndex={dataIndex}
-                    rowIndex={rowIndex}
-                    colIndex={index}
-                    columnHeader={columns[index].name}
-                    options={options}
-                    key={index}>
-                    {column}
-                  </MUIDataTableBodyCell>
-                ) : (
-                  false
-                ),
+              {row.map(
+                (column, columnIndex) =>
+                  columns[columnIndex].display === "true" && (
+                    <MUIDataTableBodyCell
+                      {...(columns[columnIndex].setCellProps
+                        ? columns[columnIndex].setCellProps(column, dataIndex, columnIndex)
+                        : {})}
+                      dataIndex={dataIndex}
+                      rowIndex={rowIndex}
+                      colIndex={columnIndex}
+                      columnHeader={columns[columnIndex].name}
+                      options={options}
+                      key={columnIndex}>
+                      {column}
+                    </MUIDataTableBodyCell>
+                  ),
               )}
             </MUIDataTableBodyRow>
-          ))
-        ) : (
+          ))}
+        </TableBody>
+      );
+    }
+
+    return (
+      <TableBody>
+        {
           <MUIDataTableBodyRow options={options}>
             <MUIDataTableBodyCell
               colSpan={options.selectableRows ? columns.length + 1 : columns.length}
@@ -140,7 +147,7 @@ class MUIDataTableBody extends React.Component {
               </Typography>
             </MUIDataTableBodyCell>
           </MUIDataTableBodyRow>
-        )}
+        }
       </TableBody>
     );
   }

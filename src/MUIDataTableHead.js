@@ -46,6 +46,7 @@ class MUIDataTableHead extends React.Component {
               onChange={this.handleRowSelect.bind(null)}
               indeterminate={isDeterminate}
               checked={isChecked}
+              isHeaderCell={true}
               fixedHeader={options.fixedHeader}
             />
           )}
@@ -63,6 +64,7 @@ class MUIDataTableHead extends React.Component {
                   sort={column.sort}
                   sortDirection={column.sortDirection}
                   toggleSort={this.handleToggleColumn}
+                  hint={column.hint}
                   options={options}>
                   {column.name}
                 </MUIDataTableHeadCell>

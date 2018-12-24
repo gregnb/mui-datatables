@@ -1,7 +1,7 @@
 import React from "react";
-import { spy, stub } from "sinon";
+import { spy } from "sinon";
 import { mount, shallow } from "enzyme";
-import { assert, expect, should } from "chai";
+import { assert, expect } from "chai";
 import MUIDataTable from "../src/MUIDataTable";
 import MUIDataTableFilterList from "../src/MUIDataTableFilterList";
 import MUIDataTablePagination from "../src/MUIDataTablePagination";
@@ -502,5 +502,38 @@ describe("<MUIDataTable />", function() {
 
     assert.deepEqual(state.selectedRows.data, expectedResult);
     assert.strictEqual(options.onTableChange.callCount, 1);
+  });
+
+  describe("fallbackComparator", () => {
+    it("correctly compares two equal strings", () => {
+      expect(MUIDataTable.fallbackComparator("testString", "testString")).to.equal(0);
+    });
+
+    it("correctly compares two different strings", () => {
+      expect(MUIDataTable.fallbackComparator("testStringA", "testStringB")).to.equal(-1);
+    });
+  });
+
+  describe("getCollatzComparator", () => {
+    describe("when Intl is available", () => {
+      it("returns a collator object", () => {
+        const comparator = MUIDataTable.getCollatzComparator();
+
+        expect(comparator).not.to.equal(MUIDataTable.fallbackComparator);
+      });
+    });
+
+    describe("when Intl is not available", () => {
+      it("returns the fallback comparator", () => {
+        const _intl = global.Intl;
+        global.Intl = undefined;
+
+        const comparator = MUIDataTable.getCollatzComparator();
+
+        global.Intl = _intl;
+
+        expect(comparator).to.equal(MUIDataTable.fallbackComparator);
+      });
+    });
   });
 });

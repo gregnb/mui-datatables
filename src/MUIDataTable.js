@@ -21,7 +21,9 @@ const defaultTableStyles = {
     outline: "none",
   },
   responsiveScroll: {
-    overflowX: "auto",
+    overflow: "auto",
+    height: "100%",
+    maxHeight: "499px",
   },
   caption: {
     position: "absolute",
@@ -134,6 +136,7 @@ class MUIDataTable extends React.Component {
   constructor() {
     super();
     this.tableRef = false;
+    this.tableContent = React.createRef();
     this.headCellRefs = {};
     this.setHeadResizeable = () => {};
   }
@@ -157,6 +160,17 @@ class MUIDataTable extends React.Component {
     this.setTableOptions(props);
     this.setTableData(props, TABLE_LOAD.INITIAL);
   }
+
+  static fallbackComparator = (a, b) => a.localeCompare(b);
+
+  static getCollatzComparator = () => {
+    if (!!Intl) {
+      const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
+      return collator.compare;
+    }
+
+    return MUIDataTable.fallbackComparator;
+  };
 
   /*
    * React currently does not support deep merge for defaultProps. Objects are overwritten
@@ -280,6 +294,8 @@ class MUIDataTable extends React.Component {
 
     let tableData = [];
     let { columns, filterData, filterList } = this.buildColumns(props.columns);
+    let sortIndex = null;
+    let sortDirection = null;
 
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
@@ -307,8 +323,13 @@ class MUIDataTable extends React.Component {
       }
 
       if (this.options.sortFilterList) {
-        const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
-        filterData[colIndex].sort(collator.compare);
+        const comparator = MUIDataTable.getCollatzComparator();
+        filterData[colIndex].sort(comparator);
+      }
+
+      if (column.sortDirection !== null) {
+        sortIndex = colIndex;
+        sortDirection = column.sortDirection === "asc" ? "desc" : "asc";
       }
     });
 
@@ -330,6 +351,11 @@ class MUIDataTable extends React.Component {
           selectedRowsData.lookup[row] = true;
         });
       }
+    }
+
+    if (sortIndex !== null) {
+      const sortedData = this.sortTable(tableData, sortIndex, sortDirection);
+      tableData = sortedData.data;
     }
 
     /* set source data and display Data set source set */
@@ -427,8 +453,8 @@ class MUIDataTable extends React.Component {
       changedData[row].data[index] = value;
 
       if (this.options.sortFilterList) {
-        const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
-        filterData[index].sort(collator.compare);
+        const comparator = MUIDataTable.getCollatzComparator();
+        filterData[index].sort(comparator);
       }
 
       return {
@@ -823,6 +849,12 @@ class MUIDataTable extends React.Component {
     };
   }
 
+  // must be arrow function on local field to refer to the correct instance when passed around
+  // assigning it as arrow function in the JSX would cause hard to track re-render errors
+  getTableContentRef = () => {
+    return this.tableContent.current;
+  };
+
   render() {
     const { classes, title } = this.props;
     const {
@@ -842,7 +874,7 @@ class MUIDataTable extends React.Component {
     const rowCount = this.options.count || displayData.length;
 
     return (
-      <Paper elevation={4} ref={el => (this.tableContent = el)} className={classes.paper}>
+      <Paper elevation={4} ref={this.tableContent} className={classes.paper}>
         {selectedRows.data.length ? (
           <MUIDataTableToolbarSelect
             options={this.options}
@@ -862,7 +894,7 @@ class MUIDataTable extends React.Component {
             options={this.options}
             resetFilters={this.resetFilters}
             searchTextUpdate={this.searchTextUpdate}
-            tableRef={() => this.tableContent}
+            tableRef={this.getTableContentRef}
             title={title}
             toggleViewColumn={this.toggleViewColumn}
             setTableAction={this.setTableAction}

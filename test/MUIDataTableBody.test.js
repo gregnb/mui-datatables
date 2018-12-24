@@ -12,7 +12,7 @@ describe("<MUIDataTableBody />", function() {
   let columns;
 
   before(() => {
-    columns = ["First Name", "Company", "City", "State"];
+    columns = [{ name: "First Name" }, { name: "Company" }, { name: "City" }, { name: "State" }];
     data = [
       ["Joe James", "Test Corp", "Yonkers", "NY"],
       ["John Walsh", "Test Corp", "Hartford", "CT"],
@@ -208,5 +208,34 @@ describe("<MUIDataTableBody />", function() {
 
     assert.strictEqual(options.onRowClick.callCount, 1);
     assert(options.onRowClick.calledWith(data[2], { rowIndex: 2, dataIndex: 2 }));
+  });
+
+  it("should add custom props to rows if 'setRowProps' provided", () => {
+    const options = { setRowProps: stub().returns({ className: "testClass" }) };
+    const selectRowUpdate = stub();
+
+    const t = mount(
+      <MUIDataTableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={[]}
+        selectRowUpdate={selectRowUpdate}
+        options={options}
+        searchText={""}
+        filterList={[]}
+      />,
+    );
+
+    const props = t
+      .find("#MUIDataTableBodyRow-1")
+      .first()
+      .props();
+
+    assert.strictEqual(props.className, "testClass");
+    assert.isAtLeast(options.setRowProps.callCount, 1);
+    assert(options.setRowProps.calledWith(data[1]));
   });
 });

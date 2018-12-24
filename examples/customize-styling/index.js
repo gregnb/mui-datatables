@@ -1,7 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
-import { createMuiTheme, MuiThemeProvider, withStyles } from '@material-ui/core/styles';
+import {createMuiTheme, MuiThemeProvider, withStyles} from '@material-ui/core/styles';
+import classnames from 'classnames';
+
+const customStyles = {
+  BusinessAnalystRow: {
+    '& td': {backgroundColor: "#F00"}
+  },
+  NameCell: {
+    fontWeight: 900
+  },
+};
 
 class Example extends React.Component {
 
@@ -21,17 +31,24 @@ class Example extends React.Component {
         }
       }
     }
-  })
+  });
 
   render() {
-
     const columns = [
       {
         name: "Name",
         options: {
           filter: true,
+          setCellProps: (value) => {
+            return {
+              className: classnames(
+                {
+                  [this.props.classes.NameCell]: value === "Mel Brooks"
+                })
+            };
+          }
         }
-      },      
+      },
       {
         name: "Title",
         options: {
@@ -56,12 +73,12 @@ class Example extends React.Component {
           filter: true,
           sort: false
         }
-      }      
+      }
     ];
 
     const data = [
       ["Gabby George", "Business Analyst", "Minneapolis", 30, 100000],
-      ["Aiden Lloyd", "Business Consultant", "Dallas",  55, 200000],
+      ["Aiden Lloyd", "Business Consultant", "Dallas", 55, 200000],
       ["Jaden Collins", "Attorney", "Santa Ana", 27, 500000],
       ["Franky Rees", "Business Analyst", "St. Petersburg", 22, 50000],
       ["Aaren Rose", "Business Consultant", "Toledo", 28, 75000],
@@ -96,15 +113,27 @@ class Example extends React.Component {
       filter: true,
       filterType: 'dropdown',
       responsive: 'stacked',
+      setRowProps: (row) => {
+        return {
+          className: classnames(
+            {
+              [this.props.classes.BusinessAnalystRow]: row[1] === "Business Analyst"
+            }),
+          style: {border: '3px solid blue',}
+        };
+      }
+
     };
 
     return (
       <MuiThemeProvider theme={this.getMuiTheme()}>
-        <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+        <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options}/>
       </MuiThemeProvider>
     );
 
   }
 }
 
-ReactDOM.render(<Example />, document.getElementById("app-root"));
+const ExampleWithStyles = withStyles(customStyles, {name: "Example"})(Example);
+
+ReactDOM.render(<ExampleWithStyles/>, document.getElementById("app-root"));
