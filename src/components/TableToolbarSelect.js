@@ -33,7 +33,7 @@ const defaultToolbarSelectStyles = {
   },
 };
 
-class MUIDataTableToolbarSelect extends React.Component {
+class TableToolbarSelect extends React.Component {
   static propTypes = {
     /** Options used to describe table */
     options: PropTypes.object.isRequired,
@@ -70,4 +70,4 @@ class MUIDataTableToolbarSelect extends React.Component {
   }
 }
 
-export default withStyles(defaultToolbarSelectStyles, { name: "MUIDataTableToolbarSelect" })(MUIDataTableToolbarSelect);
+export default withStyles(defaultToolbarSelectStyles, { name: "MUIDataTableToolbarSelect" })(TableToolbarSelect);

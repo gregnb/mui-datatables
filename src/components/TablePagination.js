@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import TableRow from "@material-ui/core/TableRow";
-import TableFooter from "@material-ui/core/TableFooter";
-import TablePagination from "@material-ui/core/TablePagination";
+import MuiTableRow from "@material-ui/core/TableRow";
+import MuiTableFooter from "@material-ui/core/TableFooter";
+import MuiTablePagination from "@material-ui/core/TablePagination";
 import { withStyles } from "@material-ui/core/styles";
 
 const defaultPaginationStyles = {
@@ -53,9 +53,9 @@ class TablePagination extends React.Component {
     const textLabels = options.textLabels.pagination;
 
     return (
-      <TableFooter>
-        <TableRow>
-          <TablePagination
+      <MuiTableFooter>
+        <MuiTableRow>
+          <MuiTablePagination
             className={classes.root}
             classes={{
               caption: classes.caption,
@@ -77,8 +77,8 @@ class TablePagination extends React.Component {
             onChangePage={this.handlePageChange}
             onChangeRowsPerPage={this.handleRowChange}
           />
-        </TableRow>
-      </TableFooter>
+        </MuiTableRow>
+      </MuiTableFooter>
     );
   }
 }

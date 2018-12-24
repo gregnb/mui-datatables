@@ -3,7 +3,7 @@ import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
-import { MUIPopover, MUIPopoverTarget, MUIPopoverContent } from "./MUIPopover";
+import Popover from "./Popover";
 import TableFilter from "./TableFilter";
 import TableViewCol from "./TableViewCol";
 import TableSearch from "./TableSearch";
@@ -13,7 +13,8 @@ import PrintIcon from "@material-ui/icons/Print";
 import ViewColumnIcon from "@material-ui/icons/ViewColumn";
 import FilterIcon from "@material-ui/icons/FilterList";
 import ReactToPrint from "react-to-print";
-import styled from "./styled";
+import styled from "../styled";
+import { createCSVDownload } from "../utils";
 
 export const defaultToolbarStyles = (theme, props) => ({
   root: {},
@@ -39,11 +40,11 @@ export const defaultToolbarStyles = (theme, props) => ({
     marginTop: "10px",
     marginRight: "8px",
   },
-  ...(props.options.responsive ? { ...responsiveToolbarStyles } : {}),
+  ...(props.options.responsive ? { ...responsiveToolbarStyles(theme) } : {}),
 });
 
-export const responsiveToolbarStyles = {
-  "@media screen and (max-width: 960px)": {
+export const responsiveToolbarStyles = theme => ({
+  [theme.breakpoints.down("sm")]: {
     titleRoot: {},
     titleText: {
       fontSize: "16px",
@@ -60,7 +61,7 @@ export const responsiveToolbarStyles = {
       textAlign: "right",
     },
   },
-  "@media screen and (max-width: 600px)": {
+  [theme.breakpoints.down("xs")]: {
     root: {
       display: "block",
     },
@@ -75,7 +76,7 @@ export const responsiveToolbarStyles = {
     },
   },
   "@media screen and (max-width: 480px)": {},
-};
+});
 
 class TableToolbar extends React.Component {
   state = {
@@ -84,61 +85,26 @@ class TableToolbar extends React.Component {
   };
 
   handleCSVDownload = () => {
-    const { displayData, columns, options } = this.props;
-
-    const CSVHead =
-      columns
-        .reduce(
-          (soFar, column) =>
-            column.download ? soFar + '"' + column.name + '"' + options.downloadOptions.separator : soFar,
-          "",
-        )
-        .slice(0, -1) + "\r\n";
-
-    const CSVBody = displayData
-      .reduce(
-        (soFar, row) =>
-          soFar +
-          '"' +
-          row.data
-            .filter((field, index) => columns[index].download)
-            .join('"' + options.downloadOptions.separator + '"') +
-          '"\r\n',
-        [],
-      )
-      .trim();
-
-    /* taken from react-csv */
-    const csv = `${CSVHead}${CSVBody}`;
-    const blob = new Blob([csv], { type: "text/csv" });
-
-    if (navigator && navigator.msSaveOrOpenBlob) {
-      navigator.msSaveOrOpenBlob(blob, options.downloadOptions.filename);
-    } else {
-      const dataURI = `data:text/csv;charset=utf-8,${csv}`;
-
-      const URL = window.URL || window.webkitURL;
-      const downloadURI = typeof URL.createObjectURL === "undefined" ? dataURI : URL.createObjectURL(blob);
-
-      let link = document.createElement("a");
-      link.setAttribute("href", downloadURI);
-      link.setAttribute("download", options.downloadOptions.filename);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+    const { data, columns, options } = this.props;
+    createCSVDownload(columns, data, options);
   };
 
   setActiveIcon = iconName => {
     this.setState(() => ({
       iconActive: iconName,
-      showSearch: iconName === "search" ? true : false,
+      showSearch: iconName === "search" ? this.showSearch() : false,
     }));
   };
 
   getActiveIcon = (styles, iconName) => {
     return this.state.iconActive !== iconName ? styles.icon : styles.iconActive;
   };
+
+  showSearch = () => {
+    !!this.props.options.onSearchOpen && this.props.options.onSearchOpen();
+    this.props.setTableAction("onSearchOpen");
+    return true;
+  }
 
   hideSearch = () => {
     const { onSearchClose } = this.props.options;
@@ -187,7 +153,7 @@ class TableToolbar extends React.Component {
           )}
         </div>
         <div className={classes.actions}>
-          {options.search ? (
+          {options.search && (
             <Tooltip title={search}>
               <IconButton
                 aria-label={search}
@@ -197,19 +163,15 @@ class TableToolbar extends React.Component {
                 <SearchIcon />
               </IconButton>
             </Tooltip>
-          ) : (
-            false
           )}
-          {options.download ? (
+          {options.download && (
             <Tooltip title={downloadCsv}>
               <IconButton aria-label={downloadCsv} classes={{ root: classes.icon }} onClick={this.handleCSVDownload}>
                 <DownloadIcon />
               </IconButton>
             </Tooltip>
-          ) : (
-            false
           )}
-          {options.print ? (
+          {options.print && (
             <Tooltip title={print}>
               <span>
                 <ReactToPrint
@@ -222,12 +184,12 @@ class TableToolbar extends React.Component {
                 />
               </span>
             </Tooltip>
-          ) : (
-            false
           )}
-          {options.viewColumns ? (
-            <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
-              <MUIPopoverTarget>
+          {options.viewColumns && (
+            <Popover 
+              refExit={this.setActiveIcon.bind(null)} 
+              container={tableRef}
+              trigger={(
                 <IconButton
                   aria-label={viewColumns}
                   classes={{ root: this.getActiveIcon(classes, "viewcolumns") }}
@@ -235,23 +197,23 @@ class TableToolbar extends React.Component {
                   <Tooltip title={viewColumns}>
                     <ViewColumnIcon />
                   </Tooltip>
-                </IconButton>
-              </MUIPopoverTarget>
-              <MUIPopoverContent>
+                </IconButton>              
+              )}
+              content={(
                 <TableViewCol
                   data={data}
                   columns={columns}
                   options={options}
                   onColumnUpdate={toggleViewColumn}
-                />
-              </MUIPopoverContent>
-            </MUIPopover>
-          ) : (
-            false
+                />              
+              )}
+            />
           )}
-          {options.filter ? (
-            <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
-              <MUIPopoverTarget>
+          {options.filter && (
+            <Popover 
+              refExit={this.setActiveIcon.bind(null)} 
+              container={tableRef}
+              trigger={(
                 <IconButton
                   aria-label={filterTable}
                   classes={{ root: this.getActiveIcon(classes, "filter") }}
@@ -259,9 +221,9 @@ class TableToolbar extends React.Component {
                   <Tooltip title={filterTable}>
                     <FilterIcon />
                   </Tooltip>
-                </IconButton>
-              </MUIPopoverTarget>
-              <MUIPopoverContent>
+                </IconButton>             
+              )}
+              content={(
                 <TableFilter
                   columns={columns}
                   options={options}
@@ -269,13 +231,11 @@ class TableToolbar extends React.Component {
                   filterData={filterData}
                   onFilterUpdate={filterUpdate}
                   onFilterReset={resetFilters}
-                />
-              </MUIPopoverContent>
-            </MUIPopover>
-          ) : (
-            false
+                />            
+              )}
+            />
           )}
-          {options.customToolbar ? options.customToolbar() : false}
+          {options.customToolbar && options.customToolbar()}
         </div>
       </Toolbar>
     );

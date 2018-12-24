@@ -5,9 +5,9 @@ import Checkbox from "@material-ui/core/Checkbox";
 import TableCell from "@material-ui/core/TableCell";
 import { withStyles } from "@material-ui/core/styles";
 
-const defaultSelectCellStyles = {
+const defaultSelectCellStyles = theme => ({
   root: {
-    "@media screen and (max-width: 960px)": {
+    [theme.breakpoints.down("sm")]: {
       display: "none",
     },
   },
@@ -18,6 +18,9 @@ const defaultSelectCellStyles = {
     zIndex: 100,
     backgroundColor: "#FFF",
   },
+  headerCell: {
+    zIndex: 110
+  },
   checkboxRoot: {
     "&$checked": {
       color: "#027cb5",
@@ -25,7 +28,7 @@ const defaultSelectCellStyles = {
   },
   checked: {},
   disabled: {},
-};
+});
 
 class TableSelectCell extends React.Component {
   static propTypes = {
@@ -39,12 +42,17 @@ class TableSelectCell extends React.Component {
     classes: PropTypes.object,
   };
 
+  static defaultProps = {
+    isHeaderCell: false
+  };
+
   render() {
-    const { classes, fixedHeader, ...otherProps } = this.props;
+    const { classes, fixedHeader, isHeaderCell, ...otherProps } = this.props;
 
     const cellClass = classNames({
       [classes.root]: true,
       [classes.fixedHeader]: fixedHeader,
+      [classes.headerCell]: isHeaderCell,
     });
 
     return (

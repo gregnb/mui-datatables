@@ -4,7 +4,8 @@ import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import textLabels from "../src/textLabels";
 import MUIDataTableHeadCell from "../src/MUIDataTableHeadCell";
-import Tooltip from "@material-ui/core/Tooltip";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
+import HelpIcon from "@material-ui/icons/Help";
 
 describe("<MUIDataTableHeadCell />", function() {
   let classes;
@@ -30,7 +31,7 @@ describe("<MUIDataTableHeadCell />", function() {
       </MUIDataTableHeadCell>,
     ).dive();
 
-    const actualResult = shallowWrapper.find(Tooltip);
+    const actualResult = shallowWrapper.find(TableSortLabel);
     assert.strictEqual(actualResult.length, 1);
   });
 
@@ -49,7 +50,38 @@ describe("<MUIDataTableHeadCell />", function() {
       </MUIDataTableHeadCell>,
     );
 
-    const actualResult = shallowWrapper.find(Tooltip);
+    const actualResult = shallowWrapper.find(TableSortLabel);
+    assert.strictEqual(actualResult.length, 0);
+  });
+
+  it("should render a table help icon when hint provided", () => {
+    const options = { sort: true, textLabels };
+
+    const shallowWrapper = shallow(
+      <MUIDataTableHeadCell
+        options={options}
+        hint={"hint text"}
+        classes={classes}>
+        some content
+      </MUIDataTableHeadCell>,
+    ).dive();
+
+    const actualResult = shallowWrapper.find(HelpIcon);
+    assert.strictEqual(actualResult.length, 1);
+  });
+
+  it("should render a table head cell without custom tooltip when hint provided", () => {
+    const options = { sort: true, textLabels };
+
+    const shallowWrapper = shallow(
+      <MUIDataTableHeadCell
+        options={options}
+        classes={classes}>
+        some content
+      </MUIDataTableHeadCell>,
+    ).dive();
+
+    const actualResult = shallowWrapper.find(HelpIcon);
     assert.strictEqual(actualResult.length, 0);
   });
 

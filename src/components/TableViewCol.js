@@ -41,7 +41,7 @@ export const defaultViewColStyles = {
   },
 };
 
-class MUIDataTableViewCol extends React.Component {
+class TableViewCol extends React.Component {
   static propTypes = {
     /** Columns used to describe table */
     columns: PropTypes.array.isRequired,
@@ -99,4 +99,4 @@ class MUIDataTableViewCol extends React.Component {
   }
 }
 
-export default withStyles(defaultViewColStyles, { name: "MUIDataTableViewCol" })(MUIDataTableViewCol);
+export default withStyles(defaultViewColStyles, { name: "MUIDataTableViewCol" })(TableViewCol);

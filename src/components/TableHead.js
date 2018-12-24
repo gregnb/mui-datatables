@@ -7,14 +7,14 @@ import TableHeadCell from "./TableHeadCell";
 import TableSelectCell from "./TableSelectCell";
 import { withStyles } from "@material-ui/core/styles";
 
-const defaultHeadStyles = {
+const defaultHeadStyles = theme => ({
   main: {},
   responsiveStacked: {
-    "@media screen and (max-width: 960px)": {
+    [theme.breakpoints.down("sm")]: {
       display: "none",
     },
   },
-};
+});
 
 class TableHead extends React.Component {
   componentDidMount() {
@@ -47,6 +47,7 @@ class TableHead extends React.Component {
               indeterminate={isDeterminate}
               checked={isChecked}
               fixedHeader={options.fixedHeader}
+              isHeaderCell={true}
             />
           )}
           {columns.map(
@@ -63,6 +64,7 @@ class TableHead extends React.Component {
                   sort={column.sort}
                   sortDirection={column.sortDirection}
                   toggleSort={this.handleToggleColumn}
+                  hint={column.hint}
                   options={options}>
                   {column.name}
                 </TableHeadCell>

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
-import TableBody from "@material-ui/core/TableBody";
+import MuiTableBody from "@material-ui/core/TableBody";
 import TableBodyCell from "./TableBodyCell";
 import TableBodyRow from "./TableBodyRow";
 import TableSelectCell from "./TableSelectCell";
@@ -90,7 +90,7 @@ class TableBody extends React.Component {
     const tableRows = this.buildRows();
 
     return (
-      <TableBody>
+      <MuiTableBody>
         {tableRows ? (
           tableRows.map(({ data: row, dataIndex }, rowIndex) => (
             <TableBodyRow
@@ -141,7 +141,7 @@ class TableBody extends React.Component {
             </TableBodyCell>
           </TableBodyRow>
         )}
-      </TableBody>
+      </MuiTableBody>
     );
   }
 }
