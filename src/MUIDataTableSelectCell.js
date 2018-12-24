@@ -19,7 +19,7 @@ const defaultSelectCellStyles = theme => ({
     backgroundColor: "#FFF",
   },
   headerCell: {
-    zIndex: 110
+    zIndex: 110,
   },
   checkboxRoot: {
     "&$checked": {
@@ -43,7 +43,7 @@ class MUIDataTableSelectCell extends React.Component {
   };
 
   static defaultProps = {
-    isHeaderCell: false
+    isHeaderCell: false,
   };
 
   render() {

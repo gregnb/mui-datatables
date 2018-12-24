@@ -19,8 +19,8 @@ const defaultTableStyles = {
   root: {},
   responsiveScroll: {
     overflow: "auto",
-    height: '100%',
-    maxHeight: '499px'
+    height: "100%",
+    maxHeight: "499px",
   },
   caption: {
     position: "absolute",
