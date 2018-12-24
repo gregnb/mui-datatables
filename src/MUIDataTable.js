@@ -161,6 +161,17 @@ class MUIDataTable extends React.Component {
     this.setTableData(props, TABLE_LOAD.INITIAL);
   }
 
+  static fallbackComparator = (a, b) => a.localeCompare(b);
+
+  static getCollatzComparator = () => {
+    if (!!Intl) {
+      const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
+      return collator.compare;
+    }
+
+    return MUIDataTable.fallbackComparator;
+  };
+
   /*
    * React currently does not support deep merge for defaultProps. Objects are overwritten
    */
@@ -825,6 +836,12 @@ class MUIDataTable extends React.Component {
     };
   }
 
+  // must be arrow function on local field to refer to the correct instance when passed around
+  // assigning it as arrow function in the JSX would cause hard to track re-render errors
+  getTableContentRef = () => {
+    return this.tableContent.current;
+  };
+
   render() {
     const { classes, title } = this.props;
     const {
@@ -844,12 +861,14 @@ class MUIDataTable extends React.Component {
     const rowCount = this.options.count || displayData.length;
 
     return (
-      <Paper elevation={4} ref={el => (this.tableContent = el)} className={classes.paper}>
+      <Paper elevation={4} ref={this.tableContent} className={classes.paper}>
         {selectedRows.data.length ? (
           <TableToolbarSelect
             options={this.options}
             selectedRows={selectedRows}
             onRowsDelete={this.selectRowDelete}
+            displayData={displayData}
+            selectRowUpdate={this.selectRowUpdate}
           />
         ) : (
           <TableToolbar

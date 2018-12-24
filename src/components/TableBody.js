@@ -108,8 +108,6 @@ class TableBody extends React.Component {
                   fixedHeader={options.fixedHeader}
                   checked={this.isRowSelected(dataIndex)}
                 />
-              ) : (
-                false
               )}
               {row.map((column, index) =>
                 columns[index].display === "true" ? (
@@ -135,7 +133,7 @@ class TableBody extends React.Component {
               options={options}
               colIndex={0}
               rowIndex={0}>
-              <Typography variant="subheading" className={classes.emptyTitle}>
+              <Typography variant="subtitle1" className={classes.emptyTitle}>
                 {options.textLabels.body.noMatch}
               </Typography>
             </TableBodyCell>

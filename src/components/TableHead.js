@@ -46,6 +46,7 @@ class TableHead extends React.Component {
               onChange={this.handleRowSelect.bind(null)}
               indeterminate={isDeterminate}
               checked={isChecked}
+              isHeaderCell={true}
               fixedHeader={options.fixedHeader}
               isHeaderCell={true}
             />
