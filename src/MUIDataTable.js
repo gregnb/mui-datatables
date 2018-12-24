@@ -18,7 +18,9 @@ import { withStyles } from "@material-ui/core/styles";
 const defaultTableStyles = {
   root: {},
   responsiveScroll: {
-    overflowX: "auto",
+    overflow: "auto",
+    height: '100%',
+    maxHeight: '499px'
   },
   caption: {
     position: "absolute",
