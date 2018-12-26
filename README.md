@@ -110,6 +110,68 @@ const options = {
 
 ```
 
+Or customize columns with JSON data:
+
+```js
+
+import MUIDataTable from "mui-datatables";
+
+const columns = [
+ {
+  name: "Name",
+  field: "name",
+  options: {
+   filter: true,
+   sort: true,
+  }
+ },
+ {
+  name: "Company",
+  field: "company",
+  options: {
+   filter: true,
+   sort: false,
+  }
+ },
+ {
+  name: "City",
+  field: "city",
+  options: {
+   filter: true,
+   sort: false,
+  }
+ },
+ {
+  name: "State",
+  field: "state",
+  options: {
+   filter: true,
+   sort: false,
+  }
+ },
+];
+
+const data = [
+ {name:"Joe James", company:"Test Corp", city:"Yonkers", state:"NY"},
+ {name:"John Walsh", company:"Test Corp", city:"Hartford", state:"CT"},
+ {name:"Bob Herm", company:"Test Corp", city:"Tampa", state:"FL"],
+ {name:"James Houston", company:"Test Corp", city:"Dallas", state:"TX"},
+];
+
+const options = {
+  filterType: 'checkbox',
+  jsonMode: true,
+};
+
+<MUIDataTable
+  title={"Employee List"}
+  data={data}
+  columns={columns}
+  options={options}
+/>
+
+```
+
 ## API
 
 
