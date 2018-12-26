@@ -55,6 +55,7 @@ class MUIDataTable extends React.Component {
         PropTypes.string,
         PropTypes.shape({
           name: PropTypes.string.isRequired,
+          field: PropTypes.string.isRequired,
           options: PropTypes.shape({
             display: PropTypes.string, // enum('true', 'false', 'excluded')
             filter: PropTypes.bool,
@@ -272,11 +273,12 @@ class MUIDataTable extends React.Component {
 
         columnOptions = {
           name: column.name,
+          field: column.field,
           ...columnOptions,
           ...(column.options ? column.options : {}),
         };
       } else {
-        columnOptions = { ...columnOptions, name: column };
+        columnOptions = { ...columnOptions, name: column, field: column };
       }
 
       columnData.push(columnOptions);
