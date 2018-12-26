@@ -100,6 +100,7 @@ class MUIDataTable extends React.Component {
         filename: PropTypes.string,
         separator: PropTypes.string,
       }),
+      jsonMode: PropTypes.bool,
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
@@ -197,6 +198,7 @@ class MUIDataTable extends React.Component {
         filename: "tableDownload.csv",
         separator: ",",
       },
+      jsonMode: false,
     };
 
     this.options = merge(defaultOptions, props.options);
@@ -479,7 +481,14 @@ class MUIDataTable extends React.Component {
     let newRows = [];
 
     for (let index = 0; index < data.length; index++) {
-      const value = data[index].data;
+      let value = data[index].data;
+      if (this.options.jsonMode) {
+        let arrayValue = [];
+        columns.map(column => {
+          arrayValue.push(value[column.field]);
+        });
+        value = arrayValue;
+      }
       const displayRow = this.computeDisplayRow(columns, value, index, filterList, searchText);
 
       if (displayRow) {
