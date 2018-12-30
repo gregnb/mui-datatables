@@ -42,6 +42,7 @@ describe("<TableBody />", function() {
   it("should render a table body with no selectable cells if selectableRows = false", () => {
     const options = { selectableRows: false };
     const selectRowUpdate = () => {};
+    const toggleExpandRow = () => {};
 
     const mountWrapper = mount(
       <TableBody
@@ -52,6 +53,8 @@ describe("<TableBody />", function() {
         rowsPerPage={10}
         selectedRows={[]}
         selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
         options={options}
         searchText={""}
         filterList={[]}
@@ -65,6 +68,7 @@ describe("<TableBody />", function() {
   it("should render a table body with no records if no data provided", () => {
     const options = { selectableRows: false, textLabels };
     const selectRowUpdate = () => {};
+    const toggleExpandRow = () => {};
 
     const mountWrapper = mount(
       <TableBody
@@ -74,6 +78,8 @@ describe("<TableBody />", function() {
         rowsPerPage={10}
         selectedRows={[]}
         selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
         options={options}
         searchText={""}
         filterList={[]}
@@ -87,6 +93,7 @@ describe("<TableBody />", function() {
   it("should render a table body with selectable cells if selectableRows = true", () => {
     const options = { selectableRows: true };
     const selectRowUpdate = () => {};
+    const toggleExpandRow = () => {};
 
     const mountWrapper = mount(
       <TableBody
@@ -97,6 +104,8 @@ describe("<TableBody />", function() {
         rowsPerPage={10}
         selectedRows={[]}
         selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
         options={options}
         searchText={""}
         filterList={[]}
@@ -110,6 +119,7 @@ describe("<TableBody />", function() {
   it("should return the correct rowIndex when calling instance method getRowIndex", () => {
     const options = { sort: true, selectableRows: true };
     const selectRowUpdate = () => {};
+    const toggleExpandRow = () => {};
 
     const shallowWrapper = shallow(
       <TableBody
@@ -120,6 +130,8 @@ describe("<TableBody />", function() {
         rowsPerPage={2}
         selectedRows={[1, 2, 3]}
         selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
         options={options}
         searchText={""}
         filterList={[]}
@@ -135,6 +147,7 @@ describe("<TableBody />", function() {
   it("should return correctly if row exists in selectedRows when calling instance method isRowSelected", () => {
     const options = { sort: true, selectableRows: true };
     const selectRowUpdate = () => {};
+    const toggleExpandRow = () => {};
 
     const shallowWrapper = shallow(
       <TableBody
@@ -145,6 +158,8 @@ describe("<TableBody />", function() {
         rowsPerPage={15}
         selectedRows={[1, 2, 3]}
         selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
         options={options}
         searchText={""}
         filterList={[]}
@@ -160,6 +175,7 @@ describe("<TableBody />", function() {
   it("should trigger selectRowUpdate prop callback when calling method handleRowSelect", () => {
     const options = { sort: true, selectableRows: true };
     const selectRowUpdate = spy();
+    const toggleExpandRow = () => {};
 
     const shallowWrapper = shallow(
       <TableBody
@@ -170,6 +186,8 @@ describe("<TableBody />", function() {
         rowsPerPage={10}
         selectedRows={[]}
         selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
         options={options}
         searchText={""}
         filterList={[]}
@@ -186,6 +204,7 @@ describe("<TableBody />", function() {
   it("should call onRowClick when Row is clicked", () => {
     const options = { selectableRows: true, onRowClick: spy() };
     const selectRowUpdate = stub();
+    const toggleExpandRow = () => {};
 
     const t = mount(
       <TableBody
@@ -196,13 +215,15 @@ describe("<TableBody />", function() {
         rowsPerPage={10}
         selectedRows={[]}
         selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
         options={options}
         searchText={""}
         filterList={[]}
       />,
     );
 
-    t.find("#TableBodyRow-2")
+    t.find("#MUIDataTableBodyRow-2")
       .first()
       .simulate("click");
 
@@ -213,9 +234,10 @@ describe("<TableBody />", function() {
   it("should add custom props to rows if 'setRowProps' provided", () => {
     const options = { setRowProps: stub().returns({ className: "testClass" }) };
     const selectRowUpdate = stub();
+    const toggleExpandRow = () => {};
 
     const t = mount(
-      <MUIDataTableBody
+      <TableBody
         data={displayData}
         count={displayData.length}
         columns={columns}
@@ -223,12 +245,14 @@ describe("<TableBody />", function() {
         rowsPerPage={10}
         selectedRows={[]}
         selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
         options={options}
         searchText={""}
         filterList={[]}
       />,
     );
-
+    
     const props = t
       .find("#MUIDataTableBodyRow-1")
       .first()

@@ -106,6 +106,7 @@ class TableBody extends React.Component {
           tableRows.map(({ data: row, dataIndex }, rowIndex) => (
             <React.Fragment key={rowIndex}>
               <TableBodyRow
+                {...(options.setRowProps ? options.setRowProps(row, dataIndex) : {})}
                 options={options}
                 rowSelected={options.selectableRows ? this.isRowSelected(dataIndex) : false}
                 onClick={options.onRowClick ? options.onRowClick.bind(null, row, { rowIndex, dataIndex }) : null}
@@ -127,15 +128,18 @@ class TableBody extends React.Component {
                     isRowExpanded={this.isRowExpanded(dataIndex)}
                   />
                 )}
-                {row.map((column, index) =>
-                  columns[index].display === "true" && (
+                {row.map((column, columnIndex) =>
+                  columns[columnIndex].display === "true" && (
                     <TableBodyCell
+                      {...(columns[columnIndex].setCellProps
+                        ? columns[columnIndex].setCellProps(column, dataIndex, columnIndex)
+                        : {})}
                       dataIndex={dataIndex}
                       rowIndex={rowIndex}
-                      colIndex={index}
-                      columnHeader={columns[index].name}
+                      colIndex={columnIndex}
+                      columnHeader={columns[columnIndex].name}
                       options={options}
-                      key={index}>
+                      key={columnIndex}>
                       {column}
                     </TableBodyCell>
                   )

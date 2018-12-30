@@ -17,6 +17,7 @@ describe("<TableToolbar />", function() {
   let data;
   let columns;
   let options;
+  let setTableAction = () => {};
 
   before(() => {
     options = {
@@ -53,48 +54,48 @@ describe("<TableToolbar />", function() {
   });
 
   it("should render a toolbar", () => {
-    const mountWrapper = mount(<TableToolbar columns={columns} data={data} options={options} />);
+    const mountWrapper = mount(<TableToolbar columns={columns} data={data} options={options} setTableAction={setTableAction} />);
     const actualResult = mountWrapper.find(IconButton);
     assert.strictEqual(actualResult.length, 5);
   });
 
   it("should render a toolbar with no search icon if option.search = false", () => {
     const newOptions = { ...options, search: false };
-    const mountWrapper = mount(<TableToolbar columns={columns} data={data} options={newOptions} />);
+    const mountWrapper = mount(<TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />);
     const actualResult = mountWrapper.find(SearchIcon);
     assert.strictEqual(actualResult.length, 0);
   });
 
   it("should render a toolbar with no download icon if option.download = false", () => {
     const newOptions = { ...options, download: false };
-    const mountWrapper = mount(<TableToolbar columns={columns} data={data} options={newOptions} />);
+    const mountWrapper = mount(<TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />);
     const actualResult = mountWrapper.find(DownloadIcon);
     assert.strictEqual(actualResult.length, 0);
   });
 
   it("should render a toolbar with no print icon if option.print = false", () => {
     const newOptions = { ...options, print: false };
-    const mountWrapper = mount(<TableToolbar columns={columns} data={data} options={newOptions} />);
+    const mountWrapper = mount(<TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />);
     const actualResult = mountWrapper.find(PrintIcon);
     assert.strictEqual(actualResult.length, 0);
   });
 
   it("should render a toolbar with no view columns icon if option.viewColumns = false", () => {
     const newOptions = { ...options, viewColumns: false };
-    const mountWrapper = mount(<TableToolbar columns={columns} data={data} options={newOptions} />);
+    const mountWrapper = mount(<TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />);
     const actualResult = mountWrapper.find(ViewColumnIcon);
     assert.strictEqual(actualResult.length, 0);
   });
 
   it("should render a toolbar with no filter icon if option.filter = false", () => {
     const newOptions = { ...options, filter: false };
-    const mountWrapper = mount(<TableToolbar columns={columns} data={data} options={newOptions} />);
+    const mountWrapper = mount(<TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />);
     const actualResult = mountWrapper.find(FilterIcon);
     assert.strictEqual(actualResult.length, 0);
   });
 
   it("should render a toolbar with a search clicking search icon", () => {
-    const shallowWrapper = shallow(<TableToolbar columns={columns} data={data} options={options} />)
+    const shallowWrapper = shallow(<TableToolbar columns={columns} data={data} options={options} setTableAction={setTableAction} />)
       .dive()
       .dive()
       .dive();
@@ -110,7 +111,7 @@ describe("<TableToolbar />", function() {
   it("should hide search after clicking cancel icon", () => {
     const searchTextUpdate = () => {};
     const shallowWrapper = shallow(
-      <TableToolbar searchTextUpdate={searchTextUpdate} columns={columns} data={data} options={options} />,
+      <TableToolbar searchTextUpdate={searchTextUpdate} columns={columns} data={data} options={options} setTableAction={setTableAction} />,
     )
       .dive()
       .dive()
@@ -137,7 +138,7 @@ describe("<TableToolbar />", function() {
   });
 
   it("should set icon when calling method setActiveIcon", () => {
-    const shallowWrapper = shallow(<TableToolbar columns={columns} data={data} options={options} />)
+    const shallowWrapper = shallow(<TableToolbar columns={columns} data={data} options={options} setTableAction={setTableAction} />)
       .dive()
       .dive()
       .dive();
@@ -152,7 +153,7 @@ describe("<TableToolbar />", function() {
 
   it("should download CSV when calling method handleCSVDownload", () => {
     const shallowWrapper = shallow(
-      <TableToolbar columns={columns} displayData={data} data={data} options={options} />,
+      <TableToolbar columns={columns} displayData={data} data={data} options={options} setTableAction={setTableAction} />,
     );
     const instance = shallowWrapper
       .dive()

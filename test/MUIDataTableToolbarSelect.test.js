@@ -3,7 +3,7 @@ import { match, spy, stub } from "sinon";
 import { mount, shallow } from "enzyme";
 import { assert, expect, should } from "chai";
 import DeleteIcon from "@material-ui/icons/Delete";
-import ToolbarSelect from "../src/components/TableToolbarSelect";
+import TableToolbarSelect from "../src/components/TableToolbarSelect";
 import textLabels from "../src/textLabels";
 
 describe("<TableToolbarSelect />", function() {
@@ -12,7 +12,7 @@ describe("<TableToolbarSelect />", function() {
   it("should render table toolbar select", () => {
     const onRowsDelete = () => {};
     const mountWrapper = mount(
-      <ToolbarSelect options={{ textLabels }} selectedRows={{ data: [1] }} onRowsDelete={onRowsDelete} />,
+      <TableToolbarSelect options={{ textLabels }} selectedRows={{ data: [1] }} onRowsDelete={onRowsDelete} />,
     );
 
     const actualResult = mountWrapper.find(DeleteIcon);
@@ -26,7 +26,7 @@ describe("<TableToolbarSelect />", function() {
     const displayData = [1];
 
     const mountWrapper = mount(
-      <MUIDataTableToolbarSelect
+      <TableToolbarSelect
         options={{ textLabels, customToolbarSelect }}
         selectedRows={selectedRows}
         onRowsDelete={onRowsDelete}
@@ -61,7 +61,7 @@ describe("<TableToolbarSelect />", function() {
     const displayData = [1];
 
     const mountWrapper = mount(
-      <MUIDataTableToolbarSelect
+      <TableToolbarSelect
         options={{ textLabels, customToolbarSelect }}
         selectedRows={selectedRows}
         onRowsDelete={onRowsDelete}
@@ -81,7 +81,7 @@ describe("<TableToolbarSelect />", function() {
     const displayData = [1];
 
     const mountWrapper = mount(
-      <MUIDataTableToolbarSelect
+      <TableToolbarSelect
         options={{ textLabels, customToolbarSelect }}
         selectedRows={selectedRows}
         onRowsDelete={onRowsDelete}

@@ -729,8 +729,6 @@ class MUIDataTable extends React.Component {
       expandedRows.push(row);
     }
 
-    console.log(expandedRows);
-
     this.setState({
       expandedRows: { 
         lookup: buildMap(expandedRows),
