@@ -13,6 +13,8 @@ const defaultToolbarSelectStyles = {
     flex: "1 1 100%",
     display: "flex",
     height: "64px",
+    position: 'relative',
+    zIndex: 120,
     justifyContent: "space-between",
   },
   title: {

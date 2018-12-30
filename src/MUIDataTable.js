@@ -15,7 +15,7 @@ import merge from "lodash.merge";
 import isEqual from "lodash.isequal";
 import textLabels from "./textLabels";
 import { withStyles } from "@material-ui/core/styles";
-import { buildSelectedMap, getCollatorComparator, sortCompare } from './utils';
+import { buildMap, getCollatorComparator, sortCompare } from './utils';
 
 const defaultTableStyles = {
   root: {},
@@ -75,6 +75,8 @@ class MUIDataTable extends React.Component {
       filterType: PropTypes.oneOf(["dropdown", "checkbox", "multiselect"]),
       textLabels: PropTypes.object,
       pagination: PropTypes.bool,
+      expandableRows: PropTypes.bool,
+      renderExpandableRow: PropTypes.func,
       customToolbar: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customToolbarSelect: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customFooter: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
@@ -129,6 +131,10 @@ class MUIDataTable extends React.Component {
       data: [],
       lookup: {},
     },
+    expandedRows: {
+      data: [],
+      lookup: {}
+    },
     showResponsive: false,
     searchText: null,
   };
@@ -170,6 +176,7 @@ class MUIDataTable extends React.Component {
       filterType: "checkbox",
       pagination: true,
       textLabels,
+      expandableRows: false,
       resizableColumns: false,
       selectableRows: true,
       caseSensitive: false,
@@ -197,6 +204,9 @@ class MUIDataTable extends React.Component {
   validateOptions(options) {
     if (options.serverSide && options.onTableChange === undefined) {
       throw Error("onTableChange callback must be provided when using serverSide option");
+    }
+    if (options.expandableRows && options.renderExpandableRow === undefined) {
+      throw Error("renderExpandableRow must be provided when using expandableRows option");
     }
   }
 
@@ -675,9 +685,10 @@ class MUIDataTable extends React.Component {
   };
 
   selectRowDelete = () => {
+
     const { selectedRows, data, filterList } = this.state;
 
-    const selectedMap = buildSelectedMap(selectedRows.data);
+    const selectedMap = buildMap(selectedRows.data);
     const cleanRows = data.filter(({ index }) => !selectedMap[index]);
 
     if (this.options.onRowsDelete) {
@@ -699,6 +710,40 @@ class MUIDataTable extends React.Component {
     );
   };
 
+  toggleExpandRow = (row) => {
+
+    const { index, dataIndex } = row;
+    let expandedRows = [...this.state.expandedRows.data];
+    let rowPos = -1;
+
+    for (let cIndex = 0; cIndex < expandedRows.length; cIndex++) {
+      if (expandedRows[cIndex].index === index) {
+        rowPos = cIndex;
+        break;
+      }
+    }
+
+    if (rowPos >= 0) {
+      expandedRows.splice(rowPos, 1);
+    } else {
+      expandedRows.push(row);
+    }
+
+    console.log(expandedRows);
+
+    this.setState({
+      expandedRows: { 
+        lookup: buildMap(expandedRows),
+        data: expandedRows,
+      }
+    },
+    () => {
+      this.setTableAction("expandRow");
+    }
+  );
+
+  };
+
   selectRowUpdate = (type, value) => {
     if (type === "head") {
       this.setState(
@@ -716,11 +761,11 @@ class MUIDataTable extends React.Component {
             .map((d, i) => ({ index: i, dataIndex: displayData[i].dataIndex }));
 
           let newRows = [...prevState.selectedRows, ...selectedRows];
-          let selectedMap = buildSelectedMap(newRows);
+          let selectedMap = buildMap(newRows);
 
           if (isDeselect) {
             newRows = prevState.selectedRows.data.filter(({ dataIndex }) => !selectedMap[dataIndex]);
-            selectedMap = buildSelectedMap(newRows);
+            selectedMap = buildMap(newRows);
           }
 
           return {
@@ -760,7 +805,7 @@ class MUIDataTable extends React.Component {
 
           return {
             selectedRows: {
-              lookup: buildSelectedMap(selectedRows),
+              lookup: buildMap(selectedRows),
               data: selectedRows,
             },
           };
@@ -776,7 +821,7 @@ class MUIDataTable extends React.Component {
       const { displayData } = this.state;
 
       const data = value.map(row => ({ index: row, dataIndex: displayData[row].dataIndex }));
-      const lookup = buildSelectedMap(data);
+      const lookup = buildMap(data);
 
       this.setState(
         {
@@ -819,7 +864,7 @@ class MUIDataTable extends React.Component {
     return {
       data: tableData,
       selectedRows: {
-        lookup: buildSelectedMap(selectedRows),
+        lookup: buildMap(selectedRows),
         data: selectedRows,
       },
     };
@@ -844,6 +889,7 @@ class MUIDataTable extends React.Component {
       filterList,
       rowsPerPage,
       selectedRows,
+      expandedRows,
       searchText,
     } = this.state;
 
@@ -908,6 +954,8 @@ class MUIDataTable extends React.Component {
               rowsPerPage={rowsPerPage}
               selectedRows={selectedRows}
               selectRowUpdate={this.selectRowUpdate}
+              expandedRows={expandedRows}
+              toggleExpandRow={this.toggleExpandRow}
               options={this.options}
               searchText={searchText}
               filterList={filterList}

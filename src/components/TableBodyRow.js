@@ -26,6 +26,7 @@ class TableBodyRow extends React.Component {
   };
 
   render() {
+    
     const { classes, options, rowSelected, onClick, className, ...rest } = this.props;
 
     return (

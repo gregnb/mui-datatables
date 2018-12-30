@@ -1,4 +1,4 @@
-function buildSelectedMap(rows) {
+function buildMap(rows) {
   return rows.reduce((accum, { dataIndex }) => {
     accum[dataIndex] = true;
     return accum;
@@ -75,7 +75,7 @@ function createCSVDownload(columns, data, options) {
 }
 
 export {
-  buildSelectedMap,
+  buildMap,
   getCollatorComparator,
   sortCompare,
   createCSVDownload
