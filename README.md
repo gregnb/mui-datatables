@@ -137,6 +137,8 @@ The component accepts the following props:
 |**`pagination`**|boolean|true|Enable/disable pagination
 |**`selectableRows`**|boolean|true|Enable/disable row selection
 |**`resizableColumns`**|boolean|false|Enable/disable resizable columns
+|**`expandableRows`**|boolean|false|Enable/disable expandable 
+|**`renderExpandableRow `**|function||Render expandable row. `function(rowData, rowMeta) => React Component`
 |**`customToolbar`**|function||Render a custom toolbar
 |**`customToolbarSelect`**|function||Render a custom selected rows toolbar. `function(selectedRows, displayData, setSelectedRows) => void`
 |**`customFooter`**|function||Render a custom table footer. `function(count, page, rowsPerPage, changeRowsPerPage, changePage) => string`&#124;` React Component`

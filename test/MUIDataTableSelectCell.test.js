@@ -1,29 +1,29 @@
-import React from "react";
-import { spy, stub } from "sinon";
-import { mount, shallow } from "enzyme";
-import { assert, expect, should } from "chai";
-import Checkbox from "@material-ui/core/Checkbox";
-import MUIDataTableSelectCell from "../src/MUIDataTableSelectCell";
+import React from 'react';
+import { spy, stub } from 'sinon';
+import { mount, shallow } from 'enzyme';
+import { assert, expect, should } from 'chai';
+import Checkbox from '@material-ui/core/Checkbox';
+import TableSelectCell from '../src/components/TableSelectCell';
 
-describe("<MUIDataTableSelectCell />", function() {
+describe('<TableSelectCell />', function() {
   before(() => {});
 
-  it("should render table select cell", () => {
-    const mountWrapper = mount(<MUIDataTableSelectCell checked={false} />);
+  it('should render table select cell', () => {
+    const mountWrapper = mount(<TableSelectCell checked={false} />);
 
     const actualResult = mountWrapper.find(Checkbox);
     assert.strictEqual(actualResult.length, 1);
   });
 
-  it("should render table select cell checked", () => {
-    const mountWrapper = mount(<MUIDataTableSelectCell checked={true} />);
+  it('should render table select cell checked', () => {
+    const mountWrapper = mount(<TableSelectCell checked={true} />);
 
     const actualResult = mountWrapper.find(Checkbox);
     assert.strictEqual(actualResult.props().checked, true);
   });
 
-  it("should render table select cell unchecked", () => {
-    const mountWrapper = mount(<MUIDataTableSelectCell checked={false} />);
+  it('should render table select cell unchecked', () => {
+    const mountWrapper = mount(<TableSelectCell checked={false} />);
 
     const actualResult = mountWrapper.find(Checkbox);
     assert.strictEqual(actualResult.props().checked, false);
