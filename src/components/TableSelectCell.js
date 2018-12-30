@@ -77,7 +77,7 @@ class TableSelectCell extends React.Component {
     return (
       <TableCell className={cellClass} padding="checkbox">
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <KeyboardArrowRight className={iconClass} onClick={onExpand} />
+          {isExpandable && <KeyboardArrowRight className={iconClass} onClick={onExpand} />}
           <Checkbox
             classes={{
               root: classes.checkboxRoot,
