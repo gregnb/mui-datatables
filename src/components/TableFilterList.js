@@ -1,17 +1,17 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Chip from "@material-ui/core/Chip";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Chip from '@material-ui/core/Chip';
+import { withStyles } from '@material-ui/core/styles';
 
 const defaultFilterListStyles = {
   root: {
-    display: "flex",
-    justifyContent: "left",
-    flexWrap: "wrap",
-    margin: "0px 16px 0px 16px",
+    display: 'flex',
+    justifyContent: 'left',
+    flexWrap: 'wrap',
+    margin: '0px 16px 0px 16px',
   },
   chip: {
-    margin: "8px 8px 0px 0px",
+    margin: '8px 8px 0px 0px',
   },
 };
 
@@ -35,7 +35,7 @@ class TableFilterList extends React.Component {
             <Chip
               label={data}
               key={colIndex}
-              onDelete={filterUpdate.bind(null, index, data, "checkbox")}
+              onDelete={filterUpdate.bind(null, index, data, 'checkbox')}
               className={classes.chip}
             />
           )),
@@ -45,4 +45,4 @@ class TableFilterList extends React.Component {
   }
 }
 
-export default withStyles(defaultFilterListStyles, { name: "MUIDataTableFilterList" })(TableFilterList);
+export default withStyles(defaultFilterListStyles, { name: 'MUIDataTableFilterList' })(TableFilterList);

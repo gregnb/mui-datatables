@@ -1,43 +1,43 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Checkbox from "@material-ui/core/Checkbox";
-import Typography from "@material-ui/core/Typography";
-import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Checkbox from '@material-ui/core/Checkbox';
+import Typography from '@material-ui/core/Typography';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { withStyles } from '@material-ui/core/styles';
 
 export const defaultViewColStyles = {
   root: {
-    padding: "16px 24px 16px 24px",
-    fontFamily: "Roboto",
+    padding: '16px 24px 16px 24px',
+    fontFamily: 'Roboto',
   },
   title: {
-    marginLeft: "-7px",
-    fontSize: "14px",
-    color: "#424242",
-    textAlign: "left",
+    marginLeft: '-7px',
+    fontSize: '14px',
+    color: '#424242',
+    textAlign: 'left',
     fontWeight: 500,
   },
   formGroup: {
-    marginTop: "8px",
+    marginTop: '8px',
   },
   formControl: {},
   checkbox: {
-    padding: "0px",
-    width: "32px",
-    height: "32px",
+    padding: '0px',
+    width: '32px',
+    height: '32px',
   },
   checkboxRoot: {
-    "&$checked": {
-      color: "#027cb5",
+    '&$checked': {
+      color: '#027cb5',
     },
   },
   checked: {},
   label: {
-    fontSize: "15px",
-    marginLeft: "8px",
-    color: "#4a4a4a",
+    fontSize: '15px',
+    marginLeft: '8px',
+    color: '#4a4a4a',
   },
 };
 
@@ -62,14 +62,14 @@ class TableViewCol extends React.Component {
     const textLabels = options.textLabels.viewColumns;
 
     return (
-      <FormControl component={"fieldset"} className={classes.root} aria-label={textLabels.titleAria}>
+      <FormControl component={'fieldset'} className={classes.root} aria-label={textLabels.titleAria}>
         <Typography variant="caption" className={classes.title}>
           {textLabels.title}
         </Typography>
         <FormGroup className={classes.formGroup}>
           {columns.map((column, index) => {
             return (
-              column.display !== "excluded" && (
+              column.display !== 'excluded' && (
                 <FormControlLabel
                   key={index}
                   classes={{
@@ -84,7 +84,7 @@ class TableViewCol extends React.Component {
                         checked: classes.checked,
                       }}
                       onChange={this.handleColChange.bind(null, index)}
-                      checked={column.display === "true"}
+                      checked={column.display === 'true'}
                       value={column.name}
                     />
                   }
@@ -99,4 +99,4 @@ class TableViewCol extends React.Component {
   }
 }
 
-export default withStyles(defaultViewColStyles, { name: "MUIDataTableViewCol" })(TableViewCol);
+export default withStyles(defaultViewColStyles, { name: 'MUIDataTableViewCol' })(TableViewCol);

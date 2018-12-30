@@ -1,16 +1,16 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Typography from "@material-ui/core/Typography";
-import MuiTableBody from "@material-ui/core/TableBody";
-import TableBodyCell from "./TableBodyCell";
-import TableBodyRow from "./TableBodyRow";
-import TableSelectCell from "./TableSelectCell";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
+import MuiTableBody from '@material-ui/core/TableBody';
+import TableBodyCell from './TableBodyCell';
+import TableBodyRow from './TableBodyRow';
+import TableSelectCell from './TableSelectCell';
+import { withStyles } from '@material-ui/core/styles';
 
 const defaultBodyStyles = {
   root: {},
   emptyTitle: {
-    textAlign: "center",
+    textAlign: 'center',
   },
 };
 
@@ -41,7 +41,7 @@ class TableBody extends React.Component {
   };
 
   static defaultProps = {
-    toggleExpandRow: () => {}
+    toggleExpandRow: () => {},
   };
 
   buildRows() {
@@ -56,11 +56,11 @@ class TableBody extends React.Component {
 
     if (page > totalPages && totalPages !== 0) {
       throw new Error(
-        "Provided options.page of `" +
+        'Provided options.page of `' +
           page +
-          "` is greater than the total available page length of `" +
+          '` is greater than the total available page length of `' +
           totalPages +
-          "`",
+          '`',
       );
     }
 
@@ -89,11 +89,11 @@ class TableBody extends React.Component {
 
   isRowExpanded(dataIndex) {
     const { expandedRows } = this.props;
-    return expandedRows.lookup && expandedRows.lookup[dataIndex] ? true : false;    
+    return expandedRows.lookup && expandedRows.lookup[dataIndex] ? true : false;
   }
 
   handleRowSelect = data => {
-    this.props.selectRowUpdate("cell", data);
+    this.props.selectRowUpdate('cell', data);
   };
 
   render() {
@@ -110,8 +110,7 @@ class TableBody extends React.Component {
                 options={options}
                 rowSelected={options.selectableRows ? this.isRowSelected(dataIndex) : false}
                 onClick={options.onRowClick ? options.onRowClick.bind(null, row, { rowIndex, dataIndex }) : null}
-                id={"MUIDataTableBodyRow-" + dataIndex}
-                >
+                id={'MUIDataTableBodyRow-' + dataIndex}>
                 {options.selectableRows && (
                   <TableSelectCell
                     onChange={this.handleRowSelect.bind(null, {
@@ -128,21 +127,22 @@ class TableBody extends React.Component {
                     isRowExpanded={this.isRowExpanded(dataIndex)}
                   />
                 )}
-                {row.map((column, columnIndex) =>
-                  columns[columnIndex].display === "true" && (
-                    <TableBodyCell
-                      {...(columns[columnIndex].setCellProps
-                        ? columns[columnIndex].setCellProps(column, dataIndex, columnIndex)
-                        : {})}
-                      dataIndex={dataIndex}
-                      rowIndex={rowIndex}
-                      colIndex={columnIndex}
-                      columnHeader={columns[columnIndex].name}
-                      options={options}
-                      key={columnIndex}>
-                      {column}
-                    </TableBodyCell>
-                  )
+                {row.map(
+                  (column, columnIndex) =>
+                    columns[columnIndex].display === 'true' && (
+                      <TableBodyCell
+                        {...(columns[columnIndex].setCellProps
+                          ? columns[columnIndex].setCellProps(column, dataIndex, columnIndex)
+                          : {})}
+                        dataIndex={dataIndex}
+                        rowIndex={rowIndex}
+                        colIndex={columnIndex}
+                        columnHeader={columns[columnIndex].name}
+                        options={options}
+                        key={columnIndex}>
+                        {column}
+                      </TableBodyCell>
+                    ),
                 )}
               </TableBodyRow>
               {this.isRowExpanded(dataIndex) && options.renderExpandableRow(row, { rowIndex, dataIndex })}
@@ -166,4 +166,4 @@ class TableBody extends React.Component {
   }
 }
 
-export default withStyles(defaultBodyStyles, { name: "MUIDataTableBody" })(TableBody);
+export default withStyles(defaultBodyStyles, { name: 'MUIDataTableBody' })(TableBody);

@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
-import TableRow from "@material-ui/core/TableRow";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import TableRow from '@material-ui/core/TableRow';
+import { withStyles } from '@material-ui/core/styles';
 
 const defaultHeadRowStyles = {
   root: {},
@@ -28,4 +28,4 @@ class TableHeadRow extends React.Component {
   }
 }
 
-export default withStyles(defaultHeadRowStyles, { name: "MUIDataTableHeadRow" })(TableHeadRow);
+export default withStyles(defaultHeadRowStyles, { name: 'MUIDataTableHeadRow' })(TableHeadRow);

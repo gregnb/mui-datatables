@@ -1,81 +1,81 @@
-import React from "react";
-import Typography from "@material-ui/core/Typography";
-import Toolbar from "@material-ui/core/Toolbar";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
-import Popover from "./Popover";
-import TableFilter from "./TableFilter";
-import TableViewCol from "./TableViewCol";
-import TableSearch from "./TableSearch";
-import SearchIcon from "@material-ui/icons/Search";
-import DownloadIcon from "@material-ui/icons/CloudDownload";
-import PrintIcon from "@material-ui/icons/Print";
-import ViewColumnIcon from "@material-ui/icons/ViewColumn";
-import FilterIcon from "@material-ui/icons/FilterList";
-import ReactToPrint from "react-to-print";
-import styled from "../styled";
-import { createCSVDownload } from "../utils";
+import React from 'react';
+import Typography from '@material-ui/core/Typography';
+import Toolbar from '@material-ui/core/Toolbar';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+import Popover from './Popover';
+import TableFilter from './TableFilter';
+import TableViewCol from './TableViewCol';
+import TableSearch from './TableSearch';
+import SearchIcon from '@material-ui/icons/Search';
+import DownloadIcon from '@material-ui/icons/CloudDownload';
+import PrintIcon from '@material-ui/icons/Print';
+import ViewColumnIcon from '@material-ui/icons/ViewColumn';
+import FilterIcon from '@material-ui/icons/FilterList';
+import ReactToPrint from 'react-to-print';
+import styled from '../styled';
+import { createCSVDownload } from '../utils';
 
 export const defaultToolbarStyles = (theme, props) => ({
   root: {},
   left: {
-    flex: "1 1 55%",
+    flex: '1 1 55%',
   },
   actions: {
-    flex: "0 0 45%",
-    textAlign: "right",
+    flex: '0 0 45%',
+    textAlign: 'right',
   },
   titleRoot: {},
   titleText: {},
   icon: {
-    "&:hover": {
-      color: "#307BB0",
+    '&:hover': {
+      color: '#307BB0',
     },
   },
   iconActive: {
-    color: "#307BB0",
+    color: '#307BB0',
   },
   searchIcon: {
-    display: "inline-flex",
-    marginTop: "10px",
-    marginRight: "8px",
+    display: 'inline-flex',
+    marginTop: '10px',
+    marginRight: '8px',
   },
   ...(props.options.responsive ? { ...responsiveToolbarStyles(theme) } : {}),
 });
 
 export const responsiveToolbarStyles = theme => ({
-  [theme.breakpoints.down("sm")]: {
+  [theme.breakpoints.down('sm')]: {
     titleRoot: {},
     titleText: {
-      fontSize: "16px",
+      fontSize: '16px',
     },
     spacer: {
-      display: "none",
+      display: 'none',
     },
     left: {
       // flex: "1 1 40%",
-      padding: "8px 0px",
+      padding: '8px 0px',
     },
     actions: {
       // flex: "1 1 60%",
-      textAlign: "right",
+      textAlign: 'right',
     },
   },
-  [theme.breakpoints.down("xs")]: {
+  [theme.breakpoints.down('xs')]: {
     root: {
-      display: "block",
+      display: 'block',
     },
     left: {
-      padding: "8px 0px 0px 0px",
+      padding: '8px 0px 0px 0px',
     },
     titleText: {
-      textAlign: "center",
+      textAlign: 'center',
     },
     actions: {
-      textAlign: "center",
+      textAlign: 'center',
     },
   },
-  "@media screen and (max-width: 480px)": {},
+  '@media screen and (max-width: 480px)': {},
 });
 
 class TableToolbar extends React.Component {
@@ -92,7 +92,7 @@ class TableToolbar extends React.Component {
   setActiveIcon = iconName => {
     this.setState(() => ({
       iconActive: iconName,
-      showSearch: iconName === "search" ? this.showSearch() : false,
+      showSearch: iconName === 'search' ? this.showSearch() : false,
     }));
   };
 
@@ -102,9 +102,9 @@ class TableToolbar extends React.Component {
 
   showSearch = () => {
     !!this.props.options.onSearchOpen && this.props.options.onSearchOpen();
-    this.props.setTableAction("onSearchOpen");
+    this.props.setTableAction('onSearchOpen');
     return true;
-  }
+  };
 
   hideSearch = () => {
     const { onSearchClose } = this.props.options;
@@ -140,12 +140,12 @@ class TableToolbar extends React.Component {
     const { showSearch } = this.state;
 
     return (
-      <Toolbar className={classes.root} role={"toolbar"} aria-label={"Table Toolbar"}>
+      <Toolbar className={classes.root} role={'toolbar'} aria-label={'Table Toolbar'}>
         <div className={classes.left}>
           {showSearch === true ? (
             <TableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
           ) : (
-            <div className={classes.titleRoot} aria-hidden={"true"}>
+            <div className={classes.titleRoot} aria-hidden={'true'}>
               <Typography variant="h6" className={classes.titleText}>
                 {title}
               </Typography>
@@ -158,8 +158,8 @@ class TableToolbar extends React.Component {
               <IconButton
                 aria-label={search}
                 buttonRef={el => (this.searchButton = el)}
-                classes={{ root: this.getActiveIcon(classes, "search") }}
-                onClick={this.setActiveIcon.bind(null, "search")}>
+                classes={{ root: this.getActiveIcon(classes, 'search') }}
+                onClick={this.setActiveIcon.bind(null, 'search')}>
                 <SearchIcon />
               </IconButton>
             </Tooltip>
@@ -186,44 +186,39 @@ class TableToolbar extends React.Component {
             </Tooltip>
           )}
           {options.viewColumns && (
-            <Popover 
-              refExit={this.setActiveIcon.bind(null)} 
+            <Popover
+              refExit={this.setActiveIcon.bind(null)}
               container={tableRef}
-              trigger={(
+              trigger={
                 <IconButton
                   aria-label={viewColumns}
-                  classes={{ root: this.getActiveIcon(classes, "viewcolumns") }}
-                  onClick={this.setActiveIcon.bind(null, "viewcolumns")}>
+                  classes={{ root: this.getActiveIcon(classes, 'viewcolumns') }}
+                  onClick={this.setActiveIcon.bind(null, 'viewcolumns')}>
                   <Tooltip title={viewColumns}>
                     <ViewColumnIcon />
                   </Tooltip>
-                </IconButton>              
-              )}
-              content={(
-                <TableViewCol
-                  data={data}
-                  columns={columns}
-                  options={options}
-                  onColumnUpdate={toggleViewColumn}
-                />              
-              )}
+                </IconButton>
+              }
+              content={
+                <TableViewCol data={data} columns={columns} options={options} onColumnUpdate={toggleViewColumn} />
+              }
             />
           )}
           {options.filter && (
-            <Popover 
-              refExit={this.setActiveIcon.bind(null)} 
+            <Popover
+              refExit={this.setActiveIcon.bind(null)}
               container={tableRef}
-              trigger={(
+              trigger={
                 <IconButton
                   aria-label={filterTable}
-                  classes={{ root: this.getActiveIcon(classes, "filter") }}
-                  onClick={this.setActiveIcon.bind(null, "filter")}>
+                  classes={{ root: this.getActiveIcon(classes, 'filter') }}
+                  onClick={this.setActiveIcon.bind(null, 'filter')}>
                   <Tooltip title={filterTable}>
                     <FilterIcon />
                   </Tooltip>
-                </IconButton>             
-              )}
-              content={(
+                </IconButton>
+              }
+              content={
                 <TableFilter
                   columns={columns}
                   options={options}
@@ -231,8 +226,8 @@ class TableToolbar extends React.Component {
                   filterData={filterData}
                   onFilterUpdate={filterUpdate}
                   onFilterReset={resetFilters}
-                />            
-              )}
+                />
+              }
             />
           )}
           {options.customToolbar && options.customToolbar()}
@@ -242,4 +237,4 @@ class TableToolbar extends React.Component {
   }
 }
 
-export default styled(TableToolbar)(defaultToolbarStyles, { name: "MUIDataTableToolbar" });
+export default styled(TableToolbar)(defaultToolbarStyles, { name: 'MUIDataTableToolbar' });

@@ -1,15 +1,15 @@
-import React from "react";
-import { match, spy, stub } from "sinon";
-import { mount, shallow } from "enzyme";
-import { assert, expect, should } from "chai";
-import DeleteIcon from "@material-ui/icons/Delete";
-import TableToolbarSelect from "../src/components/TableToolbarSelect";
-import textLabels from "../src/textLabels";
+import React from 'react';
+import { match, spy, stub } from 'sinon';
+import { mount, shallow } from 'enzyme';
+import { assert, expect, should } from 'chai';
+import DeleteIcon from '@material-ui/icons/Delete';
+import TableToolbarSelect from '../src/components/TableToolbarSelect';
+import textLabels from '../src/textLabels';
 
-describe("<TableToolbarSelect />", function() {
+describe('<TableToolbarSelect />', function() {
   before(() => {});
 
-  it("should render table toolbar select", () => {
+  it('should render table toolbar select', () => {
     const onRowsDelete = () => {};
     const mountWrapper = mount(
       <TableToolbarSelect options={{ textLabels }} selectedRows={{ data: [1] }} onRowsDelete={onRowsDelete} />,
@@ -19,7 +19,7 @@ describe("<TableToolbarSelect />", function() {
     assert.strictEqual(actualResult.length, 1);
   });
 
-  it("should call customToolbarSelect with 3 arguments", () => {
+  it('should call customToolbarSelect with 3 arguments', () => {
     const onRowsDelete = () => {};
     const customToolbarSelect = spy();
     const selectedRows = { data: [1] };
@@ -34,21 +34,21 @@ describe("<TableToolbarSelect />", function() {
       />,
     );
 
-    assert.strictEqual(customToolbarSelect.calledWith(selectedRows, displayData, match.typeOf("function")), true);
+    assert.strictEqual(customToolbarSelect.calledWith(selectedRows, displayData, match.typeOf('function')), true);
   });
 
-  it("should throw TypeError if selectedRows is not an array of numbers", done => {
+  it('should throw TypeError if selectedRows is not an array of numbers', done => {
     const onRowsDelete = () => {};
     const selectRowUpdate = () => {};
     const customToolbarSelect = (_, __, setSelectedRows) => {
       const spySetSelectedRows = spy(setSelectedRows);
       try {
-        spySetSelectedRows("");
+        spySetSelectedRows('');
       } catch (error) {
         //do nothing
       }
       try {
-        spySetSelectedRows(["1"]);
+        spySetSelectedRows(['1']);
       } catch (error) {
         //do nothing
       }
@@ -71,7 +71,7 @@ describe("<TableToolbarSelect />", function() {
     );
   });
 
-  it("should call selectRowUpdate when customToolbarSelect passed and setSelectedRows was called", () => {
+  it('should call selectRowUpdate when customToolbarSelect passed and setSelectedRows was called', () => {
     const onRowsDelete = () => {};
     const selectRowUpdate = spy();
     const customToolbarSelect = (_, __, setSelectedRows) => {

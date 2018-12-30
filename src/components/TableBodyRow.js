@@ -1,14 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
-import TableRow from "@material-ui/core/TableRow";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import TableRow from '@material-ui/core/TableRow';
+import { withStyles } from '@material-ui/core/styles';
 
 const defaultBodyRowStyles = theme => ({
   root: {},
   responsiveStacked: {
-    [theme.breakpoints.down("sm")]: {
-      border: "solid 2px rgba(0, 0, 0, 0.15)",
+    [theme.breakpoints.down('sm')]: {
+      border: 'solid 2px rgba(0, 0, 0, 0.15)',
     },
   },
 });
@@ -26,7 +26,6 @@ class TableBodyRow extends React.Component {
   };
 
   render() {
-    
     const { classes, options, rowSelected, onClick, className, ...rest } = this.props;
 
     return (
@@ -36,7 +35,7 @@ class TableBodyRow extends React.Component {
         className={classNames(
           {
             [classes.root]: true,
-            [classes.responsiveStacked]: options.responsive === "stacked",
+            [classes.responsiveStacked]: options.responsive === 'stacked',
           },
           className,
         )}
@@ -48,4 +47,4 @@ class TableBodyRow extends React.Component {
   }
 }
 
-export default withStyles(defaultBodyRowStyles, { name: "MUIDataTableBodyRow" })(TableBodyRow);
+export default withStyles(defaultBodyRowStyles, { name: 'MUIDataTableBodyRow' })(TableBodyRow);

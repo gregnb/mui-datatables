@@ -1,37 +1,37 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Paper from "@material-ui/core/Paper";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import Typography from "@material-ui/core/Typography";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { withStyles } from '@material-ui/core/styles';
 
 const defaultToolbarSelectStyles = {
   root: {
-    backgroundColor: "#f7f7f7",
-    flex: "1 1 100%",
-    display: "flex",
-    height: "64px",
+    backgroundColor: '#f7f7f7',
+    flex: '1 1 100%',
+    display: 'flex',
+    height: '64px',
     position: 'relative',
     zIndex: 120,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   title: {
-    paddingLeft: "26px",
-    top: "50%",
-    position: "relative",
-    transform: "translateY(-50%)",
+    paddingLeft: '26px',
+    top: '50%',
+    position: 'relative',
+    transform: 'translateY(-50%)',
   },
   iconButton: {
-    marginRight: "24px",
-    top: "50%",
-    display: "block",
-    position: "relative",
-    transform: "translateY(-50%)",
+    marginRight: '24px',
+    top: '50%',
+    display: 'block',
+    position: 'relative',
+    transform: 'translateY(-50%)',
   },
   deleteIcon: {
-    color: "#000",
+    color: '#000',
   },
 };
 
@@ -55,11 +55,11 @@ class TableToolbarSelect extends React.Component {
       throw new TypeError(`"selectedRows" must be an "array", but it's "${typeof selectedRows}"`);
     }
 
-    if (selectedRows.some(row => typeof row !== "number")) {
+    if (selectedRows.some(row => typeof row !== 'number')) {
       throw new TypeError(`Array "selectedRows" must contain only numbers`);
     }
 
-    this.props.selectRowUpdate("custom", selectedRows);
+    this.props.selectRowUpdate('custom', selectedRows);
   };
 
   render() {
@@ -87,4 +87,4 @@ class TableToolbarSelect extends React.Component {
   }
 }
 
-export default withStyles(defaultToolbarSelectStyles, { name: "MUIDataTableToolbarSelect" })(TableToolbarSelect);
+export default withStyles(defaultToolbarSelectStyles, { name: 'MUIDataTableToolbarSelect' })(TableToolbarSelect);

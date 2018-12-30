@@ -1,10 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import MuiPopover from "@material-ui/core/Popover";
-import { findDOMNode } from "react-dom";
+import React from 'react';
+import PropTypes from 'prop-types';
+import MuiPopover from '@material-ui/core/Popover';
+import { findDOMNode } from 'react-dom';
 
 class Popover extends React.Component {
-
   state = {
     open: false,
   };
@@ -36,7 +35,7 @@ class Popover extends React.Component {
   };
 
   handleRequestClose = cb => {
-    this.setState({ open: false }, cb && typeof cb === "function" ? cb() : () => {});
+    this.setState({ open: false }, cb && typeof cb === 'function' ? cb() : () => {});
   };
 
   handleOnExit = () => {
@@ -46,27 +45,25 @@ class Popover extends React.Component {
   };
 
   render() {
-
     const { className, placement, trigger, refExit, content, ...providedProps } = this.props;
 
     const transformOriginSpecs = {
-      vertical: "top",
-      horizontal: "center",
+      vertical: 'top',
+      horizontal: 'center',
     };
 
     const anchorOriginSpecs = {
-      vertical: "bottom",
-      horizontal: "center",
+      vertical: 'bottom',
+      horizontal: 'center',
     };
 
     const triggerEl = React.cloneElement(trigger, {
       key: 'content',
       ref: el => (this.anchorEl = el),
       onClick: () => {
-        if (trigger.props.onClick)
-          trigger.props.onClick();
+        if (trigger.props.onClick) trigger.props.onClick();
         this.handleClick();
-      }
+      },
     });
 
     return (
@@ -88,7 +85,6 @@ class Popover extends React.Component {
       </React.Fragment>
     );
   }
-
 }
 
 export default Popover;

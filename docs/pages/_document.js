@@ -1,7 +1,7 @@
-import React from "react";
-import Document, { Head, Main, NextScript } from "next/document";
-import JssProvider from "react-jss/lib/JssProvider";
-import getPageContext from "../utils/getPageContext";
+import React from 'react';
+import Document, { Head, Main, NextScript } from 'next/document';
+import JssProvider from 'react-jss/lib/JssProvider';
+import getPageContext from '../utils/getPageContext';
 
 class MyDocument extends Document {
   render() {
@@ -15,12 +15,12 @@ class MyDocument extends Document {
 
           <meta
             name="description"
-            content={"MUI-Datatables is a data tables component built for React Material-UI V1"}
+            content={'MUI-Datatables is a data tables component built for React Material-UI V1'}
           />
           <meta
             name="keywords"
             content={
-              "material-ui, data tables, datatables, material-ui, material-ui-datables, react tables, react data tables"
+              'material-ui, data tables, datatables, material-ui, material-ui-datables, react tables, react data tables'
             }
           />
           <meta name="robots" content="index,follow,noodp" />

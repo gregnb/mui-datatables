@@ -1,21 +1,21 @@
-import React from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
-import Checkbox from "@material-ui/core/Checkbox";
-import TableCell from "@material-ui/core/TableCell";
-import { withStyles } from "@material-ui/core/styles";
-import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import Checkbox from '@material-ui/core/Checkbox';
+import TableCell from '@material-ui/core/TableCell';
+import { withStyles } from '@material-ui/core/styles';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 
 const defaultSelectCellStyles = theme => ({
   root: {
-    [theme.breakpoints.down("sm")]: {
-      display: "none",
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
     },
   },
   fixedHeader: {
-    position: "sticky",
-    top: "0px",
-    left: "0px",
+    position: 'sticky',
+    top: '0px',
+    left: '0px',
     zIndex: 100,
   },
   icon: {
@@ -26,15 +26,15 @@ const defaultSelectCellStyles = theme => ({
     transform: 'rotate(90deg)',
   },
   hide: {
-    visibility: 'hidden'
+    visibility: 'hidden',
   },
   headerCell: {
     zIndex: 110,
-    backgroundColor: "#FFF",
+    backgroundColor: '#FFF',
   },
   checkboxRoot: {
-    "&$checked": {
-      color: "#027cb5",
+    '&$checked': {
+      color: '#027cb5',
     },
   },
   checked: {},
@@ -67,11 +67,11 @@ class TableSelectCell extends React.Component {
       [classes.fixedHeader]: fixedHeader,
       [classes.headerCell]: isHeaderCell,
     });
-    
+
     const iconClass = classNames({
       [classes.icon]: true,
       [classes.hide]: isHeaderCell,
-      [classes.expanded]: isRowExpanded     
+      [classes.expanded]: isRowExpanded,
     });
 
     return (
@@ -82,7 +82,7 @@ class TableSelectCell extends React.Component {
             classes={{
               root: classes.checkboxRoot,
               checked: classes.checked,
-              disabled: classes.disabled
+              disabled: classes.disabled,
             }}
             {...otherProps}
           />
@@ -92,4 +92,4 @@ class TableSelectCell extends React.Component {
   }
 }
 
-export default withStyles(defaultSelectCellStyles, { name: "MUIDataTableSelectCell" })(TableSelectCell);
+export default withStyles(defaultSelectCellStyles, { name: 'MUIDataTableSelectCell' })(TableSelectCell);
