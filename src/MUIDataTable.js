@@ -883,13 +883,13 @@ class MUIDataTable extends React.Component {
       page,
       filterData,
       filterList,
-      rowsPerPage,
       selectedRows,
       expandedRows,
       searchText,
     } = this.state;
 
     const rowCount = this.options.count || displayData.length;
+    const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
 
     return (
       <Paper elevation={this.options.elevation} ref={this.tableContent} className={classes.paper}>
