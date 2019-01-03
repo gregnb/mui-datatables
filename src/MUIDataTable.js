@@ -183,6 +183,7 @@ class MUIDataTable extends React.Component {
       serverSide: false,
       rowHover: true,
       fixedHeader: true,
+      elevation: 4,
       rowsPerPage: 10,
       rowsPerPageOptions: [10, 15, 100],
       filter: true,
@@ -891,7 +892,7 @@ class MUIDataTable extends React.Component {
     const rowCount = this.options.count || displayData.length;
 
     return (
-      <Paper elevation={4} ref={this.tableContent} className={classes.paper}>
+      <Paper elevation={this.options.elevation} ref={this.tableContent} className={classes.paper}>
         {selectedRows.data.length ? (
           <TableToolbarSelect
             options={this.options}
