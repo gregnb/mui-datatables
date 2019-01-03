@@ -222,6 +222,8 @@ class MUIDataTable extends React.Component {
 
   setTableOptions(props) {
     const optionNames = ["rowsPerPage", "page", "filterList", "rowsPerPageOptions"];
+    const count = (props.data || []).length;
+    const totalPages = Math.floor(count / this.options.rowsPerPage);
     const optState = optionNames.reduce((acc, cur) => {
       if (this.options[cur]) {
         let val = this.options[cur];
@@ -229,7 +231,9 @@ class MUIDataTable extends React.Component {
       }
 
       if (cur === "page") {
-        acc[cur] = 0;
+        if (this.state.page >= totalPages) {
+          acc.page = 0;
+        }
       }
       return acc;
     }, {});
