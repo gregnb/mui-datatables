@@ -94,8 +94,8 @@ class TableBody extends React.Component {
 
   isRowSelectable(dataIndex) {
     const { options } = this.props;
-    if (options.isSelectable) {
-      return options.isSelectable(dataIndex);
+    if (options.isRowSelectable) {
+      return options.isRowSelectable(dataIndex);
     }
     return true;
   }
@@ -133,7 +133,7 @@ class TableBody extends React.Component {
                     checked={this.isRowSelected(dataIndex)}
                     isExpandable={options.expandableRows}
                     isRowExpanded={this.isRowExpanded(dataIndex)}
-                    isSelectable={this.isRowSelectable(dataIndex)}
+                    isRowSelectable={this.isRowSelectable(dataIndex)}
                   />
                 )}
                 {row.map(

@@ -49,7 +49,7 @@ class TableHead extends React.Component {
               isHeaderCell={true}
               isExpandable={options.expandableRows}
               fixedHeader={options.fixedHeader}
-              isSelectable={true}
+              isRowSelectable={true}
             />
           )}
           {columns.map(
