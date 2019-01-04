@@ -842,6 +842,7 @@ class MUIDataTable extends React.Component {
 
     let sortedData = dataSrc.map((row, sIndex) => ({
       data: row.data[col],
+      rowData: row.data,
       position: sIndex,
       rowSelected: this.state.selectedRows.lookup[sIndex] ? true : false,
     }));
@@ -855,7 +856,7 @@ class MUIDataTable extends React.Component {
 
     for (let i = 0; i < sortedData.length; i++) {
       const row = sortedData[i];
-      tableData.push(sortedData[row.position]);
+      tableData.push({ index: row.position, data: row.rowData });
       if (row.rowSelected) {
         selectedRows.push({ index: i, dataIndex: sortedData[row.position].index });
       }
