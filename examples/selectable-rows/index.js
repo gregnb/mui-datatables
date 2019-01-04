@@ -79,6 +79,10 @@ class Example extends React.Component {
       },
       onRowClick: (rowData, rowState) => {
         console.log(rowData, rowState);
+      },
+      isRowSelectable: (dataIndex) => {
+        //prevents selection of row with title "Attorney"
+        return data[dataIndex][1] != "Attorney";
       }
     };
 
