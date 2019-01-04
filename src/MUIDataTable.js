@@ -83,6 +83,7 @@ class MUIDataTable extends React.Component {
       onRowClick: PropTypes.func,
       resizableColumns: PropTypes.bool,
       selectableRows: PropTypes.bool,
+      isSelectable: PropTypes.func,
       serverSide: PropTypes.bool,
       onTableChange: PropTypes.func,
       caseSensitive: PropTypes.bool,
@@ -743,6 +744,7 @@ class MUIDataTable extends React.Component {
 
   selectRowUpdate = (type, value) => {
     if (type === 'head') {
+      const {isSelectable} = this.options; 
       this.setState(
         prevState => {
           const { displayData } = prevState;
@@ -752,9 +754,12 @@ class MUIDataTable extends React.Component {
               ? true
               : false;
 
-          let selectedRows = Array(displayData.length)
-            .fill()
-            .map((d, i) => ({ index: i, dataIndex: displayData[i].dataIndex }));
+            let selectedRows = displayData.reduce((arr, d, i) => {
+              const selected = isSelectable? isSelectable(displayData[i].dataIndex) : true;
+              selected && arr.push({ index: i, dataIndex: displayData[i].dataIndex });
+              return arr;
+            },[]);
+
 
           let newRows = [...prevState.selectedRows, ...selectedRows];
           let selectedMap = buildMap(newRows);

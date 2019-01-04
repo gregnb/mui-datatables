@@ -92,6 +92,14 @@ class TableBody extends React.Component {
     return expandedRows.lookup && expandedRows.lookup[dataIndex] ? true : false;
   }
 
+  isRowSelectable(dataIndex) {
+    const { options } = this.props;
+    if (options.isSelectable) {
+      return options.isSelectable(dataIndex);
+    }
+    return true;
+  }
+
   handleRowSelect = data => {
     this.props.selectRowUpdate('cell', data);
   };
@@ -125,6 +133,7 @@ class TableBody extends React.Component {
                     checked={this.isRowSelected(dataIndex)}
                     isExpandable={options.expandableRows}
                     isRowExpanded={this.isRowExpanded(dataIndex)}
+                    isSelectable={this.isRowSelectable(dataIndex)}
                   />
                 )}
                 {row.map(
