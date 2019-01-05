@@ -176,7 +176,7 @@ class MUIDataTable extends React.Component {
   getDefaultOptions(props) {
     const defaultOptions = {
       responsive: 'stacked',
-      filterType: 'checkbox',
+      filterType: 'dropdown',
       pagination: true,
       textLabels,
       expandableRows: false,
