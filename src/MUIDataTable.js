@@ -487,7 +487,7 @@ class MUIDataTable extends React.Component {
       if (this.options.jsonMode) {
         let arrayValue = [];
         columns.map(column => {
-          arrayValue.push(value[column.field]);
+          arrayValue.push(value[column.field] ? value[column.field] : "");
         });
         value = arrayValue;
       }
