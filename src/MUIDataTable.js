@@ -213,9 +213,10 @@ class MUIDataTable extends React.Component {
       throw Error('renderExpandableRow must be provided when using expandableRows option');
     }
     if (this.props.options.filterList) {
-      console.error('Deprecated: filterList must now be provided under each column option. see https://github.com/gregnb/mui-datatables/tree/master/examples/serverside-options example');
+      console.error(
+        'Deprecated: filterList must now be provided under each column option. see https://github.com/gregnb/mui-datatables/tree/master/examples/serverside-options example',
+      );
     }
-
   }
 
   setTableAction = action => {
@@ -249,7 +250,10 @@ class MUIDataTable extends React.Component {
     return cols.map(item => {
       if (typeof item !== 'object') return item;
 
-      const { options: { customHeadRender, customBodyRender, setCellProps, ...otherOptions }, ...otherProps } = item;
+      const {
+        options: { customHeadRender, customBodyRender, setCellProps, ...otherOptions },
+        ...otherProps
+      } = item;
       return { ...otherOptions, ...otherProps };
     });
   };
