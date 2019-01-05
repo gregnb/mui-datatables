@@ -85,19 +85,21 @@ describe('<MUIDataTable />', function() {
         filter: true,
         download: true,
         sortDirection: null,
+        viewColumns: true,
         customBodyRender: renderName,
       },
-      { display: 'true', name: 'Company', sort: true, filter: true, download: true, sortDirection: null },
+      { display: 'true', name: 'Company', sort: true, filter: true, download: true, viewColumns: true, sortDirection: null },
       {
         display: 'true',
         name: 'City',
         sort: true,
         filter: true,
         download: true,
+        viewColumns: true,
         sortDirection: null,
         customBodyRender: renderCities,
       },
-      { display: 'true', name: 'State', sort: true, filter: true, download: true, sortDirection: null },
+      { display: 'true', name: 'State', sort: true, filter: true, download: true, viewColumns: true, sortDirection: null },
     ];
 
     assert.deepEqual(actualResult, expectedResult);
@@ -345,8 +347,9 @@ describe('<MUIDataTable />', function() {
         download: true,
         sortDirection: null,
         customBodyRender: renderName,
+        viewColumns: true,
       },
-      { name: 'Company', display: 'true', sort: true, filter: true, download: true, sortDirection: null },
+      { name: 'Company', display: 'true', sort: true, filter: true, download: true, viewColumns: true, sortDirection: null },
       {
         name: 'City',
         display: 'true',
@@ -355,8 +358,9 @@ describe('<MUIDataTable />', function() {
         download: true,
         sortDirection: null,
         customBodyRender: renderCities,
+        viewColumns: true,
       },
-      { name: 'State', display: 'true', sort: true, filter: true, download: true, sortDirection: null },
+      { name: 'State', display: 'true', sort: true, filter: true, download: true, viewColumns: true, sortDirection: null },
     ];
 
     assert.deepEqual(state.columns, expectedResult);
