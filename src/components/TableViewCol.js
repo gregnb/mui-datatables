@@ -69,7 +69,7 @@ class TableViewCol extends React.Component {
         <FormGroup className={classes.formGroup}>
           {columns.map((column, index) => {
             return (
-              column.display !== 'excluded' && (
+              column.display !== 'excluded' && column.viewColumns !== false && (
                 <FormControlLabel
                   key={index}
                   classes={{
