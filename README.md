@@ -130,7 +130,6 @@ The component accepts the following props:
 |**`page`**|number||User provided starting page for pagination
 |**`count`**|number||User provided override for total number of rows
 |**`serverSide`**|boolean|false|Enable remote data source
-|**`filterList`**|array||User provided filter list
 |**`rowsSelected`**|array||User provided selected rows
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox", "dropdown", or "multiselect"
 |**`textLabels `**|object||User provided labels to localize text
@@ -201,10 +200,12 @@ const columns = [
 |Name|Type|Default|Description
 |:--:|:-----|:--|:-----|
 |**`display`**|string|'true'|Display column in table. `enum('true', 'false', 'excluded')`
+|**`filterList`**|array||Filter value list [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-options/index.js)
+|**`filterOptons`**|array||Filter options [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-options/index.js)
 |**`filter`**|boolean|true|Display column in filter list
 |**`sort`**|boolean|true|Enable/disable sorting on column
 |**`download`**|boolean|true|Display column in CSV download file
-|**`hint`**|string|`undefined`Display hint icon with string as tooltip on hover.
+|**`hint`**|string||Display hint icon with string as tooltip on hover.
 |**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(value, tableMeta, updateValue) => string`&#124;
 |**`customBodyRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
 |**`setCellProps`**|function||Is called for each cell and allows to return custom props for this cell based on its data. `function(cellValue: string, rowIndex: number, columnIndex: number) => string`
