@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    app: "./examples/serverside-filters/index.js"
+    app: "./examples/column-filters/index.js"
   },
   stats: "verbose",
   context: __dirname,
