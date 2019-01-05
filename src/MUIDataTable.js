@@ -148,6 +148,7 @@ class MUIDataTable extends React.Component {
     this.tableContent = React.createRef();
     this.headCellRefs = {};
     this.setHeadResizeable = () => {};
+    this.updateDividers = () => {};
   }
 
   componentWillMount() {
@@ -161,6 +162,13 @@ class MUIDataTable extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.data !== nextProps.data || this.props.columns !== nextProps.columns) {
       this.initializeTable(nextProps);
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.options.resizableColumns) {
+      this.setHeadResizeable(this.headCellRefs, this.tableRef);
+      this.updateDividers();
     }
   }
 
@@ -941,7 +949,7 @@ class MUIDataTable extends React.Component {
           style={{ position: 'relative' }}
           className={this.options.responsive === 'scroll' ? classes.responsiveScroll : null}>
           {this.options.resizableColumns && (
-            <TableResize key={rowCount} setResizeable={fn => (this.setHeadResizeable = fn)} />
+            <TableResize key={rowCount} updateDividers={fn => this.updateDividers = fn} setResizeable={fn => (this.setHeadResizeable = fn)} />
           )}
           <MuiTable ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'}>
             <caption className={classes.caption}>{title}</caption>
