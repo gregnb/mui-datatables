@@ -63,6 +63,9 @@ class MUIDataTable extends React.Component {
             filter: PropTypes.bool,
             sort: PropTypes.bool,
             download: PropTypes.bool,
+            viewColumns: PropTypes.bool,
+            filterList: PropTypes.array,
+            filterOptions: PropTypes.array,
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,
           }),
@@ -91,7 +94,6 @@ class MUIDataTable extends React.Component {
       fixedHeader: PropTypes.bool,
       page: PropTypes.number,
       count: PropTypes.number,
-      filterList: PropTypes.array,
       rowsSelected: PropTypes.array,
       rowsPerPage: PropTypes.number,
       rowsPerPageOptions: PropTypes.array,
@@ -210,6 +212,10 @@ class MUIDataTable extends React.Component {
     if (options.expandableRows && options.renderExpandableRow === undefined) {
       throw Error('renderExpandableRow must be provided when using expandableRows option');
     }
+    if (this.props.options.filterList) {
+      console.error('Deprecated: filterList must now be provided under each column option. see https://github.com/gregnb/mui-datatables/tree/master/examples/serverside-options example');
+    }
+
   }
 
   setTableAction = action => {
@@ -219,7 +225,7 @@ class MUIDataTable extends React.Component {
   };
 
   setTableOptions(props) {
-    const optionNames = ['rowsPerPage', 'page', 'rowsSelected', 'filterList', 'rowsPerPageOptions'];
+    const optionNames = ['rowsPerPage', 'page', 'rowsSelected', 'rowsPerPageOptions'];
     const optState = optionNames.reduce((acc, cur) => {
       if (this.options[cur] !== undefined) {
         acc[cur] = this.options[cur];
@@ -243,8 +249,8 @@ class MUIDataTable extends React.Component {
     return cols.map(item => {
       if (typeof item !== 'object') return item;
 
-      const { options, ...otherOpts } = item;
-      return otherOpts;
+      const { options: { customHeadRender, customBodyRender, setCellProps, ...otherOptions }, ...otherProps } = item;
+      return { ...otherOptions, ...otherProps };
     });
   };
 
@@ -268,6 +274,7 @@ class MUIDataTable extends React.Component {
         filter: true,
         sort: true,
         download: true,
+        viewColumns: true,
         sortDirection: null,
       };
 
@@ -327,6 +334,14 @@ class MUIDataTable extends React.Component {
         if (filterData[colIndex].indexOf(value) < 0) filterData[colIndex].push(value);
       }
 
+      if (column.filterOptions) {
+        filterData[colIndex] = cloneDeep(column.filterOptions);
+      }
+
+      if (column.filterList) {
+        filterList[colIndex] = cloneDeep(column.filterList);
+      }
+
       if (this.options.sortFilterList) {
         const comparator = getCollatorComparator();
         filterData[colIndex].sort(comparator);
@@ -337,12 +352,6 @@ class MUIDataTable extends React.Component {
         sortDirection = column.sortDirection === 'asc' ? 'desc' : 'asc';
       }
     });
-
-    if (options.filterList) filterList = options.filterList;
-
-    if (filterList.length !== columns.length) {
-      throw new Error('Provided options.filterList does not match the column length');
-    }
 
     let selectedRowsData = {
       data: [],
