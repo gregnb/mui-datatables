@@ -541,6 +541,38 @@ describe('<MUIDataTable />', function() {
     assert.strictEqual(options.onTableChange.callCount, 1);
   });
 
+  it('should render only things that match a filter', () => {
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+    instance.filterUpdate(0, 'James, Joe', 'checkbox');
+    table.update();
+    const state = table.state();
+
+    const expectedResult = JSON.stringify([
+      { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 0 }), 'NY'], dataIndex: 0 },
+    ]);
+
+    assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
+  });
+
+  it('should render all things that match a text field filter', () => {
+    const options = { filterType: 'textField' };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+    instance.filterUpdate(0, 'James', 'textField');
+    table.update();
+    const state = table.state();
+
+    const expectedResult = JSON.stringify([
+      { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 0 }), 'NY'], dataIndex: 0 },
+      { data: ['Houston, James', 'Test Corp', renderCities('Dallas', { rowIndex: 3 }), 'TX'], dataIndex: 3 },
+    ]);
+
+    assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
+  });
+
   describe('should correctly run comparator function', () => {
     it('correctly compares two equal strings', () => {
       expect(getCollatorComparator()('testString', 'testString')).to.equal(0);

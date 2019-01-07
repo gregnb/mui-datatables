@@ -5,6 +5,7 @@ import { assert, expect, should } from 'chai';
 import textLabels from '../src/textLabels';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
+import TextField from '@material-ui/core/TextField';
 import TableFilter from '../src/components/TableFilter';
 
 describe('<TableFilter />', function() {
@@ -94,6 +95,30 @@ describe('<TableFilter />', function() {
 
     const actualResult = mountWrapper.find(Select);
     assert.strictEqual(actualResult.length, 4);
+  });
+
+  it("should data table filter view with TextFields if filterType = 'textfield'", () => {
+    const options = { filterType: 'textField', textLabels };
+    const filterList = [[], [], [], []];
+    const shallowWrapper = mount(
+      <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
+    );
+
+    const actualResult = shallowWrapper.find(TextField);
+    assert.strictEqual(actualResult.length, 4);
+  });
+
+  it("should data table filter view with no TextFields if filter=false when filterType = 'textField'", () => {
+    const options = { filterType: 'textField', textLabels };
+    const filterList = [[], [], [], []];
+    columns = columns.map(item => (item.filter = false));
+
+    const shallowWrapper = mount(
+      <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
+    );
+
+    const actualResult = shallowWrapper.find(TextField);
+    assert.strictEqual(actualResult.length, 0);
   });
 
   it('should trigger onFilterUpdate prop callback when calling method handleCheckboxChange', () => {
