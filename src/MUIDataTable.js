@@ -75,7 +75,7 @@ class MUIDataTable extends React.Component {
     /** Options used to describe table */
     options: PropTypes.shape({
       responsive: PropTypes.oneOf(['stacked', 'scroll']),
-      filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect']),
+      filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField']),
       textLabels: PropTypes.object,
       pagination: PropTypes.bool,
       expandableRows: PropTypes.bool,
@@ -435,30 +435,38 @@ class MUIDataTable extends React.Component {
 
       displayRow.push(columnDisplay);
 
-      if (filterList[index].length && filterList[index].indexOf(columnValue) < 0) {
-        isFiltered = true;
-      }
-
       const columnVal = columnValue === null ? '' : columnValue.toString();
 
-      if (searchText) {
-        let searchNeedle = searchText.toString();
-        let searchStack = columnVal.toString();
-
-        if (!this.options.caseSensitive) {
-          searchNeedle = searchNeedle.toLowerCase();
-          searchStack = searchStack.toLowerCase();
+      const filterVal = filterList[index];
+      const { filterType, caseSensitive } = this.options;
+      if (filterVal.length) {
+        if (filterType === 'textField' && !this.hasSearchText(columnVal, filterVal, caseSensitive)) {
+          isFiltered = true;
+        } else if (filterType !== 'textField' && filterVal.indexOf(columnValue) < 0) {
+          isFiltered = true;
         }
+      }
 
-        if (searchStack.indexOf(searchNeedle) >= 0) {
-          isSearchFound = true;
-        }
+      if (searchText && this.hasSearchText(columnVal, searchText, caseSensitive)) {
+        isSearchFound = true;
       }
     }
 
     if (isFiltered || (!this.options.serverSide && searchText && !isSearchFound)) return null;
     else return displayRow;
   }
+
+  hasSearchText = (toSearch, toFind, caseSensitive) => {
+    let stack = toSearch.toString();
+    let needle = toFind.toString();
+
+    if (!caseSensitive) {
+      needle = needle.toLowerCase();
+      stack = stack.toLowerCase();
+    }
+
+    return stack.indexOf(needle) >= 0;
+  };
 
   updateDataCol = (row, index, value) => {
     this.setState(prevState => {
