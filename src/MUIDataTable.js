@@ -958,7 +958,11 @@ class MUIDataTable extends React.Component {
           style={{ position: 'relative' }}
           className={this.options.responsive === 'scroll' ? classes.responsiveScroll : null}>
           {this.options.resizableColumns && (
-            <TableResize key={rowCount} updateDividers={fn => this.updateDividers = fn} setResizeable={fn => (this.setHeadResizeable = fn)} />
+            <TableResize
+              key={rowCount}
+              updateDividers={fn => (this.updateDividers = fn)}
+              setResizeable={fn => (this.setHeadResizeable = fn)}
+            />
           )}
           <MuiTable ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'}>
             <caption className={classes.caption}>{title}</caption>
