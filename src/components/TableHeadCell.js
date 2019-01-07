@@ -7,14 +7,14 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
 import HelpIcon from '@material-ui/icons/Help';
 
-const defaultHeadCellStyles = {
+const defaultHeadCellStyles = theme => ({
   root: {},
   fixedHeader: {
     position: 'sticky',
     top: '0px',
     left: '0px',
     zIndex: 100,
-    backgroundColor: '#FFF',
+    backgroundColor: theme.palette.background.paper,
   },
   tooltip: {
     cursor: 'pointer',
@@ -35,14 +35,14 @@ const defaultHeadCellStyles = {
     height: '10px',
   },
   sortActive: {
-    color: 'rgba(0, 0, 0, 0.87)',
+    color: theme.palette.text.primary,
   },
   toolButton: {
     height: '10px',
     outline: 'none',
     cursor: 'pointer',
   },
-};
+});
 
 class TableHeadCell extends React.Component {
   static propTypes = {
