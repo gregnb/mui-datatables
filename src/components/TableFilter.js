@@ -1,112 +1,126 @@
-import React from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
-import Typography from "@material-ui/core/Typography";
-import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import InputLabel from "@material-ui/core/InputLabel";
-import Input from "@material-ui/core/Input";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
-import Checkbox from "@material-ui/core/Checkbox";
-import ListItemText from "@material-ui/core/ListItemText";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import Typography from '@material-ui/core/Typography';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import Checkbox from '@material-ui/core/Checkbox';
+import ListItemText from '@material-ui/core/ListItemText';
+import { withStyles } from '@material-ui/core/styles';
+import { TextField } from '@material-ui/core';
 
 export const defaultFilterStyles = {
   root: {
-    padding: "16px 24px 16px 24px",
-    fontFamily: "Roboto",
+    padding: '16px 24px 16px 24px',
+    fontFamily: 'Roboto',
   },
   header: {
-    flex: "0 0 auto",
-    marginBottom: "16px",
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
+    flex: '0 0 auto',
+    marginBottom: '16px',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   title: {
-    display: "inline-block",
-    marginLeft: "7px",
-    color: "#424242",
-    fontSize: "14px",
+    display: 'inline-block',
+    marginLeft: '7px',
+    color: '#424242',
+    fontSize: '14px',
     fontWeight: 500,
   },
   noMargin: {
-    marginLeft: "0px",
+    marginLeft: '0px',
   },
   reset: {
-    alignSelf: "left",
+    alignSelf: 'left',
   },
   resetLink: {
-    color: "#027cb5",
-    backgroundColor: "#FFF",
-    display: "inline-block",
-    marginLeft: "24px",
-    fontSize: "12px",
-    cursor: "pointer",
-    border: "none",
-    "&:hover": {
-      color: "#FF0000",
+    color: '#027cb5',
+    backgroundColor: '#FFF',
+    display: 'inline-block',
+    marginLeft: '24px',
+    fontSize: '12px',
+    cursor: 'pointer',
+    border: 'none',
+    '&:hover': {
+      color: '#FF0000',
     },
   },
   filtersSelected: {
-    alignSelf: "right",
+    alignSelf: 'right',
   },
   /* checkbox */
   checkboxList: {
-    flex: "1 1 100%",
-    display: "inline-flex",
-    marginRight: "24px",
+    flex: '1 1 100%',
+    display: 'inline-flex',
+    marginRight: '24px',
   },
   checkboxListTitle: {
-    marginLeft: "7px",
-    marginBottom: "8px",
-    fontSize: "14px",
-    color: "#424242",
-    textAlign: "left",
+    marginLeft: '7px',
+    marginBottom: '8px',
+    fontSize: '14px',
+    color: '#424242',
+    textAlign: 'left',
     fontWeight: 500,
   },
   checkboxFormGroup: {
-    marginTop: "8px",
+    marginTop: '8px',
   },
   checkboxFormControl: {
-    margin: "0px",
+    margin: '0px',
   },
   checkboxFormControlLabel: {
-    fontSize: "15px",
-    marginLeft: "8px",
-    color: "#4a4a4a",
+    fontSize: '15px',
+    marginLeft: '8px',
+    color: '#4a4a4a',
   },
   checkboxIcon: {
     //color: "#027cb5",
-    width: "32px",
-    height: "32px",
+    width: '32px',
+    height: '32px',
   },
   checkbox: {
-    "&$checked": {
-      color: "#027cB5",
+    '&$checked': {
+      color: '#027cB5',
     },
   },
   checked: {},
   /* selects */
   selectRoot: {
-    display: "flex",
-    marginTop: "16px",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    width: "100%",
-    height: "80%",
-    justifyContent: "space-between",
+    display: 'flex',
+    marginTop: '16px',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: '100%',
+    height: '80%',
+    justifyContent: 'space-between',
   },
   selectFormControl: {
-    flex: "1 1 calc(50% - 24px)",
-    marginRight: "24px",
-    marginBottom: "24px",
+    flex: '1 1 calc(50% - 24px)',
+    marginRight: '24px',
+    marginBottom: '24px',
+  },
+  /* textField */
+  textFieldRoot: {
+    display: 'flex',
+    marginTop: '16px',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: '100%',
+  },
+  textFieldFormControl: {
+    flex: '1 1 calc(50% - 24px)',
+    marginRight: '24px',
+    marginBottom: '24px',
   },
 };
 
-class MUIDataTableFilter extends React.PureComponent {
+class TableFilter extends React.PureComponent {
   static propTypes = {
     /** Data used to populate filter dropdown/checkbox */
     filterData: PropTypes.array.isRequired,
@@ -123,16 +137,20 @@ class MUIDataTableFilter extends React.PureComponent {
   };
 
   handleCheckboxChange = (index, column) => {
-    this.props.onFilterUpdate(index, column, "checkbox");
+    this.props.onFilterUpdate(index, column, 'checkbox');
   };
 
   handleDropdownChange = (index, value) => {
-    value = value === this.props.options.textLabels.filter.all ? "" : value;
-    this.props.onFilterUpdate(index, value, "dropdown");
+    const value = event.target.value  === this.props.options.textLabels.filter.all ? "" : event.target.value ;
+    this.props.onFilterUpdate(index, value, 'dropdown');
   };
 
   handleMultiselectChange = (index, column) => {
-    this.props.onFilterUpdate(index, column, "multiselect");
+    this.props.onFilterUpdate(index, column, 'multiselect');
+  };
+
+  handleTextFieldChange = (event, index) => {
+    this.props.onFilterUpdate(index, event.target.value, 'textField');
   };
 
   renderCheckbox(columns) {
@@ -161,7 +179,7 @@ class MUIDataTableFilter extends React.PureComponent {
                       root: classes.checkbox,
                       checked: classes.checked,
                     }}
-                    value={filterColumn !== null ? filterColumn.toString() : ""}
+                    value={filterColumn !== null ? filterColumn.toString() : ''}
                   />
                 }
                 label={filterColumn}
@@ -194,7 +212,7 @@ class MUIDataTableFilter extends React.PureComponent {
         <Select
           value={filterValues.toString() || textLabels.all}
           name={column.name}
-          onChange={event => this.handleDropdownChange(index, event.target.value)}
+          onChange={event => this.handleDropdownChange(event.target.value,index)}
           input={<Input name={column.name} id={column.name} />}>
           <MenuItem value={textLabels.all} key={0}>
             {textLabels.all}
@@ -215,6 +233,28 @@ class MUIDataTableFilter extends React.PureComponent {
     return (
       <div className={classes.selectRoot}>
         {columns.map((column, index) => column.filter && this.renderSelectItem(column, index))}
+      </div>
+    );
+  }
+
+  renderTextField(columns) {
+    const { classes, filterList } = this.props;
+
+    return (
+      <div className={classes.textFieldRoot}>
+        {columns.map((column, index) =>
+          column.filter ? (
+            <FormControl className={classes.textFieldFormControl} key={index}>
+              <TextField
+                label={column.name}
+                value={filterList[index].toString() || ''}
+                onChange={event => this.handleTextFieldChange(event, index)}
+              />
+            </FormControl>
+          ) : (
+            false
+          ),
+        )}
       </div>
     );
   }
@@ -276,6 +316,8 @@ class MUIDataTableFilter extends React.PureComponent {
         return this.renderCheckbox(columns);
       case "multiselect":
         return this.renderMultiselect(columns);
+        case "textField":
+        return this.renderTextField(columns);
       default:
         return this.renderSelect(columns);
     }
@@ -293,7 +335,7 @@ class MUIDataTableFilter extends React.PureComponent {
               variant="caption"
               className={classNames({
                 [classes.title]: true,
-                [classes.noMargin]: options.filterType !== "checkbox" ? true : false,
+                [classes.noMargin]: options.filterType !== 'checkbox' ? true : false,
               })}>
               {textLabels.title}
             </Typography>
@@ -309,4 +351,4 @@ class MUIDataTableFilter extends React.PureComponent {
   }
 }
 
-export default withStyles(defaultFilterStyles, { name: "MUIDataTableFilter" })(MUIDataTableFilter);
+export default withStyles(defaultFilterStyles, { name: 'MUIDataTableFilter' })(TableFilter);

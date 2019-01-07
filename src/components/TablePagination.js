@@ -1,31 +1,31 @@
-import React from "react";
-import PropTypes from "prop-types";
-import TableRow from "@material-ui/core/TableRow";
-import TableFooter from "@material-ui/core/TableFooter";
-import TablePagination from "@material-ui/core/TablePagination";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import MuiTableRow from '@material-ui/core/TableRow';
+import MuiTableFooter from '@material-ui/core/TableFooter';
+import MuiTablePagination from '@material-ui/core/TablePagination';
+import { withStyles } from '@material-ui/core/styles';
 
 const defaultPaginationStyles = {
   root: {
-    "&:last-child": {
-      padding: "0px 24px 0px 24px",
+    '&:last-child': {
+      padding: '0px 24px 0px 24px',
     },
   },
   toolbar: {},
   selectRoot: {},
-  "@media screen and (max-width: 400px)": {
+  '@media screen and (max-width: 400px)': {
     toolbar: {
-      "& span:nth-child(2)": {
-        display: "none",
+      '& span:nth-child(2)': {
+        display: 'none',
       },
     },
     selectRoot: {
-      marginRight: "8px",
+      marginRight: '8px',
     },
   },
 };
 
-class MUIDataTablePagination extends React.Component {
+class TablePagination extends React.Component {
   static propTypes = {
     /** Total number of table rows */
     count: PropTypes.number.isRequired,
@@ -53,9 +53,9 @@ class MUIDataTablePagination extends React.Component {
     const textLabels = options.textLabels.pagination;
 
     return (
-      <TableFooter>
-        <TableRow>
-          <TablePagination
+      <MuiTableFooter>
+        <MuiTableRow>
+          <MuiTablePagination
             className={classes.root}
             classes={{
               caption: classes.caption,
@@ -68,19 +68,19 @@ class MUIDataTablePagination extends React.Component {
             labelRowsPerPage={textLabels.rowsPerPage}
             labelDisplayedRows={({ from, to, count }) => `${from}-${to} ${textLabels.displayRows} ${count}`}
             backIconButtonProps={{
-              "aria-label": textLabels.previous,
+              'aria-label': textLabels.previous,
             }}
             nextIconButtonProps={{
-              "aria-label": textLabels.next,
+              'aria-label': textLabels.next,
             }}
             rowsPerPageOptions={options.rowsPerPageOptions}
             onChangePage={this.handlePageChange}
             onChangeRowsPerPage={this.handleRowChange}
           />
-        </TableRow>
-      </TableFooter>
+        </MuiTableRow>
+      </MuiTableFooter>
     );
   }
 }
 
-export default withStyles(defaultPaginationStyles, { name: "MUIDataTablePagination" })(MUIDataTablePagination);
+export default withStyles(defaultPaginationStyles, { name: 'MUIDataTablePagination' })(TablePagination);

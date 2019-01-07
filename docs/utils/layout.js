@@ -1,47 +1,47 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Head from "next/head";
-import Typography from "@material-ui/core/Typography";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import Tooltip from "@material-ui/core/Tooltip";
-import GitHub from "../icons/GitHub";
-import withRoot from "../utils/withRoot";
-import { withStyles } from "@material-ui/core/styles";
-import Menu from "./Menu";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Head from 'next/head';
+import Typography from '@material-ui/core/Typography';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Tooltip from '@material-ui/core/Tooltip';
+import GitHub from '../icons/GitHub';
+import withRoot from '../utils/withRoot';
+import { withStyles } from '@material-ui/core/styles';
+import Menu from './Menu';
 
 /* eslint-disable import/no-webpack-loader-syntax  */
-import lightTheme from "!raw-loader!prismjs/themes/prism.css";
+import lightTheme from '!raw-loader!prismjs/themes/prism.css';
 
 const styles = theme => ({
   appBar: {
-    backgroundColor: "#23232f",
+    backgroundColor: '#23232f',
   },
   toolBar: {
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   logo: {
-    display: "block",
-    height: "56px",
-    position: "relative",
-    top: "5px",
+    display: 'block',
+    height: '56px',
+    position: 'relative',
+    top: '5px',
   },
   wrapper: {
-    flex: "1 0 100%",
+    flex: '1 0 100%',
   },
   content: {
-    flex: "1 0 100%",
-    margin: "0 auto",
-    padding: "16px 16px 0px 16px",
-    marginTop: "64px",
-    minHeight: "600px",
-    maxWidth: "960px",
+    flex: '1 0 100%',
+    margin: '0 auto',
+    padding: '16px 16px 0px 16px',
+    marginTop: '64px',
+    minHeight: '600px',
+    maxWidth: '960px',
   },
   footer: {
-    flex: "1 0 100%",
-    marginTop: "32px",
+    flex: '1 0 100%',
+    marginTop: '32px',
   },
 });
 
@@ -51,8 +51,8 @@ class Layout extends React.Component {
   };
 
   componentDidMount() {
-    const styleNode = document.createElement("style");
-    styleNode.setAttribute("data-prism", "true");
+    const styleNode = document.createElement('style');
+    styleNode.setAttribute('data-prism', 'true');
     if (document.head) {
       document.head.appendChild(styleNode);
     }

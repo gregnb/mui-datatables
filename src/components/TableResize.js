@@ -1,24 +1,24 @@
-import React from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
-import { findDOMNode } from "react-dom";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import { findDOMNode } from 'react-dom';
+import { withStyles } from '@material-ui/core/styles';
 
 const defaultResizeStyles = {
   root: {
-    position: "absolute",
+    position: 'absolute',
   },
   resizer: {
-    position: "absolute",
-    width: "1px",
-    height: "100%",
-    left: "100px",
-    cursor: "ew-resize",
-    border: "0.1px solid rgba(224, 224, 224, 1)",
+    position: 'absolute',
+    width: '1px',
+    height: '100%',
+    left: '100px',
+    cursor: 'ew-resize',
+    border: '0.1px solid rgba(224, 224, 224, 1)',
   },
 };
 
-class MUIDataTableResize extends React.Component {
+class TableResize extends React.Component {
   static propTypes = {
     /** Extend the style applied to components */
     classes: PropTypes.object,
@@ -27,8 +27,8 @@ class MUIDataTableResize extends React.Component {
   state = {
     resizeCoords: {},
     startPosition: 0,
-    tableWidth: "100%",
-    tableHeight: "100%",
+    tableWidth: '100%',
+    tableHeight: '100%',
   };
 
   handleReize = () => {
@@ -41,11 +41,12 @@ class MUIDataTableResize extends React.Component {
   componentDidMount() {
     this.windowWidth = null;
     this.props.setResizeable(this.setCellRefs);
-    window.addEventListener("resize", this.handleReize, false);
+    this.props.updateDividers(() => this.setState({ updateCoords: true }, () => this.updateWidths()));
+    window.addEventListener('resize', this.handleReize, false);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.handleReize, false);
+    window.removeEventListener('resize', this.handleReize, false);
   }
 
   setCellRefs = (cellsRef, tableRef) => {
@@ -83,7 +84,7 @@ class MUIDataTableResize extends React.Component {
       lastPosition = item.left;
 
       const thCell = this.cellsRef[key];
-      thCell.style.width = newWidth + "%";
+      thCell.style.width = newWidth + '%';
     });
   };
 
@@ -122,8 +123,8 @@ class MUIDataTableResize extends React.Component {
               onMouseMove={this.onResizeMove.bind(null, key)}
               onMouseUp={this.onResizeEnd.bind(null, key)}
               style={{
-                width: isResize && id == key ? tableWidth : "auto",
-                position: "absolute",
+                width: isResize && id == key ? tableWidth : 'auto',
+                position: 'absolute',
                 height: tableHeight,
                 zIndex: 1000,
               }}>
@@ -141,4 +142,4 @@ class MUIDataTableResize extends React.Component {
   }
 }
 
-export default withStyles(defaultResizeStyles, { name: "MUIDataTableResize" })(MUIDataTableResize);
+export default withStyles(defaultResizeStyles, { name: 'MUIDataTableResize' })(TableResize);
