@@ -258,10 +258,14 @@ class MUIDataTable extends React.Component {
     return cols.map(item => {
       if (typeof item !== 'object') return item;
 
-      const {
-        options: { customHeadRender, customBodyRender, setCellProps, ...otherOptions },
-        ...otherProps
-      } = item;
+      let otherOptions = {};
+      const { options, ...otherProps } = item;
+
+      if (options) {
+        const { customHeadRender, customBodyRender, setCellProps, ...nonFnOpts } = options;
+        otherOptions = nonFnOpts;
+      }
+
       return { ...otherOptions, ...otherProps };
     });
   };
