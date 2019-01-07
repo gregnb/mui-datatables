@@ -643,6 +643,7 @@ class MUIDataTable extends React.Component {
     this.setState(
       prevState => ({
         searchText: text && text.length ? text : null,
+        page: 0,
         displayData: this.options.serverSide
           ? prevState.displayData
           : this.getDisplayData(prevState.columns, prevState.data, prevState.filterList, text),
