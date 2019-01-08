@@ -105,6 +105,7 @@ class MUIDataTable extends React.Component {
         filename: PropTypes.string,
         separator: PropTypes.string,
       }),
+      alwaysRenderToolbar: PropTypes.bool,
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
@@ -196,6 +197,7 @@ class MUIDataTable extends React.Component {
         filename: 'tableDownload.csv',
         separator: ',',
       },
+      alwaysRenderToolbar: false,
     };
 
     this.options = merge(defaultOptions, props.options);
@@ -786,7 +788,7 @@ class MUIDataTable extends React.Component {
           let rowPos = -1;
 
           for (let cIndex = 0; cIndex < selectedRows.length; cIndex++) {
-            if (selectedRows[cIndex].index === index) {
+            if (selectedRows[cIndex].dataIndex === dataIndex) {
               rowPos = cIndex;
               break;
             }
@@ -892,7 +894,7 @@ class MUIDataTable extends React.Component {
 
     return (
       <Paper elevation={4} ref={this.tableContent} className={classes.paper}>
-        {selectedRows.data.length ? (
+        {(selectedRows.data.length > 0) && (
           <TableToolbarSelect
             options={this.options}
             selectedRows={selectedRows}
@@ -900,7 +902,8 @@ class MUIDataTable extends React.Component {
             displayData={displayData}
             selectRowUpdate={this.selectRowUpdate}
           />
-        ) : (
+        )}
+        {(selectedRows.data.length == 0 || this.options.alwaysRenderToolbar) && (
           <TableToolbar
             columns={columns}
             displayData={displayData}

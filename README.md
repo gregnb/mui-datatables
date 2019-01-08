@@ -170,6 +170,7 @@ The component accepts the following props:
 |**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
 |**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
 |**`setRowProps`**|function||Is called for each row and allows to return custom props for this row based on its data. `function(row: array, rowIndex: number) => object`
+|**`alwaysRenderToolbar`**|boolean|false|Weather the toolbar should also be rendered when a column is selected
 
 ## Customize Columns
 
