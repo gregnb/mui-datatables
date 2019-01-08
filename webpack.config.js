@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    app: "./examples/expandable-rows/index.js"
+    app: "./examples/column-filters/index.js"
   },
   stats: "verbose",
   context: __dirname,

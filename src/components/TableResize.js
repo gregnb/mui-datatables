@@ -41,6 +41,7 @@ class TableResize extends React.Component {
   componentDidMount() {
     this.windowWidth = null;
     this.props.setResizeable(this.setCellRefs);
+    this.props.updateDividers(() => this.setState({ updateCoords: true }, () => this.updateWidths()));
     window.addEventListener('resize', this.handleReize, false);
   }
 

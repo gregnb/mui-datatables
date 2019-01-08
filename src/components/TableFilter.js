@@ -12,6 +12,7 @@ import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core/styles';
+import { TextField } from '@material-ui/core';
 
 export const defaultFilterStyles = {
   root: {
@@ -104,6 +105,19 @@ export const defaultFilterStyles = {
     marginRight: '24px',
     marginBottom: '24px',
   },
+  /* textField */
+  textFieldRoot: {
+    display: 'flex',
+    marginTop: '16px',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: '100%',
+  },
+  textFieldFormControl: {
+    flex: '1 1 calc(50% - 24px)',
+    marginRight: '24px',
+    marginBottom: '24px',
+  },
 };
 
 class TableFilter extends React.Component {
@@ -133,6 +147,10 @@ class TableFilter extends React.Component {
 
   handleMultiselectChange = (index, column) => {
     this.props.onFilterUpdate(index, column, 'multiselect');
+  };
+
+  handleTextFieldChange = (event, index) => {
+    this.props.onFilterUpdate(index, event.target.value, 'textField');
   };
 
   renderCheckbox(columns) {
@@ -208,6 +226,28 @@ class TableFilter extends React.Component {
     );
   }
 
+  renderTextField(columns) {
+    const { classes, filterList } = this.props;
+
+    return (
+      <div className={classes.textFieldRoot}>
+        {columns.map((column, index) =>
+          column.filter ? (
+            <FormControl className={classes.textFieldFormControl} key={index}>
+              <TextField
+                label={column.name}
+                value={filterList[index].toString() || ''}
+                onChange={event => this.handleTextFieldChange(event, index)}
+              />
+            </FormControl>
+          ) : (
+            false
+          ),
+        )}
+      </div>
+    );
+  }
+
   renderMultiselect(columns) {
     const { classes, filterData, filterList, options } = this.props;
 
@@ -274,6 +314,8 @@ class TableFilter extends React.Component {
           ? this.renderCheckbox(columns)
           : options.filterType === 'multiselect'
           ? this.renderMultiselect(columns)
+          : options.filterType === 'textField'
+          ? this.renderTextField(columns)
           : this.renderSelect(columns)}
       </div>
     );
