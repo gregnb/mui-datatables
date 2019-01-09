@@ -1,16 +1,16 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Typography from "@material-ui/core/Typography";
-import TableBody from "@material-ui/core/TableBody";
-import MUIDataTableBodyCell from "./MUIDataTableBodyCell";
-import MUIDataTableBodyRow from "./MUIDataTableBodyRow";
-import MUIDataTableSelectCell from "./MUIDataTableSelectCell";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
+import TableBody from '@material-ui/core/TableBody';
+import MUIDataTableBodyCell from './MUIDataTableBodyCell';
+import MUIDataTableBodyRow from './MUIDataTableBodyRow';
+import MUIDataTableSelectCell from './MUIDataTableSelectCell';
+import { withStyles } from '@material-ui/core/styles';
 
 const defaultBodyStyles = {
   root: {},
   emptyTitle: {
-    textAlign: "center",
+    textAlign: 'center',
   },
 };
 
@@ -50,11 +50,11 @@ class MUIDataTableBody extends React.Component {
 
     if (page > totalPages && totalPages !== 0) {
       throw new Error(
-        "Provided options.page of `" +
+        'Provided options.page of `' +
           page +
-          "` is greater than the total available page length of `" +
+          '` is greater than the total available page length of `' +
           totalPages +
-          "`",
+          '`',
       );
     }
 
@@ -82,7 +82,7 @@ class MUIDataTableBody extends React.Component {
   }
 
   handleRowSelect = data => {
-    this.props.selectRowUpdate("cell", data);
+    this.props.selectRowUpdate('cell', data);
   };
 
   render() {
@@ -97,7 +97,7 @@ class MUIDataTableBody extends React.Component {
               options={options}
               rowSelected={options.selectableRows ? this.isRowSelected(dataIndex) : false}
               onClick={options.onRowClick ? options.onRowClick.bind(null, row, { rowIndex, dataIndex }) : null}
-              id={"MUIDataTableBodyRow-" + dataIndex}
+              id={'MUIDataTableBodyRow-' + dataIndex}
               key={rowIndex}>
               {options.selectableRows ? (
                 <MUIDataTableSelectCell
@@ -113,7 +113,7 @@ class MUIDataTableBody extends React.Component {
               )}
 
               {columns.map((column, index) =>
-                columns[index].display === "true" ? (
+                columns[index].display === 'true' ? (
                   <MUIDataTableBodyCell
                     dataIndex={dataIndex}
                     rowIndex={rowIndex}
@@ -147,4 +147,4 @@ class MUIDataTableBody extends React.Component {
   }
 }
 
-export default withStyles(defaultBodyStyles, { name: "MUIDataTableBody" })(MUIDataTableBody);
+export default withStyles(defaultBodyStyles, { name: 'MUIDataTableBody' })(MUIDataTableBody);

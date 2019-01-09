@@ -3,17 +3,18 @@ import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
-import { MUIPopover, MUIPopoverTarget, MUIPopoverContent } from './MUIPopover';
-import MUIDataTableFilter from './MUIDataTableFilter';
-import MUIDataTableViewCol from './MUIDataTableViewCol';
-import MUIDataTableSearch from './MUIDataTableSearch';
+import Popover from './Popover';
+import TableFilter from './TableFilter';
+import TableViewCol from './TableViewCol';
+import TableSearch from './TableSearch';
 import SearchIcon from '@material-ui/icons/Search';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
 import PrintIcon from '@material-ui/icons/Print';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import FilterIcon from '@material-ui/icons/FilterList';
 import ReactToPrint from 'react-to-print';
-import styled from './styled';
+import styled from '../styled';
+import { createCSVDownload } from '../utils';
 
 export const defaultToolbarStyles = (theme, props) => ({
   root: {},
@@ -39,11 +40,11 @@ export const defaultToolbarStyles = (theme, props) => ({
     marginTop: '10px',
     marginRight: '8px',
   },
-  ...(props.options.responsive ? { ...responsiveToolbarStyles } : {}),
+  ...(props.options.responsive ? { ...responsiveToolbarStyles(theme) } : {}),
 });
 
-export const responsiveToolbarStyles = {
-  '@media screen and (max-width: 960px)': {
+export const responsiveToolbarStyles = theme => ({
+  [theme.breakpoints.down('sm')]: {
     titleRoot: {},
     titleText: {
       fontSize: '16px',
@@ -60,7 +61,7 @@ export const responsiveToolbarStyles = {
       textAlign: 'right',
     },
   },
-  '@media screen and (max-width: 600px)': {
+  [theme.breakpoints.down('xs')]: {
     root: {
       display: 'block',
     },
@@ -75,70 +76,34 @@ export const responsiveToolbarStyles = {
     },
   },
   '@media screen and (max-width: 480px)': {},
-};
+});
 
-class MUIDataTableToolbar extends React.Component {
+class TableToolbar extends React.Component {
   state = {
     iconActive: null,
     showSearch: false,
   };
 
   handleCSVDownload = () => {
-    const { displayData, columns, options } = this.props;
-
-    const CSVHead =
-      columns
-        .reduce(
-          (soFar, column) =>
-            column.download ? soFar + '"' + column.name + '"' + options.downloadOptions.separator : soFar,
-          '',
-        )
-        .slice(0, -1) + '\r\n';
-    const colsIdxToDownload = Object.keys(columns).filter(index => columns[index].download);
-
-    const CSVBody = displayData
-      .reduce(
-        (soFar, row) =>
-          soFar +
-          '"' +
-          colsIdxToDownload
-            .map(index => (Array.isArray(row.data) ? row.data[index] : row.data[columns[index].field]))
-            .join('"' + options.downloadOptions.separator + '"') +
-          '"\r\n',
-        [],
-      )
-      .trim();
-
-    /* taken from react-csv */
-    const csv = `${CSVHead}${CSVBody}`;
-    const blob = new Blob([csv], { type: 'text/csv' });
-
-    if (navigator && navigator.msSaveOrOpenBlob) {
-      navigator.msSaveOrOpenBlob(blob, options.downloadOptions.filename);
-    } else {
-      const dataURI = `data:text/csv;charset=utf-8,${csv}`;
-
-      const URL = window.URL || window.webkitURL;
-      const downloadURI = typeof URL.createObjectURL === 'undefined' ? dataURI : URL.createObjectURL(blob);
-
-      let link = document.createElement('a');
-      link.setAttribute('href', downloadURI);
-      link.setAttribute('download', options.downloadOptions.filename);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+    const { data, columns, options } = this.props;
+    createCSVDownload(columns, data, options);
   };
 
   setActiveIcon = iconName => {
     this.setState(() => ({
       iconActive: iconName,
-      showSearch: iconName === 'search' ? true : false,
+      showSearch: iconName === 'search' ? this.showSearch() : false,
     }));
   };
 
   getActiveIcon = (styles, iconName) => {
     return this.state.iconActive !== iconName ? styles.icon : styles.iconActive;
+  };
+
+  showSearch = () => {
+    !!this.props.options.onSearchOpen && this.props.options.onSearchOpen();
+    this.props.setTableAction('onSearchOpen');
+    return true;
   };
 
   hideSearch = () => {
@@ -178,7 +143,7 @@ class MUIDataTableToolbar extends React.Component {
       <Toolbar className={classes.root} role={'toolbar'} aria-label={'Table Toolbar'}>
         <div className={classes.left}>
           {showSearch === true ? (
-            <MUIDataTableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
+            <TableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
           ) : (
             <div className={classes.titleRoot} aria-hidden={'true'}>
               <Typography variant="h6" className={classes.titleText}>
@@ -188,7 +153,7 @@ class MUIDataTableToolbar extends React.Component {
           )}
         </div>
         <div className={classes.actions}>
-          {options.search ? (
+          {options.search && (
             <Tooltip title={search}>
               <IconButton
                 aria-label={search}
@@ -198,19 +163,15 @@ class MUIDataTableToolbar extends React.Component {
                 <SearchIcon />
               </IconButton>
             </Tooltip>
-          ) : (
-            false
           )}
-          {options.download ? (
+          {options.download && (
             <Tooltip title={downloadCsv}>
               <IconButton aria-label={downloadCsv} classes={{ root: classes.icon }} onClick={this.handleCSVDownload}>
                 <DownloadIcon />
               </IconButton>
             </Tooltip>
-          ) : (
-            false
           )}
-          {options.print ? (
+          {options.print && (
             <Tooltip title={print}>
               <span>
                 <ReactToPrint
@@ -223,12 +184,12 @@ class MUIDataTableToolbar extends React.Component {
                 />
               </span>
             </Tooltip>
-          ) : (
-            false
           )}
-          {options.viewColumns ? (
-            <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
-              <MUIPopoverTarget>
+          {options.viewColumns && (
+            <Popover
+              refExit={this.setActiveIcon.bind(null)}
+              container={tableRef}
+              trigger={
                 <IconButton
                   aria-label={viewColumns}
                   classes={{ root: this.getActiveIcon(classes, 'viewcolumns') }}
@@ -237,22 +198,17 @@ class MUIDataTableToolbar extends React.Component {
                     <ViewColumnIcon />
                   </Tooltip>
                 </IconButton>
-              </MUIPopoverTarget>
-              <MUIPopoverContent>
-                <MUIDataTableViewCol
-                  data={data}
-                  columns={columns}
-                  options={options}
-                  onColumnUpdate={toggleViewColumn}
-                />
-              </MUIPopoverContent>
-            </MUIPopover>
-          ) : (
-            false
+              }
+              content={
+                <TableViewCol data={data} columns={columns} options={options} onColumnUpdate={toggleViewColumn} />
+              }
+            />
           )}
-          {options.filter ? (
-            <MUIPopover refExit={this.setActiveIcon.bind(null)} container={tableRef}>
-              <MUIPopoverTarget>
+          {options.filter && (
+            <Popover
+              refExit={this.setActiveIcon.bind(null)}
+              container={tableRef}
+              trigger={
                 <IconButton
                   aria-label={filterTable}
                   classes={{ root: this.getActiveIcon(classes, 'filter') }}
@@ -261,9 +217,9 @@ class MUIDataTableToolbar extends React.Component {
                     <FilterIcon />
                   </Tooltip>
                 </IconButton>
-              </MUIPopoverTarget>
-              <MUIPopoverContent>
-                <MUIDataTableFilter
+              }
+              content={
+                <TableFilter
                   columns={columns}
                   options={options}
                   filterList={filterList}
@@ -271,16 +227,14 @@ class MUIDataTableToolbar extends React.Component {
                   onFilterUpdate={filterUpdate}
                   onFilterReset={resetFilters}
                 />
-              </MUIPopoverContent>
-            </MUIPopover>
-          ) : (
-            false
+              }
+            />
           )}
-          {options.customToolbar ? options.customToolbar() : false}
+          {options.customToolbar && options.customToolbar()}
         </div>
       </Toolbar>
     );
   }
 }
 
-export default styled(MUIDataTableToolbar)(defaultToolbarStyles, { name: 'MUIDataTableToolbar' });
+export default styled(TableToolbar)(defaultToolbarStyles, { name: 'MUIDataTableToolbar' });

@@ -1,27 +1,27 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import DownloadIcon from "@material-ui/icons/CloudDownload";
-import BuildIcon from "@material-ui/icons/Build"; // eslint-disable-line import/no-unresolved
-import CodeSnippet from "../utils/CodeSnippet";
-import Layout from "../utils/layout";
-import withRoot from "../utils/withRoot";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import DownloadIcon from '@material-ui/icons/CloudDownload';
+import BuildIcon from '@material-ui/icons/Build'; // eslint-disable-line import/no-unresolved
+import CodeSnippet from '../utils/CodeSnippet';
+import Layout from '../utils/layout';
+import withRoot from '../utils/withRoot';
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
   stepIcon: {
-    fontSize: "30px",
+    fontSize: '30px',
     marginRight: theme.spacing.unit * 2,
   },
   stepWrapper: {
     marginTop: theme.spacing.unit * 4,
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
   },
   mainImage: {
-    maxWidth: "100%",
+    maxWidth: '100%',
   },
 });
 
@@ -49,14 +49,14 @@ class Homepage extends React.Component {
             <DownloadIcon className={classes.stepIcon} />
             <Typography variant="h6">Installation</Typography>
           </div>
-          <CodeSnippet withMargin language={"bash"} text={`npm install mui-datatables --save`} />
+          <CodeSnippet withMargin language={'bash'} text={`npm install mui-datatables --save`} />
 
           <div className={classes.stepWrapper}>
             <BuildIcon className={classes.stepIcon} />
             <Typography variant="h6">Usage</Typography>
           </div>
           <CodeSnippet
-            language={"jsx"}
+            language={'jsx'}
             text={`import MUIDataTable from "mui-datatables";
 
 const columns = ["Name", "Company", "City", "State"];

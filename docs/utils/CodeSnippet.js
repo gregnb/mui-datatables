@@ -1,11 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
-import classnames from "classnames";
-import prism from "prismjs";
-import "prismjs/components/prism-jsx";
-import "prismjs/components/prism-bash";
-import Paper from "@material-ui/core/Paper";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import prism from 'prismjs';
+import 'prismjs/components/prism-jsx';
+import 'prismjs/components/prism-bash';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({});
 
@@ -17,7 +17,7 @@ class CodeSnippet extends React.Component {
   };
 
   static defaultProps = {
-    language: "jsx",
+    language: 'jsx',
   };
 
   render() {
