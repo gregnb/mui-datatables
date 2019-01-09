@@ -7,16 +7,43 @@ class Example extends React.Component {
   render() {
 
     const columns = [
-      "Name",
-      "Title",
-      "Location",
-      "Age",
-      { name: "Salary", options: { hint: "USD / year"}}
+      {
+        name: "Name",
+        options: {
+          filter: true,
+          filterList: ['Franky Miles'],
+          filterOptions: ['a', 'b', 'c', 'Business Analyst']
+        }
+      },      
+      {
+        name: "Title",
+        options: {
+          filter: true,
+        }
+      },
+      {
+        name: "Location",
+        options: {
+          filter: false,
+        }
+      },
+      {
+        name: "Age",
+        options: {
+          filter: true,
+        }
+      },
+      {
+        name: "Salary",
+        options: {
+          filter: true,
+          sort: false
+        }
+      }      
     ];
-
     const data = [
       ["Gabby George", "Business Analyst", "Minneapolis", 30, 100000],
-      ["Aiden Lloyd", "Business Consultant", "Dallas",  55, 200000],
+      ["Business Analyst", "Business Consultant", "Dallas",  55, 200000],
       ["Jaden Collins", "Attorney", "Santa Ana", 27, 500000],
       ["Franky Rees", "Business Analyst", "St. Petersburg", 22, 50000],
       ["Aaren Rose", "Business Consultant", "Toledo", 28, 75000],
@@ -53,37 +80,7 @@ class Example extends React.Component {
       filterType: 'dropdown',
       responsive: 'stacked',
       rowsPerPage: 10,
-      onRowsSelect: (rowsSelected, allRows) => {
-        console.log(rowsSelected, allRows);
-      },
-      onRowsDelete: (rowsDeleted) => {
-        console.log(rowsDeleted, "were deleted!");
-      },
-      onChangePage: (numberRows) => {
-        console.log(numberRows);
-      },
-      onSearchChange: (searchText) => {
-        console.log(searchText);
-      },
-      onColumnSortChange: (column, direction) => {
-        console.log(column, direction);
-      },
-      onColumnViewChange: (column, action) => {
-        console.log(column, action);
-      },
-      onFilterChange: (column, filters) => {
-        console.log(column, filters);
-      },
-      onCellClick: (cellIndex, rowIndex) => {
-        console.log(cellIndex, rowIndex);
-      },
-      onRowClick: (rowData, rowState) => {
-        console.log(rowData, rowState);
-      },
-      isRowSelectable: (dataIndex) => {
-        //prevents selection of row with title "Attorney"
-        return data[dataIndex][1] != "Attorney";
-      }
+      page: 1,
     };
 
     return (

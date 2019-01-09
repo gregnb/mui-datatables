@@ -1,3 +1,3 @@
-import MUIDataTable from "./MUIDataTable";
+import MUIDataTable from './MUIDataTable';
 
 export default MUIDataTable;
