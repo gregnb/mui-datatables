@@ -53,6 +53,7 @@ class MUIDataTable extends React.Component {
         PropTypes.string,
         PropTypes.shape({
           name: PropTypes.string.isRequired,
+          id: PropTypes.string,
           options: PropTypes.shape({
             display: PropTypes.string, // enum('true', 'false', 'excluded')
             filter: PropTypes.bool,
@@ -60,11 +61,6 @@ class MUIDataTable extends React.Component {
             download: PropTypes.bool,
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,
-            field: function(props, propName, componentName) {
-              if (props["options"]["rowDataSource"] == "object" && props[propName] == undefined) {
-                return new Error(`${propName} is required when rowDataSource is object in ${componentName}.`);
-              }
-            },
           }),
         }),
       ]),
@@ -265,6 +261,9 @@ class MUIDataTable extends React.Component {
           ...columnOptions,
           ...(column.options ? column.options : {}),
         };
+        if (column.id) {
+          columnOptions.id = column.id;
+        }
       } else {
         columnOptions = { ...columnOptions, name: column };
       }
@@ -288,12 +287,11 @@ class MUIDataTable extends React.Component {
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
         let value = "";
-        if (rowDataSource === "object") {
-          value = status === TABLE_LOAD.INITIAL ? data[rowIndex][column.field] : data[rowIndex].data[column.field];
-        } else {
+        if (Array.isArray(data[rowIndex])) {
           value = status === TABLE_LOAD.INITIAL ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
+        } else {
+          value = status === TABLE_LOAD.INITIAL ? data[rowIndex][column.id] : data[rowIndex].data[column.id];
         }
-
         if (typeof tableData[rowIndex] === "undefined") {
           tableData.push({
             index: status === TABLE_LOAD.INITIAL ? rowIndex : data[rowIndex].index,
@@ -366,8 +364,8 @@ class MUIDataTable extends React.Component {
 
     displayRow = [];
 
-    columns.forEach((key, index) => {
-      key = rowDataSource === "object" ? key.field : index;
+    columns.forEach((col, index) => {
+      let key = col.id ? col.id : index;
       let columnDisplay = row[key];
       let columnValue = row[key];
 
@@ -400,7 +398,7 @@ class MUIDataTable extends React.Component {
         isFiltered = true;
       }
 
-      const columnVal = columnValue === null ? "" : columnValue.toString();
+      const columnVal = columnValue === null || typeof columnValue === "undefined" ? "" : columnValue.toString();
 
       if (searchText) {
         let searchNeedle = searchText.toString();
@@ -539,7 +537,7 @@ class MUIDataTable extends React.Component {
             selectedRows: prevState.selectedRows,
           };
         } else {
-          let sortField = this.props.options.rowDataSource === "object" ? prevState.columns[index].field : index;
+          let sortField = prevState.columns[index].id ? prevState.columns[index].id : index;
           const sortedData = this.sortTable(data, sortField, order);
 
           newState = {

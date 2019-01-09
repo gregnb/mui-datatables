@@ -108,6 +108,71 @@ const options = {
   options={options}
 />
 
+
+
+```
+
+Use array of objects as data source:
+
+```js
+
+import MUIDataTable from "mui-datatables";
+
+const columns = [
+ {
+  name: "Name",
+  id: "name",
+  options: {
+   filter: true,
+   sort: true,
+  }
+ },
+ {
+  name: "Company",
+  id:"company",
+  options: {
+   filter: true,
+   sort: false,
+  }
+ },
+ {
+  name: "City",
+  id: "city",
+  options: {
+   filter: true,
+   sort: false,
+  }
+ },
+ {
+  name: "State",
+  id: "state"
+  options: {
+   filter: true,
+   sort: false,
+  }
+ },
+];
+
+const data = [
+ {name: "Joe James", company: "Test Corp", city: "Yonkers", state: "NY"},
+ {name: "John Walsh", company: "Test Corp", city: "Hartford", state: "CT"},
+ {name: "Bob Herm", company: "Test Corp", city: "Tampa", state: "FL"},
+ {name: "James Houston", company: "Test Corp", city: "Dallas",state: "TX"},
+];
+
+const options = {
+  filterType: 'checkbox',
+};
+
+<MUIDataTable
+  title={"Employee List"}
+  data={data}
+  columns={columns}
+  options={options}
+/>
+
+
+
 ```
 
 ## API
@@ -187,7 +252,8 @@ const columns = [
 #### Column:
 |Name|Type|Description
 |:--:|:-----|:-----|
-|**`Name`**|string|Name of column (This field is required)
+|**`name`**|string|Name of column (This field is required, It will beused as header label of the column)
+|**`id`**|string| Key of the object that has column data in json data object (This field is optional only required if data source is array of objects)
 |**`options`**|object|Options for customizing column
 
 
