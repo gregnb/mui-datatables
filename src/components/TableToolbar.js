@@ -29,11 +29,11 @@ export const defaultToolbarStyles = (theme, props) => ({
   titleText: {},
   icon: {
     '&:hover': {
-      color: '#307BB0',
+      color: theme.palette.primary.main,
     },
   },
   iconActive: {
-    color: '#307BB0',
+    color: theme.palette.primary.main,
   },
   searchIcon: {
     display: 'inline-flex',

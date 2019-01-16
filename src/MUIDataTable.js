@@ -19,6 +19,9 @@ import { buildMap, getCollatorComparator, sortCompare } from './utils';
 
 const defaultTableStyles = {
   root: {},
+  tableRoot: {
+    outline: 'none',
+  },
   responsiveScroll: {
     overflowX: 'auto',
     overflow: 'auto',
@@ -968,7 +971,7 @@ class MUIDataTable extends React.Component {
               setResizeable={fn => (this.setHeadResizeable = fn)}
             />
           )}
-          <MuiTable ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'}>
+          <MuiTable ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'} className={classes.tableRoot}>
             <caption className={classes.caption}>{title}</caption>
             <TableHead
               columns={columns}

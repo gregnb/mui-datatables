@@ -30,11 +30,11 @@ const defaultSelectCellStyles = theme => ({
   },
   headerCell: {
     zIndex: 110,
-    backgroundColor: '#FFF',
+    backgroundColor: theme.palette.background.paper,
   },
   checkboxRoot: {
     '&$checked': {
-      color: '#027cb5',
+      color: theme.palette.primary.main,
     },
   },
   checked: {},
