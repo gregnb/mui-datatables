@@ -275,6 +275,10 @@ class MUIDataTable extends React.Component {
       filterList[colIndex] = [];
 
       totals[colIndex] = window._ ? window._("Total:") : "Total:";
+      if (colIndex > 0) {
+        totals[colIndex] = "";
+      }
+
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
         let value = status === TABLE_LOAD.INITIAL ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
 
@@ -317,9 +321,13 @@ class MUIDataTable extends React.Component {
       }
 
       if (!columnOptions.display) {
-        totals[colIndex] = "";
+        totals[colIndex] = null;
       }
     });
+
+    if (options.selectableRows) {
+      totals = [""].concat(totals);
+    }
 
     if (options.filterList) filterList = options.filterList;
 
@@ -348,7 +356,7 @@ class MUIDataTable extends React.Component {
       filterList: filterList,
       selectedRows: selectedRowsData,
       data: tableData,
-      totals: totals.filter(v => v !== ""),
+      totals: totals.filter(v => v !== null),
       displayData: this.getDisplayData(columnData, tableData, filterList, prevState.searchText),
     }));
   }
