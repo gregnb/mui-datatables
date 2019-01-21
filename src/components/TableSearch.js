@@ -6,12 +6,13 @@ import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
 import { withStyles } from '@material-ui/core/styles';
 
-const defaultSearchStyles = {
+const defaultSearchStyles = theme => ({
   main: {
     display: 'flex',
     flex: '1 0 auto',
   },
   searchIcon: {
+    color: theme.palette.text.secondary,
     marginTop: '10px',
     marginRight: '8px',
   },
@@ -20,10 +21,10 @@ const defaultSearchStyles = {
   },
   clearIcon: {
     '&:hover': {
-      color: '#FF0000',
+      color: theme.palette.error.main,
     },
   },
-};
+});
 
 class TableSearch extends React.Component {
   handleTextChange = event => {

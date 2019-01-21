@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -14,8 +15,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
 
-export const defaultFilterStyles = {
+export const defaultFilterStyles = theme => ({
   root: {
+    backgroundColor: theme.palette.background.default,
     padding: '16px 24px 16px 24px',
     fontFamily: 'Roboto',
   },
@@ -29,7 +31,7 @@ export const defaultFilterStyles = {
   title: {
     display: 'inline-block',
     marginLeft: '7px',
-    color: '#424242',
+    color: theme.palette.text.primary,
     fontSize: '14px',
     fontWeight: 500,
   },
@@ -40,16 +42,9 @@ export const defaultFilterStyles = {
     alignSelf: 'left',
   },
   resetLink: {
-    color: '#027cb5',
-    backgroundColor: '#FFF',
-    display: 'inline-block',
-    marginLeft: '24px',
+    marginLeft: '16px',
     fontSize: '12px',
     cursor: 'pointer',
-    border: 'none',
-    '&:hover': {
-      color: '#FF0000',
-    },
   },
   filtersSelected: {
     alignSelf: 'right',
@@ -64,7 +59,7 @@ export const defaultFilterStyles = {
     marginLeft: '7px',
     marginBottom: '8px',
     fontSize: '14px',
-    color: '#424242',
+    color: theme.palette.text.secondary,
     textAlign: 'left',
     fontWeight: 500,
   },
@@ -77,16 +72,15 @@ export const defaultFilterStyles = {
   checkboxFormControlLabel: {
     fontSize: '15px',
     marginLeft: '8px',
-    color: '#4a4a4a',
+    color: theme.palette.text.primary,
   },
   checkboxIcon: {
-    //color: "#027cb5",
     width: '32px',
     height: '32px',
   },
   checkbox: {
     '&$checked': {
-      color: '#027cB5',
+      color: theme.palette.primary.main,
     },
   },
   checked: {},
@@ -118,7 +112,7 @@ export const defaultFilterStyles = {
     marginRight: '24px',
     marginBottom: '24px',
   },
-};
+});
 
 class TableFilter extends React.PureComponent {
   static propTypes = {
@@ -339,9 +333,14 @@ class TableFilter extends React.PureComponent {
               })}>
               {textLabels.title}
             </Typography>
-            <button className={classes.resetLink} tabIndex={0} aria-label={textLabels.reset} onClick={onFilterReset}>
+            <Button
+              color="primary"
+              className={classes.resetLink}
+              tabIndex={0}
+              aria-label={textLabels.reset}
+              onClick={onFilterReset}>
               {textLabels.reset}
-            </button>
+            </Button>
           </div>
           <div className={classes.filtersSelected} />
         </div>

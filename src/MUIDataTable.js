@@ -19,6 +19,9 @@ import {buildMap, getCollatorComparator, sortCompare} from './utils';
 
 const defaultTableStyles = {
   root: {},
+  tableRoot: {
+    outline: 'none',
+  },
   responsiveScroll: {
     overflowX: 'auto',
     overflow: 'auto',
@@ -949,7 +952,7 @@ class MUIDataTable extends React.Component {
       data: row.data[col],
       rowData: row.data,
       position: sIndex,
-      rowSelected: this.state.selectedRows.lookup[sIndex] ? true : false,
+      rowSelected: this.state.selectedRows.lookup[row.index] ? true : false,
     }));
 
     if (!this.options.customSort) {
@@ -963,7 +966,7 @@ class MUIDataTable extends React.Component {
       const row = sortedData[i];
       tableData.push({index: row.position, data: row.rowData});
       if (row.rowSelected) {
-        selectedRows.push({index: i, dataIndex: sortedData[row.position].index});
+        selectedRows.push({index: i, dataIndex: data[row.position].index});
       }
     }
 
@@ -1039,7 +1042,7 @@ class MUIDataTable extends React.Component {
               setResizeable={fn => (this.setHeadResizeable = fn)}
             />
           )}
-          <MuiTable ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'}>
+          <MuiTable ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'} className={classes.tableRoot}>
             <caption className={classes.caption}>{title}</caption>
             <TableHead
               columns={columns}
