@@ -1,31 +1,32 @@
-import React from "react";
-import Grow from "@material-ui/core/Grow";
-import TextField from "@material-ui/core/TextField";
-import SearchIcon from "@material-ui/icons/Search";
-import IconButton from "@material-ui/core/IconButton";
-import ClearIcon from "@material-ui/icons/Clear";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import Grow from '@material-ui/core/Grow';
+import TextField from '@material-ui/core/TextField';
+import SearchIcon from '@material-ui/icons/Search';
+import IconButton from '@material-ui/core/IconButton';
+import ClearIcon from '@material-ui/icons/Clear';
+import { withStyles } from '@material-ui/core/styles';
 
-const defaultSearchStyles = {
+const defaultSearchStyles = theme => ({
   main: {
-    display: "flex",
-    flex: "1 0 auto",
+    display: 'flex',
+    flex: '1 0 auto',
   },
   searchIcon: {
-    marginTop: "10px",
-    marginRight: "8px",
+    color: theme.palette.text.secondary,
+    marginTop: '10px',
+    marginRight: '8px',
   },
   searchText: {
-    flex: "0.8 0",
+    flex: '0.8 0',
   },
   clearIcon: {
-    "&:hover": {
-      color: "#FF0000",
+    '&:hover': {
+      color: theme.palette.error.main,
     },
   },
-};
+});
 
-class MUIDataTableSearch extends React.Component {
+class TableSearch extends React.Component {
   handleTextChange = event => {
     const { onSearchChange } = this.props.options;
 
@@ -37,11 +38,11 @@ class MUIDataTableSearch extends React.Component {
   };
 
   componentDidMount() {
-    document.addEventListener("keydown", this.onKeyDown, false);
+    document.addEventListener('keydown', this.onKeyDown, false);
   }
 
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.onKeyDown, false);
+    document.removeEventListener('keydown', this.onKeyDown, false);
   }
 
   onKeyDown = event => {
@@ -61,7 +62,7 @@ class MUIDataTableSearch extends React.Component {
             className={classes.searchText}
             autoFocus={true}
             InputProps={{
-              "aria-label": options.textLabels.toolbar.search,
+              'aria-label': options.textLabels.toolbar.search,
             }}
             onChange={this.handleTextChange}
             fullWidth={true}
@@ -76,4 +77,4 @@ class MUIDataTableSearch extends React.Component {
   }
 }
 
-export default withStyles(defaultSearchStyles, { name: "MUIDataTableSearch" })(MUIDataTableSearch);
+export default withStyles(defaultSearchStyles, { name: 'MUIDataTableSearch' })(TableSearch);

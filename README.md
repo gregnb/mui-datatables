@@ -9,7 +9,7 @@
 [![dependencies Status](https://david-dm.org/gregnb/mui-datatables/status.svg)](https://david-dm.org/gregnb/mui-datatables)
 [![npm version](https://badge.fury.io/js/mui-datatables.svg)](https://badge.fury.io/js/mui-datatables)
 
-MUI-Datatables is a data tables component built on [Material-UI V1](https://www.material-ui-next.com).  It comes with features like filtering, resizable + view/hide columns, search, export to CSV download, printing, selectable rows, pagination, and sorting. On top of the ability to customize styling on most views, there are two responsive modes "stacked" and "scroll" for mobile/tablet devices.
+MUI-Datatables is a data tables component built on [Material-UI](https://www.material-ui.com).  It comes with features like filtering, resizable + view/hide columns, search, export to CSV download, printing, selectable rows, expandable rows, pagination, and sorting. On top of the ability to customize styling on most views, there are two responsive modes "stacked" and "scroll" for mobile/tablet devices.
 
 <div align="center">
 	<img src="https://user-images.githubusercontent.com/19170080/38026128-eac9d506-3258-11e8-92a7-b0d06e5faa82.gif" />
@@ -66,7 +66,7 @@ const columns = [
    filter: true,
    sort: true,
   }
- },      
+ },
  {
   name: "Company",
   options: {
@@ -80,7 +80,7 @@ const columns = [
    filter: true,
    sort: false,
   }
- },  
+ },
  {
   name: "State",
   options: {
@@ -130,21 +130,26 @@ The component accepts the following props:
 |**`page`**|number||User provided starting page for pagination
 |**`count`**|number||User provided override for total number of rows
 |**`serverSide`**|boolean|false|Enable remote data source
-|**`filterList`**|array||User provided filter list
 |**`rowsSelected`**|array||User provided selected rows
-|**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox", "dropdown", or "multiselect"
+|**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox", "dropdown", "multiselect" or "textField"
 |**`textLabels `**|object||User provided labels to localize text
 |**`pagination`**|boolean|true|Enable/disable pagination
 |**`selectableRows`**|boolean|true|Enable/disable row selection
+|**`isRowSelectable`**|function||Enable/disable selection on certain rows with custom function. Returns true if not provided.  `function(dataIndex) => bool`
 |**`resizableColumns`**|boolean|false|Enable/disable resizable columns
+|**`expandableRows`**|boolean|false|Enable/disable expandable rows
+|**`renderExpandableRow `**|function||Render expandable row. `function(rowData, rowMeta) => React Component`
 |**`customToolbar`**|function||Render a custom toolbar
-|**`customToolbarSelect`**|function||Render a custom selected rows toolbar
+|**`customToolbarSelect`**|function||Render a custom selected rows toolbar. `function(selectedRows, displayData, setSelectedRows) => void`
 |**`customFooter`**|function||Render a custom table footer. `function(count, page, rowsPerPage, changeRowsPerPage, changePage) => string`&#124;` React Component`
+|**`customSort`**|function||Override default sorting with custom function. `function(data: array, colIndex: number, order: string) => array`
+|**`elevation`**|number|4|Shadow depth applied to Paper component
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
 |**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: 'stacked', 'scroll'
 |**`rowsPerPage`**|number|10|Number of rows allowed per page
 |**`rowsPerPageOptions`**|array|[10,15,20]|Options to provide in pagination for number of rows a user can select
 |**`rowHover`**|boolean|true|Enable/disable hover style over rows
+|**`fixedHeader`**|boolean|true|Enable/disable fixed header columns
 |**`sortFilterList`**|boolean|true|Enable/disable alphanumeric sorting of filter lists
 |**`sort`**|boolean|true|Enable/disable sort on all columns
 |**`filter`**|boolean|true|Show/hide filter icon from toolbar
@@ -156,15 +161,16 @@ The component accepts the following props:
 |**`onRowsSelect`**|function||Callback function that triggers when row(s) are selected. `function(currentRowsSelected: array, allRowsSelected: array) => void`
 |**`onRowsDelete`**|function||Callback function that triggers when row(s) are deleted. `function(rowsDeleted: array) => void`
 |**`onRowClick`**|function||Callback function that triggers when a row is clicked. `function(rowData: string[], rowMeta: { dataIndex: number, rowIndex: number }) => void`
-|**`onCellClick`**|function||Callback function that triggers when a cell is clicked. `function(colIndex: number, rowIndex: number) => void`
+|**`onCellClick`**|function||Callback function that triggers when a cell is clicked. `function(colData: any, cellMeta: { colIndex: number, rowIndex: number }) => void`
 |**`onChangePage`**|function||Callback function that triggers when a page has changed. `function(currentPage: number) => void`
 |**`onChangeRowsPerPage`**|function||Callback function that triggers when the number of rows per page has changed. `function(numberOfRows: number) => void`
 |**`onSearchChange`**|function||Callback function that triggers when the search text value has changed. `function(searchText: string) => void`
+|**`onSearchOpen`**|function||Callback function that triggers when the searchbox opens. `function() => void`
 |**`onFilterChange`**|function||Callback function that triggers when filters have changed. `function(changedColumn: string, filterList: array) => void`
 |**`onColumnSortChange`**|function||Callback function that triggers when a column has been sorted. `function(changedColumn: string, direction: string) => void`
 |**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
-|**`onServerRequest`**|function||Callback function that triggers when the 'serverSide' option is enabled and table state has changed. `function(action: string, tableState: object) => void`
-
+|**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
+|**`setRowProps`**|function||Is called for each row and allows to return custom props for this row based on its data. `function(row: array, rowIndex: number) => object`
 
 ## Customize Columns
 
@@ -180,7 +186,7 @@ const columns = [
   }
  },
  ...
-];  
+];
 ```
 
 #### Column:
@@ -194,15 +200,19 @@ const columns = [
 |Name|Type|Default|Description
 |:--:|:-----|:--|:-----|
 |**`display`**|string|'true'|Display column in table. `enum('true', 'false', 'excluded')`
+|**`filterList`**|array||Filter value list [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
+|**`filterOptons`**|array||Filter options [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`filter`**|boolean|true|Display column in filter list
 |**`sort`**|boolean|true|Enable/disable sorting on column
 |**`download`**|boolean|true|Display column in CSV download file
-|**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(value, tableMeta, updateValue) => string`&#124;`
+|**`hint`**|string||Display hint icon with string as tooltip on hover.
+|**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(value, tableMeta, updateValue) => string`&#124;
 |**`customBodyRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
+|**`setCellProps`**|function||Is called for each cell and allows to return custom props for this cell based on its data. `function(cellValue: string, rowIndex: number, columnIndex: number) => string`
 
 `customHeadRender` is called with these arguments:
 
-```
+```js
 function(columnMeta: {
   display: enum('true', 'false', 'excluded'),
   filter: bool,
@@ -214,7 +224,7 @@ function(columnMeta: {
 
 `customBodyRender` is called with these arguments:
 
-```
+```js
 function(value: any, tableMeta: {
   rowIndex: number,
   columnIndex: number,
@@ -274,10 +284,10 @@ class BodyCellExample extends React.Component {
 
 If you are looking to work with remote data sets or handle pagination, filtering, and sorting on a remote server you can do that with the following options:
 
-```
+```js
 const options = {
   serverSide: true,
-  onServerRequest: (action, tableState) => {
+  onTableChange: (action, tableState) => {
     this.xhrRequest('my.api.com/tableData', result => {
       this.setState({ data: result });
     });
@@ -291,7 +301,7 @@ To see an example **[Click Here](https://github.com/gregnb/mui-datatables/blob/m
 
 This package decided that the cost of bringing in another library to perform localizations would be too expensive. Instead the ability to override all text labels (which aren't many) is offered through the options property `textLabels`.  The available strings:
 
-```
+```js
 const options = {
   ...
   textLabels: {
