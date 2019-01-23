@@ -53,12 +53,15 @@ class TableSelectCell extends React.Component {
     classes: PropTypes.object,
     /** Select cell disabled on/off */
     isRowSelectable: PropTypes.bool,
+    /** Select all cell disabled on/off */
+    isSelectAllDisabled: PropTypes.bool,
   };
 
   static defaultProps = {
     isHeaderCell: false,
     isExpandable: false,
     isRowExpanded: false,
+    isSelectAllDisabled: false,
   };
 
   render() {
@@ -70,6 +73,7 @@ class TableSelectCell extends React.Component {
       isRowExpanded,
       onExpand,
       isRowSelectable,
+      isSelectAllDisabled,
       ...otherProps
     } = this.props;
 
@@ -95,7 +99,7 @@ class TableSelectCell extends React.Component {
               checked: classes.checked,
               disabled: classes.disabled,
             }}
-            disabled={!isRowSelectable}
+            disabled={isHeaderCell === false ? !isRowSelectable : isSelectAllDisabled}
             {...otherProps}
           />
         </div>

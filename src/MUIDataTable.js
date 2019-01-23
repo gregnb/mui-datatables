@@ -111,6 +111,7 @@ class MUIDataTable extends React.Component {
         filename: PropTypes.string,
         separator: PropTypes.string,
       }),
+      selectAllDisabled: PropTypes.bool,
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
@@ -211,6 +212,7 @@ class MUIDataTable extends React.Component {
         filename: 'tableDownload.csv',
         separator: ',',
       },
+      selectAllDisabled: false,
     };
 
     this.options = merge(defaultOptions, props.options);

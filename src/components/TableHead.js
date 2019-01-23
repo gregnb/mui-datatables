@@ -50,6 +50,7 @@ class TableHead extends React.Component {
               isExpandable={options.expandableRows}
               fixedHeader={options.fixedHeader}
               isRowSelectable={true}
+              isSelectAllDisabled={options.selectAllDisabled}
             />
           )}
           {columns.map(
