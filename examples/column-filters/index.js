@@ -80,6 +80,7 @@ class Example extends React.Component {
       filterType: 'dropdown',
       responsive: 'stacked',
       rowsPerPage: 10,
+      selectableRows: true,
       page: 1,
     };
 

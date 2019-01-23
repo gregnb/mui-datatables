@@ -14,8 +14,7 @@ const defaultHeadCellStyles = theme => ({
     top: '0px',
     left: '0px',
     zIndex: 100,
-    // backgroundColor: theme.palette.background.paper,
-    backgroundColor: '#F4F7FA',
+    backgroundColor: theme.palette.background.paper,
   },
   tooltip: {
     cursor: 'pointer',
@@ -74,7 +73,6 @@ class TableHeadCell extends React.Component {
       ...(sortDirection ? { direction: sortDirection } : {}),
     };
 
-    console.log(options);
     const cellClass = classNames({
       [classes.root]: true,
       [classes.fixedHeader]: options.fixedHeader,

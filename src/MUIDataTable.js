@@ -332,13 +332,18 @@ class MUIDataTable extends React.Component {
     let sortDirection = null;
 
     columns.forEach((column, colIndex) => {
+      totals[colIndex] = window._ ? window._("Total:") : "Total:";
+      if (colIndex > 0) {
+        totals[colIndex] = "";
+      }
+
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
         let value = status === TABLE_LOAD.INITIAL ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
 
-        if (typeof value === 'number') {
-          totals[colIndex] += value;
-        } else {
-          totals[colIndex] = window._ ? window._('Total:') : 'Total:';
+        const v = parseFloat(value);
+        if (!("" + value).match(/[^0-9\.]/g) && (typeof value === "number" || v === 0 || v)) {
+          totals[colIndex] = parseFloat(totals[colIndex]) || 0;
+          totals[colIndex] += v;
         }
 
         if (typeof tableData[rowIndex] === 'undefined') {
@@ -373,7 +378,7 @@ class MUIDataTable extends React.Component {
       }
 
       if (column.display !== 'true') {
-        totals[colIndex] = '';
+        totals[colIndex] = null;
       }
 
       if (column.filterList) {
@@ -390,6 +395,10 @@ class MUIDataTable extends React.Component {
         sortDirection = column.sortDirection === 'asc' ? 'desc' : 'asc';
       }
     });
+
+    if (options.selectableRows) {
+      totals = [""].concat(totals);
+    }
 
     let selectedRowsData = {
       data: [],
@@ -418,7 +427,7 @@ class MUIDataTable extends React.Component {
         filterList: filterList,
         selectedRows: selectedRowsData,
         data: tableData,
-        totals: totals.filter(v => v !== ''),
+        totals: totals.filter(v => v !== null),
         displayData: this.getDisplayData(columns, tableData, filterList, prevState.searchText),
       }),
       callback,
