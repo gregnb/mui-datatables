@@ -12,6 +12,15 @@ const defaultBodyStyles = {
   emptyTitle: {
     textAlign: 'center',
   },
+  noMatchCell: {
+    width: '100%',
+    padding: '10px!important',
+    whiteSpace: 'normal',
+    height: 'auto',
+  },
+  noMatchRow: {
+    border: 'none',
+  },
 };
 
 class TableBody extends React.Component {
@@ -158,12 +167,13 @@ class TableBody extends React.Component {
             </React.Fragment>
           ))
         ) : (
-          <TableBodyRow options={options}>
+          <TableBodyRow options={options} className={classes.noMatchRow}>
             <TableBodyCell
               colSpan={options.selectableRows ? columns.length + 1 : columns.length}
               options={options}
               colIndex={0}
-              rowIndex={0}>
+              rowIndex={0}
+              className={classes.noMatchCell}>
               <Typography variant="subtitle1" className={classes.emptyTitle}>
                 {options.textLabels.body.noMatch}
               </Typography>
