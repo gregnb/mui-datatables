@@ -120,8 +120,7 @@ class TableBody extends React.Component {
                 options={options}
                 rowSelected={options.selectableRows ? this.isRowSelected(dataIndex) : false}
                 onClick={options.onRowClick ? options.onRowClick.bind(null, row, { rowIndex, dataIndex }) : null}
-                id={'MUIDataTableBodyRow-' + dataIndex}
-                key={rowIndex}>
+                id={'MUIDataTableBodyRow-' + dataIndex}>
                 {options.selectableRows && (
                   <TableSelectCell
                     radio={options.radio}
