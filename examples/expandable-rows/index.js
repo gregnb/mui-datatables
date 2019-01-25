@@ -82,9 +82,10 @@ class Example extends React.Component {
       responsive: 'scroll',
       expandableRows: true,
       renderExpandableRow: (rowData, rowMeta) => {
+        const colSpan = rowData.length + 1;
         return (
           <TableRow>
-            <TableCell colSpan={rowData.length}>
+            <TableCell colSpan={colSpan}>
               Custom expandable row option. Data: {JSON.stringify(rowData)}
             </TableCell>
           </TableRow>
