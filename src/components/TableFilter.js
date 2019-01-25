@@ -154,7 +154,7 @@ class TableFilter extends React.Component {
       column.filter ? (
         <div className={classes.checkboxList} key={index}>
           <FormGroup>
-            <Typography variant="caption" className={classes.checkboxListTitle}>
+            <Typography variant="body2" className={classes.checkboxListTitle}>
               {column.name}
             </Typography>
             {filterData[index].map((filterColumn, filterIndex) => (
@@ -291,7 +291,7 @@ class TableFilter extends React.Component {
         <div className={classes.header}>
           <div className={classes.reset}>
             <Typography
-              variant="caption"
+              variant="body2"
               className={classNames({
                 [classes.title]: true,
                 [classes.noMargin]: options.filterType !== 'checkbox' ? true : false,
