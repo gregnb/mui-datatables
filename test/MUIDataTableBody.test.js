@@ -5,6 +5,7 @@ import { assert, expect, should } from 'chai';
 import textLabels from '../src/textLabels';
 import TableBody from '../src/components/TableBody';
 import TableSelectCell from '../src/components/TableSelectCell';
+import Checkbox from '@material-ui/core/Checkbox';
 
 describe('<TableBody />', function() {
   let data;
@@ -61,7 +62,7 @@ describe('<TableBody />', function() {
       />,
     );
 
-    const actualResult = mountWrapper.find(TableSelectCell);
+    const actualResult = mountWrapper.find(Checkbox);
     assert.strictEqual(actualResult.length, 0);
   });
 
