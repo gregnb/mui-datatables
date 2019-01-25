@@ -74,8 +74,8 @@ class Example extends React.Component {
       onFilterChange: (column, filters) => {
         console.log(column, filters);
       },
-      onCellClick: (cellIndex, rowIndex) => {
-        console.log(cellIndex, rowIndex);
+      onCellClick: (cellData, cellMeta) => {
+        console.log(cellData, cellMeta);
       },
       onRowClick: (rowData, rowState) => {
         console.log(rowData, rowState);
