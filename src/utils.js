@@ -27,11 +27,14 @@ function sortCompare(order) {
 }
 
 function createCSVDownload(columns, data, options) {
+
+  const replaceDoubleQuoteInString = columnData => typeof columnData === 'string' ? columnData.replace(/\"/g, '""') : columnData;
+
   const CSVHead =
     columns
       .reduce(
         (soFar, column) =>
-          column.download ? soFar + '"' + column.name + '"' + options.downloadOptions.separator : soFar,
+          column.download ? soFar + '"' + replaceDoubleQuoteInString(column.name) + '"' + options.downloadOptions.separator : soFar,
         '',
       )
       .slice(0, -1) + '\r\n';
@@ -41,7 +44,7 @@ function createCSVDownload(columns, data, options) {
       (soFar, row) =>
         soFar +
         '"' +
-        row.data.filter((field, index) => columns[index].download).join('"' + options.downloadOptions.separator + '"') +
+        row.data.filter((field, index) => columns[index].download).map(columnData => replaceDoubleQuoteInString(columnData)).join('"' + options.downloadOptions.separator + '"') +
         '"\r\n',
       [],
     )
