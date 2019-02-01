@@ -372,7 +372,7 @@ class MUIDataTable extends React.Component {
       }
 
       if (typeof column.customBodyRender === 'function' && typeof totals[colIndex] === 'number') {
-        const tableMeta = this.getCustomRenderMeta(data.length, colIndex, totals[colIndex], [], columns, this.state);
+        const tableMeta = this.getTableMeta(data.length, colIndex, totals[colIndex], [], columns, this.state);
         const render = column.totalRender || column.customBodyRender;
         totals[colIndex] = render(totals[colIndex], tableMeta);
       }
