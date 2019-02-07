@@ -332,16 +332,16 @@ class MUIDataTable extends React.Component {
     let sortDirection = null;
 
     columns.forEach((column, colIndex) => {
-      totals[colIndex] = window._ ? window._("Total:") : "Total:";
+      totals[colIndex] = window._ ? window._('Total:') : 'Total:';
       if (colIndex > 0) {
-        totals[colIndex] = "";
+        totals[colIndex] = '';
       }
 
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
         let value = status === TABLE_LOAD.INITIAL ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
 
         const v = parseFloat(value);
-        if (!("" + value).match(/[^0-9\.]/g) && (typeof value === "number" || v === 0 || v)) {
+        if (!('' + value).match(/[^0-9\.]/g) && (typeof value === 'number' || v === 0 || v)) {
           totals[colIndex] = parseFloat(totals[colIndex]) || 0;
           totals[colIndex] += v;
         }
@@ -397,7 +397,7 @@ class MUIDataTable extends React.Component {
     });
 
     if (options.selectableRows) {
-      totals = [""].concat(totals);
+      totals = [''].concat(totals);
     }
 
     let selectedRowsData = {

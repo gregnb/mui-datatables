@@ -160,7 +160,6 @@ class TableBody extends React.Component {
               {this.isRowExpanded(dataIndex) && options.renderExpandableRow(row, { rowIndex, dataIndex })}
             </React.Fragment>
           ))
-          
         ) : (
           <TableBodyRow options={options}>
             <TableBodyCell
