@@ -157,7 +157,6 @@ class MUIDataTable extends React.Component {
     if (window) {
       window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
     }
-
   }
 
   componentWillMount() {
