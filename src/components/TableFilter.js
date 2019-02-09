@@ -155,7 +155,7 @@ class TableFilter extends React.Component {
         <div className={classes.checkboxList} key={index}>
           <FormGroup>
             <Typography variant="body2" className={classes.checkboxListTitle}>
-              {column.name}
+              {column.label}
             </Typography>
             {filterData[index].map((filterColumn, filterIndex) => (
               <FormControlLabel
@@ -196,7 +196,7 @@ class TableFilter extends React.Component {
         {columns.map((column, index) =>
           column.filter ? (
             <FormControl className={classes.selectFormControl} key={index}>
-              <InputLabel htmlFor={column.name}>{column.name}</InputLabel>
+              <InputLabel htmlFor={column.name}>{column.label}</InputLabel>
               <Select
                 value={filterList[index].toString() || textLabels.all}
                 name={column.name}
@@ -250,7 +250,7 @@ class TableFilter extends React.Component {
         {columns.map((column, index) =>
           column.filter ? (
             <FormControl className={classes.selectFormControl} key={index}>
-              <InputLabel htmlFor={column.name}>{column.name}</InputLabel>
+              <InputLabel htmlFor={column.name}>{column.label}</InputLabel>
               <Select
                 multiple
                 value={filterList[index] || []}
