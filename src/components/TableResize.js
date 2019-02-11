@@ -63,6 +63,8 @@ class TableResize extends React.Component {
     let finalCells = Object.entries(this.cellsRef);
 
     finalCells.forEach(([key, item]) => {
+      if (!item) return;
+
       const elRect = item.getBoundingClientRect();
       const elStyle = window.getComputedStyle(item, null);
 
@@ -84,7 +86,7 @@ class TableResize extends React.Component {
       lastPosition = item.left;
 
       const thCell = this.cellsRef[key];
-      thCell.style.width = newWidth + '%';
+      if (thCell) thCell.style.width = newWidth + '%';
     });
   };
 

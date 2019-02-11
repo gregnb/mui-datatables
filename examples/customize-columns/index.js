@@ -15,6 +15,7 @@ class Example extends React.Component {
         }
       },      
       {
+        label: "Modified Title Label",
         name: "Title",
         options: {
           filter: true,

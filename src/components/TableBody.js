@@ -107,10 +107,11 @@ class TableBody extends React.Component {
   render() {
     const { classes, columns, toggleExpandRow, options } = this.props;
     const tableRows = this.buildRows();
+    const visibleColCnt = columns.filter(c => c.display !== 'excluded').length;
 
     return (
       <MuiTableBody>
-        {tableRows ? (
+        {tableRows && tableRows.length > 0 ? (
           tableRows.map(({ data: row, dataIndex }, rowIndex) => (
             <React.Fragment key={rowIndex}>
               <TableBodyRow
@@ -119,23 +120,22 @@ class TableBody extends React.Component {
                 rowSelected={options.selectableRows ? this.isRowSelected(dataIndex) : false}
                 onClick={options.onRowClick ? options.onRowClick.bind(null, row, { rowIndex, dataIndex }) : null}
                 id={'MUIDataTableBodyRow-' + dataIndex}>
-                {options.selectableRows && (
-                  <TableSelectCell
-                    onChange={this.handleRowSelect.bind(null, {
-                      index: this.getRowIndex(rowIndex),
-                      dataIndex: dataIndex,
-                    })}
-                    onExpand={toggleExpandRow.bind(null, {
-                      index: this.getRowIndex(rowIndex),
-                      dataIndex: dataIndex,
-                    })}
-                    fixedHeader={options.fixedHeader}
-                    checked={this.isRowSelected(dataIndex)}
-                    isExpandable={options.expandableRows}
-                    isRowExpanded={this.isRowExpanded(dataIndex)}
-                    isRowSelectable={this.isRowSelectable(dataIndex)}
-                  />
-                )}
+                <TableSelectCell
+                  onChange={this.handleRowSelect.bind(null, {
+                    index: this.getRowIndex(rowIndex),
+                    dataIndex: dataIndex,
+                  })}
+                  onExpand={toggleExpandRow.bind(null, {
+                    index: this.getRowIndex(rowIndex),
+                    dataIndex: dataIndex,
+                  })}
+                  fixedHeader={options.fixedHeader}
+                  checked={this.isRowSelected(dataIndex)}
+                  expandableOn={options.expandableRows}
+                  selectableOn={options.selectableRows}
+                  isRowExpanded={this.isRowExpanded(dataIndex)}
+                  isRowSelectable={this.isRowSelectable(dataIndex)}
+                />
                 {row.map(
                   (column, columnIndex) =>
                     columns[columnIndex].display === 'true' && (
@@ -146,7 +146,7 @@ class TableBody extends React.Component {
                         dataIndex={dataIndex}
                         rowIndex={rowIndex}
                         colIndex={columnIndex}
-                        columnHeader={columns[columnIndex].name}
+                        columnHeader={columns[columnIndex].label}
                         options={options}
                         key={columnIndex}>
                         {column}
@@ -160,7 +160,7 @@ class TableBody extends React.Component {
         ) : (
           <TableBodyRow options={options}>
             <TableBodyCell
-              colSpan={options.selectableRows ? columns.length + 1 : columns.length}
+              colSpan={options.selectableRows ? visibleColCnt + 1 : visibleColCnt}
               options={options}
               colIndex={0}
               rowIndex={0}>

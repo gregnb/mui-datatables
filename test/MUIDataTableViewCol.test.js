@@ -5,13 +5,19 @@ import { assert, expect, should } from 'chai';
 import Checkbox from '@material-ui/core/Checkbox';
 import TableViewCol from '../src/components/TableViewCol';
 import textLabels from '../src/textLabels';
+import { FormControlLabel } from '@material-ui/core';
 
 describe('<TableViewCol />', function() {
   let columns;
   let options;
 
   before(() => {
-    columns = ['a', 'b', 'c', 'd'];
+    columns = [
+      { name: 'a', label: 'A' },
+      { name: 'b', label: 'B' },
+      { name: 'c', label: 'C' },
+      { name: 'd', label: 'D' },
+    ];
     options = {
       textLabels,
     };
@@ -22,6 +28,12 @@ describe('<TableViewCol />', function() {
 
     const actualResult = mountWrapper.find(Checkbox);
     assert.strictEqual(actualResult.length, 4);
+  });
+
+  it('should labels as view column names when present', () => {
+    const mountWrapper = mount(<TableViewCol columns={columns} options={options} />);
+    const labels = mountWrapper.find(FormControlLabel).map(n => n.text());
+    assert.deepEqual(labels, ['A', 'B', 'C', 'D']);
   });
 
   it('should trigger onColumnUpdate prop callback when calling method handleColChange', () => {

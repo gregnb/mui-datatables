@@ -19,6 +19,9 @@ import { buildMap, getCollatorComparator, sortCompare } from './utils';
 
 const defaultTableStyles = {
   root: {},
+  tableRoot: {
+    outline: 'none',
+  },
   responsiveScroll: {
     overflowX: 'auto',
     overflow: 'auto',
@@ -57,6 +60,7 @@ class MUIDataTable extends React.Component {
       PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.shape({
+          label: PropTypes.string,
           name: PropTypes.string.isRequired,
           options: PropTypes.shape({
             display: PropTypes.string, // enum('true', 'false', 'excluded')
@@ -150,6 +154,10 @@ class MUIDataTable extends React.Component {
     this.headCellRefs = {};
     this.setHeadResizeable = () => {};
     this.updateDividers = () => {};
+
+    if (window) {
+      window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
+    }
   }
 
   componentWillMount() {
@@ -303,11 +311,12 @@ class MUIDataTable extends React.Component {
 
         columnOptions = {
           name: column.name,
+          label: column.label ? column.label : column.name,
           ...columnOptions,
           ...(column.options ? column.options : {}),
         };
       } else {
-        columnOptions = { ...columnOptions, name: column };
+        columnOptions = { ...columnOptions, name: column, label: column };
       }
 
       columnData.push(columnOptions);
@@ -880,7 +889,7 @@ class MUIDataTable extends React.Component {
       data: row.data[col],
       rowData: row.data,
       position: sIndex,
-      rowSelected: this.state.selectedRows.lookup[sIndex] ? true : false,
+      rowSelected: this.state.selectedRows.lookup[row.index] ? true : false,
     }));
 
     if (!this.options.customSort) {
@@ -892,9 +901,9 @@ class MUIDataTable extends React.Component {
 
     for (let i = 0; i < sortedData.length; i++) {
       const row = sortedData[i];
-      tableData.push({ index: row.position, data: row.rowData });
+      tableData.push(data[row.position]);
       if (row.rowSelected) {
-        selectedRows.push({ index: i, dataIndex: sortedData[row.position].index });
+        selectedRows.push({ index: i, dataIndex: data[row.position].index });
       }
     }
 
@@ -971,7 +980,7 @@ class MUIDataTable extends React.Component {
               setResizeable={fn => (this.setHeadResizeable = fn)}
             />
           )}
-          <MuiTable ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'}>
+          <MuiTable ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'} className={classes.tableRoot}>
             <caption className={classes.caption}>{title}</caption>
             <TableHead
               columns={columns}
