@@ -107,7 +107,7 @@ class TableBody extends React.Component {
   render() {
     const { classes, columns, toggleExpandRow, options } = this.props;
     const tableRows = this.buildRows();
-    const visibleColCnt = columns.filter(c => c.display !== 'excluded').length;
+    const visibleColCnt = columns.filter(c => c.display === 'true').length;
 
     return (
       <MuiTableBody>
