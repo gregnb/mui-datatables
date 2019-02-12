@@ -460,7 +460,11 @@ class MUIDataTable extends React.Component {
         }
       }
 
-      if (searchText && this.hasSearchText(columnVal, searchText, caseSensitive)) {
+      if (
+        searchText &&
+        this.hasSearchText(columnVal, searchText, caseSensitive) &&
+        columns[index].display !== 'false'
+      ) {
         isSearchFound = true;
       }
     }
