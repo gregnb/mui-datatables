@@ -1080,7 +1080,9 @@ class MUIDataTable extends React.Component {
             />
           )}
           <div className="header-only">
-            <div style={divStyle} className={this.options.responsive === 'scroll' ? classes.responsiveScroll : null}>
+            <div
+              style={{ position: 'relative' }}
+              className={this.options.responsive === 'scroll' ? classes.responsiveScroll : null}>
               {this.options.resizableColumns && (
                 <TableResize
                   key={rowCount}
