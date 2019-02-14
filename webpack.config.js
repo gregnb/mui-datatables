@@ -7,6 +7,9 @@ module.exports = {
   },
   stats: "verbose",
   context: __dirname,
+  node : {
+    fs: 'empty'
+  },
   output: {
     filename: 'bundle.js'
   },

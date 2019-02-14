@@ -174,20 +174,21 @@ class TableBody extends React.Component {
           </TableBodyRow>
         )}
 
-        {tableRows && totals && (
-          <TableBodyRow options={options} totalled>
-            {totals.map((column, index) => (
-              <TableBodyCell
-                rowIndex={tableRows.length}
-                colIndex={index}
-                columnHeader={'Total'}
-                options={options}
-                key={index}>
-                {column}
-              </TableBodyCell>
-            ))}
-          </TableBodyRow>
-        )}
+        {tableRows &&
+          totals && (
+            <TableBodyRow options={options} totalled>
+              {totals.map((column, index) => (
+                <TableBodyCell
+                  rowIndex={tableRows.length}
+                  colIndex={index}
+                  columnHeader={'Total'}
+                  options={options}
+                  key={index}>
+                  {column}
+                </TableBodyCell>
+              ))}
+            </TableBodyRow>
+          )}
       </MuiTableBody>
     );
   }
