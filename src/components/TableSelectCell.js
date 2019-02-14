@@ -18,13 +18,13 @@ const defaultSelectCellStyles = theme => ({
     backgroundColor: '#F4F7FA',
     position: 'sticky',
     top: 0,
-    zIndex: 10,
+    zIndex: 2,
   },
   fixedHeader: {
     position: 'sticky',
     top: '0px',
     left: '0px',
-    zIndex: 100,
+    zIndex: 3,
   },
   icon: {
     cursor: 'pointer',
@@ -37,7 +37,7 @@ const defaultSelectCellStyles = theme => ({
     visibility: 'hidden',
   },
   headerCell: {
-    zIndex: 110,
+    zIndex: 4,
     backgroundColor: theme.palette.background.paper,
   },
   checkboxRoot: {
