@@ -416,7 +416,11 @@ class MUIDataTable extends React.Component {
         let value = status === TABLE_LOAD.INITIAL ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
 
         const v = parseFloat(value);
-        if (!('' + value).match(/[^0-9\.]/g) && (typeof value === 'number' || v === 0 || v)) {
+        if (
+          (!('' + value).match(/[^0-9\.]/g) ||
+            (!('' + value).slice(1).match(/[^0-9\.]/g) && ('' + value)[0] === '-')) &&
+          (typeof value === 'number' || v === 0 || v)
+        ) {
           totals[colIndex] = parseFloat(totals[colIndex]) || 0;
           totals[colIndex] += v;
         }
