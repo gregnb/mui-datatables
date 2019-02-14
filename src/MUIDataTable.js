@@ -1051,16 +1051,19 @@ class MUIDataTable extends React.Component {
 
       return (
         <Paper elevation={4} ref={el => (this.tableContent = el)} className={classes.paper}>
-          {selectedRows.data.length && this.options.delete ? (
-            <MUIDataTableToolbarSelect
+          {selectedRows.data.length ? (
+            <TableToolbarSelect
               options={this.options}
               selectedRows={selectedRows}
               onRowsDelete={this.selectRowDelete}
-              ref={this.toolbar}
+              displayData={displayData}
+              selectRowUpdate={this.selectRowUpdate}
+              iRef={this.toolbar}
             />
           ) : (
-            <MUIDataTableToolbar
+            <TableToolbar
               columns={columns}
+              displayData={displayData}
               data={data}
               filterData={filterData}
               filterList={filterList}
@@ -1068,96 +1071,116 @@ class MUIDataTable extends React.Component {
               options={this.options}
               resetFilters={this.resetFilters}
               searchTextUpdate={this.searchTextUpdate}
+              tableRef={this.getTableContentRef}
+              iRef={this.toolbar}
               tableRef={() => this.tableContent}
-              ref={this.toolbar}
               title={title}
               toggleViewColumn={this.toggleViewColumn}
+              setTableAction={this.setTableAction}
             />
           )}
-          <MUIDataTableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />
           <div className="header-only">
-            <Table ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'}>
-              <caption className={classes.caption}>{title}</caption>
-              <MUIDataTableHead
-                columns={columns}
-                data={this.state.displayData}
-                tableData={this.state.data}
-                count={rowCount}
-                columns={columns}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
-                selectedRows={selectedRows}
-                selectRowUpdate={this.selectRowUpdate}
-                toggleSort={this.toggleSortColumn}
-                options={this.options}
-              />
-              <MUIDataTableBody
-                data={this.state.displayData}
-                tableData={this.state.data}
-                count={rowCount}
-                columns={columns}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                selectedRows={selectedRows}
-                selectRowUpdate={this.selectRowUpdate}
-                options={this.options}
-                searchText={searchText}
-                filterList={filterList}
-                totals={totalled && totals}
-              />
-            </Table>
+            <div style={divStyle} className={this.options.responsive === 'scroll' ? classes.responsiveScroll : null}>
+              {this.options.resizableColumns && (
+                <TableResize
+                  key={rowCount}
+                  updateDividers={fn => (this.updateDividers = fn)}
+                  setResizeable={fn => (this.setHeadResizeable = fn)}
+                />
+              )}
+              <MuiTable ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'} className={classes.tableRoot}>
+                <caption className={classes.caption}>{title}</caption>
+                <TableHead
+                  columns={columns}
+                  activeColumn={activeColumn}
+                  data={displayData}
+                  tableData={this.state.data}
+                  count={rowCount}
+                  columns={columns}
+                  page={page}
+                  rowsPerPage={rowsPerPage}
+                  handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
+                  selectedRows={selectedRows}
+                  selectRowUpdate={this.selectRowUpdate}
+                  toggleSort={this.toggleSortColumn}
+                  setCellRef={this.setHeadCellRef}
+                  options={this.options}
+                />
+                <TableBody
+                  data={displayData}
+                  tableData={this.state.data}
+                  count={rowCount}
+                  columns={columns}
+                  page={page}
+                  rowsPerPage={rowsPerPage}
+                  selectedRows={selectedRows}
+                  selectRowUpdate={this.selectRowUpdate}
+                  expandedRows={expandedRows}
+                  toggleExpandRow={this.toggleExpandRow}
+                  options={this.options}
+                  searchText={searchText}
+                  filterList={filterList}
+                  totals={totalled && totals}
+                />
+              </MuiTable>
+            </div>
           </div>
           <div className="body-only" style={{ overflowY: 'auto', height }}>
-            <Table ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'}>
-              <caption className={classes.caption}>{title}</caption>
-              <MUIDataTableHead
-                columns={columns}
-                data={this.state.displayData}
-                tableData={this.state.data}
-                count={rowCount}
-                columns={columns}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
-                selectedRows={selectedRows}
-                selectRowUpdate={this.selectRowUpdate}
-                toggleSort={this.toggleSortColumn}
-                options={this.options}
-              />
-              <MUIDataTableBody
-                data={this.state.displayData}
-                tableData={this.state.data}
-                count={rowCount}
-                columns={columns}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                selectedRows={selectedRows}
-                selectRowUpdate={this.selectRowUpdate}
-                options={this.options}
-                searchText={searchText}
-                filterList={filterList}
-                totals={totalled && totals}
-              />
-            </Table>
-          </div>
-          <Table>
-            {this.options.pagination ? (
-              <MUIDataTablePagination
-                count={rowCount}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                changeRowsPerPage={this.changeRowsPerPage}
-                changePage={this.changePage}
-                component={'div'}
-                options={this.options}
-              />
-            ) : (
-              false
-            )}
-          </Table>
-          <div className={classes.liveAnnounce} aria-live={'polite'} ref={el => (this.announceRef = el)}>
-            {announceText}
+            <div style={divStyle} className={this.options.responsive === 'scroll' ? classes.responsiveScroll : null}>
+              {this.options.resizableColumns && (
+                <TableResize
+                  key={rowCount}
+                  updateDividers={fn => (this.updateDividers = fn)}
+                  setResizeable={fn => (this.setHeadResizeable = fn)}
+                />
+              )}
+              <MuiTable ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'} className={classes.tableRoot}>
+                <caption className={classes.caption}>{title}</caption>
+                <TableHead
+                  columns={columns}
+                  activeColumn={activeColumn}
+                  data={displayData}
+                  tableData={this.state.data}
+                  count={rowCount}
+                  columns={columns}
+                  page={page}
+                  rowsPerPage={rowsPerPage}
+                  handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
+                  selectedRows={selectedRows}
+                  selectRowUpdate={this.selectRowUpdate}
+                  toggleSort={this.toggleSortColumn}
+                  setCellRef={this.setHeadCellRef}
+                  options={this.options}
+                />
+                <TableBody
+                  data={displayData}
+                  tableData={this.state.data}
+                  count={rowCount}
+                  columns={columns}
+                  page={page}
+                  rowsPerPage={rowsPerPage}
+                  selectedRows={selectedRows}
+                  selectRowUpdate={this.selectRowUpdate}
+                  expandedRows={expandedRows}
+                  toggleExpandRow={this.toggleExpandRow}
+                  options={this.options}
+                  searchText={searchText}
+                  filterList={filterList}
+                  totals={totalled && totals}
+                />
+              </MuiTable>
+            </div>
+            <TableFooter
+              options={this.options}
+              page={page}
+              rowCount={rowCount}
+              rowsPerPage={rowsPerPage}
+              changeRowsPerPage={this.changeRowsPerPage}
+              changePage={this.changePage}
+            />
+            <div className={classes.liveAnnounce} aria-live={'polite'} ref={el => (this.announceRef = el)}>
+              {announceText}
+            </div>
           </div>
         </Paper>
       );
@@ -1172,7 +1195,7 @@ class MUIDataTable extends React.Component {
             onRowsDelete={this.selectRowDelete}
             displayData={displayData}
             selectRowUpdate={this.selectRowUpdate}
-            ref={this.toolbar}
+            iRef={this.toolbar}
           />
         ) : (
           <TableToolbar
@@ -1186,7 +1209,7 @@ class MUIDataTable extends React.Component {
             resetFilters={this.resetFilters}
             searchTextUpdate={this.searchTextUpdate}
             tableRef={this.getTableContentRef}
-            ref={this.toolbar}
+            iRef={this.toolbar}
             tableRef={() => this.tableContent}
             title={title}
             toggleViewColumn={this.toggleViewColumn}

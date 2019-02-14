@@ -21,9 +21,9 @@ class StyledComponent extends React.Component {
   };
 
   render() {
-    const { classes, className = '', WrappedComponent, ...passThroughProps } = this.props;
+    const { classes, className = '', WrappedComponent, iRef, ...passThroughProps } = this.props;
 
-    return <WrappedComponent classes={classes} className={className} {...passThroughProps} />;
+    return <WrappedComponent classes={classes} className={className} ref={iRef} {...passThroughProps} />;
   }
 }
 
