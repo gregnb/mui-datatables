@@ -84,6 +84,18 @@ class TableToolbar extends React.Component {
     showSearch: false,
   };
 
+  constructor(props) {
+    super(props);
+
+    this.initializeState();
+  }
+
+  initializeState = () => {
+    if (this.props.options.userState.searchText) {
+      this.state.showSearch = !!this.props.options.userState.searchText;
+    }
+  };
+
   handleCSVDownload = () => {
     const { data, columns, options } = this.props;
     createCSVDownload(columns, data, options);

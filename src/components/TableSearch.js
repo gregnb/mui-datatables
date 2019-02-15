@@ -10,10 +10,10 @@ const defaultSearchStyles = theme => ({
   main: {
     display: 'flex',
     flex: '1 0 auto',
+    alignItems: 'center',
   },
   searchIcon: {
     color: theme.palette.text.secondary,
-    marginTop: '10px',
     marginRight: '8px',
   },
   searchText: {
@@ -27,14 +27,33 @@ const defaultSearchStyles = theme => ({
 });
 
 class TableSearch extends React.Component {
-  handleTextChange = event => {
+  state = {
+    value: ''
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.initializeState();
+  }
+
+  initializeState = () => {
+    if (this.props.options.userState.searchText) {
+      this.state.value = this.props.options.userState.searchText;
+    }
+  };
+
+  handleTextChange = (event) => {
+    const { value } = event.target;
     const { onSearchChange } = this.props.options;
 
     if (onSearchChange) {
-      onSearchChange(event.target.value);
+      onSearchChange(value);
     }
 
-    this.props.onSearch(event.target.value);
+    this.props.onSearch(value);
+
+    this.setState({ value: event.target.value });
   };
 
   componentDidMount() {
@@ -53,6 +72,9 @@ class TableSearch extends React.Component {
 
   render() {
     const { classes, options, onHide } = this.props;
+    const { value } = this.state;
+
+    console.log('search', 'render', value);
 
     return (
       <Grow appear in={true} timeout={300}>
@@ -67,6 +89,7 @@ class TableSearch extends React.Component {
             onChange={this.handleTextChange}
             fullWidth={true}
             inputRef={el => (this.searchField = el)}
+            value={value}
           />
           <IconButton className={classes.clearIcon} onClick={onHide}>
             <ClearIcon />

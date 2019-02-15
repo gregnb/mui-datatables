@@ -14,7 +14,8 @@ npm-debug.log*
 .vscode
 
 # idea project
-.idea
+/.idea
+/*.iml
 
 # Runtime data
 pids

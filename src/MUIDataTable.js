@@ -108,6 +108,13 @@ class MUIDataTable extends React.Component {
       print: PropTypes.bool,
       viewColumns: PropTypes.bool,
       download: PropTypes.bool,
+      userState: PropTypes.shape({
+        searchText: PropTypes.string,
+        sort: PropTypes.shape({
+          column: PropTypes.string,
+          direction: PropTypes.string,
+        }),
+      }),
       downloadOptions: PropTypes.shape({
         filename: PropTypes.string,
         separator: PropTypes.string,
@@ -146,8 +153,9 @@ class MUIDataTable extends React.Component {
     searchText: null,
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
     this.tableRef = false;
     this.tableContent = React.createRef();
     this.headCellRefs = {};
@@ -179,7 +187,12 @@ class MUIDataTable extends React.Component {
   initializeTable(props) {
     this.getDefaultOptions(props);
     this.setTableOptions(props);
+    this.initializeState();
     this.setTableData(props, TABLE_LOAD.INITIAL);
+  }
+
+  initializeState() {
+    this.state.searchText = this.options.userState.searchText;
   }
 
   /*
@@ -212,6 +225,13 @@ class MUIDataTable extends React.Component {
         filename: 'tableDownload.csv',
         separator: ',',
       },
+      userState: {
+        searchText: null,
+        sort: {
+          column: null,
+          direction: null,
+        }
+      }
     };
 
     this.options = merge(defaultOptions, props.options);
@@ -914,12 +934,6 @@ class MUIDataTable extends React.Component {
     };
   }
 
-  // must be arrow function on local field to refer to the correct instance when passed around
-  // assigning it as arrow function in the JSX would cause hard to track re-render errors
-  getTableContentRef = () => {
-    return this.tableContent.current;
-  };
-
   render() {
     const { classes, title } = this.props;
     const {
@@ -984,7 +998,6 @@ class MUIDataTable extends React.Component {
               activeColumn={activeColumn}
               data={displayData}
               count={rowCount}
-              columns={columns}
               page={page}
               rowsPerPage={rowsPerPage}
               handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
