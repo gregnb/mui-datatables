@@ -1050,7 +1050,7 @@ class MUIDataTable extends React.Component {
       };
 
       return (
-        <Paper elevation={4} ref={el => (this.tableContent = el)} className={classes.paper}>
+        <Paper elevation={4} ref={this.tableContent} className={classes.paper}>
           {selectedRows.data.length ? (
             <TableToolbarSelect
               options={this.options}
@@ -1073,7 +1073,6 @@ class MUIDataTable extends React.Component {
               searchTextUpdate={this.searchTextUpdate}
               tableRef={this.getTableContentRef}
               iRef={this.toolbar}
-              tableRef={() => this.tableContent}
               title={title}
               toggleViewColumn={this.toggleViewColumn}
               setTableAction={this.setTableAction}
@@ -1212,7 +1211,6 @@ class MUIDataTable extends React.Component {
             searchTextUpdate={this.searchTextUpdate}
             tableRef={this.getTableContentRef}
             iRef={this.toolbar}
-            tableRef={() => this.tableContent}
             title={title}
             toggleViewColumn={this.toggleViewColumn}
             setTableAction={this.setTableAction}
