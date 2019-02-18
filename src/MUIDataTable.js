@@ -253,7 +253,10 @@ class MUIDataTable extends React.Component {
 
     if (this.state.columns && this.state.columns.length > 0) {
       this.state.activeColumn = this.options.initialState.sort.column;
-      this.state.columns[this.state.activeColumn].sortDirection = this.options.initialState.sort.direction;
+
+      if (this.state.activeColumn) {
+        this.state.columns[this.state.activeColumn].sortDirection = this.options.initialState.sort.direction;
+      }
     }
   }
 
