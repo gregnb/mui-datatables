@@ -117,6 +117,11 @@ class MUIDataTable extends React.Component {
           direction: PropTypes.string,
         }),
         filters: PropTypes.array,
+        columnOptions: PropTypes.PropTypes.arrayOf(
+          PropTypes.shape({
+            hidden: PropTypes.oneOf(['false']),
+          }),
+        ),
       }),
       downloadOptions: PropTypes.shape({
         filename: PropTypes.string,
@@ -232,6 +237,7 @@ class MUIDataTable extends React.Component {
           direction: null,
         },
         filters: [],
+        columnOptions: [],
       }
     };
 
@@ -268,7 +274,7 @@ class MUIDataTable extends React.Component {
     this.state.rowsPerPage = this.options.initialState.rowsPerPage;
   }
 
-  initializeStateOrdersFilters(columns, filterList) {
+  initializeStateForColumns(columns, filterList) {
     if (this.options.initialState.sort.column || this.options.initialState.sort.column === 0) {
       if (columns && columns.length > 0) {
         this.state.activeColumn = this.options.initialState.sort.column;
@@ -280,6 +286,16 @@ class MUIDataTable extends React.Component {
       filterList.map((columnArrOfVals, ix) => {
         filterList[ix] = this.options.initialState.filters[ix] || [];
       });
+    }
+
+    if (this.options.initialState.columnOptions && this.options.initialState.columnOptions.length > 0) {
+      if (columns && columns.length > 0) {
+        this.options.initialState.columnOptions.map((opts, ix) => {
+          if (!!opts.hidden) {
+            columns[ix].display = 'false';
+          }
+        });
+      }
     }
   }
 
@@ -382,7 +398,7 @@ class MUIDataTable extends React.Component {
     let sortIndex = null;
     let sortDirection = null;
 
-    this.initializeStateOrdersFilters(columns, filterList);
+    this.initializeStateForColumns(columns, filterList);
 
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {

@@ -168,6 +168,21 @@ class Example extends React.Component {
             direction: ((tableState.activeColumn || tableState.activeColumn === 0) ? tableState.columns[tableState.activeColumn].sortDirection : null),
           },
           filters: tableState.filterList,
+          columnOptions: (() => {
+            const result = [];
+
+            tableState.columns.map((column, ix) => {
+              if (column.display === 'false') {
+                result.push({
+                  hidden: (column.display === 'false'),
+                });
+              } else {
+                result.push({});
+              }
+            });
+
+            return result;
+          })(),
         },
       };
 
@@ -194,7 +209,7 @@ class Example extends React.Component {
       rowsPerPageOptions: [10, 15, 20],
       initialState: {
         page: 0,
-        rowsPerPage: 20,
+        rowsPerPage: 10,
       },
       onTableChange: function (action, tableState) {
         stateLocalStore(tableState);
