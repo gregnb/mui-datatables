@@ -114,6 +114,7 @@ class MUIDataTable extends React.Component {
           column: PropTypes.number,
           direction: PropTypes.string,
         }),
+        filters: PropTypes.array,
       }),
       downloadOptions: PropTypes.shape({
         filename: PropTypes.string,
@@ -168,7 +169,6 @@ class MUIDataTable extends React.Component {
   }
 
   componentDidMount() {
-    this.initializeState();
     this.setHeadResizeable(this.headCellRefs, this.tableRef);
   }
 
@@ -227,7 +227,8 @@ class MUIDataTable extends React.Component {
         sort: {
           column: null,
           direction: null,
-        }
+        },
+        filters: [],
       }
     };
 
@@ -250,13 +251,20 @@ class MUIDataTable extends React.Component {
 
   initializeState() {
     this.state.searchText = this.options.initialState.searchText;
+  }
 
-    if (this.state.columns && this.state.columns.length > 0) {
-      this.state.activeColumn = this.options.initialState.sort.column;
-
-      if (this.state.activeColumn) {
-        this.state.columns[this.state.activeColumn].sortDirection = this.options.initialState.sort.direction;
+  initializeStateOrdersFilters(columns, filterList) {
+    if (this.options.initialState.sort.column || this.options.initialState.sort.column === 0) {
+      if (columns && columns.length > 0) {
+        this.state.activeColumn = this.options.initialState.sort.column;
+        columns[this.state.activeColumn].sortDirection = this.options.initialState.sort.direction;
       }
+    }
+
+    if (this.options.initialState.filters && this.options.initialState.filters.length > 0) {
+      filterList.map((columnArrOfVals, ix) => {
+        filterList[ix] = this.options.initialState.filters[ix] || [];
+      });
     }
   }
 
@@ -358,6 +366,8 @@ class MUIDataTable extends React.Component {
     let { columns, filterData, filterList } = this.buildColumns(props.columns);
     let sortIndex = null;
     let sortDirection = null;
+
+    this.initializeStateOrdersFilters(columns, filterList);
 
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
