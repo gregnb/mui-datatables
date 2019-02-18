@@ -127,7 +127,7 @@ The component accepts the following props:
 #### Options:
 |Name|Type|Default|Description
 |:--:|:-----|:--|:-----|
-|**`page`**|number||User provided starting page for pagination
+|**`initialState`**|object||Can be used to set an initial state [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/initial-state-values/index.js)
 |**`count`**|number||User provided override for total number of rows
 |**`serverSide`**|boolean|false|Enable remote data source
 |**`rowsSelected`**|array||User provided selected rows
@@ -146,7 +146,6 @@ The component accepts the following props:
 |**`elevation`**|number|4|Shadow depth applied to Paper component
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
 |**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: 'stacked', 'scroll'
-|**`rowsPerPage`**|number|10|Number of rows allowed per page
 |**`rowsPerPageOptions`**|array|[10,15,20]|Options to provide in pagination for number of rows a user can select
 |**`rowHover`**|boolean|true|Enable/disable hover style over rows
 |**`fixedHeader`**|boolean|true|Enable/disable fixed header columns
@@ -171,6 +170,17 @@ The component accepts the following props:
 |**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
 |**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
 |**`setRowProps`**|function||Is called for each row and allows to return custom props for this row based on its data. `function(row: array, rowIndex: number) => object`
+
+#### Options `initialState` object:
+|Name|Type|Default|Description
+|:--:|:-----|:--|:-----|
+|**`rowsPerPage`**|number|10|Number of rows allowed per page
+|**`page`**|number||User provided starting page for pagination
+|**`searchText`**|string||User provided search text
+|**`sort`**|object||User provided active `column` for sorting and `direction`
+|**`filters`**|array||User provided array with each column index and their values as an array (see [example](https://github.com/gregnb/mui-datatables/blob/master/examples/initial-state-values/index.js))
+|**`columnOptions`**|array||User provided array with each column index and their options (see [example](https://github.com/gregnb/mui-datatables/blob/master/examples/initial-state-values/index.js))
+
 
 ## Customize Columns
 
