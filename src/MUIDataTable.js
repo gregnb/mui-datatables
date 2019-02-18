@@ -108,10 +108,10 @@ class MUIDataTable extends React.Component {
       print: PropTypes.bool,
       viewColumns: PropTypes.bool,
       download: PropTypes.bool,
-      userState: PropTypes.shape({
+      initialState: PropTypes.shape({
         searchText: PropTypes.string,
         sort: PropTypes.shape({
-          column: PropTypes.string,
+          column: PropTypes.number,
           direction: PropTypes.string,
         }),
       }),
@@ -168,6 +168,7 @@ class MUIDataTable extends React.Component {
   }
 
   componentDidMount() {
+    this.initializeState();
     this.setHeadResizeable(this.headCellRefs, this.tableRef);
   }
 
@@ -189,10 +190,6 @@ class MUIDataTable extends React.Component {
     this.setTableOptions(props);
     this.initializeState();
     this.setTableData(props, TABLE_LOAD.INITIAL);
-  }
-
-  initializeState() {
-    this.state.searchText = this.options.userState.searchText;
   }
 
   /*
@@ -225,7 +222,7 @@ class MUIDataTable extends React.Component {
         filename: 'tableDownload.csv',
         separator: ',',
       },
-      userState: {
+      initialState: {
         searchText: null,
         sort: {
           column: null,
@@ -248,6 +245,15 @@ class MUIDataTable extends React.Component {
       console.error(
         'Deprecated: filterList must now be provided under each column option. see https://github.com/gregnb/mui-datatables/tree/master/examples/serverside-options example',
       );
+    }
+  }
+
+  initializeState() {
+    this.state.searchText = this.options.initialState.searchText;
+
+    if (this.state.columns && this.state.columns.length > 0) {
+      this.state.activeColumn = this.options.initialState.sort.column;
+      this.state.columns[this.state.activeColumn].sortDirection = this.options.initialState.sort.direction;
     }
   }
 

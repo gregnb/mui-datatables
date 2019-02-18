@@ -87,12 +87,12 @@ class TableToolbar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.initializeState();
+    this.checkForState();
   }
 
-  initializeState = () => {
-    if (this.props.options.userState.searchText) {
-      this.state.showSearch = !!this.props.options.userState.searchText;
+  checkForState = () => {
+    if (this.props.options.initialState.searchText) {
+      this.state.showSearch = !!this.props.options.initialState.searchText;
     }
   };
 

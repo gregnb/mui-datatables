@@ -34,12 +34,12 @@ class TableSearch extends React.Component {
   constructor(props) {
     super(props);
 
-    this.initializeState();
+    this.checkForState();
   }
 
-  initializeState = () => {
-    if (this.props.options.userState.searchText) {
-      this.state.value = this.props.options.userState.searchText;
+  checkForState = () => {
+    if (this.props.options.initialState.searchText) {
+      this.state.value = this.props.options.initialState.searchText;
     }
   };
 
@@ -73,8 +73,6 @@ class TableSearch extends React.Component {
   render() {
     const { classes, options, onHide } = this.props;
     const { value } = this.state;
-
-    console.log('search', 'render', value);
 
     return (
       <Grow appear in={true} timeout={300}>
