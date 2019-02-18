@@ -119,7 +119,7 @@ class MUIDataTable extends React.Component {
         filters: PropTypes.array,
         columnOptions: PropTypes.PropTypes.arrayOf(
           PropTypes.shape({
-            hidden: PropTypes.oneOf(['false']),
+            hidden: PropTypes.bool,
           }),
         ),
       }),
