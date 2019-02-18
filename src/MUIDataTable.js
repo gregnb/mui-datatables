@@ -109,6 +109,8 @@ class MUIDataTable extends React.Component {
       viewColumns: PropTypes.bool,
       download: PropTypes.bool,
       initialState: PropTypes.shape({
+        page: PropTypes.number,
+        rowsPerPage: PropTypes.number,
         searchText: PropTypes.string,
         sort: PropTypes.shape({
           column: PropTypes.number,
@@ -209,7 +211,6 @@ class MUIDataTable extends React.Component {
       rowHover: true,
       fixedHeader: true,
       elevation: 4,
-      rowsPerPage: 10,
       rowsPerPageOptions: [10, 15, 100],
       filter: true,
       sortFilterList: true,
@@ -223,6 +224,8 @@ class MUIDataTable extends React.Component {
         separator: ',',
       },
       initialState: {
+        page: 0,
+        rowsPerPage: 10,
         searchText: null,
         sort: {
           column: null,
@@ -247,10 +250,22 @@ class MUIDataTable extends React.Component {
         'Deprecated: filterList must now be provided under each column option. see https://github.com/gregnb/mui-datatables/tree/master/examples/serverside-options example',
       );
     }
+    if (this.props.options.page || this.props.options.page === 0) {
+      console.warn(
+        'Deprecated: page is now under the initialState attribute in the option list. See https://github.com/gregnb/mui-datatables/tree/master/examples/initial-state-values example',
+      );
+    }
+    if (this.props.options.rowsPerPage || this.props.options.rowsPerPage === 0) {
+      console.warn(
+        'Deprecated: rowsPerPage is now under the initialState attribute in the option list. See https://github.com/gregnb/mui-datatables/tree/master/examples/initial-state-values example',
+      );
+    }
   }
 
   initializeState() {
     this.state.searchText = this.options.initialState.searchText;
+    this.state.page = this.options.initialState.page;
+    this.state.rowsPerPage = this.options.initialState.rowsPerPage;
   }
 
   initializeStateOrdersFilters(columns, filterList) {

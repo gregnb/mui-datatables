@@ -191,9 +191,11 @@ class Example extends React.Component {
       selectableRows: true,
       filterType: 'dropdown',
       responsive: 'stacked',
-      rowsPerPage: 10,
       rowsPerPageOptions: [10, 15, 20],
-      page: 0,
+      initialState: {
+        page: 0,
+        rowsPerPage: 20,
+      },
       onTableChange: function (action, tableState) {
         stateLocalStore(tableState);
       },
