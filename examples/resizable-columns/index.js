@@ -1,33 +1,27 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import MUIDataTable from "../../src/";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import MUIDataTable from '../../src/';
 
 class Example extends React.Component {
-
   render() {
-
-    const columns = ["Name", "Title", "Location"];
+    const columns = ['Name', 'Title', 'Location'];
 
     const data = [
-      ["Gabby George", "Business Analyst", "Minneapolis"],
-      ["Aiden Lloyd", "Business Consultant", "Dallas"],
-      ["Jaden Collins", "Attorney", "Santa Ana"],
-      ["Franky Rees", "Business Analyst", "St. Petersburg"],
-      ["Aaren Rose", null, "Toledo"]
+      ['Gabby George', 'Business Analyst', 'Minneapolis'],
+      ['Aiden Lloyd', 'Business Consultant', 'Dallas'],
+      ['Jaden Collins', 'Attorney', 'Santa Ana'],
+      ['Franky Rees', 'Business Analyst', 'St. Petersburg'],
+      ['Aaren Rose', null, 'Toledo'],
     ];
-
 
     const options = {
       filter: true,
       filterType: 'dropdown',
-      resizableColumns: true
+      resizableColumns: true,
     };
 
-    return (
-      <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
-    );
-
+    return <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />;
   }
 }
 
-ReactDOM.render(<Example />, document.getElementById("app-root"));
+ReactDOM.render(<Example />, document.getElementById('app-root'));

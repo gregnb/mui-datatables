@@ -91,8 +91,8 @@ class TableToolbar extends React.Component {
   }
 
   checkForState = () => {
-    if (this.props.options.initialState.searchText) {
-      this.state.showSearch = !!this.props.options.initialState.searchText;
+    if (this.props.tableState.searchText) {
+      this.state.showSearch = !!this.props.tableState.searchText;
     }
   };
 
@@ -119,10 +119,9 @@ class TableToolbar extends React.Component {
   };
 
   hideSearch = () => {
-    const { onSearchClose } = this.props.options;
-
-    if (onSearchClose) onSearchClose();
-    this.props.searchTextUpdate(null);
+    !!this.props.options.onSearchClose && this.props.options.onSearchClose();
+    this.props.setTableAction('onSearchClose');
+    // this.props.searchTextUpdate(null);
 
     this.setState(() => ({
       iconActive: null,
@@ -146,6 +145,7 @@ class TableToolbar extends React.Component {
       toggleViewColumn,
       title,
       tableRef,
+      tableState,
     } = this.props;
 
     const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;
@@ -155,7 +155,12 @@ class TableToolbar extends React.Component {
       <Toolbar className={classes.root} role={'toolbar'} aria-label={'Table Toolbar'}>
         <div className={classes.left}>
           {showSearch === true ? (
-            <TableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
+            <TableSearch
+              onSearch={searchTextUpdate}
+              onHide={this.hideSearch}
+              options={options}
+              tableState={tableState}
+            />
           ) : (
             <div className={classes.titleRoot} aria-hidden={'true'}>
               <Typography variant="h6" className={classes.titleText}>

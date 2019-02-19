@@ -9,7 +9,6 @@ import TableBody from './components/TableBody';
 import TableResize from './components/TableResize';
 import TableHead from './components/TableHead';
 import TableFooter from './components/TableFooter';
-import TablePagination from './components/TablePagination';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
 import isEqual from 'lodash.isequal';
@@ -161,9 +160,8 @@ class MUIDataTable extends React.Component {
     searchText: null,
   };
 
-  constructor(props) {
-    super(props);
-
+  constructor() {
+    super();
     this.tableRef = false;
     this.tableContent = React.createRef();
     this.headCellRefs = {};
@@ -194,8 +192,8 @@ class MUIDataTable extends React.Component {
 
   initializeTable(props) {
     this.getDefaultOptions(props);
-    this.setTableOptions(props);
     this.initializeState();
+    this.setTableOptions(props);
     this.setTableData(props, TABLE_LOAD.INITIAL);
   }
 
@@ -256,22 +254,24 @@ class MUIDataTable extends React.Component {
         'Deprecated: filterList must now be provided under each column option. see https://github.com/gregnb/mui-datatables/tree/master/examples/serverside-options example',
       );
     }
-    if (this.props.options.page || this.props.options.page === 0) {
-      console.warn(
-        'Deprecated: page is now under the initialState attribute in the option list. See https://github.com/gregnb/mui-datatables/tree/master/examples/initial-state-values example',
-      );
-    }
-    if (this.props.options.rowsPerPage || this.props.options.rowsPerPage === 0) {
-      console.warn(
-        'Deprecated: rowsPerPage is now under the initialState attribute in the option list. See https://github.com/gregnb/mui-datatables/tree/master/examples/initial-state-values example',
-      );
-    }
+    // if (this.props.options.page || this.props.options.page === 0) {
+    //   console.warn(
+    //     'Deprecated: page is now under the initialState attribute in the option list. See https://github.com/gregnb/mui-datatables/tree/master/examples/initial-state-values example',
+    //   );
+    // }
+    // if (this.props.options.rowsPerPage || this.props.options.rowsPerPage === 0) {
+    //   console.warn(
+    //     'Deprecated: rowsPerPage is now under the initialState attribute in the option list. See https://github.com/gregnb/mui-datatables/tree/master/examples/initial-state-values example',
+    //   );
+    // }
   }
 
   initializeState() {
-    this.state.searchText = this.options.initialState.searchText;
-    this.state.page = this.options.initialState.page;
-    this.state.rowsPerPage = this.options.initialState.rowsPerPage;
+    const { searchText, page, rowsPerPage } = this.options.initialState;
+
+    this.state.searchText = searchText;
+    this.state.page = page;
+    this.state.rowsPerPage = rowsPerPage;
   }
 
   initializeStateForColumns(columns, filterList) {
@@ -1022,6 +1022,7 @@ class MUIDataTable extends React.Component {
             filterList={filterList}
             filterUpdate={this.filterUpdate}
             options={this.options}
+            tableState={this.state}
             resetFilters={this.resetFilters}
             searchTextUpdate={this.searchTextUpdate}
             tableRef={this.getTableContentRef}

@@ -38,8 +38,8 @@ class TableSearch extends React.Component {
   }
 
   checkForState = () => {
-    if (this.props.options.initialState.searchText) {
-      this.state.value = this.props.options.initialState.searchText;
+    if (this.props.tableState.searchText) {
+      this.state.value = this.props.tableState.searchText;
     }
   };
 
