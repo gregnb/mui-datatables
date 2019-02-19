@@ -28,7 +28,7 @@ const defaultSearchStyles = theme => ({
 
 class TableSearch extends React.Component {
   state = {
-    value: ''
+    value: '',
   };
 
   constructor(props) {
@@ -43,7 +43,7 @@ class TableSearch extends React.Component {
     }
   };
 
-  handleTextChange = (event) => {
+  handleTextChange = event => {
     const { value } = event.target;
     const { onSearchChange } = this.props.options;
 

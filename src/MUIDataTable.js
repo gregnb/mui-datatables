@@ -238,7 +238,7 @@ class MUIDataTable extends React.Component {
         },
         filters: [],
         columnOptions: [],
-      }
+      },
     };
 
     this.options = merge(defaultOptions, props.options);
