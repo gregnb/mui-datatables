@@ -230,6 +230,7 @@ class TableToolbar extends React.Component {
           )}
         </div>
         <div className={classes.actions}>
+          {options.customToolbarStart ? options.customToolbarStart() : false}
           {options.search && (
             <Tooltip title={search}>
               <IconButton
