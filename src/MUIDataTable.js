@@ -322,7 +322,7 @@ class MUIDataTable extends React.Component {
     return { columns: columnData, filterData, filterList };
   };
 
-  transformData = (props) => {
+  transformData = props => {
     const { data, columns } = props;
     return Array.isArray(data[0]) ? data : data.map(row => columns.map(col => row[col.name]));
   };
