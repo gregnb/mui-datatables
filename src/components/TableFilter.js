@@ -173,7 +173,7 @@ class TableFilter extends React.Component {
                       root: classes.checkbox,
                       checked: classes.checked,
                     }}
-                    value={filterColumn !== null ? filterColumn.toString() : ''}
+                    value={filterColumn != null ? filterColumn.toString() : ''}
                   />
                 }
                 label={filterColumn}
