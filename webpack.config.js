@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    app: "./examples/column-filters/index.js"
+    app: "./examples/data-as-objects/index.js"
   },
   stats: "verbose",
   context: __dirname,
