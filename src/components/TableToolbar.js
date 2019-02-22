@@ -121,7 +121,7 @@ class TableToolbar extends React.Component {
   hideSearch = () => {
     !!this.props.options.onSearchClose && this.props.options.onSearchClose();
     this.props.setTableAction('onSearchClose');
-    // this.props.searchTextUpdate(null);
+    this.props.searchTextUpdate(null);
 
     this.setState(() => ({
       iconActive: null,
@@ -155,12 +155,7 @@ class TableToolbar extends React.Component {
       <Toolbar className={classes.root} role={'toolbar'} aria-label={'Table Toolbar'}>
         <div className={classes.left}>
           {showSearch === true ? (
-            <TableSearch
-              onSearch={searchTextUpdate}
-              onHide={this.hideSearch}
-              options={options}
-              tableState={tableState}
-            />
+            <TableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} tableState={tableState} />
           ) : (
             <div className={classes.titleRoot} aria-hidden={'true'}>
               <Typography variant="h6" className={classes.titleText}>
@@ -176,7 +171,8 @@ class TableToolbar extends React.Component {
                 aria-label={search}
                 buttonRef={el => (this.searchButton = el)}
                 classes={{ root: this.getActiveIcon(classes, 'search') }}
-                onClick={this.setActiveIcon.bind(null, 'search')}>
+                onClick={this.setActiveIcon.bind(null, 'search')}
+              >
                 <SearchIcon />
               </IconButton>
             </Tooltip>
@@ -210,15 +206,14 @@ class TableToolbar extends React.Component {
                 <IconButton
                   aria-label={viewColumns}
                   classes={{ root: this.getActiveIcon(classes, 'viewcolumns') }}
-                  onClick={this.setActiveIcon.bind(null, 'viewcolumns')}>
+                  onClick={this.setActiveIcon.bind(null, 'viewcolumns')}
+                >
                   <Tooltip title={viewColumns}>
                     <ViewColumnIcon />
                   </Tooltip>
                 </IconButton>
               }
-              content={
-                <TableViewCol data={data} columns={columns} options={options} onColumnUpdate={toggleViewColumn} />
-              }
+              content={<TableViewCol data={data} columns={columns} options={options} onColumnUpdate={toggleViewColumn} />}
             />
           )}
           {options.filter && (
@@ -229,7 +224,8 @@ class TableToolbar extends React.Component {
                 <IconButton
                   aria-label={filterTable}
                   classes={{ root: this.getActiveIcon(classes, 'filter') }}
-                  onClick={this.setActiveIcon.bind(null, 'filter')}>
+                  onClick={this.setActiveIcon.bind(null, 'filter')}
+                >
                   <Tooltip title={filterTable}>
                     <FilterIcon />
                   </Tooltip>

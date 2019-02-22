@@ -155,52 +155,50 @@ class Example extends React.Component {
       ['NRDEV88', 'Computer Scientist', 'San Francisco', 39, 342000],
     ];
 
-    function stateLocalStore(tableState) {
-      const store = {
-        initialState: {
-          page: tableState.page,
-          rowsPerPage: tableState.rowsPerPage,
-          searchText: tableState.searchText,
-          sort: {
-            column: tableState.activeColumn,
-            direction:
-              tableState.activeColumn || tableState.activeColumn === 0
-                ? tableState.columns[tableState.activeColumn].sortDirection
-                : null,
-          },
-          filters: tableState.filterList,
-          columnOptions: (() => {
-            const result = [];
+      function initialStateStore(tableState) {
+          const store = {
+              page: tableState.page,
+              rowsPerPage: tableState.rowsPerPage,
+              searchText: tableState.searchText,
+              sort: {
+                  column: tableState.activeColumn,
+                  direction:
+                      tableState.activeColumn || tableState.activeColumn === 0
+                          ? tableState.columns[tableState.activeColumn].sortDirection
+                          : null,
+              },
+              filters: tableState.filterList,
+              columnOptions: (() => {
+                  const result = [];
 
-            tableState.columns.map((column, ix) => {
-              if (column.display === 'false') {
-                result.push({
-                  hidden: column.display === 'false',
-                });
-              } else {
-                result.push({});
-              }
-            });
+                  tableState.columns.map((column, ix) => {
+                      if (column.display === 'false') {
+                          result.push({
+                              hidden: column.display === 'false',
+                          });
+                      } else {
+                          result.push({});
+                      }
+                  });
 
-            return result;
-          })(),
-        },
-      };
+                  return result;
+              })(),
+          };
 
-      localStorage.setItem(LOCALSTORAGEID, JSON.stringify(store));
-    }
-
-    function stateLocalRetrieve() {
-      let store = localStorage.getItem(LOCALSTORAGEID);
-
-      if (store) {
-        store = JSON.parse(store);
-
-        return store;
+          localStorage.setItem(LOCALSTORAGEID, JSON.stringify(store));
       }
 
-      return {};
-    }
+      function initialStateRetrieve() {
+          let store = localStorage.getItem(LOCALSTORAGEID);
+
+          if (store) {
+              store = JSON.parse(store);
+
+              return store;
+          }
+
+          return {};
+      }
 
     const options = {
       filter: true,
@@ -213,14 +211,11 @@ class Example extends React.Component {
         rowsPerPage: 10,
       },
       onTableChange: function(action, tableState) {
-        console.log(action, tableState);
-        stateLocalStore(tableState);
-
-      },
-      ...stateLocalRetrieve(),
+        initialStateStore(tableState);
+      }
     };
 
-    return <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />;
+    return <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} initialState={initialStateRetrieve()} />;
   }
 }
 
