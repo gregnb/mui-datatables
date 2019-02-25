@@ -38,7 +38,7 @@ class TableSearch extends React.Component {
   }
 
   checkForState = () => {
-    if (this.props.tableState.searchText) {
+    if (this.props.tableState && this.props.tableState.searchText) {
       this.state.value = this.props.tableState.searchText;
     }
   };

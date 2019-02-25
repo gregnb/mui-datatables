@@ -91,7 +91,7 @@ class TableToolbar extends React.Component {
   }
 
   checkForState = () => {
-    if (this.props.tableState.searchText) {
+    if (this.props.tableState && this.props.tableState.searchText) {
       this.state.showSearch = !!this.props.tableState.searchText;
     }
   };
