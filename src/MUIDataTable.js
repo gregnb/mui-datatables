@@ -256,7 +256,7 @@ class MUIDataTable extends React.Component {
     }
     if (this.props.options.filterList) {
       console.error(
-        'Deprecated: filterList must now be provided under each column option. see https://github.com/gregnb/mui-datatables/tree/master/examples/serverside-options example',
+        'Deprecated: filterList must now be provided under each column option. see https://github.com/gregnb/mui-datatables/tree/master/examples/column-filters example',
       );
     }
     if (this.props.options.rowsPerPage || this.props.options.rowsPerPage === 0) {
@@ -375,13 +375,20 @@ class MUIDataTable extends React.Component {
     return { columns: columnData, filterData, filterList };
   };
 
+  transformData = props => {
+    const { data, columns } = props;
+    return Array.isArray(data[0]) ? data : data.map(row => columns.map(col => row[col.name]));
+  };
+
   setTableData(props, status, callback = () => {}) {
-    const { data, options } = props;
+    const { options } = props;
 
     let tableData = [];
     let { columns, filterData, filterList } = this.buildColumns(props.columns);
     let sortIndex = null;
     let sortDirection = null;
+
+    const data = this.transformData(props);
 
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {

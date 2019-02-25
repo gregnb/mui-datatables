@@ -173,7 +173,7 @@ class TableFilter extends React.Component {
                       root: classes.checkbox,
                       checked: classes.checked,
                     }}
-                    value={filterColumn !== null ? filterColumn.toString() : ''}
+                    value={filterColumn != null ? filterColumn.toString() : ''}
                   />
                 }
                 label={filterColumn}
@@ -207,7 +207,7 @@ class TableFilter extends React.Component {
                 </MenuItem>
                 {filterData[index].map((filterColumn, filterIndex) => (
                   <MenuItem value={filterColumn} key={filterIndex + 1}>
-                    {filterColumn !== null ? filterColumn.toString() : ''}
+                    {filterColumn != null ? filterColumn.toString() : ''}
                   </MenuItem>
                 ))}
               </Select>

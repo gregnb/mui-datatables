@@ -61,28 +61,32 @@ import MUIDataTable from "mui-datatables";
 
 const columns = [
  {
-  name: "Name",
+  name: "name",
+  label: "Name",
   options: {
    filter: true,
    sort: true,
   }
  },
  {
-  name: "Company",
+  name: "company",
+  label: "Company",
   options: {
    filter: true,
    sort: false,
   }
  },
  {
-  name: "City",
+  name: "city",
+  label: "City",
   options: {
    filter: true,
    sort: false,
   }
  },
  {
-  name: "State",
+  name: "state",
+  label: "State",
   options: {
    filter: true,
    sort: false,
@@ -91,10 +95,10 @@ const columns = [
 ];
 
 const data = [
- ["Joe James", "Test Corp", "Yonkers", "NY"],
- ["John Walsh", "Test Corp", "Hartford", "CT"],
- ["Bob Herm", "Test Corp", "Tampa", "FL"],
- ["James Houston", "Test Corp", "Dallas", "TX"],
+ { name: "Joe James", company: "Test Corp", city: "Yonkers", state: "NY" },
+ { name: "John Walsh", company: "Test Corp", city: "Hartford", state: "CT" },
+ { name: "Bob Herm", company: "Test Corp", city: "Tampa", state: "FL" },
+ { name: "James Houston", company: "Test Corp", city: "Dallas", state: "TX" },
 ];
 
 const options = {
@@ -121,7 +125,7 @@ The component accepts the following props:
 |:--:|:-----|:-----|
 |**`title`**|array|Title used to caption table
 |**`columns`**|array|Columns used to describe table. Must be either an array of simple strings or objects describing a column
-|**`data`**|array|Data used to describe table. Must be an array of strings or numbers
+|**`data`**|array|Data used to describe table. Must be an array containing objects. (Arrays containing just strings or numbers also supported) 
 |**`options`**|object|Options used to describe table
 |**`initialState`**|object|Can be used to set an initial state
 
@@ -227,7 +231,7 @@ const columns = [
 #### Column:
 |Name|Type|Description
 |:--:|:-----|:-----|
-|**`Name`**|string|Name of column (This field is required)
+|**`name`**|string|Name of column (This field is required)
 |**`label`**|string|Column Header Name override
 |**`options`**|object|Options for customizing column
 
@@ -245,7 +249,7 @@ const columns = [
 |**`hint`**|string||Display hint icon with string as tooltip on hover.
 |**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(value, tableMeta, updateValue) => string`&#124;
 |**`customBodyRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
-|**`setCellProps`**|function||Is called for each cell and allows to return custom props for this cell based on its data. `function(cellValue: string, rowIndex: number, columnIndex: number) => string`
+|**`setCellProps`**|function||Is called for each cell and allows to return custom props for this cell based on its data. `function(cellValue: string, rowIndex: number, columnIndex: number) => object`
 
 `customHeadRender` is called with these arguments:
 
