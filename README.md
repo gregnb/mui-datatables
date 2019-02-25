@@ -123,6 +123,7 @@ The component accepts the following props:
 |**`columns`**|array|Columns used to describe table. Must be either an array of simple strings or objects describing a column
 |**`data`**|array|Data used to describe table. Must be an array of strings or numbers
 |**`options`**|object|Options used to describe table
+|**`initialState`**|object|Can be used to set an initial state
 
 #### Options:
 |Name|Type|Default|Description
@@ -171,7 +172,6 @@ The component accepts the following props:
 |**`setRowProps`**|function||Is called for each row and allows to return custom props for this row based on its data. `function(row: array, rowIndex: number) => object`
 
 #### Initial state:
-|**`initialState`**|object||Can be used to set an initial state (see [example](https://github.com/gregnb/mui-datatables/blob/master/examples/initial-state-values/index.js))
 
 ```js
 const state = {
