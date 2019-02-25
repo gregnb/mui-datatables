@@ -127,7 +127,6 @@ The component accepts the following props:
 #### Options:
 |Name|Type|Default|Description
 |:--:|:-----|:--|:-----|
-|**`initialState`**|object||Can be used to set an initial state [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/initial-state-values/index.js)
 |**`count`**|number||User provided override for total number of rows
 |**`serverSide`**|boolean|false|Enable remote data source
 |**`rowsSelected`**|array||User provided selected rows
@@ -171,16 +170,42 @@ The component accepts the following props:
 |**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
 |**`setRowProps`**|function||Is called for each row and allows to return custom props for this row based on its data. `function(row: array, rowIndex: number) => object`
 
-#### Options `initialState` object:
+#### Initial state:
+|**`initialState`**|object||Can be used to set an initial state (see [example](https://github.com/gregnb/mui-datatables/blob/master/examples/initial-state-values/index.js))
+
+```js
+const state = {
+  "rowsPerPage": 5,
+  "page": 0,
+  "searchText": null,
+  "sort": {
+    "column": null,
+    "direction": null
+  },
+  "filters": [[], [], [], [], []],
+  "columnOptions": [{}, {}, {}, {}, {}],
+};
+
+
+return (
+    <MUIDataTable initialState={state} ... />
+);
+
+```
+
 |Name|Type|Default|Description
 |:--:|:-----|:--|:-----|
-|**`rowsPerPage`**|number|10|Number of rows allowed per page
-|**`page`**|number||User provided starting page for pagination
+|**`rowsPerPage`**|number|10|Current number of rows  per page
+|**`page`**|number||Current page for pagination
 |**`searchText`**|string||User provided search text
 |**`sort`**|object||User provided active `column` for sorting and `direction`
 |**`filters`**|array||User provided array with each column index and their values as an array (see [example](https://github.com/gregnb/mui-datatables/blob/master/examples/initial-state-values/index.js))
-|**`columnOptions`**|array||User provided array with each column index and their options (see [example](https://github.com/gregnb/mui-datatables/blob/master/examples/initial-state-values/index.js))
+|**`columnOptions`**|array||User provided array with each column index and their options as an object (see [example](https://github.com/gregnb/mui-datatables/blob/master/examples/initial-state-values/index.js))
 
+#### Column Options:
+|Name|Type|Default|Description
+|:--:|:-----|:--|:-----|
+|**`hidden`**|bool|false|State for displaying column.
 
 ## Customize Columns
 

@@ -155,67 +155,77 @@ class Example extends React.Component {
       ['NRDEV88', 'Computer Scientist', 'San Francisco', 39, 342000],
     ];
 
-      function initialStateStore(tableState) {
-          const store = {
-              page: tableState.page,
-              rowsPerPage: tableState.rowsPerPage,
-              searchText: tableState.searchText,
-              sort: {
-                  column: tableState.activeColumn,
-                  direction:
-                      tableState.activeColumn || tableState.activeColumn === 0
-                          ? tableState.columns[tableState.activeColumn].sortDirection
-                          : null,
-              },
-              filters: tableState.filterList,
-              columnOptions: (() => {
-                  const result = [];
+    function initialStateStore(tableState) {
+      const store = {
+        page: tableState.page,
+        rowsPerPage: tableState.rowsPerPage,
+        searchText: tableState.searchText,
+        sort: {
+          column: tableState.activeColumn,
+          direction:
+            tableState.activeColumn || tableState.activeColumn === 0
+              ? tableState.columns[tableState.activeColumn].sortDirection
+              : null,
+        },
+        filters: tableState.filterList,
+        columnOptions: (() => {
+          const result = [];
 
-                  tableState.columns.map((column, ix) => {
-                      if (column.display === 'false') {
-                          result.push({
-                              hidden: column.display === 'false',
-                          });
-                      } else {
-                          result.push({});
-                      }
-                  });
+          tableState.columns.map((column, ix) => {
+            if (column.display === 'false') {
+              result.push({
+                hidden: column.display === 'false',
+              });
+            } else {
+              result.push({});
+            }
+          });
 
-                  return result;
-              })(),
-          };
+          return result;
+        })(),
+      };
 
-          localStorage.setItem(LOCALSTORAGEID, JSON.stringify(store));
+      localStorage.setItem(LOCALSTORAGEID, JSON.stringify(store));
+    }
+
+    function initialStateRetrieve() {
+      let store = localStorage.getItem(LOCALSTORAGEID);
+
+      if (store) {
+        store = JSON.parse(store);
+
+        return store;
       }
 
-      function initialStateRetrieve() {
-          let store = localStorage.getItem(LOCALSTORAGEID);
-
-          if (store) {
-              store = JSON.parse(store);
-
-              return store;
-          }
-
-          return {};
-      }
+      return {};
+    }
 
     const options = {
       filter: true,
       selectableRows: true,
       filterType: 'dropdown',
       responsive: 'stacked',
-      rowsPerPageOptions: [10, 15, 20],
-      initialState: {
-        page: 0,
-        rowsPerPage: 10,
-      },
+      rowsPerPageOptions: [5, 10, 15, 20],
       onTableChange: function(action, tableState) {
         initialStateStore(tableState);
-      }
+      },
     };
 
-    return <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} initialState={initialStateRetrieve()} />;
+    const initialState = {
+      page: 0,
+      rowsPerPage: 10,
+      ...initialStateRetrieve(),
+    };
+
+    return (
+      <MUIDataTable
+        title={'ACME Employee list'}
+        data={data}
+        columns={columns}
+        options={options}
+        initialState={initialState}
+      />
+    );
   }
 }
 
