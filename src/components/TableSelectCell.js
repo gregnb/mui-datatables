@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Checkbox from '@material-ui/core/Checkbox';
+import Radio from '@material-ui/core/Radio';
 import TableCell from '@material-ui/core/TableCell';
 import { withStyles } from '@material-ui/core/styles';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
@@ -16,12 +17,10 @@ const defaultSelectCellStyles = theme => ({
     width: '56px',
     maxWidth: '56px',
     backgroundColor: '#F4F7FA',
-    position: 'sticky',
     top: 0,
     zIndex: 2,
   },
   fixedHeader: {
-    position: 'sticky',
     top: '0px',
     left: '0px',
     zIndex: 3,
