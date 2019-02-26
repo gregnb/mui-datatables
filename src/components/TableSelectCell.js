@@ -17,12 +17,10 @@ const defaultSelectCellStyles = theme => ({
     width: '56px',
     maxWidth: '56px',
     backgroundColor: '#F4F7FA',
-    position: 'sticky',
     top: 0,
     zIndex: 2,
   },
   fixedHeader: {
-    position: 'sticky',
     top: '0px',
     left: '0px',
     zIndex: 3,
