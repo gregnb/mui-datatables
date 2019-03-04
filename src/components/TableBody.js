@@ -104,6 +104,14 @@ class TableBody extends React.Component {
     this.props.selectRowUpdate('cell', data);
   };
 
+  handleRowClick = (row, data, event) => {
+    // don't trigger onRowClick if the event was actually a row selection
+    if (event.target.id && event.target.id.startsWith('MUIDataTableSelectCell')) {
+      return;
+    }
+    this.props.options.onRowClick && this.props.options.onRowClick(row, data, event);
+  };
+
   render() {
     const { classes, columns, toggleExpandRow, options } = this.props;
     const tableRows = this.buildRows();
@@ -118,7 +126,7 @@ class TableBody extends React.Component {
                 {...(options.setRowProps ? options.setRowProps(row, dataIndex) : {})}
                 options={options}
                 rowSelected={options.selectableRows ? this.isRowSelected(dataIndex) : false}
-                onClick={options.onRowClick ? options.onRowClick.bind(null, row, { rowIndex, dataIndex }) : null}
+                onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
                 id={'MUIDataTableBodyRow-' + dataIndex}>
                 <TableSelectCell
                   onChange={this.handleRowSelect.bind(null, {
@@ -135,6 +143,7 @@ class TableBody extends React.Component {
                   selectableOn={options.selectableRows}
                   isRowExpanded={this.isRowExpanded(dataIndex)}
                   isRowSelectable={this.isRowSelectable(dataIndex)}
+                  id={'MUIDataTableSelectCell-' + dataIndex}
                 />
                 {row.map(
                   (column, columnIndex) =>
