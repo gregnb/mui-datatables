@@ -762,12 +762,12 @@ class MUIDataTable extends React.Component {
   };
 
   toggleExpandRow = row => {
-    const { index, dataIndex } = row;
+    const { dataIndex } = row;
     let expandedRows = [...this.state.expandedRows.data];
     let rowPos = -1;
 
     for (let cIndex = 0; cIndex < expandedRows.length; cIndex++) {
-      if (expandedRows[cIndex].index === index) {
+      if (expandedRows[cIndex].dataIndex === dataIndex) {
         rowPos = cIndex;
         break;
       }
