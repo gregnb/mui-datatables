@@ -7,6 +7,7 @@ import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import TableFilter from '../src/components/TableFilter';
+import Typography from '@material-ui/core/Typography';
 
 describe('<TableFilter />', function() {
   let data;
@@ -15,10 +16,10 @@ describe('<TableFilter />', function() {
 
   beforeEach(() => {
     columns = [
-      { name: 'First Name', display: true, sort: true, filter: true, sortDirection: 'desc' },
-      { name: 'Company', display: true, sort: true, filter: true, sortDirection: 'desc' },
-      { name: 'City', display: true, sort: true, filter: true, sortDirection: 'desc' },
-      { name: 'State', display: true, sort: true, filter: true, sortDirection: 'desc' },
+      { name: 'First Name', label: 'First Name', display: true, sort: true, filter: true, sortDirection: 'desc' },
+      { name: 'Company', label: 'Company', display: true, sort: true, filter: true, sortDirection: 'desc' },
+      { name: 'City', label: 'City Label', display: true, sort: true, filter: true, sortDirection: 'desc' },
+      { name: 'State', label: 'State', display: true, sort: true, filter: true, sortDirection: 'desc' },
     ];
 
     data = [
@@ -34,6 +35,19 @@ describe('<TableFilter />', function() {
       ['Yonkers', 'Hartford', 'Tampa', 'Dallas'],
       ['NY', 'CT', 'FL', 'TX'],
     ];
+  });
+
+  it('should render label as filter name', () => {
+    const options = { filterType: 'checkbox', textLabels };
+    const filterList = [[], [], [], []];
+    const shallowWrapper = mount(
+      <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
+    );
+    const labels = shallowWrapper
+      .find(Typography)
+      .filterWhere(n => n.html().match(/MUIDataTableFilter-checkboxListTitle/))
+      .map(n => n.text());
+    assert.deepEqual(labels, ['First Name', 'Company', 'City Label', 'State']);
   });
 
   it("should data table filter view with checkboxes if filterType = 'checkbox'", () => {

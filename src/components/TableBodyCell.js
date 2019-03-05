@@ -30,10 +30,10 @@ const defaultBodyCellStyles = theme => ({
 });
 
 class TableBodyCell extends React.Component {
-  handleClick = () => {
+  handleClick = (event) => {
     const { colIndex, options, children, dataIndex, rowIndex } = this.props;
     if (options.onCellClick) {
-      options.onCellClick(children, { colIndex, rowIndex });
+      options.onCellClick(children, { colIndex, rowIndex, dataIndex, event });
     }
   };
 

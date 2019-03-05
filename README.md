@@ -61,28 +61,32 @@ import MUIDataTable from "mui-datatables";
 
 const columns = [
  {
-  name: "Name",
+  name: "name",
+  label: "Name",
   options: {
    filter: true,
    sort: true,
   }
  },
  {
-  name: "Company",
+  name: "company",
+  label: "Company",
   options: {
    filter: true,
    sort: false,
   }
  },
  {
-  name: "City",
+  name: "city",
+  label: "City",
   options: {
    filter: true,
    sort: false,
   }
  },
  {
-  name: "State",
+  name: "state",
+  label: "State",
   options: {
    filter: true,
    sort: false,
@@ -91,10 +95,10 @@ const columns = [
 ];
 
 const data = [
- ["Joe James", "Test Corp", "Yonkers", "NY"],
- ["John Walsh", "Test Corp", "Hartford", "CT"],
- ["Bob Herm", "Test Corp", "Tampa", "FL"],
- ["James Houston", "Test Corp", "Dallas", "TX"],
+ { name: "Joe James", company: "Test Corp", city: "Yonkers", state: "NY" },
+ { name: "John Walsh", company: "Test Corp", city: "Hartford", state: "CT" },
+ { name: "Bob Herm", company: "Test Corp", city: "Tampa", state: "FL" },
+ { name: "James Houston", company: "Test Corp", city: "Dallas", state: "TX" },
 ];
 
 const options = {
@@ -121,7 +125,7 @@ The component accepts the following props:
 |:--:|:-----|:-----|
 |**`title`**|array|Title used to caption table
 |**`columns`**|array|Columns used to describe table. Must be either an array of simple strings or objects describing a column
-|**`data`**|array|Data used to describe table. Must be an array of strings or numbers
+|**`data`**|array|Data used to describe table. Must be an array containing objects. (Arrays containing just strings or numbers also supported) 
 |**`options`**|object|Options used to describe table
 
 #### Options:
@@ -161,7 +165,7 @@ The component accepts the following props:
 |**`onRowsSelect`**|function||Callback function that triggers when row(s) are selected. `function(currentRowsSelected: array, allRowsSelected: array) => void`
 |**`onRowsDelete`**|function||Callback function that triggers when row(s) are deleted. `function(rowsDeleted: array) => void`
 |**`onRowClick`**|function||Callback function that triggers when a row is clicked. `function(rowData: string[], rowMeta: { dataIndex: number, rowIndex: number }) => void`
-|**`onCellClick`**|function||Callback function that triggers when a cell is clicked. `function(colData: any, cellMeta: { colIndex: number, rowIndex: number }) => void`
+|**`onCellClick`**|function||Callback function that triggers when a cell is clicked. `function(colData: any, cellMeta: { colIndex: number, rowIndex: number, dataIndex: number }) => void`
 |**`onChangePage`**|function||Callback function that triggers when a page has changed. `function(currentPage: number) => void`
 |**`onChangeRowsPerPage`**|function||Callback function that triggers when the number of rows per page has changed. `function(numberOfRows: number) => void`
 |**`onSearchChange`**|function||Callback function that triggers when the search text value has changed. `function(searchText: string) => void`
@@ -192,7 +196,8 @@ const columns = [
 #### Column:
 |Name|Type|Description
 |:--:|:-----|:-----|
-|**`Name`**|string|Name of column (This field is required)
+|**`name`**|string|Name of column (This field is required)
+|**`label`**|string|Column Header Name override
 |**`options`**|object|Options for customizing column
 
 
@@ -204,11 +209,13 @@ const columns = [
 |**`filterOptons`**|array||Filter options [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`filter`**|boolean|true|Display column in filter list
 |**`sort`**|boolean|true|Enable/disable sorting on column
+|**`sortDirection`**|string||Set default sort order `enum('asc', 'desc')`
 |**`download`**|boolean|true|Display column in CSV download file
 |**`hint`**|string||Display hint icon with string as tooltip on hover.
 |**`setCellProps`**|function||Is called for each cell and allows to return custom props for this cell based on its data. `function(cellValue: string, rowIndex: number, columnIndex: number) => string`
 |**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(value, tableMeta, updateValue) => string`&#124;
 |**`customBodyRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
+|**`setCellProps`**|function||Is called for each cell and allows to return custom props for this cell based on its data. `function(cellValue: string, rowIndex: number, columnIndex: number) => object`
 |**`customFilterRender`**|function||Function that returns a string or React component. Used to render a custom filter control for the columns filter. `function (value, onChange, className) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filtering/index.js)
 |**`customFilterFn`**|function||Function that returns a boolean. Used to implement custom filter logic for this column and its filter. Return `true` to filter a row out, `false` to keep it. `(filterValue, columnValue) => boolean` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filtering/index.js)
 |**`customFilterValueRender`**|function||Function that returns a string or React component. Used customize rendering of the filters value in the filter list, e.g. for custom date format. `(columnValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filtering/index.js)

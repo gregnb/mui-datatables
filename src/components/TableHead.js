@@ -40,18 +40,17 @@ class TableHead extends React.Component {
       <MuiTableHead
         className={classNames({ [classes.responsiveStacked]: options.responsive === 'stacked', [classes.main]: true })}>
         <TableHeadRow>
-          {options.selectableRows && (
-            <TableSelectCell
-              ref={el => setCellRef(0, findDOMNode(el))}
-              onChange={this.handleRowSelect.bind(null)}
-              indeterminate={isDeterminate}
-              checked={isChecked}
-              isHeaderCell={true}
-              isExpandable={options.expandableRows}
-              fixedHeader={options.fixedHeader}
-              isRowSelectable={true}
-            />
-          )}
+          <TableSelectCell
+            ref={el => setCellRef(0, findDOMNode(el))}
+            onChange={this.handleRowSelect.bind(null)}
+            indeterminate={isDeterminate}
+            checked={isChecked}
+            isHeaderCell={true}
+            expandableOn={options.expandableRows}
+            selectableOn={options.selectableRows}
+            fixedHeader={options.fixedHeader}
+            isRowSelectable={true}
+          />
           {columns.map(
             (column, index) =>
               column.display === 'true' &&
@@ -68,7 +67,7 @@ class TableHead extends React.Component {
                   toggleSort={this.handleToggleColumn}
                   hint={column.hint}
                   options={options}>
-                  {column.name}
+                  {column.label}
                 </TableHeadCell>
               )),
           )}

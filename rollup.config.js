@@ -52,7 +52,8 @@ export default {
   ],
   output: {
     file: 'dist/index.js',
-    format: 'cjs'
+    format: 'cjs',
+    exports: 'named'
   },
   sourcemap: true
 };

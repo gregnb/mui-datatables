@@ -12,10 +12,10 @@ describe('<TableHead />', function() {
 
   before(() => {
     columns = [
-      { name: 'First Name', display: 'true', sort: null },
-      { name: 'Company', display: 'true', sort: null },
-      { name: 'City', display: 'true', sort: null },
-      { name: 'State', display: 'true', sort: null },
+      { name: 'First Name', label: 'First Name', display: 'true', sort: null },
+      { name: 'Company', label: 'Company', display: 'true', sort: null },
+      { name: 'City', label: 'City Label', display: 'true', sort: null },
+      { name: 'State', label: 'State', display: 'true', sort: null },
     ];
 
     handleHeadUpdateRef = () => {};
@@ -36,6 +36,23 @@ describe('<TableHead />', function() {
     );
     const actualResult = mountWrapper.find(TableHeadCell);
     assert.strictEqual(actualResult.length, 4);
+  });
+
+  it('should render the label in the table head cell', () => {
+    const options = {};
+    const toggleSort = () => {};
+
+    const mountWrapper = mount(
+      <TableHead
+        columns={columns}
+        options={options}
+        setCellRef={() => {}}
+        handleHeadUpdateRef={handleHeadUpdateRef}
+        toggleSort={toggleSort}
+      />,
+    );
+    const labels = mountWrapper.find(TableHeadCell).map(n => n.text());
+    assert.deepEqual(labels, ['First Name', 'Company', 'City Label', 'State']);
   });
 
   it('should render a table head with no cells', () => {

@@ -9,7 +9,6 @@ import TableBody from './components/TableBody';
 import TableResize from './components/TableResize';
 import TableHead from './components/TableHead';
 import TableFooter from './components/TableFooter';
-import TablePagination from './components/TablePagination';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
 import isEqual from 'lodash.isequal';
@@ -65,6 +64,7 @@ class MUIDataTable extends React.Component {
       PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.shape({
+          label: PropTypes.string,
           name: PropTypes.string.isRequired,
           options: PropTypes.shape({
             display: PropTypes.string, // enum('true', 'false', 'excluded')
@@ -232,7 +232,7 @@ class MUIDataTable extends React.Component {
     }
     if (this.props.options.filterList) {
       console.error(
-        'Deprecated: filterList must now be provided under each column option. see https://github.com/gregnb/mui-datatables/tree/master/examples/serverside-options example',
+        'Deprecated: filterList must now be provided under each column option. see https://github.com/gregnb/mui-datatables/tree/master/examples/column-filters example',
       );
     }
   }
@@ -314,11 +314,12 @@ class MUIDataTable extends React.Component {
 
         columnOptions = {
           name: column.name,
+          label: column.label ? column.label : column.name,
           ...columnOptions,
           ...(column.options ? column.options : {}),
         };
       } else {
-        columnOptions = {...columnOptions, name: column};
+        columnOptions = {...columnOptions, name: column, label: column};
       }
 
       columnData.push(columnOptions);
@@ -330,14 +331,21 @@ class MUIDataTable extends React.Component {
     return {columns: columnData, filterData, filterList};
   };
 
+  transformData = props => {
+    const {data, columns} = props;
+    return Array.isArray(data[0]) ? data : data.map(row => columns.map(col => row[col.name]));
+  };
+
   setTableData(props, status, callback = () => {
   }) {
-    const {data, options} = props;
+    const {options} = props;
 
     let tableData = [];
     let {columns, filterData, filterList} = this.buildColumns(props.columns);
     let sortIndex = null;
     let sortDirection = null;
+
+    const data = this.transformData(props);
 
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
@@ -464,6 +472,15 @@ class MUIDataTable extends React.Component {
       displayRow.push(columnDisplay);
 
       const filterValues = filterList[index].map(x => (x ? x.props.rawValue : undefined));
+      const {caseSensitive} = this.options;
+
+      if (
+        filterValues &&
+        this.hasSearchText(columnValue, searchText, caseSensitive) &&
+        columns[index].display !== 'false'
+      ) {
+        isFiltered = true;
+      }
 
       if (this.filterValue(filterValues, columnValue, columns[index])) {
         isFiltered = true;
@@ -732,15 +749,14 @@ class MUIDataTable extends React.Component {
         const isFilterEmpty = !filterValue;
 
         switch (type) {
-          case "checkbox":
-            {
-              const wrappedValue = React.createElement(FilterValue, {
-                children: renderFilterValue(filterValue),
-                // attach the raw input value, so we can retrieve it later
-                rawValue: filterValue,
-              });
-              filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(wrappedValue);
-            }
+          case "checkbox": {
+            const wrappedValue = React.createElement(FilterValue, {
+              children: renderFilterValue(filterValue),
+              // attach the raw input value, so we can retrieve it later
+              rawValue: filterValue,
+            });
+            filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(wrappedValue);
+          }
             break;
           case "multiselect": {
             const wrappedValue = filterValue.map(x =>
@@ -805,12 +821,12 @@ class MUIDataTable extends React.Component {
   };
 
   toggleExpandRow = row => {
-    const {index, dataIndex} = row;
+    const { dataIndex } = row;
     let expandedRows = [...this.state.expandedRows.data];
     let rowPos = -1;
 
     for (let cIndex = 0; cIndex < expandedRows.length; cIndex++) {
-      if (expandedRows[cIndex].index === index) {
+      if (expandedRows[cIndex].dataIndex === dataIndex) {
         rowPos = cIndex;
         break;
       }
