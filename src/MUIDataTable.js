@@ -66,6 +66,7 @@ class MUIDataTable extends React.Component {
             display: PropTypes.string, // enum('true', 'false', 'excluded')
             filter: PropTypes.bool,
             sort: PropTypes.bool,
+            searchable: PropTypes.bool,
             download: PropTypes.bool,
             viewColumns: PropTypes.bool,
             filterList: PropTypes.array,
@@ -293,6 +294,7 @@ class MUIDataTable extends React.Component {
         display: 'true',
         filter: true,
         sort: true,
+        searchable: true,
         download: true,
         viewColumns: true,
         sortDirection: null,
@@ -466,7 +468,8 @@ class MUIDataTable extends React.Component {
       if (
         searchText &&
         this.hasSearchText(columnVal, searchText, caseSensitive) &&
-        columns[index].display !== 'false'
+        columns[index].display !== 'false' &&
+        columns[index].searchable
       ) {
         isSearchFound = true;
       }
