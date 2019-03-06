@@ -327,7 +327,11 @@ class MUIDataTable extends React.Component {
 
   transformData = props => {
     const { data, columns } = props;
-    return Array.isArray(data[0]) ? data : data.map(row => columns.map(col => row[col.name]));
+    const myData = data.map(row => columns.map((col, index) => row[index]));
+
+    return Array.isArray(data[0])
+      ? data.map(row => columns.map((col, index) => row[index]))
+      : data.map(row => columns.map(col => row[col.name]));
   };
 
   setTableData(props, status, callback = () => {}) {
