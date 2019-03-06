@@ -327,7 +327,6 @@ class MUIDataTable extends React.Component {
 
   transformData = props => {
     const { data, columns } = props;
-    const myData = data.map(row => columns.map((col, index) => row[index]));
 
     return Array.isArray(data[0])
       ? data.map(row => columns.map((col, index) => row[index]))
