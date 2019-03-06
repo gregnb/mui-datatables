@@ -105,6 +105,7 @@ class MUIDataTable extends React.Component {
       filter: PropTypes.bool,
       sort: PropTypes.bool,
       customSort: PropTypes.func,
+      customSearch: PropTypes.func,
       search: PropTypes.bool,
       print: PropTypes.bool,
       viewColumns: PropTypes.bool,
@@ -472,6 +473,17 @@ class MUIDataTable extends React.Component {
         columns[index].searchable
       ) {
         isSearchFound = true;
+      }
+    }
+
+    const { customSearch } = this.props.options;
+
+    if (searchText && customSearch) {
+      const customSearchResult = customSearch(searchText, row, columns);
+      if (typeof customSearchResult !== 'boolean') {
+        console.error('customSearch must return a boolean');
+      } else {
+        isSearchFound = customSearchResult;
       }
     }
 
