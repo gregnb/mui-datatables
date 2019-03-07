@@ -64,6 +64,7 @@ class MUIDataTable extends React.Component {
           name: PropTypes.string.isRequired,
           options: PropTypes.shape({
             display: PropTypes.string, // enum('true', 'false', 'excluded')
+            hasData: PropTypes.bool,
             filter: PropTypes.bool,
             sort: PropTypes.bool,
             searchable: PropTypes.bool,
@@ -293,6 +294,7 @@ class MUIDataTable extends React.Component {
     newColumns.forEach((column, colIndex) => {
       let columnOptions = {
         display: 'true',
+        hasData: true,
         filter: true,
         sort: true,
         searchable: true,
@@ -325,13 +327,17 @@ class MUIDataTable extends React.Component {
     return { columns: columnData, filterData, filterList };
   };
 
-  transformData = props => {
-    const { data, columns } = props;
+  transformData = (columns, data) =>
+    Array.isArray(data[0])
+      ? data.map(row => {
+        let i = -1;
 
-    return Array.isArray(data[0])
-      ? data.map(row => columns.map((col, index) => row[index]))
+        return columns.map(col => {
+          if (col.hasData) i++;
+          return col.hasData ? row[i] : undefined;
+        });
+      })
       : data.map(row => columns.map(col => row[col.name]));
-  };
 
   setTableData(props, status, callback = () => {}) {
     const { options } = props;
@@ -341,7 +347,7 @@ class MUIDataTable extends React.Component {
     let sortIndex = null;
     let sortDirection = null;
 
-    const data = this.transformData(props);
+    const data = this.transformData(columns, props.data);
 
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {

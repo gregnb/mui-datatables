@@ -12,6 +12,7 @@ class Example extends React.Component {
         options: {
           filter: true,
           sort: false,
+          hasData: false,
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
               <button onClick={() => window.alert(`Clicked "Edit" for row ${tableMeta.rowIndex}`)}>
@@ -58,6 +59,7 @@ class Example extends React.Component {
         options: {
           filter: true,
           sort: false,
+          hasData: false,
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
               <button onClick={() => window.alert(`Clicked "Add" for row ${tableMeta.rowIndex}`)}>
