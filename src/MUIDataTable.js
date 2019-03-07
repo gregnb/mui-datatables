@@ -64,7 +64,7 @@ class MUIDataTable extends React.Component {
           name: PropTypes.string.isRequired,
           options: PropTypes.shape({
             display: PropTypes.string, // enum('true', 'false', 'excluded')
-            hasData: PropTypes.bool,
+            empty: PropTypes.bool,
             filter: PropTypes.bool,
             sort: PropTypes.bool,
             searchable: PropTypes.bool,
@@ -294,7 +294,7 @@ class MUIDataTable extends React.Component {
     newColumns.forEach((column, colIndex) => {
       let columnOptions = {
         display: 'true',
-        hasData: true,
+        empty: false,
         filter: true,
         sort: true,
         searchable: true,
@@ -333,8 +333,8 @@ class MUIDataTable extends React.Component {
         let i = -1;
 
         return columns.map(col => {
-          if (col.hasData) i++;
-          return col.hasData ? row[i] : undefined;
+          if (!col.empty) i++;
+          return col.empty ? undefined : row[i];
         });
       })
       : data.map(row => columns.map(col => row[col.name]));

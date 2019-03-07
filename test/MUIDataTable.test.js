@@ -26,7 +26,7 @@ describe('<MUIDataTable />', function() {
       'Company',
       { name: 'City', label: 'City Label', options: { customBodyRender: renderCities } },
       { name: 'State' },
-      { name: 'Empty', options: { hasData: false } }
+      { name: 'Empty', options: { empty: true } }
     ];
     data = [
       ['Joe James', 'Test Corp', 'Yonkers', 'NY'],
@@ -81,7 +81,7 @@ describe('<MUIDataTable />', function() {
     const expectedResult = [
       {
         display: 'true',
-        hasData: true,
+        empty: false,
         name: 'Name',
         sort: true,
         filter: true,
@@ -94,7 +94,7 @@ describe('<MUIDataTable />', function() {
       },
       {
         display: 'true',
-        hasData: true,
+        empty: false,
         name: 'Company',
         sort: true,
         filter: true,
@@ -106,7 +106,7 @@ describe('<MUIDataTable />', function() {
       },
       {
         display: 'true',
-        hasData: true,
+        empty: false,
         name: 'City',
         sort: true,
         filter: true,
@@ -119,7 +119,7 @@ describe('<MUIDataTable />', function() {
       },
       {
         display: 'true',
-        hasData: true,
+        empty: false,
         name: 'State',
         sort: true,
         filter: true,
@@ -131,7 +131,7 @@ describe('<MUIDataTable />', function() {
       },
       {
         display: 'true',
-        hasData: false,
+        empty: true,
         name: 'Empty',
         sort: true,
         filter: true,
@@ -384,7 +384,7 @@ describe('<MUIDataTable />', function() {
       {
         name: 'Name',
         display: 'false',
-        hasData: true,
+        empty: false,
         sort: true,
         filter: true,
         label: 'Name',
@@ -397,7 +397,7 @@ describe('<MUIDataTable />', function() {
       {
         name: 'Company',
         display: 'true',
-        hasData: true,
+        empty: false,
         sort: true,
         filter: true,
         label: 'Company',
@@ -409,7 +409,7 @@ describe('<MUIDataTable />', function() {
       {
         name: 'City',
         display: 'true',
-        hasData: true,
+        empty: false,
         sort: true,
         filter: true,
         label: 'City Label',
@@ -422,7 +422,7 @@ describe('<MUIDataTable />', function() {
       {
         name: 'State',
         display: 'true',
-        hasData: true,
+        empty: false,
         sort: true,
         filter: true,
         label: 'State',
@@ -434,7 +434,7 @@ describe('<MUIDataTable />', function() {
       {
         name: 'Empty',
         display: 'true',
-        hasData: false,
+        empty: true,
         sort: true,
         filter: true,
         label: 'Empty',
