@@ -80,6 +80,7 @@ describe('<MUIDataTable />', function() {
     const expectedResult = [
       {
         display: 'true',
+        hasData: true,
         name: 'Name',
         sort: true,
         filter: true,
@@ -92,6 +93,7 @@ describe('<MUIDataTable />', function() {
       },
       {
         display: 'true',
+        hasData: true,
         name: 'Company',
         sort: true,
         filter: true,
@@ -103,6 +105,7 @@ describe('<MUIDataTable />', function() {
       },
       {
         display: 'true',
+        hasData: true,
         name: 'City',
         sort: true,
         filter: true,
@@ -115,6 +118,7 @@ describe('<MUIDataTable />', function() {
       },
       {
         display: 'true',
+        hasData: true,
         name: 'State',
         sort: true,
         filter: true,
@@ -366,6 +370,7 @@ describe('<MUIDataTable />', function() {
       {
         name: 'Name',
         display: 'false',
+        hasData: true,
         sort: true,
         filter: true,
         label: 'Name',
@@ -378,6 +383,7 @@ describe('<MUIDataTable />', function() {
       {
         name: 'Company',
         display: 'true',
+        hasData: true,
         sort: true,
         filter: true,
         label: 'Company',
@@ -389,6 +395,7 @@ describe('<MUIDataTable />', function() {
       {
         name: 'City',
         display: 'true',
+        hasData: true,
         sort: true,
         filter: true,
         label: 'City Label',
@@ -401,6 +408,7 @@ describe('<MUIDataTable />', function() {
       {
         name: 'State',
         display: 'true',
+        hasData: true,
         sort: true,
         filter: true,
         label: 'State',
