@@ -26,6 +26,7 @@ describe('<MUIDataTable />', function() {
       'Company',
       { name: 'City', label: 'City Label', options: { customBodyRender: renderCities } },
       { name: 'State' },
+      { name: 'Empty', options: { hasData: false } }
     ];
     data = [
       ['Joe James', 'Test Corp', 'Yonkers', 'NY'],
@@ -36,27 +37,27 @@ describe('<MUIDataTable />', function() {
     // internal table data built from source data provided
     displayData = JSON.stringify([
       {
-        data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 0 }), 'NY'],
+        data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 0 }), 'NY', undefined],
         dataIndex: 0,
       },
       {
-        data: ['Walsh, John', 'Test Corp', renderCities('Hartford', { rowIndex: 1 }), 'CT'],
+        data: ['Walsh, John', 'Test Corp', renderCities('Hartford', { rowIndex: 1 }), 'CT', undefined],
         dataIndex: 1,
       },
       {
-        data: ['Herm, Bob', 'Test Corp', renderCities('Tampa', { rowIndex: 2 }), 'FL'],
+        data: ['Herm, Bob', 'Test Corp', renderCities('Tampa', { rowIndex: 2 }), 'FL', undefined],
         dataIndex: 2,
       },
       {
-        data: ['Houston, James', 'Test Corp', renderCities('Dallas', { rowIndex: 3 }), 'TX'],
+        data: ['Houston, James', 'Test Corp', renderCities('Dallas', { rowIndex: 3 }), 'TX', undefined],
         dataIndex: 3,
       },
     ]);
     tableData = [
-      { index: 0, data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 0 }), 'NY'] },
-      { index: 1, data: ['Walsh, John', 'Test Corp', renderCities('Hartford', { rowIndex: 1 }), 'CT'] },
-      { index: 2, data: ['Herm, Bob', 'Test Corp', renderCities('Tampa', { rowIndex: 2 }), 'FL'] },
-      { index: 3, data: ['Houston, James', 'Test Corp', renderCities('Dallas', { rowIndex: 3 }), 'TX'] },
+      { index: 0, data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 0 }), 'NY', undefined] },
+      { index: 1, data: ['Walsh, John', 'Test Corp', renderCities('Hartford', { rowIndex: 1 }), 'CT', undefined] },
+      { index: 2, data: ['Herm, Bob', 'Test Corp', renderCities('Tampa', { rowIndex: 2 }), 'FL', undefined] },
+      { index: 3, data: ['Houston, James', 'Test Corp', renderCities('Dallas', { rowIndex: 3 }), 'TX', undefined] },
     ];
     renderCities = renderCities;
     renderName = renderName;
@@ -128,6 +129,18 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         sortDirection: null,
       },
+      {
+        display: 'true',
+        hasData: false,
+        name: 'Empty',
+        sort: true,
+        filter: true,
+        label: 'Empty',
+        download: true,
+        searchable: true,
+        viewColumns: true,
+        sortDirection: null,
+      },
     ];
 
     assert.deepEqual(actualResult, expectedResult);
@@ -154,10 +167,10 @@ describe('<MUIDataTable />', function() {
 
     state = shallowWrapper.dive().state();
     const expectedResult = [
-      { index: 0, data: ['testing', 'Test Corp', 'Yonkers', 'NY'] },
-      { index: 1, data: ['John Walsh', 'Test Corp', 'Hartford', 'CT'] },
-      { index: 2, data: ['Bob Herm', 'Test Corp', 'Tampa', 'FL'] },
-      { index: 3, data: ['James Houston', 'Test Corp', 'Dallas', 'TX'] },
+      { index: 0, data: ['testing', 'Test Corp', 'Yonkers', 'NY', undefined] },
+      { index: 1, data: ['John Walsh', 'Test Corp', 'Hartford', 'CT', undefined] },
+      { index: 2, data: ['Bob Herm', 'Test Corp', 'Tampa', 'FL', undefined] },
+      { index: 3, data: ['James Houston', 'Test Corp', 'Dallas', 'TX', undefined] },
     ];
 
     assert.deepEqual(state.data, expectedResult);
@@ -183,7 +196,7 @@ describe('<MUIDataTable />', function() {
   it('should correctly build internal filterList structure', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const state = shallowWrapper.dive().state();
-    const expectedResult = [[], [], [], []];
+    const expectedResult = [[], [], [], [], []];
 
     assert.deepEqual(state.filterList, expectedResult);
   });
@@ -196,6 +209,7 @@ describe('<MUIDataTable />', function() {
       ['Test Corp'],
       ['Dallas', 'Hartford', 'Tampa', 'Yonkers'],
       ['CT', 'FL', 'NY', 'TX'],
+      [undefined]
     ];
 
     assert.deepEqual(state.filterData, expectedResult);
@@ -250,7 +264,7 @@ describe('<MUIDataTable />', function() {
     table.update();
 
     const state = table.state();
-    assert.deepEqual(state.filterList, [['Joe James'], [], [], []]);
+    assert.deepEqual(state.filterList, [['Joe James'], [], [], [], []]);
   });
 
   it('should remove entry from filterList when calling filterUpdate method with type=checkbox and same arguments a second time', () => {
@@ -261,13 +275,13 @@ describe('<MUIDataTable />', function() {
     table.update();
 
     let state = table.state();
-    assert.deepEqual(state.filterList, [['Joe James'], [], [], []]);
+    assert.deepEqual(state.filterList, [['Joe James'], [], [], [], []]);
 
     instance.filterUpdate(0, 'Joe James', 'checkbox');
     table.update();
 
     state = table.state();
-    assert.deepEqual(state.filterList, [[], [], [], []]);
+    assert.deepEqual(state.filterList, [[], [], [], [], []]);
   });
 
   it('should properly set internal filterList when calling filterUpdate method with type=dropdown', () => {
@@ -278,11 +292,11 @@ describe('<MUIDataTable />', function() {
     table.update();
 
     const state = table.state();
-    assert.deepEqual(state.filterList, [['Joe James'], [], [], []]);
+    assert.deepEqual(state.filterList, [['Joe James'], [], [], [], []]);
   });
 
   it('should create Chip when filterList is populated', () => {
-    const filterList = [['Joe James'], [], [], []];
+    const filterList = [['Joe James'], [], [], [], []];
 
     const mountWrapper = mount(<TableFilterList filterList={filterList} filterUpdate={() => true} />);
     const actualResult = mountWrapper.find(Chip);
@@ -297,13 +311,13 @@ describe('<MUIDataTable />', function() {
     table.update();
 
     let state = table.state();
-    assert.deepEqual(state.filterList, [['Joe James'], [], [], []]);
+    assert.deepEqual(state.filterList, [['Joe James'], [], [], [], []]);
 
     instance.filterUpdate(0, 'Joe James', 'dropdown');
     table.update();
 
     state = table.state();
-    assert.deepEqual(state.filterList, [[], [], [], []]);
+    assert.deepEqual(state.filterList, [[], [], [], [], []]);
   });
 
   it('should properly reset internal filterList when calling resetFilters method', () => {
@@ -316,12 +330,12 @@ describe('<MUIDataTable />', function() {
 
     // now remove it
     let state = table.state();
-    assert.deepEqual(state.filterList, [['Joe James'], [], [], []]);
+    assert.deepEqual(state.filterList, [['Joe James'], [], [], [], []]);
 
     instance.resetFilters();
     table.update();
     state = table.state();
-    assert.deepEqual(state.filterList, [[], [], [], []]);
+    assert.deepEqual(state.filterList, [[], [], [], [], []]);
   });
 
   it('should properly set searchText when calling searchTextUpdate method', () => {
@@ -334,7 +348,7 @@ describe('<MUIDataTable />', function() {
     const state = table.state();
 
     const expectedResult = JSON.stringify([
-      { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 0 }), 'NY'], dataIndex: 0 },
+      { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 0 }), 'NY', undefined], dataIndex: 0 },
     ]);
 
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
@@ -349,10 +363,10 @@ describe('<MUIDataTable />', function() {
     const state = shallowWrapper.state();
 
     const expectedResult = JSON.stringify([
-      { data: ['Herm, Bob', 'Test Corp', renderCities('Tampa', { rowIndex: 0 }), 'FL'], dataIndex: 2 },
-      { data: ['Houston, James', 'Test Corp', renderCities('Dallas', { rowIndex: 1 }), 'TX'], dataIndex: 3 },
-      { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 2 }), 'NY'], dataIndex: 0 },
-      { data: ['Walsh, John', 'Test Corp', renderCities('Hartford', { rowIndex: 3 }), 'CT'], dataIndex: 1 },
+      { data: ['Herm, Bob', 'Test Corp', renderCities('Tampa', { rowIndex: 0 }), 'FL', undefined], dataIndex: 2 },
+      { data: ['Houston, James', 'Test Corp', renderCities('Dallas', { rowIndex: 1 }), 'TX', undefined], dataIndex: 3 },
+      { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 2 }), 'NY', undefined], dataIndex: 0 },
+      { data: ['Walsh, John', 'Test Corp', renderCities('Hartford', { rowIndex: 3 }), 'CT', undefined], dataIndex: 1 },
     ]);
 
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
@@ -412,6 +426,18 @@ describe('<MUIDataTable />', function() {
         sort: true,
         filter: true,
         label: 'State',
+        download: true,
+        searchable: true,
+        viewColumns: true,
+        sortDirection: null,
+      },
+      {
+        name: 'Empty',
+        display: 'true',
+        hasData: false,
+        sort: true,
+        filter: true,
+        label: 'Empty',
         download: true,
         searchable: true,
         viewColumns: true,
@@ -574,7 +600,7 @@ describe('<MUIDataTable />', function() {
     const state = table.state();
 
     const expectedResult = JSON.stringify([
-      { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 0 }), 'NY'], dataIndex: 0 },
+      { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 0 }), 'NY', undefined], dataIndex: 0 },
     ]);
 
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
@@ -590,8 +616,8 @@ describe('<MUIDataTable />', function() {
     const state = table.state();
 
     const expectedResult = JSON.stringify([
-      { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 0 }), 'NY'], dataIndex: 0 },
-      { data: ['Houston, James', 'Test Corp', renderCities('Dallas', { rowIndex: 3 }), 'TX'], dataIndex: 3 },
+      { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 0 }), 'NY', undefined], dataIndex: 0 },
+      { data: ['Houston, James', 'Test Corp', renderCities('Dallas', { rowIndex: 3 }), 'TX', undefined], dataIndex: 3 },
     ]);
 
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
