@@ -91,6 +91,7 @@
     "react-dom": "^16.0.0"
   },
   "dependencies": {
+    "ajv": "^6.9.2",
     "classnames": "^2.2.5",
     "lodash.clonedeep": "^4.5.0",
     "lodash.get": "^4.4.2",

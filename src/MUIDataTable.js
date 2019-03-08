@@ -26,7 +26,6 @@ const defaultTableStyles = {
     overflowX: 'auto',
     overflow: 'auto',
     height: '100%',
-    maxHeight: '499px',
   },
   caption: {
     position: 'absolute',
@@ -79,6 +78,7 @@ class MUIDataTable extends React.Component {
     /** Options used to describe table */
     options: PropTypes.shape({
       responsive: PropTypes.oneOf(['stacked', 'scroll']),
+      maxHeight: PropTypes.string,
       filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField']),
       textLabels: PropTypes.object,
       pagination: PropTypes.bool,
@@ -95,6 +95,7 @@ class MUIDataTable extends React.Component {
       onTableChange: PropTypes.func,
       caseSensitive: PropTypes.bool,
       rowHover: PropTypes.bool,
+      cursorOnHover: PropTypes.bool,
       fixedHeader: PropTypes.bool,
       page: PropTypes.number,
       count: PropTypes.number,
@@ -107,10 +108,12 @@ class MUIDataTable extends React.Component {
       search: PropTypes.bool,
       print: PropTypes.bool,
       viewColumns: PropTypes.bool,
+      padding: PropTypes.oneOf(['default, checkbox, dense, none']),
       download: PropTypes.bool,
       downloadOptions: PropTypes.shape({
         filename: PropTypes.string,
         separator: PropTypes.string,
+        customCSVBody: PropTypes.func
       }),
     }),
     /** Pass and use className to style MUIDataTable as desired */
@@ -188,6 +191,7 @@ class MUIDataTable extends React.Component {
   getDefaultOptions(props) {
     const defaultOptions = {
       responsive: 'stacked',
+      maxHeight: '499px',
       filterType: 'dropdown',
       pagination: true,
       textLabels,
@@ -197,6 +201,7 @@ class MUIDataTable extends React.Component {
       caseSensitive: false,
       serverSide: false,
       rowHover: true,
+      cursorOnHover: false,
       fixedHeader: true,
       elevation: 4,
       rowsPerPage: 10,
@@ -207,6 +212,7 @@ class MUIDataTable extends React.Component {
       search: true,
       print: true,
       viewColumns: true,
+      padding: 'default',
       download: true,
       downloadOptions: {
         filename: 'tableDownload.csv',
@@ -971,11 +977,12 @@ class MUIDataTable extends React.Component {
             title={title}
             toggleViewColumn={this.toggleViewColumn}
             setTableAction={this.setTableAction}
+            tableState={this.state}
           />
         )}
         <TableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />
         <div
-          style={{ position: 'relative' }}
+          style={{ position: 'relative', maxHeight: this.options.maxHeight }}
           className={this.options.responsive === 'scroll' ? classes.responsiveScroll : null}>
           {this.options.resizableColumns && (
             <TableResize
@@ -984,8 +991,8 @@ class MUIDataTable extends React.Component {
               setResizeable={fn => (this.setHeadResizeable = fn)}
             />
           )}
-          <MuiTable ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'} className={classes.tableRoot}>
-            <caption className={classes.caption}>{title}</caption>
+          <MuiTable ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'} className={classes.tableRoot} padding={this.options.padding}>
+            <caption className={classes.caption}>{title} test1231312</caption>
             <TableHead
               columns={columns}
               activeColumn={activeColumn}

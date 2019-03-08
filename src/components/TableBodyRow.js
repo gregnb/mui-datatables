@@ -11,6 +11,9 @@ const defaultBodyRowStyles = theme => ({
       border: 'solid 2px rgba(0, 0, 0, 0.15)',
     },
   },
+  cursorOnHover: {
+    cursor: 'pointer'
+  },
 });
 
 class TableBodyRow extends React.Component {
@@ -36,6 +39,7 @@ class TableBodyRow extends React.Component {
           {
             [classes.root]: true,
             [classes.responsiveStacked]: options.responsive === 'stacked',
+            [classes.cursorOnHover]: options.cursorOnHover,
           },
           className,
         )}

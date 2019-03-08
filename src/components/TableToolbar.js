@@ -85,8 +85,8 @@ class TableToolbar extends React.Component {
   };
 
   handleCSVDownload = () => {
-    const { data, columns, options } = this.props;
-    createCSVDownload(columns, data, options);
+    const { data, columns, options, tableState } = this.props;
+    createCSVDownload(columns, data, options, tableState);
   };
 
   setActiveIcon = iconName => {

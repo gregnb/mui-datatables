@@ -26,7 +26,7 @@ function sortCompare(order) {
   };
 }
 
-function createCSVDownload(columns, data, options) {
+async function createCSVDownload(columns, data, options, tableState) {
   const replaceDoubleQuoteInString = columnData =>
     typeof columnData === 'string' ? columnData.replace(/\"/g, '""') : columnData;
 
@@ -41,19 +41,29 @@ function createCSVDownload(columns, data, options) {
       )
       .slice(0, -1) + '\r\n';
 
-  const CSVBody = data
-    .reduce(
-      (soFar, row) =>
-        soFar +
-        '"' +
-        row.data
-          .filter((field, index) => columns[index].download)
-          .map(columnData => replaceDoubleQuoteInString(columnData))
-          .join('"' + options.downloadOptions.separator + '"') +
-        '"\r\n',
-      [],
-    )
-    .trim();
+  var CSVBody;
+
+  if (options.downloadOptions.customCSVBody)
+  {
+      CSVBody = await options.downloadOptions.customCSVBody(tableState);
+  }
+
+  else
+  {
+    CSVBody = data
+      .reduce(
+        (soFar, row) =>
+          soFar +
+          '"' +
+          row.data
+            .filter((field, index) => columns[index].download)
+            .map(columnData => replaceDoubleQuoteInString(columnData))
+            .join('"' + options.downloadOptions.separator + '"') +
+          '"\r\n',
+        [],
+      )
+      .trim();
+  }
 
   const csv = `${CSVHead}${CSVBody}`;
   const blob = new Blob([csv], { type: 'text/csv' });
