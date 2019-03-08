@@ -338,7 +338,7 @@ class MUIDataTable extends React.Component {
     let sortIndex = null;
     let sortDirection = null;
 
-    const data = this.transformData(props);
+    const data = status === TABLE_LOAD.INITIAL ? this.transformData(props) : props.data;
 
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
