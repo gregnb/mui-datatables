@@ -59,7 +59,7 @@ class TableHeadCell extends React.Component {
     /** Hint tooltip text */
     hint: PropTypes.string,
     /** Column displayed in print */
-    print: PropTypes.string,
+    print: PropTypes.bool.isRequired,
   };
 
   handleSortClick = () => {
