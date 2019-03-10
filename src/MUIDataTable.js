@@ -327,8 +327,8 @@ class MUIDataTable extends React.Component {
     return { columns: columnData, filterData, filterList };
   };
 
-  transformData = (columns, data) =>
-    Array.isArray(data[0])
+  transformData = (columns, data) => {
+    return Array.isArray(data[0])
       ? data.map(row => {
         let i = -1;
 
@@ -338,7 +338,8 @@ class MUIDataTable extends React.Component {
         });
       })
       : data.map(row => columns.map(col => row[col.name]));
-
+  }
+  
   setTableData(props, status, callback = () => {}) {
     const { options } = props;
 
@@ -347,7 +348,7 @@ class MUIDataTable extends React.Component {
     let sortIndex = null;
     let sortDirection = null;
 
-    const data = status === TABLE_LOAD.INITIAL ? this.transformData(columns, props) : props.data;
+    const data = status === TABLE_LOAD.INITIAL ? this.transformData(columns, props.data) : props.data;
 
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
