@@ -42,6 +42,13 @@ const defaultTableStyles = {
     position: 'absolute',
     width: '1px',
   },
+  '@global': {
+    '@media print': {
+      '.datatables-noprint': {
+        display: 'none',
+      },
+    },
+  },
 };
 
 const TABLE_LOAD = {
@@ -66,6 +73,7 @@ class MUIDataTable extends React.Component {
             display: PropTypes.string, // enum('true', 'false', 'excluded')
             filter: PropTypes.bool,
             sort: PropTypes.bool,
+            print: PropTypes.bool,
             searchable: PropTypes.bool,
             download: PropTypes.bool,
             viewColumns: PropTypes.bool,
@@ -295,6 +303,7 @@ class MUIDataTable extends React.Component {
         display: 'true',
         filter: true,
         sort: true,
+        print: true,
         searchable: true,
         download: true,
         viewColumns: true,

@@ -47,6 +47,7 @@ class TableBodyCell extends React.Component {
       dataIndex,
       rowIndex,
       className,
+      print,
       ...otherProps
     } = this.props;
 
@@ -58,6 +59,7 @@ class TableBodyCell extends React.Component {
             [classes.root]: true,
             [classes.cellHide]: true,
             [classes.cellStacked]: options.responsive === 'stacked',
+            'datatables-noprint': !print,
           },
           className,
         )}>
@@ -70,6 +72,7 @@ class TableBodyCell extends React.Component {
           {
             [classes.root]: true,
             [classes.responsiveStacked]: options.responsive === 'stacked',
+            'datatables-noprint': !print,
           },
           className,
         )}

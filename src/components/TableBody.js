@@ -156,6 +156,7 @@ class TableBody extends React.Component {
                         rowIndex={rowIndex}
                         colIndex={columnIndex}
                         columnHeader={columns[columnIndex].label}
+                        print={columns[columnIndex].print}
                         options={options}
                         key={columnIndex}>
                         {column}
