@@ -64,6 +64,7 @@ class MUIDataTable extends React.Component {
           name: PropTypes.string.isRequired,
           options: PropTypes.shape({
             display: PropTypes.string, // enum('true', 'false', 'excluded')
+            empty: PropTypes.bool,
             filter: PropTypes.bool,
             sort: PropTypes.bool,
             searchable: PropTypes.bool,
@@ -293,6 +294,7 @@ class MUIDataTable extends React.Component {
     newColumns.forEach((column, colIndex) => {
       let columnOptions = {
         display: 'true',
+        empty: false,
         filter: true,
         sort: true,
         searchable: true,
@@ -325,11 +327,19 @@ class MUIDataTable extends React.Component {
     return { columns: columnData, filterData, filterList };
   };
 
-  transformData = props => {
-    const { data, columns } = props;
-    return Array.isArray(data[0]) ? data : data.map(row => columns.map(col => row[col.name]));
-  };
+  transformData = (columns, data) => {
+    return Array.isArray(data[0])
+      ? data.map(row => {
+        let i = -1;
 
+        return columns.map(col => {
+          if (!col.empty) i++;
+          return col.empty ? undefined : row[i];
+        });
+      })
+      : data.map(row => columns.map(col => row[col.name]));
+  }
+  
   setTableData(props, status, callback = () => {}) {
     const { options } = props;
 
@@ -338,7 +348,7 @@ class MUIDataTable extends React.Component {
     let sortIndex = null;
     let sortDirection = null;
 
-    const data = status === TABLE_LOAD.INITIAL ? this.transformData(props) : props.data;
+    const data = status === TABLE_LOAD.INITIAL ? this.transformData(columns, props.data) : props.data;
 
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
@@ -454,7 +464,7 @@ class MUIDataTable extends React.Component {
 
       displayRow.push(columnDisplay);
 
-      const columnVal = columnValue === null ? '' : columnValue.toString();
+      const columnVal = columnValue === null || columnValue === undefined ? '' : columnValue.toString();
 
       const filterVal = filterList[index];
       const { filterType, caseSensitive } = this.options;
