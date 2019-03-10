@@ -26,7 +26,7 @@ describe('<MUIDataTable />', function() {
       'Company',
       { name: 'City', label: 'City Label', options: { customBodyRender: renderCities } },
       { name: 'State' },
-      { name: 'Empty', options: { empty: true } }
+      { name: 'Empty', options: { empty: true } },
     ];
     data = [
       ['Joe James', 'Test Corp', 'Yonkers', 'NY'],
@@ -214,7 +214,7 @@ describe('<MUIDataTable />', function() {
       ['Test Corp'],
       ['Dallas', 'Hartford', 'Tampa', 'Yonkers'],
       ['CT', 'FL', 'NY', 'TX'],
-      [undefined]
+      [undefined],
     ];
 
     assert.deepEqual(state.filterData, expectedResult);

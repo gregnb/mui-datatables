@@ -339,16 +339,16 @@ class MUIDataTable extends React.Component {
   transformData = (columns, data) => {
     return Array.isArray(data[0])
       ? data.map(row => {
-        let i = -1;
+          let i = -1;
 
-        return columns.map(col => {
-          if (!col.empty) i++;
-          return col.empty ? undefined : row[i];
-        });
-      })
+          return columns.map(col => {
+            if (!col.empty) i++;
+            return col.empty ? undefined : row[i];
+          });
+        })
       : data.map(row => columns.map(col => row[col.name]));
-  }
-  
+  };
+
   setTableData(props, status, callback = () => {}) {
     const { options } = props;
 
