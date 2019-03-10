@@ -347,7 +347,7 @@ class MUIDataTable extends React.Component {
     let sortIndex = null;
     let sortDirection = null;
 
-    const data = this.transformData(columns, props.data);
+    const data = status === TABLE_LOAD.INITIAL ? this.transformData(props) : props.data;
 
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
@@ -930,9 +930,9 @@ class MUIDataTable extends React.Component {
 
     for (let i = 0; i < sortedData.length; i++) {
       const row = sortedData[i];
-      tableData.push(data[row.position]);
+      tableData.push(dataSrc[row.position]);
       if (row.rowSelected) {
-        selectedRows.push({ index: i, dataIndex: data[row.position].index });
+        selectedRows.push({ index: i, dataIndex: dataSrc[row.position].index });
       }
     }
 
