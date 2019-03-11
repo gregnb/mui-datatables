@@ -465,10 +465,6 @@ class MUIDataTable extends React.Component {
       }
     });
 
-    if (options.selectableRows) {
-      totals = [''].concat(totals);
-    }
-
     if (options.filterList) filterList = options.filterList;
 
     if (options.selectableRows) {
