@@ -1,6 +1,6 @@
 {
   "name": "mui-datatables",
-  "version": "2.0.0-beta.56",
+  "version": "2.0.0-beta.58",
   "description": "Datatables for React using Material-UI",
   "main": "dist/index.js",
   "files": [
@@ -18,7 +18,8 @@
     "coverage:html": "cross-env NODE_ENV=test nyc check-coverage --lines 55 --reporter=html --reporter=text mocha --require babel-register test/*.js && nyc report --reporter=html",
     "prettier": "find src/ docs/ test/ -type f -name \"*.js\" ! -path \"*/.next/*\" | xargs prettier --write",
     "lint": "eslint src",
-    "build": "cross-env NODE_ENV=production npm run prettier && rollup -c"
+    "build": "cross-env NODE_ENV=production npm run prettier && rollup -c",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -98,7 +99,7 @@
     "lodash.memoize": "^4.1.2",
     "lodash.merge": "^4.6.0",
     "prop-types": "^15.6.0",
-    "react-to-print": "^1.0.10"
+    "react-to-print": "^2.0.0-alpha.7"
   },
   "side-effects": false,
   "nyc": {

@@ -135,7 +135,8 @@ class TableFilter extends React.Component {
   };
 
   handleDropdownChange = (event, index) => {
-    const value = event.target.value === 'All' ? '' : event.target.value;
+    const labelFilterAll = this.props.options.textLabels.filter.all;
+    const value = event.target.value === labelFilterAll ? '' : event.target.value;
     this.props.onFilterUpdate(index, value, 'dropdown');
   };
 

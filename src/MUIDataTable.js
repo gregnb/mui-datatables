@@ -42,6 +42,13 @@ const defaultTableStyles = {
     position: 'absolute',
     width: '1px',
   },
+  '@global': {
+    '@media print': {
+      '.datatables-noprint': {
+        display: 'none',
+      },
+    },
+  },
 };
 
 const TABLE_LOAD = {
@@ -64,8 +71,11 @@ class MUIDataTable extends React.Component {
           name: PropTypes.string.isRequired,
           options: PropTypes.shape({
             display: PropTypes.string, // enum('true', 'false', 'excluded')
+            empty: PropTypes.bool,
             filter: PropTypes.bool,
             sort: PropTypes.bool,
+            print: PropTypes.bool,
+            searchable: PropTypes.bool,
             download: PropTypes.bool,
             viewColumns: PropTypes.bool,
             filterList: PropTypes.array,
@@ -104,6 +114,7 @@ class MUIDataTable extends React.Component {
       filter: PropTypes.bool,
       sort: PropTypes.bool,
       customSort: PropTypes.func,
+      customSearch: PropTypes.func,
       search: PropTypes.bool,
       print: PropTypes.bool,
       viewColumns: PropTypes.bool,
@@ -291,8 +302,11 @@ class MUIDataTable extends React.Component {
     newColumns.forEach((column, colIndex) => {
       let columnOptions = {
         display: 'true',
+        empty: false,
         filter: true,
         sort: true,
+        print: true,
+        searchable: true,
         download: true,
         viewColumns: true,
         sortDirection: null,
@@ -322,9 +336,17 @@ class MUIDataTable extends React.Component {
     return { columns: columnData, filterData, filterList };
   };
 
-  transformData = props => {
-    const { data, columns } = props;
-    return Array.isArray(data[0]) ? data : data.map(row => columns.map(col => row[col.name]));
+  transformData = (columns, data) => {
+    return Array.isArray(data[0])
+      ? data.map(row => {
+          let i = -1;
+
+          return columns.map(col => {
+            if (!col.empty) i++;
+            return col.empty ? undefined : row[i];
+          });
+        })
+      : data.map(row => columns.map(col => row[col.name]));
   };
 
   setTableData(props, status, callback = () => {}) {
@@ -335,7 +357,7 @@ class MUIDataTable extends React.Component {
     let sortIndex = null;
     let sortDirection = null;
 
-    const data = this.transformData(props);
+    const data = status === TABLE_LOAD.INITIAL ? this.transformData(columns, props.data) : props.data;
 
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
@@ -451,7 +473,7 @@ class MUIDataTable extends React.Component {
 
       displayRow.push(columnDisplay);
 
-      const columnVal = columnValue === null ? '' : columnValue.toString();
+      const columnVal = columnValue === null || columnValue === undefined ? '' : columnValue.toString();
 
       const filterVal = filterList[index];
       const { filterType, caseSensitive } = this.options;
@@ -466,9 +488,21 @@ class MUIDataTable extends React.Component {
       if (
         searchText &&
         this.hasSearchText(columnVal, searchText, caseSensitive) &&
-        columns[index].display !== 'false'
+        columns[index].display !== 'false' &&
+        columns[index].searchable
       ) {
         isSearchFound = true;
+      }
+    }
+
+    const { customSearch } = this.props.options;
+
+    if (searchText && customSearch) {
+      const customSearchResult = customSearch(searchText, row, columns);
+      if (typeof customSearchResult !== 'boolean') {
+        console.error('customSearch must return a boolean');
+      } else {
+        isSearchFound = customSearchResult;
       }
     }
 
@@ -762,12 +796,12 @@ class MUIDataTable extends React.Component {
   };
 
   toggleExpandRow = row => {
-    const { index, dataIndex } = row;
+    const { dataIndex } = row;
     let expandedRows = [...this.state.expandedRows.data];
     let rowPos = -1;
 
     for (let cIndex = 0; cIndex < expandedRows.length; cIndex++) {
-      if (expandedRows[cIndex].index === index) {
+      if (expandedRows[cIndex].dataIndex === dataIndex) {
         rowPos = cIndex;
         break;
       }
@@ -906,9 +940,9 @@ class MUIDataTable extends React.Component {
 
     for (let i = 0; i < sortedData.length; i++) {
       const row = sortedData[i];
-      tableData.push(data[row.position]);
+      tableData.push(dataSrc[row.position]);
       if (row.rowSelected) {
-        selectedRows.push({ index: i, dataIndex: data[row.position].index });
+        selectedRows.push({ index: i, dataIndex: dataSrc[row.position].index });
       }
     }
 

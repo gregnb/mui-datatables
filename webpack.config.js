@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    app: "./examples/data-as-objects/index.js"
+    app: "./examples/hide-columns-print/index.js"
   },
   stats: "verbose",
   context: __dirname,
