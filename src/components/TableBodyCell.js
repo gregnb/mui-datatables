@@ -37,6 +37,13 @@ class TableBodyCell extends React.Component {
     }
   };
 
+  handleMouseDown = event => {
+    const { colIndex, options, children, dataIndex, rowIndex } = this.props;
+    if (options.onCellMouseDown) {
+      options.onCellMouseDown(children, { colIndex, rowIndex, dataIndex, event });
+    }
+  };
+
   render() {
     const {
       children,
@@ -68,6 +75,7 @@ class TableBodyCell extends React.Component {
       <TableCell
         key={2}
         onClick={this.handleClick}
+        onMouseDown={this.handleMouseDown}
         className={classNames(
           {
             [classes.root]: true,
