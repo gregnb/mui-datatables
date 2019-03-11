@@ -18,12 +18,12 @@ const defaultHeadStyles = theme => ({
     backgroundColor: '#F4F7FA',
     position: 'sticky',
     top: 0,
-    zIndex: 10,
+    zIndex: 3,
   },
   sticky: {
     position: 'sticky',
     top: 0,
-    zIndex: 10,
+    zIndex: 3,
   },
   responsiveStacked: {
     [theme.breakpoints.down('sm')]: {

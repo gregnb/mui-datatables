@@ -13,7 +13,7 @@ const defaultHeadCellStyles = theme => ({
     position: 'sticky',
     top: '0px',
     left: '0px',
-    zIndex: 4,
+    zIndex: 3,
     backgroundColor: theme.palette.background.paper,
   },
   tooltip: {
