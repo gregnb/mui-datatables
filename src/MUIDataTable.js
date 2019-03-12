@@ -473,10 +473,6 @@ class MUIDataTable extends React.Component {
 
       displayRow.push(columnDisplay);
 
-      if (this.options.serverSide) {
-        return displayRow;
-      }
-
       const columnVal = columnValue === null || columnValue === undefined ? '' : columnValue.toString();
 
       const filterVal = filterList[index];
@@ -508,6 +504,14 @@ class MUIDataTable extends React.Component {
       } else {
         isSearchFound = customSearchResult;
       }
+    }
+
+    if (this.options.serverSide) {
+      if (customSearch) {
+        console.warn("Server-side filtering is enabled, hence custom search will be ignored.");
+      }
+
+      return displayRow;
     }
 
     if (isFiltered || (searchText && !isSearchFound)) return null;
