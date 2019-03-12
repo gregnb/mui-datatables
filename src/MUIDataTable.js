@@ -506,7 +506,15 @@ class MUIDataTable extends React.Component {
       }
     }
 
-    if (isFiltered || (!this.options.serverSide && searchText && !isSearchFound)) return null;
+    if (this.options.serverSide) {
+      if (customSearch) {
+        console.warn("Server-side filtering is enabled, hence custom search will be ignored.");
+      }
+
+      return displayRow;
+    }
+
+    if (isFiltered || (searchText && !isSearchFound)) return null;
     else return displayRow;
   }
 
