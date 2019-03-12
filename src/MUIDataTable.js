@@ -9,7 +9,7 @@ import TableBody from './components/TableBody';
 import TableResize from './components/TableResize';
 import TableHead from './components/TableHead';
 import TableFooter from './components/TableFooter';
-import TablePagination from './components/TablePagination';
+import classnames from 'classnames';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
 import isEqual from 'lodash.isequal';
@@ -962,7 +962,7 @@ class MUIDataTable extends React.Component {
   };
 
   render() {
-    const { classes, title } = this.props;
+    const { classes, className, title } = this.props;
     const {
       announceText,
       activeColumn,
@@ -981,7 +981,10 @@ class MUIDataTable extends React.Component {
     const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
 
     return (
-      <Paper elevation={this.options.elevation} ref={this.tableContent} className={classes.paper}>
+      <Paper
+        elevation={this.options.elevation}
+        ref={this.tableContent}
+        className={classnames(classes.paper, className)}>
         {selectedRows.data.length ? (
           <TableToolbarSelect
             options={this.options}
