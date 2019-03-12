@@ -633,6 +633,18 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
   });
 
+  it("should skip client side filtering if server side filtering is enabled", () => {
+    const options = { filterType: 'textField', serverSide: true };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+    instance.filterUpdate(0, 'Joe James', 'dropdown');
+    table.update();
+    const state = table.state();
+
+    assert.equal(state.displayData.length, data.length);
+  });
+
   describe('should correctly run comparator function', () => {
     it('correctly compares two equal strings', () => {
       expect(getCollatorComparator()('testString', 'testString')).to.equal(0);

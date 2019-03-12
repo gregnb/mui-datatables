@@ -473,6 +473,10 @@ class MUIDataTable extends React.Component {
 
       displayRow.push(columnDisplay);
 
+      if (this.options.serverSide) {
+        return displayRow;
+      }
+
       const columnVal = columnValue === null || columnValue === undefined ? '' : columnValue.toString();
 
       const filterVal = filterList[index];
@@ -506,7 +510,7 @@ class MUIDataTable extends React.Component {
       }
     }
 
-    if (isFiltered || (!this.options.serverSide && searchText && !isSearchFound)) return null;
+    if (isFiltered || (searchText && !isSearchFound)) return null;
     else return displayRow;
   }
 
