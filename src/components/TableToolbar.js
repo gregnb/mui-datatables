@@ -19,10 +19,10 @@ import { createCSVDownload } from '../utils';
 export const defaultToolbarStyles = (theme, props) => ({
   root: {},
   left: {
-    flex: '1 1 55%',
+    flex: '0 0 auto',
   },
   actions: {
-    flex: '0 0 45%',
+    flex: '1 1 auto',
     textAlign: 'right',
   },
   titleRoot: {},
