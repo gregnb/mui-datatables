@@ -41,6 +41,7 @@ class Example extends React.Component {
         name: "Age",
         options: {
           filter: false,
+          customBodyRender: value => value
         }
       },
       {
@@ -85,8 +86,8 @@ class Example extends React.Component {
     ];
 
     const data = [
-      ["Robin Duncan", "Business Analyst", "Los Angeles", 20, 77000, false],
-      ["Mel Brooks", "Business Consultant", "Oklahoma City", 37, 135000, true],
+      ["Robin Duncan", "Business Analyst", "Los Angeles", null, 77000, false],
+      ["Mel Brooks", "Business Consultant", "Oklahoma City", 37, null, true],
       ["Harper White", "Attorney", "Pittsburgh", 52, 420000, false],
       ["Kris Humphrey", "Agency Legal Counsel", "Laredo", 30, 150000, true],
       ["Frankie Long", "Industrial Analyst", "Austin", 31, 170000, false],

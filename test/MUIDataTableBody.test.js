@@ -16,7 +16,7 @@ describe('<TableBody />', function() {
     columns = [{ name: 'First Name' }, { name: 'Company' }, { name: 'City' }, { name: 'State' }];
     data = [
       ['Joe James', 'Test Corp', 'Yonkers', 'NY'],
-      ['John Walsh', 'Test Corp', 'Hartford', 'CT'],
+      ['John Walsh', 'Test Corp', null, 'CT'],
       ['Bob Herm', 'Test Corp', 'Tampa', 'FL'],
       ['James Houston', 'Test Corp', 'Dallas', 'TX'],
     ];
@@ -26,7 +26,7 @@ describe('<TableBody />', function() {
         dataIndex: 0,
       },
       {
-        data: ['John Walsh', 'Test Corp', 'Hartford', 'CT'],
+        data: ['John Walsh', 'Test Corp', null, 'CT'],
         dataIndex: 1,
       },
       {

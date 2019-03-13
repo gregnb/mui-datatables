@@ -19,18 +19,19 @@ describe('<MUIDataTable />', function() {
     <Cities value={value} index={tableMeta.rowIndex} change={event => updateValueFn(event)} />
   );
   let renderName = value => value.split(' ')[1] + ', ' + value.split(' ')[0];
+  let renderState = value => value;
 
   before(() => {
     columns = [
       { name: 'Name', options: { customBodyRender: renderName } },
       'Company',
       { name: 'City', label: 'City Label', options: { customBodyRender: renderCities } },
-      { name: 'State' },
+      { name: 'State', options: { customBodyRender: renderState } },
       { name: 'Empty', options: { empty: true } },
     ];
     data = [
       ['Joe James', 'Test Corp', 'Yonkers', 'NY'],
-      ['John Walsh', 'Test Corp', 'Hartford', 'CT'],
+      ['John Walsh', 'Test Corp', 'Hartford', null],
       ['Bob Herm', 'Test Corp', 'Tampa', 'FL'],
       ['James Houston', 'Test Corp', 'Dallas', 'TX'],
     ];
@@ -41,7 +42,7 @@ describe('<MUIDataTable />', function() {
         dataIndex: 0,
       },
       {
-        data: ['Walsh, John', 'Test Corp', renderCities('Hartford', { rowIndex: 1 }), 'CT', undefined],
+        data: ['Walsh, John', 'Test Corp', renderCities('Hartford', { rowIndex: 1 }), null, undefined],
         dataIndex: 1,
       },
       {
@@ -55,12 +56,13 @@ describe('<MUIDataTable />', function() {
     ]);
     tableData = [
       { index: 0, data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 0 }), 'NY', undefined] },
-      { index: 1, data: ['Walsh, John', 'Test Corp', renderCities('Hartford', { rowIndex: 1 }), 'CT', undefined] },
+      { index: 1, data: ['Walsh, John', 'Test Corp', renderCities('Hartford', { rowIndex: 1 }), null, undefined] },
       { index: 2, data: ['Herm, Bob', 'Test Corp', renderCities('Tampa', { rowIndex: 2 }), 'FL', undefined] },
       { index: 3, data: ['Houston, James', 'Test Corp', renderCities('Dallas', { rowIndex: 3 }), 'TX', undefined] },
     ];
     renderCities = renderCities;
     renderName = renderName;
+    renderState = renderState;
   });
 
   it('should render a table', () => {
@@ -132,6 +134,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         viewColumns: true,
         sortDirection: null,
+        customBodyRender: renderState
       },
       {
         display: 'true',
@@ -173,7 +176,7 @@ describe('<MUIDataTable />', function() {
     state = shallowWrapper.dive().state();
     const expectedResult = [
       { index: 0, data: ['testing', 'Test Corp', 'Yonkers', 'NY', undefined] },
-      { index: 1, data: ['John Walsh', 'Test Corp', 'Hartford', 'CT', undefined] },
+      { index: 1, data: ['John Walsh', 'Test Corp', 'Hartford', null, undefined] },
       { index: 2, data: ['Bob Herm', 'Test Corp', 'Tampa', 'FL', undefined] },
       { index: 3, data: ['James Houston', 'Test Corp', 'Dallas', 'TX', undefined] },
     ];
@@ -213,7 +216,7 @@ describe('<MUIDataTable />', function() {
       ['Herm, Bob', 'Houston, James', 'James, Joe', 'Walsh, John'],
       ['Test Corp'],
       ['Dallas', 'Hartford', 'Tampa', 'Yonkers'],
-      ['CT', 'FL', 'NY', 'TX'],
+      ['FL', null, 'NY', 'TX'],
       [undefined],
     ];
 
@@ -371,7 +374,7 @@ describe('<MUIDataTable />', function() {
       { data: ['Herm, Bob', 'Test Corp', renderCities('Tampa', { rowIndex: 0 }), 'FL', undefined], dataIndex: 2 },
       { data: ['Houston, James', 'Test Corp', renderCities('Dallas', { rowIndex: 1 }), 'TX', undefined], dataIndex: 3 },
       { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 2 }), 'NY', undefined], dataIndex: 0 },
-      { data: ['Walsh, John', 'Test Corp', renderCities('Hartford', { rowIndex: 3 }), 'CT', undefined], dataIndex: 1 },
+      { data: ['Walsh, John', 'Test Corp', renderCities('Hartford', { rowIndex: 3 }), null, undefined], dataIndex: 1 },
     ]);
 
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
@@ -439,6 +442,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         viewColumns: true,
         sortDirection: null,
+        customBodyRender: renderState
       },
       {
         name: 'Empty',

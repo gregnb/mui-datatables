@@ -464,7 +464,7 @@ class MUIDataTable extends React.Component {
 
         /* drill down to get the value of a cell */
         columnValue =
-          typeof funcResult === 'string'
+          typeof funcResult === 'string' || !funcResult
             ? funcResult
             : funcResult.props && funcResult.props.value
             ? funcResult.props.value
