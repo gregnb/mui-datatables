@@ -417,7 +417,7 @@ class MUIDataTable extends React.Component {
       }
     }
 
-    if (sortIndex !== null) {
+    if (!options.serverSide && sortIndex !== null) {
       const sortedData = this.sortTable(tableData, sortIndex, sortDirection);
       tableData = sortedData.data;
     }
