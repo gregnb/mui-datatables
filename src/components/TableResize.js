@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { findDOMNode } from 'react-dom';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -83,11 +82,10 @@ class TableResize extends React.Component {
 
   updateWidths = () => {
     let lastPosition = 0;
-    const { resizeCoords, tableWidth, tableHeight } = this.state;
+    const { resizeCoords, tableWidth } = this.state;
 
     Object.entries(resizeCoords).forEach(([key, item]) => {
       let newWidth = Number(((item.left - lastPosition) / tableWidth) * 100).toFixed(2);
-      item.percent = newWidth;
       lastPosition = item.left;
 
       const thCell = this.cellsRef[key];
@@ -117,7 +115,7 @@ class TableResize extends React.Component {
   };
 
   render() {
-    const { classes, options, rowSelected } = this.props;
+    const { classes } = this.props;
     const { id, isResize, resizeCoords, tableWidth, tableHeight } = this.state;
 
     return (
