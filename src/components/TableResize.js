@@ -26,6 +26,7 @@ class TableResize extends React.Component {
 
   state = {
     resizeCoords: {},
+    priorPosition: {},
     startPosition: 0,
     tableWidth: '100%',
     tableHeight: '100%',
@@ -41,7 +42,7 @@ class TableResize extends React.Component {
   componentDidMount() {
     this.windowWidth = null;
     this.props.setResizeable(this.setCellRefs);
-    this.props.updateDividers(() => this.setState({ updateCoords: true }, () => this.updateWidths()));
+    this.props.updateDividers(() => this.setState({ updateCoords: true }, () => this.updateWidths));
     window.addEventListener('resize', this.handleReize, false);
   }
 
@@ -58,8 +59,8 @@ class TableResize extends React.Component {
   setDividers = () => {
     const tableEl = findDOMNode(this.tableRef);
     const { width: tableWidth, height: tableHeight } = tableEl.getBoundingClientRect();
+    const { priorPosition, resizeCoords } = this.state;
 
-    let resizeCoords = {};
     let finalCells = Object.entries(this.cellsRef);
 
     finalCells.forEach(([key, item]) => {
@@ -67,13 +68,17 @@ class TableResize extends React.Component {
 
       const elRect = item.getBoundingClientRect();
       const elStyle = window.getComputedStyle(item, null);
+      const left = resizeCoords[key] !== undefined ? resizeCoords[key].left : undefined;
+      const oldLeft = priorPosition[key] || 0;
+      let newLeft = elRect.left + item.offsetWidth - parseInt(elStyle.paddingLeft) / 2;
 
-      resizeCoords[key] = {
-        left: elRect.left + item.offsetWidth - parseInt(elStyle.paddingLeft) / 2,
-      };
+      if (left === oldLeft) return;
+
+      resizeCoords[key] = { left: newLeft };
+      priorPosition[key] = newLeft;
     });
 
-    this.setState({ tableWidth, tableHeight, resizeCoords }, this.updateWidths());
+    this.setState({ tableWidth, tableHeight, resizeCoords, priorPosition }, this.updateWidths);
   };
 
   updateWidths = () => {
@@ -103,7 +108,7 @@ class TableResize extends React.Component {
       const curCoord = { ...resizeCoords[id], left: leftPos };
       const newResizeCoords = { ...resizeCoords, [id]: curCoord };
 
-      this.setState({ resizeCoords: newResizeCoords }, this.updateWidths());
+      this.setState({ resizeCoords: newResizeCoords }, this.updateWidths);
     }
   };
 
