@@ -30,8 +30,17 @@ function createCSVDownload(columns, data, options) {
   const replaceDoubleQuoteInString = columnData =>
     typeof columnData === 'string' ? columnData.replace(/\"/g, '""') : columnData;
 
-  const CSVHead =
-    columns
+  const convertToBasicColumn = name => {
+    return {
+      name,
+      download: true,
+    };
+  };
+
+  const optionOrFallback = (option, fallback) => (option ? option.map(convertToBasicColumn) : fallback);
+
+  const reduceData = data =>
+    data
       .reduce(
         (soFar, column) =>
           column.download
@@ -41,21 +50,23 @@ function createCSVDownload(columns, data, options) {
       )
       .slice(0, -1) + '\r\n';
 
-  const CSVBody = data
-    .reduce(
-      (soFar, row) =>
-        soFar +
-        '"' +
-        row.data
-          .filter((field, index) => columns[index].download)
-          .map(columnData => replaceDoubleQuoteInString(columnData))
-          .join('"' + options.downloadOptions.separator + '"') +
-        '"\r\n',
-      [],
-    )
-    .trim();
+  const CSVHead = reduceData(optionOrFallback(options.downloadOptions.headerNames, columns));
 
-  const csv = `${CSVHead}${CSVBody}`;
+  const CSVBody = data.reduce(
+    (soFar, row) =>
+      soFar +
+      '"' +
+      row.data
+        .filter((field, index) => columns[index].download)
+        .map(columnData => replaceDoubleQuoteInString(columnData))
+        .join('"' + options.downloadOptions.separator + '"') +
+      '"\r\n',
+    [],
+  );
+
+  const CSVFooter = reduceData(optionOrFallback(options.downloadOptions.footerNames, []));
+
+  const csv = `${CSVHead}${CSVBody}${CSVFooter}`.trim();
   const blob = new Blob([csv], { type: 'text/csv' });
 
   /* taken from react-csv */
