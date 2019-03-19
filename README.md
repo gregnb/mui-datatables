@@ -161,7 +161,7 @@ The component accepts the following props:
 |**`search`**|boolean|true|Show/hide search icon from toolbar
 |**`print`**|boolean|true|Show/hide print	 icon from toolbar
 |**`download`**|boolean|true|Show/hide download icon from toolbar
-|**`downloadOptions`**|object||Options to change the output of the CSV file. Default options: `{filename: 'tableDownload.csv', separator: ','}`
+|**`downloadOptions`**|object|{filename: 'tableDownload.csv', separator: ','}|Options to change the output of the CSV file. Options are filename, separator,headerNames,footerNames
 |**`viewColumns`**|boolean|true|Show/hide viewColumns icon from toolbar
 |**`onRowsSelect`**|function||Callback function that triggers when row(s) are selected. `function(currentRowsSelected: array, allRowsSelected: array) => void`
 |**`onRowsDelete`**|function||Callback function that triggers when row(s) are deleted. `function(rowsDeleted: array) => void`
