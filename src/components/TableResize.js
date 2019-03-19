@@ -31,7 +31,7 @@ class TableResize extends React.Component {
     tableHeight: '100%',
   };
 
-  handleReize = () => {
+  handleResize = () => {
     if (window.innerWidth !== this.windowWidth) {
       this.windowWidth = window.innerWidth;
       this.setDividers();
@@ -42,11 +42,11 @@ class TableResize extends React.Component {
     this.windowWidth = null;
     this.props.setResizeable(this.setCellRefs);
     this.props.updateDividers(() => this.setState({ updateCoords: true }, () => this.updateWidths));
-    window.addEventListener('resize', this.handleReize, false);
+    window.addEventListener('resize', this.handleResize, false);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleReize, false);
+    window.removeEventListener('resize', this.handleResize, false);
   }
 
   setCellRefs = (cellsRef, tableRef) => {
