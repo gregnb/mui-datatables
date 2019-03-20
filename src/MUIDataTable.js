@@ -510,7 +510,7 @@ class MUIDataTable extends React.Component {
 
     if (this.options.serverSide) {
       if (customSearch) {
-        console.warn("Server-side filtering is enabled, hence custom search will be ignored.");
+        console.warn('Server-side filtering is enabled, hence custom search will be ignored.');
       }
 
       return displayRow;
