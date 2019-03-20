@@ -399,7 +399,7 @@ class MUIDataTable extends React.Component {
 
       if (column.sortDirection !== null) {
         sortIndex = colIndex;
-        sortDirection = column.sortDirection === 'asc' ? 'desc' : 'asc';
+        sortDirection = column.sortDirection;
       }
     });
 
@@ -622,13 +622,13 @@ class MUIDataTable extends React.Component {
       prevState => {
         let columns = cloneDeep(prevState.columns);
         let data = prevState.data;
-        const order = prevState.columns[index].sortDirection;
+        const newOrder = columns[index].sortDirection === 'asc' ? 'desc' : 'asc';
 
         for (let pos = 0; pos < columns.length; pos++) {
           if (index !== pos) {
             columns[pos].sortDirection = null;
           } else {
-            columns[pos].sortDirection = columns[pos].sortDirection === 'asc' ? 'desc' : 'asc';
+            columns[pos].sortDirection = newOrder;
           }
         }
 
@@ -649,7 +649,7 @@ class MUIDataTable extends React.Component {
             selectedRows: prevState.selectedRows,
           };
         } else {
-          const sortedData = this.sortTable(data, index, order);
+          const sortedData = this.sortTable(data, index, newOrder);
 
           newState = {
             ...newState,
