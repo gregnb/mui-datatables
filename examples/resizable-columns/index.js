@@ -4,9 +4,35 @@ import MUIDataTable from "../../src/";
 
 class Example extends React.Component {
 
-  render() {
+  constructor(props) {
+    super(props);
 
-    const columns = ["Name", "Title", "Location"];
+    this.state = { counter: 1 };
+  }
+
+  // We update an arbitrary value here to test table resizing on state updates
+  update = () => {
+    let { counter } = this.state;
+    counter += 1;
+
+    this.setState({ counter });
+  };
+
+  render() {
+    const { counter } = this.state;
+
+    const columns = [
+      {
+        name: "Counter",
+        options: {
+          empty: true,
+          customBodyRender: value => <button onClick={this.update}>+</button>
+        }
+      },
+      "Name",
+      "Title",
+      "Location"
+    ];
 
     const data = [
       ["Gabby George", "Business Analyst", "Minneapolis"],
@@ -24,7 +50,7 @@ class Example extends React.Component {
     };
 
     return (
-      <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+      <MUIDataTable title={"ACME Employee list" + " [" + counter + "]"} data={data} columns={columns} options={options} />
     );
 
   }
