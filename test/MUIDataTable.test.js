@@ -134,7 +134,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         viewColumns: true,
         sortDirection: null,
-        customBodyRender: renderState
+        customBodyRender: renderState,
       },
       {
         display: 'true',
@@ -442,7 +442,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         viewColumns: true,
         sortDirection: null,
-        customBodyRender: renderState
+        customBodyRender: renderState,
       },
       {
         name: 'Empty',
@@ -637,7 +637,7 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
   });
 
-  it("should skip client side filtering if server side filtering is enabled", () => {
+  it('should skip client side filtering if server side filtering is enabled', () => {
     const options = { filterType: 'textField', serverSide: true };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
     const table = shallowWrapper.dive();
