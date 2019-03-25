@@ -101,6 +101,7 @@
     "lodash.memoize": "^4.1.2",
     "lodash.merge": "^4.6.0",
     "prop-types": "^15.6.0",
+    "react-custom-scrollbars": "^4.2.1",
     "react-to-print": "^1.0.10"
   },
   "side-effects": false,

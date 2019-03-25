@@ -16,6 +16,7 @@ import isEqual from 'lodash.isequal';
 import textLabels from './textLabels';
 import { withStyles } from '@material-ui/core/styles';
 import { buildMap, getCollatorComparator, sortCompare } from './utils';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 function equals(a, b) {
   if (typeof a !== typeof b) {
@@ -1034,17 +1035,7 @@ class MUIDataTable extends React.Component {
     const rowCount = this.options.count || displayData.length;
     const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
 
-    let divStyle = {
-      position: 'relative',
-    };
-
     if (height) {
-      divStyle = {
-        ...divStyle,
-        overflowY: 'auto',
-        height,
-      };
-
       return (
         <Paper elevation={4} ref={this.tableContent} className={classes.paper}>
           {selectedRows.data.length && (this.options && !this.options.radio) ? (
@@ -1123,7 +1114,11 @@ class MUIDataTable extends React.Component {
             </div>
           </div>
           <div className="body-only" style={{ overflowY: 'auto', height }}>
-            <div style={divStyle} className={this.options.responsive === 'scroll' ? classes.responsiveScroll : null}>
+            <Scrollbars
+              className={this.options.responsive === 'scroll' ? classes.responsiveScroll : null}
+              autoHeight
+              autoHeightMin={0}
+              autoHeightMax={height}>
               {this.options.resizableColumns && (
                 <TableResize
                   key={rowCount}
@@ -1166,7 +1161,7 @@ class MUIDataTable extends React.Component {
                   totals={totalled && totals}
                 />
               </MuiTable>
-            </div>
+            </Scrollbars>
             <TableFooter
               options={this.options}
               page={page}
@@ -1213,7 +1208,11 @@ class MUIDataTable extends React.Component {
           />
         )}
         <TableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />
-        <div style={divStyle} className={this.options.responsive === 'scroll' ? classes.responsiveScroll : null}>
+        <Scrollbars
+          className={this.options.responsive === 'scroll' ? classes.responsiveScroll : null}
+          autoHeight
+          autoHeightMin={0}
+          autoHeightMax={height}>
           {this.options.resizableColumns && (
             <TableResize
               key={rowCount}
@@ -1256,7 +1255,7 @@ class MUIDataTable extends React.Component {
               totals={totalled && totals}
             />
           </MuiTable>
-        </div>
+        </Scrollbars>
         <TableFooter
           options={this.options}
           page={page}
