@@ -1212,7 +1212,7 @@ class MUIDataTable extends React.Component {
           className={this.options.responsive === 'scroll' ? classes.responsiveScroll : null}
           autoHeight
           autoHeightMin={0}
-          autoHeightMax={height}>
+          autoHeightMax={height || 999999}>
           {this.options.resizableColumns && (
             <TableResize
               key={rowCount}
