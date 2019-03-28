@@ -135,6 +135,19 @@ describe('<TableFilter />', function() {
     assert.strictEqual(actualResult.length, 0);
   });
 
+  it("should data table filter view with checkboxes if column.filterType = 'checkbox' irrespective of global filterType value", () => {
+    const options = { filterType: 'textField', textLabels };
+    const filterList = [[], [], [], []];
+    columns.forEach(item => (item.filterType = 'checkbox'));
+
+    const shallowWrapper = mount(
+      <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
+    );
+
+    const actualResult = shallowWrapper.find(Checkbox);
+    assert.strictEqual(actualResult.length, 13);
+  });
+
   it('should trigger onFilterUpdate prop callback when calling method handleCheckboxChange', () => {
     const options = { filterType: 'checkbox', textLabels };
     const filterList = [[], [], [], []];
