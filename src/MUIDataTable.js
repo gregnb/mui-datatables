@@ -80,6 +80,7 @@ class MUIDataTable extends React.Component {
             viewColumns: PropTypes.bool,
             filterList: PropTypes.array,
             filterOptions: PropTypes.array,
+            filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField']),
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,
           }),
@@ -310,6 +311,7 @@ class MUIDataTable extends React.Component {
         download: true,
         viewColumns: true,
         sortDirection: null,
+        filterType: 'dropdown',
       };
 
       if (typeof column === 'object') {
