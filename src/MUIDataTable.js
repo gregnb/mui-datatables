@@ -82,6 +82,7 @@ class MUIDataTable extends React.Component {
             filterOptions: PropTypes.array,
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,
+            filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField']),
           }),
         }),
       ]),
@@ -476,7 +477,11 @@ class MUIDataTable extends React.Component {
       const columnVal = columnValue === null || columnValue === undefined ? '' : columnValue.toString();
 
       const filterVal = filterList[index];
-      const { filterType, caseSensitive } = this.options;
+      const { caseSensitive } = this.options;
+      let { filterType } = this.options;
+      if (columns[index].filterType) {
+        filterType = columns[index].filterType;
+      }
       if (filterVal.length) {
         if (filterType === 'textField' && !this.hasSearchText(columnVal, filterVal, caseSensitive)) {
           isFiltered = true;
