@@ -209,7 +209,7 @@ class TableToolbar extends React.Component {
           {options.filter && (
             <Popover
               refExit={this.setActiveIcon.bind(null)}
-              classes={{paper: classes.filterPaper}}
+              classes={{ paper: classes.filterPaper }}
               trigger={
                 <IconButton
                   aria-label={filterTable}
