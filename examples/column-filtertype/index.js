@@ -9,35 +9,35 @@ class Example extends React.Component {
         name: 'Name',
         options: {
           filter: true,
-          filterType: 'textField', // "checkbox", "dropdown", "multiselect" or "textField"
+          filterType: 'textField', // "dropdown", "multiselect" or "textField"
         },
       },
       {
         name: 'Title',
         options: {
           filter: true,
-          filterType: 'textField', // "checkbox", "dropdown", "multiselect" or "textField"
+          filterType: 'textField', // "dropdown", "multiselect" or "textField"
         },
       },
       {
         name: 'Location',
         options: {
           filter: true,
-          filterType: 'multiselect', // "checkbox", "dropdown", "multiselect" or "textField"
+          filterType: 'dropdown', // "dropdown", "multiselect" or "textField"
         },
       },
       {
         name: 'Age',
         options: {
           filter: true,
-          filterType: 'textField', // "checkbox", "dropdown", "multiselect" or "textField"
+          filterType: 'textField', // "dropdown", "multiselect" or "textField"
         },
       },
       {
         name: 'Salary',
         options: {
           filter: true,
-          filterType: 'multiselect', // "checkbox", "dropdown", "multiselect" or "textField"
+          filterType: 'multiselect', // "dropdown", "multiselect" or "textField"
         },
       },
     ];
