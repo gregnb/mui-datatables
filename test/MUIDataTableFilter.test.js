@@ -192,5 +192,75 @@ describe('<TableFilter />', function() {
     event = { target: { value: 'test' } };
     instance.handleDropdownChange(event, 0);
     assert.strictEqual(onFilterUpdate.callCount, 2);
+
+    shallowWrapper
+      .find(Select)
+      .first()
+      .simulate('change', event);
+    assert.strictEqual(onFilterUpdate.callCount, 3);
+  });
+
+  it('should trigger onFilterUpdate prop callback when calling method handleMultiselectChange', () => {
+    const options = { filterType: 'multiselect', textLabels };
+    const filterList = [[], [], [], []];
+    const onFilterUpdate = spy();
+
+    const shallowWrapper = shallow(
+      <TableFilter
+        columns={columns}
+        onFilterUpdate={onFilterUpdate}
+        filterData={filterData}
+        filterList={filterList}
+        options={options}
+      />,
+    ).dive();
+    const instance = shallowWrapper.instance();
+
+    let event = { target: { value: 'All' } };
+
+    instance.handleMultiselectChange(event, 0);
+    assert.strictEqual(onFilterUpdate.callCount, 1);
+
+    event = { target: { value: 'test' } };
+    instance.handleMultiselectChange(event, 0);
+    assert.strictEqual(onFilterUpdate.callCount, 2);
+
+    shallowWrapper
+      .find(Select)
+      .first()
+      .simulate('change', event);
+    assert.strictEqual(onFilterUpdate.callCount, 3);
+  });
+
+  it('should trigger onFilterUpdate prop callback when calling method handleTextFieldChange', () => {
+    const options = { filterType: 'textField', textLabels };
+    const filterList = [[], [], [], []];
+    const onFilterUpdate = spy();
+
+    const shallowWrapper = shallow(
+      <TableFilter
+        columns={columns}
+        onFilterUpdate={onFilterUpdate}
+        filterData={filterData}
+        filterList={filterList}
+        options={options}
+      />,
+    ).dive();
+    const instance = shallowWrapper.instance();
+
+    let event = { target: { value: 'All' } };
+
+    instance.handleTextFieldChange(event, 0);
+    assert.strictEqual(onFilterUpdate.callCount, 1);
+
+    event = { target: { value: 'test' } };
+    instance.handleTextFieldChange(event, 0);
+    assert.strictEqual(onFilterUpdate.callCount, 2);
+
+    shallowWrapper
+      .find(TextField)
+      .first()
+      .simulate('change', event);
+    assert.strictEqual(onFilterUpdate.callCount, 3);
   });
 });
