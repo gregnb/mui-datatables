@@ -311,7 +311,6 @@ class MUIDataTable extends React.Component {
         download: true,
         viewColumns: true,
         sortDirection: null,
-        filterType: 'dropdown',
       };
 
       if (typeof column === 'object') {

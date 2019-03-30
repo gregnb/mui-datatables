@@ -88,7 +88,6 @@ describe('<MUIDataTable />', function() {
         name: 'Name',
         sort: true,
         filter: true,
-        filterType: 'dropdown',
         label: 'Name',
         download: true,
         searchable: true,
@@ -103,7 +102,6 @@ describe('<MUIDataTable />', function() {
         name: 'Company',
         sort: true,
         filter: true,
-        filterType: 'dropdown',
         label: 'Company',
         download: true,
         searchable: true,
@@ -401,7 +399,6 @@ describe('<MUIDataTable />', function() {
         print: true,
         sort: true,
         filter: true,
-        filterType: 'dropdown',
         label: 'Name',
         download: true,
         searchable: true,
@@ -416,7 +413,6 @@ describe('<MUIDataTable />', function() {
         print: true,
         sort: true,
         filter: true,
-        filterType: 'dropdown',
         label: 'Company',
         download: true,
         searchable: true,
@@ -632,7 +628,7 @@ describe('<MUIDataTable />', function() {
 
   it('should render all things that match a text field filter', () => {
     const options = { filterType: 'textField' };
-    columns[0].options.filterType = 'textField'
+    columns[0].options.filterType = 'textField';
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
     const table = shallowWrapper.dive();
     const instance = table.instance();
