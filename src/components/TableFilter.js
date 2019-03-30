@@ -149,14 +149,14 @@ class TableFilter extends React.Component {
     return (
       <GridListTile key={index} cols={2}>
         <FormGroup>
-          <Grid xs={12}>
+          <Grid item xs={12}>
             <Typography variant="body2" className={classes.checkboxListTitle}>
               {column.label}
             </Typography>
           </Grid>
           <Grid container>
             {filterData[index].map((filterColumn, filterIndex) => (
-              <Grid item>
+              <Grid item key={filterIndex}>
                 <FormControlLabel
                   key={filterIndex}
                   classes={{

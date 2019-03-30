@@ -632,6 +632,7 @@ describe('<MUIDataTable />', function() {
 
   it('should render all things that match a text field filter', () => {
     const options = { filterType: 'textField' };
+    columns[0].options.filterType = 'textField'
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
     const table = shallowWrapper.dive();
     const instance = table.instance();
