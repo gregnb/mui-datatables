@@ -230,7 +230,7 @@ class TableFilter extends React.Component {
           column.filter ? (
             <FormControl className={classes.textFieldFormControl} key={index}>
               <TextField
-                label={column.name}
+                label={column.label}
                 value={filterList[index].toString() || ''}
                 onChange={event => this.handleTextFieldChange(event, index)}
               />
