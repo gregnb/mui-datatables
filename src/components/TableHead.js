@@ -45,16 +45,65 @@ class TableHead extends React.Component {
     this.props.selectRowUpdate('head', null);
   };
 
+  handleGroupHeader = () => {
+    const { columns } = this.props;
+    let groupHeader = null;
+    let lastGroup = '';
+    let lastIndex = -1;
+
+    if (columns.filter(column => column.display === 'true' && column.group).length > 0) {
+      groupHeader = {};
+
+      columns.forEach((column, index) => {
+        if (column.display === 'true') {
+          if (column.group === lastGroup) {
+            groupHeader[lastIndex].colspan += 1;
+          } else {
+            groupHeader[index] = { name: column.group, colspan: 1 };
+            lastIndex = index;
+          }
+
+          lastGroup = column.group;
+        }
+      });
+    }
+
+    return groupHeader;
+  };
+
   render() {
     const { classes, columns, count, options, data, page, setCellRef, selectedRows } = this.props;
 
     const numSelected = (selectedRows && selectedRows.data.length) || 0;
     const isDeterminate = numSelected > 0 && numSelected < count;
     const isChecked = numSelected === count ? true : false;
+    const groupHeader = this.handleGroupHeader();
 
     return (
       <MuiTableHead
         className={classNames({ [classes.responsiveStacked]: options.responsive === 'stacked', [classes.main]: true })}>
+        {groupHeader && (
+          <TableHeadRow>
+            {options.selectableRows && (
+              <TableHeadCell className={classes.emptyCell} options={options} toggleSort={() => {}} sort={false} />
+            )}
+            {Object.keys(groupHeader).map((key, index) => {
+              return (
+                <TableHeadCell
+                  colSpan={groupHeader[key].colspan}
+                  key={index}
+                  index={index}
+                  type={'cell'}
+                  ref={el => setCellRef(index + 1, findDOMNode(el))}
+                  options={{}}
+                  toggleSort={() => {}}
+                  sort={false}>
+                  {groupHeader[key].name}
+                </TableHeadCell>
+              );
+            })}
+          </TableHeadRow>
+        )}
         <TableHeadRow>
           {options.selectableRows &&
             (options.radio ? (
