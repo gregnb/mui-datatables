@@ -65,7 +65,7 @@ class TableHeadCell extends React.Component {
   };
 
   render() {
-    const { children, classes, options, sortDirection, sort, hint } = this.props;
+    const { children, classes, options, sortDirection, sort, hint, colSpan, rowSpan } = this.props;
     const sortActive = sortDirection !== null && sortDirection !== undefined ? true : false;
 
     const sortLabelProps = {
@@ -79,7 +79,7 @@ class TableHeadCell extends React.Component {
     });
 
     return (
-      <TableCell className={cellClass} scope={'col'} sortDirection={sortDirection}>
+      <TableCell className={cellClass} scope={'col'} sortDirection={sortDirection} colSpan={colSpan} rowSpan={rowSpan}>
         {options.sort && sort ? (
           <Tooltip
             title={options.textLabels.body.toolTip}
