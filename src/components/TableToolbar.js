@@ -82,6 +82,7 @@ class TableToolbar extends React.Component {
   state = {
     iconActive: null,
     showSearch: false,
+    searchText: null,
   };
 
   handleCSVDownload = () => {
@@ -91,9 +92,23 @@ class TableToolbar extends React.Component {
 
   setActiveIcon = iconName => {
     this.setState(() => ({
+      showSearch: this.getShowSearch(iconName),
       iconActive: iconName,
-      showSearch: iconName === 'search' ? this.showSearch() : false,
     }));
+  };
+
+  getShowSearch = iconName => {
+    let nextVal = false;
+    if (this.state.showSearch) {
+      if (this.state.searchText) {
+        nextVal = true;
+      } else {
+        const { onSearchClose } = this.props.options;
+        if (onSearchClose) onSearchClose();
+        nextVal = false;
+      }
+    } else if (iconName === 'search') nextVal = this.showSearch();
+    return nextVal;
   };
 
   getActiveIcon = (styles, iconName) => {
@@ -115,9 +130,15 @@ class TableToolbar extends React.Component {
     this.setState(() => ({
       iconActive: null,
       showSearch: false,
+      searchText: null,
     }));
 
     this.searchButton.focus();
+  };
+
+  searchTextUpdate = value => {
+    this.setState({ searchText: value });
+    this.props.searchTextUpdate(value);
   };
 
   render() {
@@ -130,7 +151,6 @@ class TableToolbar extends React.Component {
       filterList,
       filterUpdate,
       resetFilters,
-      searchTextUpdate,
       toggleViewColumn,
       title,
       tableRef,
@@ -143,7 +163,7 @@ class TableToolbar extends React.Component {
       <Toolbar className={classes.root} role={'toolbar'} aria-label={'Table Toolbar'}>
         <div className={classes.left}>
           {showSearch === true ? (
-            <TableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
+            <TableSearch onSearch={this.searchTextUpdate} onHide={this.hideSearch} options={options} />
           ) : (
             <div className={classes.titleRoot} aria-hidden={'true'}>
               <Typography variant="h6" className={classes.titleText}>
