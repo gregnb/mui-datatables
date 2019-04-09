@@ -59,7 +59,7 @@ const TABLE_LOAD = {
 class MUIDataTable extends React.Component {
   static propTypes = {
     /** Title of the table */
-    title: PropTypes.string.isRequired,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
     /** Data used to describe table */
     data: PropTypes.array.isRequired,
     /** Columns used to describe table */
