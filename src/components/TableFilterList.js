@@ -19,7 +19,7 @@ class TableFilterList extends React.Component {
   static propTypes = {
     /** Data used to filter table against */
     filterList: PropTypes.array.isRequired,
-    /** Column names */
+    /** Filter List value renderers */
     filterListRenderers: PropTypes.array.isRequired,
     /** Callback to trigger filter update */
     onFilterUpdate: PropTypes.func,

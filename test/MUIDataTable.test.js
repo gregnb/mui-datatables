@@ -20,6 +20,7 @@ describe('<MUIDataTable />', function() {
   );
   let renderName = value => value.split(' ')[1] + ', ' + value.split(' ')[0];
   let renderState = value => value;
+  let defaultRenderCustomFilterList = f => f;
   let renderCustomFilterList = f => `Name: ${f}`;
 
   before(() => {
@@ -94,6 +95,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         sortDirection: null,
         viewColumns: true,
+        customFilterListRender: renderCustomFilterList,
         customBodyRender: renderName,
       },
       {
@@ -305,9 +307,8 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should create Chip when filterList is populated', () => {
-    const id = f => f;
     const filterList = [['Joe James'], [], [], [], []];
-    const filterListRenderers = [id, id, id, id, id];
+    const filterListRenderers = [defaultRenderCustomFilterList, defaultRenderCustomFilterList, defaultRenderCustomFilterList, defaultRenderCustomFilterList, defaultRenderCustomFilterList];
 
     const mountWrapper = mount(
       <TableFilterList filterList={filterList} filterListRenderers={filterListRenderers} filterUpdate={() => true} />,
@@ -319,7 +320,7 @@ describe('<MUIDataTable />', function() {
   it('should create Chip with custom label when filterList and customFilterListRender are populated', () => {
     const filterList = [['Joe James'], [], [], [], []];
     const filterListRenderers = columns.map(c => {
-      return c.options && c.options.customFilterListRender ? c.options.customFilterListRender : f => f;
+      return c.options && c.options.customFilterListRender ? c.options.customFilterListRender : defaultRenderCustomFilterList;
     });
 
     const mountWrapper = mount(
@@ -421,6 +422,7 @@ describe('<MUIDataTable />', function() {
         sortDirection: null,
         customBodyRender: renderName,
         viewColumns: true,
+        customFilterListRender: renderCustomFilterList,
       },
       {
         name: 'Company',
