@@ -480,8 +480,15 @@ class MUIDataTable extends React.Component {
       if (filterVal.length) {
         if (filterType === 'textField' && !this.hasSearchText(columnVal, filterVal, caseSensitive)) {
           isFiltered = true;
-        } else if (filterType !== 'textField' && filterVal.indexOf(columnValue) < 0) {
+        } else if (filterType !== 'textField' && Array.isArray(columnValue) === false && filterVal.indexOf(columnValue) < 0) {
           isFiltered = true;
+        } else if (filterType !== 'textField' && Array.isArray(columnValue)) {
+            //true if filter contains a value from the column value, false otherwise
+            const filterContainsColumnValue = columnValue.some((el) => {
+                return filterVal.indexOf(el) >= 0;
+            });
+            //if filter contains a column value, current row should not be filtered out
+            isFiltered = !filterContainsColumnValue;
         }
       }
 
@@ -505,7 +512,7 @@ class MUIDataTable extends React.Component {
         isSearchFound = customSearchResult;
       }
     }
-
+    
     if (this.options.serverSide) {
       if (customSearch) {
         console.warn('Server-side filtering is enabled, hence custom search will be ignored.');
@@ -588,7 +595,6 @@ class MUIDataTable extends React.Component {
         });
       }
     }
-
     return newRows;
   }
 
