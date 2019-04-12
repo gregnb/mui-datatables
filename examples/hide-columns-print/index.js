@@ -50,7 +50,6 @@ class Example extends React.Component {
             filterOptions: allTags,
             searchable: false,
             customBodyRender: (value) => {
-                // return 'asdf';
                 return value.map( (val, key) => {
                     return <Chip label={val} key={key} />;
                 });
