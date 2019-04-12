@@ -76,6 +76,9 @@ class Example extends React.Component {
 
     const options = {
       filter: true,
+      onFilterChange: (changedColumn, filterList) => {
+        console.log(changedColumn, filterList);
+      },
       selectableRows: true,
       filterType: 'dropdown',
       responsive: 'stacked',
