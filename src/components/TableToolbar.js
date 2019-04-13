@@ -92,12 +92,12 @@ class TableToolbar extends React.Component {
 
   setActiveIcon = iconName => {
     this.setState(() => ({
-      showSearch: this.getShowSearch(iconName),
+      showSearch: this.isSearchShown(iconName),
       iconActive: iconName,
     }));
   };
 
-  getShowSearch = iconName => {
+  isSearchShown = iconName => {
     let nextVal = false;
     if (this.state.showSearch) {
       if (this.state.searchText) {
@@ -107,7 +107,9 @@ class TableToolbar extends React.Component {
         if (onSearchClose) onSearchClose();
         nextVal = false;
       }
-    } else if (iconName === 'search') nextVal = this.showSearch();
+    } else if (iconName === 'search') {
+      nextVal = this.showSearch();
+    }    
     return nextVal;
   };
 
@@ -136,7 +138,7 @@ class TableToolbar extends React.Component {
     this.searchButton.focus();
   };
 
-  searchTextUpdate = value => {
+  handleSearch = value => {
     this.setState({ searchText: value });
     this.props.searchTextUpdate(value);
   };
@@ -163,7 +165,7 @@ class TableToolbar extends React.Component {
       <Toolbar className={classes.root} role={'toolbar'} aria-label={'Table Toolbar'}>
         <div className={classes.left}>
           {showSearch === true ? (
-            <TableSearch onSearch={this.searchTextUpdate} onHide={this.hideSearch} options={options} />
+            <TableSearch onSearch={this.handleSearch} onHide={this.hideSearch} options={options} />
           ) : (
             <div className={classes.titleRoot} aria-hidden={'true'}>
               <Typography variant="h6" className={classes.titleText}>
