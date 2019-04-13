@@ -131,7 +131,6 @@ class TableFilter extends React.Component {
   };
 
   handleCheckboxChange = (index, value, column) => {
-    console.log(column);
     this.props.onFilterUpdate(index, value, column, 'checkbox');
   };
 
