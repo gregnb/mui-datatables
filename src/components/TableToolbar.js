@@ -144,6 +144,8 @@ class TableToolbar extends React.Component {
         <div className={classes.left}>
           {showSearch === true ? (
             <TableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
+          ) : typeof title !== 'string' ? (
+            title
           ) : (
             <div className={classes.titleRoot} aria-hidden={'true'}>
               <Typography variant="h6" className={classes.titleText}>
