@@ -19,6 +19,7 @@ import { buildMap, getCollatorComparator, sortCompare } from './utils';
 
 const defaultTableStyles = {
   root: {},
+  paper: {},
   tableRoot: {
     outline: 'none',
   },
