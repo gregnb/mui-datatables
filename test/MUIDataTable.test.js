@@ -522,15 +522,34 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(state.selectedRows.data, expectedResult);
   });
 
-  it('should update selectedRows when calling selectRowUpdate method with type=cell', () => {
-    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
+  it('If selectableRows=single, only the last cell must be selected when calling selectRowUpdate method with type=cell.', () => {
+    const options = { selectableRows: 'single' };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
     const instance = shallowWrapper.instance();
 
-    instance.selectRowUpdate('cell', 0);
+    instance.selectRowUpdate('cell', {index: 0, dataIndex: 0});
+    instance.selectRowUpdate('cell', {index: 1, dataIndex: 1});
     shallowWrapper.update();
 
     const state = shallowWrapper.state();
-    assert.deepEqual(state.selectedRows.data, [0]);
+    assert.deepEqual(state.selectedRows.data, [{index: 1, dataIndex: 1}]);
+  });
+
+  it('If selectableRows=multiple, multiple cells can be selected when calling selectRowUpdate method with type=cell.', () => {
+    const options = { selectableRows: 'multiple' };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.selectRowUpdate('cell', {index: 0, dataIndex: 0});
+    instance.selectRowUpdate('cell', {index: 1, dataIndex: 1});
+    shallowWrapper.update();
+
+    const expectedResult = [
+      {index: 0, dataIndex: 0},
+      {index: 1, dataIndex: 1},
+    ];
+    const state = shallowWrapper.state();
+    assert.deepEqual(state.selectedRows.data, expectedResult);
   });
 
   it('should update selectedRows when calling selectRowUpdate method with type=custom', () => {

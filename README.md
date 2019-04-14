@@ -139,7 +139,7 @@ The component accepts the following props:
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox", "dropdown", "multiselect" or "textField"
 |**`textLabels `**|object||User provided labels to localize text
 |**`pagination`**|boolean|true|Enable/disable pagination
-|**`selectableRows`**|boolean|true|Enable/disable row selection
+|**`selectableRows`**|string|'multiple'|Numbers of rows that can be selected. Options are "multiple", "single", "none".
 |**`isRowSelectable`**|function||Enable/disable selection on certain rows with custom function. Returns true if not provided.  `function(dataIndex) => bool`
 |**`resizableColumns`**|boolean|false|Enable/disable resizable columns
 |**`expandableRows`**|boolean|false|Enable/disable expandable rows

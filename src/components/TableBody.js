@@ -125,7 +125,7 @@ class TableBody extends React.Component {
               <TableBodyRow
                 {...(options.setRowProps ? options.setRowProps(row, dataIndex) : {})}
                 options={options}
-                rowSelected={options.selectableRows ? this.isRowSelected(dataIndex) : false}
+                rowSelected={options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false}
                 onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
                 id={'MUIDataTableBodyRow-' + dataIndex}>
                 <TableSelectCell
@@ -170,7 +170,7 @@ class TableBody extends React.Component {
         ) : (
           <TableBodyRow options={options}>
             <TableBodyCell
-              colSpan={options.selectableRows || options.expandableRows ? visibleColCnt + 1 : visibleColCnt}
+              colSpan={options.selectableRows !== 'none' || options.expandableRows ? visibleColCnt + 1 : visibleColCnt}
               options={options}
               colIndex={0}
               rowIndex={0}>
