@@ -19,6 +19,7 @@ class Example extends React.Component {
         name: "Title",
         options: {
           filter: true,
+          filterType: 'textField' // set filterType's at the column level
         }
       },
       {

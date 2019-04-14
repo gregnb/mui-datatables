@@ -35,6 +35,9 @@ export const defaultToolbarStyles = (theme, props) => ({
   iconActive: {
     color: theme.palette.primary.main,
   },
+  filterPaper: {
+    maxWidth: '50%',
+  },
   searchIcon: {
     display: 'inline-flex',
     marginTop: '10px',
@@ -230,6 +233,7 @@ class TableToolbar extends React.Component {
           {options.filter && (
             <Popover
               refExit={this.setActiveIcon.bind(null)}
+              classes={{ paper: classes.filterPaper }}
               trigger={
                 <IconButton
                   aria-label={filterTable}

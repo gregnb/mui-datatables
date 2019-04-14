@@ -25,9 +25,9 @@ describe('<MUIDataTable />', function() {
     columns = [
       { name: 'Name', options: { customBodyRender: renderName } },
       'Company',
-      { name: 'City', label: 'City Label', options: { customBodyRender: renderCities } },
-      { name: 'State', options: { customBodyRender: renderState } },
-      { name: 'Empty', options: { empty: true } },
+      { name: 'City', label: 'City Label', options: { customBodyRender: renderCities, filterType: 'textField' } },
+      { name: 'State', options: { customBodyRender: renderState, filterType: 'multiselect' } },
+      { name: 'Empty', options: { empty: true, filterType: 'checkbox' } },
     ];
     data = [
       ['Joe James', 'Test Corp', 'Yonkers', 'NY'],
@@ -115,6 +115,7 @@ describe('<MUIDataTable />', function() {
         name: 'City',
         sort: true,
         filter: true,
+        filterType: 'textField',
         label: 'City Label',
         download: true,
         searchable: true,
@@ -129,6 +130,7 @@ describe('<MUIDataTable />', function() {
         name: 'State',
         sort: true,
         filter: true,
+        filterType: 'multiselect',
         label: 'State',
         download: true,
         searchable: true,
@@ -143,6 +145,7 @@ describe('<MUIDataTable />', function() {
         name: 'Empty',
         sort: true,
         filter: true,
+        filterType: 'checkbox',
         label: 'Empty',
         download: true,
         searchable: true,
@@ -423,6 +426,7 @@ describe('<MUIDataTable />', function() {
         print: true,
         sort: true,
         filter: true,
+        filterType: 'textField',
         label: 'City Label',
         download: true,
         searchable: true,
@@ -437,6 +441,7 @@ describe('<MUIDataTable />', function() {
         print: true,
         sort: true,
         filter: true,
+        filterType: 'multiselect',
         label: 'State',
         download: true,
         searchable: true,
@@ -451,6 +456,7 @@ describe('<MUIDataTable />', function() {
         print: true,
         sort: true,
         filter: true,
+        filterType: 'checkbox',
         label: 'Empty',
         download: true,
         searchable: true,
@@ -622,6 +628,7 @@ describe('<MUIDataTable />', function() {
 
   it('should render all things that match a text field filter', () => {
     const options = { filterType: 'textField' };
+    columns[0].options.filterType = 'textField';
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
     const table = shallowWrapper.dive();
     const instance = table.instance();
