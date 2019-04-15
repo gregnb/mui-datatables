@@ -79,7 +79,6 @@ class MUIDataTable extends React.Component {
             download: PropTypes.bool,
             viewColumns: PropTypes.bool,
             filterList: PropTypes.array,
-            filterListRenderers: PropTypes.array,
             filterOptions: PropTypes.array,
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,

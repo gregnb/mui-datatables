@@ -209,6 +209,7 @@ const columns = [
 |**`empty`**|boolean|false|This denotes whether the column has data or not (for use with intentionally empty columns)
 |**`filterList`**|array||Filter value list [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`filterOptions`**|array||Filter options [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
+|**`customFilterListRender`**|function||Function that returns a string used as the chip label. `function(value) => string` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`filter`**|boolean|true|Display column in filter list
 |**`sort`**|boolean|true|Enable/disable sorting on column
 |**`searchable`**|boolean|true|Exclude/include column from search results
