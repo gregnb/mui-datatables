@@ -14,11 +14,12 @@ class Example extends React.Component {
           filterList: ['Franky Miles'],
           filterOptions: ['a', 'b', 'c', 'Business Analyst']
         }
-      },      
+      },
       {
         name: "Title",
         options: {
           filter: true,
+          filterType: 'textField' // set filterType's at the column level
         }
       },
       {
@@ -39,7 +40,7 @@ class Example extends React.Component {
           filter: true,
           sort: false
         }
-      }      
+      }
     ];
     const data = [
       ["Gabby George", "Business Analyst", "Minneapolis", 30, 100000],

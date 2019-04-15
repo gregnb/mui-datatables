@@ -19,6 +19,7 @@ import { buildMap, getCollatorComparator, sortCompare } from './utils';
 
 const defaultTableStyles = {
   root: {},
+  paper: {},
   tableRoot: {
     outline: 'none',
   },
@@ -59,7 +60,7 @@ const TABLE_LOAD = {
 class MUIDataTable extends React.Component {
   static propTypes = {
     /** Title of the table */
-    title: PropTypes.string.isRequired,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
     /** Data used to describe table */
     data: PropTypes.array.isRequired,
     /** Columns used to describe table */
@@ -80,6 +81,7 @@ class MUIDataTable extends React.Component {
             viewColumns: PropTypes.bool,
             filterList: PropTypes.array,
             filterOptions: PropTypes.array,
+            filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField']),
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,
           }),
@@ -447,15 +449,16 @@ class MUIDataTable extends React.Component {
     for (let index = 0; index < row.length; index++) {
       let columnDisplay = row[index];
       let columnValue = row[index];
+      let column = columns[index];
 
-      if (columns[index].customBodyRender) {
-        const tableMeta = this.getTableMeta(rowIndex, index, row, columns[index], this.state.data, {
+      if (column.customBodyRender) {
+        const tableMeta = this.getTableMeta(rowIndex, index, row, column, this.state.data, {
           ...this.state,
           filterList: filterList,
           searchText: searchText,
         });
 
-        const funcResult = columns[index].customBodyRender(
+        const funcResult = column.customBodyRender(
           columnValue,
           tableMeta,
           this.updateDataCol.bind(null, rowIndex, index),
@@ -476,7 +479,8 @@ class MUIDataTable extends React.Component {
       const columnVal = columnValue === null || columnValue === undefined ? '' : columnValue.toString();
 
       const filterVal = filterList[index];
-      const { filterType, caseSensitive } = this.options;
+      const caseSensitive = this.options.caseSensitive;
+      const filterType = column.filterType || this.options.filterType;
       if (filterVal.length) {
         if (filterType === 'textField' && !this.hasSearchText(columnVal, filterVal, caseSensitive)) {
           isFiltered = true;
@@ -488,8 +492,8 @@ class MUIDataTable extends React.Component {
       if (
         searchText &&
         this.hasSearchText(columnVal, searchText, caseSensitive) &&
-        columns[index].display !== 'false' &&
-        columns[index].searchable
+        column.display !== 'false' &&
+        column.searchable
       ) {
         isSearchFound = true;
       }
