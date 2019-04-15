@@ -21,6 +21,7 @@ class Example extends React.Component {
         options: {
           filter: true,
           customFilterListRender: v => `Title: ${v}`,
+          filterType: 'textField' // set filterType's at the column level
         }
       },
       {
