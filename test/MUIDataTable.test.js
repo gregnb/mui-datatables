@@ -5,6 +5,7 @@ import { assert, expect } from 'chai';
 import MUIDataTable from '../src/MUIDataTable';
 import TableFilterList from '../src/components/TableFilterList';
 import TablePagination from '../src/components/TablePagination';
+import TableToolbar from '../src/components/TableToolbar';
 import textLabels from '../src/textLabels';
 import Chip from '@material-ui/core/Chip';
 import Cities from '../examples/component/cities';
@@ -264,6 +265,20 @@ describe('<MUIDataTable />', function() {
 
     const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
     const actualResult = mountWrapper.find(TablePagination);
+    assert.lengthOf(actualResult, 0);
+  });
+
+  it('should not render toolbar when all its displayable items are missing', () => {
+    const options = {
+      filter: false,
+      search: false,
+      print: false,
+      download: false,
+      viewColumns: false
+    };
+
+    const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
+    const actualResult = mountWrapper.find(TableToolbar);
     assert.lengthOf(actualResult, 0);
   });
 
