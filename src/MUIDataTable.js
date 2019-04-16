@@ -13,6 +13,8 @@ import classnames from 'classnames';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
 import isEqual from 'lodash.isequal';
+import find from 'lodash.find';
+import isUndefined from 'lodash.isUndefined';
 import textLabels from './textLabels';
 import { withStyles } from '@material-ui/core/styles';
 import { buildMap, getCollatorComparator, sortCompare } from './utils';
@@ -55,6 +57,23 @@ const defaultTableStyles = {
 const TABLE_LOAD = {
   INITIAL: 1,
   UPDATE: 2,
+};
+
+// Populate this list with anything that might render in the toolbar to determine if we hide the toolbar
+const TOOLBAR_ITEMS = [
+  'title',
+  'filter',
+  'search',
+  'print',
+  'download',
+  'viewColumns',
+  'customToolbar'
+];
+
+const hasToolbarItem = (options, title) => {
+  options.title = title;
+
+  return !isUndefined(find(TOOLBAR_ITEMS, i => options[i]));
 };
 
 class MUIDataTable extends React.Component {
@@ -991,6 +1010,7 @@ class MUIDataTable extends React.Component {
 
     const rowCount = this.options.count || displayData.length;
     const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
+    const showToolbar = hasToolbarItem(this.options, title);
 
     return (
       <Paper
@@ -1005,7 +1025,7 @@ class MUIDataTable extends React.Component {
             displayData={displayData}
             selectRowUpdate={this.selectRowUpdate}
           />
-        ) : (
+        ) : showToolbar && (
           <TableToolbar
             columns={columns}
             displayData={displayData}
