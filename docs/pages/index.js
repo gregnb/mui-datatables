@@ -33,7 +33,7 @@ class Homepage extends React.Component {
       <Layout>
         <div>
           <p>
-            MUI-Datatables is a data tables component built on <a href="https://www.material-ui.com">Material-UI V1</a>.
+            MUI-Datatables is a data tables component built on <a href="https://www.material-ui.com">Material-UI V3</a>.
             It comes with features like filtering, view/hide columns, search, export to CSV download, printing,
             selectable rows, pagination, and sorting. On top of the ability to customize styling on most views, there
             are two responsive modes "stacked" and "scroll" for mobile/tablet devices.

@@ -5,6 +5,7 @@ import { assert, expect } from 'chai';
 import MUIDataTable from '../src/MUIDataTable';
 import TableFilterList from '../src/components/TableFilterList';
 import TablePagination from '../src/components/TablePagination';
+import TableToolbar from '../src/components/TableToolbar';
 import textLabels from '../src/textLabels';
 import Chip from '@material-ui/core/Chip';
 import Cities from '../examples/component/cities';
@@ -25,9 +26,9 @@ describe('<MUIDataTable />', function() {
     columns = [
       { name: 'Name', options: { customBodyRender: renderName } },
       'Company',
-      { name: 'City', label: 'City Label', options: { customBodyRender: renderCities } },
-      { name: 'State', options: { customBodyRender: renderState } },
-      { name: 'Empty', options: { empty: true } },
+      { name: 'City', label: 'City Label', options: { customBodyRender: renderCities, filterType: 'textField' } },
+      { name: 'State', options: { customBodyRender: renderState, filterType: 'multiselect' } },
+      { name: 'Empty', options: { empty: true, filterType: 'checkbox' } },
     ];
     data = [
       ['Joe James', 'Test Corp', 'Yonkers', 'NY'],
@@ -115,6 +116,7 @@ describe('<MUIDataTable />', function() {
         name: 'City',
         sort: true,
         filter: true,
+        filterType: 'textField',
         label: 'City Label',
         download: true,
         searchable: true,
@@ -129,6 +131,7 @@ describe('<MUIDataTable />', function() {
         name: 'State',
         sort: true,
         filter: true,
+        filterType: 'multiselect',
         label: 'State',
         download: true,
         searchable: true,
@@ -143,6 +146,7 @@ describe('<MUIDataTable />', function() {
         name: 'Empty',
         sort: true,
         filter: true,
+        filterType: 'checkbox',
         label: 'Empty',
         download: true,
         searchable: true,
@@ -261,6 +265,20 @@ describe('<MUIDataTable />', function() {
 
     const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
     const actualResult = mountWrapper.find(TablePagination);
+    assert.lengthOf(actualResult, 0);
+  });
+
+  it('should not render toolbar when all its displayable items are missing', () => {
+    const options = {
+      filter: false,
+      search: false,
+      print: false,
+      download: false,
+      viewColumns: false
+    };
+
+    const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
+    const actualResult = mountWrapper.find(TableToolbar);
     assert.lengthOf(actualResult, 0);
   });
 
@@ -423,6 +441,7 @@ describe('<MUIDataTable />', function() {
         print: true,
         sort: true,
         filter: true,
+        filterType: 'textField',
         label: 'City Label',
         download: true,
         searchable: true,
@@ -437,6 +456,7 @@ describe('<MUIDataTable />', function() {
         print: true,
         sort: true,
         filter: true,
+        filterType: 'multiselect',
         label: 'State',
         download: true,
         searchable: true,
@@ -451,6 +471,7 @@ describe('<MUIDataTable />', function() {
         print: true,
         sort: true,
         filter: true,
+        filterType: 'checkbox',
         label: 'Empty',
         download: true,
         searchable: true,
@@ -622,6 +643,7 @@ describe('<MUIDataTable />', function() {
 
   it('should render all things that match a text field filter', () => {
     const options = { filterType: 'textField' };
+    columns[0].options.filterType = 'textField';
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
     const table = shallowWrapper.dive();
     const instance = table.instance();
