@@ -442,7 +442,6 @@ class MUIDataTable extends React.Component {
       const sortedData = this.sortTable(tableData, sortIndex, sortDirection);
       tableData = sortedData.data;
     }
-    // console.log(filterData);
     /* set source data and display Data set source set */
     this.setState(
       prevState => ({
