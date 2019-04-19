@@ -395,15 +395,14 @@ class MUIDataTable extends React.Component {
         }
 
         if (filterData[colIndex].indexOf(value) < 0 && !Array.isArray(value)) {
-            filterData[colIndex].push(value);
+          filterData[colIndex].push(value);
         } else if (Array.isArray(value)) {
-            value.forEach((element) => {
-                if (filterData[colIndex].indexOf(element) < 0) {
-                    filterData[colIndex].push(element);
-                }
-            });
+          value.forEach(element => {
+            if (filterData[colIndex].indexOf(element) < 0) {
+              filterData[colIndex].push(element);
+            }
+          });
         }
-        // console.log(Array.isArray(value));
       }
 
       if (column.filterOptions) {
@@ -1038,22 +1037,24 @@ class MUIDataTable extends React.Component {
             displayData={displayData}
             selectRowUpdate={this.selectRowUpdate}
           />
-        ) : showToolbar && (
-          <TableToolbar
-            columns={columns}
-            displayData={displayData}
-            data={data}
-            filterData={filterData}
-            filterList={filterList}
-            filterUpdate={this.filterUpdate}
-            options={this.options}
-            resetFilters={this.resetFilters}
-            searchTextUpdate={this.searchTextUpdate}
-            tableRef={this.getTableContentRef}
-            title={title}
-            toggleViewColumn={this.toggleViewColumn}
-            setTableAction={this.setTableAction}
-          />
+        ) : (
+          showToolbar && (
+            <TableToolbar
+              columns={columns}
+              displayData={displayData}
+              data={data}
+              filterData={filterData}
+              filterList={filterList}
+              filterUpdate={this.filterUpdate}
+              options={this.options}
+              resetFilters={this.resetFilters}
+              searchTextUpdate={this.searchTextUpdate}
+              tableRef={this.getTableContentRef}
+              title={title}
+              toggleViewColumn={this.toggleViewColumn}
+              setTableAction={this.setTableAction}
+            />
+          )
         )}
         <TableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />
         <div

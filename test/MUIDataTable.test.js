@@ -274,7 +274,7 @@ describe('<MUIDataTable />', function() {
       search: false,
       print: false,
       download: false,
-      viewColumns: false
+      viewColumns: false,
     };
 
     const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
@@ -669,6 +669,104 @@ describe('<MUIDataTable />', function() {
     const state = table.state();
 
     assert.equal(state.displayData.length, data.length);
+  });
+
+  describe('should correctly handle array data', () => {
+    const columns = [
+      {
+        name: 'otherData',
+        options: {
+          filter: true,
+        },
+      },
+      {
+        name: 'array',
+        options: {
+          filter: true,
+        },
+      },
+    ];
+    const data = [
+      ['other-data-1', ['a', 'b', 'c']],
+      ['other-data-3', ['a']],
+      ['other-data-2', ['a', 'b']],
+      ['other-data-4', []],
+    ];
+    const options = {
+      filter: true,
+      filterType: 'dropdown',
+      responsive: 'scroll',
+    };
+
+    it('should correctly filter array data', () => {
+      const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+      const table = shallowWrapper.dive();
+      const instance = table.instance();
+      instance.filterUpdate(1, 'b', 'dropdown');
+      table.update();
+      const { displayData } = table.state();
+
+      const expectedResult = JSON.stringify([
+        { data: ['other-data-1', ['a', 'b', 'c']], dataIndex: 0 },
+        { data: ['other-data-2', ['a', 'b']], dataIndex: 2 },
+      ]);
+      assert.deepEqual(JSON.stringify(displayData), expectedResult);
+    });
+    it('should correctly extract array data for filterData', () => {
+      const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+      const table = shallowWrapper.dive();
+      const { filterData } = table.state();
+      const expectedResult = JSON.stringify([
+        ['other-data-1', 'other-data-2', 'other-data-3', 'other-data-4'],
+        ['a', 'b', 'c'],
+      ]);
+      assert.deepEqual(JSON.stringify(filterData), expectedResult);
+    });
+  });
+
+  describe('should correctly handle non-array data', () => {
+    const columns = [
+      {
+        name: 'otherData',
+        options: {
+          filter: true,
+        },
+      },
+      {
+        name: 'non-array',
+        options: {
+          filter: true,
+        },
+      },
+    ];
+    const data = [['other-data-1', 'a'], ['other-data-2', 'b'], ['other-data-3', 'c'], ['other-data-4', 'd']];
+    const options = {
+      filter: true,
+      filterType: 'dropdown',
+      responsive: 'scroll',
+    };
+
+    it('should correctly filter data when no array data is present', () => {
+      const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+      const table = shallowWrapper.dive();
+      const instance = table.instance();
+      instance.filterUpdate(1, 'b', 'dropdown');
+      table.update();
+      const { displayData } = table.state();
+
+      const expectedResult = JSON.stringify([{ data: ['other-data-2', 'b'], dataIndex: 1 }]);
+      assert.deepEqual(JSON.stringify(displayData), expectedResult);
+    });
+    it('should correctly extract filterData when no array data is present', () => {
+      const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+      const table = shallowWrapper.dive();
+      const { filterData } = table.state();
+      const expectedResult = JSON.stringify([
+        ['other-data-1', 'other-data-2', 'other-data-3', 'other-data-4'],
+        ['a', 'b', 'c', 'd'],
+      ]);
+      assert.deepEqual(JSON.stringify(filterData), expectedResult);
+    });
   });
 
   describe('should correctly run comparator function', () => {

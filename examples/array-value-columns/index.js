@@ -48,8 +48,6 @@ class Example extends React.Component {
         options: {
             filter: true,
             filterType: 'multiselect',
-            // filterOptions: allTags,
-            // searchable: false,
             customBodyRender: (value) => {
                 return value.map( (val, key) => {
                     return <Chip label={val} key={key} />;
