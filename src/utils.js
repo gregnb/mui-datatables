@@ -21,7 +21,7 @@ function sortCompare(order) {
     if (b.data === null) b.data = '';
     return (
       (typeof a.data.localeCompare === 'function' ? a.data.localeCompare(b.data) : a.data - b.data) *
-      (order === 'asc' ? -1 : 1)
+      (order === 'asc' ? 1 : -1)
     );
   };
 }
