@@ -112,7 +112,10 @@ class MUIDataTable extends React.Component {
       customFooter: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       onRowClick: PropTypes.func,
       resizableColumns: PropTypes.bool,
-      selectableRows: PropTypes.bool,
+      selectableRows: PropTypes.oneOfType([
+        PropTypes.bool,
+        PropTypes.oneOf(['none', 'single', 'multiple']),
+      ]),
       isRowSelectable: PropTypes.func,
       serverSide: PropTypes.bool,
       onTableChange: PropTypes.func,
@@ -217,7 +220,7 @@ class MUIDataTable extends React.Component {
       textLabels,
       expandableRows: false,
       resizableColumns: false,
-      selectableRows: true,
+      selectableRows: 'multiple',
       caseSensitive: false,
       serverSide: false,
       rowHover: true,
@@ -238,7 +241,11 @@ class MUIDataTable extends React.Component {
       },
     };
 
-    this.options = merge(defaultOptions, props.options);
+    const extra = {};
+    if (typeof props.options.selectableRows === 'boolean') {
+      extra.selectableRows = props.options.selectableRows ? 'multiple' : 'none';
+    }
+    this.options = merge(defaultOptions, props.options, extra);
   }
 
   validateOptions(options) {
@@ -869,6 +876,12 @@ class MUIDataTable extends React.Component {
   };
 
   selectRowUpdate = (type, value) => {
+    // safety check
+    const { selectableRows } = this.options;
+    if (selectableRows === 'none') {
+      return;
+    }
+
     if (type === 'head') {
       const { isRowSelectable } = this.options;
       this.setState(
@@ -925,7 +938,10 @@ class MUIDataTable extends React.Component {
 
           if (rowPos >= 0) {
             selectedRows.splice(rowPos, 1);
+          } else if (selectableRows === 'single') {
+            selectedRows = [value];
           } else {
+            // multiple
             selectedRows.push(value);
           }
 
