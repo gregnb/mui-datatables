@@ -95,6 +95,7 @@ class MUIDataTable extends React.Component {
             filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField']),
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,
+            customFilterListRender: PropTypes.func,
           }),
         }),
       ]),
@@ -297,7 +298,7 @@ class MUIDataTable extends React.Component {
       const { options, ...otherProps } = item;
 
       if (options) {
-        const { customHeadRender, customBodyRender, setCellProps, ...nonFnOpts } = options;
+        const { customHeadRender, customBodyRender, customFilterListRender, setCellProps, ...nonFnOpts } = options;
         otherOptions = nonFnOpts;
       }
 
@@ -1071,7 +1072,14 @@ class MUIDataTable extends React.Component {
             />
           )
         )}
-        <TableFilterList options={this.options} filterList={filterList} filterUpdate={this.filterUpdate} />
+        <TableFilterList
+          options={this.options}
+          filterListRenderers={columns.map(c => {
+            return c.customFilterListRender ? c.customFilterListRender : f => f;
+          })}
+          filterList={filterList}
+          filterUpdate={this.filterUpdate}
+        />
         <div
           style={{ position: 'relative' }}
           className={this.options.responsive === 'scroll' ? classes.responsiveScroll : null}>
