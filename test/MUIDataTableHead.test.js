@@ -4,6 +4,7 @@ import { mount, shallow } from 'enzyme';
 import { assert, expect, should } from 'chai';
 import TableHead from '../src/components/TableHead';
 import TableHeadCell from '../src/components/TableHeadCell';
+import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 
 describe('<TableHead />', function() {
@@ -114,5 +115,38 @@ describe('<TableHead />', function() {
 
     let state = shallowWrapper.state();
     assert.strictEqual(rowSelectUpdate.callCount, 1);
+  });
+
+  it('should render a table head with checkbox if selectableRows = multiple', () => {
+    const options = { selectableRows: 'multiple' };
+
+    const mountWrapper = mount(
+      <TableHead columns={columns} options={options} setCellRef={() => {}} handleHeadUpdateRef={handleHeadUpdateRef} />,
+    );
+
+    const actualResult = mountWrapper.find(Checkbox);
+    assert.strictEqual(actualResult.length, 1);
+  });
+
+  it('should render a table head with no checkbox if selectableRows = single', () => {
+    const options = { selectableRows: 'single' };
+
+    const mountWrapper = mount(
+      <TableHead columns={columns} options={options} setCellRef={() => {}} handleHeadUpdateRef={handleHeadUpdateRef} />,
+    );
+
+    const actualResult = mountWrapper.find(Checkbox);
+    assert.strictEqual(actualResult.length, 0);
+  });
+
+  it('should render a table head with no checkbox if selectableRows = none', () => {
+    const options = { selectableRows: 'none' };
+
+    const mountWrapper = mount(
+      <TableHead columns={columns} options={options} setCellRef={() => {}} handleHeadUpdateRef={handleHeadUpdateRef} />,
+    );
+
+    const actualResult = mountWrapper.find(Checkbox);
+    assert.strictEqual(actualResult.length, 0);
   });
 });

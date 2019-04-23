@@ -19,6 +19,7 @@ class Example extends React.Component {
         name: "Title",
         options: {
           filter: true,
+          sortDirection: 'asc'
         }
       },
       {
