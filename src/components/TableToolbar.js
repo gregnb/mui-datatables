@@ -112,7 +112,7 @@ class TableToolbar extends React.Component {
       }
     } else if (iconName === 'search') {
       nextVal = this.showSearch();
-    }    
+    }
     return nextVal;
   };
 

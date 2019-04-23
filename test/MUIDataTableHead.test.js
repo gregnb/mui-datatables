@@ -121,12 +121,7 @@ describe('<TableHead />', function() {
     const options = { selectableRows: 'multiple' };
 
     const mountWrapper = mount(
-      <TableHead
-        columns={columns}
-        options={options}
-        setCellRef={() => {}}
-        handleHeadUpdateRef={handleHeadUpdateRef}
-      />,
+      <TableHead columns={columns} options={options} setCellRef={() => {}} handleHeadUpdateRef={handleHeadUpdateRef} />,
     );
 
     const actualResult = mountWrapper.find(Checkbox);
@@ -137,12 +132,7 @@ describe('<TableHead />', function() {
     const options = { selectableRows: 'single' };
 
     const mountWrapper = mount(
-      <TableHead
-        columns={columns}
-        options={options}
-        setCellRef={() => {}}
-        handleHeadUpdateRef={handleHeadUpdateRef}
-      />,
+      <TableHead columns={columns} options={options} setCellRef={() => {}} handleHeadUpdateRef={handleHeadUpdateRef} />,
     );
 
     const actualResult = mountWrapper.find(Checkbox);
@@ -153,12 +143,7 @@ describe('<TableHead />', function() {
     const options = { selectableRows: 'none' };
 
     const mountWrapper = mount(
-      <TableHead
-        columns={columns}
-        options={options}
-        setCellRef={() => {}}
-        handleHeadUpdateRef={handleHeadUpdateRef}
-      />,
+      <TableHead columns={columns} options={options} setCellRef={() => {}} handleHeadUpdateRef={handleHeadUpdateRef} />,
     );
 
     const actualResult = mountWrapper.find(Checkbox);

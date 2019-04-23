@@ -326,7 +326,13 @@ describe('<MUIDataTable />', function() {
 
   it('should create Chip when filterList is populated', () => {
     const filterList = [['Joe James'], [], [], [], []];
-    const filterListRenderers = [defaultRenderCustomFilterList, defaultRenderCustomFilterList, defaultRenderCustomFilterList, defaultRenderCustomFilterList, defaultRenderCustomFilterList];
+    const filterListRenderers = [
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+    ];
 
     const mountWrapper = mount(
       <TableFilterList filterList={filterList} filterListRenderers={filterListRenderers} filterUpdate={() => true} />,
@@ -338,7 +344,9 @@ describe('<MUIDataTable />', function() {
   it('should create Chip with custom label when filterList and customFilterListRender are populated', () => {
     const filterList = [['Joe James'], [], [], [], []];
     const filterListRenderers = columns.map(c => {
-      return c.options && c.options.customFilterListRender ? c.options.customFilterListRender : defaultRenderCustomFilterList;
+      return c.options && c.options.customFilterListRender
+        ? c.options.customFilterListRender
+        : defaultRenderCustomFilterList;
     });
 
     const mountWrapper = mount(
@@ -588,12 +596,12 @@ describe('<MUIDataTable />', function() {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
     const instance = shallowWrapper.instance();
 
-    instance.selectRowUpdate('cell', {index: 0, dataIndex: 0});
-    instance.selectRowUpdate('cell', {index: 1, dataIndex: 1});
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 });
+    instance.selectRowUpdate('cell', { index: 1, dataIndex: 1 });
     shallowWrapper.update();
 
     const state = shallowWrapper.state();
-    assert.deepEqual(state.selectedRows.data, [{index: 1, dataIndex: 1}]);
+    assert.deepEqual(state.selectedRows.data, [{ index: 1, dataIndex: 1 }]);
   });
 
   it('If selectableRows=multiple, multiple cells can be selected when calling selectRowUpdate method with type=cell.', () => {
@@ -601,14 +609,11 @@ describe('<MUIDataTable />', function() {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
     const instance = shallowWrapper.instance();
 
-    instance.selectRowUpdate('cell', {index: 0, dataIndex: 0});
-    instance.selectRowUpdate('cell', {index: 1, dataIndex: 1});
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 });
+    instance.selectRowUpdate('cell', { index: 1, dataIndex: 1 });
     shallowWrapper.update();
 
-    const expectedResult = [
-      {index: 0, dataIndex: 0},
-      {index: 1, dataIndex: 1},
-    ];
+    const expectedResult = [{ index: 0, dataIndex: 0 }, { index: 1, dataIndex: 1 }];
     const state = shallowWrapper.state();
     assert.deepEqual(state.selectedRows.data, expectedResult);
   });
