@@ -159,6 +159,8 @@ class MUIDataTable extends React.Component {
       rowsSelected: PropTypes.array,
       rowsPerPage: PropTypes.number,
       rowsPerPageOptions: PropTypes.array,
+      rowsPerPageChangeable: PropTypes.bool,
+      portalPagination: PropTypes.node,
       filter: PropTypes.bool,
       sort: PropTypes.bool,
       customSort: PropTypes.func,
@@ -260,6 +262,7 @@ class MUIDataTable extends React.Component {
       fixedHeader: true,
       elevation: 4,
       rowsPerPage: 10,
+      rowsPerPageChangeable: true,
       rowsPerPageOptions: [10, 15, 100],
       filter: true,
       sortFilterList: true,
@@ -276,6 +279,7 @@ class MUIDataTable extends React.Component {
     };
 
     this.options = merge(defaultOptions, props.options);
+    this.options.rowsPerPageOptions = this.options.rowsPerPageChangeable ? this.options.rowsPerPageOptions : [];
   }
 
   validateOptions(options) {
