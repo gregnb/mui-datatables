@@ -16,7 +16,18 @@ describe('<TableHead />', function() {
       { name: 'First Name', label: 'First Name', display: 'true', sort: null },
       { name: 'Company', label: 'Company', display: 'true', sort: null },
       { name: 'City', label: 'City Label', display: 'true', sort: null },
-      { name: 'State', label: 'State', display: 'true', sort: null },
+      {
+        name: 'State',
+        label: 'State',
+        display: 'true',
+        options: { fixedHeader: true },
+        customHeadRender: columnMeta => (
+          <TableHeadCell {...columnMeta}>
+            {columnMeta.name + 's'}
+          </TableHeadCell>
+        ),
+        sort: null
+      },
     ];
 
     handleHeadUpdateRef = () => {};
@@ -53,7 +64,7 @@ describe('<TableHead />', function() {
       />,
     );
     const labels = mountWrapper.find(TableHeadCell).map(n => n.text());
-    assert.deepEqual(labels, ['First Name', 'Company', 'City Label', 'State']);
+    assert.deepEqual(labels, ['First Name', 'Company', 'City Label', 'States']);
   });
 
   it('should render a table head with no cells', () => {

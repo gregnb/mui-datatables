@@ -21,6 +21,7 @@ describe('<MUIDataTable />', function() {
   );
   let renderName = value => value.split(' ')[1] + ', ' + value.split(' ')[0];
   let renderState = value => value;
+  let renderHead = columnMeta => columnMeta.name + 's';
   let defaultRenderCustomFilterList = f => f;
   let renderCustomFilterList = f => `Name: ${f}`;
 
@@ -29,7 +30,7 @@ describe('<MUIDataTable />', function() {
       { name: 'Name', options: { customBodyRender: renderName, customFilterListRender: renderCustomFilterList } },
       'Company',
       { name: 'City', label: 'City Label', options: { customBodyRender: renderCities, filterType: 'textField' } },
-      { name: 'State', options: { customBodyRender: renderState, filterType: 'multiselect' } },
+      { name: 'State', options: { customBodyRender: renderState, filterType: 'multiselect', customHeadRender: renderHead } },
       { name: 'Empty', options: { empty: true, filterType: 'checkbox' } },
     ];
     data = [
@@ -141,6 +142,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         sortDirection: null,
         customBodyRender: renderState,
+        customHeadRender: renderHead,
       },
       {
         display: 'true',
@@ -511,6 +513,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         sortDirection: null,
         customBodyRender: renderState,
+        customHeadRender: renderHead,
       },
       {
         name: 'Empty',
