@@ -14,9 +14,8 @@ const defaultSelectCellStyles = theme => ({
     },
   },
   sticky: {
-    width: '56px',
-    maxWidth: '56px',
-    backgroundColor: '#F4F7FA',
+    width: '36px',
+    maxWidth: '36px',
     top: 0,
     zIndex: 2,
   },
@@ -86,7 +85,7 @@ class TableSelectCell extends React.Component {
       [classes.root]: true,
       [classes.fixedHeader]: fixedHeader,
       [classes.headerCell]: isHeaderCell,
-      [classes.sticky]: sticky,
+      [classes.sticky]: true,
     });
 
     const iconClass = classNames({
