@@ -126,7 +126,7 @@ The component accepts the following props:
 |:--:|:-----|:-----|
 |**`title`**|array|Title used to caption table
 |**`columns`**|array|Columns used to describe table. Must be either an array of simple strings or objects describing a column
-|**`data`**|array|Data used to describe table. Must be an array containing objects. (Arrays containing just strings or numbers also supported) 
+|**`data`**|array|Data used to describe table. Must be an array containing objects. (Arrays containing just strings or numbers also supported)
 |**`options`**|object|Options used to describe table
 
 #### Options:
@@ -219,7 +219,7 @@ const columns = [
 |**`print`**|boolean|true|Display column when printing
 |**`download`**|boolean|true|Display column in CSV download file
 |**`hint`**|string||Display hint icon with string as tooltip on hover.
-|**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(value, tableMeta, updateValue) => string`&#124;
+|**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(columnMeta, handleToggleColumn) => string`&#124;` React Component`
 |**`customBodyRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
 |**`setCellProps`**|function||Is called for each cell and allows to return custom props for this cell based on its data. `function(cellValue: string, rowIndex: number, columnIndex: number) => object`
 
@@ -227,11 +227,20 @@ const columns = [
 
 ```js
 function(columnMeta: {
+  customHeadRender: func,
   display: enum('true', 'false', 'excluded'),
   filter: bool,
   sort: bool,
   sortDirection: bool,
-}, updateDirection: function)
+  download: bool,
+  empty: bool,
+  index: number,
+  label: string,
+  name: string,
+  print: bool,
+  searchable: bool,
+  viewColumns: bool
+}, handleToggleColumn: function(columnIndex))
 ```
 
 
