@@ -26,6 +26,11 @@ class Example extends React.Component {
         name: "Location",
         options: {
           filter: false,
+          customHeadRender: (columnMeta, updateDirection) => (
+            <th key={2} onClick={() => updateDirection(2)} style={{ cursor: 'pointer' }}>
+              {columnMeta.name}
+            </th>
+          )
         }
       },
       {
