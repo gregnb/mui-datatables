@@ -210,7 +210,7 @@ const columns = [
 |**`empty`**|boolean|false|This denotes whether the column has data or not (for use with intentionally empty columns)
 |**`filterList`**|array||Filter value list [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`filterOptions`**|array||Filter options [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
-|**`customFilter`**|function||Callback function that allow custom filter data returning `true`. Use combined with `filterOptions`. `function(columnValue, filterVal: array) => boolean`
+|**`customFilter`**|function||Callback function that, combined with `filterOptions`, allows custom filter data returning `true`. `function(columnValue, filterVal: array) => boolean` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js)
 |**`customFilterListRender`**|function||Function that returns a string used as the chip label. `function(value) => string` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`filter`**|boolean|true|Display column in filter list
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Takes priority over global filterType option.`enum('checkbox', 'dropdown', 'multiselect', 'textField')`.
