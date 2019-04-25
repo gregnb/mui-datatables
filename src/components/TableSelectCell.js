@@ -14,8 +14,8 @@ const defaultSelectCellStyles = theme => ({
     },
   },
   sticky: {
-    width: '36px',
-    maxWidth: '36px',
+    width: '75px',
+    maxWidth: '75px',
     top: 0,
     zIndex: 2,
   },
@@ -71,7 +71,6 @@ class TableSelectCell extends React.Component {
     const {
       classes,
       radio,
-      sticky,
       fixedHeader,
       isHeaderCell,
       isExpandable,
