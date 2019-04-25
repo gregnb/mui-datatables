@@ -505,7 +505,9 @@ class MUIDataTable extends React.Component {
       const caseSensitive = this.options.caseSensitive;
       const filterType = column.filterType || this.options.filterType;
       if (filterVal.length) {
-        if (filterType === 'textField' && !this.hasSearchText(columnVal, filterVal, caseSensitive)) {
+        if (column.customFilter) {
+          isFiltered = column.customFilter(columnValue, filterVal);
+        } else if (filterType === 'textField' && !this.hasSearchText(columnVal, filterVal, caseSensitive)) {
           isFiltered = true;
         } else if (
           filterType !== 'textField' &&
