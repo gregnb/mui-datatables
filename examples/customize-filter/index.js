@@ -33,13 +33,14 @@ class Example extends React.Component {
         options: {
           filter: true,
           filterOptions: ["young", "adult", "middle-age", "senior", "elderly"],
-          customFilter(age, filterVal) {
-            if (filterVal.indexOf("young")>=0 && (age <= 35)) return false;
-            if (filterVal.indexOf("adult")>=0 && age > 35 && age <= 45) return false;
-            if (filterVal.indexOf("middle-age")>=0 && age > 45 && age <= 65) return false;
-            if (filterVal.indexOf("senior")>=0 && age > 65 && age <= 75) return false;
-            if (filterVal.indexOf("elderly")>=0 && age > 75) return false;
-            return true;
+          customFilter(age, filters) {
+            const show = (filters.indexOf("young")>=0 && age <= 35) ||
+                         (filters.indexOf("adult")>=0 && age > 35 && age <= 45) ||
+                         (filters.indexOf("middle-age")>=0 && age > 45 && age <= 65) ||
+                         (filters.indexOf("senior")>=0 && age > 65 && age <= 75) ||
+                         (filters.indexOf("elderly")>=0 && age > 75);
+            const filtered = !show;
+            return filtered;
           },
           print: false,
         }
@@ -52,11 +53,10 @@ class Example extends React.Component {
           filterOptions: ["lower", "average", "higher"],
           customFilter(salary, filterVal) {
             salary=salary.replace(/[^\d]/g, "");
-            console.log(salary, filterVal);
-            if (filterVal.indexOf("lower")>=0 && salary < 100000) return false;
-            if (filterVal.indexOf("average")>=0 && salary >= 100000 && salary <= 200000) return false;
-            if (filterVal.indexOf("higher")>=0 && salary > 200000) return false;
-            return true;
+            const show = (filterVal.indexOf("lower")>=0 && salary < 100000) ||
+                         (filterVal.indexOf("average")>=0 && salary >= 100000 && salary < 200000) ||
+                         (filterVal.indexOf("higher")>=0 && salary >= 200000);
+            return !show;
           },
           sort: false
         }
