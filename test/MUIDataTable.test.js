@@ -287,37 +287,15 @@ describe('<MUIDataTable />', function() {
     assert.lengthOf(actualResult, 0);
   });
 
-  it('should properly set internal filterList and displayData consider customFilter', () => {
-
-    const customFilterColumns = columns.map(c => {
-      if (c.name === "Name") return {
-        ...c,
-        options: {
-          ...c.options,
-          filterOptions: ["B", "J"],
-          customFilter(name, filters) {
-            const firstLetter=name[0];
-            return firstLetter!==filters[0];
-          }
-        }
-      };
-      return c;
-    });    
-
-    const shallowWrapper = shallow(<MUIDataTable columns={customFilterColumns} data={data} />);
+  it('should properly set internal filterList when calling filterUpdate method with type=checkbox', () => {
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const table = shallowWrapper.dive();
     const instance = table.instance();
-    instance.filterUpdate(0, 'J', 'checkbox');
+    instance.filterUpdate(0, 'Joe James', 'checkbox');
     table.update();
-
     const state = table.state();
-    assert.deepEqual(state.filterList, [['J'], [], [], [], []]);
-
-    const expectedResult = JSON.stringify([
-      { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 0 }), 'NY', undefined], dataIndex: 0 },
-    ]);
-    assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
-  }); 
+    assert.deepEqual(state.filterList, [['Joe James'], [], [], [], []]);
+  });
 
   it('should remove entry from filterList when calling filterUpdate method with type=checkbox and same arguments a second time', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
@@ -381,21 +359,36 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should create Chip with custom label when filterList and customFilter are populated', () => {
-    const filterList = [['Joe James'], [], [], [], []];
-    const filterListRenderers = columns.map(c => {
-      return c.options && c.options.customFilterListRender
-        ? c.options.customFilterListRender
-        : defaultRenderCustomFilterList;
-    });
+    const customFilterColumns = columns.map(c => {
+      if (c.name === "Name") return {
+        ...c,
+        options: {
+          ...c.options,
+          filterOptions: ["B", "J"],
+          customFilter(name, filters) {
+            const firstLetter=name[0];
+            return firstLetter!==filters[0];
+          }
+        }
+      };
+      return c;
+    });    
 
-    const mountWrapper = mount(
-      <TableFilterList filterList={filterList} filterListRenderers={filterListRenderers} filterUpdate={() => true} />,
-    );
-    const actualResult = mountWrapper.find(Chip);
-    assert.strictEqual(actualResult.length, 1);
-    assert.strictEqual(actualResult.prop('label'), 'Name: Joe James');
-  });
+    const shallowWrapper = shallow(<MUIDataTable columns={customFilterColumns} data={data} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+    instance.filterUpdate(0, 'J', 'checkbox');
+    table.update();
 
+    const state = table.state();
+    assert.deepEqual(state.filterList, [['J'], [], [], [], []]);
+
+    const expectedResult = JSON.stringify([
+      { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 0 }), 'NY', undefined], dataIndex: 0 },
+    ]);
+    assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
+  }); 
+  
   it('should remove entry from filterList when calling filterUpdate method with type=dropdown and same arguments a second time', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const table = shallowWrapper.dive();
