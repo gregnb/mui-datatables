@@ -358,7 +358,7 @@ describe('<MUIDataTable />', function() {
     assert.strictEqual(actualResult.prop('label'), 'Name: Joe James');
   });
 
-  it('should create Chip with custom label when filterList and customFilter are populated', () => {
+  it('should displayData consider filterList and customFilter are populated', () => {
     const customFilterColumns = columns.map(c => {
       if (c.name === "Name") return {
         ...c,
