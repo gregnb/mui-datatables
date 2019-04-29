@@ -176,6 +176,8 @@ class MUIDataTable extends React.Component {
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
+    height: PropTypes.string,
+    checkEquals: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -183,6 +185,8 @@ class MUIDataTable extends React.Component {
     options: {},
     data: [],
     columns: [],
+    height: '',
+    checkEquals: true,
   };
 
   state = {
@@ -226,7 +230,10 @@ class MUIDataTable extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!equals(this.props.data, nextProps.data) || !equals(this.props.columns, nextProps.columns)) {
+    if (
+      !this.props.checkEquals ||
+      (!equals(this.props.data, nextProps.data) || !equals(this.props.columns, nextProps.columns))
+    ) {
       this.initializeTable(nextProps);
     }
   }
