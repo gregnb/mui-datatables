@@ -193,6 +193,51 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(state.data, expectedResult);
   });
 
+  it('should correctly re-build internal table data while maintaining pagination after state change', () => {
+    let currentPage;
+    const options = {
+      rowsPerPage: 1,
+      rowsPerPageOptions: [1, 2, 4],
+      page: 1,
+      onChangePage: current => currentPage = current,
+    };
+    const fullWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
+
+    // simulate paging backward to set `currentPage`
+    fullWrapper.find('#pagination-back').at(0).simulate('click');
+    assert.strictEqual(currentPage, 0);
+
+    // simulate changing pagination to set `rowsPerPage`
+    fullWrapper.find('#pagination-rows').simulate('click');
+    fullWrapper.find('#pagination-menu-list li').at(1).simulate('click');
+    let inputValue = fullWrapper.find('#pagination-input').at(0).text();
+    assert.strictEqual(inputValue, '2');
+
+    // add data to simulate state change
+    let newData = data.map(item => [...item]);
+    newData.push(['Harry Smith', 'Test Corp', 'Philadelphia', 'PA', undefined]);
+    fullWrapper.setProps({ data: newData });
+
+    // simulate paging forward to test whether or not the `currentPage` was reset
+    fullWrapper.find('#pagination-next').at(0).simulate('click');
+    assert.strictEqual(currentPage, 1);
+
+    // grab pagination value to test whether or not `rowsPerPage` was reset
+    inputValue = fullWrapper.find('#pagination-input').at(0).text();
+    assert.strictEqual(inputValue, '2');
+
+    // test that data updated properly
+    let props = fullWrapper.props();
+    const expectedResult = [
+      ['Joe James', 'Test Corp', 'Yonkers', 'NY'],
+      ['John Walsh', 'Test Corp', 'Hartford', null],
+      ['Bob Herm', 'Test Corp', 'Tampa', 'FL'],
+      ['James Houston', 'Test Corp', 'Dallas', 'TX'],
+      ['Harry Smith', 'Test Corp', 'Philadelphia', 'PA', undefined],
+    ];
+    assert.deepEqual(props.data, expectedResult);
+  });
+
   it('should not re-build internal table data and displayData structure with no prop change to data or columns', () => {
     const initializeTableSpy = spy(MUIDataTable.Naked.prototype, 'initializeTable');
     const mountWrapper = mount(shallow(<MUIDataTable columns={columns} data={data} />).get(0));
