@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    app: "./examples/large-data/index.js"
+    app: "./examples/custom-action-columns/index.js"
   },
   stats: "verbose",
   context: __dirname,
