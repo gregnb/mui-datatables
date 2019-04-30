@@ -27,6 +27,7 @@ const defaultToolbarSelectStyles = theme => ({
   },
   iconButton: {
     marginRight: '24px',
+    height: '48px',
     top: '50%',
     display: 'block',
     position: 'relative',
