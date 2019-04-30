@@ -14,6 +14,7 @@ const defaultSelectCellStyles = theme => ({
     },
   },
   sticky: {
+    minWidth: '75px',
     width: '75px',
     maxWidth: '75px',
     top: 0,

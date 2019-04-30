@@ -15,7 +15,7 @@ const defaultHeadStyles = theme => ({
     },
     width: '56px',
     maxWidth: '56px',
-    backgroundColor: '#F4F7FA',
+    padding: '0px',
     position: 'sticky',
     top: 0,
     zIndex: 3,

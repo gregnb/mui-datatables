@@ -58,6 +58,7 @@ class TableHeadCell extends React.Component {
     sort: PropTypes.bool.isRequired,
     /** Hint tooltip text */
     hint: PropTypes.string,
+    className: PropTypes.string,
   };
 
   handleSortClick = () => {
@@ -65,7 +66,7 @@ class TableHeadCell extends React.Component {
   };
 
   render() {
-    const { children, classes, options, sortDirection, sort, hint, colSpan, rowSpan } = this.props;
+    const { children, classes, options, sortDirection, sort, hint, colSpan, rowSpan, className } = this.props;
     const sortActive = sortDirection !== null && sortDirection !== undefined ? true : false;
 
     const sortLabelProps = {
@@ -76,6 +77,7 @@ class TableHeadCell extends React.Component {
     const cellClass = classNames({
       [classes.root]: true,
       [classes.fixedHeader]: options.fixedHeader,
+      [className]: true,
     });
 
     return (

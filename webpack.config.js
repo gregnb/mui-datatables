@@ -3,43 +3,40 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    app: "./examples/column-filters/index.js"
+    app: './examples/selectable-rows-radio/index.js',
   },
-  stats: "verbose",
+  stats: 'verbose',
   context: __dirname,
-  node : {
-    fs: 'empty'
+  node: {
+    fs: 'empty',
   },
   output: {
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   devtool: 'source-map',
   devServer: {
     disableHostCheck: true,
     hot: true,
     inline: true,
-    host: "0.0.0.0",
-    port: 5050
+    host: '0.0.0.0',
+    port: 5050,
   },
   module: {
     rules: [
       {
         test: /\.jsx?$/,
         exclude: /(node_modules)/,
-        use: [
-          'babel-loader',
-          'eslint-loader'
-        ]
-      }
-    ]
+        use: ['babel-loader', 'eslint-loader'],
+      },
+    ],
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify("development"),
-      }
-    })
-  ]
+        NODE_ENV: JSON.stringify('development'),
+      },
+    }),
+  ],
 };
