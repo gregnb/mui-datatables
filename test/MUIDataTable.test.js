@@ -679,6 +679,27 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(state.selectedRows.data, expectedResult);
   });
 
+  it('should remove selected data on selectRowDelete when type=cell', () => {
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
+    const instance = shallowWrapper.instance();
+    const onRowsDelete = () => {};
+    const selectedRows = { data: [1] };
+
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 });
+    shallowWrapper.update();
+    instance.selectRowDelete()
+    shallowWrapper.update();
+
+    const newDisplayData = shallowWrapper.state().displayData;
+    const expectedResult = JSON.stringify([
+      { data: ['Walsh, John', 'Test Corp', renderCities('Hartford', { rowIndex: 0 }), null, undefined], dataIndex: 1, },
+      { data: ['Herm, Bob', 'Test Corp', renderCities('Tampa', { rowIndex: 1 }), 'FL', undefined], dataIndex: 2, },
+      { data: ['Houston, James', 'Test Corp', renderCities('Dallas', { rowIndex: 2 }), 'TX', undefined], dataIndex: 3, },
+    ]);
+
+    assert.deepEqual(JSON.stringify(newDisplayData), expectedResult);
+  });
+
   it('should update value when calling updateValue method in customBodyRender', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
     const instance = shallowWrapper.instance();
