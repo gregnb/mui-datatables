@@ -831,6 +831,7 @@ class MUIDataTable extends React.Component {
     const cleanRows = data.filter(({ index }) => !selectedMap[index]);
 
     if (this.options.onRowsDelete) {
+      if (this.options.onRowsDelete(selectedRows) === false) return;
       this.options.onRowsDelete(selectedRows);
     }
 
