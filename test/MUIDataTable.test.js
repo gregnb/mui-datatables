@@ -700,6 +700,24 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(JSON.stringify(newDisplayData), expectedResult);
   });
 
+  it('should not remove selected data on selectRowDelete when type=cell when onRowsDelete returns false', () => {
+    const options = {
+      onRowsDelete: () => false
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+    const selectedRows = { data: [1] };
+
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 });
+    shallowWrapper.update();
+    instance.selectRowDelete()
+    shallowWrapper.update();
+
+    const myDisplayData = shallowWrapper.state().displayData;
+
+    assert.deepEqual(JSON.stringify(myDisplayData), displayData);
+  });
+
   it('should update value when calling updateValue method in customBodyRender', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
     const instance = shallowWrapper.instance();
