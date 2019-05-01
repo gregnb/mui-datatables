@@ -12,6 +12,7 @@ class Example extends React.Component {
         options: {
           filter: true,
           filterList: ['Franky Miles'],
+          customFilterListRender: v => `Name: ${v}`,
           filterOptions: ['a', 'b', 'c', 'Business Analyst']
         }
       },
@@ -19,6 +20,7 @@ class Example extends React.Component {
         name: "Title",
         options: {
           filter: true,
+          customFilterListRender: v => `Title: ${v}`,
           filterType: 'textField' // set filterType's at the column level
         }
       },
@@ -32,12 +34,14 @@ class Example extends React.Component {
         name: "Age",
         options: {
           filter: true,
+          customFilterListRender: v => `Age: ${v}`,
         }
       },
       {
         name: "Salary",
         options: {
           filter: true,
+          customFilterListRender: v => `Salary: ${v}`,
           sort: false
         }
       }

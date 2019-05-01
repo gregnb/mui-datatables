@@ -27,6 +27,7 @@ const defaultToolbarSelectStyles = theme => ({
   },
   iconButton: {
     marginRight: '24px',
+    height: '48px',
     top: '50%',
     display: 'block',
     position: 'relative',
@@ -59,6 +60,10 @@ class TableToolbarSelect extends React.Component {
       throw new TypeError(`Array "selectedRows" must contain only numbers`);
     }
 
+    const { options } = this.props;
+    if (selectedRows.length > 1 && options.selectableRows === 'single') {
+      throw new Error('Can not select more than one row when "selectableRows" is "single"');
+    }
     this.props.selectRowUpdate('custom', selectedRows);
   };
 
