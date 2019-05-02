@@ -263,4 +263,31 @@ describe('<TableBody />', function() {
     assert.isAtLeast(options.setRowProps.callCount, 1);
     assert(options.setRowProps.calledWith(data[1]));
   });
+
+  it("should use 'customRowRender' when provided", () => {
+    const options = { customRowRender: () => <div>Test_Text</div> };
+    const selectRowUpdate = stub();
+    const toggleExpandRow = () => {};
+
+    const t = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={[]}
+        selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    const html = t.html();
+    
+    assert.notEqual(html.indexOf("Test_Text"), -1);
+  });
 });
