@@ -40,8 +40,8 @@ describe('<TableBody />', function() {
     ];
   });
 
-  it('should render a table body with no selectable cells if selectableRows = false', () => {
-    const options = { selectableRows: false };
+  it('should render a table body with no selectable cells if selectableRows = none', () => {
+    const options = { selectableRows: 'none' };
     const selectRowUpdate = () => {};
     const toggleExpandRow = () => {};
 

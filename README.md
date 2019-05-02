@@ -5,6 +5,7 @@
 # MUI-Datatables - Datatables for Material-UI
 
 [![Build Status](https://travis-ci.org/gregnb/mui-datatables.svg?branch=master)](https://travis-ci.org/gregnb/mui-datatables)
+[![NPM Downloads](https://img.shields.io/npm/dt/mui-datatables.svg?style=flat)](https://npmcharts.com/compare/mui-datatables?minimal=true)
 [![Coverage Status](https://coveralls.io/repos/github/gregnb/mui-datatables/badge.svg?branch=master)](https://coveralls.io/github/gregnb/mui-datatables?branch=master)
 [![dependencies Status](https://david-dm.org/gregnb/mui-datatables/status.svg)](https://david-dm.org/gregnb/mui-datatables)
 [![npm version](https://badge.fury.io/js/mui-datatables.svg)](https://badge.fury.io/js/mui-datatables)
@@ -135,10 +136,10 @@ The component accepts the following props:
 |**`count`**|number||User provided override for total number of rows
 |**`serverSide`**|boolean|false|Enable remote data source
 |**`rowsSelected`**|array||User provided selected rows
-|**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox", "dropdown", "multiselect" or "textField"
+|**`filterType `**|string||Choice of filtering view. `enum('checkbox', 'dropdown', 'multiselect', 'textField')`
 |**`textLabels `**|object||User provided labels to localize text
 |**`pagination`**|boolean|true|Enable/disable pagination
-|**`selectableRows`**|boolean|true|Enable/disable row selection
+|**`selectableRows`**|string|'multiple'|Numbers of rows that can be selected. Options are "multiple", "single", "none".
 |**`isRowSelectable`**|function||Enable/disable selection on certain rows with custom function. Returns true if not provided.  `function(dataIndex) => bool`
 |**`resizableColumns`**|boolean|false|Enable/disable resizable columns
 |**`expandableRows`**|boolean|false|Enable/disable expandable rows
@@ -175,7 +176,7 @@ The component accepts the following props:
 |**`onColumnSortChange`**|function||Callback function that triggers when a column has been sorted. `function(changedColumn: string, direction: string) => void`
 |**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
 |**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
-|**`setRowProps`**|function||Is called for each row and allows to return custom props for this row based on its data. `function(row: array, rowIndex: number) => object`
+|**`setRowProps`**|function||Is called for each row and allows to return custom props for this row based on its data. `function(row: array, dataIndex: number) => object`
 
 ## Customize Columns
 
@@ -209,14 +210,16 @@ const columns = [
 |**`empty`**|boolean|false|This denotes whether the column has data or not (for use with intentionally empty columns)
 |**`filterList`**|array||Filter value list [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`filterOptions`**|array||Filter options [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
+|**`customFilterListRender`**|function||Function that returns a string used as the chip label. `function(value) => string` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`filter`**|boolean|true|Display column in filter list
+|**`filterType `**|string|'dropdown'|Choice of filtering view. Takes priority over global filterType option.`enum('checkbox', 'dropdown', 'multiselect', 'textField')`.
 |**`sort`**|boolean|true|Enable/disable sorting on column
 |**`searchable`**|boolean|true|Exclude/include column from search results
 |**`sortDirection`**|string||Set default sort order `enum('asc', 'desc')`
 |**`print`**|boolean|true|Display column when printing
 |**`download`**|boolean|true|Display column in CSV download file
 |**`hint`**|string||Display hint icon with string as tooltip on hover.
-|**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(value, tableMeta, updateValue) => string`&#124;
+|**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(columnMeta, handleToggleColumn) => string`&#124;` React Component`
 |**`customBodyRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
 |**`setCellProps`**|function||Is called for each cell and allows to return custom props for this cell based on its data. `function(cellValue: string, rowIndex: number, columnIndex: number) => object`
 
@@ -224,11 +227,20 @@ const columns = [
 
 ```js
 function(columnMeta: {
+  customHeadRender: func,
   display: enum('true', 'false', 'excluded'),
   filter: bool,
   sort: bool,
   sortDirection: bool,
-}, updateDirection: function)
+  download: bool,
+  empty: bool,
+  index: number,
+  label: string,
+  name: string,
+  print: bool,
+  searchable: bool,
+  viewColumns: bool
+}, handleToggleColumn: function(columnIndex))
 ```
 
 
@@ -342,7 +354,7 @@ const options = {
       titleAria: "Show/Hide Table Columns",
     },
     selectedRows: {
-      text: "rows(s) selected",
+      text: "row(s) selected",
       delete: "Delete",
       deleteAria: "Delete Selected Rows",
     },
