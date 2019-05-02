@@ -78,13 +78,18 @@ class Example extends React.Component {
     const headerNames = ['Name', 'Speciality', 'City', 'Age', 'Earnings'];
     const footerNames = ['Full Name', 'Job', 'Whereabouts', 'Age', 'Allowance'];
 
+    const buildHead = columns => {};
+
+    const buildBody = data => {};
+
+    const onDownload = (buildHead, buildBody) => {};
+
     const options = {
       filter: true,
       filterType: 'dropdown',
       responsive: 'scroll',
       downloadOptions: {
-        headerNames,
-        footerNames,
+        onDownload,
       },
     };
 

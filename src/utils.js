@@ -57,7 +57,7 @@ function createCSVDownload(columns, data, options) {
       soFar +
       '"' +
       row.data
-        .filter((field, index) => columns[index].download)
+        .filter((_, index) => columns[index].download)
         .map(columnData => replaceDoubleQuoteInString(columnData))
         .join('"' + options.downloadOptions.separator + '"') +
       '"\r\n',
