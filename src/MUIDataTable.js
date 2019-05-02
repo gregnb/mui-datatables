@@ -157,6 +157,7 @@ class MUIDataTable extends React.Component {
     page: 0,
     rowsPerPage: 0,
     columns: [],
+    filteredColumnName: '',
     filterData: [],
     filterList: [],
     selectedRows: {
@@ -809,6 +810,7 @@ class MUIDataTable extends React.Component {
         }
 
         return {
+          filteredColumnName: column,
           filterList: filterList,
           displayData: this.options.serverSide
             ? prevState.displayData
@@ -1038,6 +1040,7 @@ class MUIDataTable extends React.Component {
       selectedRows,
       expandedRows,
       searchText,
+      filteredColumnName,
     } = this.state;
 
     const rowCount = this.options.count || displayData.length;
@@ -1083,6 +1086,7 @@ class MUIDataTable extends React.Component {
           })}
           filterList={filterList}
           filterUpdate={this.filterUpdate}
+          filteredColumnName={filteredColumnName}
         />
         <div
           style={{ position: 'relative' }}
