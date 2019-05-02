@@ -30,7 +30,10 @@ describe('<MUIDataTable />', function() {
       { name: 'Name', options: { customBodyRender: renderName, customFilterListRender: renderCustomFilterList } },
       'Company',
       { name: 'City', label: 'City Label', options: { customBodyRender: renderCities, filterType: 'textField' } },
-      { name: 'State', options: { customBodyRender: renderState, filterType: 'multiselect', customHeadRender: renderHead } },
+      {
+        name: 'State',
+        options: { customBodyRender: renderState, filterType: 'multiselect', customHeadRender: renderHead },
+      },
       { name: 'Empty', options: { empty: true, filterType: 'checkbox' } },
     ];
     data = [
@@ -199,18 +202,27 @@ describe('<MUIDataTable />', function() {
       rowsPerPage: 1,
       rowsPerPageOptions: [1, 2, 4],
       page: 1,
-      onChangePage: current => currentPage = current,
+      onChangePage: current => (currentPage = current),
     };
     const fullWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
 
     // simulate paging backward to set `currentPage`
-    fullWrapper.find('#pagination-back').at(0).simulate('click');
+    fullWrapper
+      .find('#pagination-back')
+      .at(0)
+      .simulate('click');
     assert.strictEqual(currentPage, 0);
 
     // simulate changing pagination to set `rowsPerPage`
     fullWrapper.find('#pagination-rows').simulate('click');
-    fullWrapper.find('#pagination-menu-list li').at(1).simulate('click');
-    let inputValue = fullWrapper.find('#pagination-input').at(0).text();
+    fullWrapper
+      .find('#pagination-menu-list li')
+      .at(1)
+      .simulate('click');
+    let inputValue = fullWrapper
+      .find('#pagination-input')
+      .at(0)
+      .text();
     assert.strictEqual(inputValue, '2');
 
     // add data to simulate state change
@@ -219,11 +231,17 @@ describe('<MUIDataTable />', function() {
     fullWrapper.setProps({ data: newData });
 
     // simulate paging forward to test whether or not the `currentPage` was reset
-    fullWrapper.find('#pagination-next').at(0).simulate('click');
+    fullWrapper
+      .find('#pagination-next')
+      .at(0)
+      .simulate('click');
     assert.strictEqual(currentPage, 1);
 
     // grab pagination value to test whether or not `rowsPerPage` was reset
-    inputValue = fullWrapper.find('#pagination-input').at(0).text();
+    inputValue = fullWrapper
+      .find('#pagination-input')
+      .at(0)
+      .text();
     assert.strictEqual(inputValue, '2');
 
     // test that data updated properly
