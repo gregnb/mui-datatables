@@ -363,6 +363,30 @@ const options = {
 }
 ```
 
+## Collaboration
+Thanks for taking an interest in the library and the github community!
+
+The following commands should get you started:
+
+Fork the project and clone the project in a local repository
+Add a new brunch
+
+
+```sh
+npm i
+npm run dev
+```
+
+open  http://localhost:5050/ in browser
+
+After you make your changes locally, you can run the test suite with `npm test`. 
+
+Adding additional tests around existing functionality or any of your proposed changes is always appreciated.
+
+Make a Pull request
+
+Good Work
+
 ## License
 The files included in this repository are licensed under the MIT license.
 
