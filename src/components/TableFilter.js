@@ -14,6 +14,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core/styles';
 import { TextField, Grid, GridList, GridListTile } from '@material-ui/core';
+import { joinArray } from '../utils';
 
 export const defaultFilterStyles = theme => ({
   root: {
@@ -145,6 +146,7 @@ class TableFilter extends React.Component {
 
   renderCheckbox(column, index) {
     const { classes, filterData, filterList } = this.props;
+    const customRender = typeof column.customFilterListRender === 'function' ? column.customFilterListRender : null;
 
     return (
       <GridListTile key={index} cols={2}>
@@ -175,7 +177,7 @@ class TableFilter extends React.Component {
                       value={filterColumn != null ? filterColumn.toString() : ''}
                     />
                   }
-                  label={filterColumn}
+                  label={customRender ? customRender(filterColumn) : filterColumn}
                 />
               </Grid>
             ))}
@@ -188,6 +190,7 @@ class TableFilter extends React.Component {
   renderSelect(column, index) {
     const { classes, filterData, filterList, options } = this.props;
     const textLabels = options.textLabels.filter;
+    const customRender = typeof column.customFilterListRender === 'function' ? column.customFilterListRender : null;
 
     return (
       <GridListTile key={index} cols={1}>
@@ -204,7 +207,7 @@ class TableFilter extends React.Component {
               </MenuItem>
               {filterData[index].map((filterColumn, filterIndex) => (
                 <MenuItem value={filterColumn} key={filterIndex + 1}>
-                  {filterColumn != null ? filterColumn.toString() : ''}
+                  {customRender ? customRender(filterColumn) : filterColumn != null ? filterColumn.toString() : ''}
                 </MenuItem>
               ))}
             </Select>
@@ -234,6 +237,7 @@ class TableFilter extends React.Component {
 
   renderMultiselect(column, index) {
     const { classes, filterData, filterList, options } = this.props;
+    const customRender = typeof column.customFilterListRender === 'function' ? column.customFilterListRender : null;
 
     return (
       <GridListTile key={index} cols={1}>
@@ -243,7 +247,9 @@ class TableFilter extends React.Component {
             <Select
               multiple
               value={filterList[index] || []}
-              renderValue={selected => selected.join(', ')}
+              renderValue={selected =>
+                customRender ? joinArray(selected.map(customRender), ', ') : selected.join(', ')
+              }
               name={column.name}
               onChange={event => this.handleMultiselectChange(index, event.target.value)}
               input={<Input name={column.name} id={column.name} />}>
@@ -258,7 +264,7 @@ class TableFilter extends React.Component {
                       checked: classes.checked,
                     }}
                   />
-                  <ListItemText primary={filterColumn} />
+                  <ListItemText primary={customRender ? customRender(filterColumn) : filterColumn} />
                 </MenuItem>
               ))}
             </Select>

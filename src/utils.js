@@ -76,4 +76,10 @@ function createCSVDownload(columns, data, options) {
   }
 }
 
-export { buildMap, getCollatorComparator, sortCompare, createCSVDownload };
+function joinArray(arr, sep = ',') {
+  return arr.reduce((acc, val) => {
+    return (acc && [...acc, sep, val]) || [val];
+  }, null);
+}
+
+export { buildMap, getCollatorComparator, sortCompare, createCSVDownload, joinArray };
