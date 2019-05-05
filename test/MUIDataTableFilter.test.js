@@ -365,6 +365,9 @@ describe('<TableFilter />', function() {
             .map(childs => childs.prop('primary'));
 
         assert.sameOrderedMembers(renderedOptions, Levels);
+
+        const multiSelectValues = selectLevel.prop('renderValue')([0, 2]);
+        assert.sameOrderedMembers(multiSelectValues, [Levels[0], ', ', Levels[2]]);
       });
     });
 });
