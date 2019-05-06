@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MUIDataTable from '../../src';
-import { buildColumns } from '../../src/utils';
+import MUIDataTable from '../../src/';
 
 class Example extends React.Component {
   render() {
@@ -76,27 +75,21 @@ class Example extends React.Component {
       ['Mason Ray', 'Computer Scientist', 'San Francisco', 39, '$142,000'],
     ];
 
-    // Data for building a custom head and body with the onDownload option
     const headerNames = ['Name', 'Speciality', 'City', 'Age', 'Earnings'];
     const footerNames = ['Full Name', 'Job', 'Whereabouts', 'Age', 'Allowance'];
 
-    const buildHead = columns => buildColumns(headerNames).columns;
-    const buildBody = data => {
-      return data.concat({
-        index: data.length,
-        data: footerNames,
-      });
-    };
+    const buildHead = columns => {};
+
+    const buildBody = data => {};
+
+    const onDownload = (buildHead, buildBody) => {};
 
     const options = {
       filter: true,
       filterType: 'dropdown',
       responsive: 'scroll',
       downloadOptions: {
-        onDownload: {
-          buildHead,
-          buildBody,
-        },
+        onDownload,
       },
     };
 
