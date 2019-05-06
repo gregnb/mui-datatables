@@ -109,6 +109,11 @@ class TableBody extends React.Component {
     if (event.target.id && event.target.id.startsWith('MUIDataTableSelectCell')) {
       return;
     }
+
+    // Expand row when it is clicked anywhere.
+    let expandRow = { index: data.rowIndex, dataIndex: data.dataIndex };
+    this.props.toggleExpandRow(expandRow);
+
     this.props.options.onRowClick && this.props.options.onRowClick(row, data, event);
   };
 
