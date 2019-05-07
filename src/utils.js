@@ -30,43 +30,43 @@ function createCSVDownload(columns, data, options) {
   const replaceDoubleQuoteInString = columnData =>
     typeof columnData === 'string' ? columnData.replace(/\"/g, '""') : columnData;
 
-  const convertToBasicColumn = name => {
-    return {
-      name,
-      download: true,
-    };
-  };
+  const buildHead = (columns = optionalColumns => {
+    return optionalColumns
+      ? optionalColumns
+      : columns
+          .reduce(
+            (soFar, column) =>
+              column.download
+                ? soFar + '"' + replaceDoubleQuoteInString(column.name) + '"' + options.downloadOptions.separator
+                : soFar,
+            '',
+          )
+          .slice(0, -1) + '\r\n';
+  });
+  const CSVHead = buildHead(columns);
 
-  const optionOrFallback = (option, fallback) => (option ? option.map(convertToBasicColumn) : fallback);
+  const buildBody = (data = optionalData => {
+    return optionalData
+      ? optionalData
+      : data
+          .reduce(
+            (soFar, row) =>
+              soFar +
+              '"' +
+              row.data
+                .filter((_, index) => columns[index].download)
+                .map(columnData => replaceDoubleQuoteInString(columnData))
+                .join('"' + options.downloadOptions.separator + '"') +
+              '"\r\n',
+            [],
+          )
+          .trim();
+  });
+  const CSVBody = buildBody(data);
 
-  const reduceData = data =>
-    data
-      .reduce(
-        (soFar, column) =>
-          column.download
-            ? soFar + '"' + replaceDoubleQuoteInString(column.name) + '"' + options.downloadOptions.separator
-            : soFar,
-        '',
-      )
-      .slice(0, -1) + '\r\n';
-
-  const CSVHead = reduceData(optionOrFallback(options.downloadOptions.headerNames, columns));
-
-  const CSVBody = data.reduce(
-    (soFar, row) =>
-      soFar +
-      '"' +
-      row.data
-        .filter((_, index) => columns[index].download)
-        .map(columnData => replaceDoubleQuoteInString(columnData))
-        .join('"' + options.downloadOptions.separator + '"') +
-      '"\r\n',
-    [],
-  );
-
-  const CSVFooter = reduceData(optionOrFallback(options.downloadOptions.footerNames, []));
-
-  const csv = `${CSVHead}${CSVBody}${CSVFooter}`.trim();
+  const csv = options.onDownload
+    ? options.onDownload(buildHead(columns), buildBody(data))
+    : `${CSVHead}${CSVBody}`.trim();
   const blob = new Blob([csv], { type: 'text/csv' });
 
   /* taken from react-csv */
