@@ -5,48 +5,6 @@ function buildMap(rows) {
   }, {});
 }
 
-const buildColumns = newColumns => {
-  let columnData = [];
-  let filterData = [];
-  let filterList = [];
-
-  newColumns.forEach((column, colIndex) => {
-    let columnOptions = {
-      display: 'true',
-      empty: false,
-      filter: true,
-      sort: true,
-      print: true,
-      searchable: true,
-      download: true,
-      viewColumns: true,
-      sortDirection: null,
-    };
-
-    if (typeof column === 'object') {
-      if (column.options && column.options.display !== undefined) {
-        column.options.display = column.options.display.toString();
-      }
-
-      columnOptions = {
-        name: column.name,
-        label: column.label ? column.label : column.name,
-        ...columnOptions,
-        ...(column.options ? column.options : {}),
-      };
-    } else {
-      columnOptions = { ...columnOptions, name: column, label: column };
-    }
-
-    columnData.push(columnOptions);
-
-    filterData[colIndex] = [];
-    filterList[colIndex] = [];
-  });
-
-  return { columns: columnData, filterData, filterList };
-};
-
 function getCollatorComparator() {
   if (!!Intl) {
     const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
@@ -71,38 +29,42 @@ function sortCompare(order) {
 function createCSVDownload(columns, data, options) {
   const replaceDoubleQuoteInString = columnData =>
     typeof columnData === 'string' ? columnData.replace(/\"/g, '""') : columnData;
-  const reduceData = data =>
-    data
+
+  const buildHead = columns => {
+    return (
+      columns
+        .reduce(
+          (soFar, column) =>
+            column.download
+              ? soFar + '"' + replaceDoubleQuoteInString(column.name) + '"' + options.downloadOptions.separator
+              : soFar,
+          '',
+        )
+        .slice(0, -1) + '\r\n'
+    );
+  };
+  const CSVHead = buildHead(columns);
+
+  const buildBody = data => {
+    return data
       .reduce(
-        (soFar, column) =>
-          column.download
-            ? soFar + '"' + replaceDoubleQuoteInString(column.name) + '"' + options.downloadOptions.separator
-            : soFar,
-        '',
+        (soFar, row) =>
+          soFar +
+          '"' +
+          row.data
+            .filter((_, index) => columns[index].download)
+            .map(columnData => replaceDoubleQuoteInString(columnData))
+            .join('"' + options.downloadOptions.separator + '"') +
+          '"\r\n',
+        [],
       )
-      .slice(0, -1) + '\r\n';
+      .trim();
+  };
+  const CSVBody = buildBody(data);
 
-  const CSVHead = reduceData(
-    options.downloadOptions.onDownload.buildHead ? options.downloadOptions.onDownload.buildHead(columns) : columns,
-  );
-
-  const CSVBody = (options.downloadOptions.onDownload.buildBody
-    ? options.downloadOptions.onDownload.buildBody(data)
-    : data
-  ).reduce(
-    (soFar, row) =>
-      soFar +
-      '"' +
-      row.data
-        .filter((_, index) => columns[index].download)
-        .map(columnData => replaceDoubleQuoteInString(columnData))
-        .join('"' + options.downloadOptions.separator + '"') +
-      '"\r\n',
-    [],
-  );
-
-  const csv = `${CSVHead}${CSVBody}`.trim();
-
+  const csv = options.onDownload
+    ? options.onDownload(buildHead, buildBody, columns, data)
+    : `${CSVHead}${CSVBody}`.trim();
   const blob = new Blob([csv], { type: 'text/csv' });
 
   /* taken from react-csv */
@@ -123,4 +85,4 @@ function createCSVDownload(columns, data, options) {
   }
 }
 
-export { buildColumns, buildMap, getCollatorComparator, sortCompare, createCSVDownload };
+export { buildMap, getCollatorComparator, sortCompare, createCSVDownload };

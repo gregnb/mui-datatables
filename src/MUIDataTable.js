@@ -1,23 +1,23 @@
-import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
-import MuiTable from '@material-ui/core/Table';
-import classnames from 'classnames';
-import cloneDeep from 'lodash.clonedeep';
-import find from 'lodash.find';
-import isEqual from 'lodash.isequal';
-import isUndefined from 'lodash.isundefined';
-import merge from 'lodash.merge';
-import PropTypes from 'prop-types';
 import React from 'react';
-import TableBody from './components/TableBody';
-import TableFilterList from './components/TableFilterList';
-import TableFooter from './components/TableFooter';
-import TableHead from './components/TableHead';
-import TableResize from './components/TableResize';
+import PropTypes from 'prop-types';
+import Paper from '@material-ui/core/Paper';
+import MuiTable from '@material-ui/core/Table';
 import TableToolbar from './components/TableToolbar';
 import TableToolbarSelect from './components/TableToolbarSelect';
+import TableFilterList from './components/TableFilterList';
+import TableBody from './components/TableBody';
+import TableResize from './components/TableResize';
+import TableHead from './components/TableHead';
+import TableFooter from './components/TableFooter';
+import classnames from 'classnames';
+import cloneDeep from 'lodash.clonedeep';
+import merge from 'lodash.merge';
+import isEqual from 'lodash.isequal';
+import find from 'lodash.find';
+import isUndefined from 'lodash.isundefined';
 import textLabels from './textLabels';
-import { buildColumns, buildMap, getCollatorComparator, sortCompare } from './utils';
+import { withStyles } from '@material-ui/core/styles';
+import { buildMap, getCollatorComparator, sortCompare } from './utils';
 
 const defaultTableStyles = {
   root: {},
@@ -136,11 +136,10 @@ class MUIDataTable extends React.Component {
       downloadOptions: PropTypes.shape({
         filename: PropTypes.string,
         separator: PropTypes.string,
-        onDownlad: PropTypes.shape({
-          buildHead: PropTypes.func,
-          buildBody: PropTypes.func,
-        }),
+        headerNames: PropTypes.array,
+        footerNames: PropTypes.array,
       }),
+      onDownload: PropTypes.func,
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
@@ -309,13 +308,51 @@ class MUIDataTable extends React.Component {
    *  Build the source table data
    */
 
-  internalBuildColumns = newColumns => {
+  buildColumns = newColumns => {
+    let columnData = [];
+    let filterData = [];
+    let filterList = [];
+
     if (this.state.columns.length && isEqual(this.rawColumns(newColumns), this.rawColumns(this.props.columns))) {
       const { columns, filterList, filterData } = this.state;
       return { columns, filterList, filterData };
-    } else {
-      return buildColumns(newColumns);
     }
+
+    newColumns.forEach((column, colIndex) => {
+      let columnOptions = {
+        display: 'true',
+        empty: false,
+        filter: true,
+        sort: true,
+        print: true,
+        searchable: true,
+        download: true,
+        viewColumns: true,
+        sortDirection: null,
+      };
+
+      if (typeof column === 'object') {
+        if (column.options && column.options.display !== undefined) {
+          column.options.display = column.options.display.toString();
+        }
+
+        columnOptions = {
+          name: column.name,
+          label: column.label ? column.label : column.name,
+          ...columnOptions,
+          ...(column.options ? column.options : {}),
+        };
+      } else {
+        columnOptions = { ...columnOptions, name: column, label: column };
+      }
+
+      columnData.push(columnOptions);
+
+      filterData[colIndex] = [];
+      filterList[colIndex] = [];
+    });
+
+    return { columns: columnData, filterData, filterList };
   };
 
   transformData = (columns, data) => {
@@ -335,7 +372,7 @@ class MUIDataTable extends React.Component {
     const { options } = props;
 
     let tableData = [];
-    let { columns, filterData, filterList } = this.internalBuildColumns(props.columns);
+    let { columns, filterData, filterList } = this.buildColumns(props.columns);
     let sortIndex = null;
     let sortDirection = null;
 
