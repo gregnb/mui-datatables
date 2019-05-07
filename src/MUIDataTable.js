@@ -190,7 +190,7 @@ class MUIDataTable extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
-      this.setTableData(prevProps, TABLE_LOAD.INITIAL);
+      this.setTableData(this.props, TABLE_LOAD.INITIAL);
     }
 
     if (this.options.resizableColumns) {
