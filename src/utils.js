@@ -30,42 +30,40 @@ function createCSVDownload(columns, data, options) {
   const replaceDoubleQuoteInString = columnData =>
     typeof columnData === 'string' ? columnData.replace(/\"/g, '""') : columnData;
 
-  const buildHead = (columns = optionalColumns => {
-    return optionalColumns
-      ? optionalColumns
-      : columns
-          .reduce(
-            (soFar, column) =>
-              column.download
-                ? soFar + '"' + replaceDoubleQuoteInString(column.name) + '"' + options.downloadOptions.separator
-                : soFar,
-            '',
-          )
-          .slice(0, -1) + '\r\n';
-  });
+  const buildHead = columns => {
+    return (
+      columns
+        .reduce(
+          (soFar, column) =>
+            column.download
+              ? soFar + '"' + replaceDoubleQuoteInString(column.name) + '"' + options.downloadOptions.separator
+              : soFar,
+          '',
+        )
+        .slice(0, -1) + '\r\n'
+    );
+  };
   const CSVHead = buildHead(columns);
 
-  const buildBody = (data = optionalData => {
-    return optionalData
-      ? optionalData
-      : data
-          .reduce(
-            (soFar, row) =>
-              soFar +
-              '"' +
-              row.data
-                .filter((_, index) => columns[index].download)
-                .map(columnData => replaceDoubleQuoteInString(columnData))
-                .join('"' + options.downloadOptions.separator + '"') +
-              '"\r\n',
-            [],
-          )
-          .trim();
-  });
+  const buildBody = data => {
+    return data
+      .reduce(
+        (soFar, row) =>
+          soFar +
+          '"' +
+          row.data
+            .filter((_, index) => columns[index].download)
+            .map(columnData => replaceDoubleQuoteInString(columnData))
+            .join('"' + options.downloadOptions.separator + '"') +
+          '"\r\n',
+        [],
+      )
+      .trim();
+  };
   const CSVBody = buildBody(data);
 
   const csv = options.onDownload
-    ? options.onDownload(buildHead(columns), buildBody(data))
+    ? options.onDownload(buildHead, buildBody, columns, data)
     : `${CSVHead}${CSVBody}`.trim();
   const blob = new Blob([csv], { type: 'text/csv' });
 

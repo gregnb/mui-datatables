@@ -78,55 +78,40 @@ class Example extends React.Component {
     // Data for building a custom head and body with the onDownload option
     const headerNames = [
       {
-        name: 'Name',
-        options: {
-          filter: true,
-          display: 'excluded',
-        },
+        name: 'Given name',
+        download: true,
       },
       {
-        label: 'Modified Title Label',
-        name: 'Title',
-        options: {
-          filter: true,
-        },
+        name: 'Role',
+        download: true,
       },
       {
-        name: 'Location',
-        options: {
-          print: false,
-          filter: false,
-        },
+        name: 'City',
+        download: true,
       },
       {
-        name: 'Age',
-        options: {
-          filter: true,
-          print: false,
-        },
+        name: 'Years',
+        download: true,
       },
       {
-        name: 'Salary',
-        options: {
-          filter: true,
-          sort: false,
-        },
+        name: 'Dough',
+        download: true,
       },
     ];
     const footerNames = ['Full Name', 'Job', 'Whereabouts', 'Age', 'Allowance'];
-
-    // const buildHead = columns => buildColumns(headerNames).columns;
-    // const buildBody = data =>
-    //   data.concat({
-    //     index: data.length,
-    //     data: footerNames
-    //   });
 
     const options = {
       filter: true,
       filterType: 'dropdown',
       responsive: 'scroll',
-      onDownload: (buildHead, buildBody) => buildHead(headerNames) + buildBody(null),
+      onDownload: (buildHead, buildBody, columns, data) =>
+        buildHead(headerNames) +
+        buildBody(
+          data.concat({
+            index: data.length,
+            data: footerNames,
+          }),
+        ),
     };
 
     return <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />;
