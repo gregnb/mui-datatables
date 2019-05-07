@@ -136,8 +136,6 @@ class MUIDataTable extends React.Component {
       downloadOptions: PropTypes.shape({
         filename: PropTypes.string,
         separator: PropTypes.string,
-        headerNames: PropTypes.array,
-        footerNames: PropTypes.array,
       }),
       onDownload: PropTypes.func,
     }),
