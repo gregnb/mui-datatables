@@ -21,12 +21,8 @@ describe('<TableHead />', function() {
         label: 'State',
         display: 'true',
         options: { fixedHeader: true },
-        customHeadRender: columnMeta => (
-          <TableHeadCell {...columnMeta}>
-            {columnMeta.name + 's'}
-          </TableHeadCell>
-        ),
-        sort: null
+        customHeadRender: columnMeta => <TableHeadCell {...columnMeta}>{columnMeta.name + 's'}</TableHeadCell>,
+        sort: null,
       },
     ];
 
