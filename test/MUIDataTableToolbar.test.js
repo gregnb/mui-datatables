@@ -205,4 +205,30 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(appendSpy.callCount, 1);
     assert.strictEqual(removeSpy.callCount, 1);
   });
+
+  it('should trigger onDownload prop callback when calling method handleCSVDownload', () => {
+    const onDownload = spy();
+
+    const newOptions = { ...options, onDownload };
+
+    const shallowWrapper = shallow(
+      <TableToolbar
+        columns={columns}
+        displayData={data}
+        data={data}
+        options={newOptions}
+        setTableAction={setTableAction}
+      />,
+    );
+    
+    const instance = shallowWrapper
+      .dive()
+      .dive()
+      .dive()
+      .instance();
+
+    instance.handleCSVDownload();
+
+    assert.strictEqual(onDownload.callCount, 1);
+  });
 });

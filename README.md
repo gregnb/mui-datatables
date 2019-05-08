@@ -163,6 +163,7 @@ The component accepts the following props:
 |**`print`**|boolean|true|Show/hide print	 icon from toolbar
 |**`download`**|boolean|true|Show/hide download icon from toolbar
 |**`downloadOptions`**|object||Options to change the output of the CSV file. Default options: `{filename: 'tableDownload.csv', separator: ','}`
+|**`onDownload`**|function||A callback function that triggers when the user downloads the CSV file. In the callback, you can control what is written to the CSV file. `function(buildHead: (columns) => string, buildBody: (data) => string, columns, data) => string`
 |**`viewColumns`**|boolean|true|Show/hide viewColumns icon from toolbar
 |**`onRowsSelect`**|function||Callback function that triggers when row(s) are selected. `function(currentRowsSelected: array, allRowsSelected: array) => void`
 |**`onRowsDelete`**|function||Callback function that triggers when row(s) are deleted. `function(rowsDeleted: object(lookup: {dataindex: boolean}, data: arrayOfObjects: {index, dataIndex})) => void OR false` (Returning `false` prevents row deletion.)

@@ -137,6 +137,7 @@ class MUIDataTable extends React.Component {
         filename: PropTypes.string,
         separator: PropTypes.string,
       }),
+      onDownload: PropTypes.func,
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
