@@ -170,6 +170,21 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(JSON.stringify(state.displayData), displayData);
   });
 
+  it('should correctly re-build display after xhr with serverSide=true', done => {
+    const fullWrapper = mount(<MUIDataTable columns={columns} data={[]} options={{ serverSide: true }} />);
+    assert.strictEqual(fullWrapper.find('tbody tr').length, 1);
+
+    // simulate xhr and test number of displayed rows
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        fullWrapper.setProps({ data });
+        fullWrapper.update();
+        assert.strictEqual(fullWrapper.find('tbody tr').length, 4);
+        done();
+      }, 10);
+    });
+  });
+
   it('should correctly re-build internal table data and displayData structure with prop change', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     let state = shallowWrapper.dive().state();
