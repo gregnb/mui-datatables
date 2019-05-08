@@ -75,13 +75,13 @@ class TablePagination extends React.Component {
               id: 'pagination-next',
               'aria-label': textLabels.next,
             }}
-            SelectProps= {{
+            SelectProps={{
               id: 'pagination-input',
               SelectDisplayProps: { id: 'pagination-rows' },
               MenuProps: {
                 id: 'pagination-menu',
-                MenuListProps: { id: 'pagination-menu-list' }
-              }
+                MenuListProps: { id: 'pagination-menu-list' },
+              },
             }}
             rowsPerPageOptions={options.rowsPerPageOptions}
             onChangePage={this.handlePageChange}

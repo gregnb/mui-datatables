@@ -30,7 +30,10 @@ describe('<MUIDataTable />', function() {
       { name: 'Name', options: { customBodyRender: renderName, customFilterListRender: renderCustomFilterList } },
       'Company',
       { name: 'City', label: 'City Label', options: { customBodyRender: renderCities, filterType: 'textField' } },
-      { name: 'State', options: { customBodyRender: renderState, filterType: 'multiselect', customHeadRender: renderHead } },
+      {
+        name: 'State',
+        options: { customBodyRender: renderState, filterType: 'multiselect', customHeadRender: renderHead },
+      },
       { name: 'Empty', options: { empty: true, filterType: 'checkbox' } },
     ];
     data = [
@@ -170,6 +173,21 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(JSON.stringify(state.displayData), displayData);
   });
 
+  it('should correctly re-build display after xhr with serverSide=true', done => {
+    const fullWrapper = mount(<MUIDataTable columns={columns} data={[]} options={{ serverSide: true }} />);
+    assert.strictEqual(fullWrapper.find('tbody tr').length, 1);
+
+    // simulate xhr and test number of displayed rows
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        fullWrapper.setProps({ data });
+        fullWrapper.update();
+        assert.strictEqual(fullWrapper.find('tbody tr').length, 4);
+        done();
+      }, 10);
+    });
+  });
+
   it('should correctly re-build internal table data and displayData structure with prop change', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     let state = shallowWrapper.dive().state();
@@ -199,18 +217,27 @@ describe('<MUIDataTable />', function() {
       rowsPerPage: 1,
       rowsPerPageOptions: [1, 2, 4],
       page: 1,
-      onChangePage: current => currentPage = current,
+      onChangePage: current => (currentPage = current),
     };
     const fullWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
 
     // simulate paging backward to set `currentPage`
-    fullWrapper.find('#pagination-back').at(0).simulate('click');
+    fullWrapper
+      .find('#pagination-back')
+      .at(0)
+      .simulate('click');
     assert.strictEqual(currentPage, 0);
 
     // simulate changing pagination to set `rowsPerPage`
     fullWrapper.find('#pagination-rows').simulate('click');
-    fullWrapper.find('#pagination-menu-list li').at(1).simulate('click');
-    let inputValue = fullWrapper.find('#pagination-input').at(0).text();
+    fullWrapper
+      .find('#pagination-menu-list li')
+      .at(1)
+      .simulate('click');
+    let inputValue = fullWrapper
+      .find('#pagination-input')
+      .at(0)
+      .text();
     assert.strictEqual(inputValue, '2');
 
     // add data to simulate state change
@@ -219,11 +246,17 @@ describe('<MUIDataTable />', function() {
     fullWrapper.setProps({ data: newData });
 
     // simulate paging forward to test whether or not the `currentPage` was reset
-    fullWrapper.find('#pagination-next').at(0).simulate('click');
+    fullWrapper
+      .find('#pagination-next')
+      .at(0)
+      .simulate('click');
     assert.strictEqual(currentPage, 1);
 
     // grab pagination value to test whether or not `rowsPerPage` was reset
-    inputValue = fullWrapper.find('#pagination-input').at(0).text();
+    inputValue = fullWrapper
+      .find('#pagination-input')
+      .at(0)
+      .text();
     assert.strictEqual(inputValue, '2');
 
     // test that data updated properly
@@ -713,6 +746,45 @@ describe('<MUIDataTable />', function() {
     const expectedResult = [{ index: 0, dataIndex: 0 }, { index: 3, dataIndex: 3 }];
 
     assert.deepEqual(state.selectedRows.data, expectedResult);
+  });
+
+  it('should remove selected data on selectRowDelete when type=cell', () => {
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
+    const instance = shallowWrapper.instance();
+    const onRowsDelete = () => {};
+    const selectedRows = { data: [1] };
+
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 });
+    shallowWrapper.update();
+    instance.selectRowDelete();
+    shallowWrapper.update();
+
+    const newDisplayData = shallowWrapper.state().displayData;
+    const expectedResult = JSON.stringify([
+      { data: ['Walsh, John', 'Test Corp', renderCities('Hartford', { rowIndex: 0 }), null, undefined], dataIndex: 1 },
+      { data: ['Herm, Bob', 'Test Corp', renderCities('Tampa', { rowIndex: 1 }), 'FL', undefined], dataIndex: 2 },
+      { data: ['Houston, James', 'Test Corp', renderCities('Dallas', { rowIndex: 2 }), 'TX', undefined], dataIndex: 3 },
+    ]);
+
+    assert.deepEqual(JSON.stringify(newDisplayData), expectedResult);
+  });
+
+  it('should not remove selected data on selectRowDelete when type=cell when onRowsDelete returns false', () => {
+    const options = {
+      onRowsDelete: () => false,
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+    const selectedRows = { data: [1] };
+
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 });
+    shallowWrapper.update();
+    instance.selectRowDelete();
+    shallowWrapper.update();
+
+    const myDisplayData = shallowWrapper.state().displayData;
+
+    assert.deepEqual(JSON.stringify(myDisplayData), displayData);
   });
 
   it('should update value when calling updateValue method in customBodyRender', () => {

@@ -199,31 +199,31 @@ class TableToolbar extends React.Component {
             </Tooltip>
           )}
           {options.print && (
-            <Tooltip title={print}>
-              <span>
-                <ReactToPrint
-                  trigger={() => (
+            <span>
+              <ReactToPrint
+                trigger={() => (
+                  <Tooltip title={print}>
                     <IconButton aria-label={print} classes={{ root: classes.icon }}>
                       <PrintIcon />
                     </IconButton>
-                  )}
-                  content={() => this.props.tableRef()}
-                />
-              </span>
-            </Tooltip>
+                  </Tooltip>
+                )}
+                content={() => this.props.tableRef()}
+              />
+            </span>
           )}
           {options.viewColumns && (
             <Popover
               refExit={this.setActiveIcon.bind(null)}
               trigger={
-                <IconButton
-                  aria-label={viewColumns}
-                  classes={{ root: this.getActiveIcon(classes, 'viewcolumns') }}
-                  onClick={this.setActiveIcon.bind(null, 'viewcolumns')}>
-                  <Tooltip title={viewColumns}>
+                <Tooltip title={viewColumns}>
+                  <IconButton
+                    aria-label={viewColumns}
+                    classes={{ root: this.getActiveIcon(classes, 'viewcolumns') }}
+                    onClick={this.setActiveIcon.bind(null, 'viewcolumns')}>
                     <ViewColumnIcon />
-                  </Tooltip>
-                </IconButton>
+                  </IconButton>
+                </Tooltip>
               }
               content={
                 <TableViewCol data={data} columns={columns} options={options} onColumnUpdate={toggleViewColumn} />
@@ -235,14 +235,14 @@ class TableToolbar extends React.Component {
               refExit={this.setActiveIcon.bind(null)}
               classes={{ paper: classes.filterPaper }}
               trigger={
-                <IconButton
-                  aria-label={filterTable}
-                  classes={{ root: this.getActiveIcon(classes, 'filter') }}
-                  onClick={this.setActiveIcon.bind(null, 'filter')}>
-                  <Tooltip title={filterTable}>
+                <Tooltip title={filterTable}>
+                  <IconButton
+                    aria-label={filterTable}
+                    classes={{ root: this.getActiveIcon(classes, 'filter') }}
+                    onClick={this.setActiveIcon.bind(null, 'filter')}>
                     <FilterIcon />
-                  </Tooltip>
-                </IconButton>
+                  </IconButton>
+                </Tooltip>
               }
               content={
                 <TableFilter
