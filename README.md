@@ -363,9 +363,21 @@ const options = {
 }
 ```
 
+## Contributing
+Thanks for taking an interest in the library and the github community!
+
+The following commands should get you started:
+
+```sh
+npm i
+npm run dev
+```
+open  http://localhost:5050/ in browser
+
+After you make your changes locally, you can run the test suite with `npm test`. 
+
 ## License
 The files included in this repository are licensed under the MIT license.
-
 
 ## Thanks
 
