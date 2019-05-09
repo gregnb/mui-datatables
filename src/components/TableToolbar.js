@@ -84,8 +84,8 @@ export const responsiveToolbarStyles = theme => ({
 class TableToolbar extends React.Component {
   state = {
     iconActive: null,
-    showSearch: false,
-    searchText: null,
+    showSearch: Boolean(this.props.options.searchText),
+    searchText: this.props.options.searchText || null,
   };
 
   handleCSVDownload = () => {
@@ -162,13 +162,18 @@ class TableToolbar extends React.Component {
     } = this.props;
 
     const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;
-    const { showSearch } = this.state;
+    const { showSearch, searchText } = this.state;
 
     return (
       <Toolbar className={classes.root} role={'toolbar'} aria-label={'Table Toolbar'}>
         <div className={classes.left}>
           {showSearch === true ? (
-            <TableSearch onSearch={this.handleSearch} onHide={this.hideSearch} options={options} />
+            <TableSearch
+              initialSearchText={searchText}
+              onSearch={this.handleSearch}
+              onHide={this.hideSearch}
+              options={options}
+            />
           ) : typeof title !== 'string' ? (
             title
           ) : (

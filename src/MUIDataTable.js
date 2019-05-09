@@ -130,6 +130,7 @@ class MUIDataTable extends React.Component {
       customSort: PropTypes.func,
       customSearch: PropTypes.func,
       search: PropTypes.bool,
+      searchText: PropTypes.string,
       print: PropTypes.bool,
       viewColumns: PropTypes.bool,
       download: PropTypes.bool,
@@ -375,6 +376,7 @@ class MUIDataTable extends React.Component {
     let sortDirection = null;
 
     const data = status === TABLE_LOAD.INITIAL ? this.transformData(columns, props.data) : props.data;
+    const searchText = status === TABLE_LOAD.INITIAL ? options.searchText : null;
 
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
@@ -461,9 +463,10 @@ class MUIDataTable extends React.Component {
         columns: columns,
         filterData: filterData,
         filterList: filterList,
+        searchText: searchText || prevState.searchText,
         selectedRows: selectedRowsData,
         data: tableData,
-        displayData: this.getDisplayData(columns, tableData, filterList, prevState.searchText),
+        displayData: this.getDisplayData(columns, tableData, filterList, searchText || prevState.searchText),
       }),
       callback,
     );
