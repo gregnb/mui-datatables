@@ -413,9 +413,10 @@ describe('<MUIDataTable />', function() {
       defaultRenderCustomFilterList,
       defaultRenderCustomFilterList,
     ];
+    const columnNames = columns.map(column => ({ name: column.name }));
 
     const mountWrapper = mount(
-      <TableFilterList filterList={filterList} filterListRenderers={filterListRenderers} filterUpdate={() => true} />,
+      <TableFilterList filterList={filterList} filterListRenderers={filterListRenderers} filterUpdate={() => true} columnNames={columnNames} />,
     );
     const actualResult = mountWrapper.find(Chip);
     assert.strictEqual(actualResult.length, 1);
@@ -428,9 +429,10 @@ describe('<MUIDataTable />', function() {
         ? c.options.customFilterListRender
         : defaultRenderCustomFilterList;
     });
+    const columnNames = columns.map(column => ({ name: column.name }));
 
     const mountWrapper = mount(
-      <TableFilterList filterList={filterList} filterListRenderers={filterListRenderers} filterUpdate={() => true} />,
+      <TableFilterList filterList={filterList} filterListRenderers={filterListRenderers} filterUpdate={() => true} columnNames={columnNames} />,
     );
     const actualResult = mountWrapper.find(Chip);
     assert.strictEqual(actualResult.length, 1);

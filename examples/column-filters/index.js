@@ -20,6 +20,7 @@ class Example extends React.Component {
         name: "Title",
         options: {
           filter: true,
+          filterList: ['Business Analyst'],
           customFilterListRender: v => `Title: ${v}`,
           filterType: 'textField' // set filterType's at the column level
         }

@@ -158,7 +158,6 @@ class MUIDataTable extends React.Component {
     page: 0,
     rowsPerPage: 0,
     columns: [],
-    filteredColumnName: '',
     filterData: [],
     filterList: [],
     selectedRows: {
@@ -811,7 +810,6 @@ class MUIDataTable extends React.Component {
         }
 
         return {
-          filteredColumnName: column,
           filterList: filterList,
           displayData: this.options.serverSide
             ? prevState.displayData
@@ -1042,12 +1040,12 @@ class MUIDataTable extends React.Component {
       selectedRows,
       expandedRows,
       searchText,
-      filteredColumnName,
     } = this.state;
 
     const rowCount = this.options.count || displayData.length;
     const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
     const showToolbar = hasToolbarItem(this.options, title);
+    const columnNames = columns.map(column => ({ name: column.name }));
 
     return (
       <Paper
@@ -1088,7 +1086,7 @@ class MUIDataTable extends React.Component {
           })}
           filterList={filterList}
           filterUpdate={this.filterUpdate}
-          filteredColumnName={filteredColumnName}
+          columnNames={columnNames}
         />
         <div
           style={{ position: 'relative' }}
