@@ -181,7 +181,7 @@ class TableToolbar extends React.Component {
         </div>
         <div className={classes.actions}>
           {options.search && (
-            <Tooltip title={search}>
+            <Tooltip title={search} disableFocusListener>
               <IconButton
                 aria-label={search}
                 buttonRef={el => (this.searchButton = el)}
@@ -216,7 +216,7 @@ class TableToolbar extends React.Component {
             <Popover
               refExit={this.setActiveIcon.bind(null)}
               trigger={
-                <Tooltip title={viewColumns}>
+                <Tooltip title={viewColumns} disableFocusListener>
                   <IconButton
                     aria-label={viewColumns}
                     classes={{ root: this.getActiveIcon(classes, 'viewcolumns') }}
@@ -235,7 +235,7 @@ class TableToolbar extends React.Component {
               refExit={this.setActiveIcon.bind(null)}
               classes={{ paper: classes.filterPaper }}
               trigger={
-                <Tooltip title={filterTable}>
+                <Tooltip title={filterTable} disableFocusListener>
                   <IconButton
                     aria-label={filterTable}
                     classes={{ root: this.getActiveIcon(classes, 'filter') }}
