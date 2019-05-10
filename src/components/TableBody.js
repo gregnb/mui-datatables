@@ -105,14 +105,22 @@ class TableBody extends React.Component {
   };
 
   handleRowClick = (row, data, event) => {
-    // don't trigger onRowClick if the event was actually a row selection
+    // Don't trigger onRowClick if the event was actually a row selection
     if (event.target.id && event.target.id.startsWith('MUIDataTableSelectCell')) {
       return;
     }
 
-    // Expand row when it is clicked anywhere.
-    let expandRow = { index: data.rowIndex, dataIndex: data.dataIndex };
-    this.props.toggleExpandRow(expandRow);
+    // Check if we should trigger row expand/select when row is clicked anywhere
+    if (this.props.options.fullRowTrigger) {
+      if (this.props.options.expandableRows) {
+        const expandRow = { index: data.rowIndex, dataIndex: data.dataIndex };
+        this.props.toggleExpandRow(expandRow);
+      }
+      if (this.props.options.selectableRows !== 'none') {
+        const selectRow = { index: data.rowIndex, dataIndex: data.dataIndex };
+        this.handleRowSelect(selectRow);
+      }
+    }
 
     this.props.options.onRowClick && this.props.options.onRowClick(row, data, event);
   };

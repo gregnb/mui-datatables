@@ -141,9 +141,10 @@ The component accepts the following props:
 |**`pagination`**|boolean|true|Enable/disable pagination
 |**`selectableRows`**|string|'multiple'|Numbers of rows that can be selected. Options are "multiple", "single", "none".
 |**`isRowSelectable`**|function||Enable/disable selection on certain rows with custom function. Returns true if not provided.  `function(dataIndex) => bool`
-|**`resizableColumns`**|boolean|false|Enable/disable resizable columns
 |**`expandableRows`**|boolean|false|Enable/disable expandable rows
-|**`renderExpandableRow `**|function||Render expandable row. `function(rowData, rowMeta) => React Component`
+|**`renderExpandableRow`**|function||Render expandable row. `function(rowData, rowMeta) => React Component`
+|**`fullRowTrigger`**|boolean|false|Enable/disable trigger of select/expand when row is clicked. When False, only specific elements will trigger these actions.
+|**`resizableColumns`**|boolean|false|Enable/disable resizable columns
 |**`customToolbar`**|function||Render a custom toolbar
 |**`customToolbarSelect`**|function||Render a custom selected rows toolbar. `function(selectedRows, displayData, setSelectedRows) => void`
 |**`customFooter`**|function||Render a custom table footer. `function(count, page, rowsPerPage, changeRowsPerPage, changePage) => string`&#124;` React Component`
