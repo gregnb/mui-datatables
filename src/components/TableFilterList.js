@@ -23,10 +23,7 @@ class TableFilterList extends React.Component {
     filterListRenderers: PropTypes.array.isRequired,
     /** Columns used to describe table */
     columnNames: PropTypes.PropTypes.arrayOf(
-      PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.shape({ name: PropTypes.string.isRequired }),
-      ]),
+      PropTypes.oneOfType([PropTypes.string, PropTypes.shape({ name: PropTypes.string.isRequired })]),
     ).isRequired,
     /** Callback to trigger filter update */
     onFilterUpdate: PropTypes.func,

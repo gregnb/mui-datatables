@@ -5,7 +5,7 @@ import { assert, expect, should } from 'chai';
 import Checkbox from '@material-ui/core/Checkbox';
 import TableViewCol from '../src/components/TableViewCol';
 import textLabels from '../src/textLabels';
-import { FormControlLabel } from '@material-ui/core';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 describe('<TableViewCol />', function() {
   let columns;
