@@ -72,7 +72,7 @@ function Example() {
       options={{
         selectableRows: "none",
         responsive: "scroll",
-        customRowRender: ({ data }) => {
+        customRowRender: data => {
           const [ name, cardNumber, cvc, expiry ] = data;
           
           return (
