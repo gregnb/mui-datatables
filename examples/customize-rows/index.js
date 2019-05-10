@@ -5,7 +5,8 @@
 */
 
 import React from 'react';
-import MuiDatatable from "mui-datatables";
+import ReactDOM from "react-dom";
+import MuiDatatable from "../../src/";
 
 function YourCustomRowComponent(props) {
   const { name, cardNumber, cvc, expiry } = props;
