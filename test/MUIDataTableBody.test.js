@@ -207,7 +207,7 @@ describe('<TableBody />', function() {
     const selectRowUpdate = stub();
     const toggleExpandRow = () => {};
 
-    const t = mount(
+    const mountWrapper = mount(
       <TableBody
         data={displayData}
         count={displayData.length}
@@ -224,7 +224,7 @@ describe('<TableBody />', function() {
       />,
     );
 
-    t.find('#MUIDataTableBodyRow-2')
+    mountWrapper.find('#MUIDataTableBodyRow-2')
       .first()
       .simulate('click');
 
@@ -237,7 +237,7 @@ describe('<TableBody />', function() {
     const selectRowUpdate = stub();
     const toggleExpandRow = () => {};
 
-    const t = mount(
+    const mountWrapper = mount(
       <TableBody
         data={displayData}
         count={displayData.length}
@@ -254,7 +254,7 @@ describe('<TableBody />', function() {
       />,
     );
 
-    const props = t
+    const props = mountWrapper
       .find('#MUIDataTableBodyRow-1')
       .first()
       .props();
@@ -269,7 +269,7 @@ describe('<TableBody />', function() {
     const selectRowUpdate = stub();
     const toggleExpandRow = () => {};
 
-    const t = mount(
+    const mountWrapper = mount(
       <TableBody
         data={displayData}
         count={displayData.length}
@@ -286,8 +286,8 @@ describe('<TableBody />', function() {
       />,
     );
 
-    const html = t.html();
-    
-    assert.notEqual(html.indexOf("Test_Text"), -1);
+    const html = mountWrapper.html();
+
+    expect(html).to.contain("Test_Text");
   });
 });
