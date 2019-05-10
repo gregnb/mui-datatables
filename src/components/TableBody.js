@@ -121,11 +121,11 @@ class TableBody extends React.Component {
       <MuiTableBody>
         {tableRows && tableRows.length > 0 ? (
           tableRows.map((data, rowIndex) => {
-            if (options.customRowRender) {
-              return options.customRowRender(data, rowIndex);
-            }
-
             const { data: row, dataIndex } = data;
+
+            if (options.customRowRender) {
+              return options.customRowRender(row, dataIndex, rowIndex);
+            }
 
             return (
               <React.Fragment key={rowIndex}>
