@@ -190,7 +190,9 @@ class MUIDataTable extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
-      this.setTableData(prevProps, TABLE_LOAD.INITIAL);
+      this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
+        this.setTableAction('tableLoadInitial');
+      });
     }
 
     if (this.options.resizableColumns) {
@@ -374,9 +376,7 @@ class MUIDataTable extends React.Component {
     let { columns, filterData, filterList } = this.buildColumns(props.columns);
     let sortIndex = null;
     let sortDirection = null;
-
     const data = status === TABLE_LOAD.INITIAL ? this.transformData(columns, props.data) : props.data;
-
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
         let value = status === TABLE_LOAD.INITIAL ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
