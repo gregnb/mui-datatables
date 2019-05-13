@@ -353,6 +353,8 @@ class MUIDataTable extends React.Component {
     return { columns: columnData, filterData, filterList };
   };
 
+  leaf = (obj, path) => (path.split('.').reduce((value,el) => value[el], obj));
+
   transformData = (columns, data) => {
     return Array.isArray(data[0])
       ? data.map(row => {
@@ -363,7 +365,7 @@ class MUIDataTable extends React.Component {
             return col.empty ? undefined : row[i];
           });
         })
-      : data.map(row => columns.map(col => row[col.name]));
+      : data.map(row => columns.map(col => this.leaf(row, col.name)));
   };
 
   setTableData(props, status, callback = () => {}) {

@@ -43,15 +43,19 @@ class Example extends React.Component {
           filter: true,
           sort: false
         }
-      }      
+      },
+      {
+        name: "phone.home",
+        label: "Home Phone",
+      }
     ];
 
 
     const data = [
-      { name: "Gabby George", title: "Business Analyst", location: "Minneapolis", age: 30, salary: "$100,000" },
-      { name: "Aiden Lloyd", title: "Business Consultant", location: "Dallas",  age: 55, salary: "$200,000" },
-      { name: "Jaden Collins", title: "Attorney", location: "Santa Ana", age: 27, salary: "$500,000" },
-      { name: "Franky Rees", title: "Business Analyst", location: "St. Petersburg", age: 22, salary: "$50,000" }
+      { name: "Gabby George", title: "Business Analyst", location: "Minneapolis", age: 30, salary: "$100,000", phone: { home: '867-5309', cell: '123-4567' } },
+      { name: "Aiden Lloyd", title: "Business Consultant", location: "Dallas",  age: 55, salary: "$200,000", phone: { home: '867-5309', cell: '123-4567' } },
+      { name: "Jaden Collins", title: "Attorney", location: "Santa Ana", age: 27, salary: "$500,000", phone: { home: '867-5309', cell: '123-4567' } },
+      { name: "Franky Rees", title: "Business Analyst", location: "St. Petersburg", age: 22, salary: "$50,000", phone: { home: '867-5309', cell: '123-4567' } }
       // ["Aaren Rose", "Business Consultant", "Toledo", 28, "$75,000"],
       // ["Blake Duncan", "Business Management Analyst", "San Diego", 65, "$94,000"],
       // ["Frankie Parry", "Agency Legal Counsel", "Jacksonville", 71, "$210,000"],
