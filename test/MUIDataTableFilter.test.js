@@ -364,7 +364,8 @@ describe('<TableFilter />', function() {
             .find(ListItemText)
             .map(childs => childs.prop('primary'));
 
-        assert.sameOrderedMembers(renderedOptions, Levels);
+        const excpectedLevelsArray = Levels.map((x, i) => [x, i]).flat();
+        assert.sameOrderedMembers(renderedOptions, excpectedLevelsArray);
 
         const multiSelectValues = selectLevel.prop('renderValue')([0, 2]);
         assert.sameOrderedMembers(multiSelectValues, [Levels[0], ', ', Levels[2]]);

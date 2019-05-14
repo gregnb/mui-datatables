@@ -137,6 +137,7 @@ class MUIDataTable extends React.Component {
         filename: PropTypes.string,
         separator: PropTypes.string,
       }),
+      onDownload: PropTypes.func,
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
@@ -190,7 +191,7 @@ class MUIDataTable extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
-      this.setTableData(prevProps, TABLE_LOAD.INITIAL);
+      this.setTableData(this.props, TABLE_LOAD.INITIAL);
     }
 
     if (this.options.resizableColumns) {
@@ -791,21 +792,21 @@ class MUIDataTable extends React.Component {
     );
   };
 
-  filterUpdate = (index, column, type) => {
+  filterUpdate = (index, value, column, type) => {
     this.setState(
       prevState => {
         const filterList = cloneDeep(prevState.filterList);
-        const filterPos = filterList[index].indexOf(column);
+        const filterPos = filterList[index].indexOf(value);
 
         switch (type) {
           case 'checkbox':
-            filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(column);
+            filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(value);
             break;
           case 'multiselect':
-            filterList[index] = column === '' ? [] : column;
+            filterList[index] = value === '' ? [] : value;
             break;
           default:
-            filterList[index] = filterPos >= 0 || column === '' ? [] : [column];
+            filterList[index] = filterPos >= 0 || value === '' ? [] : [value];
         }
 
         return {
@@ -831,6 +832,7 @@ class MUIDataTable extends React.Component {
     const cleanRows = data.filter(({ index }) => !selectedMap[index]);
 
     if (this.options.onRowsDelete) {
+      if (this.options.onRowsDelete(selectedRows) === false) return;
       this.options.onRowsDelete(selectedRows);
     }
 
@@ -1043,6 +1045,7 @@ class MUIDataTable extends React.Component {
     const rowCount = this.options.count || displayData.length;
     const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
     const showToolbar = hasToolbarItem(this.options, title);
+    const columnNames = columns.map(column => ({ name: column.name }));
 
     return (
       <Paper
@@ -1083,6 +1086,7 @@ class MUIDataTable extends React.Component {
           })}
           filterList={filterList}
           filterUpdate={this.filterUpdate}
+          columnNames={columnNames}
         />
         <div
           style={{ position: 'relative' }}

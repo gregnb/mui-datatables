@@ -126,22 +126,22 @@ class TableFilter extends React.Component {
     classes: PropTypes.object,
   };
 
-  handleCheckboxChange = (index, column) => {
-    this.props.onFilterUpdate(index, column, 'checkbox');
+  handleCheckboxChange = (index, value, column) => {
+    this.props.onFilterUpdate(index, value, column, 'checkbox');
   };
 
-  handleDropdownChange = (event, index) => {
+  handleDropdownChange = (event, index, column) => {
     const labelFilterAll = this.props.options.textLabels.filter.all;
     const value = event.target.value === labelFilterAll ? '' : event.target.value;
-    this.props.onFilterUpdate(index, value, 'dropdown');
+    this.props.onFilterUpdate(index, value, column, 'dropdown');
   };
 
-  handleMultiselectChange = (index, column) => {
-    this.props.onFilterUpdate(index, column, 'multiselect');
+  handleMultiselectChange = (index, value, column) => {
+    this.props.onFilterUpdate(index, value, column, 'multiselect');
   };
 
-  handleTextFieldChange = (event, index) => {
-    this.props.onFilterUpdate(index, event.target.value, 'textField');
+  handleTextFieldChange = (event, index, column) => {
+    this.props.onFilterUpdate(index, event.target.value, column, 'textField');
   };
 
   renderCheckbox(column, index) {
@@ -157,7 +157,7 @@ class TableFilter extends React.Component {
             </Typography>
           </Grid>
           <Grid container>
-            {filterData[index].map((filterColumn, filterIndex) => (
+            {filterData[index].map((filterValue, filterIndex) => (
               <Grid item key={filterIndex}>
                 <FormControlLabel
                   key={filterIndex}
@@ -168,16 +168,16 @@ class TableFilter extends React.Component {
                   control={
                     <Checkbox
                       className={classes.checkboxIcon}
-                      onChange={this.handleCheckboxChange.bind(null, index, filterColumn)}
-                      checked={filterList[index].indexOf(filterColumn) >= 0 ? true : false}
+                      onChange={this.handleCheckboxChange.bind(null, index, filterValue, column.name)}
+                      checked={filterList[index].indexOf(filterValue) >= 0 ? true : false}
                       classes={{
                         root: classes.checkbox,
                         checked: classes.checked,
                       }}
-                      value={filterColumn != null ? filterColumn.toString() : ''}
+                      value={filterValue != null ? filterValue.toString() : ''}
                     />
                   }
-                  label={customRender ? customRender(filterColumn) : filterColumn}
+                  label={customRender ? customRender(filterValue) : filterValue}
                 />
               </Grid>
             ))}
@@ -200,14 +200,14 @@ class TableFilter extends React.Component {
             <Select
               value={filterList[index].toString() || textLabels.all}
               name={column.name}
-              onChange={event => this.handleDropdownChange(event, index)}
+              onChange={event => this.handleDropdownChange(event, index, column.name)}
               input={<Input name={column.name} id={column.name} />}>
               <MenuItem value={textLabels.all} key={0}>
                 {textLabels.all}
               </MenuItem>
-              {filterData[index].map((filterColumn, filterIndex) => (
-                <MenuItem value={filterColumn} key={filterIndex + 1}>
-                  {customRender ? customRender(filterColumn) : filterColumn != null ? filterColumn.toString() : ''}
+              {filterData[index].map((filterValue, filterIndex) => (
+                <MenuItem value={filterValue} key={filterIndex + 1}>
+                  {customRender ? customRender(filterValue) : filterValue != null ? filterValue.toString() : ''}
                 </MenuItem>
               ))}
             </Select>
@@ -227,7 +227,7 @@ class TableFilter extends React.Component {
             <TextField
               label={column.label}
               value={filterList[index].toString() || ''}
-              onChange={event => this.handleTextFieldChange(event, index)}
+              onChange={event => this.handleTextFieldChange(event, index, column.name)}
             />
           </FormControl>
         </div>
@@ -251,20 +251,21 @@ class TableFilter extends React.Component {
                 customRender ? joinArray(selected.map(customRender), ', ') : selected.join(', ')
               }
               name={column.name}
-              onChange={event => this.handleMultiselectChange(index, event.target.value)}
+              onChange={event => this.handleMultiselectChange(index, event.target.value, column.name)}
               input={<Input name={column.name} id={column.name} />}>
-              {filterData[index].map((filterColumn, filterIndex) => (
-                <MenuItem value={filterColumn} key={filterIndex + 1}>
+              {filterData[index].map((filterValue, filterIndex) => (
+                <MenuItem value={filterValue} key={filterIndex + 1}>
                   <Checkbox
-                    checked={filterList[index].indexOf(filterColumn) >= 0 ? true : false}
-                    value={filterColumn.toString()}
+                    checked={filterList[index].indexOf(filterValue) >= 0 ? true : false}
+                    value={filterValue.toString()}
                     className={classes.checkboxIcon}
                     classes={{
                       root: classes.checkbox,
                       checked: classes.checked,
                     }}
                   />
-                  <ListItemText primary={customRender ? customRender(filterColumn) : filterColumn} />
+                  <ListItemText primary={customRender ? customRender(filterValue) : filterValue} />
+                  <ListItemText primary={filterValue} />
                 </MenuItem>
               ))}
             </Select>

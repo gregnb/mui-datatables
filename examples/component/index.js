@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch';
 import MUIDataTable from "../../src/";
 import Cities from "./cities";
@@ -14,8 +15,15 @@ class Example extends React.Component {
         name: "Name",
         options: {
           filter: false,
+          customBodyRender: (value, tableMeta, updateValue) => (
+            <FormControlLabel
+              value={value}
+              control={<TextField value={value} />}
+              onChange={event => updateValue(event.target.value)}
+            />
+          )
         }
-      },      
+      },
       {
         name: "Title",
         options: {
@@ -34,14 +42,19 @@ class Example extends React.Component {
                 change={event => updateValue(event)}
               />
             );
-          },         
+          },
         }
       },
       {
         name: "Age",
         options: {
           filter: false,
-          customBodyRender: value => value
+          customBodyRender: (value, tableMeta, updateValue) => (
+            <FormControlLabel
+              control={<TextField value={value || ''} type='number' />}
+              onChange={event => updateValue(event.target.value)}
+            />
+          )
         }
       },
       {
