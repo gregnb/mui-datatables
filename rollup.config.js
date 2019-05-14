@@ -36,7 +36,7 @@ export default {
     }),
     uglify({
       compress: {
-        //        warnings: false,
+        // warnings: false,
         conditionals: true,
         unused: true,
         comparisons: true,

@@ -727,6 +727,15 @@ describe('<MUIDataTable />', function() {
     assert.strictEqual(options.onTableChange.callCount, 1);
   });
 
+  it('should call onTableInit on create', () => {
+    const options = { selectableRows: true, onTableInit: spy() };
+
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    assert.strictEqual(options.onTableInit.callCount, 1);
+  });
+
   it('should call onTableChange when calling selectRowUpdate method with type=cell', () => {
     const options = { selectableRows: true, onTableChange: spy() };
 
