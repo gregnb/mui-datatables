@@ -416,7 +416,12 @@ describe('<MUIDataTable />', function() {
     const columnNames = columns.map(column => ({ name: column.name }));
 
     const mountWrapper = mount(
-      <TableFilterList filterList={filterList} filterListRenderers={filterListRenderers} filterUpdate={() => true} columnNames={columnNames} />,
+      <TableFilterList
+        filterList={filterList}
+        filterListRenderers={filterListRenderers}
+        filterUpdate={() => true}
+        columnNames={columnNames}
+      />,
     );
     const actualResult = mountWrapper.find(Chip);
     assert.strictEqual(actualResult.length, 1);
@@ -432,7 +437,12 @@ describe('<MUIDataTable />', function() {
     const columnNames = columns.map(column => ({ name: column.name }));
 
     const mountWrapper = mount(
-      <TableFilterList filterList={filterList} filterListRenderers={filterListRenderers} filterUpdate={() => true} columnNames={columnNames} />,
+      <TableFilterList
+        filterList={filterList}
+        filterListRenderers={filterListRenderers}
+        filterUpdate={() => true}
+        columnNames={columnNames}
+      />,
     );
     const actualResult = mountWrapper.find(Chip);
     assert.strictEqual(actualResult.length, 1);
@@ -477,7 +487,7 @@ describe('<MUIDataTable />', function() {
   it('should have the proper column name in onFilterChange when applying filters', () => {
     let changedColumn;
     const options = {
-      onFilterChange: column => changedColumn = column
+      onFilterChange: column => (changedColumn = column),
     };
 
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
@@ -798,6 +808,14 @@ describe('<MUIDataTable />', function() {
 
     const state = shallowWrapper.state();
     assert.deepEqual(state.data[0].data[2], 'Las Vegas');
+  });
+
+  it('should call onTableInit when MUIDataTable is initialized', () => {
+    const options = { selectableRows: true, onTableInit: spy() };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    assert.strictEqual(options.onTableInit.callCount, 1);
   });
 
   it('should call onTableChange when calling selectRowUpdate method with type=head', () => {
