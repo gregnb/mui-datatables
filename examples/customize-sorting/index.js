@@ -22,7 +22,7 @@ class Example extends React.Component {
       responsive: 'stacked',
       customSort: (data, colIndex, order) => {
         return data.sort((a, b) => {
-          return a.data[colIndex].length > b.data[colIndex].length * (order === "asc" ? -1 : 1);
+          return (a.data[colIndex].length < b.data[colIndex].length ? -1: 1 ) * (order === 'desc' ? 1 : -1);
         });
       }
     };

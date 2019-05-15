@@ -9,7 +9,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 const defaultSelectCellStyles = theme => ({
   root: {
     [theme.breakpoints.down('sm')]: {
-      display: 'none',
+      backgroundColor: theme.palette.background.paper,
     },
   },
   fixedHeader: {
@@ -54,16 +54,15 @@ class TableSelectCell extends React.Component {
     /** Is expandable option enabled */
     expandableOn: PropTypes.bool,
     /** Is selectable option enabled */
-    selectableOn: PropTypes.bool,
+    selectableOn: PropTypes.string,
     /** Select cell disabled on/off */
-    isRowSelectable: PropTypes.bool,
   };
 
   static defaultProps = {
     isHeaderCell: false,
     isRowExpanded: false,
     expandableOn: false,
-    selectableOn: false,
+    selectableOn: 'none',
   };
 
   render() {
@@ -79,7 +78,7 @@ class TableSelectCell extends React.Component {
       ...otherProps
     } = this.props;
 
-    if (!expandableOn && !selectableOn) return false;
+    if (!expandableOn && selectableOn === 'none') return false;
 
     const cellClass = classNames({
       [classes.root]: true,
@@ -93,21 +92,29 @@ class TableSelectCell extends React.Component {
       [classes.expanded]: isRowExpanded,
     });
 
+    const renderCheckBox = () => {
+      if (isHeaderCell && selectableOn !== 'multiple') {
+        // only display the header checkbox for multiple selection.
+        return null;
+      }
+      return (
+        <Checkbox
+          classes={{
+            root: classes.checkboxRoot,
+            checked: classes.checked,
+            disabled: classes.disabled,
+          }}
+          disabled={!isRowSelectable}
+          {...otherProps}
+        />
+      );
+    };
+
     return (
       <TableCell className={cellClass} padding="checkbox">
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {expandableOn && <KeyboardArrowRight className={iconClass} onClick={onExpand} />}
-          {selectableOn && (
-            <Checkbox
-              classes={{
-                root: classes.checkboxRoot,
-                checked: classes.checked,
-                disabled: classes.disabled,
-              }}
-              disabled={!isRowSelectable}
-              {...otherProps}
-            />
-          )}
+          {selectableOn !== 'none' && renderCheckBox()}
         </div>
       </TableCell>
     );

@@ -57,6 +57,10 @@ class Example extends React.Component {
         console.log(rowsSelected, allRows);
       },
       onRowsDelete: (rowsDeleted) => {
+        if (rowsDeleted.data[0].dataIndex === 0) {
+          window.alert('Can\'t delete this!');
+          return false;
+        };
         console.log(rowsDeleted, "were deleted!");
       },
       onChangePage: (numberRows) => {

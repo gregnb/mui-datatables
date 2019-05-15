@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { CircularProgress } from '@material-ui/core';
 import MUIDataTable from "../../src/";
 
 class Example extends React.Component {
@@ -7,7 +8,8 @@ class Example extends React.Component {
   state = {
     page: 0,
     count: 100,
-    data: []
+    data: [["Loading Data..."]],
+    isLoading: false
   };
 
   componentDidMount() {
@@ -16,8 +18,9 @@ class Example extends React.Component {
 
   // get data
   getData = () => {
+    this.setState({ isLoading: true });
     this.xhrRequest().then(data => {
-      this.setState({ data });
+      this.setState({ data, isLoading: false });
     });
   }
 
@@ -39,7 +42,7 @@ class Example extends React.Component {
 
       setTimeout(() => {
         resolve(data);
-      }, 250);
+      }, 2500);
 
     });
 
@@ -57,7 +60,7 @@ class Example extends React.Component {
   render() {
 
     const columns = ["Name", "Title", "Location"];
-    const { data, page,   count } = this.state;
+    const { data, page, count, isLoading } = this.state;
 
     const options = {
       filter: true,
@@ -81,7 +84,10 @@ class Example extends React.Component {
     };
 
     return (
-      <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+      <div>
+        {isLoading && <CircularProgress style={{ marginLeft: '50%' }} />}
+        <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+      </div>
     );
 
   }

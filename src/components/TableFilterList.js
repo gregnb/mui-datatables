@@ -19,6 +19,15 @@ class TableFilterList extends React.Component {
   static propTypes = {
     /** Data used to filter table against */
     filterList: PropTypes.array.isRequired,
+    /** Filter List value renderers */
+    filterListRenderers: PropTypes.array.isRequired,
+    /** Columns used to describe table */
+    columnNames: PropTypes.PropTypes.arrayOf(
+      PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.shape({ name: PropTypes.string.isRequired }),
+      ]),
+    ).isRequired,
     /** Callback to trigger filter update */
     onFilterUpdate: PropTypes.func,
     /** Extend the style applied to components */
@@ -26,16 +35,16 @@ class TableFilterList extends React.Component {
   };
 
   render() {
-    const { classes, filterList, filterUpdate } = this.props;
+    const { classes, filterList, filterUpdate, filterListRenderers, columnNames } = this.props;
 
     return (
       <div className={classes.root}>
         {filterList.map((item, index) =>
           item.map((data, colIndex) => (
             <Chip
-              label={data}
+              label={filterListRenderers[index](data)}
               key={colIndex}
-              onDelete={filterUpdate.bind(null, index, data, 'checkbox')}
+              onDelete={filterUpdate.bind(null, index, data, columnNames[index].name, 'checkbox')}
               className={classes.chip}
             />
           )),

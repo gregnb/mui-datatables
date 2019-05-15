@@ -61,6 +61,15 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(actualResult.length, 5);
   });
 
+  it('should render a toolbar with custom title if title is not string', () => {
+    const title = <h1>custom title</h1>;
+    const mountWrapper = mount(
+      <TableToolbar title={title} columns={columns} data={data} options={options} setTableAction={setTableAction} />,
+    );
+    const actualResult = mountWrapper.find('h1');
+    assert.strictEqual(actualResult.length, 1);
+  });
+
   it('should render a toolbar with no search icon if option.search = false', () => {
     const newOptions = { ...options, search: false };
     const mountWrapper = mount(
@@ -195,5 +204,31 @@ describe('<TableToolbar />', function() {
 
     assert.strictEqual(appendSpy.callCount, 1);
     assert.strictEqual(removeSpy.callCount, 1);
+  });
+
+  it('should trigger onDownload prop callback when calling method handleCSVDownload', () => {
+    const onDownload = spy();
+
+    const newOptions = { ...options, onDownload };
+
+    const shallowWrapper = shallow(
+      <TableToolbar
+        columns={columns}
+        displayData={data}
+        data={data}
+        options={newOptions}
+        setTableAction={setTableAction}
+      />,
+    );
+
+    const instance = shallowWrapper
+      .dive()
+      .dive()
+      .dive()
+      .instance();
+
+    instance.handleCSVDownload();
+
+    assert.strictEqual(onDownload.callCount, 1);
   });
 });

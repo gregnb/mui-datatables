@@ -19,24 +19,20 @@ class Example extends React.Component {
         name: "Title",
         options: {
           filter: true,
-          sortDirection: 'asc'
         }
       },
       {
         name: "Location",
         options: {
+          print: false,
           filter: false,
-          customHeadRender: (columnMeta, updateDirection) => (
-            <th key={2} onClick={() => updateDirection(2)} style={{ cursor: 'pointer' }}>
-              {columnMeta.name}
-            </th>
-          )
         }
       },
       {
         name: "Age",
         options: {
           filter: true,
+          print: false,
         }
       },
       {
@@ -85,7 +81,7 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: 'scroll',
     };
 
     return (

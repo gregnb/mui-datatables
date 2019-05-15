@@ -19,10 +19,10 @@ import { createCSVDownload } from '../utils';
 export const defaultToolbarStyles = (theme, props) => ({
   root: {},
   left: {
-    flex: '1 1 55%',
+    flex: '1 1 auto',
   },
   actions: {
-    flex: '0 0 45%',
+    flex: '1 1 auto',
     textAlign: 'right',
   },
   titleRoot: {},
@@ -34,6 +34,9 @@ export const defaultToolbarStyles = (theme, props) => ({
   },
   iconActive: {
     color: theme.palette.primary.main,
+  },
+  filterPaper: {
+    maxWidth: '50%',
   },
   searchIcon: {
     display: 'inline-flex',
@@ -82,6 +85,7 @@ class TableToolbar extends React.Component {
   state = {
     iconActive: null,
     showSearch: false,
+    searchText: null,
   };
 
   handleCSVDownload = () => {
@@ -91,9 +95,25 @@ class TableToolbar extends React.Component {
 
   setActiveIcon = iconName => {
     this.setState(() => ({
+      showSearch: this.isSearchShown(iconName),
       iconActive: iconName,
-      showSearch: iconName === 'search' ? this.showSearch() : false,
     }));
+  };
+
+  isSearchShown = iconName => {
+    let nextVal = false;
+    if (this.state.showSearch) {
+      if (this.state.searchText) {
+        nextVal = true;
+      } else {
+        const { onSearchClose } = this.props.options;
+        if (onSearchClose) onSearchClose();
+        nextVal = false;
+      }
+    } else if (iconName === 'search') {
+      nextVal = this.showSearch();
+    }
+    return nextVal;
   };
 
   getActiveIcon = (styles, iconName) => {
@@ -115,9 +135,15 @@ class TableToolbar extends React.Component {
     this.setState(() => ({
       iconActive: null,
       showSearch: false,
+      searchText: null,
     }));
 
     this.searchButton.focus();
+  };
+
+  handleSearch = value => {
+    this.setState({ searchText: value });
+    this.props.searchTextUpdate(value);
   };
 
   render() {
@@ -130,7 +156,6 @@ class TableToolbar extends React.Component {
       filterList,
       filterUpdate,
       resetFilters,
-      searchTextUpdate,
       toggleViewColumn,
       title,
       tableRef,
@@ -143,7 +168,9 @@ class TableToolbar extends React.Component {
       <Toolbar className={classes.root} role={'toolbar'} aria-label={'Table Toolbar'}>
         <div className={classes.left}>
           {showSearch === true ? (
-            <TableSearch onSearch={searchTextUpdate} onHide={this.hideSearch} options={options} />
+            <TableSearch onSearch={this.handleSearch} onHide={this.hideSearch} options={options} />
+          ) : typeof title !== 'string' ? (
+            title
           ) : (
             <div className={classes.titleRoot} aria-hidden={'true'}>
               <Typography variant="h6" className={classes.titleText}>
@@ -172,32 +199,31 @@ class TableToolbar extends React.Component {
             </Tooltip>
           )}
           {options.print && (
-            <Tooltip title={print}>
-              <span>
-                <ReactToPrint
-                  trigger={() => (
+            <span>
+              <ReactToPrint
+                trigger={() => (
+                  <Tooltip title={print}>
                     <IconButton aria-label={print} classes={{ root: classes.icon }}>
                       <PrintIcon />
                     </IconButton>
-                  )}
-                  content={() => this.props.tableRef()}
-                />
-              </span>
-            </Tooltip>
+                  </Tooltip>
+                )}
+                content={() => this.props.tableRef()}
+              />
+            </span>
           )}
           {options.viewColumns && (
             <Popover
               refExit={this.setActiveIcon.bind(null)}
-              container={tableRef}
               trigger={
-                <IconButton
-                  aria-label={viewColumns}
-                  classes={{ root: this.getActiveIcon(classes, 'viewcolumns') }}
-                  onClick={this.setActiveIcon.bind(null, 'viewcolumns')}>
-                  <Tooltip title={viewColumns}>
+                <Tooltip title={viewColumns}>
+                  <IconButton
+                    aria-label={viewColumns}
+                    classes={{ root: this.getActiveIcon(classes, 'viewcolumns') }}
+                    onClick={this.setActiveIcon.bind(null, 'viewcolumns')}>
                     <ViewColumnIcon />
-                  </Tooltip>
-                </IconButton>
+                  </IconButton>
+                </Tooltip>
               }
               content={
                 <TableViewCol data={data} columns={columns} options={options} onColumnUpdate={toggleViewColumn} />
@@ -207,16 +233,16 @@ class TableToolbar extends React.Component {
           {options.filter && (
             <Popover
               refExit={this.setActiveIcon.bind(null)}
-              container={tableRef}
+              classes={{ paper: classes.filterPaper }}
               trigger={
-                <IconButton
-                  aria-label={filterTable}
-                  classes={{ root: this.getActiveIcon(classes, 'filter') }}
-                  onClick={this.setActiveIcon.bind(null, 'filter')}>
-                  <Tooltip title={filterTable}>
+                <Tooltip title={filterTable}>
+                  <IconButton
+                    aria-label={filterTable}
+                    classes={{ root: this.getActiveIcon(classes, 'filter') }}
+                    onClick={this.setActiveIcon.bind(null, 'filter')}>
                     <FilterIcon />
-                  </Tooltip>
-                </IconButton>
+                  </IconButton>
+                </Tooltip>
               }
               content={
                 <TableFilter

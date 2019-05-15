@@ -5,6 +5,7 @@
 # MUI-Datatables - Datatables for Material-UI
 
 [![Build Status](https://travis-ci.org/gregnb/mui-datatables.svg?branch=master)](https://travis-ci.org/gregnb/mui-datatables)
+[![NPM Downloads](https://img.shields.io/npm/dt/mui-datatables.svg?style=flat)](https://npmcharts.com/compare/mui-datatables?minimal=true)
 [![Coverage Status](https://coveralls.io/repos/github/gregnb/mui-datatables/badge.svg?branch=master)](https://coveralls.io/github/gregnb/mui-datatables?branch=master)
 [![dependencies Status](https://david-dm.org/gregnb/mui-datatables/status.svg)](https://david-dm.org/gregnb/mui-datatables)
 [![npm version](https://badge.fury.io/js/mui-datatables.svg)](https://badge.fury.io/js/mui-datatables)
@@ -61,28 +62,32 @@ import MUIDataTable from "mui-datatables";
 
 const columns = [
  {
-  name: "Name",
+  name: "name",
+  label: "Name",
   options: {
    filter: true,
    sort: true,
   }
  },
  {
-  name: "Company",
+  name: "company",
+  label: "Company",
   options: {
    filter: true,
    sort: false,
   }
  },
  {
-  name: "City",
+  name: "city",
+  label: "City",
   options: {
    filter: true,
    sort: false,
   }
  },
  {
-  name: "State",
+  name: "state",
+  label: "State",
   options: {
    filter: true,
    sort: false,
@@ -91,10 +96,10 @@ const columns = [
 ];
 
 const data = [
- ["Joe James", "Test Corp", "Yonkers", "NY"],
- ["John Walsh", "Test Corp", "Hartford", "CT"],
- ["Bob Herm", "Test Corp", "Tampa", "FL"],
- ["James Houston", "Test Corp", "Dallas", "TX"],
+ { name: "Joe James", company: "Test Corp", city: "Yonkers", state: "NY" },
+ { name: "John Walsh", company: "Test Corp", city: "Hartford", state: "CT" },
+ { name: "Bob Herm", company: "Test Corp", city: "Tampa", state: "FL" },
+ { name: "James Houston", company: "Test Corp", city: "Dallas", state: "TX" },
 ];
 
 const options = {
@@ -121,7 +126,7 @@ The component accepts the following props:
 |:--:|:-----|:-----|
 |**`title`**|array|Title used to caption table
 |**`columns`**|array|Columns used to describe table. Must be either an array of simple strings or objects describing a column
-|**`data`**|array|Data used to describe table. Must be an array of strings or numbers
+|**`data`**|array|Data used to describe table. Must be an array containing objects. (Arrays containing just strings or numbers also supported) 
 |**`options`**|object|Options used to describe table
 
 #### Options:
@@ -131,10 +136,10 @@ The component accepts the following props:
 |**`count`**|number||User provided override for total number of rows
 |**`serverSide`**|boolean|false|Enable remote data source
 |**`rowsSelected`**|array||User provided selected rows
-|**`filterType `**|string|'dropdown'|Choice of filtering view. Options are "checkbox", "dropdown", "multiselect" or "textField"
+|**`filterType `**|string||Choice of filtering view. `enum('checkbox', 'dropdown', 'multiselect', 'textField')`
 |**`textLabels `**|object||User provided labels to localize text
 |**`pagination`**|boolean|true|Enable/disable pagination
-|**`selectableRows`**|boolean|true|Enable/disable row selection
+|**`selectableRows`**|string|'multiple'|Numbers of rows that can be selected. Options are "multiple", "single", "none".
 |**`isRowSelectable`**|function||Enable/disable selection on certain rows with custom function. Returns true if not provided.  `function(dataIndex) => bool`
 |**`resizableColumns`**|boolean|false|Enable/disable resizable columns
 |**`expandableRows`**|boolean|false|Enable/disable expandable rows
@@ -143,6 +148,7 @@ The component accepts the following props:
 |**`customToolbarSelect`**|function||Render a custom selected rows toolbar. `function(selectedRows, displayData, setSelectedRows) => void`
 |**`customFooter`**|function||Render a custom table footer. `function(count, page, rowsPerPage, changeRowsPerPage, changePage) => string`&#124;` React Component`
 |**`customSort`**|function||Override default sorting with custom function. `function(data: array, colIndex: number, order: string) => array`
+|**`customSearch `**|function||Override default search with custom function. `customSearch(searchQuery: string, currentRow: array, columns: array) => boolean`
 |**`elevation`**|number|4|Shadow depth applied to Paper component
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
 |**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: 'stacked', 'scroll'
@@ -157,9 +163,10 @@ The component accepts the following props:
 |**`print`**|boolean|true|Show/hide print	 icon from toolbar
 |**`download`**|boolean|true|Show/hide download icon from toolbar
 |**`downloadOptions`**|object||Options to change the output of the CSV file. Default options: `{filename: 'tableDownload.csv', separator: ','}`
+|**`onDownload`**|function||A callback function that triggers when the user downloads the CSV file. In the callback, you can control what is written to the CSV file. `function(buildHead: (columns) => string, buildBody: (data) => string, columns, data) => string`
 |**`viewColumns`**|boolean|true|Show/hide viewColumns icon from toolbar
 |**`onRowsSelect`**|function||Callback function that triggers when row(s) are selected. `function(currentRowsSelected: array, allRowsSelected: array) => void`
-|**`onRowsDelete`**|function||Callback function that triggers when row(s) are deleted. `function(rowsDeleted: array) => void`
+|**`onRowsDelete`**|function||Callback function that triggers when row(s) are deleted. `function(rowsDeleted: object(lookup: {dataindex: boolean}, data: arrayOfObjects: {index, dataIndex})) => void OR false` (Returning `false` prevents row deletion.)
 |**`onRowClick`**|function||Callback function that triggers when a row is clicked. `function(rowData: string[], rowMeta: { dataIndex: number, rowIndex: number }) => void`
 |**`onCellClick`**|function||Callback function that triggers when a cell is clicked. `function(colData: any, cellMeta: { colIndex: number, rowIndex: number, dataIndex: number }) => void`
 |**`onChangePage`**|function||Callback function that triggers when a page has changed. `function(currentPage: number) => void`
@@ -170,7 +177,7 @@ The component accepts the following props:
 |**`onColumnSortChange`**|function||Callback function that triggers when a column has been sorted. `function(changedColumn: string, direction: string) => void`
 |**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
 |**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
-|**`setRowProps`**|function||Is called for each row and allows to return custom props for this row based on its data. `function(row: array, rowIndex: number) => object`
+|**`setRowProps`**|function||Is called for each row and allows to return custom props for this row based on its data. `function(row: array, dataIndex: number) => object`
 |**`alwaysRenderToolbar`**|boolean|false|Whether the toolbar should also be rendered when a column is selected
 
 ## Customize Columns
@@ -193,7 +200,7 @@ const columns = [
 #### Column:
 |Name|Type|Description
 |:--:|:-----|:-----|
-|**`Name`**|string|Name of column (This field is required)
+|**`name`**|string|Name of column (This field is required)
 |**`label`**|string|Column Header Name override
 |**`options`**|object|Options for customizing column
 
@@ -202,26 +209,40 @@ const columns = [
 |Name|Type|Default|Description
 |:--:|:-----|:--|:-----|
 |**`display`**|string|'true'|Display column in table. `enum('true', 'false', 'excluded')`
+|**`empty`**|boolean|false|This denotes whether the column has data or not (for use with intentionally empty columns)
 |**`filterList`**|array||Filter value list [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
-|**`filterOptons`**|array||Filter options [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
+|**`filterOptions`**|array||Filter options [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
+|**`customFilterListRender`**|function||Function that returns a string used as the chip label. `function(value) => string` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`filter`**|boolean|true|Display column in filter list
+|**`filterType `**|string|'dropdown'|Choice of filtering view. Takes priority over global filterType option.`enum('checkbox', 'dropdown', 'multiselect', 'textField')`.
 |**`sort`**|boolean|true|Enable/disable sorting on column
+|**`searchable`**|boolean|true|Exclude/include column from search results
 |**`sortDirection`**|string||Set default sort order `enum('asc', 'desc')`
+|**`print`**|boolean|true|Display column when printing
 |**`download`**|boolean|true|Display column in CSV download file
 |**`hint`**|string||Display hint icon with string as tooltip on hover.
-|**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(value, tableMeta, updateValue) => string`&#124;
+|**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(columnMeta, handleToggleColumn) => string`&#124;` React Component`
 |**`customBodyRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
-|**`setCellProps`**|function||Is called for each cell and allows to return custom props for this cell based on its data. `function(cellValue: string, rowIndex: number, columnIndex: number) => string`
+|**`setCellProps`**|function||Is called for each cell and allows to return custom props for this cell based on its data. `function(cellValue: string, rowIndex: number, columnIndex: number) => object`
 
 `customHeadRender` is called with these arguments:
 
 ```js
 function(columnMeta: {
+  customHeadRender: func,
   display: enum('true', 'false', 'excluded'),
   filter: bool,
   sort: bool,
   sortDirection: bool,
-}, updateDirection: function)
+  download: bool,
+  empty: bool,
+  index: number,
+  label: string,
+  name: string,
+  print: bool,
+  searchable: bool,
+  viewColumns: bool
+}, handleToggleColumn: function(columnIndex))
 ```
 
 
@@ -335,7 +356,7 @@ const options = {
       titleAria: "Show/Hide Table Columns",
     },
     selectedRows: {
-      text: "rows(s) selected",
+      text: "row(s) selected",
       delete: "Delete",
       deleteAria: "Delete Selected Rows",
     },
@@ -344,9 +365,21 @@ const options = {
 }
 ```
 
+## Contributing
+Thanks for taking an interest in the library and the github community!
+
+The following commands should get you started:
+
+```sh
+npm i
+npm run dev
+```
+open  http://localhost:5050/ in browser
+
+After you make your changes locally, you can run the test suite with `npm test`. 
+
 ## License
 The files included in this repository are licensed under the MIT license.
-
 
 ## Thanks
 
