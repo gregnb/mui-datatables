@@ -161,6 +161,7 @@ The component accepts the following props:
 |**`sort`**|boolean|true|Enable/disable sort on all columns
 |**`filter`**|boolean|true|Show/hide filter icon from toolbar
 |**`search`**|boolean|true|Show/hide search icon from toolbar
+|**`searchText`**|string||Initial search text
 |**`print`**|boolean|true|Show/hide print	 icon from toolbar
 |**`download`**|boolean|true|Show/hide download icon from toolbar
 |**`downloadOptions`**|object||Options to change the output of the CSV file. Default options: `{filename: 'tableDownload.csv', separator: ','}`
