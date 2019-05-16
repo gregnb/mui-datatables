@@ -224,7 +224,8 @@ describe('<TableBody />', function() {
       />,
     );
 
-    mountWrapper.find('#MUIDataTableBodyRow-2')
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
       .first()
       .simulate('click');
 
@@ -288,6 +289,6 @@ describe('<TableBody />', function() {
 
     const html = mountWrapper.html();
 
-    expect(html).to.contain("Test_Text");
+    expect(html).to.contain('Test_Text');
   });
 });
