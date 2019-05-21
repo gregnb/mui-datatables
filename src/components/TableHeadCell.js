@@ -34,7 +34,7 @@ const defaultHeadCellStyles = theme => ({
     paddingLeft: '4px',
     height: '10px',
     position: 'absolute'
-},
+  },
   sortActive: {
     color: theme.palette.text.primary,
   },
