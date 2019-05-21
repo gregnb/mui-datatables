@@ -70,6 +70,16 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(actualResult.length, 1);
   });
 
+  it('should render a toolbar with search text initialized if option.searchText = some_text', () => {
+    const newOptions = { ...options, search: true, searchText: 'searchText' };
+    const mountWrapper = mount(
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    );
+    const actualResult = mountWrapper.find(TableSearch);
+    assert.strictEqual(actualResult.length, 1);
+    assert.strictEqual(actualResult.props().initialSearchText, 'searchText');
+  });
+
   it('should render a toolbar with no search icon if option.search = false', () => {
     const newOptions = { ...options, search: false };
     const mountWrapper = mount(
@@ -204,5 +214,31 @@ describe('<TableToolbar />', function() {
 
     assert.strictEqual(appendSpy.callCount, 1);
     assert.strictEqual(removeSpy.callCount, 1);
+  });
+
+  it('should trigger onDownload prop callback when calling method handleCSVDownload', () => {
+    const onDownload = spy();
+
+    const newOptions = { ...options, onDownload };
+
+    const shallowWrapper = shallow(
+      <TableToolbar
+        columns={columns}
+        displayData={data}
+        data={data}
+        options={newOptions}
+        setTableAction={setTableAction}
+      />,
+    );
+
+    const instance = shallowWrapper
+      .dive()
+      .dive()
+      .dive()
+      .instance();
+
+    instance.handleCSVDownload();
+
+    assert.strictEqual(onDownload.callCount, 1);
   });
 });

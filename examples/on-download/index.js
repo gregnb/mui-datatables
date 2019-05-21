@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MUIDataTable from '../../src/';
+import MUIDataTable from '../../src';
 
 class Example extends React.Component {
   render() {
@@ -22,6 +22,7 @@ class Example extends React.Component {
       {
         name: 'Location',
         options: {
+          print: false,
           filter: false,
         },
       },
@@ -29,6 +30,7 @@ class Example extends React.Component {
         name: 'Age',
         options: {
           filter: true,
+          print: false,
         },
       },
       {
@@ -73,20 +75,43 @@ class Example extends React.Component {
       ['Mason Ray', 'Computer Scientist', 'San Francisco', 39, '$142,000'],
     ];
 
+    // Data for building a custom head and body with the onDownload option
+    const headerNames = [
+      {
+        name: 'Given name',
+        download: true,
+      },
+      {
+        name: 'Role',
+        download: true,
+      },
+      {
+        name: 'City',
+        download: true,
+      },
+      {
+        name: 'Years',
+        download: true,
+      },
+      {
+        name: 'Dough',
+        download: true,
+      },
+    ];
+    const footerNames = ['Full Name', 'Job', 'Whereabouts', 'Age', 'Allowance'];
+
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'stacked',
-      searchText: 'Computer',
-      customSearch: (searchQuery, currentRow, columns) => {
-        let isFound = false;
-        currentRow.forEach(col => {
-          if (col.toString().indexOf(searchQuery) >= 0) {
-            isFound = true;
-          }
-        });
-        return isFound;
-      },
+      responsive: 'scroll',
+      onDownload: (buildHead, buildBody, columns, data) =>
+        buildHead(headerNames) +
+        buildBody(
+          data.concat({
+            index: data.length,
+            data: footerNames,
+          }),
+        ),
     };
 
     return <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />;

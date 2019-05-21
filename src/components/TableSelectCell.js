@@ -9,7 +9,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 const defaultSelectCellStyles = theme => ({
   root: {
     [theme.breakpoints.down('sm')]: {
-      display: 'none',
+      backgroundColor: theme.palette.background.paper,
     },
   },
   fixedHeader: {

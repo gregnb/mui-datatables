@@ -147,6 +147,7 @@ The component accepts the following props:
 |**`customToolbar`**|function||Render a custom toolbar
 |**`customToolbarSelect`**|function||Render a custom selected rows toolbar. `function(selectedRows, displayData, setSelectedRows) => void`
 |**`customFooter`**|function||Render a custom table footer. `function(count, page, rowsPerPage, changeRowsPerPage, changePage) => string`&#124;` React Component`
+|**`customRowRender `**|function||Override default row rendering with custom function. `customRowRender(data, dataIndex, rowIndex) => React Component`
 |**`customSort`**|function||Override default sorting with custom function. `function(data: array, colIndex: number, order: string) => array`
 |**`customSearch `**|function||Override default search with custom function. `customSearch(searchQuery: string, currentRow: array, columns: array) => boolean`
 |**`elevation`**|number|4|Shadow depth applied to Paper component
@@ -160,12 +161,14 @@ The component accepts the following props:
 |**`sort`**|boolean|true|Enable/disable sort on all columns
 |**`filter`**|boolean|true|Show/hide filter icon from toolbar
 |**`search`**|boolean|true|Show/hide search icon from toolbar
+|**`searchText`**|string||Initial search text
 |**`print`**|boolean|true|Show/hide print	 icon from toolbar
 |**`download`**|boolean|true|Show/hide download icon from toolbar
 |**`downloadOptions`**|object||Options to change the output of the CSV file. Default options: `{filename: 'tableDownload.csv', separator: ','}`
+|**`onDownload`**|function||A callback function that triggers when the user downloads the CSV file. In the callback, you can control what is written to the CSV file. `function(buildHead: (columns) => string, buildBody: (data) => string, columns, data) => string`
 |**`viewColumns`**|boolean|true|Show/hide viewColumns icon from toolbar
 |**`onRowsSelect`**|function||Callback function that triggers when row(s) are selected. `function(currentRowsSelected: array, allRowsSelected: array) => void`
-|**`onRowsDelete`**|function||Callback function that triggers when row(s) are deleted. `function(rowsDeleted: array) => void`
+|**`onRowsDelete`**|function||Callback function that triggers when row(s) are deleted. `function(rowsDeleted: object(lookup: {dataindex: boolean}, data: arrayOfObjects: {index, dataIndex})) => void OR false` (Returning `false` prevents row deletion.)
 |**`onRowClick`**|function||Callback function that triggers when a row is clicked. `function(rowData: string[], rowMeta: { dataIndex: number, rowIndex: number }) => void`
 |**`onCellClick`**|function||Callback function that triggers when a cell is clicked. `function(colData: any, cellMeta: { colIndex: number, rowIndex: number, dataIndex: number }) => void`
 |**`onChangePage`**|function||Callback function that triggers when a page has changed. `function(currentPage: number) => void`
@@ -208,6 +211,7 @@ const columns = [
 |:--:|:-----|:--|:-----|
 |**`display`**|string|'true'|Display column in table. `enum('true', 'false', 'excluded')`
 |**`empty`**|boolean|false|This denotes whether the column has data or not (for use with intentionally empty columns)
+|**`viewColumns`**|boolean|true|Allow user to toggle column visibility through 'View Column' list
 |**`filterList`**|array||Filter value list [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`filterOptions`**|array||Filter options [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`customFilter`**|function||Callback function that, combined with `filterOptions`, allows custom filter data returning `true`. `function(columnValue, filterVal: array) => boolean` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js)
@@ -364,9 +368,21 @@ const options = {
 }
 ```
 
+## Contributing
+Thanks for taking an interest in the library and the github community!
+
+The following commands should get you started:
+
+```sh
+npm i
+npm run dev
+```
+open  http://localhost:5050/ in browser
+
+After you make your changes locally, you can run the test suite with `npm test`. 
+
 ## License
 The files included in this repository are licensed under the MIT license.
-
 
 ## Thanks
 

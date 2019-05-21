@@ -207,7 +207,7 @@ describe('<TableBody />', function() {
     const selectRowUpdate = stub();
     const toggleExpandRow = () => {};
 
-    const t = mount(
+    const mountWrapper = mount(
       <TableBody
         data={displayData}
         count={displayData.length}
@@ -224,7 +224,8 @@ describe('<TableBody />', function() {
       />,
     );
 
-    t.find('#MUIDataTableBodyRow-2')
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
       .first()
       .simulate('click');
 
@@ -237,7 +238,7 @@ describe('<TableBody />', function() {
     const selectRowUpdate = stub();
     const toggleExpandRow = () => {};
 
-    const t = mount(
+    const mountWrapper = mount(
       <TableBody
         data={displayData}
         count={displayData.length}
@@ -254,7 +255,7 @@ describe('<TableBody />', function() {
       />,
     );
 
-    const props = t
+    const props = mountWrapper
       .find('#MUIDataTableBodyRow-1')
       .first()
       .props();
@@ -262,5 +263,32 @@ describe('<TableBody />', function() {
     assert.strictEqual(props.className, 'testClass');
     assert.isAtLeast(options.setRowProps.callCount, 1);
     assert(options.setRowProps.calledWith(data[1]));
+  });
+
+  it("should use 'customRowRender' when provided", () => {
+    const options = { customRowRender: () => <div>Test_Text</div> };
+    const selectRowUpdate = stub();
+    const toggleExpandRow = () => {};
+
+    const mountWrapper = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={[]}
+        selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    const html = mountWrapper.html();
+
+    expect(html).to.contain('Test_Text');
   });
 });

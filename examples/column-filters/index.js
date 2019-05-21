@@ -15,11 +15,12 @@ class Example extends React.Component {
           customFilterListRender: v => `Name: ${v}`,
           filterOptions: ['a', 'b', 'c', 'Business Analyst']
         }
-      },      
+      },
       {
         name: "Title",
         options: {
           filter: true,
+          filterList: ['Business Analyst'],
           customFilterListRender: v => `Title: ${v}`,
           filterType: 'textField' // set filterType's at the column level
         }
@@ -44,7 +45,7 @@ class Example extends React.Component {
           customFilterListRender: v => `Salary: ${v}`,
           sort: false
         }
-      }      
+      }
     ];
     const data = [
       ["Gabby George", "Business Analyst", "Minneapolis", 30, 100000],
@@ -81,6 +82,9 @@ class Example extends React.Component {
 
     const options = {
       filter: true,
+      onFilterChange: (changedColumn, filterList) => {
+        console.log(changedColumn, filterList);
+      },
       selectableRows: true,
       filterType: 'dropdown',
       responsive: 'stacked',

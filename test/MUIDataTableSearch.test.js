@@ -19,6 +19,19 @@ describe('<TableSearch />', function() {
     assert.strictEqual(actualResult.length, 1);
   });
 
+  it('should render a search bar with text initialized', () => {
+    const options = { textLabels };
+    const onSearch = () => {};
+    const onHide = () => {};
+
+    const mountWrapper = mount(
+      <TableSearch onSearch={onSearch} onHide={onHide} options={options} initialSearchText="searchText" />,
+    );
+    const actualResult = mountWrapper.find(TextField);
+    assert.strictEqual(actualResult.length, 1);
+    assert.strictEqual(actualResult.props().defaultValue, 'searchText');
+  });
+
   it('should trigger handleTextChange prop callback when calling method handleTextChange', () => {
     const options = { onSearchChange: () => true, textLabels };
     const onSearch = spy();
