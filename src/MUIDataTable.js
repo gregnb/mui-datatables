@@ -837,7 +837,6 @@ class MUIDataTable extends React.Component {
 
     if (this.options.onRowsDelete) {
       if (this.options.onRowsDelete(selectedRows) === false) return;
-      this.options.onRowsDelete(selectedRows);
     }
 
     this.setTableData(
