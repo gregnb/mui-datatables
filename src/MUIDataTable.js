@@ -91,7 +91,10 @@ class MUIDataTable extends React.Component {
             download: PropTypes.bool,
             viewColumns: PropTypes.bool,
             filterList: PropTypes.array,
-            filterOptions: PropTypes.array,
+            filterOptions: PropTypes.oneOfType([PropTypes.array, PropTypes.shape({
+              names: PropTypes.array,
+              logic: PropTypes.func,
+            })]),
             filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField']),
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,
@@ -179,8 +182,8 @@ class MUIDataTable extends React.Component {
     this.tableRef = false;
     this.tableContent = React.createRef();
     this.headCellRefs = {};
-    this.setHeadResizeable = () => {};
-    this.updateDividers = () => {};
+    this.setHeadResizeable = () => { };
+    this.updateDividers = () => { };
   }
 
   componentWillMount() {
@@ -358,17 +361,17 @@ class MUIDataTable extends React.Component {
   transformData = (columns, data) => {
     return Array.isArray(data[0])
       ? data.map(row => {
-          let i = -1;
+        let i = -1;
 
-          return columns.map(col => {
-            if (!col.empty) i++;
-            return col.empty ? undefined : row[i];
-          });
-        })
+        return columns.map(col => {
+          if (!col.empty) i++;
+          return col.empty ? undefined : row[i];
+        });
+      })
       : data.map(row => columns.map(col => row[col.name]));
   };
 
-  setTableData(props, status, callback = () => {}) {
+  setTableData(props, status, callback = () => { }) {
     const { options } = props;
 
     let tableData = [];
@@ -413,7 +416,8 @@ class MUIDataTable extends React.Component {
       }
 
       if (column.filterOptions) {
-        filterData[colIndex] = cloneDeep(column.filterOptions);
+        if (Array.isArray(column.filterOptions)) filterData[colIndex] = cloneDeep(column.filterOptions);
+        else filterData[colIndex] = cloneDeep(column.filterOptions.names);
       }
 
       if (column.filterList) {
@@ -505,8 +509,8 @@ class MUIDataTable extends React.Component {
           typeof funcResult === 'string' || !funcResult
             ? funcResult
             : funcResult.props && funcResult.props.value
-            ? funcResult.props.value
-            : columnValue;
+              ? funcResult.props.value
+              : columnValue;
       }
 
       displayRow.push(columnDisplay);
@@ -517,8 +521,8 @@ class MUIDataTable extends React.Component {
       const caseSensitive = this.options.caseSensitive;
       const filterType = column.filterType || this.options.filterType;
       if (filterVal.length) {
-        if (column.customFilter) {
-          isFiltered = column.customFilter(columnValue, filterVal);
+        if (column.filterOptions && column.filterOptions.logic) {
+          isFiltered = column.filterOptions.logic(columnValue, filterVal);
         } else if (filterType === 'textField' && !this.hasSearchText(columnVal, filterVal, caseSensitive)) {
           isFiltered = true;
         } else if (
@@ -1067,24 +1071,24 @@ class MUIDataTable extends React.Component {
             selectRowUpdate={this.selectRowUpdate}
           />
         ) : (
-          showToolbar && (
-            <TableToolbar
-              columns={columns}
-              displayData={displayData}
-              data={data}
-              filterData={filterData}
-              filterList={filterList}
-              filterUpdate={this.filterUpdate}
-              options={this.options}
-              resetFilters={this.resetFilters}
-              searchTextUpdate={this.searchTextUpdate}
-              tableRef={this.getTableContentRef}
-              title={title}
-              toggleViewColumn={this.toggleViewColumn}
-              setTableAction={this.setTableAction}
-            />
-          )
-        )}
+            showToolbar && (
+              <TableToolbar
+                columns={columns}
+                displayData={displayData}
+                data={data}
+                filterData={filterData}
+                filterList={filterList}
+                filterUpdate={this.filterUpdate}
+                options={this.options}
+                resetFilters={this.resetFilters}
+                searchTextUpdate={this.searchTextUpdate}
+                tableRef={this.getTableContentRef}
+                title={title}
+                toggleViewColumn={this.toggleViewColumn}
+                setTableAction={this.setTableAction}
+              />
+            )
+          )}
         <TableFilterList
           options={this.options}
           filterListRenderers={columns.map(c => {

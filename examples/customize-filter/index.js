@@ -32,15 +32,17 @@ class Example extends React.Component {
         name: "Age",
         options: {
           filter: true,
-          filterOptions: ["young", "adult", "middle-age", "senior", "elderly"],
-          customFilter(age, filters) {
-            const show = (filters.indexOf("young")>=0 && age <= 35) ||
-                         (filters.indexOf("adult")>=0 && age > 35 && age <= 45) ||
-                         (filters.indexOf("middle-age")>=0 && age > 45 && age <= 65) ||
-                         (filters.indexOf("senior")>=0 && age > 65 && age <= 75) ||
-                         (filters.indexOf("elderly")>=0 && age > 75);
-            const filtered = !show;
-            return filtered;
+          filterOptions: {
+            names: ["young", "adult", "middle-age", "senior", "elderly"],
+            logic(age, filters) {
+              const show = (filters.indexOf("young") >= 0 && age <= 35) ||
+                (filters.indexOf("adult") >= 0 && age > 35 && age <= 45) ||
+                (filters.indexOf("middle-age") >= 0 && age > 45 && age <= 65) ||
+                (filters.indexOf("senior") >= 0 && age > 65 && age <= 75) ||
+                (filters.indexOf("elderly") >= 0 && age > 75);
+              const filtered = !show;
+              return filtered;
+            }
           },
           print: false,
         }
@@ -50,13 +52,15 @@ class Example extends React.Component {
         options: {
           filter: true,
           filterType: "checkbox",
-          filterOptions: ["lower", "average", "higher"],
-          customFilter(salary, filterVal) {
-            salary=salary.replace(/[^\d]/g, "");
-            const show = (filterVal.indexOf("lower")>=0 && salary < 100000) ||
-                         (filterVal.indexOf("average")>=0 && salary >= 100000 && salary < 200000) ||
-                         (filterVal.indexOf("higher")>=0 && salary >= 200000);
-            return !show;
+          filterOptions: {
+            names: ["lower", "average", "higher"],
+            logic(salary, filterVal) {
+              salary = salary.replace(/[^\d]/g, "");
+              const show = (filterVal.indexOf("lower") >= 0 && salary < 100000) ||
+                (filterVal.indexOf("average") >= 0 && salary >= 100000 && salary < 200000) ||
+                (filterVal.indexOf("higher") >= 0 && salary >= 200000);
+              return !show;
+            }
           },
           sort: false
         }

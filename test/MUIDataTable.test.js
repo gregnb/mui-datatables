@@ -448,17 +448,19 @@ describe('<MUIDataTable />', function() {
     assert.strictEqual(actualResult.prop('label'), 'Name: Joe James');
   });
 
-  it('should displayData consider filterList and customFilter are populated', () => {
+  it('should displayData consider filterOptions with Logic', () => {
     const customFilterColumns = columns.map(c => {
       if (c.name === "Name") return {
         ...c,
         options: {
           ...c.options,
-          filterOptions: ["B", "J"],
-          customFilter(name, filters) {
-            const firstLetter=name[0];
-            return firstLetter!==filters[0];
-          }
+          filterOptions: {
+            names: ["B", "J"],
+            logic(name, filters) {
+              const firstLetter=name[0];
+              return firstLetter!==filters[0];
+            }
+          },
         }
       };
       return c;
