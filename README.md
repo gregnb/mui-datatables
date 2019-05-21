@@ -213,7 +213,8 @@ const columns = [
 |**`empty`**|boolean|false|This denotes whether the column has data or not (for use with intentionally empty columns)
 |**`viewColumns`**|boolean|true|Allow user to toggle column visibility through 'View Column' list
 |**`filterList`**|array||Filter value list [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
-|**`filterOptions`**|array or object||Filter options [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js) [filterOptions logic exemple](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js)
+|**`filterOptions`**|array or object||Filter options. it's possible use an array of values 
+[Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js) or an object with names and logic [Exemple](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js)
 |**`customFilterListRender`**|function||Function that returns a string used as the chip label. `function(value) => string` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`filter`**|boolean|true|Display column in filter list
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Takes priority over global filterType option.`enum('checkbox', 'dropdown', 'multiselect', 'textField')`.
