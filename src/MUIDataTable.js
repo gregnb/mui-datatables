@@ -405,7 +405,7 @@ class MUIDataTable extends React.Component {
   };
 
   setTableData(props, status, callback = () => {}) {
-    const { data, options } = props;
+    const { data, options, totalLabel } = props;
 
     let tableData = [];
     let totals = [];
@@ -414,12 +414,7 @@ class MUIDataTable extends React.Component {
     let sortDirection = null;
 
     columns.forEach((column, colIndex) => {
-      totals[colIndex] = window._ ? window._('Total:') : 'Total:';
-      if (colIndex > 0) {
-        totals[colIndex] = '';
-      }
-
-      totals[colIndex] = window._ ? window._('Total:') : 'Total:';
+      totals[colIndex] = totalLabel ? totalLabel : window._ ? window._('Total:') : 'Total:';
       if (colIndex > 0) {
         totals[colIndex] = '';
       }
