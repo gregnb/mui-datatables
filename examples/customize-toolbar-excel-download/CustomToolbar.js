@@ -7,7 +7,7 @@ const CustomToolbar = props => {
   return (
     <span>
       <Tooltip title={'XLS Download'}>
-        <IconButton onClick={props.handleSXLSDownload}>
+        <IconButton onClick={props.handleXLSXDownload}>
           <CloudDownloadIcon />
         </IconButton>
       </Tooltip>
