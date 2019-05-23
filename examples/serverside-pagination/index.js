@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 import MUIDataTable from "../../src/";
 
 class Example extends React.Component {
 
   state = {
     page: 0,
-    count: 100,
+    count: 0,
     data: [["Loading Data..."]],
     isLoading: false
   };
@@ -20,7 +20,7 @@ class Example extends React.Component {
   getData = () => {
     this.setState({ isLoading: true });
     this.xhrRequest().then(data => {
-      this.setState({ data, isLoading: false });
+      this.setState({ data, isLoading: false, count: 121 });
     });
   }
 
@@ -49,9 +49,14 @@ class Example extends React.Component {
   }
 
   changePage = (page) => {
+    this.setState({
+      isLoading: true,
+    });
     this.xhrRequest(`/myApiServer?page=${page}`).then(data => {
       this.setState({
+        isLoading: false,
         page: page,
+        count: 450,
         data
       });
     });
@@ -82,11 +87,13 @@ class Example extends React.Component {
         }
       }
     };
-
     return (
       <div>
-        {isLoading && <CircularProgress style={{ marginLeft: '50%' }} />}
-        <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+        <MUIDataTable title={<Typography variant="title">
+          ACME Employee list
+          {isLoading && <CircularProgress size={24} style={{marginLeft: 15, position: 'relative', top: 4}} />}
+          </Typography>
+          } data={data} columns={columns} options={options} />
       </div>
     );
 

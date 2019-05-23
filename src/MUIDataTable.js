@@ -1046,7 +1046,7 @@ class MUIDataTable extends React.Component {
       searchText,
     } = this.state;
 
-    const rowCount = this.options.count || displayData.length;
+    const rowCount = this.props.options.count || this.options.count || displayData.length;
     const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
     const showToolbar = hasToolbarItem(this.options, title);
     const columnNames = columns.map(column => ({ name: column.name }));
