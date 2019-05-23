@@ -53,12 +53,12 @@ class Example extends React.Component {
           filter: true,
           filterType: "checkbox",
           filterOptions: {
-            names: ["lower", "average", "higher"],
+            names: ["Lower wages", "Average wages", "Higher wages"],
             logic(salary, filterVal) {
               salary = salary.replace(/[^\d]/g, "");
-              const show = (filterVal.indexOf("lower") >= 0 && salary < 100000) ||
-                (filterVal.indexOf("average") >= 0 && salary >= 100000 && salary < 200000) ||
-                (filterVal.indexOf("higher") >= 0 && salary >= 200000);
+              const show = (filterVal.indexOf("Lower wages") >= 0 && salary < 100000) ||
+                (filterVal.indexOf("Average wages") >= 0 && salary >= 100000 && salary < 200000) ||
+                (filterVal.indexOf("Higher wages") >= 0 && salary >= 200000);
               return !show;
             }
           },
