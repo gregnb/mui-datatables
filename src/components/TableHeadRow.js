@@ -5,7 +5,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { withStyles } from '@material-ui/core/styles';
 
 const defaultHeadRowStyles = {
-  root: {}
+  root: {},
 };
 
 class TableHeadRow extends React.Component {
