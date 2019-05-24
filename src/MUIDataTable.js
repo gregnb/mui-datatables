@@ -543,6 +543,7 @@ class MUIDataTable extends React.Component {
         column.display !== 'false' &&
         column.searchable
       ) {
+        this.setState({ page: 0 }); // When we have a search, we must reset page to view it
         isSearchFound = true;
       }
     }
