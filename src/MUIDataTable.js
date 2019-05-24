@@ -464,10 +464,10 @@ class MUIDataTable extends React.Component {
         columns: columns,
         filterData: filterData,
         filterList: filterList,
-        searchText: searchText || prevState.searchText,
+        searchText: searchText,
         selectedRows: selectedRowsData,
         data: tableData,
-        displayData: this.getDisplayData(columns, tableData, filterList, searchText || prevState.searchText),
+        displayData: this.getDisplayData(columns, tableData, filterList, searchText),
       }),
       callback,
     );
@@ -1075,6 +1075,7 @@ class MUIDataTable extends React.Component {
               filterUpdate={this.filterUpdate}
               options={this.options}
               resetFilters={this.resetFilters}
+              searchText={searchText}
               searchTextUpdate={this.searchTextUpdate}
               tableRef={this.getTableContentRef}
               title={title}
@@ -1130,7 +1131,6 @@ class MUIDataTable extends React.Component {
               expandedRows={expandedRows}
               toggleExpandRow={this.toggleExpandRow}
               options={this.options}
-              searchText={searchText}
               filterList={filterList}
             />
           </MuiTable>
