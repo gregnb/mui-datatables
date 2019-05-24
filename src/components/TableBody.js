@@ -110,16 +110,15 @@ class TableBody extends React.Component {
       return;
     }
 
-    // Check if we should trigger row expand/select when row is clicked anywhere
-    if (this.props.options.fullRowTrigger) {
-      if (this.props.options.expandableRows) {
-        const expandRow = { index: data.rowIndex, dataIndex: data.dataIndex };
-        this.props.toggleExpandRow(expandRow);
-      }
-      if (this.props.options.selectableRows !== 'none') {
-        const selectRow = { index: data.rowIndex, dataIndex: data.dataIndex };
-        this.handleRowSelect(selectRow);
-      }
+    // Check if we should toggle row select when row is clicked anywhere
+    if (this.props.options.selectableRowsOnClick && this.props.options.selectableRows !== 'none') {
+      const selectRow = { index: data.rowIndex, dataIndex: data.dataIndex };
+      this.handleRowSelect(selectRow);
+    }
+    // Check if we should trigger row expand when row is clicked anywhere
+    if (this.props.options.expandableRowsOnClick && this.props.options.expandableRows) {
+      const expandRow = { index: data.rowIndex, dataIndex: data.dataIndex };
+      this.props.toggleExpandRow(expandRow);
     }
 
     this.props.options.onRowClick && this.props.options.onRowClick(row, data, event);
