@@ -902,7 +902,7 @@ describe('<MUIDataTable />', function () {
     assert.equal(state.displayData.length, data.length);
   });
 
-  describe('should displayData consider filterOptions with logic', () => {
+  describe('should have the correct displayData and filters when using filterOptions with logic', () => {
 
     it('with one column', () => {
 
@@ -926,7 +926,7 @@ describe('<MUIDataTable />', function () {
       const shallowWrapper = shallow(<MUIDataTable columns={customFilterColumns} data={data} />);
       const table = shallowWrapper.dive();
       const instance = table.instance();
-      instance.filterUpdate(0, 'J', 'checkbox');
+      instance.filterUpdate(0, 'J', 'Names', 'checkbox');
       table.update();
   
       const state = table.state();
@@ -970,8 +970,8 @@ describe('<MUIDataTable />', function () {
       const shallowWrapper = shallow(<MUIDataTable columns={customFilterColumns} data={data} />);
       const table = shallowWrapper.dive();
       const instance = table.instance();
-      instance.filterUpdate(0, 'H', 'checkbox');
-      instance.filterUpdate(3, 'TX', 'checkbox');
+      instance.filterUpdate(0, 'H', 'Names', 'checkbox');
+      instance.filterUpdate(3, 'TX', 'State', 'checkbox');
       table.update();
   
       const state = table.state();

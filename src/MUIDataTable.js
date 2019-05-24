@@ -422,7 +422,7 @@ class MUIDataTable extends React.Component {
             'Deprecated: filterOptions must now be an object. see https://github.com/gregnb/mui-datatables/tree/master/examples/customize-filter example',
           );
         }
-        else filterData[colIndex] = cloneDeep(column.filterOptions.names);
+        else if (column.filterOptions.names) filterData[colIndex] = cloneDeep(column.filterOptions.names);
       }
 
       if (column.filterList) {
