@@ -189,11 +189,19 @@ class MUIDataTable extends React.Component {
 
   componentDidMount() {
     this.setHeadResizeable(this.headCellRefs, this.tableRef);
+
+    // When we have a search, we must reset page to view it
+    if (this.props.options.searchText) this.setState({ page: 0 });
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
       this.setTableData(this.props, TABLE_LOAD.INITIAL);
+    }
+
+    if (this.props.options.searchText !== prevProps.options.searchText) {
+      // When we have a search, we must reset page to view it
+      this.setState({ page: 0 });
     }
 
     if (this.options.resizableColumns) {
@@ -543,7 +551,6 @@ class MUIDataTable extends React.Component {
         column.display !== 'false' &&
         column.searchable
       ) {
-        this.setState({ page: 0 }); // When we have a search, we must reset page to view it
         isSearchFound = true;
       }
     }
