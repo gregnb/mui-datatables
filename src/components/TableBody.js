@@ -105,10 +105,13 @@ class TableBody extends React.Component {
   };
 
   handleRowClick = (row, data, event) => {
-    let isExpandableIconClick = false;
-    // We need to know if our row click was actually on our expandable icon
-    if (event.target.nodeName === 'path' && event.target.parentNode.id === 'expandable-button') isExpandableIconClick = true;
-    else if (event.target.id === 'expandable-button') isExpandableIconClick = true;
+    // Don't trigger onRowClick if the event was actually the expandable icon
+    if (
+      event.target.id === 'expandable-button' ||
+      (event.target.nodeName === 'path' && event.target.parentNode.id === 'expandable-button')
+    ) {
+      return;
+    }
 
     // Don't trigger onRowClick if the event was actually a row selection
     if (event.target.id && event.target.id.startsWith('MUIDataTableSelectCell')) {
@@ -116,7 +119,7 @@ class TableBody extends React.Component {
     }
 
     // Check if we should toggle row select when row is clicked anywhere
-    if (this.props.options.selectableRowsOnClick && (this.props.options.selectableRows !== 'none') && !isExpandableIconClick) {
+    if (this.props.options.selectableRowsOnClick && this.props.options.selectableRows !== 'none') {
       const selectRow = { index: data.rowIndex, dataIndex: data.dataIndex };
       this.handleRowSelect(selectRow);
     }
