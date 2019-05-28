@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import MUIDataTable from '../../src/';
 
 class Example extends React.Component {
+  state = {
+    searchText: 'Computer'
+  };
+
   render() {
     const columns = [
       {
@@ -77,7 +81,8 @@ class Example extends React.Component {
       filter: true,
       filterType: 'dropdown',
       responsive: 'stacked',
-      searchText: 'Computer',
+      page: 1,
+      searchText: this.state.searchText,
       customSearch: (searchQuery, currentRow, columns) => {
         let isFound = false;
         currentRow.forEach(col => {
@@ -89,7 +94,12 @@ class Example extends React.Component {
       },
     };
 
-    return <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />;
+    return (
+      <Fragment>
+        <button onClick={() => this.setState({ searchText: '' })}>Reset Search</button>
+        <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />
+      </Fragment>
+    );
   }
 }
 
