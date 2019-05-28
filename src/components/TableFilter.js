@@ -18,7 +18,7 @@ import { TextField, Grid, GridList, GridListTile } from '@material-ui/core';
 export const defaultFilterStyles = theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
-    padding: '24px',
+    padding: '24px 24px 36px 24px',
     fontFamily: 'Roboto',
   },
   header: {
@@ -291,7 +291,7 @@ class TableFilter extends React.Component {
           </div>
           <div className={classes.filtersSelected} />
         </div>
-        <GridList cellHeight="auto" cols={filterGridColumns} cellHeight={70} spacing={34}>
+        <GridList cellHeight="auto" cols={filterGridColumns} cellHeight={64} spacing={34}>
           {columns.map((column, index) => {
             if (column.filter) {
               const filterType = column.filterType || options.filterType;
