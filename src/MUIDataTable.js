@@ -193,7 +193,7 @@ class MUIDataTable extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
-      this.setTableData(this.props, TABLE_LOAD.INITIAL);
+      this.setTableData(prevProps, TABLE_LOAD.INITIAL);
     }
 
     if (this.options.resizableColumns) {
@@ -308,17 +308,17 @@ class MUIDataTable extends React.Component {
    *  Build the source table data
    */
 
-  buildColumns = newColumns => {
+  buildColumns = oldColumns => {
     let columnData = [];
     let filterData = [];
     let filterList = [];
 
-    if (this.state.columns.length && isEqual(this.rawColumns(newColumns), this.rawColumns(this.props.columns))) {
+    if (this.state.columns.length && isEqual(this.rawColumns(oldColumns), this.rawColumns(this.props.columns))) {
       const { columns, filterList, filterData } = this.state;
       return { columns, filterList, filterData };
     }
 
-    newColumns.forEach((column, colIndex) => {
+    this.props.columns.forEach((column, colIndex) => {
       let columnOptions = {
         display: 'true',
         empty: false,
@@ -376,7 +376,7 @@ class MUIDataTable extends React.Component {
     let sortIndex = null;
     let sortDirection = null;
 
-    const data = status === TABLE_LOAD.INITIAL ? this.transformData(columns, props.data) : props.data;
+    const data = status === TABLE_LOAD.INITIAL ? this.transformData(columns, this.props.data) : props.data;
     const searchText = status === TABLE_LOAD.INITIAL ? options.searchText : null;
 
     columns.forEach((column, colIndex) => {
