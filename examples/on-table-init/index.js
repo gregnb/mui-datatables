@@ -1,44 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import MUIDataTable from '../../src';
-import CustomToolbar from './CustomToolbar';
-import XLSX from 'xlsx';
 
 class Example extends React.Component {
   constructor(props) {
     super(props);
 
     this.tableState = {};
-    this.handleXLSXDownload = this.handleXLSXDownload.bind(this);
     this.handleTableInit = this.handleTableInit.bind(this);
     this.handleTableChange = this.handleTableChange.bind(this);
   }
-  handleXLSXDownload = () => {
-    console.log('handleXLSXDownload');
-    if (!!this.tableState) {
-      // manipulate tableState here to your liking, download all data, sorted, filtered, visible...
-      const columns = this.tableState.columns;
-      const tableData = this.tableState.data;
-      const filteredRowIndexArray = this.tableState.displayData.map(row => row.dataIndex);
 
-      const data = tableData.filter(row => filteredRowIndexArray.includes(row.index));
-      const visibleColumns = columns.filter(col => col.display === 'true' && col.download === true);
-
-      // boolean array of visible columns
-      const colMap = columns.map(col => col.display === 'true');
-      const filteredData = data.map(({ data }) => data.filter((cell, i) => colMap[i] === true));
-
-      const sheetHeader = [visibleColumns.map(col => col.label)];
-      const finalData = sheetHeader.concat(filteredData);
-      console.log(finalData);
-
-      const workbook = XLSX.utils.book_new();
-      const worksheet = XLSX.utils.aoa_to_sheet(finalData);
-      XLSX.utils.book_append_sheet(workbook, worksheet);
-      XLSX.writeFile(workbook, `download.xlsx`);
-    }
-  };
-
+  /** onTableInit gives access to initial MuiDataTable state
+   *  if the application needs access to internal state prior to
+   *  the user performing a table mutation (sort, filter, etc.)
+   *  that triggers onTableChange
+   */
   handleTableInit = (action, tableState) => {
     console.log('handleTableInit: ', tableState);
     this.tableState = tableState;
@@ -88,14 +65,11 @@ class Example extends React.Component {
       filter: true,
       selectableRows: true,
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: 'scroll',
       rowsPerPage: 10,
       download: false, // hide csv download option
       onTableInit: this.handleTableInit,
       onTableChange: this.handleTableChange,
-      customToolbar: () => {
-        return <CustomToolbar handleXLSXDownload={this.handleXLSXDownload} />;
-      },
     };
 
     return <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />;
