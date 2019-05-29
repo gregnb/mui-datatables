@@ -538,7 +538,7 @@ describe('<MUIDataTable />', function() {
 
   it('should filter displayData when searchText is set', () => {
     const options = {
-      searchText: 'Joe'
+      searchText: 'Joe',
     };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
     const state = shallowWrapper.dive().state();
