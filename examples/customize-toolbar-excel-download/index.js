@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import MUIDataTable from '../../src';
 import CustomToolbar from './CustomToolbar';
-import XLSX from 'xlsx';
 
 class Example extends React.Component {
   constructor(props) {
@@ -31,14 +30,14 @@ class Example extends React.Component {
       const sheetHeader = [visibleColumns.map(col => col.label)];
       const finalData = sheetHeader.concat(filteredData);
       console.log(finalData);
-
-      const workbook = XLSX.utils.book_new();
-      const worksheet = XLSX.utils.aoa_to_sheet(finalData);
-      XLSX.utils.book_append_sheet(workbook, worksheet);
-      XLSX.writeFile(workbook, `download.xlsx`);
     }
   };
 
+  /** onTableInit gives access to initial MuiDataTable state
+   *  if the application needs access to internal state prior to
+   *  the user performing a table mutation (sort, filter, etc.)
+   *  that triggers onTableChange
+   */
   handleTableInit = (action, tableState) => {
     console.log('handleTableInit: ', tableState);
     this.tableState = tableState;
