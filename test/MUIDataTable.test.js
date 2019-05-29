@@ -824,6 +824,25 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(state.data[0].data[2], 'Las Vegas');
   });
 
+  it('should call onTableInit when MUIDataTable is initialized', () => {
+    const options = { selectableRows: true, onTableInit: spy() };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    assert.strictEqual(options.onTableInit.callCount, 1);
+  });
+
+  it('should call onTableInit only 1 time when creating table and calling selectRowUpdate method with type=head', () => {
+    const options = { selectableRows: true, onTableInit: spy() };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.selectRowUpdate('head', 0);
+    shallowWrapper.update();
+
+    assert.strictEqual(options.onTableInit.callCount, 1);
+  });
+
   it('should call onTableChange when calling selectRowUpdate method with type=head', () => {
     const options = { selectableRows: true, onTableChange: spy() };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
