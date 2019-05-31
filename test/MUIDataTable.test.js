@@ -6,15 +6,18 @@ import MUIDataTable from '../src/MUIDataTable';
 import TableFilterList from '../src/components/TableFilterList';
 import TablePagination from '../src/components/TablePagination';
 import TableToolbar from '../src/components/TableToolbar';
+import TableFooter from '../src/components/TableFooter';
 import textLabels from '../src/textLabels';
 import Chip from '@material-ui/core/Chip';
 import Cities from '../examples/component/cities';
 import { getCollatorComparator } from '../src/utils';
+import cloneDeep from 'lodash.clonedeep';
 
 describe('<MUIDataTable />', function() {
   let data;
   let displayData;
   let columns;
+  let options;
   let tableData;
   let renderCities = (value, tableMeta, updateValueFn) => (
     <Cities value={value} index={tableMeta.rowIndex} change={event => updateValueFn(event)} />
@@ -42,6 +45,12 @@ describe('<MUIDataTable />', function() {
       ['Bob Herm', 'Test Corp', 'Tampa', 'FL'],
       ['James Houston', 'Test Corp', 'Dallas', 'TX'],
     ];
+    options = {
+      count: 120,
+      rowsPerPage: 10,
+      rowsPerPageOptions: [10, 15, 20, 50],
+      page: 0,
+    };
     // internal table data built from source data provided
     displayData = JSON.stringify([
       {
@@ -188,7 +197,7 @@ describe('<MUIDataTable />', function() {
     });
   });
 
-  it('should correctly re-build internal table data and displayData structure with prop change', () => {
+  it('should correctly re-build internal table data and displayData structure with data prop change', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     let state = shallowWrapper.dive().state();
 
@@ -209,6 +218,67 @@ describe('<MUIDataTable />', function() {
     ];
 
     assert.deepEqual(state.data, expectedResult);
+  });
+
+  it('should correctly re-build internal table data and displayData structure with columns prop change', () => {
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
+    let state = shallowWrapper.dive().state();
+
+    assert.deepEqual(state.filterList, [[], [], [], [], []]);
+
+    // now use updated props
+    let newColumns = cloneDeep(columns);
+    newColumns[0].options['filterList'] = ['James'];
+    shallowWrapper.setProps({ columns: newColumns });
+    shallowWrapper.update();
+
+    state = shallowWrapper.dive().state();
+    const expectedResult = [['James'], [], [], [], []];
+
+    assert.deepEqual(state.filterList, expectedResult);
+  });
+
+  it('should correctly re-build internal table data and displayData structure with options prop change', () => {
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+    let state = shallowWrapper.dive().state();
+
+    assert.strictEqual(state.page, 0);
+    assert.strictEqual(state.rowsPerPage, 10);
+    assert.deepEqual(state.rowsPerPageOptions, [10, 15, 20, 50]);
+    assert.strictEqual(state.searchText, undefined);
+    assert.strictEqual(
+      shallowWrapper
+        .dive()
+        .find(TableFooter)
+        .prop('rowCount'),
+      120,
+    );
+
+    // now use updated props
+    let newOptions = {
+      ...cloneDeep(options),
+      page: 1,
+      rowsPerPage: 12,
+      rowsPerPageOptions: [10, 12, 15, 20, 50],
+      count: 121,
+      searchText: 'random',
+    };
+    shallowWrapper.setProps({ options: newOptions });
+    shallowWrapper.update();
+
+    state = shallowWrapper.dive().state();
+
+    assert.strictEqual(state.page, 0);
+    assert.strictEqual(state.rowsPerPage, 12);
+    assert.deepEqual(state.rowsPerPageOptions, [10, 12, 15, 20, 50]);
+    assert.strictEqual(state.searchText, 'random');
+    assert.strictEqual(
+      shallowWrapper
+        .dive()
+        .find(TableFooter)
+        .prop('rowCount'),
+      121,
+    );
   });
 
   it('should correctly re-build internal table data while maintaining pagination after state change', () => {
