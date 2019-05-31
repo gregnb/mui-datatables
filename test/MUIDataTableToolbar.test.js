@@ -73,7 +73,13 @@ describe('<TableToolbar />', function() {
   it('should render a toolbar with search text initialized if option.searchText = some_text', () => {
     const newOptions = { ...options, search: true, searchText: 'searchText' };
     const mountWrapper = mount(
-      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+      <TableToolbar
+        columns={columns}
+        data={data}
+        options={newOptions}
+        searchText={newOptions.searchText}
+        setTableAction={setTableAction}
+      />,
     );
     const actualResult = mountWrapper.find(TableSearch);
     assert.strictEqual(actualResult.length, 1);

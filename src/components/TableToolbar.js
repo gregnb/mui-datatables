@@ -84,13 +84,16 @@ export const responsiveToolbarStyles = theme => ({
 class TableToolbar extends React.Component {
   state = {
     iconActive: null,
-    showSearch: Boolean(this.props.searchText || this.props.options.searchText),
+    showSearch: Boolean(this.props.searchText),
     searchText: this.props.searchText || null,
   };
 
   componentDidUpdate(prevProps) {
     if (this.props.searchText !== prevProps.searchText) {
-      this.setState({ searchText: this.props.searchText });
+      this.setState({
+        searchText: this.props.searchText,
+        showSearch: Boolean(this.props.searchText),
+      });
     }
   }
 

@@ -196,7 +196,15 @@ class MUIDataTable extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
+    if (
+      this.props.data !== prevProps.data ||
+      this.props.columns !== prevProps.columns ||
+      this.props.options !== prevProps.options
+    ) {
+      if (this.props.options !== prevProps.options) {
+        this.getDefaultOptions(this.props);
+        this.setTableOptions(this.props);
+      }
       this.setTableData(prevProps, TABLE_LOAD.INITIAL, () => {
         this.setTableAction('propsUpdate');
       });
@@ -388,15 +396,13 @@ class MUIDataTable extends React.Component {
   };
 
   setTableData(props, status, callback = () => {}) {
-    const { options } = props;
-
     let tableData = [];
     let { columns, filterData, filterList } = this.buildColumns(props.columns);
     let sortIndex = null;
     let sortDirection = null;
 
     const data = status === TABLE_LOAD.INITIAL ? this.transformData(columns, this.props.data) : props.data;
-    const searchText = status === TABLE_LOAD.INITIAL ? options.searchText : null;
+    const searchText = status === TABLE_LOAD.INITIAL ? this.options.searchText : null;
 
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
@@ -456,8 +462,8 @@ class MUIDataTable extends React.Component {
     };
 
     if (TABLE_LOAD.INITIAL) {
-      if (options.rowsSelected && options.rowsSelected.length) {
-        options.rowsSelected.forEach(row => {
+      if (this.options.rowsSelected && this.options.rowsSelected.length) {
+        this.options.rowsSelected.forEach(row => {
           let rowPos = row;
 
           for (let cIndex = 0; cIndex < this.state.displayData.length; cIndex++) {
@@ -473,7 +479,7 @@ class MUIDataTable extends React.Component {
       }
     }
 
-    if (!options.serverSide && sortIndex !== null) {
+    if (!this.options.serverSide && sortIndex !== null) {
       const sortedData = this.sortTable(tableData, sortIndex, sortDirection);
       tableData = sortedData.data;
     }
