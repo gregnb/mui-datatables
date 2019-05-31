@@ -7,7 +7,6 @@ class Example extends React.Component {
 
   state = {
     page: 0,
-    count: 0,
     data: [["Loading Data..."]],
     isLoading: false
   };
