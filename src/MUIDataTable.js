@@ -332,6 +332,8 @@ class MUIDataTable extends React.Component {
     let filterData = [];
     let filterList = [];
 
+    let sortEnabled = false;
+
     if (this.state.columns.length && isEqual(this.rawColumns(newColumns), this.rawColumns(this.props.columns))) {
       const { columns, filterList, filterData } = this.state;
       return { columns, filterList, filterData };
@@ -351,8 +353,19 @@ class MUIDataTable extends React.Component {
       };
 
       if (typeof column === 'object') {
-        if (column.options && column.options.display !== undefined) {
-          column.options.display = column.options.display.toString();
+        if (column.options) {
+          if (column.options.display !== undefined) {
+            column.options.display = column.options.display.toString();
+          }
+
+          if (column.options.sortDirection !== undefined) {
+            if (sortEnabled) {
+              console.error('sortDirection is set for more than one column. Only the first column will be considered.');
+              column.options.sortDirection = null;
+            } else {
+              sortEnabled = true;
+            }
+          }
         }
 
         columnOptions = {
