@@ -200,6 +200,7 @@ class MUIDataTable extends React.Component {
       this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
         this.setTableAction('propsUpdate');
       });
+      this.updateOptions(this.props);
     }
 
     if (this.props.options.searchText !== prevProps.options.searchText) {
@@ -211,7 +212,6 @@ class MUIDataTable extends React.Component {
       this.setHeadResizeable(this.headCellRefs, this.tableRef);
       this.updateDividers();
     }
-    this.updateOptions(this.props);
   }
 
   updateOptions(props) {
