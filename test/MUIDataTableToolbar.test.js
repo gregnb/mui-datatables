@@ -77,7 +77,7 @@ describe('<TableToolbar />', function() {
     );
     const actualResult = mountWrapper.find(TableSearch);
     assert.strictEqual(actualResult.length, 1);
-    assert.strictEqual(actualResult.props().initialSearchText, 'searchText');
+    assert.strictEqual(actualResult.props().options.searchText, 'searchText');
   });
 
   it('should render a toolbar with no search icon if option.search = false', () => {

@@ -25,11 +25,24 @@ describe('<TableSearch />', function() {
     const onHide = () => {};
 
     const mountWrapper = mount(
-      <TableSearch onSearch={onSearch} onHide={onHide} options={options} initialSearchText="searchText" />,
+      <TableSearch onSearch={onSearch} onHide={onHide} options={options} searchText="searchText" />,
     );
     const actualResult = mountWrapper.find(TextField);
     assert.strictEqual(actualResult.length, 1);
-    assert.strictEqual(actualResult.props().defaultValue, 'searchText');
+    assert.strictEqual(actualResult.props().value, 'searchText');
+  });
+
+  it('should change search bar text when searchText changes', () => {
+    const options = { textLabels };
+    const onSearch = () => {};
+    const onHide = () => {};
+
+    const mountWrapper = mount(
+      <TableSearch onSearch={onSearch} onHide={onHide} options={options} searchText="searchText" />,
+    );
+    const actualResult = mountWrapper.setProps({ searchText: 'nextText' }).update();
+    assert.strictEqual(actualResult.length, 1);
+    assert.strictEqual(actualResult.find(TextField).props().value, 'nextText');
   });
 
   it('should trigger handleTextChange prop callback when calling method handleTextChange', () => {

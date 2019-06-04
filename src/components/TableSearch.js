@@ -52,7 +52,7 @@ class TableSearch extends React.Component {
   };
 
   render() {
-    const { classes, options, onHide, initialSearchText } = this.props;
+    const { classes, options, onHide, searchText } = this.props;
 
     return (
       <Grow appear in={true} timeout={300}>
@@ -64,7 +64,7 @@ class TableSearch extends React.Component {
             InputProps={{
               'aria-label': options.textLabels.toolbar.search,
             }}
-            defaultValue={initialSearchText}
+            value={searchText || ''}
             onChange={this.handleTextChange}
             fullWidth={true}
             inputRef={el => (this.searchField = el)}

@@ -118,6 +118,7 @@ class MUIDataTable extends React.Component {
       isRowSelectable: PropTypes.func,
       serverSide: PropTypes.bool,
       onTableChange: PropTypes.func,
+      onTableInit: PropTypes.func,
       caseSensitive: PropTypes.bool,
       rowHover: PropTypes.bool,
       fixedHeader: PropTypes.bool,
@@ -189,11 +190,21 @@ class MUIDataTable extends React.Component {
 
   componentDidMount() {
     this.setHeadResizeable(this.headCellRefs, this.tableRef);
+
+    // When we have a search, we must reset page to view it
+    if (this.props.options.searchText) this.setState({ page: 0 });
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
-      this.setTableData(this.props, TABLE_LOAD.INITIAL);
+      this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
+        this.setTableAction('propsUpdate');
+      });
+    }
+
+    if (this.props.options.searchText !== prevProps.options.searchText) {
+      // When we have a search, we must reset page to view it
+      this.setState({ page: 0 });
     }
 
     if (this.options.resizableColumns) {
@@ -205,7 +216,9 @@ class MUIDataTable extends React.Component {
   initializeTable(props) {
     this.getDefaultOptions(props);
     this.setTableOptions(props);
-    this.setTableData(props, TABLE_LOAD.INITIAL);
+    this.setTableData(props, TABLE_LOAD.INITIAL, () => {
+      this.setTableInit('tableInitialized');
+    });
   }
 
   /*
@@ -264,6 +277,12 @@ class MUIDataTable extends React.Component {
   setTableAction = action => {
     if (typeof this.options.onTableChange === 'function') {
       this.options.onTableChange(action, this.state);
+    }
+  };
+
+  setTableInit = action => {
+    if (typeof this.options.onTableInit === 'function') {
+      this.options.onTableInit(action, this.state);
     }
   };
 
@@ -464,10 +483,10 @@ class MUIDataTable extends React.Component {
         columns: columns,
         filterData: filterData,
         filterList: filterList,
-        searchText: searchText || prevState.searchText,
+        searchText: searchText,
         selectedRows: selectedRowsData,
         data: tableData,
-        displayData: this.getDisplayData(columns, tableData, filterList, searchText || prevState.searchText),
+        displayData: this.getDisplayData(columns, tableData, filterList, searchText),
       }),
       callback,
     );
@@ -837,7 +856,6 @@ class MUIDataTable extends React.Component {
 
     if (this.options.onRowsDelete) {
       if (this.options.onRowsDelete(selectedRows) === false) return;
-      this.options.onRowsDelete(selectedRows);
     }
 
     this.setTableData(
@@ -1075,6 +1093,7 @@ class MUIDataTable extends React.Component {
               filterUpdate={this.filterUpdate}
               options={this.options}
               resetFilters={this.resetFilters}
+              searchText={searchText}
               searchTextUpdate={this.searchTextUpdate}
               tableRef={this.getTableContentRef}
               title={title}
@@ -1130,7 +1149,6 @@ class MUIDataTable extends React.Component {
               expandedRows={expandedRows}
               toggleExpandRow={this.toggleExpandRow}
               options={this.options}
-              searchText={searchText}
               filterList={filterList}
             />
           </MuiTable>

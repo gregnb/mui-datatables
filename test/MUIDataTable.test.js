@@ -536,6 +536,20 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
   });
 
+  it('should filter displayData when searchText is set', () => {
+    const options = {
+      searchText: 'Joe',
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+    const state = shallowWrapper.dive().state();
+
+    const expectedResult = JSON.stringify([
+      { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 0 }), 'NY', undefined], dataIndex: 0 },
+    ]);
+
+    assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
+  });
+
   it('should sort provided column in descending order when calling toggleSortColum method for the first time', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
     const instance = shallowWrapper.instance();
@@ -808,6 +822,25 @@ describe('<MUIDataTable />', function() {
 
     const state = shallowWrapper.state();
     assert.deepEqual(state.data[0].data[2], 'Las Vegas');
+  });
+
+  it('should call onTableInit when MUIDataTable is initialized', () => {
+    const options = { selectableRows: true, onTableInit: spy() };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    assert.strictEqual(options.onTableInit.callCount, 1);
+  });
+
+  it('should call onTableInit only 1 time when creating table and calling selectRowUpdate method with type=head', () => {
+    const options = { selectableRows: true, onTableInit: spy() };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.selectRowUpdate('head', 0);
+    shallowWrapper.update();
+
+    assert.strictEqual(options.onTableInit.callCount, 1);
   });
 
   it('should call onTableChange when calling selectRowUpdate method with type=head', () => {
