@@ -211,6 +211,11 @@ class MUIDataTable extends React.Component {
       this.setHeadResizeable(this.headCellRefs, this.tableRef);
       this.updateDividers();
     }
+    this.updateOptions(this.props);
+  }
+
+  updateOptions(props) {
+    this.options = merge(this.options, props.options);
   }
 
   initializeTable(props) {
