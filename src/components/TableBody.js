@@ -134,6 +134,7 @@ class TableBody extends React.Component {
                   options={options}
                   rowSelected={options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false}
                   onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
+                  data-testid={'MUIDataTableBodyRow-' + dataIndex}
                   id={'MUIDataTableBodyRow-' + dataIndex}>
                   <TableSelectCell
                     onChange={this.handleRowSelect.bind(null, {
@@ -159,6 +160,7 @@ class TableBody extends React.Component {
                           {...(columns[columnIndex].setCellProps
                             ? columns[columnIndex].setCellProps(column, dataIndex, columnIndex)
                             : {})}
+                          data-testid={`${columnIndex}-${rowIndex}-MuiDataTableBodyCell`}
                           dataIndex={dataIndex}
                           rowIndex={rowIndex}
                           colIndex={columnIndex}
