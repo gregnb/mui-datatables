@@ -258,6 +258,9 @@ class MUIDataTable extends React.Component {
       extra.selectableRows = props.options.selectableRows ? 'multiple' : 'none';
     }
     this.options = merge(defaultOptions, props.options, extra);
+    if (props.options.rowsPerPageOptions) {
+      this.options.rowsPerPageOptions = props.options.rowsPerPageOptions;
+    }
   }
 
   validateOptions(options) {
@@ -1157,6 +1160,7 @@ class MUIDataTable extends React.Component {
           options={this.options}
           page={page}
           rowCount={rowCount}
+          rowsPerPageOptions={this.options.rowsPerPageOptions}
           rowsPerPage={rowsPerPage}
           changeRowsPerPage={this.changeRowsPerPage}
           changePage={this.changePage}
