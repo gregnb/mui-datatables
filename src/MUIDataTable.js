@@ -410,7 +410,7 @@ class MUIDataTable extends React.Component {
         }
 
         if (typeof column.customBodyRender === 'function') {
-          const tableMeta = this.getTableMeta(rowIndex, colIndex, value, [], column, this.state);
+          const tableMeta = this.getTableMeta(rowIndex, colIndex, value, column, [], this.state);
           const funcResult = column.customBodyRender(value, tableMeta);
 
           if (React.isValidElement(funcResult) && funcResult.props.value) {
