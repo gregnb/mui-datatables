@@ -180,6 +180,7 @@ class MUIDataTable extends React.Component {
         }),
       }),
       onDownload: PropTypes.func,
+      tableProps: PropTypes.object,
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
@@ -1297,7 +1298,12 @@ class MUIDataTable extends React.Component {
               setResizeable={fn => (this.setHeadResizeable = fn)}
             />
           )}
-          <MuiTable ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'} className={classes.tableRoot}>
+          <MuiTable
+            ref={el => (this.tableRef = el)}
+            tabIndex={'0'}
+            role={'grid'}
+            className={classes.tableRoot}
+            {...this.options.tableProps}>
             <caption className={classes.caption}>{title}</caption>
             <TableHead
               columns={columns}
