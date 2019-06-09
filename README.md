@@ -136,6 +136,7 @@ The component accepts the following props:
 |**`count`**|number||User provided override for total number of rows
 |**`serverSide`**|boolean|false|Enable remote data source
 |**`rowsSelected`**|array||User provided selected rows
+|**`rowsHighlighted`**|array||User provided highlighted rows
 |**`filterType `**|string||Choice of filtering view. `enum('checkbox', 'dropdown', 'multiselect', 'textField')`
 |**`textLabels `**|object||User provided labels to localize text
 |**`pagination`**|boolean|true|Enable/disable pagination
@@ -172,6 +173,8 @@ The component accepts the following props:
 |**`onRowsSelect`**|function||Callback function that triggers when row(s) are selected. `function(currentRowsSelected: array, allRowsSelected: array) => void`
 |**`onRowsDelete`**|function||Callback function that triggers when row(s) are deleted. `function(rowsDeleted: object(lookup: {dataindex: boolean}, data: arrayOfObjects: {index, dataIndex})) => void OR false` (Returning `false` prevents row deletion.)
 |**`onRowClick`**|function||Callback function that triggers when a row is clicked. `function(rowData: string[], rowMeta: { dataIndex: number, rowIndex: number }) => void`
+|**`onRowMouseEnter`**|function||Callback function that triggers when the mouse enters a row. `function(rowData: string[], rowMeta: { dataIndex: number, rowIndex: number }) => void`
+|**`onRowMouseLeave`**|function||Callback function that triggers when the mouse leaves a row. `function(rowData: string[], rowMeta: { dataIndex: number, rowIndex: number }) => void`
 |**`onCellClick`**|function||Callback function that triggers when a cell is clicked. `function(colData: any, cellMeta: { colIndex: number, rowIndex: number, dataIndex: number }) => void`
 |**`onChangePage`**|function||Callback function that triggers when a page has changed. `function(currentPage: number) => void`
 |**`onChangeRowsPerPage`**|function||Callback function that triggers when the number of rows per page has changed. `function(numberOfRows: number) => void`

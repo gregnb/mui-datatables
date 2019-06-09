@@ -133,6 +133,7 @@ class MUIDataTable extends React.Component {
       page: PropTypes.number,
       count: PropTypes.number,
       rowsSelected: PropTypes.array,
+      rowsHighlighted: PropTypes.array,
       rowsPerPage: PropTypes.number,
       rowsPerPageOptions: PropTypes.array,
       filter: PropTypes.bool,
@@ -174,6 +175,10 @@ class MUIDataTable extends React.Component {
     filterList: [],
     selectedRows: {
       data: [],
+      lookup: {},
+    },
+    highlightedRows: {
+      date: [],
       lookup: {},
     },
     expandedRows: {
@@ -473,22 +478,14 @@ class MUIDataTable extends React.Component {
       lookup: {},
     };
 
+    let highlightedRowsData = {
+      data: [],
+      lookup: {},
+    };
+
     if (TABLE_LOAD.INITIAL) {
-      if (options.rowsSelected && options.rowsSelected.length) {
-        options.rowsSelected.forEach(row => {
-          let rowPos = row;
-
-          for (let cIndex = 0; cIndex < this.state.displayData.length; cIndex++) {
-            if (this.state.displayData[cIndex].dataIndex === row) {
-              rowPos = cIndex;
-              break;
-            }
-          }
-
-          selectedRowsData.data.push({ index: rowPos, dataIndex: row });
-          selectedRowsData.lookup[row] = true;
-        });
-      }
+      selectedRowsData = this.indexRows(options.rowsSelected);
+      highlightedRowsData = this.indexRows(options.rowsHighlighted);
     }
 
     if (!options.serverSide && sortIndex !== null) {
@@ -504,11 +501,40 @@ class MUIDataTable extends React.Component {
         searchText: searchText,
         selectedRows: selectedRowsData,
         count: options.count,
+        highlightedRows: highlightedRowsData,
         data: tableData,
         displayData: this.getDisplayData(columns, tableData, filterList, searchText),
       }),
       callback,
     );
+  }
+
+  /*
+   *  Index a set of rows (eg: selectedRows/highlightedRows)
+   */
+  indexRows(rows) {
+    let indexData = {
+      data: [],
+      lookup: {},
+    };
+
+    if ( rows && rows.length ) {
+      rows.forEach(row => {
+        let rowPos = row;
+
+        for (let cIndex = 0; cIndex < this.state.displayData.length; cIndex++) {
+          if (this.state.displayData[cIndex].dataIndex === row) {
+            rowPos = cIndex;
+            break;
+          }
+        }
+
+        indexData.data.push({ index: rowPos, dataIndex: row });
+        indexData.lookup[row] = true;
+      });
+    }
+
+    return indexData;
   }
 
   /*
@@ -1081,6 +1107,7 @@ class MUIDataTable extends React.Component {
       filterData,
       filterList,
       selectedRows,
+      highlightedRows,
       expandedRows,
       searchText,
     } = this.state;
@@ -1167,6 +1194,7 @@ class MUIDataTable extends React.Component {
               rowsPerPage={rowsPerPage}
               selectedRows={selectedRows}
               selectRowUpdate={this.selectRowUpdate}
+              highlightedRows={highlightedRows}
               expandedRows={expandedRows}
               toggleExpandRow={this.toggleExpandRow}
               options={this.options}

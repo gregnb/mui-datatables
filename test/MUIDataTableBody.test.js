@@ -54,6 +54,7 @@ describe('<TableBody />', function() {
         rowsPerPage={10}
         selectedRows={[]}
         selectRowUpdate={selectRowUpdate}
+        highlightedRows={[]}
         expandedRows={[]}
         toggleExpandRow={toggleExpandRow}
         options={options}
@@ -79,6 +80,7 @@ describe('<TableBody />', function() {
         rowsPerPage={10}
         selectedRows={[]}
         selectRowUpdate={selectRowUpdate}
+        highlightedRows={[]}
         expandedRows={[]}
         toggleExpandRow={toggleExpandRow}
         options={options}
@@ -105,6 +107,7 @@ describe('<TableBody />', function() {
         rowsPerPage={10}
         selectedRows={[]}
         selectRowUpdate={selectRowUpdate}
+        highlightedRows={[]}
         expandedRows={[]}
         toggleExpandRow={toggleExpandRow}
         options={options}
@@ -131,6 +134,7 @@ describe('<TableBody />', function() {
         rowsPerPage={2}
         selectedRows={[1, 2, 3]}
         selectRowUpdate={selectRowUpdate}
+        highlightedRows={[]}
         expandedRows={[]}
         toggleExpandRow={toggleExpandRow}
         options={options}
@@ -159,6 +163,7 @@ describe('<TableBody />', function() {
         rowsPerPage={15}
         selectedRows={[1, 2, 3]}
         selectRowUpdate={selectRowUpdate}
+        highlightedRows={[]}
         expandedRows={[]}
         toggleExpandRow={toggleExpandRow}
         options={options}
@@ -187,6 +192,7 @@ describe('<TableBody />', function() {
         rowsPerPage={10}
         selectedRows={[]}
         selectRowUpdate={selectRowUpdate}
+        highlightedRows={[]}
         expandedRows={[]}
         toggleExpandRow={toggleExpandRow}
         options={options}
@@ -200,6 +206,35 @@ describe('<TableBody />', function() {
     shallowWrapper.update();
 
     assert.strictEqual(selectRowUpdate.callCount, 1);
+  });
+
+  it('should return correctly if row exists in highlightedRows when calling instance method isRowHighlighted', () => {
+    const options = { sort: true, selectableRows: true };
+    const selectRowUpdate = () => {};
+    const toggleExpandRow = () => {};
+
+    const shallowWrapper = shallow(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={15}
+        selectedRows={[]}
+        selectRowUpdate={selectRowUpdate}
+        highlightedRows={[1, 2, 3]}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    ).dive();
+
+    const instance = shallowWrapper.instance();
+    const actualResult = instance.isRowHighlighted(5);
+
+    assert.strictEqual(actualResult, false);
   });
 
   it('should gather selected row data when clicking row with selectableRowsOnClick=true.', () => {
@@ -217,6 +252,7 @@ describe('<TableBody />', function() {
         rowsPerPage={10}
         selectedRows={[]}
         selectRowUpdate={selectRowUpdate}
+        highlightedRows={[]}
         expandedRows={[]}
         toggleExpandRow={toggleExpandRow}
         options={options}
@@ -250,6 +286,7 @@ describe('<TableBody />', function() {
         rowsPerPage={10}
         selectedRows={[]}
         selectRowUpdate={selectRowUpdate}
+        highlightedRows={[]}
         expandedRows={[]}
         toggleExpandRow={toggleExpandRow}
         options={options}
@@ -289,6 +326,7 @@ describe('<TableBody />', function() {
         rowsPerPage={10}
         selectedRows={[]}
         selectRowUpdate={selectRowUpdate}
+        highlightedRows={[]}
         expandedRows={[]}
         toggleExpandRow={toggleExpandRow}
         options={options}
@@ -321,6 +359,7 @@ describe('<TableBody />', function() {
         rowsPerPage={10}
         selectedRows={[]}
         selectRowUpdate={selectRowUpdate}
+        highlightedRows={[]}
         expandedRows={[]}
         toggleExpandRow={toggleExpandRow}
         options={options}
@@ -352,6 +391,7 @@ describe('<TableBody />', function() {
         rowsPerPage={10}
         selectedRows={[]}
         selectRowUpdate={selectRowUpdate}
+        highlightedRows={[]}
         expandedRows={[]}
         toggleExpandRow={toggleExpandRow}
         options={options}
@@ -369,6 +409,70 @@ describe('<TableBody />', function() {
     assert(options.onRowClick.calledWith(data[2], { rowIndex: 2, dataIndex: 2 }));
   });
 
+  it('should call onRowMouseEnter when mouse enters Row', () => {
+    const options = { selectableRows: true, onRowMouseEnter: spy() };
+    const selectRowUpdate = stub();
+    const toggleExpandRow = () => {};
+
+    const mountWrapper = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={[]}
+        selectRowUpdate={selectRowUpdate}
+        highlightedRows={[]}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('mouseenter');
+
+    assert.strictEqual(options.onRowMouseEnter.callCount, 1);
+    assert(options.onRowMouseEnter.calledWith(data[2], { rowIndex: 2, dataIndex: 2 }));
+  });
+
+  it('should call onRowMouseLeave when mouse leaves Row', () => {
+    const options = { selectableRows: true, onRowMouseLeave: spy() };
+    const selectRowUpdate = stub();
+    const toggleExpandRow = () => {};
+
+    const mountWrapper = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={[]}
+        selectRowUpdate={selectRowUpdate}
+        highlightedRows={[]}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('mouseleave');
+
+    assert.strictEqual(options.onRowMouseLeave.callCount, 1);
+    assert(options.onRowMouseLeave.calledWith(data[2], { rowIndex: 2, dataIndex: 2 }));
+  });
+
   it("should add custom props to rows if 'setRowProps' provided", () => {
     const options = { setRowProps: stub().returns({ className: 'testClass' }) };
     const selectRowUpdate = stub();
@@ -383,6 +487,7 @@ describe('<TableBody />', function() {
         rowsPerPage={10}
         selectedRows={[]}
         selectRowUpdate={selectRowUpdate}
+        highlightedRows={[]}
         expandedRows={[]}
         toggleExpandRow={toggleExpandRow}
         options={options}
@@ -415,6 +520,7 @@ describe('<TableBody />', function() {
         rowsPerPage={10}
         selectedRows={[]}
         selectRowUpdate={selectRowUpdate}
+        highlightedRows={[]}
         expandedRows={[]}
         toggleExpandRow={toggleExpandRow}
         options={options}

@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 const defaultBodyRowStyles = theme => ({
   root: {},
   hover: {},
+  highlight: {},
   hoverCursor: { cursor: 'pointer' },
   responsiveStacked: {
     [theme.breakpoints.down('sm')]: {
@@ -21,25 +22,34 @@ class TableBodyRow extends React.Component {
     options: PropTypes.object.isRequired,
     /** Callback to execute when row is clicked */
     onClick: PropTypes.func,
+    /** Callback to execute when the mouse enters a row */
+    onMouseEnter: PropTypes.func,
+    /** Callback to execute when the mouse leaves a row */
+    onMouseLeave: PropTypes.func,
     /** Current row selected or not */
     rowSelected: PropTypes.bool,
+    /** Current row is highlighted or not */
+    rowHighlighted: PropTypes.bool,
     /** Extend the style applied to components */
     classes: PropTypes.object,
   };
 
   render() {
-    const { classes, options, rowSelected, onClick, className, ...rest } = this.props;
+    const { classes, options, rowSelected, rowHighlighted, onClick, onMouseEnter, onMouseLeave, className, ...rest } = this.props;
 
     return (
       <TableRow
         hover={options.rowHover ? true : false}
         onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         className={classNames(
           {
             [classes.root]: true,
             [classes.hover]: options.rowHover,
             [classes.hoverCursor]: options.selectableRowsOnClick || options.expandableRowsOnClick,
             [classes.responsiveStacked]: options.responsive === 'stacked',
+            [classes.highlight]: rowHighlighted,
           },
           className,
         )}

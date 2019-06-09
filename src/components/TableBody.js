@@ -28,10 +28,16 @@ class TableBody extends React.Component {
     filterList: PropTypes.array,
     /** Callback to execute when row is clicked */
     onRowClick: PropTypes.func,
+    /** Callback to execute when the mouse enters a row */
+    onRowMouseEnter: PropTypes.func,
+    /** Callback to execute when the mouse leaves a row */
+    onRowMouseLeave: PropTypes.func,
     /** Table rows selected */
     selectedRows: PropTypes.object,
     /** Callback to trigger table row select */
     selectRowUpdate: PropTypes.func,
+    /** Table rows highlighted */
+    highlightedRows: PropTypes.object,
     /** Data used to search table against */
     searchText: PropTypes.string,
     /** Toggle row expandable */
@@ -85,6 +91,11 @@ class TableBody extends React.Component {
   isRowSelected(dataIndex) {
     const { selectedRows } = this.props;
     return selectedRows.lookup && selectedRows.lookup[dataIndex] ? true : false;
+  }
+
+  isRowHighlighted(dataIndex) {
+    const { highlightedRows } = this.props;
+    return highlightedRows.lookup && highlightedRows.lookup[dataIndex] ? true : false;
   }
 
   isRowExpanded(dataIndex) {
@@ -141,6 +152,14 @@ class TableBody extends React.Component {
     this.props.options.onRowClick && this.props.options.onRowClick(row, data, event);
   };
 
+  handleRowMouseEnter = (row, data, event) => {
+    this.props.options.onRowMouseEnter && this.props.options.onRowMouseEnter(row, data, event);
+  };
+
+  handleRowMouseLeave = (row, data, event) => {
+    this.props.options.onRowMouseLeave && this.props.options.onRowMouseLeave(row, data, event);
+  };
+
   render() {
     const { classes, columns, toggleExpandRow, options } = this.props;
     const tableRows = this.buildRows();
@@ -162,7 +181,10 @@ class TableBody extends React.Component {
                   {...(options.setRowProps ? options.setRowProps(row, dataIndex) : {})}
                   options={options}
                   rowSelected={options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false}
+                  rowHighlighted={this.isRowHighlighted(dataIndex)}
                   onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
+                  onMouseEnter={this.handleRowMouseEnter.bind(null, row, { rowIndex, dataIndex })}
+                  onMouseLeave={this.handleRowMouseLeave.bind(null, row, { rowIndex, dataIndex })}
                   id={'MUIDataTableBodyRow-' + dataIndex}>
                   <TableSelectCell
                     onChange={this.handleRowSelect.bind(null, {
