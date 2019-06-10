@@ -406,20 +406,19 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should apply columns prop change for filterList', () => {
-    const shallowWrapper = mount(shallow(<MUIDataTable columns={columns} data={data} />).get(0));
-    console.log(`shallowWrapper.props().columns[0]: ${JSON.stringify(shallowWrapper.props().columns[0])}`);
-    const instance = shallowWrapper.instance();
-    instance.initializeTable(shallowWrapper.props());
+    const mountShallowWrapper = mount(shallow(<MUIDataTable columns={columns} data={data} />).get(0));
+    const instance = mountShallowWrapper.instance();
+    instance.initializeTable(mountShallowWrapper.props());
     // now use updated columns props
     const newColumns = cloneDeep(columns);
     newColumns[0].options.filterList = ['Joe James'];
-    shallowWrapper.setProps({ columns: newColumns });
-    shallowWrapper.update();
+    mountShallowWrapper.setProps({ columns: newColumns });
+    mountShallowWrapper.update();
     // mimic componentDidUpdate(prevProps) {
     // if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
-    instance.setTableData(shallowWrapper.props(), 1 /* instance.TABLE_LOAD.INITIAL */);
+    instance.setTableData(mountShallowWrapper.props(), 1 /* instance.TABLE_LOAD.INITIAL */);
 
-    const updatedState = shallowWrapper.state();
+    const updatedState = mountShallowWrapper.state();
     const { columns: updatedColumns } = updatedState;
     assert.deepEqual(updatedState.filterList, [['Joe James'], [], [], [], []]);
   });
