@@ -2,6 +2,7 @@ import React from 'react';
 import { spy } from 'sinon';
 import { mount, shallow } from 'enzyme';
 import { assert, expect } from 'chai';
+import cloneDeep from 'lodash.clonedeep';
 import MUIDataTable from '../src/MUIDataTable';
 import TableFilterList from '../src/components/TableFilterList';
 import TablePagination from '../src/components/TablePagination';
@@ -402,6 +403,25 @@ describe('<MUIDataTable />', function() {
 
     const state = table.state();
     assert.deepEqual(state.filterList, [['Joe James'], [], [], [], []]);
+  });
+
+  it('should apply columns prop change for filterList', () => {
+    const shallowWrapper = mount(shallow(<MUIDataTable columns={columns} data={data} />).get(0));
+    console.log(`shallowWrapper.props().columns[0]: ${JSON.stringify(shallowWrapper.props().columns[0])}`);
+    const instance = shallowWrapper.instance();
+    instance.initializeTable(shallowWrapper.props());
+    // now use updated columns props
+    const newColumns = cloneDeep(columns);
+    newColumns[0].options.filterList = ['Joe James'];
+    shallowWrapper.setProps({ columns: newColumns });
+    shallowWrapper.update();
+    // mimic componentDidUpdate(prevProps) {
+    // if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
+    instance.setTableData(shallowWrapper.props(), 1 /* instance.TABLE_LOAD.INITIAL */);
+
+    const updatedState = shallowWrapper.state();
+    const { columns: updatedColumns } = updatedState;
+    assert.deepEqual(updatedState.filterList, [['Joe James'], [], [], [], []]);
   });
 
   it('should create Chip when filterList is populated', () => {
