@@ -405,7 +405,27 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(state.filterList, [['Joe James'], [], [], [], []]);
   });
 
-  it('should apply columns prop change for filterList', () => {
+  it('should not update internal column state on data props change after initial columns options filterList', () => {
+    const initColumns = cloneDeep(columns);
+    initColumns[0].options.filterList = ['Joe James'];
+    const mountShallowWrapper = mount(shallow(<MUIDataTable columns={initColumns} data={data} />).get(0));
+    const instance = mountShallowWrapper.instance();
+    // now disable Joe James filter
+    instance.filterUpdate(0, 'Joe James', 'Name', 'dropdown');
+    mountShallowWrapper.update();
+    mountShallowWrapper.setProps({ data: [] });
+    mountShallowWrapper.update();
+    // mimic componentDidUpdate(prevProps) {
+    // if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
+    // instance.setTableData(mountShallowWrapper.props(), 1 /* instance.TABLE_LOAD.INITIAL */);
+
+    const updatedState = mountShallowWrapper.state();
+    const { columns: updatedColumns } = updatedState;
+    // make sure we still no longer have an active filter
+    assert.deepEqual(updatedState.filterList, [[], [], [], [], []]);
+  });
+
+  xit('should apply columns prop change for filterList', () => {
     const mountShallowWrapper = mount(shallow(<MUIDataTable columns={columns} data={data} />).get(0));
     const instance = mountShallowWrapper.instance();
     instance.initializeTable(mountShallowWrapper.props());
