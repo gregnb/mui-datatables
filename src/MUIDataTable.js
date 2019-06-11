@@ -337,7 +337,7 @@ class MUIDataTable extends React.Component {
     let filterData = [];
     let filterList = [];
 
-    if (this.state.columns.length && isEqual(this.rawColumns(newColumns), this.rawColumns(this.state.columns))) {
+    if (this.state.columns.length) {
       console.log('buildColumns unchanged columns');
       const { columns, filterList, filterData } = this.state;
       return { columns, filterList, filterData };
@@ -375,7 +375,7 @@ class MUIDataTable extends React.Component {
       columnData.push(columnOptions);
 
       filterData[colIndex] = [];
-      filterList[colIndex] = [];
+      filterList[colIndex] = columnOptions.filterList || [];
     });
 
     return { columns: columnData, filterData, filterList };
@@ -445,10 +445,6 @@ class MUIDataTable extends React.Component {
 
       if (column.filterOptions) {
         filterData[colIndex] = cloneDeep(column.filterOptions);
-      }
-
-      if (column.filterList) {
-        filterList[colIndex] = cloneDeep(column.filterList);
       }
 
       if (this.options.sortFilterList) {
