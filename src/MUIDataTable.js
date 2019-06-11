@@ -91,10 +91,13 @@ class MUIDataTable extends React.Component {
             download: PropTypes.bool,
             viewColumns: PropTypes.bool,
             filterList: PropTypes.array,
-            filterOptions: PropTypes.oneOfType([PropTypes.array, PropTypes.shape({
-              names: PropTypes.array,
-              logic: PropTypes.func,
-            })]),
+            filterOptions: PropTypes.oneOfType([
+              PropTypes.array,
+              PropTypes.shape({
+                names: PropTypes.array,
+                logic: PropTypes.func,
+              }),
+            ]),
             filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField']),
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,
@@ -186,8 +189,8 @@ class MUIDataTable extends React.Component {
     this.tableRef = false;
     this.tableContent = React.createRef();
     this.headCellRefs = {};
-    this.setHeadResizeable = () => { };
-    this.updateDividers = () => { };
+    this.setHeadResizeable = () => {};
+    this.updateDividers = () => {};
   }
 
   componentWillMount() {
@@ -385,17 +388,17 @@ class MUIDataTable extends React.Component {
   transformData = (columns, data) => {
     return Array.isArray(data[0])
       ? data.map(row => {
-        let i = -1;
+          let i = -1;
 
-        return columns.map(col => {
-          if (!col.empty) i++;
-          return col.empty ? undefined : row[i];
-        });
-      })
+          return columns.map(col => {
+            if (!col.empty) i++;
+            return col.empty ? undefined : row[i];
+          });
+        })
       : data.map(row => columns.map(col => row[col.name]));
   };
 
-  setTableData(props, status, callback = () => { }) {
+  setTableData(props, status, callback = () => {}) {
     const { options } = props;
 
     let tableData = [];
@@ -445,8 +448,7 @@ class MUIDataTable extends React.Component {
           console.error(
             'Deprecated: filterOptions must now be an object. see https://github.com/gregnb/mui-datatables/tree/master/examples/customize-filter example',
           );
-        }
-        else if (Array.isArray(column.filterOptions.names)) {
+        } else if (Array.isArray(column.filterOptions.names)) {
           filterData[colIndex] = cloneDeep(column.filterOptions.names);
         }
       }
@@ -541,8 +543,8 @@ class MUIDataTable extends React.Component {
           typeof funcResult === 'string' || !funcResult
             ? funcResult
             : funcResult.props && funcResult.props.value
-              ? funcResult.props.value
-              : columnValue;
+            ? funcResult.props.value
+            : columnValue;
       }
 
       displayRow.push(columnDisplay);
@@ -852,6 +854,7 @@ class MUIDataTable extends React.Component {
         }
 
         return {
+          page: 0,
           filterList: filterList,
           displayData: this.options.serverSide
             ? prevState.displayData
