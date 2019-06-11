@@ -247,7 +247,7 @@ class TableFilter extends React.Component {
                 <MenuItem value={filterValue} key={filterIndex + 1}>
                   <Checkbox
                     checked={filterList[index].indexOf(filterValue) >= 0 ? true : false}
-                    value={filterValue !== null ? filterValue.toString() : ''}
+                    value={filterValue != null ? filterValue.toString() : ''}
                     className={classes.checkboxIcon}
                     classes={{
                       root: classes.checkbox,
