@@ -18,7 +18,7 @@ import { TextField, Grid, GridList, GridListTile } from '@material-ui/core';
 export const defaultFilterStyles = theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
-    padding: '16px 24px 16px 24px',
+    padding: '24px 24px 36px 24px',
     fontFamily: 'Roboto',
   },
   header: {
@@ -91,8 +91,6 @@ export const defaultFilterStyles = theme => ({
   },
   selectFormControl: {
     flex: '1 1 calc(50% - 24px)',
-    marginRight: '24px',
-    marginBottom: '24px',
   },
   /* textField */
   textFieldRoot: {
@@ -104,8 +102,6 @@ export const defaultFilterStyles = theme => ({
   },
   textFieldFormControl: {
     flex: '1 1 calc(50% - 24px)',
-    marginRight: '24px',
-    marginBottom: '24px',
   },
 });
 
@@ -251,7 +247,7 @@ class TableFilter extends React.Component {
                 <MenuItem value={filterValue} key={filterIndex + 1}>
                   <Checkbox
                     checked={filterList[index].indexOf(filterValue) >= 0 ? true : false}
-                    value={filterValue.toString()}
+                    value={filterValue !== null ? filterValue.toString() : ''}
                     className={classes.checkboxIcon}
                     classes={{
                       root: classes.checkbox,
@@ -295,7 +291,7 @@ class TableFilter extends React.Component {
           </div>
           <div className={classes.filtersSelected} />
         </div>
-        <GridList cellHeight="auto" cols={filterGridColumns}>
+        <GridList cellHeight="auto" cols={filterGridColumns} cellHeight={64} spacing={34}>
           {columns.map((column, index) => {
             if (column.filter) {
               const filterType = column.filterType || options.filterType;

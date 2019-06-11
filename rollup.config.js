@@ -1,41 +1,41 @@
-import babel from "rollup-plugin-babel";
-import commonjs from "rollup-plugin-commonjs";
-import replace from "rollup-plugin-replace";
-import uglify from "rollup-plugin-uglify";
+import babel from 'rollup-plugin-babel';
+import commonjs from 'rollup-plugin-commonjs';
+import replace from 'rollup-plugin-replace';
+import uglify from 'rollup-plugin-uglify';
 
 export default {
   input: 'src/index.js',
   plugins: [
     replace({
-      'process.env.NODE_ENV': JSON.stringify('production')
+      'process.env.NODE_ENV': JSON.stringify('production'),
     }),
     commonjs({
-      include: [
-        'node_modules/**'
-      ]
+      include: ['node_modules/**'],
     }),
     babel({
-      "presets": [
-        "react",
-        ["env", {
-          "targets": {
-            "browsers": ["last 2 versions", "ie >= 10"]
+      presets: [
+        'react',
+        [
+          'env',
+          {
+            targets: {
+              browsers: ['last 2 versions', 'ie >= 10'],
+            },
+            debug: false,
+            modules: false,
           },
-          "debug": false,
-          "modules": false
-        }]
+        ],
       ],
-      "plugins": [
-        "external-helpers",
-        "transform-object-rest-spread",
-        "babel-plugin-transform-class-properties",
-        "transform-react-remove-prop-types"
+      plugins: [
+        'external-helpers',
+        'transform-object-rest-spread',
+        'babel-plugin-transform-class-properties',
+        'transform-react-remove-prop-types',
       ],
-      babelrc: false
+      babelrc: false,
     }),
     uglify({
       compress: {
-        warnings: false,
         conditionals: true,
         unused: true,
         comparisons: true,
@@ -47,13 +47,13 @@ export default {
       },
       output: {
         comments: false,
-      }
-    })
+      },
+    }),
   ],
   output: {
     file: 'dist/index.js',
     format: 'cjs',
-    exports: 'named'
+    exports: 'named',
   },
-  sourcemap: true
+  sourcemap: true,
 };
