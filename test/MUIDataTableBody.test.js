@@ -205,7 +205,7 @@ describe('<TableBody />', function() {
   it('should gather selected row data when clicking row with selectableRowsOnClick=true.', () => {
     let selectedRowData;
     const options = { selectableRows: true, selectableRowsOnClick: true };
-    const selectRowUpdate = (type, data) => selectedRowData = data;
+    const selectRowUpdate = (type, data) => (selectedRowData = data);
     const toggleExpandRow = spy();
 
     const mountWrapper = mount(
@@ -239,7 +239,7 @@ describe('<TableBody />', function() {
     let expandedRowData;
     const options = { selectableRows: true, expandableRows: true, expandableRowsOnClick: true };
     const selectRowUpdate = spy();
-    const toggleExpandRow = data => expandedRowData = data;
+    const toggleExpandRow = data => (expandedRowData = data);
 
     const mountWrapper = mount(
       <TableBody
@@ -271,9 +271,14 @@ describe('<TableBody />', function() {
   it('should gather both selected and expanded row data when clicking row with expandableRows=true, selectableRowsOnClick=true, and expandableRowsOnClick=true.', () => {
     let expandedRowData;
     let selectedRowData;
-    const options = { selectableRows: true, selectableRowsOnClick: true, expandableRows: true, expandableRowsOnClick: true };
-    const selectRowUpdate = (type, data) => selectedRowData = data;
-    const toggleExpandRow = data => expandedRowData = data;
+    const options = {
+      selectableRows: true,
+      selectableRowsOnClick: true,
+      expandableRows: true,
+      expandableRowsOnClick: true,
+    };
+    const selectRowUpdate = (type, data) => (selectedRowData = data);
+    const toggleExpandRow = data => (expandedRowData = data);
 
     const mountWrapper = mount(
       <TableBody
