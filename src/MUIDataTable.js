@@ -91,7 +91,13 @@ class MUIDataTable extends React.Component {
             download: PropTypes.bool,
             viewColumns: PropTypes.bool,
             filterList: PropTypes.array,
-            filterOptions: PropTypes.array,
+            filterOptions: PropTypes.oneOfType([
+              PropTypes.array,
+              PropTypes.shape({
+                names: PropTypes.array,
+                logic: PropTypes.func,
+              }),
+            ]),
             filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField']),
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,
@@ -107,6 +113,7 @@ class MUIDataTable extends React.Component {
       textLabels: PropTypes.object,
       pagination: PropTypes.bool,
       expandableRows: PropTypes.bool,
+      expandableRowsOnClick: PropTypes.bool,
       renderExpandableRow: PropTypes.func,
       customToolbar: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customToolbarSelect: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
@@ -115,6 +122,7 @@ class MUIDataTable extends React.Component {
       onRowClick: PropTypes.func,
       resizableColumns: PropTypes.bool,
       selectableRows: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['none', 'single', 'multiple'])]),
+      selectableRowsOnClick: PropTypes.bool,
       isRowSelectable: PropTypes.func,
       serverSide: PropTypes.bool,
       onTableChange: PropTypes.func,
@@ -160,6 +168,7 @@ class MUIDataTable extends React.Component {
     displayData: [],
     page: 0,
     rowsPerPage: 0,
+    count: 0,
     columns: [],
     filterData: [],
     filterList: [],
@@ -231,8 +240,10 @@ class MUIDataTable extends React.Component {
       pagination: true,
       textLabels,
       expandableRows: false,
+      expandableRowsOnClick: false,
       resizableColumns: false,
       selectableRows: 'multiple',
+      selectableRowsOnClick: false,
       caseSensitive: false,
       serverSide: false,
       rowHover: true,
@@ -432,7 +443,14 @@ class MUIDataTable extends React.Component {
       }
 
       if (column.filterOptions) {
-        filterData[colIndex] = cloneDeep(column.filterOptions);
+        if (Array.isArray(column.filterOptions)) {
+          filterData[colIndex] = cloneDeep(column.filterOptions);
+          console.error(
+            'Deprecated: filterOptions must now be an object. see https://github.com/gregnb/mui-datatables/tree/master/examples/customize-filter example',
+          );
+        } else if (Array.isArray(column.filterOptions.names)) {
+          filterData[colIndex] = cloneDeep(column.filterOptions.names);
+        }
       }
 
       if (column.filterList) {
@@ -485,6 +503,7 @@ class MUIDataTable extends React.Component {
         filterList: filterList,
         searchText: searchText,
         selectedRows: selectedRowsData,
+        count: options.count,
         data: tableData,
         displayData: this.getDisplayData(columns, tableData, filterList, searchText),
       }),
@@ -536,7 +555,9 @@ class MUIDataTable extends React.Component {
       const caseSensitive = this.options.caseSensitive;
       const filterType = column.filterType || this.options.filterType;
       if (filterVal.length) {
-        if (filterType === 'textField' && !this.hasSearchText(columnVal, filterVal, caseSensitive)) {
+        if (column.filterOptions && column.filterOptions.logic) {
+          if (column.filterOptions.logic(columnValue, filterVal)) isFiltered = true;
+        } else if (filterType === 'textField' && !this.hasSearchText(columnVal, filterVal, caseSensitive)) {
           isFiltered = true;
         } else if (
           filterType !== 'textField' &&
@@ -1064,7 +1085,7 @@ class MUIDataTable extends React.Component {
       searchText,
     } = this.state;
 
-    const rowCount = this.options.count || displayData.length;
+    const rowCount = this.state.count || displayData.length;
     const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
     const showToolbar = hasToolbarItem(this.options, title);
     const columnNames = columns.map(column => ({ name: column.name }));
