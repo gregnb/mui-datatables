@@ -425,24 +425,6 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(updatedState.filterList, [[], [], [], [], []]);
   });
 
-  xit('should apply columns prop change for filterList', () => {
-    const mountShallowWrapper = mount(shallow(<MUIDataTable columns={columns} data={data} />).get(0));
-    const instance = mountShallowWrapper.instance();
-    instance.initializeTable(mountShallowWrapper.props());
-    // now use updated columns props
-    const newColumns = cloneDeep(columns);
-    newColumns[0].options.filterList = ['Joe James'];
-    mountShallowWrapper.setProps({ columns: newColumns });
-    mountShallowWrapper.update();
-    // mimic componentDidUpdate(prevProps) {
-    // if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
-    instance.setTableData(mountShallowWrapper.props(), 1 /* instance.TABLE_LOAD.INITIAL */);
-
-    const updatedState = mountShallowWrapper.state();
-    const { columns: updatedColumns } = updatedState;
-    assert.deepEqual(updatedState.filterList, [['Joe James'], [], [], [], []]);
-  });
-
   it('should create Chip when filterList is populated', () => {
     const filterList = [['Joe James'], [], [], [], []];
     const filterListRenderers = [
