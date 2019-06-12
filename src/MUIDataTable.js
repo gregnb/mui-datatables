@@ -195,12 +195,7 @@ class MUIDataTable extends React.Component {
     if (this.props.options.searchText) this.setState({ page: 0 });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    console.log('componentDidUpdate');
-    console.log(`prevProps.columns[0]: ${JSON.stringify(prevProps.columns[0])}`);
-    console.log(`this.props.columns[0]: ${JSON.stringify(this.props.columns[0])}`);
-    console.log(`prevState.filterList: ${JSON.stringify(prevState.filterList)}`);
-    console.log(`this.state.filterList: ${JSON.stringify(this.state.filterList)}`);
+  componentDidUpdate(prevProps) {
     if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
       this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
         this.setTableAction('propsUpdate');
@@ -338,11 +333,9 @@ class MUIDataTable extends React.Component {
     let filterList = [];
 
     if (this.state.columns.length) {
-      console.log('buildColumns unchanged columns');
       const { columns, filterList, filterData } = this.state;
       return { columns, filterList, filterData };
     }
-    console.log('buildColumns newColumns');
 
     newColumns.forEach((column, colIndex) => {
       let columnOptions = {
@@ -396,14 +389,9 @@ class MUIDataTable extends React.Component {
 
   setTableData(props, status, callback = () => {}) {
     const { options } = props;
-    console.log('setTableData');
-    console.log(`props.columns[0]: ${JSON.stringify(props.columns[0])}`);
-    console.log(`this.props.columns[0]: ${JSON.stringify(this.props.columns[0])}`);
-    console.log(`this.state.columns[0]: ${JSON.stringify(this.state.columns[0])}`);
 
     let tableData = [];
     let { columns, filterData, filterList } = this.buildColumns(props.columns);
-    console.log(JSON.stringify(filterList));
     let sortIndex = null;
     let sortDirection = null;
 
@@ -486,8 +474,6 @@ class MUIDataTable extends React.Component {
       tableData = sortedData.data;
     }
     /* set source data and display Data set source set */
-    console.log(`nextState.columns[0]: ${JSON.stringify(columns[0])}`);
-    console.log(`nextState.filterList: ${JSON.stringify(filterList)}`);
     this.setState(
       prevState => ({
         columns: columns,
