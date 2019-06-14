@@ -13,6 +13,7 @@ class Example extends React.Component {
       []
     ],
     filterOptions: ['this', 'test', 'is', 'working'],
+    display: ['true', 'true', 'true', 'true', 'true'],
     data: [
       ["Gabby George", "Business Analyst", "Minneapolis", 30, 100000],
       ["Business Analyst", "Business Consultant", "Dallas",  55, 200000],
@@ -53,8 +54,13 @@ class Example extends React.Component {
   }
 
   handleAddData = (event) => {
-    const string = prompt("Write a string with 'Name', 'Title', 'Location', 'Age' and 'Salary' separted by semicolon !");
+    const string = prompt("Write a string with 'Name', 'Title', 'Location', 'Age' and 'Salary' separeted by semicolon !");
     this.setState({ data: [string.split(';'), ...this.state.data] });
+  }
+
+  handleChangeDisplay = (event) => {
+    const string = prompt("Write a string with 5 display options true, false or excluded separeted by semicolon !");
+    this.setState({ display: string.split(';') });
   }
 
   render() {
@@ -65,6 +71,7 @@ class Example extends React.Component {
         name: "Name",
         options: {
           filter: true,
+          display: this.state.display[0],
           filterList: filterList[0].length ? filterList[0] : null,
           customFilterListRender: v => `Name: ${v}`,
           filterOptions: {
@@ -75,6 +82,7 @@ class Example extends React.Component {
       {
         name: "Title",
         options: {
+          display: this.state.display[1],
           filter: true,
           filterList: filterList[1].length ? filterList[1] : null,
           customFilterListRender: v => `Title: ${v}`,
@@ -84,6 +92,7 @@ class Example extends React.Component {
       {
         name: "Location",
         options: {
+          display: this.state.display[2],
           filter: false,
           filterList: filterList[2].length ? filterList[2] : null,
         }
@@ -91,6 +100,7 @@ class Example extends React.Component {
       {
         name: "Age",
         options: {
+          display: this.state.display[3],
           filter: true,
           filterList: filterList[3].length ? filterList[3] : null,
           customFilterListRender: v => `Age: ${v}`,
@@ -99,6 +109,7 @@ class Example extends React.Component {
       {
         name: "Salary",
         options: {
+          display: this.state.display[4],
           filter: true,
           filterList: filterList[4].length ? filterList[4] : null,
           customFilterListRender: v => `Salary: ${v}`,
@@ -136,6 +147,7 @@ class Example extends React.Component {
         </button>
         <button onClick={this.handleFilterOptionsChange}>Change filters!</button>
         <button onClick={this.handleAddData}>Add data!</button>
+        <button onClick={this.handleChangeDisplay}>Change displayed data!</button>
       </React.Fragment>
     );
 

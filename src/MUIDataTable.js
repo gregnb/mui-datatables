@@ -343,7 +343,11 @@ class MUIDataTable extends React.Component {
     let filterData = [];
     let filterList = [];
 
-    if (this.state.columns.length && isEqual(this.rawColumns(newColumns), this.rawColumns(this.props.columns))  && !Object.keys(newColumns).some(val => this.state.columns[val] !== newColumns[val])) {
+    if (
+      this.state.columns.length &&
+      isEqual(this.rawColumns(newColumns), this.rawColumns(this.props.columns)) &&
+      !Object.keys(newColumns).some(val => this.state.columns[val] !== newColumns[val])
+    ) {
       const { columns, filterList, filterData } = this.state;
       return { columns, filterList, filterData };
     }
