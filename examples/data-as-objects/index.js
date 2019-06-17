@@ -47,6 +47,14 @@ class Example extends React.Component {
       {
         name: "phone.home",
         label: "Home Phone",
+      },
+      {
+        name: "phone.fake",
+        label: "Not a Phone #",
+      },
+      {
+        name: "phone2.home",
+        label: "Not An Attribute",
       }
     ];
 
