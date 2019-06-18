@@ -202,7 +202,7 @@ class MUIDataTable extends React.Component {
       caseSensitive: false,
       serverSide: false,
       rowHover: true,
-      rowSelect: true,
+      rowSelect: false,
       fixedHeader: true,
       elevation: 4,
       rowsPerPage: 10,
