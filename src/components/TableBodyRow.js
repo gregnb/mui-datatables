@@ -6,7 +6,15 @@ import { withStyles } from '@material-ui/core/styles';
 
 const defaultBodyRowStyles = theme => ({
   root: {},
-  hover: {},
+    hover: {
+        cursor: 'pointer',
+        '&$root': {
+            '&:hover:active': {
+                background: 'rgb(0,106,195, 0.2)',
+                color: 'white'
+            }
+        }
+    },
   hoverCursor: { cursor: 'pointer' },
   responsiveStacked: {
     [theme.breakpoints.down('sm')]: {
@@ -37,7 +45,7 @@ class TableBodyRow extends React.Component {
         className={classNames(
           {
             [classes.root]: true,
-            [classes.hover]: options.rowHover,
+              [classes.hover]: !!options.rowSelect,
             [classes.hoverCursor]: options.selectableRowsOnClick || options.expandableRowsOnClick,
             [classes.responsiveStacked]: options.responsive === 'stacked',
           },
