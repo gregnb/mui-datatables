@@ -149,6 +149,7 @@ The component accepts the following props:
 |**`rowsPerPage`**|number|10|Number of rows allowed per page
 |**`rowsPerPageOptions`**|array|[10,15,20]|Options to provide in pagination for number of rows a user can select
 |**`rowHover`**|boolean|true|Enable/disable hover style over rows
+|**`rowSelect`**|boolean|false|Enable/disable select style over rows (mouse pointer / highlight on press)
 |**`fixedHeader`**|boolean|true|Enable/disable fixed header columns
 |**`sortFilterList`**|boolean|true|Enable/disable alphanumeric sorting of filter lists
 |**`sort`**|boolean|true|Enable/disable sort on all columns

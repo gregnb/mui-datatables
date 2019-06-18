@@ -5,12 +5,21 @@ import TableRow from '@material-ui/core/TableRow';
 import { withStyles } from '@material-ui/core/styles';
 
 const defaultBodyRowStyles = theme => ({
-  root: {},
-  responsiveStacked: {
-    [theme.breakpoints.down('sm')]: {
-      border: 'solid 2px rgba(0, 0, 0, 0.15)',
+    root: {},
+    hover: {
+        cursor: 'pointer',
+        '&$root': {
+            '&:hover:active': {
+                background: 'rgb(0,106,195, 0.2)',
+                color: 'white'
+            }
+        }
     },
-  },
+    responsiveStacked: {
+        [theme.breakpoints.down('sm')]: {
+            border: 'solid 2px rgba(0, 0, 0, 0.15)',
+        },
+    },
 });
 
 class TableBodyRow extends React.Component {
@@ -35,6 +44,7 @@ class TableBodyRow extends React.Component {
         className={classNames(
           {
             [classes.root]: true,
+            [classes.hover]: !!options.rowSelect,
             [classes.responsiveStacked]: options.responsive === 'stacked',
           },
           className,
