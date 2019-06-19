@@ -1,22 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
 import MuiTable from '@material-ui/core/Table';
-import TableToolbar from './components/TableToolbar';
-import TableToolbarSelect from './components/TableToolbarSelect';
-import TableFilterList from './components/TableFilterList';
-import TableBody from './components/TableBody';
-import TableResize from './components/TableResize';
-import TableHead from './components/TableHead';
-import TableFooter from './components/TableFooter';
 import classnames from 'classnames';
 import cloneDeep from 'lodash.clonedeep';
-import merge from 'lodash.merge';
-import isEqual from 'lodash.isequal';
 import find from 'lodash.find';
+import isEqual from 'lodash.isequal';
 import isUndefined from 'lodash.isundefined';
+import merge from 'lodash.merge';
+import PropTypes from 'prop-types';
+import React from 'react';
+import TableBody from './components/TableBody';
+import TableFilterList from './components/TableFilterList';
+import TableFooter from './components/TableFooter';
+import TableHead from './components/TableHead';
+import TableResize from './components/TableResize';
+import TableToolbar from './components/TableToolbar';
+import TableToolbarSelect from './components/TableToolbarSelect';
 import textLabels from './textLabels';
-import { withStyles } from '@material-ui/core/styles';
 import { buildMap, getCollatorComparator, sortCompare } from './utils';
 
 const defaultTableStyles = {
@@ -96,9 +96,10 @@ class MUIDataTable extends React.Component {
               PropTypes.shape({
                 names: PropTypes.array,
                 logic: PropTypes.func,
+                display: PropTypes.func,
               }),
             ]),
-            filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField']),
+            filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField', 'custom']),
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,
             customFilterListRender: PropTypes.func,
@@ -109,7 +110,7 @@ class MUIDataTable extends React.Component {
     /** Options used to describe table */
     options: PropTypes.shape({
       responsive: PropTypes.oneOf(['stacked', 'scroll']),
-      filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField']),
+      filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField', 'custom']),
       textLabels: PropTypes.object,
       pagination: PropTypes.bool,
       expandableRows: PropTypes.bool,
@@ -554,7 +555,7 @@ class MUIDataTable extends React.Component {
       const filterVal = filterList[index];
       const caseSensitive = this.options.caseSensitive;
       const filterType = column.filterType || this.options.filterType;
-      if (filterVal.length) {
+      if (filterVal.length || filterType === 'custom') {
         if (column.filterOptions && column.filterOptions.logic) {
           if (column.filterOptions.logic(columnValue, filterVal)) isFiltered = true;
         } else if (filterType === 'textField' && !this.hasSearchText(columnVal, filterVal, caseSensitive)) {
@@ -849,6 +850,9 @@ class MUIDataTable extends React.Component {
           case 'multiselect':
             filterList[index] = value === '' ? [] : value;
             break;
+          case 'custom':
+            filterList[index] = value;
+            break;
           default:
             filterList[index] = filterPos >= 0 || value === '' ? [] : [value];
         }
@@ -1088,7 +1092,7 @@ class MUIDataTable extends React.Component {
     const rowCount = this.state.count || displayData.length;
     const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
     const showToolbar = hasToolbarItem(this.options, title);
-    const columnNames = columns.map(column => ({ name: column.name }));
+    const columnNames = columns.map(column => ({ name: column.name, filterType: column.filterType }));
 
     return (
       <Paper
