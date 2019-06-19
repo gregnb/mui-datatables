@@ -241,10 +241,10 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(onDownload.callCount, 1);
   });
 
-  it('should trigger onDownload prop callback when calling method handleCSVDownload and skip download if downloadServerSide is true', () => {
-    const onDownload = spy();
+  it('should trigger onDownload prop callback when calling method handleCSVDownload and skip download if return from onDownload is false', () => {
+    const onDownload = spy(() => false);
 
-    const newOptions = { ...options, onDownload, downloadServerSide: true };
+    const newOptions = { ...options, onDownload };
 
     const shallowWrapper = shallow(
       <TableToolbar

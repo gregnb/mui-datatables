@@ -66,7 +66,7 @@ function createCSVDownload(columns, data, options) {
     ? options.onDownload(buildHead, buildBody, columns, data)
     : `${CSVHead}${CSVBody}`.trim();
 
-  if (options.onDownload && options.downloadServerSide) {
+  if (options.onDownload && csv === false) {
     return;
   }
 
