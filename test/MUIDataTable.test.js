@@ -371,7 +371,6 @@ describe('<MUIDataTable />', function() {
     const instance = table.instance();
     instance.filterUpdate(0, 'Joe James', 'Name', 'checkbox');
     table.update();
-
     const state = table.state();
     assert.deepEqual(state.filterList, [['Joe James'], [], [], [], []]);
   });
@@ -934,6 +933,90 @@ describe('<MUIDataTable />', function() {
     const state = table.state();
 
     assert.equal(state.displayData.length, data.length);
+  });
+
+  describe('should displayData consider filterOptions with logic', () => {
+    it('with one column', () => {
+      const customFilterColumns = columns.map(c => {
+        if (c.name === 'Name')
+          return {
+            ...c,
+            options: {
+              ...c.options,
+              filterOptions: {
+                names: ['B', 'J'],
+                logic(name, filters) {
+                  const firstLetter = name[0];
+                  return firstLetter !== filters[0];
+                },
+              },
+            },
+          };
+        return c;
+      });
+
+      const shallowWrapper = shallow(<MUIDataTable columns={customFilterColumns} data={data} />);
+      const table = shallowWrapper.dive();
+      const instance = table.instance();
+      instance.filterUpdate(0, 'J', 'checkbox');
+      table.update();
+
+      const state = table.state();
+      assert.deepEqual(state.filterList, [['J'], [], [], [], []]);
+
+      const expectedResult = JSON.stringify([
+        { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 0 }), 'NY', undefined], dataIndex: 0 },
+      ]);
+      assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
+    });
+
+    it('operating as AND', () => {
+      const customFilterColumns = columns.map(c => {
+        if (c.name === 'Name')
+          return {
+            ...c,
+            options: {
+              ...c.options,
+              filterOptions: {
+                names: ['B', 'J', 'H'],
+                logic(name, filters) {
+                  const firstLetter = name[0];
+                  return firstLetter !== filters[0];
+                },
+              },
+            },
+          };
+        if (c.name === 'State')
+          return {
+            ...c,
+            options: {
+              ...c.options,
+              filterOptions: {
+                names: ['NY', 'FL', 'TX'],
+              },
+            },
+          };
+        return c;
+      });
+
+      const shallowWrapper = shallow(<MUIDataTable columns={customFilterColumns} data={data} />);
+      const table = shallowWrapper.dive();
+      const instance = table.instance();
+      instance.filterUpdate(0, 'H', 'checkbox');
+      instance.filterUpdate(3, 'TX', 'checkbox');
+      table.update();
+
+      const state = table.state();
+      assert.deepEqual(state.filterList, [['H'], [], [], ['TX'], []]);
+
+      const expectedResult = JSON.stringify([
+        {
+          data: ['Houston, James', 'Test Corp', renderCities('Dallas', { rowIndex: 3 }), 'TX', undefined],
+          dataIndex: 3,
+        },
+      ]);
+      assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
+    });
   });
 
   describe('should correctly handle array data', () => {
