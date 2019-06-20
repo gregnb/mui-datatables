@@ -173,6 +173,32 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(JSON.stringify(state.displayData), displayData);
   });
 
+  it('should correctly build internal table data and displayData structure when using nested data', () => {
+    const columns = [
+      { name: 'Name', options: { customBodyRender: renderName, customFilterListRender: renderCustomFilterList } },
+      'Company',
+      { name: 'Location.City', label: 'City Label' },
+      { name: 'Location.State' },
+      { name: 'Empty', options: { empty: true, filterType: 'checkbox' } },
+    ];
+    const data = [
+      { Name: 'Joe James', Company: 'Test Corp', Location: { City: 'Yonkers', State: 'NY' } },
+      { Name: 'John Walsh', Company: 'Test Corp', Location: { City: 'Hartford', State: null } },
+      { Name: 'Bob Herm', Company: 'Test Corp', Location: { Town: 'Tampa', State: 'FL' } },
+      { Name: 'James Houston', Company: 'Test Corp', Location: { City: 'Dallas', State: 'TX' } },
+    ];
+    const displayData = JSON.stringify([
+      { data: ['James, Joe', 'Test Corp', 'Yonkers', 'NY', undefined], dataIndex: 0, },
+      { data: ['Walsh, John', 'Test Corp', 'Hartford', null, undefined], dataIndex: 1, },
+      { data: ['Herm, Bob', 'Test Corp', undefined, 'FL', undefined], dataIndex: 2, },
+      { data: ['Houston, James', 'Test Corp', 'Dallas', 'TX', undefined], dataIndex: 3, },
+    ]);
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
+    const state = shallowWrapper.dive().state();
+
+    assert.deepEqual(JSON.stringify(state.displayData), displayData);
+  });
+
   it('should correctly re-build display after xhr with serverSide=true', done => {
     const fullWrapper = mount(<MUIDataTable columns={columns} data={[]} options={{ serverSide: true }} />);
     assert.strictEqual(fullWrapper.find('tbody tr').length, 1);
