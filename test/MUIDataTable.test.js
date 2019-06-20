@@ -188,10 +188,10 @@ describe('<MUIDataTable />', function() {
       { Name: 'James Houston', Company: 'Test Corp', Location: { City: 'Dallas', State: 'TX' } },
     ];
     const displayData = JSON.stringify([
-      { data: ['James, Joe', 'Test Corp', 'Yonkers', 'NY', undefined], dataIndex: 0, },
-      { data: ['Walsh, John', 'Test Corp', 'Hartford', null, undefined], dataIndex: 1, },
-      { data: ['Herm, Bob', 'Test Corp', undefined, 'FL', undefined], dataIndex: 2, },
-      { data: ['Houston, James', 'Test Corp', 'Dallas', 'TX', undefined], dataIndex: 3, },
+      { data: ['James, Joe', 'Test Corp', 'Yonkers', 'NY', undefined], dataIndex: 0 },
+      { data: ['Walsh, John', 'Test Corp', 'Hartford', null, undefined], dataIndex: 1 },
+      { data: ['Herm, Bob', 'Test Corp', undefined, 'FL', undefined], dataIndex: 2 },
+      { data: ['Houston, James', 'Test Corp', 'Dallas', 'TX', undefined], dataIndex: 3 },
     ]);
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const state = shallowWrapper.dive().state();

@@ -394,7 +394,7 @@ class MUIDataTable extends React.Component {
   };
 
   transformData = (columns, data) => {
-    const leaf = (obj, path) => (path.split('.').reduce((value, el) => value ? value[el] : undefined, obj));
+    const leaf = (obj, path) => path.split('.').reduce((value, el) => (value ? value[el] : undefined), obj);
 
     return Array.isArray(data[0])
       ? data.map(row => {
