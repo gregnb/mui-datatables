@@ -864,6 +864,7 @@ class MUIDataTable extends React.Component {
         }
 
         return {
+          page: 0,
           filterList: filterList,
           displayData: this.options.serverSide
             ? prevState.displayData
