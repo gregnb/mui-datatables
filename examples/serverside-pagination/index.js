@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 import MUIDataTable from "../../src/";
 
 class Example extends React.Component {
 
   state = {
     page: 0,
-    count: 100,
+    count: 1,
     data: [["Loading Data..."]],
     isLoading: false
   };
@@ -19,8 +19,8 @@ class Example extends React.Component {
   // get data
   getData = () => {
     this.setState({ isLoading: true });
-    this.xhrRequest().then(data => {
-      this.setState({ data, isLoading: false });
+    this.xhrRequest().then(res => {
+      this.setState({ data: res.data, isLoading: false, count: res.total });
     });
   }
 
@@ -28,6 +28,8 @@ class Example extends React.Component {
   xhrRequest = () => {
 
     return new Promise((resolve, reject) => {
+      const total = 124;  // mock record count from server
+      // mock page data
       const srcData = [
         ["Gabby George", "Business Analyst", "Minneapolis"],
         ["Aiden Lloyd", "Business Consultant", "Dallas"],
@@ -35,13 +37,14 @@ class Example extends React.Component {
         ["Franky Rees", "Business Analyst", "St. Petersburg"],
         ["Aaren Rose", "Business Analyst", "Toledo"]
       ];
-
       const maxRound =  Math.floor(Math.random() * 2) + 1;
       const data = [...Array(maxRound)].reduce(acc => acc.push(...srcData) && acc, []);
       data.sort((a, b) => 0.5 - Math.random());
 
       setTimeout(() => {
-        resolve(data);
+        resolve({
+          data, total
+        });
       }, 2500);
 
     });
@@ -49,10 +52,15 @@ class Example extends React.Component {
   }
 
   changePage = (page) => {
-    this.xhrRequest(`/myApiServer?page=${page}`).then(data => {
+    this.setState({
+      isLoading: true,
+    });
+    this.xhrRequest(`/myApiServer?page=${page}`).then(res => {
       this.setState({
+        isLoading: false,
         page: page,
-        data
+        data: res.data,
+        count: res.total,
       });
     });
   };
@@ -82,11 +90,13 @@ class Example extends React.Component {
         }
       }
     };
-
     return (
       <div>
-        {isLoading && <CircularProgress style={{ marginLeft: '50%' }} />}
-        <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+        <MUIDataTable title={<Typography variant="title">
+          ACME Employee list
+          {isLoading && <CircularProgress size={24} style={{marginLeft: 15, position: 'relative', top: 4}} />}
+          </Typography>
+          } data={data} columns={columns} options={options} />
       </div>
     );
 

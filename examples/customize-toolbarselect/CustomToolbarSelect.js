@@ -8,14 +8,9 @@ import { withStyles } from "@material-ui/core/styles";
 
 const defaultToolbarSelectStyles = {
   iconButton: {
-    marginRight: "24px",
-    top: "50%",
-    display: "inline-block",
-    position: "relative",
-    transform: "translateY(-50%)",
   },
-  icon: {
-    color: "#000",
+  iconContainer: {
+    marginRight: "24px",
   },
   inverseIcon: {
     transform: "rotate(90deg)",
@@ -47,7 +42,7 @@ class CustomToolbarSelect extends React.Component {
     const { classes } = this.props;
 
     return (
-      <div className={"custom-toolbar-select"}>
+      <div className={classes.iconContainer}>
         <Tooltip title={"Deselect ALL"}>
           <IconButton className={classes.iconButton} onClick={this.handleClickDeselectAll}>
             <IndeterminateCheckBoxIcon className={classes.icon} />

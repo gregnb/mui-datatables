@@ -29,8 +29,19 @@ class Example extends React.Component {
           customBodyRender: value => <button onClick={this.update}>+</button>
         }
       },
-      "Name",
-      "Title",
+      {
+        name: "Name",
+        options: {
+          sort: false,
+          hint: "?"
+        }
+      },
+      {
+        name: "Title",
+        options: {
+          hint: "?"
+        }
+      },
       "Location"
     ];
 
