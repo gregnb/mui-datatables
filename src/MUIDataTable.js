@@ -205,16 +205,17 @@ class MUIDataTable extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    // When search text or data changes, we need to reset page
+    if (this.props.options.searchText !== prevProps.options.searchText ||
+        this.props.data !== prevProps.data) {
+      this.setState({ page: 0 });
+    }
+
     if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
       this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
         this.setTableAction('propsUpdate');
       });
       this.updateOptions(this.props);
-    }
-
-    if (this.props.options.searchText !== prevProps.options.searchText) {
-      // When we have a search, we must reset page to view it
-      this.setState({ page: 0 });
     }
 
     if (this.options.resizableColumns) {
