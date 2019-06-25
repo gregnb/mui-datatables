@@ -336,6 +336,26 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(state.filterData, expectedResult);
   });
 
+  it('should check for page out of bounds and move to last available page if necessary', () => {
+    const pagesOfData = Array.from({length: 100}, () => ['string1', 'string2', 'string3', 'string4']);
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={pagesOfData} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+
+    instance.changePage(7);
+
+    assert.strictEqual(instance.state.page, 7);
+
+    const prevProps = shallowWrapper.props();
+    instance.props = {
+      ...instance.props,
+      data: pagesOfData.slice(0, 45)
+    };
+    instance.componentDidUpdate(prevProps);
+
+    assert.strictEqual(instance.state.page, 4);
+  });
+
   it('should correctly build internal rowsPerPage when provided in options', () => {
     const options = {
       rowsPerPage: 20,
