@@ -206,6 +206,7 @@ class MUIDataTable extends React.Component {
 
   componentDidUpdate(prevProps) {
     this.checkPageOutOfBounds();
+
     if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
       this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
         this.setTableAction('propsUpdate');
