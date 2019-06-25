@@ -209,6 +209,7 @@ class MUIDataTable extends React.Component {
       this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
         this.setTableAction('propsUpdate');
       });
+      this.checkPageOutOfBounds();
       this.updateOptions(this.props);
     }
 
@@ -220,6 +221,13 @@ class MUIDataTable extends React.Component {
     if (this.options.resizableColumns) {
       this.setHeadResizeable(this.headCellRefs, this.tableRef);
       this.updateDividers();
+    }
+  }
+
+  checkPageOutOfBounds() {
+    const lastPage = Math.max(0, Math.ceil(this.props.data.length / this.options.rowsPerPage) - 1);
+    if (this.state.page > lastPage) {
+        this.setState({page: lastPage});
     }
   }
 
