@@ -68,17 +68,22 @@ function createCSVDownload(columns, data, options) {
   const blob = new Blob([csv], { type: 'text/csv' });
 
   /* taken from react-csv */
-  const dataURI = `data:text/csv;charset=utf-8,%EF%BB%BF${csv}`;
+  // const dataURI = `data:text/csv;charset=utf-8,%EF%BB%BF${csv}`;
 
-  const URL = window.URL || window.webkitURL;
-  const downloadURI = typeof URL.createObjectURL === 'undefined' ? dataURI : URL.createObjectURL(blob);
-  alert("TEST")
-  let link = document.createElement('a');
-  link.setAttribute('href', downloadURI);
-  link.setAttribute('download', options.downloadOptions.filename);
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  let CSVLink = document.createElement("a");
+  CSVLink.href = "data:text/csv;charset=utf-8,%EF%BB%BF" + csv;
+  CSVLink.target = "_blank";
+  CSVLink.download = options.downloadOptions.filename;
+  CSVLink.click()
+  // const URL = window.URL || window.webkitURL;
+  // const downloadURI = typeof URL.createObjectURL === 'undefined' ? dataURI : URL.createObjectURL(blob);
+  // alert("TEST")
+  // let link = document.createElement('a');
+  // link.setAttribute('href', downloadURI);
+  // link.setAttribute('download', options.downloadOptions.filename);
+  // document.body.appendChild(link);
+  // link.click();
+  // document.body.removeChild(link);
 }
 
 export { buildMap, getCollatorComparator, sortCompare, createCSVDownload };
