@@ -240,30 +240,4 @@ describe('<TableToolbar />', function() {
 
     assert.strictEqual(onDownload.callCount, 1);
   });
-
-  it('should trigger onDownload prop callback when calling method handleCSVDownload and skip download if return from onDownload is false', () => {
-    const onDownload = spy(() => false);
-
-    const newOptions = { ...options, onDownload };
-
-    const shallowWrapper = shallow(
-      <TableToolbar
-        columns={columns}
-        displayData={data}
-        data={data}
-        options={newOptions}
-        setTableAction={setTableAction}
-      />,
-    );
-
-    const instance = shallowWrapper
-      .dive()
-      .dive()
-      .dive()
-      .instance();
-
-    instance.handleCSVDownload();
-
-    assert.strictEqual(onDownload.callCount, 1);
-  });
 });
