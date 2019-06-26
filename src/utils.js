@@ -72,7 +72,7 @@ function createCSVDownload(columns, data, options) {
 
   const URL = window.URL || window.webkitURL;
   const downloadURI = typeof URL.createObjectURL === 'undefined' ? dataURI : URL.createObjectURL(blob);
-
+  alert("TEST")
   let link = document.createElement('a');
   link.setAttribute('href', downloadURI);
   link.setAttribute('download', options.downloadOptions.filename);
