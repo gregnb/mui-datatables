@@ -64,22 +64,24 @@ class TableToolbarSelect extends React.Component {
     const textLabels = options.textLabels.selectedRows;
 
     return (
-      <Paper className={classes.root}>
-        <div>
-          <Typography variant="subtitle1" className={classes.title}>
-            {selectedRows.data.length} {textLabels.text}
-          </Typography>
-        </div>
-        {options.customToolbarSelect ? (
-          options.customToolbarSelect(selectedRows, displayData, this.handleCustomSelectedRows)
-        ) : (
-          <Tooltip title={textLabels.delete}>
-            <IconButton className={classes.iconButton} onClick={onRowsDelete} aria-label={textLabels.deleteAria}>
-              <DeleteIcon className={classes.deleteIcon} />
-            </IconButton>
-          </Tooltip>
-        )}
-      </Paper>
+      options.showSelectionToolbar && (
+        <Paper className={classes.root}>
+          <div>
+            <Typography variant="subtitle1" className={classes.title}>
+              {selectedRows.data.length} {textLabels.text}
+            </Typography>
+          </div>
+          {options.customToolbarSelect ? (
+            options.customToolbarSelect(selectedRows, displayData, this.handleCustomSelectedRows)
+          ) : (
+            <Tooltip title={textLabels.delete}>
+              <IconButton className={classes.iconButton} onClick={onRowsDelete} aria-label={textLabels.deleteAria}>
+                <DeleteIcon className={classes.deleteIcon} />
+              </IconButton>
+            </Tooltip>
+          )}
+        </Paper>
+      )
     );
   }
 }

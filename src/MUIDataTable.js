@@ -149,6 +149,7 @@ class MUIDataTable extends React.Component {
         separator: PropTypes.string,
       }),
       onDownload: PropTypes.func,
+      showSelectionToolbar: PropTypes.bool,
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
@@ -267,6 +268,7 @@ class MUIDataTable extends React.Component {
         filename: 'tableDownload.csv',
         separator: ',',
       },
+      showSelectionToolbar: true,
     };
 
     const extra = {};
@@ -1076,7 +1078,7 @@ class MUIDataTable extends React.Component {
   };
 
   render() {
-    const { classes, className, title } = this.props;
+    const { classes, className, title, showSelectionToolbar } = this.props;
     const {
       announceText,
       activeColumn,
@@ -1101,7 +1103,7 @@ class MUIDataTable extends React.Component {
         elevation={this.options.elevation}
         ref={this.tableContent}
         className={classnames(classes.paper, className)}>
-        {selectedRows.data.length ? (
+        {(selectedRows.data.length && showSelectionToolbar) ? (
           <TableToolbarSelect
             options={this.options}
             selectedRows={selectedRows}

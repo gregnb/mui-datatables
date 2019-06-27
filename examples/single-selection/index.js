@@ -106,7 +106,9 @@ class Example extends React.Component {
       filterType: 'dropdown',
       responsive: 'scroll',
       selectableRows: 'single',
-      selectableRowsOnClick: true
+      selectableRowsOnClick: true,
+      showSelectionToolbar:false,
+      
     };
 
     return (
