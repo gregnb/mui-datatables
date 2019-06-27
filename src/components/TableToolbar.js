@@ -95,8 +95,26 @@ class TableToolbar extends React.Component {
   }
 
   handleCSVDownload = () => {
-    const { data, columns, options } = this.props;
-    createCSVDownload(columns, data, options);
+    const { data, displayData, columns, options } = this.props;
+    let dataToDownload = data;
+    let columnsToDownload = columns;
+
+    if (options.downloadOptions && options.downloadOptions.filterOptions) {
+      // check rows first:
+      if (options.downloadOptions.filterOptions.useDisplayedRowsOnly) {
+        dataToDownload = displayData;
+      }
+      // now, check columns:
+      if (options.downloadOptions.filterOptions.useDisplayedColumnsOnly) {
+        columnsToDownload = columns.filter((_, index) => _.display==='true');
+
+        dataToDownload = dataToDownload.map(row => {
+          row.data = row.data.filter((_, index) => columns[index].display==='true');
+          return row;
+        });
+      }
+    }
+    createCSVDownload(columnsToDownload, dataToDownload, options);
   };
 
   setActiveIcon = iconName => {

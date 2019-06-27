@@ -61,6 +61,10 @@ class Example extends React.Component {
       downloadOptions: {
           filename: 'excel-format.csv',
           separator: ';',
+          filterOptions: {
+            useDisplayedColumnsOnly: true,
+            useDisplayedRowsOnly: true,
+          }
       },
       onRowsSelect: (rowsSelected, allRows) => {
         console.log(rowsSelected, allRows);
