@@ -840,7 +840,7 @@ class MUIDataTable extends React.Component {
   filterUpdate = (index, value, column, type) => {
     this.setState(
       prevState => {
-        const filterList = cloneDeep(prevState.filterList);
+        const filterList = prevState.filterList.slice(0);
         const filterPos = filterList[index].indexOf(value);
 
         switch (type) {

@@ -270,12 +270,17 @@ class TableFilter extends React.Component {
 
   renderCustomField(column, index) {
     const { classes, filterList, options } = this.props;
-    const display = (column.filterOptions && column.filterOptions.display) || options.filterOptions.display;
+    const display =
+      (column.filterOptions && column.filterOptions.display) ||
+      (options.filterOptions && options.filterOptions.display);
 
     return (
       <GridListTile key={index} cols={1}>
         <div className={classes.textFieldRoot}>
-          <FormControl key={index}>{display(filterList, this.handleCustomChange, index, column)}</FormControl>
+          <FormControl key={index}>
+            {(display && display(filterList, this.handleCustomChange, index, column)) ||
+              "Property 'display' is required when using custom filter type."}
+          </FormControl>
         </div>
       </GridListTile>
     );
