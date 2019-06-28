@@ -274,13 +274,15 @@ class TableFilter extends React.Component {
       (column.filterOptions && column.filterOptions.display) ||
       (options.filterOptions && options.filterOptions.display);
 
+    if (!display) {
+      console.log('Property "display" is required when using custom filter type.');
+      return;
+    }
+
     return (
       <GridListTile key={index} cols={1}>
         <div className={classes.textFieldRoot}>
-          <FormControl key={index}>
-            {(display && display(filterList, this.handleCustomChange, index, column)) ||
-              "Property 'display' is required when using custom filter type."}
-          </FormControl>
+          <FormControl key={index}>{display(filterList, this.handleCustomChange, index, column)}</FormControl>
         </div>
       </GridListTile>
     );
