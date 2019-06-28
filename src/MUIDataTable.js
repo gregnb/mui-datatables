@@ -209,6 +209,7 @@ class MUIDataTable extends React.Component {
       this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
         this.setTableAction('propsUpdate');
       });
+      this.updateOptions(this.props);
     }
 
     if (this.props.options.searchText !== prevProps.options.searchText) {
@@ -220,6 +221,10 @@ class MUIDataTable extends React.Component {
       this.setHeadResizeable(this.headCellRefs, this.tableRef);
       this.updateDividers();
     }
+  }
+
+  updateOptions(props) {
+    this.options = merge(this.options, props.options);
   }
 
   initializeTable(props) {
@@ -269,6 +274,9 @@ class MUIDataTable extends React.Component {
       extra.selectableRows = props.options.selectableRows ? 'multiple' : 'none';
     }
     this.options = merge(defaultOptions, props.options, extra);
+    if (props.options.rowsPerPageOptions) {
+      this.options.rowsPerPageOptions = props.options.rowsPerPageOptions;
+    }
   }
 
   validateOptions(options) {
@@ -343,11 +351,6 @@ class MUIDataTable extends React.Component {
     let filterData = [];
     let filterList = [];
 
-    if (this.state.columns.length && isEqual(this.rawColumns(newColumns), this.rawColumns(this.props.columns))) {
-      const { columns, filterList, filterData } = this.state;
-      return { columns, filterList, filterData };
-    }
-
     newColumns.forEach((column, colIndex) => {
       let columnOptions = {
         display: 'true',
@@ -386,6 +389,8 @@ class MUIDataTable extends React.Component {
   };
 
   transformData = (columns, data) => {
+    const leaf = (obj, path) => path.split('.').reduce((value, el) => (value ? value[el] : undefined), obj);
+
     return Array.isArray(data[0])
       ? data.map(row => {
           let i = -1;
@@ -395,7 +400,7 @@ class MUIDataTable extends React.Component {
             return col.empty ? undefined : row[i];
           });
         })
-      : data.map(row => columns.map(col => row[col.name]));
+      : data.map(row => columns.map(col => leaf(row, col.name)));
   };
 
   setTableData(props, status, callback = () => {}) {
@@ -421,7 +426,7 @@ class MUIDataTable extends React.Component {
         }
 
         if (typeof column.customBodyRender === 'function') {
-          const tableMeta = this.getTableMeta(rowIndex, colIndex, value, [], column, this.state);
+          const tableMeta = this.getTableMeta(rowIndex, colIndex, value, column, [], this.state);
           const funcResult = column.customBodyRender(value, tableMeta);
 
           if (React.isValidElement(funcResult) && funcResult.props.value) {
@@ -854,6 +859,7 @@ class MUIDataTable extends React.Component {
         }
 
         return {
+          page: 0,
           filterList: filterList,
           displayData: this.options.serverSide
             ? prevState.displayData
@@ -1178,6 +1184,7 @@ class MUIDataTable extends React.Component {
           options={this.options}
           page={page}
           rowCount={rowCount}
+          rowsPerPageOptions={this.options.rowsPerPageOptions}
           rowsPerPage={rowsPerPage}
           changeRowsPerPage={this.changeRowsPerPage}
           changePage={this.changePage}
