@@ -275,7 +275,7 @@ class TableFilter extends React.Component {
       (options.filterOptions && options.filterOptions.display);
 
     if (!display) {
-      console.log('Property "display" is required when using custom filter type.');
+      console.error('Property "display" is required when using custom filter type.');
       return;
     }
 
