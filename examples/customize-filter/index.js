@@ -1,8 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import MUIDataTable from "../../src/";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
+import MUIDataTable from "../../src";
 
 class Example extends React.Component {
 
@@ -13,9 +11,11 @@ class Example extends React.Component {
         name: "Name",
         options: {
           filter: true,
+          display: 'excluded',
         }
       },
       {
+        label: "Modified Title Label",
         name: "Title",
         options: {
           filter: true,
@@ -24,6 +24,7 @@ class Example extends React.Component {
       {
         name: "Location",
         options: {
+          print: false,
           filter: false,
         }
       },
@@ -31,12 +32,36 @@ class Example extends React.Component {
         name: "Age",
         options: {
           filter: true,
+          filterOptions: {
+            names: ["young", "adult", "middle-age", "senior", "elderly"],
+            logic(age, filters) {
+              const show = (filters.indexOf("young") >= 0 && age <= 35) ||
+                (filters.indexOf("adult") >= 0 && age > 35 && age <= 45) ||
+                (filters.indexOf("middle-age") >= 0 && age > 45 && age <= 65) ||
+                (filters.indexOf("senior") >= 0 && age > 65 && age <= 75) ||
+                (filters.indexOf("elderly") >= 0 && age > 75);
+              const filtered = !show;
+              return filtered;
+            }
+          },
+          print: false,
         }
       },
       {
         name: "Salary",
         options: {
           filter: true,
+          filterType: "checkbox",
+          filterOptions: {
+            names: ["Lower wages", "Average wages", "Higher wages"],
+            logic(salary, filterVal) {
+              salary = salary.replace(/[^\d]/g, "");
+              const show = (filterVal.indexOf("Lower wages") >= 0 && salary < 100000) ||
+                (filterVal.indexOf("Average wages") >= 0 && salary >= 100000 && salary < 200000) ||
+                (filterVal.indexOf("Higher wages") >= 0 && salary >= 200000);
+              return !show;
+            }
+          },
           sort: false
         }
       }
@@ -45,7 +70,7 @@ class Example extends React.Component {
 
     const data = [
       ["Gabby George", "Business Analyst", "Minneapolis", 30, "$100,000"],
-      ["Aiden Lloyd", "Business Consultant", "Dallas",  55, "$200,000"],
+      ["Aiden Lloyd", "Business Consultant", "Dallas", 55, "$200,000"],
       ["Jaden Collins", "Attorney", "Santa Ana", 27, "$500,000"],
       ["Franky Rees", "Business Analyst", "St. Petersburg", 22, "$50,000"],
       ["Aaren Rose", "Business Consultant", "Toledo", 28, "$75,000"],
@@ -69,7 +94,7 @@ class Example extends React.Component {
       ["Danni Hudson", "Agency Legal Counsel", "Tampa", 37, "$90,000"],
       ["Terry Macdonald", "Commercial Specialist", "Miami", 39, "$140,000"],
       ["Justice Mccarthy", "Attorney", "Tucson", 26, "$330,000"],
-      ["Silver Carey", "Computer Scientist", "Memphis", 47, "$250,000" ],
+      ["Silver Carey", "Computer Scientist", "Memphis", 47, "$250,000"],
       ["Franky Miles", "Industrial Analyst", "Buffalo", 49, "$190,000"],
       ["Glen Nixon", "Corporate Counselor", "Arlington", 44, "$80,000"],
       ["Gabby Strickland", "Business Process Consultant", "Scottsdale", 26, "$45,000"],
@@ -80,22 +105,10 @@ class Example extends React.Component {
       filter: true,
       filterType: 'dropdown',
       responsive: 'scroll',
-      expandableRows: true,
-      expandableRowsOnClick: true,
-      renderExpandableRow: (rowData, rowMeta) => {
-        const colSpan = rowData.length + 1;
-        return (
-          <TableRow>
-            <TableCell colSpan={colSpan}>
-              Custom expandable row option. Data: {JSON.stringify(rowData)}
-            </TableCell>
-          </TableRow>
-        );
-      }
     };
 
     return (
-      <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+      <MUIDataTable title={"ACME Employee list - customizeFilter"} data={data} columns={columns} options={options} />
     );
 
   }

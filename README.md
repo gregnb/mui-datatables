@@ -140,13 +140,16 @@ The component accepts the following props:
 |**`textLabels `**|object||User provided labels to localize text
 |**`pagination`**|boolean|true|Enable/disable pagination
 |**`selectableRows`**|string|'multiple'|Numbers of rows that can be selected. Options are "multiple", "single", "none".
+|**`selectableRowsOnClick`**|boolean|false|Enable/disable select toggle when row is clicked. When False, only checkbox will trigger this action.
 |**`isRowSelectable`**|function||Enable/disable selection on certain rows with custom function. Returns true if not provided.  `function(dataIndex) => bool`
-|**`resizableColumns`**|boolean|false|Enable/disable resizable columns
 |**`expandableRows`**|boolean|false|Enable/disable expandable rows
-|**`renderExpandableRow `**|function||Render expandable row. `function(rowData, rowMeta) => React Component`
+|**`expandableRowsOnClick`**|boolean|false|Enable/disable expand trigger when row is clicked. When False, only expand icon will trigger this action.
+|**`renderExpandableRow`**|function||Render expandable row. `function(rowData, rowMeta) => React Component`
+|**`resizableColumns`**|boolean|false|Enable/disable resizable columns
 |**`customToolbar`**|function||Render a custom toolbar
 |**`customToolbarSelect`**|function||Render a custom selected rows toolbar. `function(selectedRows, displayData, setSelectedRows) => void`
 |**`customFooter`**|function||Render a custom table footer. `function(count, page, rowsPerPage, changeRowsPerPage, changePage) => string`&#124;` React Component`
+|**`customRowRender `**|function||Override default row rendering with custom function. `customRowRender(data, dataIndex, rowIndex) => React Component`
 |**`customSort`**|function||Override default sorting with custom function. `function(data: array, colIndex: number, order: string) => array`
 |**`customSearch `**|function||Override default search with custom function. `customSearch(searchQuery: string, currentRow: array, columns: array) => boolean`
 |**`elevation`**|number|4|Shadow depth applied to Paper component
@@ -160,6 +163,7 @@ The component accepts the following props:
 |**`sort`**|boolean|true|Enable/disable sort on all columns
 |**`filter`**|boolean|true|Show/hide filter icon from toolbar
 |**`search`**|boolean|true|Show/hide search icon from toolbar
+|**`searchText`**|string||Initial search text
 |**`print`**|boolean|true|Show/hide print	 icon from toolbar
 |**`download`**|boolean|true|Show/hide download icon from toolbar
 |**`downloadOptions`**|object||Options to change the output of the CSV file. Default options: `{filename: 'tableDownload.csv', separator: ','}`
@@ -177,6 +181,7 @@ The component accepts the following props:
 |**`onColumnSortChange`**|function||Callback function that triggers when a column has been sorted. `function(changedColumn: string, direction: string) => void`
 |**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
 |**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
+|**`onTableInit`**|function||Callback function that triggers when table state has been initialized. `function(action: string, tableState: object) => void`
 |**`setRowProps`**|function||Is called for each row and allows to return custom props for this row based on its data. `function(row: array, dataIndex: number) => object`
 |**`alwaysRenderToolbar`**|boolean|false|Whether the toolbar should also be rendered when a column is selected
 
@@ -210,8 +215,9 @@ const columns = [
 |:--:|:-----|:--|:-----|
 |**`display`**|string|'true'|Display column in table. `enum('true', 'false', 'excluded')`
 |**`empty`**|boolean|false|This denotes whether the column has data or not (for use with intentionally empty columns)
+|**`viewColumns`**|boolean|true|Allow user to toggle column visibility through 'View Column' list
 |**`filterList`**|array||Filter value list [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
-|**`filterOptions`**|array||Filter options [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
+|**`filterOptions`**|{names, logic}||With filter options, it's possible to use custom names for the filter fields [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js) and/or custom filter logic [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js)
 |**`customFilterListRender`**|function||Function that returns a string used as the chip label. `function(value) => string` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`filter`**|boolean|true|Display column in filter list
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Takes priority over global filterType option.`enum('checkbox', 'dropdown', 'multiselect', 'textField')`.
