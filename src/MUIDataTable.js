@@ -1103,7 +1103,7 @@ class MUIDataTable extends React.Component {
         elevation={this.options.elevation}
         ref={this.tableContent}
         className={classnames(classes.paper, className)}>
-        {(selectedRows.data.length > 0) && (
+        {selectedRows.data.length > 0 && (
           <TableToolbarSelect
             options={this.options}
             selectedRows={selectedRows}
@@ -1112,8 +1112,8 @@ class MUIDataTable extends React.Component {
             selectRowUpdate={this.selectRowUpdate}
           />
         )}
-        {(selectedRows.data.length == 0 || this.options.alwaysRenderToolbar) && (
-          showToolbar && (
+        {(selectedRows.data.length == 0 || this.options.alwaysRenderToolbar) &&
+          (showToolbar && (
             <TableToolbar
               columns={columns}
               displayData={displayData}
@@ -1130,8 +1130,7 @@ class MUIDataTable extends React.Component {
               toggleViewColumn={this.toggleViewColumn}
               setTableAction={this.setTableAction}
             />
-          )
-        )}
+          ))}
         <TableFilterList
           options={this.options}
           filterListRenderers={columns.map(c => {
