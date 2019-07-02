@@ -73,7 +73,7 @@ describe('<TableFilter />', function() {
     assert.deepEqual(labels, ['First Name', 'Company', 'City Label', 'State']);
   });
 
-  it("should data table filter view with checkboxes if filterType = 'checkbox'", () => {
+  it("should render data table filter view with checkboxes if filterType = 'checkbox'", () => {
     const options = { filterType: 'checkbox', textLabels };
     const filterList = [[], [], [], []];
     const shallowWrapper = mount(
@@ -84,20 +84,20 @@ describe('<TableFilter />', function() {
     assert.strictEqual(actualResult.length, 13);
   });
 
-  it('should data table filter view with no checkboxes if filter=false for each column', () => {
+  it('should render data table filter view with no checkboxes if filter=false for each column', () => {
     const options = { filterType: 'checkbox', textLabels };
     const filterList = [[], [], [], []];
     columns = columns.map(item => (item.filter = false));
 
-    const shallowWrapper = mount(
+    const mountWrapper = mount(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
 
-    const actualResult = shallowWrapper.find(Checkbox);
+    const actualResult = mountWrapper.find(Checkbox);
     assert.strictEqual(actualResult.length, 0);
   });
 
-  it("should data table filter view with selects if filterType = 'select'", () => {
+  it("should render data table filter view with selects if filterType = 'select'", () => {
     const options = { filterType: 'select', textLabels };
     const filterList = [['Joe James'], [], [], []];
 
@@ -109,7 +109,7 @@ describe('<TableFilter />', function() {
     assert.strictEqual(actualResult.length, 4);
   });
 
-  it('should data table filter view no selects if filter=false for each column', () => {
+  it('should render data table filter view no selects if filter=false for each column', () => {
     const options = { filterType: 'select', textLabels };
     const filterList = [['Joe James'], [], [], []];
     columns = columns.map(item => (item.filter = false));
@@ -122,7 +122,7 @@ describe('<TableFilter />', function() {
     assert.strictEqual(actualResult.length, 0);
   });
 
-  it("should data table filter view with checkbox selects if filterType = 'multiselect'", () => {
+  it("should render data table filter view with checkbox selects if filterType = 'multiselect'", () => {
     const options = { filterType: 'multiselect', textLabels };
     const filterList = [['Joe James', 'John Walsh'], [], [], []];
 
