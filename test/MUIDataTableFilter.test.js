@@ -125,7 +125,7 @@ describe('<TableFilter />', function() {
             <TextField id="custom-filter-render">Custom Filter Render</TextField>
           </div>
         ),
-      }
+      },
     };
     const filterList = [[], [], [], []];
     const mountWrapper = mount(
