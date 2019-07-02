@@ -18,30 +18,7 @@ describe('<TableFilter />', function() {
     columns = [
       { name: 'firstName', label: 'First Name', display: true, sort: true, filter: true, sortDirection: 'desc' },
       { name: 'company', label: 'Company', display: true, sort: true, filter: true, sortDirection: 'desc' },
-      {
-        name: 'city',
-        label: 'City Label',
-        display: true,
-        sort: true,
-        filter: true,
-        sortDirection: 'desc',
-        options: {
-          filter: true,
-          filterType: 'custom',
-          customFilterListRender: v => `City: ${v}`,
-          filterOptions: {
-            names: [],
-            logic(city, filters) {
-              return false;
-            },
-            display: (filterList, onChange, index, column) => (
-              <div>
-                <TextField id="ForTesting">ForTesting</TextField>
-              </div>
-            ),
-          },
-        },
-      },
+      { name: 'city', label: 'City Label', display: true, sort: true, filter: true, sortDirection: 'desc' },
       { name: 'state', label: 'State', display: true, sort: true, filter: true, sortDirection: 'desc' },
     ];
 
@@ -132,6 +109,31 @@ describe('<TableFilter />', function() {
 
     const actualResult = mountWrapper.find(Select);
     assert.strictEqual(actualResult.length, 4);
+  });
+
+  it("should data table custom filter view with if filterType = 'custom' and a valid display filterOption is provided", () => {
+    const options = {
+      filterType: 'custom',
+      textLabels,
+      filterOptions: {
+        names: [],
+        logic(city, filters) {
+          return false;
+        },
+        display: (filterList, onChange, index, column) => (
+          <div>
+            <TextField id="custom-filter-render">Custom Filter Render</TextField>
+          </div>
+        ),
+      }
+    };
+    const filterList = [[], [], [], []];
+    const mountWrapper = mount(
+      <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
+    );
+
+    const actualResult = mountWrapper.find('#custom-filter-render');
+    assert.isAtLeast(actualResult.length, 1);
   });
 
   it("should render column.label as filter label if filterType = 'textField'", () => {
