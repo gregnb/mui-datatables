@@ -1,13 +1,13 @@
-import React from 'react';
-import { spy, stub } from 'sinon';
-import { mount, shallow } from 'enzyme';
-import { assert, expect, should } from 'chai';
-import textLabels from '../src/textLabels';
-import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
+import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
-import TableFilter from '../src/components/TableFilter';
 import Typography from '@material-ui/core/Typography';
+import { assert } from 'chai';
+import { mount, shallow } from 'enzyme';
+import React from 'react';
+import { spy } from 'sinon';
+import TableFilter from '../src/components/TableFilter';
+import textLabels from '../src/textLabels';
 
 describe('<TableFilter />', function() {
   let data;
@@ -18,7 +18,30 @@ describe('<TableFilter />', function() {
     columns = [
       { name: 'firstName', label: 'First Name', display: true, sort: true, filter: true, sortDirection: 'desc' },
       { name: 'company', label: 'Company', display: true, sort: true, filter: true, sortDirection: 'desc' },
-      { name: 'city', label: 'City Label', display: true, sort: true, filter: true, sortDirection: 'desc' },
+      {
+        name: 'city',
+        label: 'City Label',
+        display: true,
+        sort: true,
+        filter: true,
+        sortDirection: 'desc',
+        options: {
+          filter: true,
+          filterType: 'custom',
+          customFilterListRender: v => `City: ${v}`,
+          filterOptions: {
+            names: [],
+            logic(city, filters) {
+              return false;
+            },
+            display: (filterList, onChange, index, column) => (
+              <div>
+                <TextField id="ForTesting">ForTesting</TextField>
+              </div>
+            ),
+          },
+        },
+      },
       { name: 'state', label: 'State', display: true, sort: true, filter: true, sortDirection: 'desc' },
     ];
 
