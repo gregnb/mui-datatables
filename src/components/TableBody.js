@@ -55,13 +55,7 @@ class TableBody extends React.Component {
     const toIndex = Math.min(count, (page + 1) * rowsPerPage);
 
     if (page > totalPages && totalPages !== 0) {
-      throw new Error(
-        'Provided options.page of `' +
-          page +
-          '` is greater than the total available page length of `' +
-          totalPages +
-          '`',
-      );
+      console.warn('Current page is out of range.');
     }
 
     for (let rowIndex = fromIndex; rowIndex < count && rowIndex < toIndex; rowIndex++) {
