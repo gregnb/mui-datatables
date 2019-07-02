@@ -1,19 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import { Grid, GridList, GridListTile, TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import InputLabel from '@material-ui/core/InputLabel';
+import FormGroup from '@material-ui/core/FormGroup';
 import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import Checkbox from '@material-ui/core/Checkbox';
-import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core/styles';
-import { TextField, Grid, GridList, GridListTile } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 export const defaultFilterStyles = theme => ({
   root: {
@@ -139,6 +139,10 @@ class TableFilter extends React.Component {
     this.props.onFilterUpdate(index, event.target.value, column, 'textField');
   };
 
+  handleCustomChange = (value, index, column) => {
+    this.props.onFilterUpdate(index, value, column.name, column.filterType);
+  };
+
   renderCheckbox(column, index) {
     const { classes, filterData, filterList } = this.props;
 
@@ -229,7 +233,7 @@ class TableFilter extends React.Component {
   }
 
   renderMultiselect(column, index) {
-    const { classes, filterData, filterList, options } = this.props;
+    const { classes, filterData, filterList } = this.props;
 
     return (
       <GridListTile key={index} cols={1}>
@@ -264,6 +268,26 @@ class TableFilter extends React.Component {
     );
   }
 
+  renderCustomField(column, index) {
+    const { classes, filterList, options } = this.props;
+    const display =
+      (column.filterOptions && column.filterOptions.display) ||
+      (options.filterOptions && options.filterOptions.display);
+
+    if (!display) {
+      console.error('Property "display" is required when using custom filter type.');
+      return;
+    }
+
+    return (
+      <GridListTile key={index} cols={1}>
+        <div className={classes.textFieldRoot}>
+          <FormControl key={index}>{display(filterList, this.handleCustomChange, index, column)}</FormControl>
+        </div>
+      </GridListTile>
+    );
+  }
+
   render() {
     const { classes, columns, options, onFilterReset } = this.props;
     const textLabels = options.textLabels.filter;
@@ -291,7 +315,7 @@ class TableFilter extends React.Component {
           </div>
           <div className={classes.filtersSelected} />
         </div>
-        <GridList cellHeight="auto" cols={filterGridColumns} cellHeight={70} spacing={34}>
+        <GridList cellHeight="auto" cols={filterGridColumns} spacing={34}>
           {columns.map((column, index) => {
             if (column.filter) {
               const filterType = column.filterType || options.filterType;
@@ -301,6 +325,8 @@ class TableFilter extends React.Component {
                 ? this.renderMultiselect(column, index)
                 : filterType === 'textField'
                 ? this.renderTextField(column, index)
+                : filterType === 'custom'
+                ? this.renderCustomField(column, index)
                 : this.renderSelect(column, index);
             }
           })}

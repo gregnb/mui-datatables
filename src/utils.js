@@ -65,6 +65,11 @@ function createCSVDownload(columns, data, options) {
   const csv = options.onDownload
     ? options.onDownload(buildHead, buildBody, columns, data)
     : `${CSVHead}${CSVBody}`.trim();
+
+  if (options.onDownload && csv === false) {
+    return;
+  }
+
   const blob = new Blob([csv], { type: 'text/csv' });
 
   /* taken from react-csv */
