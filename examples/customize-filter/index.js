@@ -5,6 +5,8 @@ import MUIDataTable from '../../src';
 
 class Example extends React.Component {
   render() {
+    const customFilterList = [];
+    customFilterList['min'] = 25;
     const columns = [
       {
         name: 'Name',
@@ -32,6 +34,7 @@ class Example extends React.Component {
         options: {
           filter: true,
           filterType: 'custom',
+          filterList: customFilterList,
           customFilterListRender: v => {
             if (v['min'] && v['max']) {
               return `Min Age: ${v['min']}, Max Age: ${v['max']}`;

@@ -4,7 +4,6 @@ import MuiTable from '@material-ui/core/Table';
 import classnames from 'classnames';
 import cloneDeep from 'lodash.clonedeep';
 import find from 'lodash.find';
-import isEqual from 'lodash.isequal';
 import isUndefined from 'lodash.isundefined';
 import merge from 'lodash.merge';
 import PropTypes from 'prop-types';
@@ -460,7 +459,7 @@ class MUIDataTable extends React.Component {
       }
 
       if (column.filterList) {
-        filterList[colIndex] = cloneDeep(column.filterList);
+        filterList[colIndex] = Object.assign([], column.filterList);
       }
 
       if (this.options.sortFilterList) {
