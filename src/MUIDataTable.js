@@ -1,22 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
 import MuiTable from '@material-ui/core/Table';
-import TableToolbar from './components/TableToolbar';
-import TableToolbarSelect from './components/TableToolbarSelect';
-import TableFilterList from './components/TableFilterList';
-import TableBody from './components/TableBody';
-import TableResize from './components/TableResize';
-import TableHead from './components/TableHead';
-import TableFooter from './components/TableFooter';
 import classnames from 'classnames';
 import cloneDeep from 'lodash.clonedeep';
-import merge from 'lodash.merge';
-import isEqual from 'lodash.isequal';
 import find from 'lodash.find';
+import isEqual from 'lodash.isequal';
 import isUndefined from 'lodash.isundefined';
+import merge from 'lodash.merge';
+import PropTypes from 'prop-types';
+import React from 'react';
+import TableBody from './components/TableBody';
+import TableFilterList from './components/TableFilterList';
+import TableFooter from './components/TableFooter';
+import TableHead from './components/TableHead';
+import TableResize from './components/TableResize';
+import TableToolbar from './components/TableToolbar';
+import TableToolbarSelect from './components/TableToolbarSelect';
 import textLabels from './textLabels';
-import { withStyles } from '@material-ui/core/styles';
 import { buildMap, getCollatorComparator, sortCompare } from './utils';
 
 const defaultTableStyles = {
