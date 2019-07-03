@@ -459,7 +459,7 @@ class MUIDataTable extends React.Component {
       }
 
       if (column.filterList) {
-        filterList[colIndex] = Object.assign([], column.filterList);
+        filterList[colIndex] = cloneDeep(column.filterList);
       }
 
       if (this.options.sortFilterList) {
