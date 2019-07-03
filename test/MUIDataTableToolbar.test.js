@@ -1,16 +1,15 @@
-import React from 'react';
-import { spy, stub } from 'sinon';
-import { mount, shallow } from 'enzyme';
-import { assert, expect, should } from 'chai';
 import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
 import DownloadIcon from '@material-ui/icons/CloudDownload';
-import PrintIcon from '@material-ui/icons/Print';
-import ViewColumnIcon from '@material-ui/icons/ViewColumn';
-import ClearIcon from '@material-ui/icons/Clear';
 import FilterIcon from '@material-ui/icons/FilterList';
-import TableToolbar from '../src/components/TableToolbar';
+import PrintIcon from '@material-ui/icons/Print';
+import SearchIcon from '@material-ui/icons/Search';
+import ViewColumnIcon from '@material-ui/icons/ViewColumn';
+import { assert } from 'chai';
+import { mount, shallow } from 'enzyme';
+import React from 'react';
+import { spy } from 'sinon';
 import TableSearch from '../src/components/TableSearch';
+import TableToolbar from '../src/components/TableToolbar';
 import textLabels from '../src/textLabels';
 
 describe('<TableToolbar />', function() {

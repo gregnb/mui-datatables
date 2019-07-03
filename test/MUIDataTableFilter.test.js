@@ -1,13 +1,13 @@
-import React from 'react';
-import { spy, stub } from 'sinon';
-import { mount, shallow } from 'enzyme';
-import { assert, expect, should } from 'chai';
-import textLabels from '../src/textLabels';
-import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
+import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
-import TableFilter from '../src/components/TableFilter';
 import Typography from '@material-ui/core/Typography';
+import { assert } from 'chai';
+import { mount, shallow } from 'enzyme';
+import React from 'react';
+import { spy } from 'sinon';
+import TableFilter from '../src/components/TableFilter';
+import textLabels from '../src/textLabels';
 
 describe('<TableFilter />', function() {
   let data;
@@ -50,7 +50,7 @@ describe('<TableFilter />', function() {
     assert.deepEqual(labels, ['First Name', 'Company', 'City Label', 'State']);
   });
 
-  it("should data table filter view with checkboxes if filterType = 'checkbox'", () => {
+  it("should render data table filter view with checkboxes if filterType = 'checkbox'", () => {
     const options = { filterType: 'checkbox', textLabels };
     const filterList = [[], [], [], []];
     const shallowWrapper = mount(
@@ -61,20 +61,20 @@ describe('<TableFilter />', function() {
     assert.strictEqual(actualResult.length, 13);
   });
 
-  it('should data table filter view with no checkboxes if filter=false for each column', () => {
+  it('should render data table filter view with no checkboxes if filter=false for each column', () => {
     const options = { filterType: 'checkbox', textLabels };
     const filterList = [[], [], [], []];
     columns = columns.map(item => (item.filter = false));
 
-    const shallowWrapper = mount(
+    const mountWrapper = mount(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
     );
 
-    const actualResult = shallowWrapper.find(Checkbox);
+    const actualResult = mountWrapper.find(Checkbox);
     assert.strictEqual(actualResult.length, 0);
   });
 
-  it("should data table filter view with selects if filterType = 'select'", () => {
+  it("should render data table filter view with selects if filterType = 'select'", () => {
     const options = { filterType: 'select', textLabels };
     const filterList = [['Joe James'], [], [], []];
 
@@ -86,7 +86,7 @@ describe('<TableFilter />', function() {
     assert.strictEqual(actualResult.length, 4);
   });
 
-  it('should data table filter view no selects if filter=false for each column', () => {
+  it('should render data table filter view no selects if filter=false for each column', () => {
     const options = { filterType: 'select', textLabels };
     const filterList = [['Joe James'], [], [], []];
     columns = columns.map(item => (item.filter = false));
@@ -99,7 +99,7 @@ describe('<TableFilter />', function() {
     assert.strictEqual(actualResult.length, 0);
   });
 
-  it("should data table filter view with checkbox selects if filterType = 'multiselect'", () => {
+  it("should render data table filter view with checkbox selects if filterType = 'multiselect'", () => {
     const options = { filterType: 'multiselect', textLabels };
     const filterList = [['Joe James', 'John Walsh'], [], [], []];
 
@@ -109,6 +109,31 @@ describe('<TableFilter />', function() {
 
     const actualResult = mountWrapper.find(Select);
     assert.strictEqual(actualResult.length, 4);
+  });
+
+  it("should data table custom filter view with if filterType = 'custom' and a valid display filterOption is provided", () => {
+    const options = {
+      filterType: 'custom',
+      textLabels,
+      filterOptions: {
+        names: [],
+        logic(city, filters) {
+          return false;
+        },
+        display: (filterList, onChange, index, column) => (
+          <div>
+            <TextField id="custom-filter-render">Custom Filter Render</TextField>
+          </div>
+        ),
+      },
+    };
+    const filterList = [[], [], [], []];
+    const mountWrapper = mount(
+      <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
+    );
+
+    const actualResult = mountWrapper.find('#custom-filter-render');
+    assert.isAtLeast(actualResult.length, 1);
   });
 
   it("should render column.label as filter label if filterType = 'textField'", () => {
