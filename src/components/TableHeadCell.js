@@ -142,19 +142,18 @@ class TableHeadCell extends React.Component {
         ) : (
           children
         )}
-        {!options.sort ||
-          (!sort && hint && (
-            <Tooltip
-              title={hint}
-              placement={'bottom-end'}
-              classes={{
-                tooltip: classes.tooltip,
-              }}
-              enterDelay={300}
-              classes={{ popper: classes.mypopper }}>
-              <HelpIcon fontSize="small" />
-            </Tooltip>
-          ))}
+        {((!options.sort && hint) || (!sort && hint)) && (
+          <Tooltip
+            title={hint}
+            placement={'bottom-end'}
+            classes={{
+              tooltip: classes.tooltip,
+            }}
+            enterDelay={300}
+            classes={{ popper: classes.mypopper }}>
+            <HelpIcon fontSize="small" />
+          </Tooltip>
+        )}
       </TableCell>
     );
   }
