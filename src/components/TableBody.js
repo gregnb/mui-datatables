@@ -28,6 +28,8 @@ class TableBody extends React.Component {
     filterList: PropTypes.array,
     /** Callback to execute when row is clicked */
     onRowClick: PropTypes.func,
+    /** Callback to execute when row is dragged over */
+    onRowDrag: PropTypes.func,
     /** Table rows selected */
     selectedRows: PropTypes.object,
     /** Callback to trigger table row select */
@@ -145,15 +147,16 @@ class TableBody extends React.Component {
   };
 
   handleRowDrag = (row, data, event) => {
-    // Check if we should toggle row select when row is clicked anywhere
-    if (
-      this.props.options.selectableRowsOnDrag &&
-      this.props.options.selectableRows !== 'none' &&
-      this.state.isMouseDown
-    ) {
-      const selectRow = { index: data.rowIndex, dataIndex: data.dataIndex };
-      if (!this.props.selectedRows.data.filter(row => row.dataIndex === data.dataIndex).length)
-        this.handleRowSelect(selectRow);
+    // Check if we should toggle row select when row is dragged anywhere
+    if (this.props.options.selectableRowsOnDrag && this.props.options.selectableRows !== 'none') {
+      if (this.props.options.onRowDrag) {
+        this.props.options.onRowDrag(row, data, event);
+      }
+      if (this.state.isMouseDown) {
+        const selectRow = { index: data.rowIndex, dataIndex: data.dataIndex };
+        if (!this.props.selectedRows.data.filter(row => row.dataIndex === data.dataIndex).length)
+          this.handleRowSelect(selectRow);
+      }
     }
   };
 

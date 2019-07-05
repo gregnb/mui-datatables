@@ -228,7 +228,7 @@ describe('<TableBody />', function() {
     mountWrapper
       .find('#MUIDataTableBodyRow-2')
       .first()
-      .simulate('click');
+      .simulate('mousedown');
 
     const expectedResult = { index: 2, dataIndex: 2 };
     assert.deepEqual(selectedRowData, expectedResult);
@@ -261,7 +261,7 @@ describe('<TableBody />', function() {
     mountWrapper
       .find('#MUIDataTableBodyRow-2')
       .first()
-      .simulate('click');
+      .simulate('mousedown');
 
     const expectedResult = { index: 2, dataIndex: 2 };
     assert.deepEqual(expandedRowData, expectedResult);
@@ -300,7 +300,7 @@ describe('<TableBody />', function() {
     mountWrapper
       .find('#MUIDataTableBodyRow-2')
       .first()
-      .simulate('click');
+      .simulate('mousedown');
 
     const expectedResult = { index: 2, dataIndex: 2 };
     assert.deepEqual(selectedRowData, expectedResult);
@@ -333,7 +333,7 @@ describe('<TableBody />', function() {
       .find('TableSelectCell')
       .first()
       .find('input')
-      .simulate('click');
+      .simulate('mousedown');
 
     assert.strictEqual(options.onRowClick.callCount, 0);
   });
@@ -363,10 +363,44 @@ describe('<TableBody />', function() {
     mountWrapper
       .find('#MUIDataTableBodyRow-2')
       .first()
-      .simulate('click');
+      .simulate('mousedown');
 
     assert.strictEqual(options.onRowClick.callCount, 1);
     assert(options.onRowClick.calledWith(data[2], { rowIndex: 2, dataIndex: 2 }));
+  });
+
+  it('should call onRowDrag when Row is dragged', () => {
+    const options = { selectableRows: true, selectableRowsOnDrag: true, onRowDrag: spy() };
+    const selectRowUpdate = stub();
+
+    const mountWrapper = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={[]}
+        selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('mousedown');
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('mouseover');
+
+    assert.strictEqual(options.onRowDrag.callCount, 1);
+    assert(options.onRowDrag.calledWith(data[2], { rowIndex: 2, dataIndex: 2 }));
   });
 
   it("should add custom props to rows if 'setRowProps' provided", () => {

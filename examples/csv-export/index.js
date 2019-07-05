@@ -93,6 +93,9 @@ class Example extends React.Component {
       onRowClick: (rowData, rowState) => {
         console.log(rowData, rowState);
       },
+      onRowDrag: (rowData, rowState) => {
+        console.log(rowData, rowState);
+      },
     };
 
     return (
