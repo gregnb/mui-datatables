@@ -42,6 +42,13 @@ const defaultHeadCellStyles = theme => ({
     outline: 'none',
     cursor: 'pointer',
   },
+  hintIconAlone: {
+    marginTop: '-3px',
+    marginLeft: '3px'
+  },
+  hintIconWithSortIcon: {
+    marginTop: '-3px'
+  }
 });
 
 class TableHeadCell extends React.Component {
@@ -133,26 +140,28 @@ class TableHeadCell extends React.Component {
                     open={isHintTooltipOpen}
                     onOpen={() => this.setState({ isSortTooltipOpen: false, isHintTooltipOpen: true })}
                     onClose={() => this.setState({ isHintTooltipOpen: false })}>
-                    <HelpIcon fontSize="small" />
+                    <HelpIcon className={ !sortActive ? classes.hintIconAlone : classes.hintIconWithSortIcon} fontSize="small" />
                   </Tooltip>
                 )}
               </div>
             </span>
           </Tooltip>
         ) : (
-          children
-        )}
-        {((!options.sort && hint) || (!sort && hint)) && (
-          <Tooltip
-            title={hint}
-            placement={'bottom-end'}
-            classes={{
-              tooltip: classes.tooltip,
-            }}
-            enterDelay={300}
-            classes={{ popper: classes.mypopper }}>
-            <HelpIcon fontSize="small" />
-          </Tooltip>
+          <div className={classes.sortAction}>
+            {children}
+            {hint && (
+              <Tooltip
+                title={hint}
+                placement={'bottom-end'}
+                classes={{
+                  tooltip: classes.tooltip,
+                }}
+                enterDelay={300}
+                classes={{ popper: classes.mypopper }}>
+                <HelpIcon className={classes.hintIconAlone} fontSize="small" />
+              </Tooltip>
+            )}
+          </div>
         )}
       </TableCell>
     );
