@@ -141,6 +141,7 @@ The component accepts the following props:
 |**`pagination`**|boolean|true|Enable/disable pagination
 |**`selectableRows`**|string|'multiple'|Numbers of rows that can be selected. Options are "multiple", "single", "none".
 |**`selectableRowsOnClick`**|boolean|false|Enable/disable select toggle when row is clicked. When False, only checkbox will trigger this action.
+|**`selectableRowsOnDrag`**|boolean|false|Enable/disable select toggle when row is dragged over. 
 |**`isRowSelectable`**|function||Enable/disable selection on certain rows with custom function. Returns true if not provided.  `function(dataIndex) => bool`
 |**`expandableRows`**|boolean|false|Enable/disable expandable rows
 |**`expandableRowsOnClick`**|boolean|false|Enable/disable expand trigger when row is clicked. When False, only expand icon will trigger this action.
