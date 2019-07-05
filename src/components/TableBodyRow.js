@@ -21,6 +21,8 @@ class TableBodyRow extends React.Component {
     options: PropTypes.object.isRequired,
     /** Callback to execute when row is clicked */
     onClick: PropTypes.func,
+    /** Callback to execute when row is dragged over */
+    onDragEnter: PropTypes.func,
     /** Current row selected or not */
     rowSelected: PropTypes.bool,
     /** Extend the style applied to components */
@@ -28,12 +30,13 @@ class TableBodyRow extends React.Component {
   };
 
   render() {
-    const { classes, options, rowSelected, onClick, className, ...rest } = this.props;
+    const { classes, options, rowSelected, onClick, onDragEnter, className, ...rest } = this.props;
 
     return (
       <TableRow
         hover={options.rowHover ? true : false}
-        onClick={onClick}
+        onMouseDown={onClick}
+        onMouseOverCapture={onDragEnter}
         className={classNames(
           {
             [classes.root]: true,

@@ -44,6 +44,15 @@ class TableBody extends React.Component {
     toggleExpandRow: () => {},
   };
 
+  state = {
+    isMouseDown: 0,
+  };
+
+  componentDidMount() {
+    document.addEventListener('mouseup', () => this.setState({ isMouseDown: this.state.isMouseDown - 1 }));
+    document.addEventListener('mousedown', () => this.setState({ isMouseDown: this.state.isMouseDown + 1 }));
+  }
+
   buildRows() {
     const { data, page, rowsPerPage, count } = this.props;
 
@@ -135,6 +144,19 @@ class TableBody extends React.Component {
     this.props.options.onRowClick && this.props.options.onRowClick(row, data, event);
   };
 
+  handleRowDrag = (row, data, event) => {
+    // Check if we should toggle row select when row is clicked anywhere
+    if (
+      this.props.options.selectableRowsOnDrag &&
+      this.props.options.selectableRows !== 'none' &&
+      this.state.isMouseDown
+    ) {
+      const selectRow = { index: data.rowIndex, dataIndex: data.dataIndex };
+      if (!this.props.selectedRows.data.filter(row => row.dataIndex === data.dataIndex).length)
+        this.handleRowSelect(selectRow);
+    }
+  };
+
   render() {
     const { classes, columns, toggleExpandRow, options } = this.props;
     const tableRows = this.buildRows();
@@ -157,6 +179,7 @@ class TableBody extends React.Component {
                   options={options}
                   rowSelected={options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false}
                   onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
+                  onDragEnter={this.handleRowDrag.bind(null, row, { rowIndex, dataIndex })}
                   id={'MUIDataTableBodyRow-' + dataIndex}>
                   <TableSelectCell
                     onChange={this.handleRowSelect.bind(null, {
