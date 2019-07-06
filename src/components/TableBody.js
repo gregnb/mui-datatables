@@ -50,11 +50,6 @@ class TableBody extends React.Component {
     isMouseDown: 0,
   };
 
-  componentDidMount() {
-    document.addEventListener('mouseup', () => this.setState({ isMouseDown: this.state.isMouseDown - 1 }));
-    document.addEventListener('mousedown', () => this.setState({ isMouseDown: this.state.isMouseDown + 1 }));
-  }
-
   buildRows() {
     const { data, page, rowsPerPage, count } = this.props;
 
@@ -147,7 +142,6 @@ class TableBody extends React.Component {
   };
 
   handleRowDrag = (row, data, event) => {
-    // Check if we should toggle row select when row is dragged anywhere
     if (this.props.options.selectableRowsOnDrag && this.props.options.selectableRows !== 'none') {
       if (this.props.options.onRowDrag) {
         this.props.options.onRowDrag(row, data, event);
@@ -166,7 +160,9 @@ class TableBody extends React.Component {
     const visibleColCnt = columns.filter(c => c.display === 'true').length;
 
     return (
-      <MuiTableBody>
+      <MuiTableBody
+        onMouseDown={() => this.setState({ isMouseDown: this.state.isMouseDown - 1 })}
+        onMouseUp={() => this.setState({ isMouseDown: this.state.isMouseDown - 1 })}>
         {tableRows && tableRows.length > 0 ? (
           tableRows.map((data, rowIndex) => {
             const { data: row, dataIndex } = data;

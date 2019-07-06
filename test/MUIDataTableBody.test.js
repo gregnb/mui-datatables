@@ -380,7 +380,7 @@ describe('<TableBody />', function() {
         columns={columns}
         page={0}
         rowsPerPage={10}
-        selectedRows={[]}
+        selectedRows={{ data: [] }}
         selectRowUpdate={selectRowUpdate}
         expandedRows={[]}
         options={options}
@@ -401,6 +401,40 @@ describe('<TableBody />', function() {
 
     assert.strictEqual(options.onRowDrag.callCount, 1);
     assert(options.onRowDrag.calledWith(data[2], { rowIndex: 2, dataIndex: 2 }));
+  });
+
+  it('should call selectRowUpdate on drag over', () => {
+    const options = { selectableRowsOnClick: true, selectableRowsOnDrag: true, onRowClick: spy() };
+    const selectRowUpdate = spy();
+
+    const mountWrapper = mount(
+      <TableBody
+        id="testbody"
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={{ data: [] }}
+        selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    mountWrapper
+      .find('#testbody')
+      .first()
+      .simulate('mousedown');
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('mouseover');
+
+    assert.strictEqual(selectRowUpdate.callCount, 1);
   });
 
   it("should add custom props to rows if 'setRowProps' provided", () => {
