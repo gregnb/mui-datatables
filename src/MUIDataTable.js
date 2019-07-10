@@ -4,7 +4,6 @@ import MuiTable from '@material-ui/core/Table';
 import classnames from 'classnames';
 import cloneDeep from 'lodash.clonedeep';
 import find from 'lodash.find';
-import isEqual from 'lodash.isequal';
 import isUndefined from 'lodash.isundefined';
 import merge from 'lodash.merge';
 import PropTypes from 'prop-types';
@@ -202,7 +201,7 @@ class MUIDataTable extends React.Component {
     this.setHeadResizeable(this.headCellRefs, this.tableRef);
 
     // When we have a search, we must reset page to view it
-    if (this.props.options.searchText) this.setState({ page: 0 });
+    if (this.props.options.searchText && !this.props.options.page) this.setState({ page: 0 });
   }
 
   componentDidUpdate(prevProps) {
@@ -213,7 +212,7 @@ class MUIDataTable extends React.Component {
       this.updateOptions(this.props);
     }
 
-    if (this.props.options.searchText !== prevProps.options.searchText) {
+    if (this.props.options.searchText !== prevProps.options.searchText && !this.props.options.page) {
       // When we have a search, we must reset page to view it
       this.setState({ page: 0 });
     }
