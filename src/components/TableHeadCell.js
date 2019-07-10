@@ -30,10 +30,10 @@ const defaultHeadCellStyles = theme => ({
   sortAction: {
     display: 'flex',
     verticalAlign: 'top',
-    cursor: 'pointer'
+    cursor: 'pointer',
   },
   sortLabelRoot: {
-    height: '10px'
+    height: '10px',
   },
   sortActive: {
     color: theme.palette.text.primary,
@@ -45,11 +45,11 @@ const defaultHeadCellStyles = theme => ({
   },
   hintIconAlone: {
     marginTop: '-3px',
-    marginLeft: '3px'
+    marginLeft: '3px',
   },
   hintIconWithSortIcon: {
-    marginTop: '-3px'
-  }
+    marginTop: '-3px',
+  },
 });
 
 class TableHeadCell extends React.Component {
@@ -142,7 +142,10 @@ class TableHeadCell extends React.Component {
                     open={isHintTooltipOpen}
                     onOpen={() => this.setState({ isSortTooltipOpen: false, isHintTooltipOpen: true })}
                     onClose={() => this.setState({ isHintTooltipOpen: false })}>
-                    <HelpIcon className={ !sortActive ? classes.hintIconAlone : classes.hintIconWithSortIcon} fontSize="small" />
+                    <HelpIcon
+                      className={!sortActive ? classes.hintIconAlone : classes.hintIconWithSortIcon}
+                      fontSize="small"
+                    />
                   </Tooltip>
                 )}
               </div>
