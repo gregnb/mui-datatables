@@ -30,15 +30,16 @@ const defaultHeadCellStyles = theme => ({
   sortAction: {
     display: 'flex',
     verticalAlign: 'top',
-    cursor: 'pointer',
-    height: '10px',
+    cursor: 'pointer'
+  },
+  sortLabelRoot: {
+    height: '10px'
   },
   sortActive: {
     color: theme.palette.text.primary,
   },
   toolButton: {
     display: 'flex',
-    height: '10px',
     outline: 'none',
     cursor: 'pointer',
   },
@@ -84,6 +85,7 @@ class TableHeadCell extends React.Component {
     const sortActive = sortDirection !== null && sortDirection !== undefined ? true : false;
 
     const sortLabelProps = {
+      classes: { root: classes.sortLabelRoot },
       active: sortActive,
       hideSortIcon: true,
       ...(sortDirection ? { direction: sortDirection } : {}),
