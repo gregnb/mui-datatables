@@ -122,7 +122,7 @@ class TableBody extends React.Component {
     }
 
     // Check if we should toggle row select when row is clicked anywhere
-    if (this.props.options.selectableRowsOnClick && this.props.options.selectableRows !== 'none') {
+    if (this.props.options.selectableRowsOnClick && this.props.options.selectableRows !== 'none' && this.isRowSelectable(data.dataIndex)) {
       const selectRow = { index: data.rowIndex, dataIndex: data.dataIndex };
       this.handleRowSelect(selectRow);
     }
