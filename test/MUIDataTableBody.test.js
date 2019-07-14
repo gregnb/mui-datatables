@@ -237,7 +237,11 @@ describe('<TableBody />', function() {
 
   it('should not gather selected row data when clicking row with selectableRowsOnClick=true when it is disabled with isRowSelectable.', () => {
     let selectedRowData;
-    const options = { selectableRows: true, selectableRowsOnClick: true, isRowSelectable: dataIndex => dataIndex === 2 ? false : true };
+    const options = {
+      selectableRows: true,
+      selectableRowsOnClick: true,
+      isRowSelectable: dataIndex => (dataIndex === 2 ? false : true),
+    };
     const selectRowUpdate = (type, data) => (selectedRowData = data);
     const toggleExpandRow = spy();
 
