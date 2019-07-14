@@ -990,7 +990,7 @@ class MUIDataTable extends React.Component {
           let rowPos = -1;
 
           for (let cIndex = 0; cIndex < selectedRows.length; cIndex++) {
-            if (selectedRows[cIndex].index === index) {
+            if (selectedRows[cIndex].dataIndex === dataIndex) {
               rowPos = cIndex;
               break;
             }
