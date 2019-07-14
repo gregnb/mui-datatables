@@ -116,11 +116,6 @@ class TableBody extends React.Component {
       return;
     }
 
-    // Don't trigger onRowClick if the event was actually a row selection
-    if (event.target.id && event.target.id.startsWith('MUIDataTableSelectCell')) {
-      return;
-    }
-
     // Check if we should toggle row select when row is clicked anywhere
     if (this.props.options.selectableRowsOnClick && this.props.options.selectableRows !== 'none' && this.isRowSelectable(data.dataIndex)) {
       const selectRow = { index: data.rowIndex, dataIndex: data.dataIndex };
@@ -130,6 +125,11 @@ class TableBody extends React.Component {
     if (this.props.options.expandableRowsOnClick && this.props.options.expandableRows) {
       const expandRow = { index: data.rowIndex, dataIndex: data.dataIndex };
       this.props.toggleExpandRow(expandRow);
+    }
+
+    // Don't trigger onRowClick if the event was actually a row selection
+    if (event.target.id && event.target.id.startsWith('MUIDataTableSelectCell') || this.props.options.selectableRowsOnClick) {
+      return;
     }
 
     this.props.options.onRowClick && this.props.options.onRowClick(row, data, event);

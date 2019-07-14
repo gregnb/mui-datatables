@@ -370,6 +370,36 @@ describe('<TableBody />', function() {
     assert.strictEqual(options.onRowClick.callCount, 0);
   });
 
+  it('should not call onRowClick when clicking to select a row', () => {
+    const options = { selectableRows: true, selectableRowsOnClick: true, onRowClick: spy() };
+    const selectRowUpdate = spy();
+    const toggleExpandRow = spy();
+
+    const mountWrapper = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={[]}
+        selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    mountWrapper
+      .find('TableSelectCell')
+      .first()
+      .simulate('click');
+
+    assert.strictEqual(options.onRowClick.callCount, 0);
+  });
+
   it('should call onRowClick when Row is clicked', () => {
     const options = { selectableRows: true, onRowClick: spy() };
     const selectRowUpdate = stub();
