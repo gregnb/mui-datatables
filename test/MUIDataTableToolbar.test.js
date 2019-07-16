@@ -124,6 +124,22 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(actualResult.length, 0);
   });
 
+  it('should render a toolbar with custom TableSearch when option.customTableSearch is method ', () => {
+    const CustomTableSearch = () => (<h1>CustomTableSearch</h1>);
+    const newOptions = { ...options, customTableSearch: CustomTableSearch };
+    const shallowWrapper = shallow(
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    )
+      .dive()
+      .dive()
+      .dive();
+    const instance = shallowWrapper.instance();
+    instance.setActiveIcon('search');
+    shallowWrapper.update();
+    const actualResult = shallowWrapper.find('h1');
+    assert.strictEqual(actualResult.length, 1);
+  });
+
   it('should render a toolbar with a search clicking search icon', () => {
     const shallowWrapper = shallow(
       <TableToolbar columns={columns} data={data} options={options} setTableAction={setTableAction} />,
