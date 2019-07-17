@@ -19,7 +19,7 @@ import TableToolbarSelect from './components/TableToolbarSelect';
 import textLabels from './textLabels';
 import { buildMap, getCollatorComparator, sortCompare } from './utils';
 
-const defaultTableStyles = {
+const defaultTableStyles = theme => ({
   root: {},
   paper: {},
   tableRoot: {
@@ -30,6 +30,14 @@ const defaultTableStyles = {
     overflow: 'auto',
     height: '100%',
     maxHeight: '499px',
+  },
+  responsiveStacked: {
+    overflowX: 'auto',
+    overflow: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      overflowX: 'hidden',
+      overflow: 'hidden',
+    }
   },
   caption: {
     position: 'absolute',
@@ -52,7 +60,7 @@ const defaultTableStyles = {
       },
     },
   },
-};
+});
 
 const TABLE_LOAD = {
   INITIAL: 1,
@@ -1144,7 +1152,7 @@ class MUIDataTable extends React.Component {
         />
         <div
           style={{ position: 'relative' }}
-          className={this.options.responsive === 'scroll' ? classes.responsiveScroll : null}>
+          className={this.options.responsive === 'scroll' ? classes.responsiveScroll : classes.responsiveStacked}>
           {this.options.resizableColumns && (
             <TableResize
               key={rowCount}
