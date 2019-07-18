@@ -142,6 +142,7 @@ class MUIDataTable extends React.Component {
       page: PropTypes.number,
       count: PropTypes.number,
       rowsSelected: PropTypes.array,
+      rowsExpanded: PropTypes.array,
       rowsPerPage: PropTypes.number,
       rowsPerPageOptions: PropTypes.array,
       filter: PropTypes.bool,
@@ -487,6 +488,11 @@ class MUIDataTable extends React.Component {
       lookup: {},
     };
 
+    let expandedRowsData = {
+      data: [],
+      lookup: {},
+    };
+
     if (TABLE_LOAD.INITIAL) {
       if (options.rowsSelected && options.rowsSelected.length) {
         options.rowsSelected.forEach(row => {
@@ -503,6 +509,22 @@ class MUIDataTable extends React.Component {
           selectedRowsData.lookup[row] = true;
         });
       }
+
+      if (options.rowsExpanded && options.rowsExpanded.length && options.expandableRows) {
+        options.rowsExpanded.forEach(row => {
+          let rowPos = row;
+
+          for (let cIndex = 0; cIndex < this.state.displayData.length; cIndex++) {
+            if (this.state.displayData[cIndex].dataIndex === row) {
+              rowPos = cIndex;
+              break;
+            }
+          }
+
+          expandedRowsData.data.push({ index: rowPos, dataIndex: row });
+          expandedRowsData.lookup[row] = true;
+        });
+      }
     }
 
     if (!options.serverSide && sortIndex !== null) {
@@ -517,6 +539,7 @@ class MUIDataTable extends React.Component {
         filterList: filterList,
         searchText: searchText,
         selectedRows: selectedRowsData,
+        expandedRows: expandedRowsData,
         count: options.count,
         data: tableData,
         displayData: this.getDisplayData(columns, tableData, filterList, searchText),
