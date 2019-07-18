@@ -116,6 +116,9 @@ class TableBody extends React.Component {
       return;
     }
 
+    // Don't trigger onRowClick if the event was actually a row selection via checkbox
+    if (event.target.id && event.target.id.startsWith('MUIDataTableSelectCell')) return;
+
     // Check if we should toggle row select when row is clicked anywhere
     if (
       this.props.options.selectableRowsOnClick &&
@@ -131,13 +134,8 @@ class TableBody extends React.Component {
       this.props.toggleExpandRow(expandRow);
     }
 
-    // Don't trigger onRowClick if the event was actually a row selection
-    if (
-      (event.target.id && event.target.id.startsWith('MUIDataTableSelectCell')) ||
-      this.props.options.selectableRowsOnClick
-    ) {
-      return;
-    }
+    // Don't trigger onRowClick if the event was actually a row selection via click
+    if (this.props.options.selectableRowsOnClick) return;
 
     this.props.options.onRowClick && this.props.options.onRowClick(row, data, event);
   };
