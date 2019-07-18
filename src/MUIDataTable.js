@@ -37,7 +37,7 @@ const defaultTableStyles = theme => ({
     [theme.breakpoints.down('sm')]: {
       overflowX: 'hidden',
       overflow: 'hidden',
-    }
+    },
   },
   caption: {
     position: 'absolute',
