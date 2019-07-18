@@ -772,7 +772,7 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(state.selectedRows.data, [{ index: 1, dataIndex: 1 }]);
   });
 
-  it('If selectableRows=multiple, multiple cells can be selected when calling selectRowUpdate method with type=cell.', () => {
+  it('should allow multiple cells to be selected when selectableRows=multiple and selectRowUpdate method with type=cell.', () => {
     const options = { selectableRows: 'multiple' };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
     const instance = shallowWrapper.instance();
