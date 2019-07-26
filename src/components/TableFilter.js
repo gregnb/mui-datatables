@@ -1,4 +1,5 @@
 import { Grid, GridList, GridListTile, TextField } from '@material-ui/core';
+
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
@@ -8,12 +9,12 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Select from '@material-ui/core/Select';
+import Typography from '@material-ui/core/Typography';
+import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
 
 export const defaultFilterStyles = theme => ({
   root: {
@@ -89,9 +90,6 @@ export const defaultFilterStyles = theme => ({
     height: '80%',
     justifyContent: 'space-between',
   },
-  selectFormControl: {
-    flex: '1 1 calc(50% - 24px)',
-  },
   /* textField */
   textFieldRoot: {
     display: 'flex',
@@ -99,9 +97,6 @@ export const defaultFilterStyles = theme => ({
     flexDirection: 'row',
     flexWrap: 'wrap',
     width: '100%',
-  },
-  textFieldFormControl: {
-    flex: '1 1 calc(50% - 24px)',
   },
 });
 
@@ -192,9 +187,10 @@ class TableFilter extends React.Component {
     return (
       <GridListTile key={index} cols={1}>
         <div className={classes.selectRoot}>
-          <FormControl className={classes.selectFormControl} key={index}>
+          <FormControl key={index} fullWidth>
             <InputLabel htmlFor={column.name}>{column.label}</InputLabel>
             <Select
+              fullWidth
               value={filterList[index].toString() || textLabels.all}
               name={column.name}
               onChange={event => this.handleDropdownChange(event, index, column.name)}
@@ -220,8 +216,9 @@ class TableFilter extends React.Component {
     return (
       <GridListTile key={index} cols={1}>
         <div className={classes.textFieldRoot}>
-          <FormControl className={classes.textFieldFormControl} key={index}>
+          <FormControl key={index} fullWidth>
             <TextField
+              fullWidth
               label={column.label}
               value={filterList[index].toString() || ''}
               onChange={event => this.handleTextFieldChange(event, index, column.name)}
@@ -238,10 +235,11 @@ class TableFilter extends React.Component {
     return (
       <GridListTile key={index} cols={1}>
         <div className={classes.selectRoot}>
-          <FormControl className={classes.selectFormControl} key={index}>
+          <FormControl key={index} fullWidth>
             <InputLabel htmlFor={column.name}>{column.label}</InputLabel>
             <Select
               multiple
+              fullWidth
               value={filterList[index] || []}
               renderValue={selected => selected.join(', ')}
               name={column.name}
