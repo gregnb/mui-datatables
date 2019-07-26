@@ -192,7 +192,7 @@ class TableFilter extends React.Component {
     return (
       <GridListTile key={index} cols={1}>
         <div className={classes.selectRoot}>
-          <FormControl className={classes.selectFormControl} key={index} fullWidth>
+          <FormControl className={classes.selectFormControl} key={index}>
             <InputLabel htmlFor={column.name}>{column.label}</InputLabel>
             <Select
               value={filterList[index].toString() || textLabels.all}
@@ -282,7 +282,9 @@ class TableFilter extends React.Component {
     return (
       <GridListTile key={index} cols={1}>
         <div className={classes.textFieldRoot}>
-          <FormControl key={index}>{display(filterList, this.handleCustomChange, index, column)}</FormControl>
+          <FormControl key={index} fullWidth>
+            {display(filterList, this.handleCustomChange, index, column)}
+          </FormControl>
         </div>
       </GridListTile>
     );
