@@ -32,11 +32,7 @@ const defaultSelectCellStyles = theme => ({
     zIndex: 110,
     backgroundColor: theme.palette.background.paper,
   },
-  checkboxRoot: {
-    '&$checked': {
-      color: theme.palette.primary.main,
-    },
-  },
+  checkboxRoot: {},
   checked: {},
   disabled: {},
 });
@@ -104,6 +100,7 @@ class TableSelectCell extends React.Component {
             checked: classes.checked,
             disabled: classes.disabled,
           }}
+          color="primary"
           disabled={!isRowSelectable}
           {...otherProps}
         />
