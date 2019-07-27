@@ -3,61 +3,66 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Checkbox from '@material-ui/core/Checkbox';
 import TableCell from '@material-ui/core/TableCell';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles, Theme, WithStyles } from '@material-ui/core/styles';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 
-const defaultSelectCellStyles = theme => ({
-  root: {
-    [theme.breakpoints.down('sm')]: {
+const defaultSelectCellStyles = (theme: Theme) =>
+  createStyles({
+    root: {
+      [theme.breakpoints.down('sm')]: {
+        backgroundColor: theme.palette.background.paper,
+      },
+    },
+    fixedHeader: {
+      position: 'sticky',
+      top: '0px',
+      left: '0px',
+      zIndex: 100,
+    },
+    icon: {
+      cursor: 'pointer',
+      transition: 'transform 0.25s',
+    },
+    expanded: {
+      transform: 'rotate(90deg)',
+    },
+    hide: {
+      visibility: 'hidden',
+    },
+    headerCell: {
+      zIndex: 110,
       backgroundColor: theme.palette.background.paper,
     },
-  },
-  fixedHeader: {
-    position: 'sticky',
-    top: '0px',
-    left: '0px',
-    zIndex: 100,
-  },
-  icon: {
-    cursor: 'pointer',
-    transition: 'transform 0.25s',
-  },
-  expanded: {
-    transform: 'rotate(90deg)',
-  },
-  hide: {
-    visibility: 'hidden',
-  },
-  headerCell: {
-    zIndex: 110,
-    backgroundColor: theme.palette.background.paper,
-  },
-  checkboxRoot: {
-    '&$checked': {
-      color: theme.palette.primary.main,
+    checkboxRoot: {
+      '&$checked': {
+        color: theme.palette.primary.main,
+      },
     },
-  },
-  checked: {},
-  disabled: {},
-});
+    checked: {},
+    disabled: {},
+  });
 
-class TableSelectCell extends React.Component {
-  static propTypes = {
-    /** Select cell checked on/off */
-    checked: PropTypes.bool.isRequired,
-    /** Select cell part of fixed header */
-    fixedHeader: PropTypes.bool.isRequired,
-    /** Callback to trigger cell update */
-    onChange: PropTypes.func,
-    /** Extend the style applied to components */
-    classes: PropTypes.object,
-    /** Is expandable option enabled */
-    expandableOn: PropTypes.bool,
-    /** Is selectable option enabled */
-    selectableOn: PropTypes.string,
-    /** Select cell disabled on/off */
-  };
+interface TableSelectCellProps extends WithStyles<typeof defaultSelectCellStyles> {
+  /** Select cell checked on/off */
+  checked: boolean;
+  /** Select cell part of fixed header */
+  fixedHeader: boolean;
+  /** Callback to trigger cell update */
+  onChange: any;
+  /** Is expandable option enabled */
+  expandableOn: boolean;
+  /** Is selectable option enabled */
+  selectableOn: string;
+  /** Select cell disabled on/off */
+  isRowSelectable: boolean;
+  isHeaderCell: boolean;
+  isRowExpanded?: boolean;
+  id?: any;
+  indeterminate?: boolean;
+  onExpand?: () => void;
+}
 
+class TableSelectCell extends React.Component<TableSelectCellProps> {
   static defaultProps = {
     isHeaderCell: false,
     isRowExpanded: false,

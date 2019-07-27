@@ -7,7 +7,16 @@ import { withStyles } from '@material-ui/core/styles';
 
 export const defaultFooterStyles = {};
 
-class TableFooter extends React.Component {
+interface TableFooterProps {
+  options: any;
+  rowCount: any;
+  page: any;
+  rowsPerPage: any;
+  changeRowsPerPage: any;
+  changePage: any;
+}
+
+class TableFooter extends React.Component<TableFooterProps> {
   static propTypes = {};
 
   render() {
@@ -24,7 +33,8 @@ class TableFooter extends React.Component {
                 rowsPerPage={rowsPerPage}
                 changeRowsPerPage={changeRowsPerPage}
                 changePage={changePage}
-                component={'div'}
+                // TODO fix this error
+                //component={'div'}
                 options={options}
               />
             )}

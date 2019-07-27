@@ -2,31 +2,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import TableRow from '@material-ui/core/TableRow';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-const defaultBodyRowStyles = theme => ({
-  root: {},
-  hover: {},
-  hoverCursor: { cursor: 'pointer' },
-  responsiveStacked: {
-    [theme.breakpoints.down('sm')]: {
-      border: 'solid 2px rgba(0, 0, 0, 0.15)',
+const defaultBodyRowStyles = (theme: Theme) =>
+  createStyles({
+    root: {},
+    hover: {},
+    hoverCursor: { cursor: 'pointer' },
+    responsiveStacked: {
+      [theme.breakpoints.down('sm')]: {
+        border: 'solid 2px rgba(0, 0, 0, 0.15)',
+      },
     },
-  },
-});
+  });
 
-class TableBodyRow extends React.Component {
-  static propTypes = {
-    /** Options used to describe table */
-    options: PropTypes.object.isRequired,
-    /** Callback to execute when row is clicked */
-    onClick: PropTypes.func,
-    /** Current row selected or not */
-    rowSelected: PropTypes.bool,
-    /** Extend the style applied to components */
-    classes: PropTypes.object,
-  };
+interface TableBodyRowProps extends WithStyles<typeof defaultBodyRowStyles> {
+  /** Options used to describe table */
+  options: any;
+  /** Callback to execute when row is clicked */
+  onClick?: () => void;
+  /** Current row selected or not */
+  rowSelected?: boolean;
+  className?: string;
+}
 
+class TableBodyRow extends React.Component<TableBodyRowProps> {
   render() {
     const { classes, options, rowSelected, onClick, className, ...rest } = this.props;
 

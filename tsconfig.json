@@ -8,7 +8,7 @@
         "target": "es5",            // specify ECMAScript target version
         "allowJs": true,            // allow a partial TypeScript and JavaScript codebase
         "moduleResolution": "node",
-        "lib":["es2015"],
+        "lib":["es6", "dom", "es2017.object"],
         "skipLibCheck": true,
         "allowSyntheticDefaultImports": true
     },

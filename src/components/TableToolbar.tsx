@@ -15,8 +15,11 @@ import FilterIcon from '@material-ui/icons/FilterList';
 import ReactToPrint from 'react-to-print';
 import styled from '../styled';
 import { createCSVDownload } from '../utils';
+import { createStyles, Theme } from '@material-ui/core';
+import { StyleRules } from '@material-ui/core/styles';
+import { ClassNameMap } from '@material-ui/core/styles/withStyles';
 
-export const defaultToolbarStyles = (theme, props) => ({
+export const defaultToolbarStyles = (theme: Theme, props: TableToolbarProps) => createStyles({
   root: {},
   left: {
     flex: '1 1 auto',
@@ -46,7 +49,7 @@ export const defaultToolbarStyles = (theme, props) => ({
   ...(props.options.responsive ? { ...responsiveToolbarStyles(theme) } : {}),
 });
 
-export const responsiveToolbarStyles = theme => ({
+export const responsiveToolbarStyles = (theme: Theme) => ({
   [theme.breakpoints.down('sm')]: {
     titleRoot: {},
     titleText: {
@@ -78,10 +81,49 @@ export const responsiveToolbarStyles = theme => ({
       textAlign: 'center',
     },
   },
-  '@media screen and (max-width: 480px)': {},
+  //'@media screen and (max-width: 480px)': {},
 });
 
-class TableToolbar extends React.Component {
+type StyleRulesCallback<ClassKey extends string = string> = (
+  theme: Theme,
+  props: TableToolbarProps
+) => StyleRules<ClassKey>;
+
+type WithStyles<
+  T extends string | StyleRules | StyleRulesCallback,
+  IncludeTheme extends boolean | undefined = false
+> = (IncludeTheme extends true ? { theme: Theme, props: TableToolbarProps } : {}) & {
+  classes: ClassNameMap<
+    T extends string
+      ? T
+      : T extends StyleRulesCallback<infer K>
+      ? K
+      : T extends StyleRules<infer K>
+      ? K
+      : never
+  >;
+};
+
+interface TableToolbarProps extends WithStyles<typeof defaultToolbarStyles> {
+  searchText: string;
+  options;
+  data;
+  columns;
+  setTableAction: (arg: string) => void;
+  searchTextUpdate: (searchText: string | null) => void;
+  filterData;
+  filterList;
+  filterUpdate;
+  resetFilters;
+  toggleViewColumn;
+  title;
+  tableRef;
+}
+
+class TableToolbar extends React.Component<TableToolbarProps> {
+
+  private searchButton;
+
   state = {
     iconActive: null,
     showSearch: Boolean(this.props.searchText || this.props.options.searchText),
@@ -175,6 +217,7 @@ class TableToolbar extends React.Component {
         <div className={classes.left}>
           {showSearch === true ? (
             <TableSearch
+              // @ts-ignore
               searchText={searchText}
               onSearch={this.handleSearch}
               onHide={this.hideSearch}
@@ -242,8 +285,10 @@ class TableToolbar extends React.Component {
             />
           )}
           {options.filter && (
+            // @ts-ignore
             <Popover
               refExit={this.setActiveIcon.bind(null)}
+              // TODO fix me
               classes={{ paper: classes.filterPaper }}
               trigger={
                 <Tooltip title={filterTable} disableFocusListener>

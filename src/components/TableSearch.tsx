@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { ChangeEventHandler } from 'react';
 import Grow from '@material-ui/core/Grow';
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Theme, createStyles, WithStyles } from '@material-ui/core/styles';
 
-const defaultSearchStyles = theme => ({
+const defaultSearchStyles = (theme: Theme) => createStyles({
   main: {
     display: 'flex',
     flex: '1 0 auto',
@@ -26,8 +26,19 @@ const defaultSearchStyles = theme => ({
   },
 });
 
-class TableSearch extends React.Component {
-  handleTextChange = event => {
+interface TableSearchProps extends WithStyles<typeof defaultSearchStyles> {
+  options: any
+  onSearch: (arg1: any) => void;
+  onHide: () => void;
+  searchText: string;
+}
+
+class TableSearch extends React.Component<TableSearchProps> {
+
+  rootRef: any;
+  searchField: any;
+
+  handleTextChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> = (event) => {
     const { onSearchChange } = this.props.options;
 
     if (onSearchChange) {

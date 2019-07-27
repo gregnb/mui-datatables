@@ -5,41 +5,43 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-const defaultToolbarSelectStyles = theme => ({
-  root: {
-    backgroundColor: theme.palette.background.default,
-    flex: '1 1 100%',
-    display: 'flex',
-    position: 'relative',
-    zIndex: 120,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
-  },
-  title: {
-    paddingLeft: '26px',
-  },
-  iconButton: {
-    marginRight: '24px',
-  },
-  deleteIcon: {},
-});
+const defaultToolbarSelectStyles = (theme: Theme) =>
+  createStyles({
+    root: {
+      backgroundColor: theme.palette.background.default,
+      flex: '1 1 100%',
+      display: 'flex',
+      position: 'relative',
+      zIndex: 120,
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingTop: theme.spacing.unit,
+      paddingBottom: theme.spacing.unit,
+    },
+    title: {
+      paddingLeft: '26px',
+    },
+    iconButton: {
+      marginRight: '24px',
+    },
+    deleteIcon: {},
+  });
 
-class TableToolbarSelect extends React.Component {
-  static propTypes = {
-    /** Options used to describe table */
-    options: PropTypes.object.isRequired,
-    /** Current row selected or not */
-    rowSelected: PropTypes.bool,
-    /** Callback to trigger selected rows delete */
-    onRowsDelete: PropTypes.func,
-    /** Extend the style applied to components */
-    classes: PropTypes.object,
-  };
+interface TableToolbarSelectProps extends WithStyles<typeof defaultToolbarSelectStyles> {
+  /** Options used to describe table */
+  options: any;
+  /** Current row selected or not */
+  rowSelected: boolean;
+  selectedRows: any;
+  displayData: any;
+  /** Callback to trigger selected rows delete */
+  onRowsDelete: () => void;
+  selectRowUpdate: (arg1: string, arg2: any) => void;
+}
 
+class TableToolbarSelect extends React.Component<TableToolbarSelectProps> {
   /**
    * @param {number[]} selectedRows Array of rows indexes that are selected, e.g. [0, 2] will select first and third rows in table
    */

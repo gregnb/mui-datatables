@@ -14,7 +14,7 @@ const styles = (theme, props, style) => {
   return typeof style === 'function' ? style(theme, props) : style;
 };
 
-class StyledComponent extends React.Component {
+class StyledComponent extends React.Component<any> {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     className: PropTypes.string,
@@ -30,7 +30,8 @@ class StyledComponent extends React.Component {
 const styled = (WrappedComponent, customProps = {}) => {
   return (style, options = {}) => {
     const HOCProps = WrappedComponent => {
-      return class _HOCProps extends React.Component {
+      return class _HOCProps extends React.Component<any> {
+        FinalComponent: any;
         constructor(props) {
           super(props);
           this.FinalComponent = withStyles(theme => {

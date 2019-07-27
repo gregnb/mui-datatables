@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import MuiTableRow from '@material-ui/core/TableRow';
 import MuiTableFooter from '@material-ui/core/TableFooter';
 import MuiTablePagination from '@material-ui/core/TablePagination';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
 
-const defaultPaginationStyles = {
+const defaultPaginationStyles = createStyles({
   root: {
     '&:last-child': {
       padding: '0px 24px 0px 24px',
@@ -23,22 +23,24 @@ const defaultPaginationStyles = {
       marginRight: '8px',
     },
   },
-};
+  caption: {},
+});
 
-class TablePagination extends React.Component {
-  static propTypes = {
-    /** Total number of table rows */
-    count: PropTypes.number.isRequired,
-    /** Options used to describe table */
-    options: PropTypes.object.isRequired,
-    /** Current page index */
-    page: PropTypes.number.isRequired,
-    /** Total number allowed of rows per page */
-    rowsPerPage: PropTypes.number.isRequired,
-    /** Callback to trigger rows per page change */
-    changeRowsPerPage: PropTypes.func.isRequired,
-  };
+interface TablePaginationProps extends WithStyles<typeof defaultPaginationStyles> {
+  /** Total number of table rows */
+  count: number;
+  /** Options used to describe table */
+  options: any;
+  /** Current page index */
+  page: number;
+  /** Total number allowed of rows per page */
+  rowsPerPage: number;
+  /** Callback to trigger rows per page change */
+  changeRowsPerPage: (arg1: any) => void;
+  changePage: (page: number) => void;
+}
 
+class TablePagination extends React.Component<TablePaginationProps> {
   handleRowChange = event => {
     this.props.changeRowsPerPage(event.target.value);
   };

@@ -9,118 +9,118 @@ import InputLabel from '@material-ui/core/InputLabel';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-export const defaultFilterStyles = theme => ({
-  root: {
-    backgroundColor: theme.palette.background.default,
-    padding: '24px 24px 36px 24px',
-    fontFamily: 'Roboto',
-  },
-  header: {
-    flex: '0 0 auto',
-    marginBottom: '16px',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  title: {
-    display: 'inline-block',
-    marginLeft: '7px',
-    color: theme.palette.text.primary,
-    fontSize: '14px',
-    fontWeight: 500,
-  },
-  noMargin: {
-    marginLeft: '0px',
-  },
-  reset: {
-    alignSelf: 'left',
-  },
-  resetLink: {
-    marginLeft: '16px',
-    fontSize: '12px',
-    cursor: 'pointer',
-  },
-  filtersSelected: {
-    alignSelf: 'right',
-  },
-  /* checkbox */
-  checkboxListTitle: {
-    marginLeft: '7px',
-    marginBottom: '8px',
-    fontSize: '14px',
-    color: theme.palette.text.secondary,
-    textAlign: 'left',
-    fontWeight: 500,
-  },
-  checkboxFormGroup: {
-    marginTop: '8px',
-  },
-  checkboxFormControl: {
-    margin: '0px',
-  },
-  checkboxFormControlLabel: {
-    fontSize: '15px',
-    marginLeft: '8px',
-    color: theme.palette.text.primary,
-  },
-  checkboxIcon: {
-    width: '32px',
-    height: '32px',
-  },
-  checkbox: {
-    '&$checked': {
-      color: theme.palette.primary.main,
+export const defaultFilterStyles = (theme: Theme) =>
+  createStyles({
+    root: {
+      backgroundColor: theme.palette.background.default,
+      padding: '24px 24px 36px 24px',
+      fontFamily: 'Roboto',
     },
-  },
-  checked: {},
-  /* selects */
-  selectRoot: {
-    display: 'flex',
-    marginTop: '16px',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    width: '100%',
-    height: '80%',
-    justifyContent: 'space-between',
-  },
-  selectFormControl: {
-    flex: '1 1 calc(50% - 24px)',
-  },
-  /* textField */
-  textFieldRoot: {
-    display: 'flex',
-    marginTop: '16px',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    width: '100%',
-  },
-  textFieldFormControl: {
-    flex: '1 1 calc(50% - 24px)',
-  },
-});
+    header: {
+      flex: '0 0 auto',
+      marginBottom: '16px',
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+    title: {
+      display: 'inline-block',
+      marginLeft: '7px',
+      color: theme.palette.text.primary,
+      fontSize: '14px',
+      fontWeight: 500,
+    },
+    noMargin: {
+      marginLeft: '0px',
+    },
+    reset: {
+      alignSelf: 'left',
+    },
+    resetLink: {
+      marginLeft: '16px',
+      fontSize: '12px',
+      cursor: 'pointer',
+    },
+    filtersSelected: {
+      alignSelf: 'right',
+    },
+    /* checkbox */
+    checkboxListTitle: {
+      marginLeft: '7px',
+      marginBottom: '8px',
+      fontSize: '14px',
+      color: theme.palette.text.secondary,
+      textAlign: 'left',
+      fontWeight: 500,
+    },
+    checkboxFormGroup: {
+      marginTop: '8px',
+    },
+    checkboxFormControl: {
+      margin: '0px',
+    },
+    checkboxFormControlLabel: {
+      fontSize: '15px',
+      marginLeft: '8px',
+      color: theme.palette.text.primary,
+    },
+    checkboxIcon: {
+      width: '32px',
+      height: '32px',
+    },
+    checkbox: {
+      '&$checked': {
+        color: theme.palette.primary.main,
+      },
+    },
+    checked: {},
+    /* selects */
+    selectRoot: {
+      display: 'flex',
+      marginTop: '16px',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      width: '100%',
+      height: '80%',
+      justifyContent: 'space-between',
+    },
+    selectFormControl: {
+      flex: '1 1 calc(50% - 24px)',
+    },
+    /* textField */
+    textFieldRoot: {
+      display: 'flex',
+      marginTop: '16px',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      width: '100%',
+    },
+    textFieldFormControl: {
+      flex: '1 1 calc(50% - 24px)',
+    },
+  });
 
-class TableFilter extends React.Component {
-  static propTypes = {
-    /** Data used to populate filter dropdown/checkbox */
-    filterData: PropTypes.array.isRequired,
-    /** Data selected to be filtered against dropdown/checkbox */
-    filterList: PropTypes.array.isRequired,
-    /** Options used to describe table */
-    options: PropTypes.object.isRequired,
-    /** Callback to trigger filter update */
-    onFilterUpdate: PropTypes.func,
-    /** Callback to trigger filter reset */
-    onFilterRest: PropTypes.func,
-    /** Extend the style applied to components */
-    classes: PropTypes.object,
-  };
+interface TableFilterProps extends WithStyles<typeof defaultFilterStyles> {
+  /** Data used to populate filter dropdown/checkbox */
+  filterData: any[];
+  /** Data selected to be filtered against dropdown/checkbox */
+  filterList: any[];
+  /** Options used to describe table */
+  options: any;
+  columns: any[];
+  /** Callback to trigger filter reset */
+  onFilterReset: () => void;
+  /** Callback to trigger filter update */
+  onFilterUpdate: (index: number, value: any, column: any, arg3: string) => void;
+}
 
+class TableFilter extends React.Component<TableFilterProps> {
   handleCheckboxChange = (index, value, column) => {
     this.props.onFilterUpdate(index, value, column, 'checkbox');
   };
@@ -243,6 +243,7 @@ class TableFilter extends React.Component {
             <Select
               multiple
               value={filterList[index] || []}
+              // @ts-ignore
               renderValue={selected => selected.join(', ')}
               name={column.name}
               onChange={event => this.handleMultiselectChange(index, event.target.value, column.name)}

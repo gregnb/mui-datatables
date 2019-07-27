@@ -5,41 +5,42 @@ import MuiTableBody from '@material-ui/core/TableBody';
 import TableBodyCell from './TableBodyCell';
 import TableBodyRow from './TableBodyRow';
 import TableSelectCell from './TableSelectCell';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
 
-const defaultBodyStyles = {
+const defaultBodyStyles = createStyles({
   root: {},
   emptyTitle: {
     textAlign: 'center',
   },
-};
+});
 
-class TableBody extends React.Component {
-  static propTypes = {
-    /** Data used to describe table */
-    data: PropTypes.array.isRequired,
-    /** Total number of data rows */
-    count: PropTypes.number.isRequired,
-    /** Columns used to describe table */
-    columns: PropTypes.array.isRequired,
-    /** Options used to describe table */
-    options: PropTypes.object.isRequired,
-    /** Data used to filter table against */
-    filterList: PropTypes.array,
-    /** Callback to execute when row is clicked */
-    onRowClick: PropTypes.func,
-    /** Table rows selected */
-    selectedRows: PropTypes.object,
-    /** Callback to trigger table row select */
-    selectRowUpdate: PropTypes.func,
-    /** Data used to search table against */
-    searchText: PropTypes.string,
-    /** Toggle row expandable */
-    toggleExpandRow: PropTypes.func,
-    /** Extend the style applied to components */
-    classes: PropTypes.object,
-  };
+interface TableBodyProps extends WithStyles<typeof defaultBodyStyles> {
+  /** Data used to describe table */
+  data: any[];
+  /** Total number of data rows */
+  count: number;
+  /** Columns used to describe table */
+  columns: any[];
+  /** Options used to describe table */
+  options: any;
+  /** Data used to filter table against */
+  filterList: any[];
+  page: number;
+  rowsPerPage: number;
+  expandedRows: any;
+  /** Callback to execute when row is clicked */
+  onRowClick: () => void;
+  /** Table rows selected */
+  selectedRows: any;
+  /** Callback to trigger table row select */
+  selectRowUpdate: (arg1: string, arg2: any) => void;
+  /** Data used to search table against */
+  searchText: string;
+  /** Toggle row expandable */
+  toggleExpandRow: (props: { index: number, dataIndex: number }) => void;
+}
 
+class TableBody extends React.Component<TableBodyProps> {
   static defaultProps = {
     toggleExpandRow: () => {},
   };
@@ -49,7 +50,7 @@ class TableBody extends React.Component {
 
     if (this.props.options.serverSide) return data.length ? data : null;
 
-    let rows = [];
+    let rows: any[] = [];
     const totalPages = Math.floor(count / rowsPerPage);
     const fromIndex = page === 0 ? 0 : page * rowsPerPage;
     const toIndex = Math.min(count, (page + 1) * rowsPerPage);

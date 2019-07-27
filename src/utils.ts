@@ -78,6 +78,7 @@ function createCSVDownload(columns, data, options) {
   } else {
     const dataURI = `data:text/csv;charset=utf-8,${csv}`;
 
+    // @ts-ignore
     const URL = window.URL || window.webkitURL;
     const downloadURI = typeof URL.createObjectURL === 'undefined' ? dataURI : URL.createObjectURL(blob);
 

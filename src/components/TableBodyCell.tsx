@@ -1,35 +1,47 @@
 import React from 'react';
 import classNames from 'classnames';
 import TableCell from '@material-ui/core/TableCell';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-const defaultBodyCellStyles = theme => ({
-  root: {},
-  cellHide: {
-    display: 'none',
-  },
-  cellStacked: {
-    [theme.breakpoints.down('sm')]: {
-      display: 'inline-block',
-      backgroundColor: theme.palette.background.paper,
-      fontSize: '16px',
-      height: '24px',
-      width: 'calc(50% - 80px)',
-      whiteSpace: 'nowrap',
+const defaultBodyCellStyles = (theme: Theme) =>
+  createStyles({
+    root: {},
+    cellHide: {
+      display: 'none',
     },
-  },
-  responsiveStacked: {
-    [theme.breakpoints.down('sm')]: {
-      display: 'inline-block',
-      fontSize: '16px',
-      width: 'calc(50% - 80px)',
-      whiteSpace: 'nowrap',
-      height: '24px',
+    cellStacked: {
+      [theme.breakpoints.down('sm')]: {
+        display: 'inline-block',
+        backgroundColor: theme.palette.background.paper,
+        fontSize: '16px',
+        height: '24px',
+        width: 'calc(50% - 80px)',
+        whiteSpace: 'nowrap',
+      },
     },
-  },
-});
+    responsiveStacked: {
+      [theme.breakpoints.down('sm')]: {
+        display: 'inline-block',
+        fontSize: '16px',
+        width: 'calc(50% - 80px)',
+        whiteSpace: 'nowrap',
+        height: '24px',
+      },
+    },
+  });
 
-class TableBodyCell extends React.Component {
+interface TableBodyCellProps extends WithStyles<typeof defaultBodyCellStyles> {
+  colIndex: any;
+  options: any;
+  dataIndex?: any;
+  rowIndex: any;
+  columnHeader?: any;
+  print?: boolean;
+  className?: string;
+  colSpan: number;
+}
+
+class TableBodyCell extends React.Component<TableBodyCellProps> {
   handleClick = event => {
     const { colIndex, options, children, dataIndex, rowIndex } = this.props;
     if (options.onCellClick) {

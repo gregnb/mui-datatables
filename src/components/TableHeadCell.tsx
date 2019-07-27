@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import TableCell from '@material-ui/core/TableCell';
+import TableCell, { SortDirection } from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 import HelpIcon from '@material-ui/icons/Help';
 
-const defaultHeadCellStyles = theme => ({
+const defaultHeadCellStyles = (theme: Theme) => createStyles({
   root: {},
   fixedHeader: {
     position: 'sticky',
@@ -52,23 +52,25 @@ const defaultHeadCellStyles = theme => ({
   },
 });
 
-class TableHeadCell extends React.Component {
-  static propTypes = {
-    /** Extend the style applied to components */
-    classes: PropTypes.object,
-    /** Options used to describe table */
-    options: PropTypes.object.isRequired,
-    /** Current sort direction */
-    sortDirection: PropTypes.string,
-    /** Callback to trigger column sort */
-    toggleSort: PropTypes.func.isRequired,
-    /** Sort enabled / disabled for this column **/
-    sort: PropTypes.bool.isRequired,
-    /** Hint tooltip text */
-    hint: PropTypes.string,
-    /** Column displayed in print */
-    print: PropTypes.bool.isRequired,
-  };
+interface TableHeadCellProps extends WithStyles<typeof defaultHeadCellStyles> {
+  /** Options used to describe table */
+  options: any,
+  /** Current sort direction */
+  sortDirection: SortDirection,
+  /** Callback to trigger column sort */
+  toggleSort: (index: number) => void,
+  /** Sort enabled / disabled for this column **/
+  sort: boolean
+  /** Hint tooltip text */
+  hint: string,
+  /** Column displayed in print */
+  print: boolean,
+  index: number;
+}
+
+class TableHeadCell extends React.Component<TableHeadCellProps> {
+
+  private handleClickSort: (event: React.KeyboardEvent<HTMLSpanElement>) => void;
 
   state = {
     isSortTooltipOpen: false,
@@ -105,9 +107,9 @@ class TableHeadCell extends React.Component {
             placement={'bottom-start'}
             classes={{
               tooltip: classes.tooltip,
+              popper: classes.mypopper
             }}
             enterDelay={300}
-            classes={{ popper: classes.mypopper }}
             open={isSortTooltipOpen}
             onOpen={() =>
               isHintTooltipOpen
@@ -136,9 +138,9 @@ class TableHeadCell extends React.Component {
                     placement={'bottom-end'}
                     classes={{
                       tooltip: classes.tooltip,
+                      popper: classes.mypopper
                     }}
                     enterDelay={300}
-                    classes={{ popper: classes.mypopper }}
                     open={isHintTooltipOpen}
                     onOpen={() => this.setState({ isSortTooltipOpen: false, isHintTooltipOpen: true })}
                     onClose={() => this.setState({ isHintTooltipOpen: false })}>
@@ -160,9 +162,9 @@ class TableHeadCell extends React.Component {
                 placement={'bottom-end'}
                 classes={{
                   tooltip: classes.tooltip,
+                  popper: classes.mypopper
                 }}
-                enterDelay={300}
-                classes={{ popper: classes.mypopper }}>
+                enterDelay={300}>
                 <HelpIcon className={classes.hintIconAlone} fontSize="small" />
               </Tooltip>
             )}

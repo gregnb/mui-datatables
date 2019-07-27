@@ -1,9 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MuiPopover from '@material-ui/core/Popover';
+import MuiPopover, { PopoverOrigin } from '@material-ui/core/Popover';
 import { findDOMNode } from 'react-dom';
 
-class Popover extends React.Component {
+interface PopoverProps {
+  refClose?: any;
+  refExit: any;
+  className?: any;
+  placement?: any;
+  trigger: any;
+  content: any;
+}
+
+class Popover extends React.Component<PopoverProps> {
+  anchorEl: any;
+  popoverActions: any;
+  popoverEl: any;
+
   state = {
     open: false,
   };
@@ -47,12 +60,12 @@ class Popover extends React.Component {
   render() {
     const { className, placement, trigger, refExit, content, ...providedProps } = this.props;
 
-    const transformOriginSpecs = {
+    const transformOriginSpecs: PopoverOrigin = {
       vertical: 'top',
       horizontal: 'center',
     };
 
-    const anchorOriginSpecs = {
+    const anchorOriginSpecs: PopoverOrigin = {
       vertical: 'bottom',
       horizontal: 'center',
     };
@@ -68,6 +81,7 @@ class Popover extends React.Component {
 
     return (
       <React.Fragment>
+        // @ts-ignore
         <MuiPopover
           action={actions => (this.popoverActions = actions)}
           elevation={2}
@@ -75,6 +89,7 @@ class Popover extends React.Component {
           onClose={this.handleRequestClose}
           onExited={this.handleOnExit}
           anchorEl={this.anchorEl}
+          // TODO fix this error
           ref={el => this.popoverEl}
           anchorOrigin={anchorOriginSpecs}
           transformOrigin={transformOriginSpecs}
