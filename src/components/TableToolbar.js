@@ -102,8 +102,20 @@ class TableToolbar extends React.Component {
     if (options.downloadOptions && options.downloadOptions.filterOptions) {
       // check rows first:
       if (options.downloadOptions.filterOptions.useDisplayedRowsOnly) {
-        dataToDownload = displayData;
+        dataToDownload = displayData.map(row => {
+          let i = -1;
+
+          return {
+            data: row.data.map(column => {
+              i += 1;
+
+              // if we have a custom render, we must grab the actual value from data
+              return typeof column === 'object' ? data[row.dataIndex].data[i] : column;
+            })
+          };
+        });
       }
+
       // now, check columns:
       if (options.downloadOptions.filterOptions.useDisplayedColumnsOnly) {
         columnsToDownload = columns.filter((_, index) => _.display==='true');
