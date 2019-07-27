@@ -28,13 +28,13 @@ interface TableBodyProps extends WithStyles<typeof defaultBodyStyles> {
   rowsPerPage: number;
   expandedRows: any;
   /** Callback to execute when row is clicked */
-  onRowClick: () => void;
+  onRowClick?: () => void;
   /** Table rows selected */
   selectedRows: any;
   /** Callback to trigger table row select */
   selectRowUpdate: (arg1: string, arg2: any) => void;
   /** Data used to search table against */
-  searchText: string;
+  searchText?: string;
   /** Toggle row expandable */
   toggleExpandRow: (props: { index: number, dataIndex: number }) => void;
 }

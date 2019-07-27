@@ -17,12 +17,16 @@ const defaultHeadStyles = theme => ({
 });
 
 interface TableHeadProps extends WithStyles<typeof defaultHeadStyles> {
+  activeColumn: string | null;
+  data: any[];
   handleHeadUpdateRef: (handleUpdateCheck: any) => void;
   toggleSort: (index: any) => void;
   selectRowUpdate: (arg1: string, arg2: any | null) => void;
   columns: any[];
   count: number;
   options: any;
+  page: any;
+  rowsPerPage: any;
   setCellRef: (arg1: number, arg2: Element | Text | null) => void;
   selectedRows: any;
 }

@@ -12,6 +12,7 @@ interface TableFooterProps {
   page: any;
   rowsPerPage: any;
   changeRowsPerPage: any;
+  rowsPerPageOptions: any;
   changePage: any;
 }
 

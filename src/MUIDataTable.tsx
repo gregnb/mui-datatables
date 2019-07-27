@@ -1,5 +1,5 @@
 import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, createStyles, Theme } from '@material-ui/core/styles';
 import MuiTable from '@material-ui/core/Table';
 import classnames from 'classnames';
 import cloneDeep from 'lodash.clonedeep';
@@ -7,7 +7,6 @@ import find from 'lodash.find';
 import isEqual from 'lodash.isequal';
 import isUndefined from 'lodash.isundefined';
 import merge from 'lodash.merge';
-import PropTypes from 'prop-types';
 import React from 'react';
 import TableBody from './components/TableBody';
 import TableFilterList from './components/TableFilterList';
@@ -18,8 +17,10 @@ import TableToolbar from './components/TableToolbar';
 import TableToolbarSelect from './components/TableToolbarSelect';
 import textLabels from './textLabels';
 import { buildMap, getCollatorComparator, sortCompare } from './utils';
+import { MUIDataTableProps } from './MUIDataTableProps';
+import { MUIDataTableState } from './MUIDataTableState';
 
-const defaultTableStyles = theme => ({
+const defaultTableStyles = (theme: Theme) => createStyles({
   root: {},
   paper: {},
   tableRoot: {
@@ -76,93 +77,8 @@ const hasToolbarItem = (options, title) => {
   return !isUndefined(find(TOOLBAR_ITEMS, i => options[i]));
 };
 
-class MUIDataTable extends React.Component {
-  static propTypes = {
-    /** Title of the table */
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
-    /** Data used to describe table */
-    data: PropTypes.array.isRequired,
-    /** Columns used to describe table */
-    columns: PropTypes.PropTypes.arrayOf(
-      PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.shape({
-          label: PropTypes.string,
-          name: PropTypes.string.isRequired,
-          options: PropTypes.shape({
-            display: PropTypes.string, // enum('true', 'false', 'excluded')
-            empty: PropTypes.bool,
-            filter: PropTypes.bool,
-            sort: PropTypes.bool,
-            print: PropTypes.bool,
-            searchable: PropTypes.bool,
-            download: PropTypes.bool,
-            viewColumns: PropTypes.bool,
-            filterList: PropTypes.array,
-            filterOptions: PropTypes.oneOfType([
-              PropTypes.array,
-              PropTypes.shape({
-                names: PropTypes.array,
-                logic: PropTypes.func,
-                display: PropTypes.func,
-              }),
-            ]),
-            filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField', 'custom']),
-            customHeadRender: PropTypes.func,
-            customBodyRender: PropTypes.func,
-            customFilterListRender: PropTypes.func,
-          }),
-        }),
-      ]),
-    ).isRequired,
-    /** Options used to describe table */
-    options: PropTypes.shape({
-      responsive: PropTypes.oneOf(['stacked', 'scroll']),
-      filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField', 'custom']),
-      textLabels: PropTypes.object,
-      pagination: PropTypes.bool,
-      expandableRows: PropTypes.bool,
-      expandableRowsOnClick: PropTypes.bool,
-      renderExpandableRow: PropTypes.func,
-      customToolbar: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
-      customToolbarSelect: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
-      customFooter: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
-      customRowRender: PropTypes.func,
-      onRowClick: PropTypes.func,
-      resizableColumns: PropTypes.bool,
-      selectableRows: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['none', 'single', 'multiple'])]),
-      selectableRowsOnClick: PropTypes.bool,
-      isRowSelectable: PropTypes.func,
-      serverSide: PropTypes.bool,
-      onTableChange: PropTypes.func,
-      onTableInit: PropTypes.func,
-      caseSensitive: PropTypes.bool,
-      rowHover: PropTypes.bool,
-      fixedHeader: PropTypes.bool,
-      page: PropTypes.number,
-      count: PropTypes.number,
-      rowsSelected: PropTypes.array,
-      rowsPerPage: PropTypes.number,
-      rowsPerPageOptions: PropTypes.array,
-      filter: PropTypes.bool,
-      sort: PropTypes.bool,
-      customSort: PropTypes.func,
-      customSearch: PropTypes.func,
-      search: PropTypes.bool,
-      searchText: PropTypes.string,
-      print: PropTypes.bool,
-      viewColumns: PropTypes.bool,
-      download: PropTypes.bool,
-      downloadOptions: PropTypes.shape({
-        filename: PropTypes.string,
-        separator: PropTypes.string,
-      }),
-      onDownload: PropTypes.func,
-    }),
-    /** Pass and use className to style MUIDataTable as desired */
-    className: PropTypes.string,
-  };
-
+class MUIDataTable extends React.Component<MUIDataTableProps, MUIDataTableState> {
+  
   static defaultProps = {
     title: '',
     options: {},
@@ -170,7 +86,17 @@ class MUIDataTable extends React.Component {
     columns: [],
   };
 
-  state = {
+  
+  private tableRef: boolean;
+  private tableContent: React.RefObject<unknown>;
+  private headCellRefs: {};
+  private setHeadResizeable: (arg1: any, arg2: any) => void;
+  private updateDividers: () => void;
+  private options: any;
+  private updateToolbarSelect: any;
+  private announceRef: HTMLDivElement | null;
+
+  state: MUIDataTableState = {
     announceText: null,
     activeColumn: null,
     data: [],
@@ -193,8 +119,8 @@ class MUIDataTable extends React.Component {
     searchText: null,
   };
 
-  constructor() {
-    super();
+  constructor(props: MUIDataTableProps) {
+    super(props);
     this.tableRef = false;
     this.tableContent = React.createRef();
     this.headCellRefs = {};
@@ -210,10 +136,11 @@ class MUIDataTable extends React.Component {
     this.setHeadResizeable(this.headCellRefs, this.tableRef);
 
     // When we have a search, we must reset page to view it
+    // @ts-ignore
     if (this.props.options.searchText) this.setState({ page: 0 });
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: MUIDataTableProps) {
     if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
       this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
         this.setTableAction('propsUpdate');
@@ -221,6 +148,7 @@ class MUIDataTable extends React.Component {
       this.updateOptions(this.props);
     }
 
+    // @ts-ignore
     if (this.props.options.searchText !== prevProps.options.searchText) {
       // When we have a search, we must reset page to view it
       this.setState({ page: 0 });
@@ -278,7 +206,7 @@ class MUIDataTable extends React.Component {
       },
     };
 
-    const extra = {};
+    const extra: any = {};
     if (typeof props.options.selectableRows === 'boolean') {
       extra.selectableRows = props.options.selectableRows ? 'multiple' : 'none';
     }
@@ -295,6 +223,7 @@ class MUIDataTable extends React.Component {
     if (options.expandableRows && options.renderExpandableRow === undefined) {
       throw Error('renderExpandableRow must be provided when using expandableRows option');
     }
+    // @ts-ignore
     if (this.props.options.filterList) {
       console.error(
         'Deprecated: filterList must now be provided under each column option. see https://github.com/gregnb/mui-datatables/tree/master/examples/column-filters example',
@@ -1109,8 +1038,10 @@ class MUIDataTable extends React.Component {
     const columnNames = columns.map(column => ({ name: column.name, filterType: column.filterType }));
 
     return (
+      // @ts-ignore
       <Paper
         elevation={this.options.elevation}
+        // TODO fix me.
         ref={this.tableContent}
         className={classnames(classes.paper, className)}>
         {selectedRows.data.length ? (
@@ -1167,7 +1098,6 @@ class MUIDataTable extends React.Component {
               activeColumn={activeColumn}
               data={displayData}
               count={rowCount}
-              columns={columns}
               page={page}
               rowsPerPage={rowsPerPage}
               handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}

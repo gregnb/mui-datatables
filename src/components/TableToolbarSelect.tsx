@@ -32,7 +32,7 @@ interface TableToolbarSelectProps extends WithStyles<typeof defaultToolbarSelect
   /** Options used to describe table */
   options: any;
   /** Current row selected or not */
-  rowSelected: boolean;
+  rowSelected?: boolean;
   selectedRows: any;
   displayData: any;
   /** Callback to trigger selected rows delete */
