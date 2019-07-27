@@ -55,7 +55,7 @@ export interface MUIDataTableProps extends WithStyles<typeof defaultTableStyles>
   className?: string;
 }
 
-type MUIDataTableColumnDef = string | MUIDataTableColumn;
+export type MUIDataTableColumnDef = string | MUIDataTableColumn;
 
 export interface MUIDataTableColumn {
   name: string;
@@ -71,7 +71,7 @@ export interface MUIDataTableColumnOptions {
   empty?: boolean;
   filter?: boolean;
   filterList?: string[];
-  filterOptions?: string[] | { names: any[] };
+  filterOptions?: string[] | { names: any[], logic?: any, display?: any };
   filterType?: FilterType;
   sort?: boolean;
   searchable?: boolean;
@@ -90,13 +90,13 @@ export interface MUIDataTableColumnOptions {
     // TODO is this really supplied or not?...
     // updateValue: (s: any, c: any, p: any) => any,
   ) => string | React.ReactNode;
-  customFilterListRender?: (arg: any) => string;
+  customFilterListRender?: (arg: any) => string | false;
   setCellProps?: (cellValue: string, rowIndex: number, columnIndex: number) => object;
 }
 
 type Display = 'true' | 'false' | 'excluded';
 type SortDirection = 'asc' | 'desc';
-export type FilterType = 'dropdown' | 'checkbox' | 'multiselect' | 'textField';
+export type FilterType = 'dropdown' | 'checkbox' | 'multiselect' | 'textField' | 'custom';
 
 interface MUIDataTableCustomHeadRenderer extends MUIDataTableColumn {
   index: number;

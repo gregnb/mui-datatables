@@ -2,10 +2,12 @@ import { FormGroup, FormLabel, TextField } from '@material-ui/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import MUIDataTable from '../../src';
+import { MUIDataTableOptions } from '../../src/MUIDataTableOptions';
+import { MUIDataTableColumnDef } from '../../src/MUIDataTableProps';
 
 class Example extends React.Component {
   render() {
-    const columns = [
+    const columns: MUIDataTableColumnDef[] = [
       {
         name: 'Name',
         options: {
@@ -137,7 +139,7 @@ class Example extends React.Component {
       ['Mason Ray', 'Computer Scientist', 'San Francisco', 39, '$142,000'],
     ];
 
-    const options = {
+    const options: MUIDataTableOptions = {
       filter: true,
       filterType: 'dropdown',
       responsive: 'scroll',
