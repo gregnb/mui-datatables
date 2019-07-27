@@ -58,7 +58,8 @@ class TableHead extends React.Component<TableHeadProps> {
       <MuiTableHead
         className={classNames({ [classes.responsiveStacked]: options.responsive === 'stacked', [classes.main]: true })}>
         <TableHeadRow>
-          // @ts-ignore
+          {/* 
+  // @ts-ignore */}
           <TableSelectCell
             // TODO fix me            
             ref={el => setCellRef(0, findDOMNode(el))}
@@ -77,7 +78,8 @@ class TableHead extends React.Component<TableHeadProps> {
               (column.customHeadRender ? (
                 column.customHeadRender({ index, ...column }, this.handleToggleColumn)
               ) : (
-                // @ts-ignore
+                /* 
+  // @ts-ignore */
                 <TableHeadCell
                   key={index}
                   index={index}

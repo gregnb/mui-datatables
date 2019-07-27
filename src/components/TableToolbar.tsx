@@ -285,7 +285,8 @@ class TableToolbar extends React.Component<TableToolbarProps> {
             />
           )}
           {options.filter && (
-            // @ts-ignore
+            /* 
+  // @ts-ignore */
             <Popover
               refExit={this.setActiveIcon.bind(null)}
               // TODO fix me

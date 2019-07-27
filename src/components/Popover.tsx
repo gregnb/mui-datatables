@@ -80,7 +80,8 @@ class Popover extends React.Component<PopoverProps> {
 
     return (
       <React.Fragment>
-        // @ts-ignore
+        {/* 
+  // @ts-ignore */}
         <MuiPopover
           action={actions => (this.popoverActions = actions)}
           elevation={2}

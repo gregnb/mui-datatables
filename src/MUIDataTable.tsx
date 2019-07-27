@@ -1007,7 +1007,8 @@ class MUIDataTable extends React.Component<MUIDataTableProps, MUIDataTableState>
     const columnNames = columns.map(column => ({ name: column.name, filterType: column.filterType }));
 
     return (
-      // @ts-ignore
+      /* 
+  // @ts-ignore */
       <Paper
         elevation={this.options.elevation}
         // TODO fix me.
@@ -1060,8 +1061,9 @@ class MUIDataTable extends React.Component<MUIDataTableProps, MUIDataTableState>
               setResizeable={fn => (this.setHeadResizeable = fn)}
             />
           )}
-          // TODO fix me.
-          // @ts-ignore
+          {/* 
+          TODO Fix me
+  // @ts-ignore */}
           <MuiTable 
             ref={el => (this.tableRef = el)} 
             tabIndex={0} 
