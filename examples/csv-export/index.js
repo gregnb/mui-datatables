@@ -69,7 +69,13 @@ class Example extends React.Component {
             useDisplayedRowsOnly: true,
           }
       },
-      onDownload: () => this.state.downloadFile,
+      onDownload: (buildHead, buildBody, columns, data) => {
+        if (this.state.downloadFile) {
+          return `${buildHead(columns)}${buildBody(data)}`.trim();
+        }
+
+        return false;
+      },
       onRowsSelect: (rowsSelected, allRows) => {
         console.log(rowsSelected, allRows);
       },
