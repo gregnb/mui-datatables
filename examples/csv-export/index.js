@@ -12,8 +12,18 @@ class Example extends React.Component {
     const columns = [
       'Name',
       'Title',
-      'Location',
-      'Age',
+      {
+        name: 'Location',
+        options: {
+          display: 'false'
+        }
+      },
+      {
+        name: 'Age',
+        options: {
+          customBodyRender: value => <div><span>{value}</span></div>
+        }
+      },
       {
         name: 'Salary',
         options: {
