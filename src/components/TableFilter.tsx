@@ -12,7 +12,6 @@ import Select from '@material-ui/core/Select';
 import { withStyles, WithStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 export const defaultFilterStyles = (theme: Theme) =>

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import MuiTable from '@material-ui/core/Table';
 import TableHead from './TableHead';
 import TablePagination from './TablePagination';
@@ -17,8 +16,6 @@ interface TableFooterProps {
 }
 
 class TableFooter extends React.Component<TableFooterProps> {
-  static propTypes = {};
-
   render() {
     const { options, rowCount, page, rowsPerPage, changeRowsPerPage, changePage } = this.props;
 

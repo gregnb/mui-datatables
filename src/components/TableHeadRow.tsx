@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import TableRow from '@material-ui/core/TableRow';
 import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';

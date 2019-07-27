@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import merge from 'lodash.merge';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -15,11 +14,6 @@ const styles = (theme, props, style) => {
 };
 
 class StyledComponent extends React.Component<any> {
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    className: PropTypes.string,
-  };
-
   render() {
     const { classes, className = '', WrappedComponent, ...passThroughProps } = this.props;
 

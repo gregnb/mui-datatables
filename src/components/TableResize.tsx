@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
 

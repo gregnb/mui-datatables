@@ -1,6 +1,5 @@
 import Chip from '@material-ui/core/Chip';
 import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 const defaultFilterListStyles = createStyles({
