@@ -56,15 +56,15 @@ export interface MUIDataTableOptions {
   ) => void;
   onChangePage?: (currentPage: number) => void;
   onChangeRowsPerPage?: (numberOfRows: number) => void;
-  onColumnSortChange?: (changedColumn: string, direction: string) => void;
-  onColumnViewChange?: (changedColumn: string, action: string) => void;
+  onColumnSortChange?: (changedColumn: string | null, direction: string) => void;
+  onColumnViewChange?: (changedColumn: string | null, action: string) => void;
   onDownload?: (
     buildHead: (columns: any) => string,
     buildBody: (data: any) => string,
     columns: any,
     data: any,
   ) => string;
-  onFilterChange?: (changedColumn: string, filterList: any[]) => void;
+  onFilterChange?: (changedColumn: string | null, filterList: any[]) => void;
   onRowClick?: (
     rowData: string[],
     rowMeta: {
@@ -76,6 +76,7 @@ export interface MUIDataTableOptions {
   onRowsSelect?: (currentRowsSelected: any[], rowsSelected: any[]) => void;
   onSearchChange?: (searchText: string) => void;
   onTableChange?: (action: string, tableState: MUIDataTableState) => void;
+  onTableInit?: (action: any, state: MUIDataTableState) => void;
   page?: number;
   pagination?: boolean;
   print?: boolean;
@@ -102,3 +103,7 @@ export interface MUIDataTableOptions {
   textLabels?: MUIDataTableTextLabels;
   viewColumns?: boolean;
 }
+
+type SelectableRows = 'multiple' | 'single' | 'none';
+
+type Responsive = 'stacked' | 'scroll';

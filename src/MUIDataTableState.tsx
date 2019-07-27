@@ -1,9 +1,12 @@
+import { MUIDataTableColumnOptions } from './MUIDataTableProps';
+
 export interface MUIDataTableState {
   //curSelectedRows(curSelectedRows: any, data: string[]);
   data: any[];
   displayData: any[];
   count: number;
-  columns: any[];
+  columns: MUIDataTableColumnOptions[];
+  curSelectedRows?: any[];
   filterData: any[];
   announceText: string | null;
   activeColumn: string | null;

@@ -1,6 +1,7 @@
 import Chip from '@material-ui/core/Chip';
 import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
 import React from 'react';
+import { MUIDataTableOptions } from '../MUIDataTableOptions';
 
 const defaultFilterListStyles = createStyles({
   root: {
@@ -19,9 +20,10 @@ interface TableFilterListProps extends WithStyles<typeof defaultFilterListStyles
   filterList: any[];
   filterUpdate: any;
   /** Callback to trigger filter update */
-  onFilterUpdate: () => void;
+  onFilterUpdate?: () => void;
   filterListRenderers: ((arg: any) => string)[];
   columnNames: any[];
+  options: MUIDataTableOptions;
 }
 
 class TableFilterList extends React.Component<TableFilterListProps> {
