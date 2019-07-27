@@ -5,7 +5,7 @@ import MuiTableHead from '@material-ui/core/TableHead';
 import TableHeadRow from './TableHeadRow';
 import TableHeadCell from './TableHeadCell';
 import TableSelectCell from './TableSelectCell';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 
 const defaultHeadStyles = theme => ({
   main: {},
@@ -16,7 +16,21 @@ const defaultHeadStyles = theme => ({
   },
 });
 
-class TableHead extends React.Component {
+interface TableHeadProps extends WithStyles<typeof defaultHeadStyles> {
+  handleHeadUpdateRef: (handleUpdateCheck: any) => void;
+  toggleSort: (index: any) => void;
+  selectRowUpdate: (arg1: string, arg2: any | null) => void;
+  columns: any[];
+  count: number;
+  options: any;
+  setCellRef: (arg1: number, arg2: Element | Text | null) => void;
+  selectedRows: any;
+}
+
+class TableHead extends React.Component<TableHeadProps> {
+
+  private handleUpdateCheck: any;
+
   componentDidMount() {
     this.props.handleHeadUpdateRef(this.handleUpdateCheck);
   }
@@ -30,7 +44,7 @@ class TableHead extends React.Component {
   };
 
   render() {
-    const { classes, columns, count, options, data, page, setCellRef, selectedRows } = this.props;
+    const { classes, columns, count, options, setCellRef, selectedRows } = this.props;
 
     const numSelected = (selectedRows && selectedRows.data.length) || 0;
     const isDeterminate = numSelected > 0 && numSelected < count;

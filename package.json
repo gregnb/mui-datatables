@@ -39,6 +39,9 @@
   "devDependencies": {
     "@material-ui/core": "^3.2.0",
     "@material-ui/icons": "^3.0.1",
+    "@types/react": "^16.8.23",
+    "@types/react-dom": "^16.8.5",
+    "awesome-typescript-loader": "^5.2.1",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.3",
@@ -82,7 +85,10 @@
     "rollup-plugin-uglify": "^3.0.0",
     "simulant": "^0.2.2",
     "sinon": "^4.1.3",
+    "source-map-loader": "^0.2.4",
+    "typescript": "^3.5.3",
     "webpack": "^3.9.1",
+    "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^2.9.5"
   },
   "peerDependencies": {
