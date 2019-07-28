@@ -41,6 +41,7 @@
     "@material-ui/icons": "^3.0.1",
     "@types/enzyme": "^3.10.3",
     "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/lodash": "^4.14.136",
     "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.5",
     "awesome-typescript-loader": "^5.2.1",

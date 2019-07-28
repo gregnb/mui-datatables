@@ -40,6 +40,7 @@ export interface MUIDataTableOptions {
   };
   elevation?: number;
   expandableRows?: boolean;
+  expandableRowsOnClick?: boolean;
   filter?: boolean;
   filterList?: any;
   filterType?: FilterType;
@@ -96,6 +97,7 @@ export interface MUIDataTableOptions {
   search?: boolean;
   searchText?: string;
   selectableRows?: SelectableRows;
+  selectableRowsOnClick?: boolean;
   serverSide?: boolean;
   setRowProps?: (row: any[], rowIndex: number) => object;
   sort?: boolean;

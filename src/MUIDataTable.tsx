@@ -17,15 +17,10 @@ import TableToolbar from './components/TableToolbar';
 import TableToolbarSelect from './components/TableToolbarSelect';
 import textLabels from './textLabels';
 import { buildMap, getCollatorComparator, sortCompare } from './utils';
-import { MUIDataTableProps, MUIDataTableColumn, MUIDataTableColumnOptions, defaultTableStyles } from './MUIDataTableProps';
-import { MUIDataTableState } from './MUIDataTableState';
+import { MUIDataTableProps, MUIDataTableColumn, MUIDataTableColumnOptions, defaultTableStyles, MUIDataTableData, MUIDataTableColumnDef } from './MUIDataTableProps';
+import { MUIDataTableState, TableAction, TableLoad } from './MUIDataTableState';
 import { MUIDataTableOptions } from './MUIDataTableOptions';
 import { SortDirection } from '@material-ui/core/TableCell';
-
-const TABLE_LOAD = {
-  INITIAL: 1,
-  UPDATE: 2,
-};
 
 // Populate this list with anything that might render in the toolbar to determine if we hide the toolbar
 const TOOLBAR_ITEMS = ['title', 'filter', 'search', 'print', 'download', 'viewColumns', 'customToolbar'];
@@ -95,20 +90,24 @@ class MUIDataTable extends React.Component<MUIDataTableProps, MUIDataTableState>
     this.setHeadResizeable(this.headCellRefs, this.tableRef);
 
     // When we have a search, we must reset page to view it
-    // @ts-ignore
-    if (this.props.options.searchText) this.setState({ page: 0 });
+    if (this.props.options && this.props.options.searchText) {
+      this.setState({ page: 0 });
+    }
   }
 
   componentDidUpdate(prevProps: MUIDataTableProps) {
     if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
-      this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
+      this.setTableData(this.props, "INITIAL", () => {
         this.setTableAction('propsUpdate');
       });
       this.updateOptions(this.props);
     }
 
-    // @ts-ignore
-    if (this.props.options.searchText !== prevProps.options.searchText) {
+    // we currently have searchText AND it doesn't match the previous searchText if it existed or not.
+    if (this.props.options 
+      && this.props.options.searchText 
+      && (!prevProps.options 
+        || this.props.options.searchText !== prevProps.options.searchText)) {
       // When we have a search, we must reset page to view it
       this.setState({ page: 0 });
     }
@@ -119,14 +118,14 @@ class MUIDataTable extends React.Component<MUIDataTableProps, MUIDataTableState>
     }
   }
 
-  updateOptions(props: MUIDataTableProps) {
+  updateOptions(props: MUIDataTableProps): void {
     this.options = merge(this.options, props.options);
   }
 
-  initializeTable(props: MUIDataTableProps) {
+  initializeTable(props: MUIDataTableProps): void {
     this.getDefaultOptions(props);
     this.setTableOptions(props);
-    this.setTableData(props, TABLE_LOAD.INITIAL, () => {
+    this.setTableData(props, "INITIAL", () => {
       this.setTableInit('tableInitialized');
     });
   }
@@ -134,8 +133,8 @@ class MUIDataTable extends React.Component<MUIDataTableProps, MUIDataTableState>
   /*
    * React currently does not support deep merge for defaultProps. Objects are overwritten
    */
-  getDefaultOptions(props: MUIDataTableProps) {
-    const defaultOptions = {
+  getDefaultOptions(props: MUIDataTableProps): void {
+    const defaultOptions: MUIDataTableOptions = {
       responsive: 'stacked',
       filterType: 'dropdown',
       pagination: true,
@@ -175,7 +174,7 @@ class MUIDataTable extends React.Component<MUIDataTableProps, MUIDataTableState>
     }
   }
 
-  validateOptions(options) {
+  validateOptions(options: MUIDataTableOptions): void {
     if (options.serverSide && options.onTableChange === undefined) {
       throw Error('onTableChange callback must be provided when using serverSide option');
     }
@@ -190,19 +189,19 @@ class MUIDataTable extends React.Component<MUIDataTableProps, MUIDataTableState>
     }
   }
 
-  setTableAction = action => {
+  setTableAction = (action: TableAction) => {
     if (typeof this.options.onTableChange === 'function') {
       this.options.onTableChange(action, this.state);
     }
   };
 
-  setTableInit = action => {
+  setTableInit = (action: TableAction) => {
     if (typeof this.options.onTableInit === 'function') {
       this.options.onTableInit(action, this.state);
     }
   };
 
-  setTableOptions(props: MUIDataTableProps) {
+  setTableOptions(props: MUIDataTableProps): void {
     // take a subset of the properties from the 
     const optionNames = ['rowsPerPage', 'page', 'rowsSelected', 'rowsPerPageOptions'];
     const optState = optionNames.reduce((acc, cur) => {
@@ -246,7 +245,7 @@ class MUIDataTable extends React.Component<MUIDataTableProps, MUIDataTableState>
    *  Build the source table data
    */
 
-  buildColumns = newColumns => {
+  buildColumns = (newColumns: MUIDataTableColumnDef[]) => {
     let columnData: MUIDataTableColumnOptions[] = [];
     let filterData: any[] = [];
     let filterList: any[] = [];
@@ -266,7 +265,7 @@ class MUIDataTable extends React.Component<MUIDataTableProps, MUIDataTableState>
 
       if (typeof column === 'object') {
         if (column.options && column.options.display !== undefined) {
-          column.options.display = column.options.display.toString();
+          column.options.display = column.options.display;
         }
 
         columnOptions = {
@@ -303,25 +302,25 @@ class MUIDataTable extends React.Component<MUIDataTableProps, MUIDataTableState>
       : data.map(row => columns.map(col => leaf(row, col.name)));
   };
 
-  setTableData(props, status, callback = () => {}) {
+  setTableData(props: MUIDataTableProps, status: TableLoad, callback = () => {}): void {
     const { options } = props;
 
-    let tableData: any[] = [];
+    let tableData: MUIDataTableData[] = [];
     let { columns, filterData, filterList } = this.buildColumns(props.columns);
     let sortIndex: number | null = null;
     let sortDirection: SortDirection | null = null;
 
-    const data = status === TABLE_LOAD.INITIAL ? this.transformData(columns, props.data) : props.data;
-    const searchText = status === TABLE_LOAD.INITIAL ? options.searchText : null;
+    const data = status === "INITIAL" ? this.transformData(columns, props.data) : props.data;
+    const searchText = status === "INITIAL" && options ? options.searchText : null;
 
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
-        let value = status === TABLE_LOAD.INITIAL ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
+        let value = status === "INITIAL" ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
 
         if (typeof tableData[rowIndex] === 'undefined') {
           tableData.push({
-            index: status === TABLE_LOAD.INITIAL ? rowIndex : data[rowIndex].index,
-            data: status === TABLE_LOAD.INITIAL ? data[rowIndex] : data[rowIndex].data,
+            index: status === "INITIAL" ? rowIndex : data[rowIndex].index,
+            data: status === "INITIAL" ? data[rowIndex] : data[rowIndex].data,
           });
         }
 
@@ -378,8 +377,8 @@ class MUIDataTable extends React.Component<MUIDataTableProps, MUIDataTableState>
       lookup: {},
     };
 
-    if (TABLE_LOAD.INITIAL) {
-      if (options.rowsSelected && options.rowsSelected.length) {
+    if ("INITIAL") {
+      if (options && options.rowsSelected && options.rowsSelected.length) {
         options.rowsSelected.forEach(row => {
           let rowPos = row;
 
@@ -396,7 +395,7 @@ class MUIDataTable extends React.Component<MUIDataTableProps, MUIDataTableState>
       }
     }
 
-    if (!options.serverSide && sortIndex !== null) {
+    if (options && !options.serverSide && sortIndex !== null) {
       const sortedData = this.sortTable(tableData, sortIndex, sortDirection);
       tableData = sortedData.data;
     }
@@ -406,9 +405,9 @@ class MUIDataTable extends React.Component<MUIDataTableProps, MUIDataTableState>
         columns: columns,
         filterData: filterData,
         filterList: filterList,
-        searchText: searchText,
+        searchText: searchText || null,
         selectedRows: selectedRowsData,
-        count: options.count,
+        count: options && options.count ? options.count : 0,
         data: tableData,
         displayData: this.getDisplayData(columns, tableData, filterList, searchText),
       }),
@@ -572,7 +571,7 @@ class MUIDataTable extends React.Component<MUIDataTableProps, MUIDataTableState>
     };
   };
 
-  getDisplayData(columns, data, filterList, searchText) {
+  getDisplayData(columns: MUIDataTableColumnOptions[], data: MUIDataTableData[], filterList, searchText?:string | null) {
     let newRows: any[] = [];
 
     for (let index = 0; index < data.length; index++) {
@@ -794,13 +793,13 @@ class MUIDataTable extends React.Component<MUIDataTableProps, MUIDataTableState>
 
     this.setTableData(
       {
-        columns: this.props.columns,
+        ...this.props,
         data: cleanRows,
         options: {
           filterList: filterList,
         },
       },
-      TABLE_LOAD.UPDATE,
+      "UPDATE",
       () => {
         this.setTableAction('rowDelete');
       },

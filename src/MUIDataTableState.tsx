@@ -24,3 +24,19 @@ interface MUIDataTableStateRows {
   data: { dataIndex: number }[];
   lookup: any;
 }
+
+export type TableAction =
+  | 'propsUpdate'
+  | 'tableInitialized'
+  | 'columnViewChange'
+  | 'sort'
+  | 'changeRowsPerPage'
+  | 'changePage'
+  | 'search'
+  | 'resetFilters'
+  | 'filterChange'
+  | 'rowDelete'
+  | 'expandRow'
+  | 'rowsSelect';
+
+export type TableLoad = 'INITIAL' | 'UPDATE';

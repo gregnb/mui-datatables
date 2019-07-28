@@ -102,7 +102,7 @@ interface MUIDataTableCustomHeadRenderer extends MUIDataTableColumn {
   index: number;
 }
 
-interface MUIDataTableData {
+export interface MUIDataTableData {
   index: number;
   data: Array<object | number[] | string[]>;
 }
