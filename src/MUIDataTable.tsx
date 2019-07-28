@@ -261,7 +261,7 @@ class MUIDataTable extends React.Component<MUIDataTableProps, MUIDataTableState>
         searchable: true,
         download: true,
         viewColumns: true,
-        sortDirection: undefined,
+        sortDirection: null,
       };
 
       if (typeof column === 'object') {
@@ -858,20 +858,16 @@ class MUIDataTable extends React.Component<MUIDataTableProps, MUIDataTableState>
               ? true
               : false;
 
-          let selectedRows = displayData.reduce((arr, d, i) => {
+          let selectedRows = displayData.reduce((arr: any[], d, i) => {
             const selected = isRowSelectable ? isRowSelectable(displayData[i].dataIndex) : true;
             selected && arr.push({ index: i, dataIndex: displayData[i].dataIndex });
             return arr;
           }, []);
 
-          // TODO fix me.
-          // @ts-ignore
-          let newRows = [...prevState.selectedRows, ...selectedRows];
+          let newRows = [...prevState.selectedRows.data, ...selectedRows];
           let selectedMap = buildMap(newRows);
 
           if (isDeselect) {
-            // TODO fix me.
-            // @ts-ignore
             newRows = prevState.selectedRows.data.filter(({ dataIndex }) => !selectedMap[dataIndex]);
             selectedMap = buildMap(newRows);
           }

@@ -1,4 +1,4 @@
-import Enzyme from 'enzyme';
+import * as Enzyme from 'enzyme';
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 

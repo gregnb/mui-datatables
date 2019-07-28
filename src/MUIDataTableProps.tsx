@@ -75,7 +75,7 @@ export interface MUIDataTableColumnOptions {
   filterType?: FilterType;
   sort?: boolean;
   searchable?: boolean;
-  sortDirection?: SortDirection;
+  sortDirection?: SortDirection | null;
   print?: boolean;
   download?: boolean;
   viewColumns?: boolean;

@@ -21,6 +21,6 @@ export interface MUIDataTableState {
 }
 
 interface MUIDataTableStateRows {
-  data: string[];
+  data: { dataIndex: number }[];
   lookup: any;
 }

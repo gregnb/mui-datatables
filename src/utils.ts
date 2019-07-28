@@ -17,8 +17,8 @@ function getCollatorComparator() {
 
 function sortCompare(order) {
   return (a, b) => {
-    if (a.data === null) a.data = '';
-    if (b.data === null) b.data = '';
+    if (a.data === null || a.data === undefined) a.data = '';
+    if (b.data === null || b.data === undefined) b.data = '';
     return (
       (typeof a.data.localeCompare === 'function' ? a.data.localeCompare(b.data) : a.data - b.data) *
       (order === 'asc' ? 1 : -1)

@@ -3,14 +3,15 @@
         "outDir": "./dist/",        // path to output directory
         "sourceMap": true,          // allow sourcemap support
         "strictNullChecks": true,   // enable strict null checks as a best practice
-        "module": "es6",            // specify module code generation
+        "module": "commonjs",       // specify module code generation
         "jsx": "react",             // use typescript to transpile jsx to js
         "target": "es5",            // specify ECMAScript target version
         "allowJs": true,            // allow a partial TypeScript and JavaScript codebase
         "moduleResolution": "node",
         "lib":["es6", "dom", "es2017.object"],
         "skipLibCheck": true,
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true
     },
     "include": [
         "./src/"
