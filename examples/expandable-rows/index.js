@@ -91,7 +91,8 @@ class Example extends React.Component {
             </TableCell>
           </TableRow>
         );
-      }
+      },
+      isRowDefaultExpanded: (index, data) => index === 0
     };
 
     return (

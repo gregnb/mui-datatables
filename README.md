@@ -145,6 +145,7 @@ The component accepts the following props:
 |**`expandableRows`**|boolean|false|Enable/disable expandable rows
 |**`expandableRowsOnClick`**|boolean|false|Enable/disable expand trigger when row is clicked. When False, only expand icon will trigger this action.
 |**`renderExpandableRow`**|function||Render expandable row. `function(rowData, rowMeta) => React Component`
+|**`isRowDefaultExpanded`**|function||Should row be expanded by default. `function(rowIndex, rowData) => boolean`
 |**`resizableColumns`**|boolean|false|Enable/disable resizable columns
 |**`customToolbar`**|function||Render a custom toolbar
 |**`customToolbarSelect`**|function||Render a custom selected rows toolbar. `function(selectedRows, displayData, setSelectedRows) => void`

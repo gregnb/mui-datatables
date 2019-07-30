@@ -124,6 +124,7 @@ class MUIDataTable extends React.Component {
       expandableRows: PropTypes.bool,
       expandableRowsOnClick: PropTypes.bool,
       renderExpandableRow: PropTypes.func,
+      isRowDefaultExpanded: PropTypes.func,
       customToolbar: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customToolbarSelect: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customFooter: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
@@ -294,6 +295,9 @@ class MUIDataTable extends React.Component {
     }
     if (options.expandableRows && options.renderExpandableRow === undefined) {
       throw Error('renderExpandableRow must be provided when using expandableRows option');
+    }
+    if (options.isRowDefaultExpanded && options.isRowDefaultExpanded === undefined) {
+      throw Error('isRowDefaultExpanded must be provided when using isRowDefaultExpanded option');
     }
     if (this.props.options.filterList) {
       console.error(
@@ -509,6 +513,7 @@ class MUIDataTable extends React.Component {
       const sortedData = this.sortTable(tableData, sortIndex, sortDirection);
       tableData = sortedData.data;
     }
+    this.isRowDefaultExpanded(tableData);
     /* set source data and display Data set source set */
     this.setState(
       prevState => ({
@@ -942,6 +947,29 @@ class MUIDataTable extends React.Component {
       },
     );
   };
+
+  isRowDefaultExpanded(tableData) {
+    const { isRowDefaultExpanded } = this.props.options;
+    if (!isRowDefaultExpanded) {
+      return;
+    }
+
+    const rowsToExpand = tableData
+      .filter(({ index, data }) => isRowDefaultExpanded(index, data))
+      .map(({index }) => ({index, dataIndex: index }));
+
+    this.setState(
+      {
+        expandedRows: {
+          lookup: buildMap(rowsToExpand),
+          data: rowsToExpand
+        }
+      },
+      () => {
+        this.setTableAction('expandAllRows');
+      }
+    );
+  }
 
   selectRowUpdate = (type, value) => {
     // safety check

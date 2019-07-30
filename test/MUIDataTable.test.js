@@ -949,6 +949,36 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
   });
 
+  it('should render expandable rows, depending on external callback', () => {
+    const isRowDefaultExpanded = () => true;
+    const options = { isRowDefaultExpanded };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+    const expected = {
+      lookup: { '0': true, '1': true, '2': true, '3': true },
+      data:
+        [ { index: 0, dataIndex: 0 },
+          { index: 1, dataIndex: 1 },
+          { index: 2, dataIndex: 2 },
+          { index: 3, dataIndex: 3 } ] };
+
+    assert.deepEqual(instance.state.expandedRows, expected);
+  });
+
+  it('should render some expandable rows, depending on external callback', () => {
+    const isRowDefaultExpanded = index => index === 1;
+    const options = { isRowDefaultExpanded };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+    const expected = {
+      lookup: { '1': true },
+      data: [ { index: 1, dataIndex: 1 } ] };
+
+    assert.deepEqual(instance.state.expandedRows, expected);
+  });
+
   it('should skip client side filtering if server side filtering is enabled', () => {
     const options = { filterType: 'textField', serverSide: true };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
