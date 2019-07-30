@@ -813,6 +813,21 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(state.selectedRows.data, expectedResult);
   });
 
+  it('should update expandedRows when using expandableRows option with default rowsExpanded', () => {
+    const options = {
+      expandableRows: true,
+      rowsExpanded: [0, 3],
+      renderExpandableRow: () => <tr><td>opened</td></tr>
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    const state = shallowWrapper.state();
+    const expectedResult = [{ index: 0, dataIndex: 0 }, { index: 3, dataIndex: 3 }];
+
+    assert.deepEqual(state.expandedRows.data, expectedResult);
+  });
+
   it('should remove selected data on selectRowDelete when type=cell', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
     const instance = shallowWrapper.instance();
