@@ -799,6 +799,20 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(state.selectedRows.data, expectedResult);
   });
 
+  it('should update selectedRows when using rowsSelected option with type=multiple', () => {
+    const options = {
+      selectableRows: 'multiple',
+      rowsSelected: [0, 3]
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    const state = shallowWrapper.state();
+    const expectedResult = [{ index: 0, dataIndex: 0 }, { index: 3, dataIndex: 3 }];
+
+    assert.deepEqual(state.selectedRows.data, expectedResult);
+  });
+
   it('should remove selected data on selectRowDelete when type=cell', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
     const instance = shallowWrapper.instance();
