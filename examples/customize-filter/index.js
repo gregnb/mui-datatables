@@ -32,25 +32,26 @@ class Example extends React.Component {
         options: {
           filter: true,
           filterType: 'custom',
+          filterList: [25, 50],
           customFilterListRender: v => {
-            if (v['min'] && v['max']) {
-              return `Min Age: ${v['min']}, Max Age: ${v['max']}`;
-            } else if (v['min']) {
-              return `Min Age: ${v['min']}`;
-            } else if (v['max']) {
-              return `Max Age: ${v['max']}`;
+            if (v[0] && v[1]) {
+              return `Min Age: ${v[0]}, Max Age: ${v[1]}`;
+            } else if (v[0]) {
+              return `Min Age: ${v[0]}`;
+            } else if (v[1]) {
+              return `Max Age: ${v[1]}`;
             }
             return false;
           },
           filterOptions: {
             names: [],
             logic(age, filters) {
-              if (filters['min'] && filters['max']) {
-                return age < filters['min'] || age > filters['max'];
-              } else if (filters['min']) {
-                return age < filters['min'];
-              } else if (filters['max']) {
-                return age > filters['max'];
+              if (filters[0] && filters[1]) {
+                return age < filters[0] || age > filters[1];
+              } else if (filters[0]) {
+                return age < filters[0];
+              } else if (filters[1]) {
+                return age > filters[1];
               }
               return false;
             },
@@ -60,18 +61,18 @@ class Example extends React.Component {
                 <FormGroup row>
                   <TextField
                     label="min"
-                    value={filterList[index]['min'] || ''}
+                    value={filterList[index][0] || ''}
                     onChange={event => {
-                      filterList[index]['min'] = event.target.value;
+                      filterList[index][0] = event.target.value;
                       onChange(filterList[index], index, column);
                     }}
                     style={{ width: '45%', marginRight: '5%' }}
                   />
                   <TextField
                     label="max"
-                    value={filterList[index]['max'] || ''}
+                    value={filterList[index][1] || ''}
                     onChange={event => {
-                      filterList[index]['max'] = event.target.value;
+                      filterList[index][1] = event.target.value;
                       onChange(filterList[index], index, column);
                     }}
                     style={{ width: '45%' }}
