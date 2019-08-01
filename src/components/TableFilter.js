@@ -90,7 +90,7 @@ export const defaultFilterStyles = theme => ({
     justifyContent: 'space-between',
   },
   selectFormControl: {
-    flex: '1 1 calc(50% - 24px)',
+    flex: '1 1 auto',
   },
   /* textField */
   textFieldRoot: {
@@ -101,7 +101,7 @@ export const defaultFilterStyles = theme => ({
     width: '100%',
   },
   textFieldFormControl: {
-    flex: '1 1 calc(50% - 24px)',
+    flex: '1 1 auto',
   },
 });
 
