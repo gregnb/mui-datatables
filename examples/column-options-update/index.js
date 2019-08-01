@@ -49,18 +49,18 @@ class Example extends React.Component {
   }
 
   handleFilterOptionsChange = (event) => {
-    let array = prompt("Write a string separte by semicolon to change filterOptions in first column!");
-    this.setState({ filterOptions: array.split(';') });
+    let string = prompt("Write a string separte by semicolon to change filterOptions in first column!");
+    if (string) this.setState({ filterOptions: string.split(';') });
   }
 
   handleAddData = (event) => {
     const string = prompt("Write a string with 'Name', 'Title', 'Location', 'Age' and 'Salary' separeted by semicolon !");
-    this.setState({ data: [string.split(';'), ...this.state.data] });
+    if (string) this.setState({ data: [string.split(';'), ...this.state.data] });
   }
 
   handleChangeDisplay = (event) => {
     const string = prompt("Write a string with 5 display options true, false or excluded separeted by semicolon !");
-    this.setState({ display: string.split(';') });
+    if (string) this.setState({ display: string.split(';') });
   }
 
   render() {
@@ -123,7 +123,7 @@ class Example extends React.Component {
       onFilterChange: (changedColumn, newFilterList) => {
         this.setState({ filterList: newFilterList });
       },
-      selectableRows: true,
+      selectableRows: 'multiple',
       filterType: 'dropdown',
       responsive: 'stacked',
       rowsPerPage: 10,
