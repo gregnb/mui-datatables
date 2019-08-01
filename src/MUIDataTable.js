@@ -213,8 +213,8 @@ class MUIDataTable extends React.Component {
   componentDidMount() {
     this.setHeadResizeable(this.headCellRefs, this.tableRef);
 
-    // When we have a search, we must reset page to view it
-    if (this.props.options.searchText && !this.props.options.page) this.setState({ page: 0 });
+    // When we have a search, we must reset page to view it unless on serverSide since paging is handled by the user.
+    if (this.props.options.searchText && !this.props.options.serverSide) this.setState({ page: 0 });
   }
 
   componentDidUpdate(prevProps) {
@@ -225,8 +225,8 @@ class MUIDataTable extends React.Component {
       this.updateOptions(this.props);
     }
 
-    if (this.props.options.searchText !== prevProps.options.searchText && !this.props.options.page) {
-      // When we have a search, we must reset page to view it
+    if (this.props.options.searchText !== prevProps.options.searchText && !this.props.options.serverSide) {
+      // When we have a search, we must reset page to view it unless on serverSide since paging is handled by the user.
       this.setState({ page: 0 });
     }
 
