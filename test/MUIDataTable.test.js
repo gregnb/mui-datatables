@@ -772,7 +772,7 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(state.selectedRows.data, [{ index: 1, dataIndex: 1 }]);
   });
 
-  it('If selectableRows=multiple, multiple cells can be selected when calling selectRowUpdate method with type=cell.', () => {
+  it('should allow multiple cells to be selected when selectableRows=multiple and selectRowUpdate method with type=cell.', () => {
     const options = { selectableRows: 'multiple' };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
     const instance = shallowWrapper.instance();
@@ -797,6 +797,39 @@ describe('<MUIDataTable />', function() {
     const expectedResult = [{ index: 0, dataIndex: 0 }, { index: 3, dataIndex: 3 }];
 
     assert.deepEqual(state.selectedRows.data, expectedResult);
+  });
+
+  it('should update selectedRows when using rowsSelected option with type=multiple', () => {
+    const options = {
+      selectableRows: 'multiple',
+      rowsSelected: [0, 3],
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    const state = shallowWrapper.state();
+    const expectedResult = [{ index: 0, dataIndex: 0 }, { index: 3, dataIndex: 3 }];
+
+    assert.deepEqual(state.selectedRows.data, expectedResult);
+  });
+
+  it('should update expandedRows when using expandableRows option with default rowsExpanded', () => {
+    const options = {
+      expandableRows: true,
+      rowsExpanded: [0, 3],
+      renderExpandableRow: () => (
+        <tr>
+          <td>opened</td>
+        </tr>
+      ),
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    const state = shallowWrapper.state();
+    const expectedResult = [{ index: 0, dataIndex: 0 }, { index: 3, dataIndex: 3 }];
+
+    assert.deepEqual(state.expandedRows.data, expectedResult);
   });
 
   it('should remove selected data on selectRowDelete when type=cell', () => {

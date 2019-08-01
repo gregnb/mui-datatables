@@ -31,6 +31,8 @@ const defaultHeadCellStyles = theme => ({
     display: 'flex',
     verticalAlign: 'top',
     cursor: 'pointer',
+  },
+  sortLabelRoot: {
     height: '10px',
   },
   sortActive: {
@@ -38,9 +40,15 @@ const defaultHeadCellStyles = theme => ({
   },
   toolButton: {
     display: 'flex',
-    height: '10px',
     outline: 'none',
     cursor: 'pointer',
+  },
+  hintIconAlone: {
+    marginTop: '-3px',
+    marginLeft: '3px',
+  },
+  hintIconWithSortIcon: {
+    marginTop: '-3px',
   },
 });
 
@@ -77,6 +85,7 @@ class TableHeadCell extends React.Component {
     const sortActive = sortDirection !== null && sortDirection !== undefined ? true : false;
 
     const sortLabelProps = {
+      classes: { root: classes.sortLabelRoot },
       active: sortActive,
       hideSortIcon: true,
       ...(sortDirection ? { direction: sortDirection } : {}),
@@ -133,28 +142,32 @@ class TableHeadCell extends React.Component {
                     open={isHintTooltipOpen}
                     onOpen={() => this.setState({ isSortTooltipOpen: false, isHintTooltipOpen: true })}
                     onClose={() => this.setState({ isHintTooltipOpen: false })}>
-                    <HelpIcon fontSize="small" />
+                    <HelpIcon
+                      className={!sortActive ? classes.hintIconAlone : classes.hintIconWithSortIcon}
+                      fontSize="small"
+                    />
                   </Tooltip>
                 )}
               </div>
             </span>
           </Tooltip>
         ) : (
-          children
+          <div className={classes.sortAction}>
+            {children}
+            {hint && (
+              <Tooltip
+                title={hint}
+                placement={'bottom-end'}
+                classes={{
+                  tooltip: classes.tooltip,
+                }}
+                enterDelay={300}
+                classes={{ popper: classes.mypopper }}>
+                <HelpIcon className={classes.hintIconAlone} fontSize="small" />
+              </Tooltip>
+            )}
+          </div>
         )}
-        {!options.sort ||
-          (!sort && hint && (
-            <Tooltip
-              title={hint}
-              placement={'bottom-end'}
-              classes={{
-                tooltip: classes.tooltip,
-              }}
-              enterDelay={300}
-              classes={{ popper: classes.mypopper }}>
-              <HelpIcon fontSize="small" />
-            </Tooltip>
-          ))}
       </TableCell>
     );
   }

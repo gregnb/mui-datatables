@@ -3,6 +3,9 @@ import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
 
 class Example extends React.Component {
+  state = {
+    rowsSelected: []
+  };
 
   render() {
 
@@ -49,12 +52,15 @@ class Example extends React.Component {
 
     const options = {
       filter: true,
-      selectableRows: true,
+      selectableRows: 'multiple',
+      selectableRowsOnClick: true,
       filterType: 'dropdown',
       responsive: 'stacked',
       rowsPerPage: 10,
+      rowsSelected: this.state.rowsSelected,
       onRowsSelect: (rowsSelected, allRows) => {
         console.log(rowsSelected, allRows);
+        this.setState({ rowsSelected: allRows.map(row => row.dataIndex) });
       },
       onRowsDelete: (rowsDeleted) => {
         if (rowsDeleted.data[0].dataIndex === 0) {

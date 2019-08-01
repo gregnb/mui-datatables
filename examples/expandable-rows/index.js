@@ -82,6 +82,7 @@ class Example extends React.Component {
       responsive: 'scroll',
       expandableRows: true,
       expandableRowsOnClick: true,
+      rowsExpanded: [0, 2, 3],
       renderExpandableRow: (rowData, rowMeta) => {
         const colSpan = rowData.length + 1;
         return (

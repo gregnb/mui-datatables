@@ -116,13 +116,15 @@ class TableBody extends React.Component {
       return;
     }
 
-    // Don't trigger onRowClick if the event was actually a row selection
-    if (event.target.id && event.target.id.startsWith('MUIDataTableSelectCell')) {
-      return;
-    }
+    // Don't trigger onRowClick if the event was actually a row selection via checkbox
+    if (event.target.id && event.target.id.startsWith('MUIDataTableSelectCell')) return;
 
     // Check if we should toggle row select when row is clicked anywhere
-    if (this.props.options.selectableRowsOnClick && this.props.options.selectableRows !== 'none') {
+    if (
+      this.props.options.selectableRowsOnClick &&
+      this.props.options.selectableRows !== 'none' &&
+      this.isRowSelectable(data.dataIndex)
+    ) {
       const selectRow = { index: data.rowIndex, dataIndex: data.dataIndex };
       this.handleRowSelect(selectRow);
     }
@@ -131,6 +133,9 @@ class TableBody extends React.Component {
       const expandRow = { index: data.rowIndex, dataIndex: data.dataIndex };
       this.props.toggleExpandRow(expandRow);
     }
+
+    // Don't trigger onRowClick if the event was actually a row selection via click
+    if (this.props.options.selectableRowsOnClick) return;
 
     this.props.options.onRowClick && this.props.options.onRowClick(row, data, event);
   };
@@ -157,6 +162,7 @@ class TableBody extends React.Component {
                   options={options}
                   rowSelected={options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false}
                   onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
+                  data-testid={'MUIDataTableBodyRow-' + dataIndex}
                   id={'MUIDataTableBodyRow-' + dataIndex}>
                   <TableSelectCell
                     onChange={this.handleRowSelect.bind(null, {
@@ -182,6 +188,7 @@ class TableBody extends React.Component {
                           {...(columns[columnIndex].setCellProps
                             ? columns[columnIndex].setCellProps(column, dataIndex, columnIndex)
                             : {})}
+                          data-testid={`MuiDataTableBodyCell-${columnIndex}-${rowIndex}`}
                           dataIndex={dataIndex}
                           rowIndex={rowIndex}
                           colIndex={columnIndex}

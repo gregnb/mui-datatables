@@ -18,7 +18,7 @@ import TableToolbarSelect from './components/TableToolbarSelect';
 import textLabels from './textLabels';
 import { buildMap, getCollatorComparator, sortCompare } from './utils';
 
-const defaultTableStyles = {
+const defaultTableStyles = theme => ({
   root: {},
   paper: {},
   tableRoot: {
@@ -29,6 +29,14 @@ const defaultTableStyles = {
     overflow: 'auto',
     height: '100%',
     maxHeight: '499px',
+  },
+  responsiveStacked: {
+    overflowX: 'auto',
+    overflow: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      overflowX: 'hidden',
+      overflow: 'hidden',
+    },
   },
   caption: {
     position: 'absolute',
@@ -51,7 +59,7 @@ const defaultTableStyles = {
       },
     },
   },
-};
+});
 
 const TABLE_LOAD = {
   INITIAL: 1,
@@ -133,6 +141,7 @@ class MUIDataTable extends React.Component {
       page: PropTypes.number,
       count: PropTypes.number,
       rowsSelected: PropTypes.array,
+      rowsExpanded: PropTypes.array,
       rowsPerPage: PropTypes.number,
       rowsPerPageOptions: PropTypes.array,
       filter: PropTypes.bool,
@@ -147,6 +156,10 @@ class MUIDataTable extends React.Component {
       downloadOptions: PropTypes.shape({
         filename: PropTypes.string,
         separator: PropTypes.string,
+        filterOptions: PropTypes.shape({
+          useDisplayedColumnsOnly: PropTypes.bool,
+          useDisplayedRowsOnly: PropTypes.bool,
+        }),
       }),
       onDownload: PropTypes.func,
     }),
@@ -478,8 +491,14 @@ class MUIDataTable extends React.Component {
       lookup: {},
     };
 
+    let expandedRowsData = {
+      data: [],
+      lookup: {},
+    };
+
     if (TABLE_LOAD.INITIAL) {
-      if (options.rowsSelected && options.rowsSelected.length) {
+      // Multiple row selection customization
+      if (options.rowsSelected && options.rowsSelected.length && options.selectableRows === 'multiple') {
         options.rowsSelected.forEach(row => {
           let rowPos = row;
 
@@ -492,6 +511,41 @@ class MUIDataTable extends React.Component {
 
           selectedRowsData.data.push({ index: rowPos, dataIndex: row });
           selectedRowsData.lookup[row] = true;
+        });
+      }
+
+      // Single row selection customization
+      if (options.rowsSelected && options.rowsSelected.length === 1 && options.selectableRows === 'single') {
+        let rowPos = options.rowsSelected[0];
+
+        for (let cIndex = 0; cIndex < this.state.displayData.length; cIndex++) {
+          if (this.state.displayData[cIndex].dataIndex === options.rowsSelected[0]) {
+            rowPos = cIndex;
+            break;
+          }
+        }
+
+        selectedRowsData.data.push({ index: rowPos, dataIndex: options.rowsSelected[0] });
+        selectedRowsData.lookup[options.rowsSelected[0]] = true;
+      } else if (options.rowsSelected && options.rowsSelected.length > 1 && options.selectableRows === 'single') {
+        console.error(
+          'Multiple values provided for selectableRows, but selectableRows set to "single". Either supply only a single value or use "multiple".',
+        );
+      }
+
+      if (options.rowsExpanded && options.rowsExpanded.length && options.expandableRows) {
+        options.rowsExpanded.forEach(row => {
+          let rowPos = row;
+
+          for (let cIndex = 0; cIndex < this.state.displayData.length; cIndex++) {
+            if (this.state.displayData[cIndex].dataIndex === row) {
+              rowPos = cIndex;
+              break;
+            }
+          }
+
+          expandedRowsData.data.push({ index: rowPos, dataIndex: row });
+          expandedRowsData.lookup[row] = true;
         });
       }
     }
@@ -508,6 +562,7 @@ class MUIDataTable extends React.Component {
         filterList: filterList,
         searchText: searchText,
         selectedRows: selectedRowsData,
+        expandedRows: expandedRowsData,
         count: options.count,
         data: tableData,
         displayData: this.getDisplayData(columns, tableData, filterList, searchText),
@@ -989,7 +1044,7 @@ class MUIDataTable extends React.Component {
           let rowPos = -1;
 
           for (let cIndex = 0; cIndex < selectedRows.length; cIndex++) {
-            if (selectedRows[cIndex].index === index) {
+            if (selectedRows[cIndex].dataIndex === dataIndex) {
               rowPos = cIndex;
               break;
             }
@@ -1143,7 +1198,7 @@ class MUIDataTable extends React.Component {
         />
         <div
           style={{ position: 'relative' }}
-          className={this.options.responsive === 'scroll' ? classes.responsiveScroll : null}>
+          className={this.options.responsive === 'scroll' ? classes.responsiveScroll : classes.responsiveStacked}>
           {this.options.resizableColumns && (
             <TableResize
               key={rowCount}
