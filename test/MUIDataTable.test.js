@@ -802,7 +802,7 @@ describe('<MUIDataTable />', function() {
   it('should update selectedRows when using rowsSelected option with type=multiple', () => {
     const options = {
       selectableRows: 'multiple',
-      rowsSelected: [0, 3]
+      rowsSelected: [0, 3],
     };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
     const instance = shallowWrapper.instance();
@@ -817,7 +817,11 @@ describe('<MUIDataTable />', function() {
     const options = {
       expandableRows: true,
       rowsExpanded: [0, 3],
-      renderExpandableRow: () => <tr><td>opened</td></tr>
+      renderExpandableRow: () => (
+        <tr>
+          <td>opened</td>
+        </tr>
+      ),
     };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
     const instance = shallowWrapper.instance();
