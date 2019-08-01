@@ -141,6 +141,7 @@ class MUIDataTable extends React.Component {
       page: PropTypes.number,
       count: PropTypes.number,
       rowsSelected: PropTypes.array,
+      rowsExpanded: PropTypes.array,
       rowsPerPage: PropTypes.number,
       rowsPerPageOptions: PropTypes.array,
       filter: PropTypes.bool,
@@ -490,8 +491,14 @@ class MUIDataTable extends React.Component {
       lookup: {},
     };
 
+    let expandedRowsData = {
+      data: [],
+      lookup: {},
+    };
+
     if (TABLE_LOAD.INITIAL) {
-      if (options.rowsSelected && options.rowsSelected.length) {
+      // Multiple row selection customization
+      if (options.rowsSelected && options.rowsSelected.length && options.selectableRows === 'multiple') {
         options.rowsSelected.forEach(row => {
           let rowPos = row;
 
@@ -504,6 +511,39 @@ class MUIDataTable extends React.Component {
 
           selectedRowsData.data.push({ index: rowPos, dataIndex: row });
           selectedRowsData.lookup[row] = true;
+        });
+      }
+
+      // Single row selection customization
+      if (options.rowsSelected && options.rowsSelected.length === 1 && options.selectableRows === 'single') {
+        let rowPos = options.rowsSelected[0];
+
+        for (let cIndex = 0; cIndex < this.state.displayData.length; cIndex++) {
+          if (this.state.displayData[cIndex].dataIndex === options.rowsSelected[0]) {
+            rowPos = cIndex;
+            break;
+          }
+        }
+
+        selectedRowsData.data.push({ index: rowPos, dataIndex: options.rowsSelected[0] });
+        selectedRowsData.lookup[options.rowsSelected[0]] = true;
+      } else if (options.rowsSelected && options.rowsSelected.length > 1 && options.selectableRows === 'single') {
+        console.error('Multiple values provided for selectableRows, but selectableRows set to "single". Either supply only a single value or use "multiple".');
+      }
+
+      if (options.rowsExpanded && options.rowsExpanded.length && options.expandableRows) {
+        options.rowsExpanded.forEach(row => {
+          let rowPos = row;
+
+          for (let cIndex = 0; cIndex < this.state.displayData.length; cIndex++) {
+            if (this.state.displayData[cIndex].dataIndex === row) {
+              rowPos = cIndex;
+              break;
+            }
+          }
+
+          expandedRowsData.data.push({ index: rowPos, dataIndex: row });
+          expandedRowsData.lookup[row] = true;
         });
       }
     }
@@ -520,6 +560,7 @@ class MUIDataTable extends React.Component {
         filterList: filterList,
         searchText: searchText,
         selectedRows: selectedRowsData,
+        expandedRows: expandedRowsData,
         count: options.count,
         data: tableData,
         displayData: this.getDisplayData(columns, tableData, filterList, searchText),
