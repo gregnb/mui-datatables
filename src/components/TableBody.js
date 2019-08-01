@@ -188,7 +188,7 @@ class TableBody extends React.Component {
                           {...(columns[columnIndex].setCellProps
                             ? columns[columnIndex].setCellProps(column, dataIndex, columnIndex)
                             : {})}
-                          data-testid={`${columnIndex}-${rowIndex}-MuiDataTableBodyCell`}
+                          data-testid={`MuiDataTableBodyCell-${columnIndex}-${rowIndex}`}
                           dataIndex={dataIndex}
                           rowIndex={rowIndex}
                           colIndex={columnIndex}
