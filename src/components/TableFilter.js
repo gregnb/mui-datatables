@@ -309,6 +309,7 @@ class TableFilter extends React.Component {
               className={classes.resetLink}
               tabIndex={0}
               aria-label={textLabels.reset}
+              data-testid={'filterReset-button'}
               onClick={onFilterReset}>
               {textLabels.reset}
             </Button>
