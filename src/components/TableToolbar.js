@@ -111,17 +111,17 @@ class TableToolbar extends React.Component {
 
               // if we have a custom render, we must grab the actual value from data
               return typeof column === 'object' ? data[row.dataIndex].data[i] : column;
-            })
+            }),
           };
         });
       }
 
       // now, check columns:
       if (options.downloadOptions.filterOptions.useDisplayedColumnsOnly) {
-        columnsToDownload = columns.filter((_, index) => _.display==='true');
+        columnsToDownload = columns.filter((_, index) => _.display === 'true');
 
         dataToDownload = dataToDownload.map(row => {
-          row.data = row.data.filter((_, index) => columns[index].display==='true');
+          row.data = row.data.filter((_, index) => columns[index].display === 'true');
           return row;
         });
       }

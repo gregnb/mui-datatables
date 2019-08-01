@@ -158,8 +158,8 @@ class MUIDataTable extends React.Component {
         separator: PropTypes.string,
         filterOptions: PropTypes.shape({
           useDisplayedColumnsOnly: PropTypes.bool,
-          useDisplayedRowsOnly: PropTypes.bool
-        })
+          useDisplayedRowsOnly: PropTypes.bool,
+        }),
       }),
       onDownload: PropTypes.func,
     }),
@@ -528,7 +528,9 @@ class MUIDataTable extends React.Component {
         selectedRowsData.data.push({ index: rowPos, dataIndex: options.rowsSelected[0] });
         selectedRowsData.lookup[options.rowsSelected[0]] = true;
       } else if (options.rowsSelected && options.rowsSelected.length > 1 && options.selectableRows === 'single') {
-        console.error('Multiple values provided for selectableRows, but selectableRows set to "single". Either supply only a single value or use "multiple".');
+        console.error(
+          'Multiple values provided for selectableRows, but selectableRows set to "single". Either supply only a single value or use "multiple".',
+        );
       }
 
       if (options.rowsExpanded && options.rowsExpanded.length && options.expandableRows) {
