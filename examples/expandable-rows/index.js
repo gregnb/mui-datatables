@@ -14,7 +14,7 @@ class Example extends React.Component {
         options: {
           filter: true,
         }
-      },      
+      },
       {
         name: "Title",
         options: {
@@ -39,7 +39,7 @@ class Example extends React.Component {
           filter: true,
           sort: false
         }
-      }      
+      }
     ];
 
 
@@ -81,6 +81,7 @@ class Example extends React.Component {
       filterType: 'dropdown',
       responsive: 'scroll',
       expandableRows: true,
+      expandableRowsOnClick: true,
       renderExpandableRow: (rowData, rowMeta) => {
         const colSpan = rowData.length + 1;
         return (

@@ -1,12 +1,9 @@
-import React, { Fragment } from 'react';
+import { FormGroup, FormLabel, TextField } from '@material-ui/core';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import MUIDataTable from '../../src/';
+import MUIDataTable from '../../src';
 
 class Example extends React.Component {
-  state = {
-    searchText: 'Computer'
-  };
-
   render() {
     const columns = [
       {
@@ -26,6 +23,7 @@ class Example extends React.Component {
       {
         name: 'Location',
         options: {
+          print: false,
           filter: false,
         },
       },
@@ -33,12 +31,74 @@ class Example extends React.Component {
         name: 'Age',
         options: {
           filter: true,
+          filterType: 'custom',
+          customFilterListRender: v => {
+            if (v['min'] && v['max']) {
+              return `Min Age: ${v['min']}, Max Age: ${v['max']}`;
+            } else if (v['min']) {
+              return `Min Age: ${v['min']}`;
+            } else if (v['max']) {
+              return `Max Age: ${v['max']}`;
+            }
+            return false;
+          },
+          filterOptions: {
+            names: [],
+            logic(age, filters) {
+              if (filters['min'] && filters['max']) {
+                return age < filters['min'] || age > filters['max'];
+              } else if (filters['min']) {
+                return age < filters['min'];
+              } else if (filters['max']) {
+                return age > filters['max'];
+              }
+              return false;
+            },
+            display: (filterList, onChange, index, column) => (
+              <div>
+                <FormLabel>Age</FormLabel>
+                <FormGroup row>
+                  <TextField
+                    label="min"
+                    value={filterList[index]['min'] || ''}
+                    onChange={event => {
+                      filterList[index]['min'] = event.target.value;
+                      onChange(filterList[index], index, column);
+                    }}
+                    style={{ width: '45%', marginRight: '5%' }}
+                  />
+                  <TextField
+                    label="max"
+                    value={filterList[index]['max'] || ''}
+                    onChange={event => {
+                      filterList[index]['max'] = event.target.value;
+                      onChange(filterList[index], index, column);
+                    }}
+                    style={{ width: '45%' }}
+                  />
+                </FormGroup>
+              </div>
+            ),
+          },
+          print: false,
         },
       },
       {
         name: 'Salary',
         options: {
           filter: true,
+          filterType: 'checkbox',
+          filterOptions: {
+            names: ['Lower wages', 'Average wages', 'Higher wages'],
+            logic(salary, filterVal) {
+              salary = salary.replace(/[^\d]/g, '');
+              const show =
+                (filterVal.indexOf('Lower wages') >= 0 && salary < 100000) ||
+                (filterVal.indexOf('Average wages') >= 0 && salary >= 100000 && salary < 200000) ||
+                (filterVal.indexOf('Higher wages') >= 0 && salary >= 200000);
+              return !show;
+            },
+          },
           sort: false,
         },
       },
@@ -80,25 +140,11 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'stacked',
-      page: 1,
-      searchText: this.state.searchText,
-      customSearch: (searchQuery, currentRow, columns) => {
-        let isFound = false;
-        currentRow.forEach(col => {
-          if (col.toString().indexOf(searchQuery) >= 0) {
-            isFound = true;
-          }
-        });
-        return isFound;
-      },
+      responsive: 'scroll',
     };
 
     return (
-      <Fragment>
-        <button onClick={() => this.setState({ searchText: '' })}>Reset Search</button>
-        <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />
-      </Fragment>
+      <MUIDataTable title={'ACME Employee list - customizeFilter'} data={data} columns={columns} options={options} />
     );
   }
 }
