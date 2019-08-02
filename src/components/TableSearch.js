@@ -52,7 +52,7 @@ class TableSearch extends React.Component {
   };
 
   render() {
-    const { classes, options, onHide, searchText, searchProps } = this.props;
+    const { classes, options, onHide, searchText } = this.props;
 
     return (
       <Grow appear in={true} timeout={300}>
@@ -69,7 +69,7 @@ class TableSearch extends React.Component {
             onChange={this.handleTextChange}
             fullWidth={true}
             inputRef={el => (this.searchField = el)}
-            {...searchProps}
+            {...options.searchProps}
           />
           <IconButton className={classes.clearIcon} onClick={onHide}>
             <ClearIcon />
