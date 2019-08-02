@@ -197,7 +197,7 @@ class TableToolbar extends React.Component {
       tableRef,
     } = this.props;
 
-    const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;
+    const { search, downloadCsv, print, viewColumns, filterTable, searchProps } = options.textLabels.toolbar;
     const { showSearch, searchText } = this.state;
 
     return (
@@ -209,6 +209,7 @@ class TableToolbar extends React.Component {
               onSearch={this.handleSearch}
               onHide={this.hideSearch}
               options={options}
+              searchProps={searchProps}
             />
           ) : typeof title !== 'string' ? (
             title

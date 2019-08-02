@@ -148,6 +148,11 @@ class MUIDataTable extends React.Component {
       sort: PropTypes.bool,
       customSort: PropTypes.func,
       customSearch: PropTypes.func,
+      searchProps: PropTypes.shape({
+        onBlur: PropTypes.func,
+        onKeyPress: PropTypes.func,
+        style: PropTypes.object,
+      }),
       search: PropTypes.bool,
       searchText: PropTypes.string,
       print: PropTypes.bool,
