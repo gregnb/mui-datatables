@@ -126,7 +126,7 @@ The component accepts the following props:
 |:--:|:-----|:-----|
 |**`title`**|array|Title used to caption table
 |**`columns`**|array|Columns used to describe table. Must be either an array of simple strings or objects describing a column
-|**`data`**|array|Data used to describe table. Must be an array containing objects. (Arrays containing just strings or numbers also supported) 
+|**`data`**|array|Data used to describe table. Must be an array containing objects. (Arrays containing just strings or numbers also supported)
 |**`options`**|object|Options used to describe table
 
 #### Options:
@@ -136,14 +136,17 @@ The component accepts the following props:
 |**`count`**|number||User provided override for total number of rows
 |**`serverSide`**|boolean|false|Enable remote data source
 |**`rowsSelected`**|array||User provided selected rows
+|**`rowsExpanded`**|array||User provided expanded rows
 |**`filterType `**|string||Choice of filtering view. `enum('checkbox', 'dropdown', 'multiselect', 'textField')`
 |**`textLabels `**|object||User provided labels to localize text
 |**`pagination`**|boolean|true|Enable/disable pagination
 |**`selectableRows`**|string|'multiple'|Numbers of rows that can be selected. Options are "multiple", "single", "none".
+|**`selectableRowsOnClick`**|boolean|false|Enable/disable select toggle when row is clicked. When False, only checkbox will trigger this action.
 |**`isRowSelectable`**|function||Enable/disable selection on certain rows with custom function. Returns true if not provided.  `function(dataIndex) => bool`
-|**`resizableColumns`**|boolean|false|Enable/disable resizable columns
 |**`expandableRows`**|boolean|false|Enable/disable expandable rows
-|**`renderExpandableRow `**|function||Render expandable row. `function(rowData, rowMeta) => React Component`
+|**`expandableRowsOnClick`**|boolean|false|Enable/disable expand trigger when row is clicked. When False, only expand icon will trigger this action.
+|**`renderExpandableRow`**|function||Render expandable row. `function(rowData, rowMeta) => React Component`
+|**`resizableColumns`**|boolean|false|Enable/disable resizable columns
 |**`customToolbar`**|function||Render a custom toolbar
 |**`customToolbarSelect`**|function||Render a custom selected rows toolbar. `function(selectedRows, displayData, setSelectedRows) => void`
 |**`customFooter`**|function||Render a custom table footer. `function(count, page, rowsPerPage, changeRowsPerPage, changePage) => string`&#124;` React Component`
@@ -165,7 +168,7 @@ The component accepts the following props:
 |**`print`**|boolean|true|Show/hide print	 icon from toolbar
 |**`download`**|boolean|true|Show/hide download icon from toolbar
 |**`downloadOptions`**|object||Options to change the output of the CSV file. Default options: `{filename: 'tableDownload.csv', separator: ','}`
-|**`onDownload`**|function||A callback function that triggers when the user downloads the CSV file. In the callback, you can control what is written to the CSV file. `function(buildHead: (columns) => string, buildBody: (data) => string, columns, data) => string`
+|**`onDownload`**|function||A callback function that triggers when the user downloads the CSV file. In the callback, you can control what is written to the CSV file. `function(buildHead: (columns) => string, buildBody: (data) => string, columns, data) => string`. Return `false` to cancel download of file.
 |**`viewColumns`**|boolean|true|Show/hide viewColumns icon from toolbar
 |**`onRowsSelect`**|function||Callback function that triggers when row(s) are selected. `function(currentRowsSelected: array, allRowsSelected: array) => void`
 |**`onRowsDelete`**|function||Callback function that triggers when row(s) are deleted. `function(rowsDeleted: object(lookup: {dataindex: boolean}, data: arrayOfObjects: {index, dataIndex})) => void OR false` (Returning `false` prevents row deletion.)
@@ -214,10 +217,10 @@ const columns = [
 |**`empty`**|boolean|false|This denotes whether the column has data or not (for use with intentionally empty columns)
 |**`viewColumns`**|boolean|true|Allow user to toggle column visibility through 'View Column' list
 |**`filterList`**|array||Filter value list [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
-|**`filterOptions`**|array||Filter options [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
+|**`filterOptions`**|{names, logic, display}||With filter options, it's possible to use custom names for the filter fields [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js), custom filter logic [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js), and custom rendering [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js)
 |**`customFilterListRender`**|function||Function that returns a string used as the chip label. `function(value) => string` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`filter`**|boolean|true|Display column in filter list
-|**`filterType `**|string|'dropdown'|Choice of filtering view. Takes priority over global filterType option.`enum('checkbox', 'dropdown', 'multiselect', 'textField')`.
+|**`filterType `**|string|'dropdown'|Choice of filtering view. Takes priority over global filterType option.`enum('checkbox', 'dropdown', 'multiselect', 'textField', 'custom')` Use 'custom' if you are supplying your own rendering via `filterOptions`.
 |**`sort`**|boolean|true|Enable/disable sorting on column
 |**`searchable`**|boolean|true|Exclude/include column from search results
 |**`sortDirection`**|string||Set default sort order `enum('asc', 'desc')`
@@ -379,7 +382,7 @@ npm run dev
 ```
 open  http://localhost:5050/ in browser
 
-After you make your changes locally, you can run the test suite with `npm test`. 
+After you make your changes locally, you can run the test suite with `npm test`.
 
 ## License
 The files included in this repository are licensed under the MIT license.

@@ -13,7 +13,9 @@ class Example extends React.Component {
           filter: true,
           filterList: ['Franky Miles'],
           customFilterListRender: v => `Name: ${v}`,
-          filterOptions: ['a', 'b', 'c', 'Business Analyst']
+          filterOptions: {
+            names: ['a', 'b', 'c', 'Business Analyst']
+          },
         }
       },
       {

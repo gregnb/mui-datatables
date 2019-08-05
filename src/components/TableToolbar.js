@@ -95,8 +95,38 @@ class TableToolbar extends React.Component {
   }
 
   handleCSVDownload = () => {
-    const { data, columns, options } = this.props;
-    createCSVDownload(columns, data, options);
+    const { data, displayData, columns, options } = this.props;
+    let dataToDownload = data;
+    let columnsToDownload = columns;
+
+    if (options.downloadOptions && options.downloadOptions.filterOptions) {
+      // check rows first:
+      if (options.downloadOptions.filterOptions.useDisplayedRowsOnly) {
+        dataToDownload = displayData.map(row => {
+          let i = -1;
+
+          return {
+            data: row.data.map(column => {
+              i += 1;
+
+              // if we have a custom render, we must grab the actual value from data
+              return typeof column === 'object' ? data[row.dataIndex].data[i] : column;
+            }),
+          };
+        });
+      }
+
+      // now, check columns:
+      if (options.downloadOptions.filterOptions.useDisplayedColumnsOnly) {
+        columnsToDownload = columns.filter((_, index) => _.display === 'true');
+
+        dataToDownload = dataToDownload.map(row => {
+          row.data = row.data.filter((_, index) => columns[index].display === 'true');
+          return row;
+        });
+      }
+    }
+    createCSVDownload(columnsToDownload, dataToDownload, options);
   };
 
   setActiveIcon = iconName => {
@@ -195,6 +225,7 @@ class TableToolbar extends React.Component {
             <Tooltip title={search} disableFocusListener>
               <IconButton
                 aria-label={search}
+                data-testid={search + '-iconButton'}
                 buttonRef={el => (this.searchButton = el)}
                 classes={{ root: this.getActiveIcon(classes, 'search') }}
                 onClick={this.setActiveIcon.bind(null, 'search')}>
@@ -204,7 +235,11 @@ class TableToolbar extends React.Component {
           )}
           {options.download && (
             <Tooltip title={downloadCsv}>
-              <IconButton aria-label={downloadCsv} classes={{ root: classes.icon }} onClick={this.handleCSVDownload}>
+              <IconButton
+                data-testid={downloadCsv + '-iconButton'}
+                aria-label={downloadCsv}
+                classes={{ root: classes.icon }}
+                onClick={this.handleCSVDownload}>
                 <DownloadIcon />
               </IconButton>
             </Tooltip>
@@ -214,7 +249,7 @@ class TableToolbar extends React.Component {
               <ReactToPrint
                 trigger={() => (
                   <Tooltip title={print}>
-                    <IconButton aria-label={print} classes={{ root: classes.icon }}>
+                    <IconButton data-testid={print + '-iconButton'} aria-label={print} classes={{ root: classes.icon }}>
                       <PrintIcon />
                     </IconButton>
                   </Tooltip>
@@ -229,6 +264,7 @@ class TableToolbar extends React.Component {
               trigger={
                 <Tooltip title={viewColumns} disableFocusListener>
                   <IconButton
+                    data-testid={viewColumns + '-iconButton'}
                     aria-label={viewColumns}
                     classes={{ root: this.getActiveIcon(classes, 'viewcolumns') }}
                     onClick={this.setActiveIcon.bind(null, 'viewcolumns')}>
@@ -248,6 +284,7 @@ class TableToolbar extends React.Component {
               trigger={
                 <Tooltip title={filterTable} disableFocusListener>
                   <IconButton
+                    data-testid={filterTable + '-iconButton'}
                     aria-label={filterTable}
                     classes={{ root: this.getActiveIcon(classes, 'filter') }}
                     onClick={this.setActiveIcon.bind(null, 'filter')}>

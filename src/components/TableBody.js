@@ -55,13 +55,7 @@ class TableBody extends React.Component {
     const toIndex = Math.min(count, (page + 1) * rowsPerPage);
 
     if (page > totalPages && totalPages !== 0) {
-      throw new Error(
-        'Provided options.page of `' +
-          page +
-          '` is greater than the total available page length of `' +
-          totalPages +
-          '`',
-      );
+      console.warn('Current page is out of range.');
     }
 
     for (let rowIndex = fromIndex; rowIndex < count && rowIndex < toIndex; rowIndex++) {
@@ -105,10 +99,44 @@ class TableBody extends React.Component {
   };
 
   handleRowClick = (row, data, event) => {
-    // don't trigger onRowClick if the event was actually a row selection
-    if (event.target.id && event.target.id.startsWith('MUIDataTableSelectCell')) {
+    // Don't trigger onRowClick if the event was actually the expandable icon
+    if (
+      event.target.id === 'expandable-button' ||
+      (event.target.nodeName === 'path' && event.target.parentNode.id === 'expandable-button')
+    ) {
+      // In a future release, onRowClick will no longer be called here (for consistency).
+      // For now, issue a deprecated warning.
+      if (this.props.options.onRowClick) {
+        console.warn(
+          'Deprecated: Clicks on expandable button will not trigger onRowClick in an upcoming release, see: https://github.com/gregnb/mui-datatables/issues/516.',
+        );
+        this.props.options.onRowClick(row, data, event);
+      }
+
       return;
     }
+
+    // Don't trigger onRowClick if the event was actually a row selection via checkbox
+    if (event.target.id && event.target.id.startsWith('MUIDataTableSelectCell')) return;
+
+    // Check if we should toggle row select when row is clicked anywhere
+    if (
+      this.props.options.selectableRowsOnClick &&
+      this.props.options.selectableRows !== 'none' &&
+      this.isRowSelectable(data.dataIndex)
+    ) {
+      const selectRow = { index: data.rowIndex, dataIndex: data.dataIndex };
+      this.handleRowSelect(selectRow);
+    }
+    // Check if we should trigger row expand when row is clicked anywhere
+    if (this.props.options.expandableRowsOnClick && this.props.options.expandableRows) {
+      const expandRow = { index: data.rowIndex, dataIndex: data.dataIndex };
+      this.props.toggleExpandRow(expandRow);
+    }
+
+    // Don't trigger onRowClick if the event was actually a row selection via click
+    if (this.props.options.selectableRowsOnClick) return;
+
     this.props.options.onRowClick && this.props.options.onRowClick(row, data, event);
   };
 
@@ -134,6 +162,7 @@ class TableBody extends React.Component {
                   options={options}
                   rowSelected={options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false}
                   onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
+                  data-testid={'MUIDataTableBodyRow-' + dataIndex}
                   id={'MUIDataTableBodyRow-' + dataIndex}>
                   <TableSelectCell
                     onChange={this.handleRowSelect.bind(null, {
@@ -159,6 +188,7 @@ class TableBody extends React.Component {
                           {...(columns[columnIndex].setCellProps
                             ? columns[columnIndex].setCellProps(column, dataIndex, columnIndex)
                             : {})}
+                          data-testid={`MuiDataTableBodyCell-${columnIndex}-${rowIndex}`}
                           dataIndex={dataIndex}
                           rowIndex={rowIndex}
                           colIndex={columnIndex}
