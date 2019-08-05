@@ -439,12 +439,9 @@ describe('<MUIDataTable />', function() {
     newColumns[0].options.filterList = ['Joe James'];
     mountShallowWrapper.setProps({ columns: newColumns });
     mountShallowWrapper.update();
-    // mimic componentDidUpdate(prevProps) {
-    // if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
     instance.setTableData(mountShallowWrapper.props(), 1 /* instance.TABLE_LOAD.INITIAL */);
 
     const updatedState = mountShallowWrapper.state();
-    const { columns: updatedColumns } = updatedState;
     assert.deepEqual(updatedState.filterList, [['Joe James'], [], [], [], []]);
   });
 
