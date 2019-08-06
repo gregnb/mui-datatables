@@ -62,6 +62,9 @@ class TableToolbarSelect extends React.Component {
   render() {
     const { classes, onRowsDelete, selectedRows, options, displayData } = this.props;
     const textLabels = options.textLabels.selectedRows;
+    const displaySelectToolbar = options.displaySelectToolbar !== false;
+
+    if (!displaySelectToolbar) return null;
 
     return (
       <Paper className={classes.root}>

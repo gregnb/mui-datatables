@@ -1167,25 +1167,24 @@ class MUIDataTable extends React.Component {
             displayData={displayData}
             selectRowUpdate={this.selectRowUpdate}
           />
-        ) : (
-          showToolbar && (
-            <TableToolbar
-              columns={columns}
-              displayData={displayData}
-              data={data}
-              filterData={filterData}
-              filterList={filterList}
-              filterUpdate={this.filterUpdate}
-              options={this.options}
-              resetFilters={this.resetFilters}
-              searchText={searchText}
-              searchTextUpdate={this.searchTextUpdate}
-              tableRef={this.getTableContentRef}
-              title={title}
-              toggleViewColumn={this.toggleViewColumn}
-              setTableAction={this.setTableAction}
-            />
-          )
+        ) : null}
+        {showToolbar && (
+          <TableToolbar
+            columns={columns}
+            displayData={displayData}
+            data={data}
+            filterData={filterData}
+            filterList={filterList}
+            filterUpdate={this.filterUpdate}
+            options={this.options}
+            resetFilters={this.resetFilters}
+            searchText={searchText}
+            searchTextUpdate={this.searchTextUpdate}
+            tableRef={this.getTableContentRef}
+            title={title}
+            toggleViewColumn={this.toggleViewColumn}
+            setTableAction={this.setTableAction}
+          />
         )}
         <TableFilterList
           options={this.options}
