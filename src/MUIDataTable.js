@@ -417,15 +417,13 @@ class MUIDataTable extends React.Component {
   };
 
   setTableData(props, status, callback = () => {}) {
-    const { options } = props;
-
     let tableData = [];
     let { columns, filterData, filterList } = this.buildColumns(props.columns);
     let sortIndex = null;
     let sortDirection = null;
 
     const data = status === TABLE_LOAD.INITIAL ? this.transformData(columns, props.data) : props.data;
-    const searchText = status === TABLE_LOAD.INITIAL ? options.searchText : null;
+    const searchText = status === TABLE_LOAD.INITIAL ? this.options.searchText : null;
 
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
@@ -498,8 +496,8 @@ class MUIDataTable extends React.Component {
 
     if (TABLE_LOAD.INITIAL) {
       // Multiple row selection customization
-      if (options.rowsSelected && options.rowsSelected.length && options.selectableRows === 'multiple') {
-        options.rowsSelected.forEach(row => {
+      if (this.options.rowsSelected && this.options.rowsSelected.length && this.options.selectableRows === 'multiple') {
+        this.options.rowsSelected.forEach(row => {
           let rowPos = row;
 
           for (let cIndex = 0; cIndex < this.state.displayData.length; cIndex++) {
@@ -515,26 +513,26 @@ class MUIDataTable extends React.Component {
       }
 
       // Single row selection customization
-      if (options.rowsSelected && options.rowsSelected.length === 1 && options.selectableRows === 'single') {
-        let rowPos = options.rowsSelected[0];
+      if (this.options.rowsSelected && this.options.rowsSelected.length === 1 && this.options.selectableRows === 'single') {
+        let rowPos = this.options.rowsSelected[0];
 
         for (let cIndex = 0; cIndex < this.state.displayData.length; cIndex++) {
-          if (this.state.displayData[cIndex].dataIndex === options.rowsSelected[0]) {
+          if (this.state.displayData[cIndex].dataIndex === this.options.rowsSelected[0]) {
             rowPos = cIndex;
             break;
           }
         }
 
-        selectedRowsData.data.push({ index: rowPos, dataIndex: options.rowsSelected[0] });
-        selectedRowsData.lookup[options.rowsSelected[0]] = true;
-      } else if (options.rowsSelected && options.rowsSelected.length > 1 && options.selectableRows === 'single') {
+        selectedRowsData.data.push({ index: rowPos, dataIndex: this.options.rowsSelected[0] });
+        selectedRowsData.lookup[this.options.rowsSelected[0]] = true;
+      } else if (this.options.rowsSelected && this.options.rowsSelected.length > 1 && this.options.selectableRows === 'single') {
         console.error(
           'Multiple values provided for selectableRows, but selectableRows set to "single". Either supply only a single value or use "multiple".',
         );
       }
 
-      if (options.rowsExpanded && options.rowsExpanded.length && options.expandableRows) {
-        options.rowsExpanded.forEach(row => {
+      if (this.options.rowsExpanded && this.options.rowsExpanded.length && this.options.expandableRows) {
+        this.options.rowsExpanded.forEach(row => {
           let rowPos = row;
 
           for (let cIndex = 0; cIndex < this.state.displayData.length; cIndex++) {
@@ -550,7 +548,7 @@ class MUIDataTable extends React.Component {
       }
     }
 
-    if (!options.serverSide && sortIndex !== null) {
+    if (!this.options.serverSide && sortIndex !== null) {
       const sortedData = this.sortTable(tableData, sortIndex, sortDirection);
       tableData = sortedData.data;
     }
@@ -563,7 +561,7 @@ class MUIDataTable extends React.Component {
         searchText: searchText,
         selectedRows: selectedRowsData,
         expandedRows: expandedRowsData,
-        count: options.count,
+        count: this.options.count,
         data: tableData,
         displayData: this.getDisplayData(columns, tableData, filterList, searchText),
       }),
