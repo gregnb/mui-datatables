@@ -284,6 +284,7 @@ class MUIDataTable extends React.Component {
 
     const extra = {};
     if (typeof props.options.selectableRows === 'boolean') {
+      console.error('Using a boolean for selectableRows has been deprecated. Please use string option: multiple | single | none');
       extra.selectableRows = props.options.selectableRows ? 'multiple' : 'none';
     }
     this.options = merge(defaultOptions, props.options, extra);
