@@ -799,6 +799,20 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(state.selectedRows.data, expectedResult);
   });
 
+  it('should not update selectedRows when using rowsSelected option with type=none', () => {
+    const options = {
+      selectableRows: 'none',
+      rowsSelected: [0],
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    const state = shallowWrapper.state();
+    const expectedResult = [];
+
+    assert.deepEqual(state.selectedRows.data, expectedResult);
+  });
+
   it('should update selectedRows when using rowsSelected option with type=single', () => {
     const options = {
       selectableRows: 'single',
