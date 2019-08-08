@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import MUIDataTable from '../../src/';
-import CustomTableSearch from './CustomTableSearch';
+import CustomSearchRender from './CustomSearchRender';
 
 class Example extends React.Component {
 
@@ -48,12 +48,12 @@ class Example extends React.Component {
       filterType: 'dropdown',
       responsive: 'stacked',
       rowsPerPage: 10,
-      customTableSearch: (searchText, handleSearch, hideSearch, options) => {
+      customSearchRender: (searchText, handleSearch, hideSearch, options) => {
         return (
-          <CustomTableSearch
+          <CustomSearchRender
             searchText={searchText}
-            handleSearch={handleSearch}
-            hideSearch={hideSearch}
+            onSearch={handleSearch}
+            onHide={hideSearch}
             options={options}
           />
         );

@@ -20,7 +20,7 @@ const defaultSearchStyles = theme => ({
   },
 });
 
-class CustomTableSearch extends React.Component {
+class CustomSearchRender extends React.Component {
   handleTextChange = event => {
     const { onSearchChange } = this.props.options;
 
@@ -71,4 +71,4 @@ class CustomTableSearch extends React.Component {
   }
 }
 
-export default withStyles(defaultSearchStyles, { name: 'CustomTableSearch' })(CustomTableSearch);
+export default withStyles(defaultSearchStyles, { name: 'CustomSearchRender' })(CustomSearchRender);

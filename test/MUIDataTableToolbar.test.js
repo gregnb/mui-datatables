@@ -124,9 +124,9 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(actualResult.length, 0);
   });
 
-  it('should render a toolbar with custom TableSearch when option.customTableSearch is method ', () => {
-    const CustomTableSearch = () => (<h1>CustomTableSearch</h1>);
-    const newOptions = { ...options, customTableSearch: CustomTableSearch };
+  it('should render a toolbar with custom search when option.customSearchRender is provided', () => {
+    const CustomSearchRender = () => <h1>customSearchRender</h1>;
+    const newOptions = { ...options, customSearchRender: CustomSearchRender };
     const shallowWrapper = shallow(
       <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
     )
