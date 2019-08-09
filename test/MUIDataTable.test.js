@@ -2,6 +2,7 @@ import React from 'react';
 import { spy } from 'sinon';
 import { mount, shallow } from 'enzyme';
 import { assert, expect } from 'chai';
+import cloneDeep from 'lodash.clonedeep';
 import MUIDataTable from '../src/MUIDataTable';
 import TableFilterList from '../src/components/TableFilterList';
 import TablePagination from '../src/components/TablePagination';
@@ -427,6 +428,21 @@ describe('<MUIDataTable />', function() {
 
     const state = table.state();
     assert.deepEqual(state.filterList, [['Joe James'], [], [], [], []]);
+  });
+
+  it('should apply columns prop change for filterList', () => {
+    const mountShallowWrapper = mount(shallow(<MUIDataTable columns={columns} data={data} />).get(0));
+    const instance = mountShallowWrapper.instance();
+    instance.initializeTable(mountShallowWrapper.props());
+    // now use updated columns props
+    const newColumns = cloneDeep(columns);
+    newColumns[0].options.filterList = ['Joe James'];
+    mountShallowWrapper.setProps({ columns: newColumns });
+    mountShallowWrapper.update();
+    instance.setTableData(mountShallowWrapper.props(), 1 /* instance.TABLE_LOAD.INITIAL */);
+
+    const updatedState = mountShallowWrapper.state();
+    assert.deepEqual(updatedState.filterList, [['Joe James'], [], [], [], []]);
   });
 
   it('should create Chip when filterList is populated', () => {
