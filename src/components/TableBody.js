@@ -87,11 +87,14 @@ class TableBody extends React.Component {
   }
 
   isRowSelectable(dataIndex) {
-    const { options } = this.props;
-    if (options.isRowSelectable) {
-      return options.isRowSelectable(dataIndex);
+    const { options, selectedRows } = this.props;
+    const lookup = (selectedRows && selectedRows.lookup) || {};
+    if (lookup[dataIndex]) {
+      return (!options.isRowSelectable || options.isRowSelectable(dataIndex));
+    } else {
+      const numSelected = (selectedRows && selectedRows.data.length) || 0;
+      return options.maxSelectedRows > numSelected && (!options.isRowSelectable || options.isRowSelectable(dataIndex));
     }
-    return true;
   }
 
   handleRowSelect = data => {
