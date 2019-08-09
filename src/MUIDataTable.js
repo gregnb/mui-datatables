@@ -285,7 +285,9 @@ class MUIDataTable extends React.Component {
 
     const extra = {};
     if (typeof props.options.selectableRows === 'boolean') {
-      console.error('Using a boolean for selectableRows has been deprecated. Please use string option: multiple | single | none');
+      console.error(
+        'Using a boolean for selectableRows has been deprecated. Please use string option: multiple | single | none',
+      );
       extra.selectableRows = props.options.selectableRows ? 'multiple' : 'none';
     }
     this.options = merge(defaultOptions, props.options, extra);
@@ -527,7 +529,11 @@ class MUIDataTable extends React.Component {
       }
 
       // Single row selection customization
-      if (this.options.rowsSelected && this.options.rowsSelected.length === 1 && this.options.selectableRows === 'single') {
+      if (
+        this.options.rowsSelected &&
+        this.options.rowsSelected.length === 1 &&
+        this.options.selectableRows === 'single'
+      ) {
         let rowPos = this.options.rowsSelected[0];
 
         for (let cIndex = 0; cIndex < this.state.displayData.length; cIndex++) {
@@ -539,7 +545,11 @@ class MUIDataTable extends React.Component {
 
         selectedRowsData.data.push({ index: rowPos, dataIndex: this.options.rowsSelected[0] });
         selectedRowsData.lookup[this.options.rowsSelected[0]] = true;
-      } else if (this.options.rowsSelected && this.options.rowsSelected.length > 1 && this.options.selectableRows === 'single') {
+      } else if (
+        this.options.rowsSelected &&
+        this.options.rowsSelected.length > 1 &&
+        this.options.selectableRows === 'single'
+      ) {
         console.error(
           'Multiple values provided for selectableRows, but selectableRows set to "single". Either supply only a single value or use "multiple".',
         );
