@@ -126,6 +126,7 @@ class MUIDataTable extends React.Component {
       customToolbar: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customToolbarSelect: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customFooter: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+      customSearchRender: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customRowRender: PropTypes.func,
       onRowClick: PropTypes.func,
       resizableColumns: PropTypes.bool,

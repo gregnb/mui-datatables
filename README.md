@@ -153,6 +153,7 @@ The component accepts the following props:
 |**`customRowRender `**|function||Override default row rendering with custom function. `customRowRender(data, dataIndex, rowIndex) => React Component`
 |**`customSort`**|function||Override default sorting with custom function. `function(data: array, colIndex: number, order: string) => array`
 |**`customSearch `**|function||Override default search with custom function. `customSearch(searchQuery: string, currentRow: array, columns: array) => boolean`
+|**`customSearchRender `**|function||Render a custom table search. `customSearchRender(searchText: string, handleSearch, hideSearch, options) => React Component`
 |**`elevation`**|number|4|Shadow depth applied to Paper component
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
 |**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: 'stacked', 'scroll'
