@@ -92,8 +92,8 @@ class TableBody extends React.Component {
     if (lookup[dataIndex]) {
       return (!options.isRowSelectable || options.isRowSelectable(dataIndex));
     } else {
-      const numSelected = (selectedRows && selectedRows.data.length) || 0;
-      return options.maxSelectedRows > numSelected && (!options.isRowSelectable || options.isRowSelectable(dataIndex));
+      const numSelected = (selectedRows && selectedRows.data && selectedRows.data.length) || 0;
+      return (options.maxSelectedRows || Infinity) > numSelected && (!options.isRowSelectable || options.isRowSelectable(dataIndex));
     }
   }
 
