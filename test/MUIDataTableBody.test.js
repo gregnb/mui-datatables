@@ -493,4 +493,32 @@ describe('<TableBody />', function() {
 
     expect(html).to.contain('Test_Text');
   });
+
+  it('should not call onRowClick when maxSelectedRows rows is reached', () => {
+    const options = { selectableRows: true, maxSelectedRows: 1 };
+    const selectedIndex = 0;
+    const selectedRows = { data: [selectedIndex], lookup: {[selectedIndex]: true }};
+    
+    const mountWrapper = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={selectedRows}
+        expandedRows={[]}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    const tableSelectCellsProps = mountWrapper.find('TableSelectCell').map(t => t.props());
+
+    tableSelectCellsProps.forEach((props, i) => {
+      assert.equal(props.checked, i === selectedIndex);
+      assert.equal(props.isRowSelectable, i === selectedIndex);
+    });
+  });
 });
