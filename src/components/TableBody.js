@@ -32,6 +32,8 @@ class TableBody extends React.Component {
     selectedRows: PropTypes.object,
     /** Callback to trigger table row select */
     selectRowUpdate: PropTypes.func,
+    /** The most recent row to have been selected/unselected */
+    previousSelectedRow: PropTypes.object,
     /** Data used to search table against */
     searchText: PropTypes.string,
     /** Toggle row expandable */
@@ -94,8 +96,26 @@ class TableBody extends React.Component {
     return true;
   }
 
-  handleRowSelect = data => {
-    this.props.selectRowUpdate('cell', data);
+  handleRowSelect = (data, event) => {
+    let shiftKey = event && event.nativeEvent ? event.nativeEvent.shiftKey : false;
+    let shiftAdjacentRows = [];
+    let previousSelectedRow = this.props.previousSelectedRow;
+
+    // If the user is pressing shift and has previously clicked another row.
+    if (shiftKey && previousSelectedRow && previousSelectedRow.index < this.props.data.length) {
+      let curIndex = previousSelectedRow.index;
+      while (curIndex !== data.index) {
+        let dataIndex = this.props.data[curIndex].dataIndex;
+        if (this.isRowSelectable(dataIndex)) {
+          shiftAdjacentRows.push({
+            index: curIndex,
+            dataIndex: dataIndex
+          });
+        }
+        curIndex = data.index > curIndex ? (curIndex + 1) : (curIndex - 1);
+      }
+    }
+    this.props.selectRowUpdate('cell', data, shiftAdjacentRows);
   };
 
   handleRowClick = (row, data, event) => {
@@ -126,7 +146,7 @@ class TableBody extends React.Component {
       this.isRowSelectable(data.dataIndex)
     ) {
       const selectRow = { index: data.rowIndex, dataIndex: data.dataIndex };
-      this.handleRowSelect(selectRow);
+      this.handleRowSelect(selectRow, event);
     }
     // Check if we should trigger row expand when row is clicked anywhere
     if (this.props.options.expandableRowsOnClick && this.props.options.expandableRows) {
@@ -144,7 +164,7 @@ class TableBody extends React.Component {
     const { classes, columns, toggleExpandRow, options } = this.props;
     const tableRows = this.buildRows();
     const visibleColCnt = columns.filter(c => c.display === 'true').length;
-
+    
     return (
       <MuiTableBody>
         {tableRows && tableRows.length > 0 ? (
@@ -167,7 +187,7 @@ class TableBody extends React.Component {
                   <TableSelectCell
                     onChange={this.handleRowSelect.bind(null, {
                       index: this.getRowIndex(rowIndex),
-                      dataIndex: dataIndex,
+                      dataIndex: dataIndex
                     })}
                     onExpand={toggleExpandRow.bind(null, {
                       index: this.getRowIndex(rowIndex),
