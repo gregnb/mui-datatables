@@ -15,7 +15,6 @@ class CustomFooter extends React.Component {
   };
 
   handlePageChange = (_, page) => {
-    const { options } = this.props;
     this.props.changePage(page);
   };
 
@@ -43,23 +42,10 @@ class CustomFooter extends React.Component {
               labelRowsPerPage={textLabels.rowsPerPage}
               labelDisplayedRows={({ from, to, count }) => `${from}-${to} ${textLabels.displayRows} ${count}`}
               backIconButtonProps={{
-                id: 'pagination-back',
-                'data-testid': 'pagination-back',
                 'aria-label': textLabels.previous,
               }}
               nextIconButtonProps={{
-                id: 'pagination-next',
-                'data-testid': 'pagination-next',
                 'aria-label': textLabels.next,
-              }}
-              SelectProps={{
-                id: 'pagination-input',
-                SelectDisplayProps: { id: 'pagination-rows', 'data-testid': 'pagination-rows' },
-                MenuProps: {
-                  id: 'pagination-menu',
-                  'data-testid': 'pagination-menu',
-                  MenuListProps: { id: 'pagination-menu-list', 'data-testid': 'pagination-menu-list' },
-                },
               }}
               rowsPerPageOptions={options.rowsPerPageOptions}
               onChangePage={this.handlePageChange}
