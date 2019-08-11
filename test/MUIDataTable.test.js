@@ -815,6 +815,22 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(state.selectedRows.data, expectedResult);
   });
 
+  it('should allow multiple cells to be selected when selectableRows=multiple and selectRowUpdate method with type=cell and there are adjacent rows.', () => {
+    const options = { selectableRows: 'multiple' };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 }, [
+      { index: 0, dataIndex: 0 },
+      { index: 1, dataIndex: 1 },
+    ]);
+    shallowWrapper.update();
+
+    const expectedResult = [{ index: 0, dataIndex: 0 }, { index: 1, dataIndex: 1 }];
+    const state = shallowWrapper.state();
+    assert.deepEqual(state.selectedRows.data, expectedResult);
+  });
+
   it('should not update selectedRows when using rowsSelected option with type=none', () => {
     const options = {
       selectableRows: 'none',

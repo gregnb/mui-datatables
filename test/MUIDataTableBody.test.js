@@ -202,6 +202,42 @@ describe('<TableBody />', function() {
     assert.strictEqual(selectRowUpdate.callCount, 1);
   });
 
+  it('should select the adjacent rows when a row is shift+clicked and a previous row has been selected.', () => {
+    let adjacentRows = [];
+    const options = { sort: true, selectableRows: true, selectableRowsOnClick: true };
+    const previousSelectedRow = { index: 0, dataIndex: 0 };
+    const selectRowUpdate = (type, data, adjacent) => {
+      adjacentRows = adjacent;
+    };
+    const selectedRows = [];
+    const toggleExpandRow = () => {};
+
+    const mountWrapper = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={selectedRows}
+        selectRowUpdate={selectRowUpdate}
+        previousSelectedRow={previousSelectedRow}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-3')
+      .first()
+      .simulate('click', { nativeEvent: { shiftKey: true } });
+
+    assert.strictEqual(adjacentRows.length, 3);
+  });
+
   it('should gather selected row data when clicking row with selectableRowsOnClick=true.', () => {
     let selectedRowData;
     const options = { selectableRows: true, selectableRowsOnClick: true };
