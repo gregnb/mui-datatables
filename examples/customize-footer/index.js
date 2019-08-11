@@ -48,9 +48,15 @@ class Example extends React.Component {
       filterType: 'dropdown',
       responsive: 'stacked',
       rowsPerPage: 10,
-      customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => {
+      customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage, options) => {
         return (  
-          <CustomFooter changePage={changePage} count={count} />
+          <CustomFooter 
+            count={count} 
+            page={page} 
+            rowsPerPage={rowsPerPage} 
+            changeRowsPerPage={changeRowsPerPage} 
+            changePage={changePage} 
+            options={options} />
         );
       }
     };
