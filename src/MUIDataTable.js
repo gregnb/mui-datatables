@@ -577,7 +577,7 @@ class MUIDataTable extends React.Component {
       const sortedData = this.sortTable(tableData, sortIndex, sortDirection);
       tableData = sortedData.data;
     }
-    
+
     /* set source data and display Data set source set */
     this.setState(
       prevState => ({
@@ -590,7 +590,7 @@ class MUIDataTable extends React.Component {
         count: this.options.count,
         data: tableData,
         displayData: this.getDisplayData(columns, tableData, filterList, searchText),
-        previousSelectedRow: null
+        previousSelectedRow: null,
       }),
       callback,
     );
@@ -832,7 +832,7 @@ class MUIDataTable extends React.Component {
             data: sortedData.data,
             displayData: this.getDisplayData(columns, sortedData.data, prevState.filterList, prevState.searchText),
             selectedRows: sortedData.selectedRows,
-            previousSelectedRow: null
+            previousSelectedRow: null,
           };
         }
 
@@ -976,7 +976,7 @@ class MUIDataTable extends React.Component {
         data: cleanRows,
         options: {
           filterList: filterList,
-        }
+        },
       },
       TABLE_LOAD.UPDATE,
       () => {
@@ -1054,7 +1054,7 @@ class MUIDataTable extends React.Component {
               data: newRows,
               lookup: selectedMap,
             },
-            previousSelectedRow: null
+            previousSelectedRow: null,
           };
         },
         () => {
@@ -1095,11 +1095,11 @@ class MUIDataTable extends React.Component {
           } else {
             // multiple
             selectedRows.push(value);
-            
+
             // handle rows affected by shift+click
             if (shiftAdjacentRows.length > 0) {
               let selectedMap = buildMap(selectedRows);
-              shiftAdjacentRows.forEach((aRow) => {
+              shiftAdjacentRows.forEach(aRow => {
                 if (!selectedMap[aRow.dataIndex]) {
                   selectedRows.push(aRow);
                 }
@@ -1112,7 +1112,7 @@ class MUIDataTable extends React.Component {
               lookup: buildMap(selectedRows),
               data: selectedRows,
             },
-            previousSelectedRow: value
+            previousSelectedRow: value,
           };
         },
         () => {
@@ -1131,6 +1131,7 @@ class MUIDataTable extends React.Component {
       this.setState(
         {
           selectedRows: { data, lookup },
+          previousSelectedRow: null,
         },
         () => {
           this.setTableAction('rowsSelect');
@@ -1172,7 +1173,7 @@ class MUIDataTable extends React.Component {
       selectedRows: {
         lookup: buildMap(selectedRows),
         data: selectedRows,
-      }
+      },
     };
   }
 
