@@ -339,9 +339,9 @@ class MUIDataTable extends React.Component {
     this.headCellRefs[index] = el;
   };
 
-  getTableContentRef = () => {
-    return this.tableContent.current;
-  };
+  // must be arrow function on local field to refer to the correct instance when passed around
+  // assigning it as arrow function in the JSX would cause hard to track re-render errors
+  getTableContentRef = () => this.tableContent.current;
 
   /*
    *  Build the source table data
@@ -1133,12 +1133,6 @@ class MUIDataTable extends React.Component {
     };
   }
 
-  // must be arrow function on local field to refer to the correct instance when passed around
-  // assigning it as arrow function in the JSX would cause hard to track re-render errors
-  getTableContentRef = () => {
-    return this.tableContent.current;
-  };
-
   render() {
     const { classes, className, title } = this.props;
     const {
@@ -1219,7 +1213,6 @@ class MUIDataTable extends React.Component {
               activeColumn={activeColumn}
               data={displayData}
               count={rowCount}
-              columns={columns}
               page={page}
               rowsPerPage={rowsPerPage}
               selectedRows={selectedRows}
