@@ -343,22 +343,6 @@ class MUIDataTable extends React.Component {
     return this.tableContent.current;
   };
 
-  rawColumns = cols => {
-    return cols.map(item => {
-      if (typeof item !== 'object') return item;
-
-      let otherOptions = {};
-      const { options, ...otherProps } = item;
-
-      if (options) {
-        const { customHeadRender, customBodyRender, customFilterListRender, setCellProps, ...nonFnOpts } = options;
-        otherOptions = nonFnOpts;
-      }
-
-      return { ...otherOptions, ...otherProps };
-    });
-  };
-
   /*
    *  Build the source table data
    */
@@ -1061,7 +1045,7 @@ class MUIDataTable extends React.Component {
     } else if (type === 'cell') {
       this.setState(
         prevState => {
-          const { index, dataIndex } = value;
+          const { dataIndex } = value;
           let selectedRows = [...prevState.selectedRows.data];
           let rowPos = -1;
 
@@ -1238,7 +1222,6 @@ class MUIDataTable extends React.Component {
               columns={columns}
               page={page}
               rowsPerPage={rowsPerPage}
-              handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
               selectedRows={selectedRows}
               selectRowUpdate={this.selectRowUpdate}
               toggleSort={this.toggleSortColumn}
@@ -1269,7 +1252,7 @@ class MUIDataTable extends React.Component {
           changeRowsPerPage={this.changeRowsPerPage}
           changePage={this.changePage}
         />
-        <div className={classes.liveAnnounce} aria-live={'polite'} ref={el => (this.announceRef = el)}>
+        <div className={classes.liveAnnounce} aria-live={'polite'}>
           {announceText}
         </div>
       </Paper>
