@@ -56,7 +56,6 @@ class Example extends React.Component {
       selectableRowsOnClick: true,
       filterType: 'dropdown',
       responsive: 'stacked',
-      maxSelectedRows: 5,
       rowsPerPage: 10,
       rowsSelected: this.state.rowsSelected,
       onRowsSelect: (rowsSelected, allRows) => {
