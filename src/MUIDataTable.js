@@ -322,7 +322,7 @@ class MUIDataTable extends React.Component {
     }
   };
 
-  setTableOptions(props) {
+  setTableOptions() {
     const optionNames = ['rowsPerPage', 'page', 'rowsSelected', 'rowsPerPageOptions'];
     const optState = optionNames.reduce((acc, cur) => {
       if (this.options[cur] !== undefined) {
@@ -561,8 +561,7 @@ class MUIDataTable extends React.Component {
       tableData = sortedData.data;
     }
     /* set source data and display Data set source set */
-    this.setState(
-      prevState => ({
+    this.setState({
         columns: columns,
         filterData: filterData,
         filterList: filterList,
@@ -572,7 +571,7 @@ class MUIDataTable extends React.Component {
         count: this.options.count,
         data: tableData,
         displayData: this.getDisplayData(columns, tableData, filterList, searchText),
-      }),
+      },
       callback,
     );
   }
@@ -884,7 +883,7 @@ class MUIDataTable extends React.Component {
   resetFilters = () => {
     this.setState(
       prevState => {
-        const filterList = prevState.columns.map((column, index) => []);
+        const filterList = prevState.columns.map(() => []);
 
         return {
           filterList: filterList,
@@ -1009,9 +1008,7 @@ class MUIDataTable extends React.Component {
           const { displayData } = prevState;
           const selectedRowsLen = prevState.selectedRows.data.length;
           const isDeselect =
-            selectedRowsLen === displayData.length || (selectedRowsLen < displayData.length && selectedRowsLen > 0)
-              ? true
-              : false;
+            selectedRowsLen === displayData.length || (selectedRowsLen < displayData.length && selectedRowsLen > 0);
 
           let selectedRows = displayData.reduce((arr, d, i) => {
             const selected = isRowSelectable ? isRowSelectable(displayData[i].dataIndex) : true;
@@ -1106,7 +1103,7 @@ class MUIDataTable extends React.Component {
       data: row.data[col],
       rowData: row.data,
       position: sIndex,
-      rowSelected: this.state.selectedRows.lookup[row.index] ? true : false,
+      rowSelected: this.state.selectedRows.lookup[row.index],
     }));
 
     if (!this.options.customSort) {
