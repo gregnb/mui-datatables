@@ -1,6 +1,6 @@
 {
   "name": "mui-datatables",
-  "version": "2.8.0",
+  "version": "2.8.1",
   "description": "Datatables for React using Material-UI",
   "main": "dist/index.js",
   "files": [
@@ -93,6 +93,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
+    "lodash.assign": "^4.2.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.find": "^4.6.0",
     "lodash.get": "^4.4.2",

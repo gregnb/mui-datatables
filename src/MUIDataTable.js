@@ -11,6 +11,7 @@ import TableHead from './components/TableHead';
 import TableResize from './components/TableResize';
 import TableToolbar from './components/TableToolbar';
 import TableToolbarSelect from './components/TableToolbarSelect';
+import assign from 'lodash.assign';
 import classnames from 'classnames';
 import cloneDeep from 'lodash.clonedeep';
 import find from 'lodash.find';
@@ -221,10 +222,10 @@ class MUIDataTable extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
+      this.updateOptions(this.props);
       this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
         this.setTableAction('propsUpdate');
       });
-      this.updateOptions(this.props);
     }
 
     if (this.props.options.searchText !== prevProps.options.searchText && !this.props.options.serverSide) {
@@ -239,7 +240,7 @@ class MUIDataTable extends React.Component {
   }
 
   updateOptions(props) {
-    this.options = merge(this.options, props.options);
+    this.options = assign(this.options, props.options);
   }
 
   initializeTable(props) {
