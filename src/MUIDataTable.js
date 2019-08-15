@@ -6,6 +6,7 @@ import cloneDeep from 'lodash.clonedeep';
 import find from 'lodash.find';
 import isUndefined from 'lodash.isundefined';
 import merge from 'lodash.merge';
+import assign from 'lodash.assign';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TableBody from './components/TableBody';
@@ -220,10 +221,10 @@ class MUIDataTable extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
+      this.updateOptions(this.props);
       this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
         this.setTableAction('propsUpdate');
       });
-      this.updateOptions(this.props);
     }
 
     if (this.props.options.searchText !== prevProps.options.searchText && !this.props.options.serverSide) {
@@ -238,7 +239,7 @@ class MUIDataTable extends React.Component {
   }
 
   updateOptions(props) {
-    this.options = merge(this.options, props.options);
+    this.options = assign(this.options, props.options);
   }
 
   initializeTable(props) {
