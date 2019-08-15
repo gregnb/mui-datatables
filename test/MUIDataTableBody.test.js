@@ -494,7 +494,7 @@ describe('<TableBody />', function() {
     expect(html).to.contain('Test_Text');
   });
 
-  it('should selectedRows be passed in isRowSelectable', () => {;
+  it('should pass in selectedRows to isRowSelectable', () => {;
     const selectedIndex = 0;
     const originalSelectedRows = { data: [selectedIndex], lookup: {[selectedIndex]: true }};
     const isRowSelectable = spy((_, selectedRows) => {

@@ -263,7 +263,6 @@ class MUIDataTable extends React.Component {
       resizableColumns: false,
       selectableRows: 'multiple',
       selectableRowsOnClick: false,
-      maxSelectedRows: Infinity,
       caseSensitive: false,
       serverSide: false,
       rowHover: true,
