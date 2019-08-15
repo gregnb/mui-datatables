@@ -1022,7 +1022,7 @@ class MUIDataTable extends React.Component {
       const { isRowSelectable } = this.options;
       this.setState(
         prevState => {
-          const { displayData } = prevState;
+          const { displayData, selectedRows: prevSelectedRows } = prevState;
           const selectedRowsLen = prevState.selectedRows.data.length;
           const isDeselect =
             selectedRowsLen === displayData.length || (selectedRowsLen < displayData.length && selectedRowsLen > 0)
@@ -1030,7 +1030,7 @@ class MUIDataTable extends React.Component {
               : false;
 
           let selectedRows = displayData.reduce((arr, d, i) => {
-            const selected = isRowSelectable ? isRowSelectable(displayData[i].dataIndex) : true;
+            const selected = isRowSelectable ? isRowSelectable(displayData[i].dataIndex, prevSelectedRows) : true;
             selected && arr.push({ index: i, dataIndex: displayData[i].dataIndex });
             return arr;
           }, []);

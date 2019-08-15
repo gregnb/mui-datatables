@@ -235,7 +235,7 @@ describe('<TableBody />', function() {
     assert.strictEqual(toggleExpandRow.callCount, 0);
   });
 
-  it('should not gather selected row data when clicking row with selectableRowsOnClick=true when it is disabled with isRowSelectable.', () => {
+  it('should not gather selected row data when clicking row with selectableRowsOnClick=true when it is disabled with isRowSelectable via index.', () => {
     let selectedRowData;
     const options = {
       selectableRows: true,
@@ -253,6 +253,42 @@ describe('<TableBody />', function() {
         page={0}
         rowsPerPage={10}
         selectedRows={[]}
+        selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('click');
+
+    assert.isUndefined(selectedRowData);
+    assert.strictEqual(toggleExpandRow.callCount, 0);
+  });
+
+  it('should not gather selected row data when clicking row with selectableRowsOnClick=true when it is disabled with isRowSelectable via selectedRows.', () => {
+    let selectedRowData;
+    const options = {
+      selectableRows: true,
+      selectableRowsOnClick: true,
+      isRowSelectable: (_, selectedRows) => (selectedRows.length === 1 ? false : true),
+    };
+    const selectRowUpdate = (type, data) => (selectedRowData = data);
+    const toggleExpandRow = spy();
+
+    const mountWrapper = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={[2]}
         selectRowUpdate={selectRowUpdate}
         expandedRows={[]}
         toggleExpandRow={toggleExpandRow}
@@ -494,14 +530,14 @@ describe('<TableBody />', function() {
     expect(html).to.contain('Test_Text');
   });
 
-  it('should pass in selectedRows to isRowSelectable', () => {;
+  it('should pass in selectedRows to isRowSelectable', () => {
     const selectedIndex = 0;
-    const originalSelectedRows = { data: [selectedIndex], lookup: {[selectedIndex]: true }};
+    const originalSelectedRows = { data: [selectedIndex], lookup: { [selectedIndex]: true } };
     const isRowSelectable = spy((_, selectedRows) => {
       assert.deepEqual(selectedRows, originalSelectedRows);
     });
 
-    const options = { selectableRows: true, isRowSelectable }
+    const options = { selectableRows: true, isRowSelectable };
 
     mount(
       <TableBody
