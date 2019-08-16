@@ -19,8 +19,7 @@ class CustomFooter extends React.Component {
   };
 
   render() {
-    const { count, classes, options, rowsPerPage, page } = this.props;
-    const textLabels = options.textLabels.pagination;
+    const { count, classes, textLabels, rowsPerPage, page } = this.props;
 
     const footerStyle = {
       display:'flex', 
@@ -47,7 +46,7 @@ class CustomFooter extends React.Component {
               nextIconButtonProps={{
                 'aria-label': textLabels.next,
               }}
-              rowsPerPageOptions={options.rowsPerPageOptions}
+              rowsPerPageOptions={[10,20,100]}
               onChangePage={this.handlePageChange}
               onChangeRowsPerPage={this.handleRowChange}
             />

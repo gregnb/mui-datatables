@@ -16,7 +16,7 @@ class TableFooter extends React.Component {
     return (
       <MuiTable>
         {options.customFooter
-          ? options.customFooter(rowCount, page, rowsPerPage, changeRowsPerPage, changePage, options)
+          ? options.customFooter(rowCount, page, rowsPerPage, changeRowsPerPage, changePage, options.textLabels.pagination)
           : options.pagination && (
               <TablePagination
                 count={rowCount}
