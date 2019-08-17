@@ -531,15 +531,18 @@ describe('<TableBody />', function() {
   });
 
   it('should pass in selectedRows to isRowSelectable', () => {
-    const selectedIndex = 0;
-    const originalSelectedRows = { data: [selectedIndex], lookup: { [selectedIndex]: true } };
-    const isRowSelectable = spy((_, selectedRows) => {
-      assert.deepEqual(selectedRows, originalSelectedRows);
+    const selectedIndex = 2;
+    const originalSelectedRows = {
+      data: { index: selectedIndex, dataIndex: selectedIndex },
+      lookup: { [selectedIndex]: true },
+    };
+    const isRowSelectable = spy((index, selectedRows) => {
+      return selectedRows.lookup[index] || selectedRows.data.length < 1;
     });
 
     const options = { selectableRows: true, isRowSelectable };
 
-    mount(
+    const mountWrapper = mount(
       <TableBody
         data={displayData}
         count={displayData.length}
@@ -554,6 +557,10 @@ describe('<TableBody />', function() {
       />,
     );
 
-    assert.equal(isRowSelectable.callCount, displayData.length);
+    const tableSelectCellsProps = mountWrapper.find('TableSelectCell').map(t => t.props());
+    tableSelectCellsProps.forEach((props, i) => {
+      assert.equal(props.checked, i === selectedIndex);
+      assert.equal(props.isRowSelectable, i === selectedIndex);
+    });
   });
 });
