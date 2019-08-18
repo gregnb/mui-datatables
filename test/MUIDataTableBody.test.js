@@ -242,7 +242,7 @@ describe('<TableBody />', function() {
       selectableRowsOnClick: true,
       isRowSelectable: dataIndex => (dataIndex === 2 ? false : true),
     };
-    const selectRowUpdate = (type, data) => (selectedRowData = data);
+    const selectRowUpdate = (_, data) => (selectedRowData = data);
     const toggleExpandRow = spy();
 
     const mountWrapper = mount(
@@ -276,10 +276,14 @@ describe('<TableBody />', function() {
     const options = {
       selectableRows: true,
       selectableRowsOnClick: true,
-      isRowSelectable: (_, selectedRows) => (selectedRows.length === 1 ? false : true),
+      isRowSelectable: (_, selectedRows) => (selectedRows.data.length === 1 ? false : true),
     };
-    const selectRowUpdate = (type, data) => (selectedRowData = data);
+    const selectRowUpdate = (_, data) => (selectedRowData = data);
     const toggleExpandRow = spy();
+    const initialSelectedRows = {
+      data: [{ index: 2, dataIndex: 2 }],
+      lookup: { 2: true },
+    };
 
     const mountWrapper = mount(
       <TableBody
@@ -288,7 +292,7 @@ describe('<TableBody />', function() {
         columns={columns}
         page={0}
         rowsPerPage={10}
-        selectedRows={[2]}
+        selectedRows={initialSelectedRows}
         selectRowUpdate={selectRowUpdate}
         expandedRows={[]}
         toggleExpandRow={toggleExpandRow}
@@ -530,10 +534,10 @@ describe('<TableBody />', function() {
     expect(html).to.contain('Test_Text');
   });
 
-  it('should pass in selectedRows to isRowSelectable', () => {
+  it('should isRowSelectable be used to determine if row is selectable', () => {
     const selectedIndex = 2;
     const originalSelectedRows = {
-      data: { index: selectedIndex, dataIndex: selectedIndex },
+      data: [{ index: selectedIndex, dataIndex: selectedIndex }],
       lookup: { [selectedIndex]: true },
     };
     const isRowSelectable = spy((index, selectedRows) => {
@@ -562,5 +566,36 @@ describe('<TableBody />', function() {
       assert.equal(props.checked, i === selectedIndex);
       assert.equal(props.isRowSelectable, i === selectedIndex);
     });
+  });
+
+  it('should pass in selectedRows to isRowSelectable', () => {
+    const selectedIndex = 2;
+    const originalSelectedRows = {
+      data: [{ index: selectedIndex, dataIndex: selectedIndex }],
+      lookup: { [selectedIndex]: true },
+    };
+    const isRowSelectable = spy((_, selectedRows) => {
+      assert.deepEqual(selectedRows, originalSelectedRows);
+      return true;
+    });
+
+    const options = { selectableRows: true, isRowSelectable };
+
+    mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        selectedRows={originalSelectedRows}
+        rowsPerPage={10}
+        expandedRows={[]}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    assert.equal(isRowSelectable.callCount, displayData.length);
   });
 });
