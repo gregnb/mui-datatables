@@ -48,18 +48,18 @@ class Example extends React.Component {
     ]
   }
 
-  handleFilterOptionsChange = (event) => {
-    let string = prompt("Write a string separte by semicolon to change filterOptions in first column!");
+  handleFilterNameChange = (event) => {
+    let string = prompt("Write a semicolon-separated string to change filter names in the first column!");
     if (string) this.setState({ filterOptions: string.split(';') });
   }
 
   handleAddData = (event) => {
-    const string = prompt("Write a string with 'Name', 'Title', 'Location', 'Age' and 'Salary' separeted by semicolon !");
+    const string = prompt("Write a semicolon-separated string with values for 'Name', 'Title', 'Location', 'Age' and 'Salary' to add a new row of data!");
     if (string) this.setState({ data: [string.split(';'), ...this.state.data] });
   }
 
   handleChangeDisplay = (event) => {
-    const string = prompt("Write a string with 5 display options true, false or excluded separeted by semicolon !");
+    const string = prompt("Write a semicolon-separated string of display options for each of the 5 columns. Options are either 'true', 'false', or 'excluded'");
     if (string) this.setState({ display: string.split(';') });
   }
 
@@ -145,9 +145,9 @@ class Example extends React.Component {
         >
           Set starter filters!
         </button>
-        <button onClick={this.handleFilterOptionsChange}>Change filters!</button>
-        <button onClick={this.handleAddData}>Add data!</button>
-        <button onClick={this.handleChangeDisplay}>Change displayed data!</button>
+        <button onClick={this.handleFilterNameChange}>Change filter names for first column!</button>
+        <button onClick={this.handleAddData}>Add row data!</button>
+        <button onClick={this.handleChangeDisplay}>Change which columns are displayed!</button>
       </React.Fragment>
     );
 
