@@ -208,7 +208,7 @@ class MUIDataTable extends React.Component {
     this.updateDividers = () => {};
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.initializeTable(this.props);
   }
 
