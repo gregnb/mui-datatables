@@ -152,6 +152,7 @@ class MUIDataTable extends React.Component {
       customSearch: PropTypes.func,
       search: PropTypes.bool,
       searchText: PropTypes.string,
+      searchPlaceholder: PropTypes.string,
       print: PropTypes.bool,
       viewColumns: PropTypes.bool,
       download: PropTypes.bool,
