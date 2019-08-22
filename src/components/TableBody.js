@@ -87,11 +87,12 @@ class TableBody extends React.Component {
   }
 
   isRowSelectable(dataIndex) {
-    const { options } = this.props;
+    const { options, selectedRows } = this.props;
     if (options.isRowSelectable) {
-      return options.isRowSelectable(dataIndex);
+      return options.isRowSelectable(dataIndex, selectedRows);
+    } else {
+      return true;
     }
-    return true;
   }
 
   handleRowSelect = data => {
