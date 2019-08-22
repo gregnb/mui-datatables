@@ -295,6 +295,9 @@ class MUIDataTable extends React.Component {
     if (props.options.rowsPerPageOptions) {
       this.options.rowsPerPageOptions = props.options.rowsPerPageOptions;
     }
+    if (['scroll', 'stacked'].indexOf(this.options.responsive) === -1) {
+      console.error('Invalid option value for responsive. Please use string option: stacked | scroll');
+    }
   }
 
   validateOptions(options) {

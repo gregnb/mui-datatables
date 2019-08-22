@@ -130,8 +130,6 @@ describe('<TableToolbar />', function() {
     const shallowWrapper = shallow(
       <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
     )
-      .dive()
-      .dive()
       .dive();
     const instance = shallowWrapper.instance();
     instance.setActiveIcon('search');
@@ -144,8 +142,6 @@ describe('<TableToolbar />', function() {
     const shallowWrapper = shallow(
       <TableToolbar columns={columns} data={data} options={options} setTableAction={setTableAction} />,
     )
-      .dive()
-      .dive()
       .dive();
     const instance = shallowWrapper.instance();
 
@@ -167,8 +163,6 @@ describe('<TableToolbar />', function() {
         setTableAction={setTableAction}
       />,
     )
-      .dive()
-      .dive()
       .dive();
     const instance = shallowWrapper.instance();
 
@@ -195,8 +189,6 @@ describe('<TableToolbar />', function() {
     const shallowWrapper = shallow(
       <TableToolbar columns={columns} data={data} options={options} setTableAction={setTableAction} />,
     )
-      .dive()
-      .dive()
       .dive();
     const instance = shallowWrapper.instance();
 
@@ -218,8 +210,6 @@ describe('<TableToolbar />', function() {
       />,
     );
     const instance = shallowWrapper
-      .dive()
-      .dive()
       .dive()
       .instance();
 
@@ -247,8 +237,6 @@ describe('<TableToolbar />', function() {
     );
 
     const instance = shallowWrapper
-      .dive()
-      .dive()
       .dive()
       .instance();
 

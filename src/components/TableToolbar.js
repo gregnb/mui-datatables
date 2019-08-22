@@ -13,10 +13,10 @@ import PrintIcon from '@material-ui/icons/Print';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import FilterIcon from '@material-ui/icons/FilterList';
 import ReactToPrint from 'react-to-print';
-import styled from '../styled';
+import { withStyles } from '@material-ui/core/styles';
 import { createCSVDownload } from '../utils';
 
-export const defaultToolbarStyles = (theme, props) => ({
+export const defaultToolbarStyles = theme => ({
   root: {},
   left: {
     flex: '1 1 auto',
@@ -43,10 +43,6 @@ export const defaultToolbarStyles = (theme, props) => ({
     marginTop: '10px',
     marginRight: '8px',
   },
-  ...(props.options.responsive ? { ...responsiveToolbarStyles(theme) } : {}),
-});
-
-export const responsiveToolbarStyles = theme => ({
   [theme.breakpoints.down('sm')]: {
     titleRoot: {},
     titleText: {
@@ -315,4 +311,4 @@ class TableToolbar extends React.Component {
   }
 }
 
-export default styled(TableToolbar)(defaultToolbarStyles, { name: 'MUIDataTableToolbar' });
+export default withStyles(defaultToolbarStyles, { name: 'MUIDataTableToolbar' })(TableToolbar);
