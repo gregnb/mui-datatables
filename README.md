@@ -158,7 +158,7 @@ The component accepts the following props:
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
 |**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: 'stacked', 'scroll'
 |**`rowsPerPage`**|number|10|Number of rows allowed per page
-|**`rowsPerPageOptions`**|array|[10,15,20]|Options to provide in pagination for number of rows a user can select
+|**`rowsPerPageOptions`**|array|[10,15,100]|Options to provide in pagination for number of rows a user can select
 |**`rowHover`**|boolean|true|Enable/disable hover style over rows
 |**`fixedHeader`**|boolean|true|Enable/disable fixed header columns
 |**`sortFilterList`**|boolean|true|Enable/disable alphanumeric sorting of filter lists
