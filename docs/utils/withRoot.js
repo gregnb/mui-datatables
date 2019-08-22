@@ -5,7 +5,7 @@ import getPageContext from './getPageContext';
 
 function withRoot(Component) {
   class WithRoot extends React.Component {
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
       this.pageContext = this.props.pageContext || getPageContext();
     }
 
