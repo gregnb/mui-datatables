@@ -172,7 +172,15 @@ describe('<MUIDataTable />', function() {
 
     shallowWrapper.setProps({
       columns: [
-        { name: 'Test Name', options: { filter: false, display: 'excluded', customBodyRender: renderName, customFilterListRender: renderCustomFilterList } },
+        {
+          name: 'Test Name',
+          options: {
+            filter: false,
+            display: 'excluded',
+            customBodyRender: renderName,
+            customFilterListRender: renderCustomFilterList,
+          },
+        },
         'Company',
         { name: 'City', label: 'City Label', options: { customBodyRender: renderCities, filterType: 'textField' } },
         {
@@ -180,8 +188,8 @@ describe('<MUIDataTable />', function() {
           options: { customBodyRender: renderState, filterType: 'multiselect', customHeadRender: renderHead },
         },
         { name: 'Empty', options: { empty: true, filterType: 'checkbox' } },
-      ]
-    })
+      ],
+    });
 
     const actualResult = shallowWrapper.dive().state().columns;
 

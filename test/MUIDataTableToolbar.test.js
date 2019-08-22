@@ -129,8 +129,7 @@ describe('<TableToolbar />', function() {
     const newOptions = { ...options, customSearchRender: CustomSearchRender };
     const shallowWrapper = shallow(
       <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
-    )
-      .dive();
+    ).dive();
     const instance = shallowWrapper.instance();
     instance.setActiveIcon('search');
     shallowWrapper.update();
@@ -141,8 +140,7 @@ describe('<TableToolbar />', function() {
   it('should render a toolbar with a search clicking search icon', () => {
     const shallowWrapper = shallow(
       <TableToolbar columns={columns} data={data} options={options} setTableAction={setTableAction} />,
-    )
-      .dive();
+    ).dive();
     const instance = shallowWrapper.instance();
 
     instance.setActiveIcon('search');
@@ -162,8 +160,7 @@ describe('<TableToolbar />', function() {
         options={options}
         setTableAction={setTableAction}
       />,
-    )
-      .dive();
+    ).dive();
     const instance = shallowWrapper.instance();
 
     instance.searchButton = {
@@ -188,8 +185,7 @@ describe('<TableToolbar />', function() {
   it('should set icon when calling method setActiveIcon', () => {
     const shallowWrapper = shallow(
       <TableToolbar columns={columns} data={data} options={options} setTableAction={setTableAction} />,
-    )
-      .dive();
+    ).dive();
     const instance = shallowWrapper.instance();
 
     instance.setActiveIcon('filter');
@@ -209,9 +205,7 @@ describe('<TableToolbar />', function() {
         setTableAction={setTableAction}
       />,
     );
-    const instance = shallowWrapper
-      .dive()
-      .instance();
+    const instance = shallowWrapper.dive().instance();
 
     const appendSpy = spy(document.body, 'appendChild');
     const removeSpy = spy(document.body, 'removeChild');
@@ -236,9 +230,7 @@ describe('<TableToolbar />', function() {
       />,
     );
 
-    const instance = shallowWrapper
-      .dive()
-      .instance();
+    const instance = shallowWrapper.dive().instance();
 
     instance.handleCSVDownload();
 
