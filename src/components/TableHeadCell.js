@@ -76,12 +76,7 @@ class TableHeadCell extends React.Component {
   };
 
   handleKeyboardSortinput = (e) => {
-    e.preventDefault()
-    const key = e.key;
-
-    if (key === 'ArrowDown' ||
-      key === 'ArrowUp' ||
-      key === 'Enter')
+    if (e.key === 'Enter')
     {
       this.props.toggleSort(this.props.index);
     }
