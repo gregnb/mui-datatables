@@ -134,6 +134,6 @@ class Example extends React.Component {
   }
 }
 
-const ExampleWithStyles = withStyles(customStyles, {name: "Example"})(Example);
+const ExampleWithStyles = withStyles(customStyles, {name: "ExampleCard.js"})(Example);
 
 ReactDOM.render(<ExampleWithStyles/>, document.getElementById("app-root"));
