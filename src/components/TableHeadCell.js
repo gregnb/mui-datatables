@@ -88,7 +88,7 @@ class TableHeadCell extends React.Component {
     this.props.toggleSort(this.props.index);
   };
 
-  render () {
+  render() {
     const { isSortTooltipOpen, isHintTooltipOpen } = this.state;
     const { children, classes, options, sortDirection, sort, hint, print } = this.props;
     const sortActive = sortDirection !== null && sortDirection !== undefined ? true : false;
@@ -161,22 +161,22 @@ class TableHeadCell extends React.Component {
             </span>
           </Tooltip>
         ) : (
-            <div className={classes.sortAction}>
-              {children}
-              {hint && (
-                <Tooltip
-                  title={hint}
-                  placement={'bottom-end'}
-                  classes={{
-                    tooltip: classes.tooltip,
-                  }}
-                  enterDelay={300}
-                  classes={{ popper: classes.mypopper }}>
-                  <HelpIcon className={classes.hintIconAlone} fontSize="small" />
-                </Tooltip>
-              )}
-            </div>
-          )}
+          <div className={classes.sortAction}>
+            {children}
+            {hint && (
+              <Tooltip
+                title={hint}
+                placement={'bottom-end'}
+                classes={{
+                  tooltip: classes.tooltip,
+                }}
+                enterDelay={300}
+                classes={{ popper: classes.mypopper }}>
+                <HelpIcon className={classes.hintIconAlone} fontSize="small" />
+              </Tooltip>
+            )}
+          </div>
+        )}
       </TableCell>
     );
   }
