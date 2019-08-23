@@ -130,6 +130,7 @@ class MUIDataTable extends React.Component {
       customSearchRender: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customRowRender: PropTypes.func,
       onRowClick: PropTypes.func,
+      onRowsExpand: PropTypes.func,
       resizableColumns: PropTypes.bool,
       selectableRows: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['none', 'single', 'multiple'])]),
       selectableRowsOnClick: PropTypes.bool,
@@ -987,6 +988,7 @@ class MUIDataTable extends React.Component {
   toggleExpandRow = row => {
     const { dataIndex } = row;
     let expandedRows = [...this.state.expandedRows.data];
+    let removedRow;
     let rowPos = -1;
 
     for (let cIndex = 0; cIndex < expandedRows.length; cIndex++) {
@@ -997,13 +999,14 @@ class MUIDataTable extends React.Component {
     }
 
     if (rowPos >= 0) {
-      expandedRows.splice(rowPos, 1);
+      removedRow = expandedRows.splice(rowPos, 1);
     } else {
       expandedRows.push(row);
     }
 
     this.setState(
       {
+        curExpandedRows: rowPos >= 0 ? removedRow : [row],
         expandedRows: {
           lookup: buildMap(expandedRows),
           data: expandedRows,
@@ -1011,6 +1014,9 @@ class MUIDataTable extends React.Component {
       },
       () => {
         this.setTableAction('expandRow');
+        if (this.options.onRowsExpand) {
+          this.options.onRowsExpand(this.state.curExpandedRows, this.state.expandedRows.data);
+        }
       },
     );
   };
