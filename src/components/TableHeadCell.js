@@ -75,11 +75,25 @@ class TableHeadCell extends React.Component {
     isHintTooltipOpen: false,
   };
 
+  handleKeyboardSortinput = (e) => {
+    e.preventDefault()
+    const key = e.key;
+
+    if (key === 'ArrowDown' ||
+      key === 'ArrowUp' ||
+      key === 'Enter')
+    {
+      this.props.toggleSort(this.props.index);
+    }
+
+    return false;
+  }
+
   handleSortClick = () => {
     this.props.toggleSort(this.props.index);
   };
 
-  render() {
+  render () {
     const { isSortTooltipOpen, isHintTooltipOpen } = this.state;
     const { children, classes, options, sortDirection, sort, hint, print } = this.props;
     const sortActive = sortDirection !== null && sortDirection !== undefined ? true : false;
@@ -117,7 +131,7 @@ class TableHeadCell extends React.Component {
             onClose={() => this.setState({ isSortTooltipOpen: false })}>
             <span
               role="button"
-              onKeyUp={this.handleClickSort}
+              onKeyUp={this.handleKeyboardSortinput}
               onClick={this.handleSortClick}
               className={classes.toolButton}
               tabIndex={0}>
@@ -152,22 +166,22 @@ class TableHeadCell extends React.Component {
             </span>
           </Tooltip>
         ) : (
-          <div className={classes.sortAction}>
-            {children}
-            {hint && (
-              <Tooltip
-                title={hint}
-                placement={'bottom-end'}
-                classes={{
-                  tooltip: classes.tooltip,
-                }}
-                enterDelay={300}
-                classes={{ popper: classes.mypopper }}>
-                <HelpIcon className={classes.hintIconAlone} fontSize="small" />
-              </Tooltip>
-            )}
-          </div>
-        )}
+            <div className={classes.sortAction}>
+              {children}
+              {hint && (
+                <Tooltip
+                  title={hint}
+                  placement={'bottom-end'}
+                  classes={{
+                    tooltip: classes.tooltip,
+                  }}
+                  enterDelay={300}
+                  classes={{ popper: classes.mypopper }}>
+                  <HelpIcon className={classes.hintIconAlone} fontSize="small" />
+                </Tooltip>
+              )}
+            </div>
+          )}
       </TableCell>
     );
   }
