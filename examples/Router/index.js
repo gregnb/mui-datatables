@@ -19,7 +19,7 @@ function Examples(props) {
     const {classes} = props;
     return <main className={classes.root}>
         <div className={classes.contentWrapper}>
-            <Router>
+            <Router hashType="noslash">
                 <Switch>
                     <Route path="/" exact render={() => <ExamplesGrid examples={examples}/>}/>
                     {Object.keys(examples).map((label, index) => (
