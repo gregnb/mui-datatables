@@ -39,10 +39,13 @@ function ExamplesGrid(props) {
         examplesSorted[key] = examples[key];
     });
 
+    const examplesSortedKeys = Object.keys(examplesSorted);
+
     return <React.Fragment>
         <Typography variant="h5" align="center">Choose an Example</Typography>
+        <Typography variant="subtitle2" align="center">({examplesSortedKeys.length}) Examples</Typography>
         <Grid container className={classes.container} spacing={16}>
-            {Object.keys(examplesSorted).map((label, index) => (
+            {examplesSortedKeys.map((label, index) => (
                 <Grid key={index} item md={2}>
                     <Link className={classes.link} to={`/${label.replace(/\s+/g, '-').toLowerCase()}`}>
                         <Card className={classes.card}>

@@ -133,6 +133,4 @@ class Example extends React.Component {
   }
 }
 
-const ExampleWithStyles = withStyles(customStyles, {name: "ExampleCard.js"})(Example);
-
-export default <ExampleWithStyles/>;
+export default withStyles(customStyles, {name: "ExampleCard.js"})(Example);
