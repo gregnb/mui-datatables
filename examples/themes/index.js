@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import MUIDataTable from '../../src/';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core';
 
@@ -91,10 +90,6 @@ const theme = createMuiTheme({
   typography: { useNextVariants: true },
 });
 
-const element = (
-  <MuiThemeProvider theme={theme}>
-    <Example />
-  </MuiThemeProvider>
-);
-
-ReactDOM.render(element, document.getElementById('app-root'));
+export default <MuiThemeProvider theme={theme}>
+  <Example />
+</MuiThemeProvider>;

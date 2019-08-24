@@ -93,4 +93,4 @@ function Example() {
   );
 }
 
-ReactDOM.render(<Example />, document.getElementById("app-root"));
+export default Example;

@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
-import {withStyles} from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles/index";
 import ExamplesGrid from "./ExamplesGrid";
-import examples from "./examples";
+import examples from "../examples";
 
 const styles = {
     root: {
@@ -23,7 +23,7 @@ function Examples(props) {
                 <Switch>
                     <Route path="/" exact render={() => <ExamplesGrid examples={examples}/>}/>
                     {Object.keys(examples).map((label, index) => (
-                        <Route key={index} path={`/${label}`} exact component={examples[label]}/>
+                        <Route key={index} path={`/${label.replace(/\s+/g, '-').toLowerCase()}`} exact component={examples[label]}/>
                     ))}
                 </Switch>
             </Router>
