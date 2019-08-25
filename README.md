@@ -326,6 +326,8 @@ const options = {
 };
 ```
 
+**Notice:** When using {serverSide: true}, column sorting indicator should be set manually by changing the requested column's option called **sortDirection**.
+
 To see an example **[Click Here](https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-pagination/index.js)**
 
 ## Localization
