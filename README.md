@@ -224,7 +224,7 @@ const columns = [
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Takes priority over global filterType option.`enum('checkbox', 'dropdown', 'multiselect', 'textField', 'custom')` Use 'custom' if you are supplying your own rendering via `filterOptions`.
 |**`sort`**|boolean|true|Enable/disable sorting on column
 |**`searchable`**|boolean|true|Exclude/include column from search results
-|**`sortDirection`**|string||Set default sort order `enum('asc', 'desc')`
+|**`sortDirection`**|string||Set default sort order `enum('asc', 'desc', 'none')`
 |**`print`**|boolean|true|Display column when printing
 |**`download`**|boolean|true|Display column in CSV download file
 |**`hint`**|string||Display hint icon with string as tooltip on hover.
@@ -240,7 +240,7 @@ function(columnMeta: {
   display: enum('true', 'false', 'excluded'),
   filter: bool,
   sort: bool,
-  sortDirection: bool,
+  sortDirection: enum('asc', 'desc', 'none'),
   download: bool,
   empty: bool,
   index: number,
