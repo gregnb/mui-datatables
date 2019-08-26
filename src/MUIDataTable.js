@@ -31,6 +31,18 @@ const defaultTableStyles = theme => ({
     height: '100%',
     maxHeight: '499px',
   },
+  responsiveScrollMaxHeight: {
+    overflowX: 'auto',
+    overflow: 'auto',
+    height: '100%',
+    maxHeight: '499px',
+  },
+  responsiveScrollFullHeight: {
+    overflowX: 'auto',
+    overflow: 'auto',
+    height: '100%',
+    maxHeight: 'none',
+  },
   responsiveStacked: {
     overflowX: 'auto',
     overflow: 'auto',
@@ -117,7 +129,7 @@ class MUIDataTable extends React.Component {
     ).isRequired,
     /** Options used to describe table */
     options: PropTypes.shape({
-      responsive: PropTypes.oneOf(['stacked', 'scroll']),
+      responsive: PropTypes.oneOf(['stacked', 'scrollMaxHeight', 'scrollFullHeight']),
       filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField', 'custom']),
       textLabels: PropTypes.object,
       pagination: PropTypes.bool,
@@ -295,8 +307,11 @@ class MUIDataTable extends React.Component {
     if (props.options.rowsPerPageOptions) {
       this.options.rowsPerPageOptions = props.options.rowsPerPageOptions;
     }
-    if (['scroll', 'stacked'].indexOf(this.options.responsive) === -1) {
-      console.error('Invalid option value for responsive. Please use string option: stacked | scroll');
+    if (['scrollMaxHeight', 'scrollFullHeight', 'stacked'].indexOf(this.options.responsive) === -1) {
+      console.error('Invalid option value for responsive. Please use string option: scrollMaxHeight | scrollFullHeight | stacked');
+    }
+    if (this.options.responsive === 'scroll') {
+      console.error('This option has been deprecated. It is being replaced by scrollMaxHeight');
     }
   }
 
@@ -1179,6 +1194,23 @@ class MUIDataTable extends React.Component {
     const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
     const showToolbar = hasToolbarItem(this.options, title);
     const columnNames = columns.map(column => ({ name: column.name, filterType: column.filterType }));
+    let responsiveClass;
+
+    switch (this.options.responsive) {
+      // DEPRECATED: This options is beign transitioned to `responsiveScrollMaxHeight`
+      case 'scroll':
+        responsiveClass = classes.responsiveScroll;
+        break;
+      case 'scrollMaxHeight':
+        responsiveClass = classes.responsiveScrollMaxHeight;
+        break;
+      case 'scrollFullHeight':
+        responsiveClass = classes.responsiveFullHeight;
+        break;
+      case 'stacked':
+        responsiveClass = classes.responsiveStacked;
+        break;
+    }
 
     return (
       <Paper
@@ -1224,7 +1256,7 @@ class MUIDataTable extends React.Component {
         />
         <div
           style={{ position: 'relative' }}
-          className={this.options.responsive === 'scroll' ? classes.responsiveScroll : classes.responsiveStacked}>
+          className={responsiveClass}>
           {this.options.resizableColumns && (
             <TableResize
               key={rowCount}
