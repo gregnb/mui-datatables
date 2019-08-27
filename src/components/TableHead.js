@@ -1,19 +1,19 @@
-import React from "react";
-import { findDOMNode } from "react-dom";
-import classNames from "classnames";
-import MuiTableHead from "@material-ui/core/TableHead";
-import TableHeadRow from "./TableHeadRow";
-import TableHeadCell from "./TableHeadCell";
-import TableSelectCell from "./TableSelectCell";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import { findDOMNode } from 'react-dom';
+import classNames from 'classnames';
+import MuiTableHead from '@material-ui/core/TableHead';
+import TableHeadRow from './TableHeadRow';
+import TableHeadCell from './TableHeadCell';
+import TableSelectCell from './TableSelectCell';
+import { withStyles } from '@material-ui/core/styles';
 
 const defaultHeadStyles = theme => ({
   main: {},
   responsiveStacked: {
-    [theme.breakpoints.down("sm")]: {
-      display: "none"
-    }
-  }
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
 });
 
 class TableHead extends React.Component {
@@ -26,7 +26,7 @@ class TableHead extends React.Component {
   };
 
   handleRowSelect = () => {
-    this.props.selectRowUpdate("head", null);
+    this.props.selectRowUpdate('head', null);
   };
 
   render() {
@@ -57,11 +57,7 @@ class TableHead extends React.Component {
 
     return (
       <MuiTableHead
-        className={classNames({
-          [classes.responsiveStacked]: options.responsive === "stacked",
-          [classes.main]: true
-        })}
-      >
+        className={classNames({ [classes.responsiveStacked]: options.responsive === 'stacked', [classes.main]: true })}>
         <TableHeadRow>
           <TableSelectCell
             ref={el => setCellRef(0, findDOMNode(el))}
@@ -76,28 +72,24 @@ class TableHead extends React.Component {
           />
           {columns.map(
             (column, index) =>
-              column.display === "true" &&
+              column.display === 'true' &&
               (column.customHeadRender ? (
-                column.customHeadRender(
-                  { index, ...column },
-                  this.handleToggleColumn
-                )
+                column.customHeadRender({ index, ...column }, this.handleToggleColumn)
               ) : (
                 <TableHeadCell
                   key={index}
                   index={index}
-                  type={"cell"}
+                  type={'cell'}
                   ref={el => setCellRef(index + 1, findDOMNode(el))}
                   sort={column.sort}
                   sortDirection={column.sortDirection}
                   toggleSort={this.handleToggleColumn}
                   hint={column.hint}
                   print={column.print}
-                  options={options}
-                >
+                  options={options}>
                   {column.label}
                 </TableHeadCell>
-              ))
+              )),
           )}
         </TableHeadRow>
       </MuiTableHead>
@@ -105,6 +97,4 @@ class TableHead extends React.Component {
   }
 }
 
-export default withStyles(defaultHeadStyles, { name: "MUIDataTableHead" })(
-  TableHead
-);
+export default withStyles(defaultHeadStyles, { name: 'MUIDataTableHead' })(TableHead);
