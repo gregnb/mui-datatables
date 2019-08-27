@@ -945,11 +945,9 @@ describe('<MUIDataTable />', function() {
       { index: 1, dataIndex: 1 },
       { index: 2, dataIndex: 2 },
     ]);
-    instance.selectRowUpdate('cell', { index: 1, dataIndex: 1 }, [
-      { index: 0, dataIndex: 0 },
-    ]);
+    instance.selectRowUpdate('cell', { index: 1, dataIndex: 1 }, [{ index: 0, dataIndex: 0 }]);
     shallowWrapper.update();
-    
+
     const expectedResult = [{ index: 2, dataIndex: 2 }];
     const state = shallowWrapper.state();
     assert.deepEqual(state.selectedRows.data, expectedResult);

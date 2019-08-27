@@ -88,8 +88,10 @@ class TableBody extends React.Component {
     return expandedRows.lookup && expandedRows.lookup[dataIndex] ? true : false;
   }
 
-  isRowSelectable(dataIndex) {
-    const { options, selectedRows } = this.props;
+  isRowSelectable(dataIndex, selectedRows) {
+    const { options } = this.props;
+    selectedRows = selectedRows || this.props.selectedRows;
+
     if (options.isRowSelectable) {
       return options.isRowSelectable(dataIndex, selectedRows);
     } else {
@@ -105,22 +107,46 @@ class TableBody extends React.Component {
     // If the user is pressing shift and has previously clicked another row.
     if (shiftKey && previousSelectedRow && previousSelectedRow.index < this.props.data.length) {
       let curIndex = previousSelectedRow.index;
+
+      // Create a copy of the selectedRows object. This will be used and modified
+      // below when we see if we can add adjacent rows.
+      let selectedRows = JSON.parse(JSON.stringify(this.props.selectedRows));
+
+      // Add the clicked on row to our copy of selectedRows (if it isn't already present).
+      var clickedDataIndex = this.props.data[data.index].dataIndex;
+      if (selectedRows.data.filter(d => d.dataIndex === clickedDataIndex).length === 0) {
+        selectedRows.data.push({
+          index: data.index,
+          dataIndex: clickedDataIndex
+        });
+        selectedRows.lookup[clickedDataIndex] = true;
+      }
+
       while (curIndex !== data.index) {
         let dataIndex = this.props.data[curIndex].dataIndex;
-        if (this.isRowSelectable(dataIndex)) {
-          shiftAdjacentRows.push({
+
+        if (this.isRowSelectable(dataIndex, selectedRows)) {
+          var lookup = {
             index: curIndex,
-            dataIndex: dataIndex
-          });
+            dataIndex: dataIndex,
+          };
+          
+          // Add adjacent row to temp selectedRow object if it isn't present.
+          if (selectedRows.data.filter(d => d.dataIndex === dataIndex).length === 0) {
+            selectedRows.data.push(lookup);
+            selectedRows.lookup[dataIndex] = true;
+          }
+
+          shiftAdjacentRows.push(lookup);
         }
-        curIndex = data.index > curIndex ? (curIndex + 1) : (curIndex - 1);
+        curIndex = data.index > curIndex ? curIndex + 1 : curIndex - 1;
       }
     }
     this.props.selectRowUpdate('cell', data, shiftAdjacentRows);
   };
 
   handleRowClick = (row, data, event) => {
-    // Don't trigger onRowClick if the event was actually the expandable icon
+    // Don't trigger onRowClick if the event was actually the expandable icon.
     if (
       event.target.id === 'expandable-button' ||
       (event.target.nodeName === 'path' && event.target.parentNode.id === 'expandable-button')
@@ -165,7 +191,7 @@ class TableBody extends React.Component {
     const { classes, columns, toggleExpandRow, options } = this.props;
     const tableRows = this.buildRows();
     const visibleColCnt = columns.filter(c => c.display === 'true').length;
-    
+
     return (
       <MuiTableBody>
         {tableRows && tableRows.length > 0 ? (
@@ -188,7 +214,7 @@ class TableBody extends React.Component {
                   <TableSelectCell
                     onChange={this.handleRowSelect.bind(null, {
                       index: this.getRowIndex(rowIndex),
-                      dataIndex: dataIndex
+                      dataIndex: dataIndex,
                     })}
                     onExpand={toggleExpandRow.bind(null, {
                       index: this.getRowIndex(rowIndex),

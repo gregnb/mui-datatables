@@ -209,7 +209,7 @@ describe('<TableBody />', function() {
     const selectRowUpdate = (type, data, adjacent) => {
       adjacentRows = adjacent;
     };
-    const selectedRows = [];
+    const selectedRows = {data: [], lookup: {}};
     const toggleExpandRow = () => {};
 
     const mountWrapper = mount(
