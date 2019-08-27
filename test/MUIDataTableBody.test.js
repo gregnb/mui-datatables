@@ -271,14 +271,14 @@ describe('<TableBody />', function() {
     assert.strictEqual(toggleExpandRow.callCount, 0);
   });
 
-  it('should not gather selected row data when clicking row with selectableRowsOnClick=true when it is disabled with isRowSelectable.', () => {
+  it('should not gather selected row data when clicking row with selectableRowsOnClick=true when it is disabled with isRowSelectable via index.', () => {
     let selectedRowData;
     const options = {
       selectableRows: true,
       selectableRowsOnClick: true,
       isRowSelectable: dataIndex => (dataIndex === 2 ? false : true),
     };
-    const selectRowUpdate = (type, data) => (selectedRowData = data);
+    const selectRowUpdate = (_, data) => (selectedRowData = data);
     const toggleExpandRow = spy();
 
     const mountWrapper = mount(
@@ -304,6 +304,86 @@ describe('<TableBody />', function() {
       .simulate('click');
 
     assert.isUndefined(selectedRowData);
+    assert.strictEqual(toggleExpandRow.callCount, 0);
+  });
+
+  it('should not gather selected row data when clicking row with selectableRowsOnClick=true when it is disabled with isRowSelectable via selectedRows.', () => {
+    let selectedRowData;
+    const options = {
+      selectableRows: true,
+      selectableRowsOnClick: true,
+      isRowSelectable: (index, selectedRows) => selectedRows.lookup[index] || selectedRows.data.length < 1,
+    };
+    const selectRowUpdate = (_, data) => (selectedRowData = data);
+    const toggleExpandRow = spy();
+    const initialSelectedRows = {
+      data: [{ index: 1, dataIndex: 1 }],
+      lookup: { 1: true },
+    };
+
+    const mountWrapper = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={initialSelectedRows}
+        selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('click');
+
+    assert.isUndefined(selectedRowData);
+    assert.strictEqual(toggleExpandRow.callCount, 0);
+  });
+
+  it('should gather selected row data when clicking row with selectableRowsOnClick=true when it is enabled with isRowSelectable via index.', () => {
+    let selectedRowData;
+    const options = {
+      selectableRows: true,
+      selectableRowsOnClick: true,
+      isRowSelectable: (index, selectedRows) => selectedRows.lookup[index] || selectedRows.data.length < 1,
+    };
+    const selectRowUpdate = (_, data) => (selectedRowData = data);
+    const toggleExpandRow = spy();
+    const initialSelectedRows = {
+      data: [{ index: 1, dataIndex: 1 }],
+      lookup: { 1: true },
+    };
+
+    const mountWrapper = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={initialSelectedRows}
+        selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-1')
+      .first()
+      .simulate('click');
+
+    assert.isDefined(selectedRowData);
     assert.strictEqual(toggleExpandRow.callCount, 0);
   });
 
@@ -528,5 +608,36 @@ describe('<TableBody />', function() {
     const html = mountWrapper.html();
 
     expect(html).to.contain('Test_Text');
+  });
+
+  it('should pass in selectedRows to isRowSelectable', () => {
+    const selectedIndex = 2;
+    const originalSelectedRows = {
+      data: [{ index: selectedIndex, dataIndex: selectedIndex }],
+      lookup: { [selectedIndex]: true },
+    };
+    const isRowSelectable = spy((_, selectedRows) => {
+      assert.deepEqual(selectedRows, originalSelectedRows);
+      return true;
+    });
+
+    const options = { selectableRows: true, isRowSelectable };
+
+    mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        selectedRows={originalSelectedRows}
+        rowsPerPage={10}
+        expandedRows={[]}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    assert.equal(isRowSelectable.callCount, displayData.length);
   });
 });

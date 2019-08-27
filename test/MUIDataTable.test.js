@@ -167,6 +167,111 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(actualResult, expectedResult);
   });
 
+  it('should correctly rebuild internal columns data structure', () => {
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
+
+    shallowWrapper.setProps({
+      columns: [
+        {
+          name: 'Test Name',
+          options: {
+            filter: false,
+            display: 'excluded',
+            customBodyRender: renderName,
+            customFilterListRender: renderCustomFilterList,
+          },
+        },
+        'Company',
+        { name: 'City', label: 'City Label', options: { customBodyRender: renderCities, filterType: 'textField' } },
+        {
+          name: 'State',
+          options: { customBodyRender: renderState, filterType: 'multiselect', customHeadRender: renderHead },
+        },
+        { name: 'Empty', options: { empty: true, filterType: 'checkbox' } },
+      ],
+    });
+
+    const actualResult = shallowWrapper.dive().state().columns;
+
+    const expectedResult = [
+      {
+        display: 'excluded',
+        empty: false,
+        print: true,
+        name: 'Test Name',
+        sort: true,
+        filter: false,
+        label: 'Test Name',
+        download: true,
+        searchable: true,
+        sortDirection: null,
+        viewColumns: true,
+        customFilterListRender: renderCustomFilterList,
+        customBodyRender: renderName,
+      },
+      {
+        display: 'true',
+        empty: false,
+        print: true,
+        name: 'Company',
+        sort: true,
+        filter: true,
+        label: 'Company',
+        download: true,
+        searchable: true,
+        viewColumns: true,
+        sortDirection: null,
+      },
+      {
+        display: 'true',
+        empty: false,
+        print: true,
+        name: 'City',
+        sort: true,
+        filter: true,
+        filterType: 'textField',
+        label: 'City Label',
+        download: true,
+        searchable: true,
+        viewColumns: true,
+        sortDirection: null,
+        customBodyRender: renderCities,
+      },
+      {
+        display: 'true',
+        empty: false,
+        print: true,
+        name: 'State',
+        sort: true,
+        filter: true,
+        filterType: 'multiselect',
+        label: 'State',
+        download: true,
+        searchable: true,
+        viewColumns: true,
+        sortDirection: null,
+        customBodyRender: renderState,
+        customHeadRender: renderHead,
+      },
+      {
+        display: 'true',
+        empty: true,
+        print: true,
+        name: 'Empty',
+        sort: true,
+        filter: true,
+        filterType: 'checkbox',
+        label: 'Empty',
+        download: true,
+        searchable: true,
+        viewColumns: true,
+        sortDirection: null,
+      },
+    ];
+
+    assert.deepEqual(actualResult, expectedResult);
+  });
+
   it('should correctly build internal table data and displayData structure', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const state = shallowWrapper.dive().state();
