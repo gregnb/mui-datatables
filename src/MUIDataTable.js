@@ -133,6 +133,7 @@ class MUIDataTable extends React.Component {
       selectableRows: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['none', 'single', 'multiple'])]),
       selectableRowsOnClick: PropTypes.bool,
       isRowSelectable: PropTypes.func,
+      disableToolbarSelect: PropTypes.bool,
       serverSide: PropTypes.bool,
       onTableChange: PropTypes.func,
       onTableInit: PropTypes.func,
@@ -1024,19 +1025,32 @@ class MUIDataTable extends React.Component {
         prevState => {
           const { displayData } = prevState;
           const selectedRowsLen = prevState.selectedRows.data.length;
-          const isDeselect =
+          let isDeselect =
             selectedRowsLen === displayData.length || (selectedRowsLen < displayData.length && selectedRowsLen > 0)
               ? true
               : false;
 
           let selectedRows = displayData.reduce((arr, d, i) => {
             const selected = isRowSelectable ? isRowSelectable(displayData[i].dataIndex) : true;
-            selected && arr.push({ index: i, dataIndex: displayData[i].dataIndex });
+             selected && arr.push({ index: i, dataIndex: displayData[i].dataIndex });
             return arr;
-          }, []);
+           }, []);
 
           let newRows = [...prevState.selectedRows, ...selectedRows];
           let selectedMap = buildMap(newRows);
+
+          // if the select toolbar is disabled, the rules are a little different
+          if (this.options.disableToolbarSelect === true) {
+            if (selectedRowsLen > displayData.length) {
+               isDeselect = true;
+             } else {
+              for (let ii = 0; ii < displayData.length; ii++) {
+                if (!selectedMap[displayData[ii].dataIndex]) {
+                   isDeselect = true;
+                 }
+               }
+             }
+           }
 
           if (isDeselect) {
             newRows = prevState.selectedRows.data.filter(({ dataIndex }) => !selectedMap[dataIndex]);
@@ -1181,7 +1195,7 @@ class MUIDataTable extends React.Component {
         elevation={this.options.elevation}
         ref={this.tableContent}
         className={classnames(classes.paper, className)}>
-        {selectedRows.data.length ? (
+        {(selectedRows.data.length && this.options.disableToolbarSelect !== true) ? (
           <TableToolbarSelect
             options={this.options}
             selectedRows={selectedRows}
