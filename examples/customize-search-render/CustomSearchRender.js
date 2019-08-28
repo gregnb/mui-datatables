@@ -27,7 +27,7 @@ class CustomSearchRender extends React.Component {
     if (onSearchChange) {
       onSearchChange(event.target.value);
     }
-
+    
     this.props.onSearch(event.target.value);
   };
 

@@ -139,6 +139,7 @@ class TableToolbar extends React.Component {
         nextVal = true;
       } else {
         const { onSearchClose } = this.props.options;
+        this.props.setTableAction('onSearchClose');
         if (onSearchClose) onSearchClose();
         nextVal = false;
       }
@@ -153,14 +154,15 @@ class TableToolbar extends React.Component {
   };
 
   showSearch = () => {
-    !!this.props.options.onSearchOpen && this.props.options.onSearchOpen();
     this.props.setTableAction('onSearchOpen');
+    !!this.props.options.onSearchOpen && this.props.options.onSearchOpen();
     return true;
   };
 
   hideSearch = () => {
     const { onSearchClose } = this.props.options;
 
+    this.props.setTableAction('onSearchClose');
     if (onSearchClose) onSearchClose();
     this.props.searchTextUpdate(null);
 
@@ -196,12 +198,18 @@ class TableToolbar extends React.Component {
     const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;
     const { showSearch, searchText } = this.state;
 
+    // prevent a customSearchRender component from calling the onSearchChange callback
+    let optionsCopy = Object.assign({}, options);
+    optionsCopy.onSearchChange = function() {
+      console.warn('The onSearchChange callback no longer needs to be managed by a customSearch component.');
+    };
+
     return (
       <Toolbar className={classes.root} role={'toolbar'} aria-label={'Table Toolbar'}>
         <div className={classes.left}>
           {showSearch === true ? (
             options.customSearchRender ? (
-              options.customSearchRender(searchText, this.handleSearch, this.hideSearch, options)
+              options.customSearchRender(searchText, this.handleSearch, this.hideSearch, optionsCopy)
             ) : (
               <TableSearch
                 searchText={searchText}
