@@ -1297,7 +1297,7 @@ describe('<MUIDataTable />', function() {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'scroll',
+      responsive: 'scrollMaxHeight',
     };
 
     it('should correctly filter array data', () => {
@@ -1345,7 +1345,7 @@ describe('<MUIDataTable />', function() {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'scroll',
+      responsive: 'scrollMaxHeight',
     };
 
     it('should correctly filter data when no array data is present', () => {
