@@ -248,11 +248,16 @@ class TableToolbar extends React.Component {
             <span>
               <ReactToPrint
                 trigger={() => (
-                  <Tooltip title={print}>
-                    <IconButton data-testid={print + '-iconButton'} aria-label={print} classes={{ root: classes.icon }}>
-                      <PrintIcon />
-                    </IconButton>
-                  </Tooltip>
+                  <span>
+                    <Tooltip title={print}>
+                      <IconButton
+                        data-testid={print + '-iconButton'}
+                        aria-label={print}
+                        classes={{ root: classes.icon }}>
+                        <PrintIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </span>
                 )}
                 content={() => this.props.tableRef()}
               />
