@@ -6,6 +6,7 @@ import cloneDeep from 'lodash.clonedeep';
 import find from 'lodash.find';
 import isUndefined from 'lodash.isundefined';
 import merge from 'lodash.merge';
+import assign from 'lodash.assign';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TableBody from './components/TableBody';
@@ -207,7 +208,7 @@ class MUIDataTable extends React.Component {
     this.updateDividers = () => {};
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.initializeTable(this.props);
   }
 
@@ -220,10 +221,10 @@ class MUIDataTable extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
+      this.updateOptions(this.props);
       this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
         this.setTableAction('propsUpdate');
       });
-      this.updateOptions(this.props);
     }
 
     if (this.props.options.searchText !== prevProps.options.searchText && !this.props.options.serverSide) {
@@ -238,7 +239,7 @@ class MUIDataTable extends React.Component {
   }
 
   updateOptions(props) {
-    this.options = merge(this.options, props.options);
+    this.options = assign(this.options, props.options);
   }
 
   initializeTable(props) {
@@ -293,6 +294,9 @@ class MUIDataTable extends React.Component {
     this.options = merge(defaultOptions, props.options, extra);
     if (props.options.rowsPerPageOptions) {
       this.options.rowsPerPageOptions = props.options.rowsPerPageOptions;
+    }
+    if (['scroll', 'stacked'].indexOf(this.options.responsive) === -1) {
+      console.error('Invalid option value for responsive. Please use string option: stacked | scroll');
     }
   }
 
@@ -1005,13 +1009,13 @@ class MUIDataTable extends React.Component {
       const { isRowSelectable } = this.options;
       this.setState(
         prevState => {
-          const { displayData } = prevState;
+          const { displayData, selectedRows: prevSelectedRows } = prevState;
           const selectedRowsLen = prevState.selectedRows.data.length;
           const isDeselect =
             (selectedRowsLen === displayData.length) || (selectedRowsLen < displayData.length && selectedRowsLen > 0);
 
           let selectedRows = displayData.reduce((arr, d, i) => {
-            const selected = isRowSelectable ? isRowSelectable(displayData[i].dataIndex) : true;
+            const selected = isRowSelectable ? isRowSelectable(displayData[i].dataIndex, prevSelectedRows) : true;
             selected && arr.push({ index: i, dataIndex: displayData[i].dataIndex });
             return arr;
           }, []);
