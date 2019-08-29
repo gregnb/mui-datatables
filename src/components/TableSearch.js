@@ -69,6 +69,7 @@ class TableSearch extends React.Component {
             onChange={this.handleTextChange}
             fullWidth={true}
             inputRef={el => (this.searchField = el)}
+            placeholder={options.searchPlaceholder}
           />
           <IconButton className={classes.clearIcon} onClick={onHide}>
             <ClearIcon />
