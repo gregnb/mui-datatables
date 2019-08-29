@@ -171,7 +171,7 @@ class TableBody extends React.Component {
     if (
       this.props.options.selectableRowsOnClick &&
       this.props.options.selectableRows !== 'none' &&
-      this.isRowSelectable(data.dataIndex)
+      this.isRowSelectable(data.dataIndex, this.props.selectedRows)
     ) {
       const selectRow = { index: data.rowIndex, dataIndex: data.dataIndex };
       this.handleRowSelect(selectRow, event);
