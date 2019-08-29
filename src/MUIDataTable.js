@@ -601,7 +601,7 @@ class MUIDataTable extends React.Component {
         data: tableData,
         displayData: this.getDisplayData(columns, tableData, filterList, searchText),
         previousSelectedRow: null,
-      }),
+      },
       callback,
     );
   }
