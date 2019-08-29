@@ -266,6 +266,7 @@ class MUIDataTable extends React.Component {
       selectableRows: 'multiple',
       selectableRowsOnClick: false,
       caseSensitive: false,
+      disableToolbarSelect: false,
       serverSide: false,
       rowHover: true,
       fixedHeader: true,
