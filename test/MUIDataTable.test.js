@@ -75,12 +75,12 @@ describe('<MUIDataTable />', function() {
 
   it('should render a table', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
-    assert.strictEqual(
+    assert.include(
+      ['Paper', 'ForwardRef(Paper)'],
       shallowWrapper
         .dive()
         .dive()
         .name(),
-      'Paper',
     );
   });
 
