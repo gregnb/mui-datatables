@@ -90,7 +90,7 @@ class MUIDataTable extends React.Component {
           label: PropTypes.string,
           name: PropTypes.string.isRequired,
           options: PropTypes.shape({
-            display: PropTypes.string, // enum('true', 'false', 'excluded')
+            display: PropTypes.oneOf(['true', 'false', 'excluded']),
             empty: PropTypes.bool,
             filter: PropTypes.bool,
             sort: PropTypes.bool,
@@ -131,6 +131,7 @@ class MUIDataTable extends React.Component {
       customSearchRender: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customRowRender: PropTypes.func,
       onRowClick: PropTypes.func,
+      onRowsSelect: PropTypes.func,
       resizableColumns: PropTypes.bool,
       selectableRows: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['none', 'single', 'multiple'])]),
       selectableRowsOnClick: PropTypes.bool,
@@ -153,6 +154,7 @@ class MUIDataTable extends React.Component {
       customSearch: PropTypes.func,
       search: PropTypes.bool,
       searchText: PropTypes.string,
+      searchPlaceholder: PropTypes.string,
       print: PropTypes.bool,
       viewColumns: PropTypes.bool,
       download: PropTypes.bool,
@@ -192,6 +194,7 @@ class MUIDataTable extends React.Component {
       data: [],
       lookup: {},
     },
+    previousSelectedRow: null,
     expandedRows: {
       data: [],
       lookup: {},
@@ -245,7 +248,7 @@ class MUIDataTable extends React.Component {
 
   initializeTable(props) {
     this.getDefaultOptions(props);
-    this.setTableOptions(props);
+    this.setTableOptions();
     this.setTableData(props, TABLE_LOAD.INITIAL, () => {
       this.setTableInit('tableInitialized');
     });
@@ -327,7 +330,7 @@ class MUIDataTable extends React.Component {
     }
   };
 
-  setTableOptions(props) {
+  setTableOptions() {
     const optionNames = ['rowsPerPage', 'page', 'rowsSelected', 'rowsPerPageOptions'];
     const optState = optionNames.reduce((acc, cur) => {
       if (this.options[cur] !== undefined) {
@@ -344,25 +347,9 @@ class MUIDataTable extends React.Component {
     this.headCellRefs[index] = el;
   };
 
-  getTableContentRef = () => {
-    return this.tableContent.current;
-  };
-
-  rawColumns = cols => {
-    return cols.map(item => {
-      if (typeof item !== 'object') return item;
-
-      let otherOptions = {};
-      const { options, ...otherProps } = item;
-
-      if (options) {
-        const { customHeadRender, customBodyRender, customFilterListRender, setCellProps, ...nonFnOpts } = options;
-        otherOptions = nonFnOpts;
-      }
-
-      return { ...otherOptions, ...otherProps };
-    });
-  };
+  // must be arrow function on local field to refer to the correct instance when passed around
+  // assigning it as arrow function in the JSX would cause hard to track re-render errors
+  getTableContentRef = () => this.tableContent.current;
 
   /*
    *  Build the source table data
@@ -586,9 +573,9 @@ class MUIDataTable extends React.Component {
       const sortedData = this.sortTable(tableData, sortIndex, sortDirection);
       tableData = sortedData.data;
     }
+
     /* set source data and display Data set source set */
-    this.setState(
-      prevState => ({
+    this.setState({
         columns: columns,
         filterData: filterData,
         filterList: filterList,
@@ -598,6 +585,7 @@ class MUIDataTable extends React.Component {
         count: this.options.count,
         data: tableData,
         displayData: this.getDisplayData(columns, tableData, filterList, searchText),
+        previousSelectedRow: null,
       }),
       callback,
     );
@@ -839,6 +827,7 @@ class MUIDataTable extends React.Component {
             data: sortedData.data,
             displayData: this.getDisplayData(columns, sortedData.data, prevState.filterList, prevState.searchText),
             selectedRows: sortedData.selectedRows,
+            previousSelectedRow: null,
           };
         }
 
@@ -910,7 +899,7 @@ class MUIDataTable extends React.Component {
   resetFilters = () => {
     this.setState(
       prevState => {
-        const filterList = prevState.columns.map((column, index) => []);
+        const filterList = prevState.columns.map(() => []);
 
         return {
           filterList: filterList,
@@ -954,6 +943,7 @@ class MUIDataTable extends React.Component {
           displayData: this.options.serverSide
             ? prevState.displayData
             : this.getDisplayData(prevState.columns, prevState.data, filterList, prevState.searchText),
+          previousSelectedRow: null,
         };
       },
       () => {
@@ -1021,7 +1011,7 @@ class MUIDataTable extends React.Component {
     );
   };
 
-  selectRowUpdate = (type, value) => {
+  selectRowUpdate = (type, value, shiftAdjacentRows = []) => {
     // safety check
     const { selectableRows } = this.options;
     if (selectableRows === 'none') {
@@ -1035,9 +1025,7 @@ class MUIDataTable extends React.Component {
           const { displayData, selectedRows: prevSelectedRows } = prevState;
           const selectedRowsLen = prevState.selectedRows.data.length;
           const isDeselect =
-            selectedRowsLen === displayData.length || (selectedRowsLen < displayData.length && selectedRowsLen > 0)
-              ? true
-              : false;
+            (selectedRowsLen === displayData.length) || (selectedRowsLen < displayData.length && selectedRowsLen > 0);
 
           let selectedRows = displayData.reduce((arr, d, i) => {
             const selected = isRowSelectable ? isRowSelectable(displayData[i].dataIndex, prevSelectedRows) : true;
@@ -1059,6 +1047,7 @@ class MUIDataTable extends React.Component {
               data: newRows,
               lookup: selectedMap,
             },
+            previousSelectedRow: null,
           };
         },
         () => {
@@ -1071,7 +1060,7 @@ class MUIDataTable extends React.Component {
     } else if (type === 'cell') {
       this.setState(
         prevState => {
-          const { index, dataIndex } = value;
+          const { dataIndex } = value;
           let selectedRows = [...prevState.selectedRows.data];
           let rowPos = -1;
 
@@ -1084,11 +1073,31 @@ class MUIDataTable extends React.Component {
 
           if (rowPos >= 0) {
             selectedRows.splice(rowPos, 1);
+
+            // handle rows affected by shift+click
+            if (shiftAdjacentRows.length > 0) {
+              let shiftAdjacentMap = buildMap(shiftAdjacentRows);
+              for (let cIndex = selectedRows.length - 1; cIndex >= 0; cIndex--) {
+                if (shiftAdjacentMap[selectedRows[cIndex].dataIndex]) {
+                  selectedRows.splice(cIndex, 1);
+                }
+              }
+            }
           } else if (selectableRows === 'single') {
             selectedRows = [value];
           } else {
             // multiple
             selectedRows.push(value);
+
+            // handle rows affected by shift+click
+            if (shiftAdjacentRows.length > 0) {
+              let selectedMap = buildMap(selectedRows);
+              shiftAdjacentRows.forEach(aRow => {
+                if (!selectedMap[aRow.dataIndex]) {
+                  selectedRows.push(aRow);
+                }
+              });
+            }
           }
 
           return {
@@ -1096,6 +1105,7 @@ class MUIDataTable extends React.Component {
               lookup: buildMap(selectedRows),
               data: selectedRows,
             },
+            previousSelectedRow: value,
           };
         },
         () => {
@@ -1114,6 +1124,7 @@ class MUIDataTable extends React.Component {
       this.setState(
         {
           selectedRows: { data, lookup },
+          previousSelectedRow: null,
         },
         () => {
           this.setTableAction('rowsSelect');
@@ -1159,12 +1170,6 @@ class MUIDataTable extends React.Component {
     };
   }
 
-  // must be arrow function on local field to refer to the correct instance when passed around
-  // assigning it as arrow function in the JSX would cause hard to track re-render errors
-  getTableContentRef = () => {
-    return this.tableContent.current;
-  };
-
   render() {
     const { classes, className, title } = this.props;
     const {
@@ -1177,6 +1182,7 @@ class MUIDataTable extends React.Component {
       filterData,
       filterList,
       selectedRows,
+      previousSelectedRow,
       expandedRows,
       searchText,
     } = this.state;
@@ -1245,7 +1251,6 @@ class MUIDataTable extends React.Component {
               activeColumn={activeColumn}
               data={displayData}
               count={rowCount}
-              columns={columns}
               page={page}
               rowsPerPage={rowsPerPage}
               handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
@@ -1263,6 +1268,7 @@ class MUIDataTable extends React.Component {
               rowsPerPage={rowsPerPage}
               selectedRows={selectedRows}
               selectRowUpdate={this.selectRowUpdate}
+              previousSelectedRow={previousSelectedRow}
               expandedRows={expandedRows}
               toggleExpandRow={this.toggleExpandRow}
               options={this.options}
@@ -1279,7 +1285,7 @@ class MUIDataTable extends React.Component {
           changeRowsPerPage={this.changeRowsPerPage}
           changePage={this.changePage}
         />
-        <div className={classes.liveAnnounce} aria-live={'polite'} ref={el => (this.announceRef = el)}>
+        <div className={classes.liveAnnounce} aria-live={'polite'}>
           {announceText}
         </div>
       </Paper>

@@ -75,6 +75,15 @@ class TableHeadCell extends React.Component {
     isHintTooltipOpen: false,
   };
 
+  handleKeyboardSortinput = (e) => {
+    if (e.key === 'Enter')
+    {
+      this.props.toggleSort(this.props.index);
+    }
+
+    return false;
+  }
+
   handleSortClick = () => {
     this.props.toggleSort(this.props.index);
   };
@@ -119,7 +128,7 @@ class TableHeadCell extends React.Component {
             onClose={() => this.setState({ isSortTooltipOpen: false })}>
             <span
               role="button"
-              onKeyUp={this.handleClickSort}
+              onKeyUp={this.handleKeyboardSortinput}
               onClick={this.handleSortClick}
               className={classes.toolButton}
               tabIndex={0}>

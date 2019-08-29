@@ -54,6 +54,8 @@ function setupDom() {
 
   global.window.cancelAnimationFrame = () => {};
   global.getComputedStyle = global.window.getComputedStyle;
+  global.HTMLInputElement = global.window.HTMLInputElement;
+  global.Element = global.window.Element;
 
   Object.defineProperty(global.window.URL, 'createObjectURL', { value: () => {} });
   global.Blob = () => '';
