@@ -99,6 +99,7 @@ class MUIDataTable extends React.Component {
             download: PropTypes.bool,
             viewColumns: PropTypes.bool,
             filterList: PropTypes.array,
+            sortDirection: PropTypes.oneOf(['asc', 'desc', 'none']),
             filterOptions: PropTypes.oneOfType([
               PropTypes.array,
               PropTypes.shape({
@@ -370,7 +371,7 @@ class MUIDataTable extends React.Component {
         searchable: true,
         download: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
       };
 
       if (typeof column === 'object') {
@@ -379,10 +380,15 @@ class MUIDataTable extends React.Component {
             column.options.display = column.options.display.toString();
           }
 
+          if (column.options.sortDirection === null) {
+            console.error('The "null" option for sortDirection is deprecated. sortDirection is an enum, use "asc" | "desc" | "none"');
+            column.options.sortDirection = 'none';
+          }
+
           if (column.options.sortDirection !== undefined) {
             if (sortDirectionSet) {
               console.error('sortDirection is set for more than one column. Only the first column will be considered.');
-              column.options.sortDirection = null;
+              column.options.sortDirection = 'none';
             } else {
               sortDirectionSet = true;
             }
@@ -427,7 +433,7 @@ class MUIDataTable extends React.Component {
     let tableData = [];
     let { columns, filterData, filterList } = this.buildColumns(props.columns);
     let sortIndex = null;
-    let sortDirection = null;
+    let sortDirection = 'none';
 
     const data = status === TABLE_LOAD.INITIAL ? this.transformData(columns, props.data) : props.data;
     const searchText = status === TABLE_LOAD.INITIAL ? this.options.searchText : null;
@@ -485,7 +491,7 @@ class MUIDataTable extends React.Component {
         filterData[colIndex].sort(comparator);
       }
 
-      if (column.sortDirection !== null) {
+      if (column.sortDirection !== 'none') {
         sortIndex = colIndex;
         sortDirection = column.sortDirection;
       }
@@ -791,7 +797,7 @@ class MUIDataTable extends React.Component {
 
         for (let pos = 0; pos < columns.length; pos++) {
           if (index !== pos) {
-            columns[pos].sortDirection = null;
+            columns[pos].sortDirection = 'none';
           } else {
             columns[pos].sortDirection = newOrder;
           }
