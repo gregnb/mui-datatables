@@ -90,7 +90,7 @@ class MUIDataTable extends React.Component {
           label: PropTypes.string,
           name: PropTypes.string.isRequired,
           options: PropTypes.shape({
-            display: PropTypes.string, // enum('true', 'false', 'excluded')
+            display: PropTypes.oneOf(['true', 'false', 'excluded']),
             empty: PropTypes.bool,
             filter: PropTypes.bool,
             sort: PropTypes.bool,
@@ -247,7 +247,7 @@ class MUIDataTable extends React.Component {
 
   initializeTable(props) {
     this.getDefaultOptions(props);
-    this.setTableOptions(props);
+    this.setTableOptions();
     this.setTableData(props, TABLE_LOAD.INITIAL, () => {
       this.setTableInit('tableInitialized');
     });
@@ -329,7 +329,7 @@ class MUIDataTable extends React.Component {
     }
   };
 
-  setTableOptions(props) {
+  setTableOptions() {
     const optionNames = ['rowsPerPage', 'page', 'rowsSelected', 'rowsPerPageOptions'];
     const optState = optionNames.reduce((acc, cur) => {
       if (this.options[cur] !== undefined) {
@@ -346,25 +346,9 @@ class MUIDataTable extends React.Component {
     this.headCellRefs[index] = el;
   };
 
-  getTableContentRef = () => {
-    return this.tableContent.current;
-  };
-
-  rawColumns = cols => {
-    return cols.map(item => {
-      if (typeof item !== 'object') return item;
-
-      let otherOptions = {};
-      const { options, ...otherProps } = item;
-
-      if (options) {
-        const { customHeadRender, customBodyRender, customFilterListRender, setCellProps, ...nonFnOpts } = options;
-        otherOptions = nonFnOpts;
-      }
-
-      return { ...otherOptions, ...otherProps };
-    });
-  };
+  // must be arrow function on local field to refer to the correct instance when passed around
+  // assigning it as arrow function in the JSX would cause hard to track re-render errors
+  getTableContentRef = () => this.tableContent.current;
 
   /*
    *  Build the source table data
@@ -585,8 +569,7 @@ class MUIDataTable extends React.Component {
     }
 
     /* set source data and display Data set source set */
-    this.setState(
-      prevState => ({
+    this.setState({
         columns: columns,
         filterData: filterData,
         filterList: filterList,
@@ -910,7 +893,7 @@ class MUIDataTable extends React.Component {
   resetFilters = () => {
     this.setState(
       prevState => {
-        const filterList = prevState.columns.map((column, index) => []);
+        const filterList = prevState.columns.map(() => []);
 
         return {
           filterList: filterList,
@@ -1036,9 +1019,7 @@ class MUIDataTable extends React.Component {
           const { displayData, selectedRows: prevSelectedRows } = prevState;
           const selectedRowsLen = prevState.selectedRows.data.length;
           const isDeselect =
-            selectedRowsLen === displayData.length || (selectedRowsLen < displayData.length && selectedRowsLen > 0)
-              ? true
-              : false;
+            (selectedRowsLen === displayData.length) || (selectedRowsLen < displayData.length && selectedRowsLen > 0);
 
           let selectedRows = displayData.reduce((arr, d, i) => {
             const selected = isRowSelectable ? isRowSelectable(displayData[i].dataIndex, prevSelectedRows) : true;
@@ -1073,7 +1054,7 @@ class MUIDataTable extends React.Component {
     } else if (type === 'cell') {
       this.setState(
         prevState => {
-          const { index, dataIndex } = value;
+          const { dataIndex } = value;
           let selectedRows = [...prevState.selectedRows.data];
           let rowPos = -1;
 
@@ -1183,12 +1164,6 @@ class MUIDataTable extends React.Component {
     };
   }
 
-  // must be arrow function on local field to refer to the correct instance when passed around
-  // assigning it as arrow function in the JSX would cause hard to track re-render errors
-  getTableContentRef = () => {
-    return this.tableContent.current;
-  };
-
   render() {
     const { classes, className, title } = this.props;
     const {
@@ -1270,7 +1245,6 @@ class MUIDataTable extends React.Component {
               activeColumn={activeColumn}
               data={displayData}
               count={rowCount}
-              columns={columns}
               page={page}
               rowsPerPage={rowsPerPage}
               handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
@@ -1305,7 +1279,7 @@ class MUIDataTable extends React.Component {
           changeRowsPerPage={this.changeRowsPerPage}
           changePage={this.changePage}
         />
-        <div className={classes.liveAnnounce} aria-live={'polite'} ref={el => (this.announceRef = el)}>
+        <div className={classes.liveAnnounce} aria-live={'polite'}>
           {announceText}
         </div>
       </Paper>
