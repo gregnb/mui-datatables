@@ -243,7 +243,7 @@ class MUIDataTable extends React.Component {
 
   initializeTable(props) {
     this.getDefaultOptions(props);
-    this.setTableOptions(props);
+    this.setTableOptions();
     this.setTableData(props, TABLE_LOAD.INITIAL, () => {
       this.setTableInit('tableInitialized');
     });
@@ -1008,7 +1008,7 @@ class MUIDataTable extends React.Component {
           const { displayData } = prevState;
           const selectedRowsLen = prevState.selectedRows.data.length;
           const isDeselect =
-            selectedRowsLen === displayData.length || (selectedRowsLen < displayData.length && selectedRowsLen > 0);
+            (selectedRowsLen === displayData.length) || (selectedRowsLen < displayData.length && selectedRowsLen > 0);
 
           let selectedRows = displayData.reduce((arr, d, i) => {
             const selected = isRowSelectable ? isRowSelectable(displayData[i].dataIndex) : true;
@@ -1103,7 +1103,7 @@ class MUIDataTable extends React.Component {
       data: row.data[col],
       rowData: row.data,
       position: sIndex,
-      rowSelected: this.state.selectedRows.lookup[row.index],
+      rowSelected: this.state.selectedRows.lookup[row.index] ? true : false,
     }));
 
     if (!this.options.customSort) {
@@ -1212,6 +1212,7 @@ class MUIDataTable extends React.Component {
               count={rowCount}
               page={page}
               rowsPerPage={rowsPerPage}
+              handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
               selectedRows={selectedRows}
               selectRowUpdate={this.selectRowUpdate}
               toggleSort={this.toggleSortColumn}
