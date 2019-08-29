@@ -50,9 +50,7 @@ describe('<TableSearch />', function() {
     const onSearch = () => {};
     const onHide = () => {};
 
-    const mountWrapper = mount(
-        <TableSearch onSearch={onSearch} onHide={onHide} options={options} />,
-    );
+    const mountWrapper = mount(<TableSearch onSearch={onSearch} onHide={onHide} options={options} />);
     const actualResult = mountWrapper.find(TextField);
     assert.strictEqual(actualResult.length, 1);
     assert.strictEqual(actualResult.props().placeholder, 'TestingPlaceholder');

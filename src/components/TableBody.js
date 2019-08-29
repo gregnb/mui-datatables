@@ -118,7 +118,7 @@ class TableBody extends React.Component {
       if (selectedRows.data.filter(d => d.dataIndex === clickedDataIndex).length === 0) {
         selectedRows.data.push({
           index: data.index,
-          dataIndex: clickedDataIndex
+          dataIndex: clickedDataIndex,
         });
         selectedRows.lookup[clickedDataIndex] = true;
       }
@@ -131,7 +131,7 @@ class TableBody extends React.Component {
             index: curIndex,
             dataIndex: dataIndex,
           };
-          
+
           // Add adjacent row to temp selectedRow object if it isn't present.
           if (selectedRows.data.filter(d => d.dataIndex === dataIndex).length === 0) {
             selectedRows.data.push(lookup);

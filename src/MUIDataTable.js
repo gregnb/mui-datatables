@@ -312,7 +312,9 @@ class MUIDataTable extends React.Component {
       this.options.rowsPerPageOptions = props.options.rowsPerPageOptions;
     }
     if (['scrollMaxHeight', 'scrollFullHeight', 'stacked'].indexOf(this.options.responsive) === -1) {
-      console.error('Invalid option value for responsive. Please use string option: scrollMaxHeight | scrollFullHeight | stacked');
+      console.error(
+        'Invalid option value for responsive. Please use string option: scrollMaxHeight | scrollFullHeight | stacked',
+      );
     }
     if (this.options.responsive === 'scroll') {
       console.error('This option has been deprecated. It is being replaced by scrollMaxHeight');
@@ -396,7 +398,9 @@ class MUIDataTable extends React.Component {
           }
 
           if (column.options.sortDirection === null) {
-            console.error('The "null" option for sortDirection is deprecated. sortDirection is an enum, use "asc" | "desc" | "none"');
+            console.error(
+              'The "null" option for sortDirection is deprecated. sortDirection is an enum, use "asc" | "desc" | "none"',
+            );
             column.options.sortDirection = 'none';
           }
 
@@ -590,7 +594,8 @@ class MUIDataTable extends React.Component {
     }
 
     /* set source data and display Data set source set */
-    this.setState({
+    this.setState(
+      {
         columns: columns,
         filterData: filterData,
         filterList: filterList,
@@ -1040,7 +1045,7 @@ class MUIDataTable extends React.Component {
           const { displayData, selectedRows: prevSelectedRows } = prevState;
           const selectedRowsLen = prevState.selectedRows.data.length;
           const isDeselect =
-            (selectedRowsLen === displayData.length) || (selectedRowsLen < displayData.length && selectedRowsLen > 0);
+            selectedRowsLen === displayData.length || (selectedRowsLen < displayData.length && selectedRowsLen > 0);
 
           let selectedRows = displayData.reduce((arr, d, i) => {
             const selected = isRowSelectable ? isRowSelectable(displayData[i].dataIndex, prevSelectedRows) : true;
@@ -1266,9 +1271,7 @@ class MUIDataTable extends React.Component {
           filterUpdate={this.filterUpdate}
           columnNames={columnNames}
         />
-        <div
-          style={{ position: 'relative' }}
-          className={responsiveClass}>
+        <div style={{ position: 'relative' }} className={responsiveClass}>
           {this.options.resizableColumns && (
             <TableResize
               key={rowCount}

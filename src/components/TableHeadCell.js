@@ -75,14 +75,13 @@ class TableHeadCell extends React.Component {
     isHintTooltipOpen: false,
   };
 
-  handleKeyboardSortinput = (e) => {
-    if (e.key === 'Enter')
-    {
+  handleKeyboardSortinput = e => {
+    if (e.key === 'Enter') {
       this.props.toggleSort(this.props.index);
     }
 
     return false;
-  }
+  };
 
   handleSortClick = () => {
     this.props.toggleSort(this.props.index);
@@ -93,7 +92,6 @@ class TableHeadCell extends React.Component {
     const { children, classes, options, sortDirection, sort, hint, print } = this.props;
     const sortActive = sortDirection !== 'none' && sortDirection !== undefined ? true : false;
     const ariaSortDirection = sortDirection === 'none' ? false : sortDirection;
-
 
     const sortLabelProps = {
       classes: { root: classes.sortLabelRoot },
