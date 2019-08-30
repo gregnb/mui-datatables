@@ -1233,6 +1233,9 @@ class MUIDataTable extends React.Component {
         break;
     }
 
+    let tableProps = this.options.setTableProps ? this.options.setTableProps() : {};
+    let tableClassNames = classnames(classes.tableRoot, tableProps.className);
+
     return (
       <Paper
         elevation={this.options.elevation}
@@ -1284,8 +1287,8 @@ class MUIDataTable extends React.Component {
             />
           )}
           <MuiTable 
-             {...(this.options.setTableProps ? this.options.setTableProps() : {})}
-            ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'} className={classes.tableRoot}>
+            ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'} className={tableClassNames}
+            {...(tableProps)}>
             <caption className={classes.caption}>{title}</caption>
             <TableHead
               columns={columns}

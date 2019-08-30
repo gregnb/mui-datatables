@@ -49,6 +49,12 @@ class Example extends React.Component {
     });
   }
 
+  toggleResponsive = (event) => {
+    this.setState({
+      stacked: event.target.checked ? true : false
+    });
+  }
+
   render() {
     const columns = [
       {
@@ -63,13 +69,24 @@ class Example extends React.Component {
                 })
             };
           },
-          setCellHeaderProps: (value) => ({style:{color:'green'}}),
+          setCellHeaderProps: (value) => {
+            return {
+              className: classnames(
+                {
+                  [this.props.classes.NameCell]: true
+                }),
+                style: {
+                  color: 'blue'
+                }
+            };
+          }
         }
       },
       {
         name: "Title",
         options: {
           filter: true,
+          setCellHeaderProps: (value) => ({style:{color:'green'}}),
         }
       },
       {
@@ -129,7 +146,8 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: this.state.stacked ? 'stacked' : 'scrollMaxHeight',
+      fixedHeader: true,
       setRowProps: (row) => {
         return {
           className: classnames(
@@ -158,11 +176,22 @@ class Example extends React.Component {
               <Switch
                 checked={this.state.denseTable}
                 onChange={this.toggleDenseTable}
-                value="checkedB"
+                value="denseTable"
                 color="primary"
               />
             }
             label="Dense Table"
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={this.state.stacked}
+                onChange={this.toggleResponsive}
+                value="stacked"
+                color="primary"
+              />
+            }
+            label="Stacked Table"
           />
         </FormGroup>
         <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options}/>
