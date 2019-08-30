@@ -1,11 +1,11 @@
+import { withStyles } from '@material-ui/core/styles';
+import MuiTableHead from '@material-ui/core/TableHead';
+import classNames from 'classnames';
 import React from 'react';
 import { findDOMNode } from 'react-dom';
-import classNames from 'classnames';
-import MuiTableHead from '@material-ui/core/TableHead';
-import TableHeadRow from './TableHeadRow';
 import TableHeadCell from './TableHeadCell';
+import TableHeadRow from './TableHeadRow';
 import TableSelectCell from './TableSelectCell';
-import { withStyles } from '@material-ui/core/styles';
 
 const defaultHeadStyles = theme => ({
   main: {},
@@ -65,7 +65,7 @@ class TableHead extends React.Component {
                   sort={column.sort}
                   sortDirection={column.sortDirection}
                   toggleSort={this.handleToggleColumn}
-                  hint={column.hint}
+                  hint={column.hint || `Sort by ${column.label}`}
                   print={column.print}
                   options={options}>
                   {column.label}
