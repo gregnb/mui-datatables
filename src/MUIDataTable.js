@@ -1,12 +1,7 @@
-import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
+import { buildMap, getCollatorComparator, sortCompare } from './utils';
+
 import MuiTable from '@material-ui/core/Table';
-import classnames from 'classnames';
-import cloneDeep from 'lodash.clonedeep';
-import find from 'lodash.find';
-import isUndefined from 'lodash.isundefined';
-import merge from 'lodash.merge';
-import assign from 'lodash.assign';
+import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TableBody from './components/TableBody';
@@ -16,8 +11,14 @@ import TableHead from './components/TableHead';
 import TableResize from './components/TableResize';
 import TableToolbar from './components/TableToolbar';
 import TableToolbarSelect from './components/TableToolbarSelect';
+import assign from 'lodash.assign';
+import classnames from 'classnames';
+import cloneDeep from 'lodash.clonedeep';
+import find from 'lodash.find';
+import isUndefined from 'lodash.isundefined';
+import merge from 'lodash.merge';
 import textLabels from './textLabels';
-import { buildMap, getCollatorComparator, sortCompare } from './utils';
+import { withStyles } from '@material-ui/core/styles';
 
 const defaultTableStyles = theme => ({
   root: {},
@@ -975,14 +976,15 @@ class MUIDataTable extends React.Component {
     );
   };
 
-  selectRowDelete = () => {
+  selectRowDelete = async () => {
     const { selectedRows, data, filterList } = this.state;
 
     const selectedMap = buildMap(selectedRows.data);
     const cleanRows = data.filter(({ index }) => !selectedMap[index]);
 
     if (this.options.onRowsDelete) {
-      if (this.options.onRowsDelete(selectedRows) === false) return;
+      const deleteResult = await this.options.onRowsDelete(selectedRows);
+      if (deleteResult === false) return;
     }
 
     this.setTableData(
