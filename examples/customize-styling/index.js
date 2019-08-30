@@ -22,6 +22,7 @@ class Example extends React.Component {
     super(props);
     this.state = {
       denseTable: false,
+      stacked: true
     };
   }
 
