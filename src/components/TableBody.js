@@ -6,6 +6,7 @@ import TableBodyCell from './TableBodyCell';
 import TableBodyRow from './TableBodyRow';
 import TableSelectCell from './TableSelectCell';
 import { withStyles } from '@material-ui/core/styles';
+import cloneDeep from 'lodash.clonedeep';
 
 const defaultBodyStyles = {
   root: {},
@@ -32,6 +33,8 @@ class TableBody extends React.Component {
     selectedRows: PropTypes.object,
     /** Callback to trigger table row select */
     selectRowUpdate: PropTypes.func,
+    /** The most recent row to have been selected/unselected */
+    previousSelectedRow: PropTypes.object,
     /** Data used to search table against */
     searchText: PropTypes.string,
     /** Toggle row expandable */
@@ -86,20 +89,65 @@ class TableBody extends React.Component {
     return expandedRows.lookup && expandedRows.lookup[dataIndex] ? true : false;
   }
 
-  isRowSelectable(dataIndex) {
+  isRowSelectable(dataIndex, selectedRows) {
     const { options } = this.props;
+    selectedRows = selectedRows || this.props.selectedRows;
+
     if (options.isRowSelectable) {
-      return options.isRowSelectable(dataIndex);
+      return options.isRowSelectable(dataIndex, selectedRows);
+    } else {
+      return true;
     }
-    return true;
   }
 
-  handleRowSelect = data => {
-    this.props.selectRowUpdate('cell', data);
+  handleRowSelect = (data, event) => {
+    let shiftKey = event && event.nativeEvent ? event.nativeEvent.shiftKey : false;
+    let shiftAdjacentRows = [];
+    let previousSelectedRow = this.props.previousSelectedRow;
+
+    // If the user is pressing shift and has previously clicked another row.
+    if (shiftKey && previousSelectedRow && previousSelectedRow.index < this.props.data.length) {
+      let curIndex = previousSelectedRow.index;
+
+      // Create a copy of the selectedRows object. This will be used and modified
+      // below when we see if we can add adjacent rows.
+      let selectedRows = cloneDeep(this.props.selectedRows);
+
+      // Add the clicked on row to our copy of selectedRows (if it isn't already present).
+      let clickedDataIndex = this.props.data[data.index].dataIndex;
+      if (selectedRows.data.filter(d => d.dataIndex === clickedDataIndex).length === 0) {
+        selectedRows.data.push({
+          index: data.index,
+          dataIndex: clickedDataIndex,
+        });
+        selectedRows.lookup[clickedDataIndex] = true;
+      }
+
+      while (curIndex !== data.index) {
+        let dataIndex = this.props.data[curIndex].dataIndex;
+
+        if (this.isRowSelectable(dataIndex, selectedRows)) {
+          let lookup = {
+            index: curIndex,
+            dataIndex: dataIndex,
+          };
+
+          // Add adjacent row to temp selectedRow object if it isn't present.
+          if (selectedRows.data.filter(d => d.dataIndex === dataIndex).length === 0) {
+            selectedRows.data.push(lookup);
+            selectedRows.lookup[dataIndex] = true;
+          }
+
+          shiftAdjacentRows.push(lookup);
+        }
+        curIndex = data.index > curIndex ? curIndex + 1 : curIndex - 1;
+      }
+    }
+    this.props.selectRowUpdate('cell', data, shiftAdjacentRows);
   };
 
   handleRowClick = (row, data, event) => {
-    // Don't trigger onRowClick if the event was actually the expandable icon
+    // Don't trigger onRowClick if the event was actually the expandable icon.
     if (
       event.target.id === 'expandable-button' ||
       (event.target.nodeName === 'path' && event.target.parentNode.id === 'expandable-button')
@@ -116,21 +164,26 @@ class TableBody extends React.Component {
       return;
     }
 
-    // Don't trigger onRowClick if the event was actually a row selection
-    if (event.target.id && event.target.id.startsWith('MUIDataTableSelectCell')) {
-      return;
-    }
+    // Don't trigger onRowClick if the event was actually a row selection via checkbox
+    if (event.target.id && event.target.id.startsWith('MUIDataTableSelectCell')) return;
 
     // Check if we should toggle row select when row is clicked anywhere
-    if (this.props.options.selectableRowsOnClick && this.props.options.selectableRows !== 'none') {
+    if (
+      this.props.options.selectableRowsOnClick &&
+      this.props.options.selectableRows !== 'none' &&
+      this.isRowSelectable(data.dataIndex, this.props.selectedRows)
+    ) {
       const selectRow = { index: data.rowIndex, dataIndex: data.dataIndex };
-      this.handleRowSelect(selectRow);
+      this.handleRowSelect(selectRow, event);
     }
     // Check if we should trigger row expand when row is clicked anywhere
     if (this.props.options.expandableRowsOnClick && this.props.options.expandableRows) {
       const expandRow = { index: data.rowIndex, dataIndex: data.dataIndex };
       this.props.toggleExpandRow(expandRow);
     }
+
+    // Don't trigger onRowClick if the event was actually a row selection via click
+    if (this.props.options.selectableRowsOnClick) return;
 
     this.props.options.onRowClick && this.props.options.onRowClick(row, data, event);
   };
@@ -157,6 +210,7 @@ class TableBody extends React.Component {
                   options={options}
                   rowSelected={options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false}
                   onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
+                  data-testid={'MUIDataTableBodyRow-' + dataIndex}
                   id={'MUIDataTableBodyRow-' + dataIndex}>
                   <TableSelectCell
                     onChange={this.handleRowSelect.bind(null, {
@@ -182,6 +236,7 @@ class TableBody extends React.Component {
                           {...(columns[columnIndex].setCellProps
                             ? columns[columnIndex].setCellProps(column, dataIndex, columnIndex)
                             : {})}
+                          data-testid={`MuiDataTableBodyCell-${columnIndex}-${rowIndex}`}
                           dataIndex={dataIndex}
                           rowIndex={rowIndex}
                           colIndex={columnIndex}

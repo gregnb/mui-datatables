@@ -202,6 +202,42 @@ describe('<TableBody />', function() {
     assert.strictEqual(selectRowUpdate.callCount, 1);
   });
 
+  it('should select the adjacent rows when a row is shift+clicked and a previous row has been selected.', () => {
+    let adjacentRows = [];
+    const options = { sort: true, selectableRows: true, selectableRowsOnClick: true };
+    const previousSelectedRow = { index: 0, dataIndex: 0 };
+    const selectRowUpdate = (type, data, adjacent) => {
+      adjacentRows = adjacent;
+    };
+    const selectedRows = { data: [], lookup: {} };
+    const toggleExpandRow = () => {};
+
+    const mountWrapper = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={selectedRows}
+        selectRowUpdate={selectRowUpdate}
+        previousSelectedRow={previousSelectedRow}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-3')
+      .first()
+      .simulate('click', { nativeEvent: { shiftKey: true } });
+
+    assert.strictEqual(adjacentRows.length, 3);
+  });
+
   it('should gather selected row data when clicking row with selectableRowsOnClick=true.', () => {
     let selectedRowData;
     const options = { selectableRows: true, selectableRowsOnClick: true };
@@ -232,6 +268,122 @@ describe('<TableBody />', function() {
 
     const expectedResult = { index: 2, dataIndex: 2 };
     assert.deepEqual(selectedRowData, expectedResult);
+    assert.strictEqual(toggleExpandRow.callCount, 0);
+  });
+
+  it('should not gather selected row data when clicking row with selectableRowsOnClick=true when it is disabled with isRowSelectable via index.', () => {
+    let selectedRowData;
+    const options = {
+      selectableRows: true,
+      selectableRowsOnClick: true,
+      isRowSelectable: dataIndex => (dataIndex === 2 ? false : true),
+    };
+    const selectRowUpdate = (_, data) => (selectedRowData = data);
+    const toggleExpandRow = spy();
+
+    const mountWrapper = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={[]}
+        selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('click');
+
+    assert.isUndefined(selectedRowData);
+    assert.strictEqual(toggleExpandRow.callCount, 0);
+  });
+
+  it('should not gather selected row data when clicking row with selectableRowsOnClick=true when it is disabled with isRowSelectable via selectedRows.', () => {
+    let selectedRowData;
+    const options = {
+      selectableRows: true,
+      selectableRowsOnClick: true,
+      isRowSelectable: (index, selectedRows) => selectedRows.lookup[index] || selectedRows.data.length < 1,
+    };
+    const selectRowUpdate = (_, data) => (selectedRowData = data);
+    const toggleExpandRow = spy();
+    const initialSelectedRows = {
+      data: [{ index: 1, dataIndex: 1 }],
+      lookup: { 1: true },
+    };
+
+    const mountWrapper = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={initialSelectedRows}
+        selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('click');
+
+    assert.isUndefined(selectedRowData);
+    assert.strictEqual(toggleExpandRow.callCount, 0);
+  });
+
+  it('should gather selected row data when clicking row with selectableRowsOnClick=true when it is enabled with isRowSelectable via index.', () => {
+    let selectedRowData;
+    const options = {
+      selectableRows: true,
+      selectableRowsOnClick: true,
+      isRowSelectable: (index, selectedRows) => selectedRows.lookup[index] || selectedRows.data.length < 1,
+    };
+    const selectRowUpdate = (_, data) => (selectedRowData = data);
+    const toggleExpandRow = spy();
+    const initialSelectedRows = {
+      data: [{ index: 1, dataIndex: 1 }],
+      lookup: { 1: true },
+    };
+
+    const mountWrapper = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={initialSelectedRows}
+        selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-1')
+      .first()
+      .simulate('click');
+
+    assert.isDefined(selectedRowData);
     assert.strictEqual(toggleExpandRow.callCount, 0);
   });
 
@@ -338,6 +490,36 @@ describe('<TableBody />', function() {
     assert.strictEqual(options.onRowClick.callCount, 0);
   });
 
+  it('should not call onRowClick when clicking to select a row', () => {
+    const options = { selectableRows: true, selectableRowsOnClick: true, onRowClick: spy() };
+    const selectRowUpdate = spy();
+    const toggleExpandRow = spy();
+
+    const mountWrapper = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={[]}
+        selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    mountWrapper
+      .find('TableSelectCell')
+      .first()
+      .simulate('click');
+
+    assert.strictEqual(options.onRowClick.callCount, 0);
+  });
+
   it('should call onRowClick when Row is clicked', () => {
     const options = { selectableRows: true, onRowClick: spy() };
     const selectRowUpdate = stub();
@@ -426,5 +608,36 @@ describe('<TableBody />', function() {
     const html = mountWrapper.html();
 
     expect(html).to.contain('Test_Text');
+  });
+
+  it('should pass in selectedRows to isRowSelectable', () => {
+    const selectedIndex = 2;
+    const originalSelectedRows = {
+      data: [{ index: selectedIndex, dataIndex: selectedIndex }],
+      lookup: { [selectedIndex]: true },
+    };
+    const isRowSelectable = spy((_, selectedRows) => {
+      assert.deepEqual(selectedRows, originalSelectedRows);
+      return true;
+    });
+
+    const options = { selectableRows: true, isRowSelectable };
+
+    mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        selectedRows={originalSelectedRows}
+        rowsPerPage={10}
+        expandedRows={[]}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    assert.equal(isRowSelectable.callCount, displayData.length);
   });
 });
