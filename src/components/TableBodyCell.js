@@ -12,7 +12,7 @@ const defaultBodyCellStyles = theme => ({
     [theme.breakpoints.down('sm')]: {
       display: 'inline-block',
       fontSize: '16px',
-      //height: '24px',
+      height: '24px',
       width: 'calc(50%)',
       whiteSpace: 'nowrap',
       boxSizing: 'border-box',
@@ -24,7 +24,7 @@ const defaultBodyCellStyles = theme => ({
       fontSize: '16px',
       width: 'calc(50%)',
       whiteSpace: 'nowrap',
-      //height: '24px',
+      height: '24px',
       boxSizing: 'border-box',
     },
   },
