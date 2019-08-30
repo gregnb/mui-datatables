@@ -75,12 +75,12 @@ describe('<MUIDataTable />', function() {
 
   it('should render a table', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
-    assert.strictEqual(
+    assert.include(
+      ['Paper', 'ForwardRef(Paper)'],
       shallowWrapper
         .dive()
         .dive()
         .name(),
-      'Paper',
     );
   });
 
@@ -99,7 +99,7 @@ describe('<MUIDataTable />', function() {
         label: 'Name',
         download: true,
         searchable: true,
-        sortDirection: null,
+        sortDirection: 'none',
         viewColumns: true,
         customFilterListRender: renderCustomFilterList,
         customBodyRender: renderName,
@@ -115,7 +115,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
       },
       {
         display: 'true',
@@ -129,7 +129,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
         customBodyRender: renderCities,
       },
       {
@@ -144,7 +144,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
         customBodyRender: renderState,
         customHeadRender: renderHead,
       },
@@ -160,7 +160,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
       },
     ];
 
@@ -204,7 +204,7 @@ describe('<MUIDataTable />', function() {
         label: 'Test Name',
         download: true,
         searchable: true,
-        sortDirection: null,
+        sortDirection: 'none',
         viewColumns: true,
         customFilterListRender: renderCustomFilterList,
         customBodyRender: renderName,
@@ -220,7 +220,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
       },
       {
         display: 'true',
@@ -234,7 +234,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
         customBodyRender: renderCities,
       },
       {
@@ -249,7 +249,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
         customBodyRender: renderState,
         customHeadRender: renderHead,
       },
@@ -265,7 +265,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
       },
     ];
 
@@ -752,7 +752,7 @@ describe('<MUIDataTable />', function() {
         label: 'Name',
         download: true,
         searchable: true,
-        sortDirection: null,
+        sortDirection: 'none',
         customBodyRender: renderName,
         viewColumns: true,
         customFilterListRender: renderCustomFilterList,
@@ -768,7 +768,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
       },
       {
         name: 'City',
@@ -781,7 +781,7 @@ describe('<MUIDataTable />', function() {
         label: 'City Label',
         download: true,
         searchable: true,
-        sortDirection: null,
+        sortDirection: 'none',
         customBodyRender: renderCities,
         viewColumns: true,
       },
@@ -797,7 +797,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
         customBodyRender: renderState,
         customHeadRender: renderHead,
       },
@@ -813,7 +813,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
       },
     ];
 
@@ -917,6 +917,39 @@ describe('<MUIDataTable />', function() {
     const state = shallowWrapper.state();
     const expectedResult = [{ index: 0, dataIndex: 0 }, { index: 3, dataIndex: 3 }];
 
+    assert.deepEqual(state.selectedRows.data, expectedResult);
+  });
+
+  it('should allow multiple cells to be selected when selectableRows=multiple and selectRowUpdate method with type=cell and there are adjacent rows.', () => {
+    const options = { selectableRows: 'multiple' };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 }, [
+      { index: 0, dataIndex: 0 },
+      { index: 1, dataIndex: 1 },
+    ]);
+    shallowWrapper.update();
+
+    const expectedResult = [{ index: 0, dataIndex: 0 }, { index: 1, dataIndex: 1 }];
+    const state = shallowWrapper.state();
+    assert.deepEqual(state.selectedRows.data, expectedResult);
+  });
+
+  it('should allow multiple cells to be selected and then unselected when selectableRows=multiple and selectRowUpdate method with type=cell and there are adjacent rows.', () => {
+    const options = { selectableRows: 'multiple' };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 }, [
+      { index: 1, dataIndex: 1 },
+      { index: 2, dataIndex: 2 },
+    ]);
+    instance.selectRowUpdate('cell', { index: 1, dataIndex: 1 }, [{ index: 0, dataIndex: 0 }]);
+    shallowWrapper.update();
+
+    const expectedResult = [{ index: 2, dataIndex: 2 }];
+    const state = shallowWrapper.state();
     assert.deepEqual(state.selectedRows.data, expectedResult);
   });
 
@@ -1264,7 +1297,7 @@ describe('<MUIDataTable />', function() {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'scroll',
+      responsive: 'scrollMaxHeight',
     };
 
     it('should correctly filter array data', () => {
@@ -1312,7 +1345,7 @@ describe('<MUIDataTable />', function() {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'scroll',
+      responsive: 'scrollMaxHeight',
     };
 
     it('should correctly filter data when no array data is present', () => {
