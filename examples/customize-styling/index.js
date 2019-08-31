@@ -77,7 +77,7 @@ class Example extends React.Component {
                   [this.props.classes.NameCell]: true
                 }),
                 style: {
-                  color: 'blue'
+                  textDecoration: 'underline'
                 }
             };
           }
@@ -87,7 +87,7 @@ class Example extends React.Component {
         name: "Title",
         options: {
           filter: true,
-          setCellHeaderProps: (value) => ({style:{color:'green'}}),
+          setCellHeaderProps: (value) => ({style:{textDecoration:'underline'}}),
         }
       },
       {
@@ -149,6 +149,7 @@ class Example extends React.Component {
       filterType: 'dropdown',
       responsive: this.state.stacked ? 'stacked' : 'scrollMaxHeight',
       fixedHeader: true,
+      rowHover: false,
       setRowProps: (row) => {
         return {
           className: classnames(

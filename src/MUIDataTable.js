@@ -1235,6 +1235,7 @@ class MUIDataTable extends React.Component {
 
     let tableProps = this.options.setTableProps ? this.options.setTableProps() : {};
     let tableClassNames = classnames(classes.tableRoot, tableProps.className);
+    delete tableProps.className; // remove className from props to avoid the className being applied twice
 
     return (
       <Paper
@@ -1286,9 +1287,12 @@ class MUIDataTable extends React.Component {
               setResizeable={fn => (this.setHeadResizeable = fn)}
             />
           )}
-          <MuiTable 
-            ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'} className={tableClassNames}
-            {...(tableProps)}>
+          <MuiTable
+            ref={el => (this.tableRef = el)}
+            tabIndex={'0'}
+            role={'grid'}
+            className={tableClassNames}
+            {...tableProps}>
             <caption className={classes.caption}>{title}</caption>
             <TableHead
               columns={columns}
