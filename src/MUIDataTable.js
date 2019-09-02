@@ -6,7 +6,6 @@ import cloneDeep from 'lodash.clonedeep';
 import find from 'lodash.find';
 import isUndefined from 'lodash.isundefined';
 import merge from 'lodash.merge';
-import assign from 'lodash.assign';
 import assignwith from 'lodash.assignwith';
 import PropTypes from 'prop-types';
 import React from 'react';
