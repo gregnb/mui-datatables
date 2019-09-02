@@ -347,22 +347,22 @@ describe('<MUIDataTable />', function() {
     const options = {
       textLabels: {
         newObj: {
-          test: 'foo'
-        }
+          test: 'foo',
+        },
       },
       downloadOptions: {
-        separator: ':'
-      }
+        separator: ':',
+      },
     };
     const newOptions = {
       textLabels: {
         newObj: {
-          test: 'bar'
-        }
+          test: 'bar',
+        },
       },
       downloadOptions: {
-        separator: ';'
-      }
+        separator: ';',
+      },
     };
     const fullWrapper = mount(<MUIDataTable columns={columns} data={[]} options={options} />);
     let props = fullWrapper.props();
