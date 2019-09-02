@@ -6,7 +6,7 @@ import cloneDeep from 'lodash.clonedeep';
 import find from 'lodash.find';
 import isUndefined from 'lodash.isundefined';
 import merge from 'lodash.merge';
-import assign from 'lodash.assign';
+import assignwith from 'lodash.assignwith';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TableBody from './components/TableBody';
@@ -255,70 +255,79 @@ class MUIDataTable extends React.Component {
   }
 
   updateOptions(props) {
-    this.options = assign(this.options, props.options);
+    this.options = assignwith(this.options, props.options, (objValue, srcValue, key) => {
+      // Merge any default options that are objects, as they will be overwritten otherwise
+      if (key === 'textLabels' || key === 'downloadOptions') return merge(objValue, srcValue);
+      return;
+    });
+
+    this.handleOptionDeprecation(props);
   }
 
   initializeTable(props) {
-    this.getDefaultOptions(props);
+    this.mergeDefaultOptions(props);
     this.setTableOptions();
     this.setTableData(props, TABLE_LOAD.INITIAL, () => {
       this.setTableInit('tableInitialized');
     });
   }
 
-  /*
-   * React currently does not support deep merge for defaultProps. Objects are overwritten
-   */
-  getDefaultOptions(props) {
-    const defaultOptions = {
-      responsive: 'stacked',
-      filterType: 'dropdown',
-      pagination: true,
-      textLabels,
-      expandableRows: false,
-      expandableRowsOnClick: false,
-      resizableColumns: false,
-      selectableRows: 'multiple',
-      selectableRowsOnClick: false,
-      caseSensitive: false,
-      serverSide: false,
-      rowHover: true,
-      fixedHeader: true,
-      elevation: 4,
-      rowsPerPage: 10,
-      rowsPerPageOptions: [10, 15, 100],
-      filter: true,
-      sortFilterList: true,
-      sort: true,
-      search: true,
-      print: true,
-      viewColumns: true,
-      download: true,
-      downloadOptions: {
-        filename: 'tableDownload.csv',
-        separator: ',',
-      },
-    };
+  getDefaultOptions = () => ({
+    responsive: 'stacked',
+    filterType: 'dropdown',
+    pagination: true,
+    textLabels,
+    expandableRows: false,
+    expandableRowsOnClick: false,
+    resizableColumns: false,
+    selectableRows: 'multiple',
+    selectableRowsOnClick: false,
+    caseSensitive: false,
+    serverSide: false,
+    rowHover: true,
+    fixedHeader: true,
+    elevation: 4,
+    rowsPerPage: 10,
+    rowsPerPageOptions: [10, 15, 100],
+    filter: true,
+    sortFilterList: true,
+    sort: true,
+    search: true,
+    print: true,
+    viewColumns: true,
+    download: true,
+    downloadOptions: {
+      filename: 'tableDownload.csv',
+      separator: ',',
+    },
+  });
 
-    const extra = {};
+  handleOptionDeprecation = props => {
     if (typeof props.options.selectableRows === 'boolean') {
       console.error(
         'Using a boolean for selectableRows has been deprecated. Please use string option: multiple | single | none',
       );
-      extra.selectableRows = props.options.selectableRows ? 'multiple' : 'none';
+      this.options.selectableRows = props.options.selectableRows ? 'multiple' : 'none';
     }
-    this.options = merge(defaultOptions, props.options, extra);
-    if (props.options.rowsPerPageOptions) {
-      this.options.rowsPerPageOptions = props.options.rowsPerPageOptions;
-    }
-    if (['scrollMaxHeight', 'scrollFullHeight', 'stacked'].indexOf(this.options.responsive) === -1) {
+    if (['scrollMaxHeight', 'scrollFullHeight', 'stacked'].indexOf(props.options.responsive) === -1) {
       console.error(
         'Invalid option value for responsive. Please use string option: scrollMaxHeight | scrollFullHeight | stacked',
       );
     }
-    if (this.options.responsive === 'scroll') {
+    if (props.options.responsive === 'scroll') {
       console.error('This option has been deprecated. It is being replaced by scrollMaxHeight');
     }
+  };
+
+  /*
+   * React currently does not support deep merge for defaultProps. Objects are overwritten
+   */
+  mergeDefaultOptions(props) {
+    const defaultOptions = this.getDefaultOptions();
+
+    this.options = merge(defaultOptions, props.options);
+
+    this.handleOptionDeprecation(props);
   }
 
   validateOptions(options) {
