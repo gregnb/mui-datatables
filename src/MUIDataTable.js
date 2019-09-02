@@ -263,12 +263,7 @@ class MUIDataTable extends React.Component {
     this.options.textLabels = assign(this.options.textLabels, myTextLabels);
     this.options.downloadOptions = assign(this.options.downloadOptions, myDownloadOptions);
 
-    if (typeof props.options.selectableRows === 'boolean') {
-      console.error(
-        'Using a boolean for selectableRows has been deprecated. Please use string option: multiple | single | none',
-      );
-      this.options.selectableRows = props.options.selectableRows ? 'multiple' : 'none';
-    }
+    this.handleOptionDeprecation(props);
   }
 
   initializeTable(props) {
@@ -309,14 +304,7 @@ class MUIDataTable extends React.Component {
     },
   });
 
-  /*
-   * React currently does not support deep merge for defaultProps. Objects are overwritten
-   */
-  mergeDefaultOptions(props) {
-    const defaultOptions = this.getDefaultOptions();
-
-    this.options = merge(defaultOptions, props.options);
-
+  handleOptionDeprecation = props => {
     if (typeof props.options.selectableRows === 'boolean') {
       console.error(
         'Using a boolean for selectableRows has been deprecated. Please use string option: multiple | single | none',
@@ -331,6 +319,17 @@ class MUIDataTable extends React.Component {
     if (props.options.responsive === 'scroll') {
       console.error('This option has been deprecated. It is being replaced by scrollMaxHeight');
     }
+  };
+
+  /*
+   * React currently does not support deep merge for defaultProps. Objects are overwritten
+   */
+  mergeDefaultOptions(props) {
+    const defaultOptions = this.getDefaultOptions();
+
+    this.options = merge(defaultOptions, props.options);
+
+    this.handleOptionDeprecation(props);
   }
 
   validateOptions(options) {
