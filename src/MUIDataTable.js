@@ -7,6 +7,7 @@ import find from 'lodash.find';
 import isUndefined from 'lodash.isundefined';
 import merge from 'lodash.merge';
 import assign from 'lodash.assign';
+import assignwith from 'lodash.assignwith';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TableBody from './components/TableBody';
@@ -255,13 +256,11 @@ class MUIDataTable extends React.Component {
   }
 
   updateOptions(props) {
-    // Save any default options that are objects, as they will be overwritten
-    const myTextLabels = merge(this.options.textLabels, props.options.textLabels);
-    const myDownloadOptions = merge(this.options.downloadOptions, props.options.downloadOptions);
-
-    this.options = assign(this.options, props.options);
-    this.options.textLabels = assign(this.options.textLabels, myTextLabels);
-    this.options.downloadOptions = assign(this.options.downloadOptions, myDownloadOptions);
+    this.options = assignwith(this.options, props.options, (objValue, srcValue, key) => {
+      // Merge any default options that are objects, as they will be overwritten otherwise
+      if (key === 'textLabels' || key === 'downloadOptions') return merge(objValue, srcValue);
+      return;
+    });
 
     this.handleOptionDeprecation(props);
   }
