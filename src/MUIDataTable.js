@@ -262,6 +262,13 @@ class MUIDataTable extends React.Component {
     this.options = assign(this.options, props.options);
     this.options.textLabels = assign(this.options.textLabels, myTextLabels);
     this.options.downloadOptions = assign(this.options.downloadOptions, myDownloadOptions);
+
+    if (typeof props.options.selectableRows === 'boolean') {
+      console.error(
+        'Using a boolean for selectableRows has been deprecated. Please use string option: multiple | single | none',
+      );
+      this.options.selectableRows = props.options.selectableRows ? 'multiple' : 'none';
+    }
   }
 
   initializeTable(props) {
