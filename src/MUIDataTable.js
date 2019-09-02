@@ -272,64 +272,63 @@ class MUIDataTable extends React.Component {
   }
 
   initializeTable(props) {
-    this.getDefaultOptions(props);
+    this.mergeDefaultOptions(props);
     this.setTableOptions();
     this.setTableData(props, TABLE_LOAD.INITIAL, () => {
       this.setTableInit('tableInitialized');
     });
   }
 
+  getDefaultOptions = () => ({
+    responsive: 'stacked',
+    filterType: 'dropdown',
+    pagination: true,
+    textLabels,
+    expandableRows: false,
+    expandableRowsOnClick: false,
+    resizableColumns: false,
+    selectableRows: 'multiple',
+    selectableRowsOnClick: false,
+    caseSensitive: false,
+    serverSide: false,
+    rowHover: true,
+    fixedHeader: true,
+    elevation: 4,
+    rowsPerPage: 10,
+    rowsPerPageOptions: [10, 15, 100],
+    filter: true,
+    sortFilterList: true,
+    sort: true,
+    search: true,
+    print: true,
+    viewColumns: true,
+    download: true,
+    downloadOptions: {
+      filename: 'tableDownload.csv',
+      separator: ',',
+    },
+  });
+
   /*
    * React currently does not support deep merge for defaultProps. Objects are overwritten
    */
-  getDefaultOptions(props) {
-    const defaultOptions = {
-      responsive: 'stacked',
-      filterType: 'dropdown',
-      pagination: true,
-      textLabels,
-      expandableRows: false,
-      expandableRowsOnClick: false,
-      resizableColumns: false,
-      selectableRows: 'multiple',
-      selectableRowsOnClick: false,
-      caseSensitive: false,
-      serverSide: false,
-      rowHover: true,
-      fixedHeader: true,
-      elevation: 4,
-      rowsPerPage: 10,
-      rowsPerPageOptions: [10, 15, 100],
-      filter: true,
-      sortFilterList: true,
-      sort: true,
-      search: true,
-      print: true,
-      viewColumns: true,
-      download: true,
-      downloadOptions: {
-        filename: 'tableDownload.csv',
-        separator: ',',
-      },
-    };
+  mergeDefaultOptions(props) {
+    const defaultOptions = this.getDefaultOptions();
 
-    const extra = {};
+    this.options = merge(defaultOptions, props.options);
+
     if (typeof props.options.selectableRows === 'boolean') {
       console.error(
         'Using a boolean for selectableRows has been deprecated. Please use string option: multiple | single | none',
       );
-      extra.selectableRows = props.options.selectableRows ? 'multiple' : 'none';
+      this.options.selectableRows = props.options.selectableRows ? 'multiple' : 'none';
     }
-    this.options = merge(defaultOptions, props.options, extra);
-    if (props.options.rowsPerPageOptions) {
-      this.options.rowsPerPageOptions = props.options.rowsPerPageOptions;
-    }
-    if (['scrollMaxHeight', 'scrollFullHeight', 'stacked'].indexOf(this.options.responsive) === -1) {
+    if (['scrollMaxHeight', 'scrollFullHeight', 'stacked'].indexOf(props.options.responsive) === -1) {
       console.error(
         'Invalid option value for responsive. Please use string option: scrollMaxHeight | scrollFullHeight | stacked',
       );
     }
-    if (this.options.responsive === 'scroll') {
+    if (props.options.responsive === 'scroll') {
       console.error('This option has been deprecated. It is being replaced by scrollMaxHeight');
     }
   }
