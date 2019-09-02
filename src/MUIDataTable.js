@@ -255,7 +255,13 @@ class MUIDataTable extends React.Component {
   }
 
   updateOptions(props) {
+    // Save any default options that are objects, as they will be overwritten
+    const myTextLabels = merge(this.options.textLabels, props.options.textLabels);
+    const myDownloadOptions = merge(this.options.downloadOptions, props.options.downloadOptions);
+
     this.options = assign(this.options, props.options);
+    this.options.textLabels = assign(this.options.textLabels, myTextLabels);
+    this.options.downloadOptions = assign(this.options.downloadOptions, myDownloadOptions);
   }
 
   initializeTable(props) {
