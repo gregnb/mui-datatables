@@ -79,9 +79,10 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'scroll',
+      responsive: 'scrollMaxHeight',
       expandableRows: true,
       expandableRowsOnClick: true,
+      rowsExpanded: [0, 2, 3],
       renderExpandableRow: (rowData, rowMeta) => {
         const colSpan = rowData.length + 1;
         return (

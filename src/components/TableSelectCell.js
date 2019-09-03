@@ -7,11 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 
 const defaultSelectCellStyles = theme => ({
-  root: {
-    [theme.breakpoints.down('sm')]: {
-      backgroundColor: theme.palette.background.paper,
-    },
-  },
+  root: {},
   fixedHeader: {
     position: 'sticky',
     top: '0px',
@@ -32,11 +28,7 @@ const defaultSelectCellStyles = theme => ({
     zIndex: 110,
     backgroundColor: theme.palette.background.paper,
   },
-  checkboxRoot: {
-    '&$checked': {
-      color: theme.palette.primary.main,
-    },
-  },
+  checkboxRoot: {},
   checked: {},
   disabled: {},
 });
@@ -104,6 +96,7 @@ class TableSelectCell extends React.Component {
             checked: classes.checked,
             disabled: classes.disabled,
           }}
+          color="primary"
           disabled={!isRowSelectable}
           {...otherProps}
         />

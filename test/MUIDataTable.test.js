@@ -2,6 +2,7 @@ import React from 'react';
 import { spy } from 'sinon';
 import { mount, shallow } from 'enzyme';
 import { assert, expect } from 'chai';
+import cloneDeep from 'lodash.clonedeep';
 import MUIDataTable from '../src/MUIDataTable';
 import TableFilterList from '../src/components/TableFilterList';
 import TablePagination from '../src/components/TablePagination';
@@ -74,12 +75,12 @@ describe('<MUIDataTable />', function() {
 
   it('should render a table', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
-    assert.strictEqual(
+    assert.include(
+      ['Paper', 'ForwardRef(Paper)'],
       shallowWrapper
         .dive()
         .dive()
         .name(),
-      'Paper',
     );
   });
 
@@ -98,7 +99,7 @@ describe('<MUIDataTable />', function() {
         label: 'Name',
         download: true,
         searchable: true,
-        sortDirection: null,
+        sortDirection: 'none',
         viewColumns: true,
         customFilterListRender: renderCustomFilterList,
         customBodyRender: renderName,
@@ -114,7 +115,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
       },
       {
         display: 'true',
@@ -128,7 +129,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
         customBodyRender: renderCities,
       },
       {
@@ -143,7 +144,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
         customBodyRender: renderState,
         customHeadRender: renderHead,
       },
@@ -159,7 +160,112 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
+      },
+    ];
+
+    assert.deepEqual(actualResult, expectedResult);
+  });
+
+  it('should correctly rebuild internal columns data structure', () => {
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
+
+    shallowWrapper.setProps({
+      columns: [
+        {
+          name: 'Test Name',
+          options: {
+            filter: false,
+            display: 'excluded',
+            customBodyRender: renderName,
+            customFilterListRender: renderCustomFilterList,
+          },
+        },
+        'Company',
+        { name: 'City', label: 'City Label', options: { customBodyRender: renderCities, filterType: 'textField' } },
+        {
+          name: 'State',
+          options: { customBodyRender: renderState, filterType: 'multiselect', customHeadRender: renderHead },
+        },
+        { name: 'Empty', options: { empty: true, filterType: 'checkbox' } },
+      ],
+    });
+
+    const actualResult = shallowWrapper.dive().state().columns;
+
+    const expectedResult = [
+      {
+        display: 'excluded',
+        empty: false,
+        print: true,
+        name: 'Test Name',
+        sort: true,
+        filter: false,
+        label: 'Test Name',
+        download: true,
+        searchable: true,
+        sortDirection: 'none',
+        viewColumns: true,
+        customFilterListRender: renderCustomFilterList,
+        customBodyRender: renderName,
+      },
+      {
+        display: 'true',
+        empty: false,
+        print: true,
+        name: 'Company',
+        sort: true,
+        filter: true,
+        label: 'Company',
+        download: true,
+        searchable: true,
+        viewColumns: true,
+        sortDirection: 'none',
+      },
+      {
+        display: 'true',
+        empty: false,
+        print: true,
+        name: 'City',
+        sort: true,
+        filter: true,
+        filterType: 'textField',
+        label: 'City Label',
+        download: true,
+        searchable: true,
+        viewColumns: true,
+        sortDirection: 'none',
+        customBodyRender: renderCities,
+      },
+      {
+        display: 'true',
+        empty: false,
+        print: true,
+        name: 'State',
+        sort: true,
+        filter: true,
+        filterType: 'multiselect',
+        label: 'State',
+        download: true,
+        searchable: true,
+        viewColumns: true,
+        sortDirection: 'none',
+        customBodyRender: renderState,
+        customHeadRender: renderHead,
+      },
+      {
+        display: 'true',
+        empty: true,
+        print: true,
+        name: 'Empty',
+        sort: true,
+        filter: true,
+        filterType: 'checkbox',
+        label: 'Empty',
+        download: true,
+        searchable: true,
+        viewColumns: true,
+        sortDirection: 'none',
       },
     ];
 
@@ -235,6 +341,39 @@ describe('<MUIDataTable />', function() {
     ];
 
     assert.deepEqual(state.data, expectedResult);
+  });
+
+  it('should correctly re-build table options before and after prop change', () => {
+    const options = {
+      textLabels: {
+        newObj: {
+          test: 'foo',
+        },
+      },
+      downloadOptions: {
+        separator: ':',
+      },
+    };
+    const newOptions = {
+      textLabels: {
+        newObj: {
+          test: 'bar',
+        },
+      },
+      downloadOptions: {
+        separator: ';',
+      },
+    };
+    const fullWrapper = mount(<MUIDataTable columns={columns} data={[]} options={options} />);
+    let props = fullWrapper.props();
+
+    assert.deepEqual(props.options, options);
+
+    fullWrapper.setProps({ options: newOptions, data });
+    fullWrapper.update();
+    props = fullWrapper.props();
+
+    assert.deepEqual(props.options, newOptions);
   });
 
   it('should correctly re-build internal table data while maintaining pagination after state change', () => {
@@ -427,6 +566,21 @@ describe('<MUIDataTable />', function() {
 
     const state = table.state();
     assert.deepEqual(state.filterList, [['Joe James'], [], [], [], []]);
+  });
+
+  it('should apply columns prop change for filterList', () => {
+    const mountShallowWrapper = mount(shallow(<MUIDataTable columns={columns} data={data} />).get(0));
+    const instance = mountShallowWrapper.instance();
+    instance.initializeTable(mountShallowWrapper.props());
+    // now use updated columns props
+    const newColumns = cloneDeep(columns);
+    newColumns[0].options.filterList = ['Joe James'];
+    mountShallowWrapper.setProps({ columns: newColumns });
+    mountShallowWrapper.update();
+    instance.setTableData(mountShallowWrapper.props(), 1 /* instance.TABLE_LOAD.INITIAL */);
+
+    const updatedState = mountShallowWrapper.state();
+    assert.deepEqual(updatedState.filterList, [['Joe James'], [], [], [], []]);
   });
 
   it('should create Chip when filterList is populated', () => {
@@ -631,7 +785,7 @@ describe('<MUIDataTable />', function() {
         label: 'Name',
         download: true,
         searchable: true,
-        sortDirection: null,
+        sortDirection: 'none',
         customBodyRender: renderName,
         viewColumns: true,
         customFilterListRender: renderCustomFilterList,
@@ -647,7 +801,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
       },
       {
         name: 'City',
@@ -660,7 +814,7 @@ describe('<MUIDataTable />', function() {
         label: 'City Label',
         download: true,
         searchable: true,
-        sortDirection: null,
+        sortDirection: 'none',
         customBodyRender: renderCities,
         viewColumns: true,
       },
@@ -676,7 +830,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
         customBodyRender: renderState,
         customHeadRender: renderHead,
       },
@@ -692,7 +846,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: null,
+        sortDirection: 'none',
       },
     ];
 
@@ -772,7 +926,7 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(state.selectedRows.data, [{ index: 1, dataIndex: 1 }]);
   });
 
-  it('If selectableRows=multiple, multiple cells can be selected when calling selectRowUpdate method with type=cell.', () => {
+  it('should allow multiple cells to be selected when selectableRows=multiple and selectRowUpdate method with type=cell.', () => {
     const options = { selectableRows: 'multiple' };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
     const instance = shallowWrapper.instance();
@@ -797,6 +951,113 @@ describe('<MUIDataTable />', function() {
     const expectedResult = [{ index: 0, dataIndex: 0 }, { index: 3, dataIndex: 3 }];
 
     assert.deepEqual(state.selectedRows.data, expectedResult);
+  });
+
+  it('should allow multiple cells to be selected when selectableRows=multiple and selectRowUpdate method with type=cell and there are adjacent rows.', () => {
+    const options = { selectableRows: 'multiple' };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 }, [
+      { index: 0, dataIndex: 0 },
+      { index: 1, dataIndex: 1 },
+    ]);
+    shallowWrapper.update();
+
+    const expectedResult = [{ index: 0, dataIndex: 0 }, { index: 1, dataIndex: 1 }];
+    const state = shallowWrapper.state();
+    assert.deepEqual(state.selectedRows.data, expectedResult);
+  });
+
+  it('should allow multiple cells to be selected and then unselected when selectableRows=multiple and selectRowUpdate method with type=cell and there are adjacent rows.', () => {
+    const options = { selectableRows: 'multiple' };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 }, [
+      { index: 1, dataIndex: 1 },
+      { index: 2, dataIndex: 2 },
+    ]);
+    instance.selectRowUpdate('cell', { index: 1, dataIndex: 1 }, [{ index: 0, dataIndex: 0 }]);
+    shallowWrapper.update();
+
+    const expectedResult = [{ index: 2, dataIndex: 2 }];
+    const state = shallowWrapper.state();
+    assert.deepEqual(state.selectedRows.data, expectedResult);
+  });
+
+  it('should not update selectedRows when using rowsSelected option with type=none', () => {
+    const options = {
+      selectableRows: 'none',
+      rowsSelected: [0],
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    const state = shallowWrapper.state();
+    const expectedResult = [];
+
+    assert.deepEqual(state.selectedRows.data, expectedResult);
+  });
+
+  it('should update selectedRows when using rowsSelected option with type=single', () => {
+    const options = {
+      selectableRows: 'single',
+      rowsSelected: [0],
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    const state = shallowWrapper.state();
+    const expectedResult = [{ index: 0, dataIndex: 0 }];
+
+    assert.deepEqual(state.selectedRows.data, expectedResult);
+  });
+
+  it('should update selectedRows when using rowsSelected option with type=multiple', () => {
+    const options = {
+      selectableRows: 'multiple',
+      rowsSelected: [0, 3],
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    const state = shallowWrapper.state();
+    const expectedResult = [{ index: 0, dataIndex: 0 }, { index: 3, dataIndex: 3 }];
+
+    assert.deepEqual(state.selectedRows.data, expectedResult);
+  });
+
+  it('should update selectedRows (with default type=multiple option) when using rowsSelected with no option specified', () => {
+    const options = {
+      rowsSelected: [0, 3],
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    const state = shallowWrapper.state();
+    const expectedResult = [{ index: 0, dataIndex: 0 }, { index: 3, dataIndex: 3 }];
+
+    assert.deepEqual(state.selectedRows.data, expectedResult);
+  });
+
+  it('should update expandedRows when using expandableRows option with default rowsExpanded', () => {
+    const options = {
+      expandableRows: true,
+      rowsExpanded: [0, 3],
+      renderExpandableRow: () => (
+        <tr>
+          <td>opened</td>
+        </tr>
+      ),
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    const state = shallowWrapper.state();
+    const expectedResult = [{ index: 0, dataIndex: 0 }, { index: 3, dataIndex: 3 }];
+
+    assert.deepEqual(state.expandedRows.data, expectedResult);
   });
 
   it('should remove selected data on selectRowDelete when type=cell', () => {
@@ -1069,7 +1330,7 @@ describe('<MUIDataTable />', function() {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'scroll',
+      responsive: 'scrollMaxHeight',
     };
 
     it('should correctly filter array data', () => {
@@ -1117,7 +1378,7 @@ describe('<MUIDataTable />', function() {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'scroll',
+      responsive: 'scrollMaxHeight',
     };
 
     it('should correctly filter data when no array data is present', () => {
