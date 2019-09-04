@@ -68,7 +68,7 @@ class TableHead extends React.Component {
                   hint={column.hint}
                   print={column.print}
                   options={options}
-                  label={column.label}>
+                  column={column}>
                   {column.label}
                 </TableHeadCell>
               )),
