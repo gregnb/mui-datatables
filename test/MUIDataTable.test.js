@@ -343,6 +343,39 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(state.data, expectedResult);
   });
 
+  it('should correctly re-build table options before and after prop change', () => {
+    const options = {
+      textLabels: {
+        newObj: {
+          test: 'foo',
+        },
+      },
+      downloadOptions: {
+        separator: ':',
+      },
+    };
+    const newOptions = {
+      textLabels: {
+        newObj: {
+          test: 'bar',
+        },
+      },
+      downloadOptions: {
+        separator: ';',
+      },
+    };
+    const fullWrapper = mount(<MUIDataTable columns={columns} data={[]} options={options} />);
+    let props = fullWrapper.props();
+
+    assert.deepEqual(props.options, options);
+
+    fullWrapper.setProps({ options: newOptions, data });
+    fullWrapper.update();
+    props = fullWrapper.props();
+
+    assert.deepEqual(props.options, newOptions);
+  });
+
   it('should correctly re-build internal table data while maintaining pagination after state change', () => {
     let currentPage;
     const options = {
