@@ -237,7 +237,7 @@ class MUIDataTable extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
-      this.updateOptions(this.props);
+      this.updateOptions(this.options, this.props);
       this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
         this.setTableAction('propsUpdate');
       });
@@ -254,8 +254,8 @@ class MUIDataTable extends React.Component {
     }
   }
 
-  updateOptions(props) {
-    this.options = assignwith(this.options, props.options, (objValue, srcValue, key) => {
+  updateOptions(options, props) {
+    this.options = assignwith(options, props.options, (objValue, srcValue, key) => {
       // Merge any default options that are objects, as they will be overwritten otherwise
       if (key === 'textLabels' || key === 'downloadOptions') return merge(objValue, srcValue);
       return;
@@ -325,9 +325,7 @@ class MUIDataTable extends React.Component {
   mergeDefaultOptions(props) {
     const defaultOptions = this.getDefaultOptions();
 
-    this.options = merge(defaultOptions, props.options);
-
-    this.handleOptionDeprecation(props);
+    this.updateOptions(defaultOptions, this.props);
   }
 
   validateOptions(options) {
