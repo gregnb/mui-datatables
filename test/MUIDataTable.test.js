@@ -496,6 +496,16 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(state.rowsPerPageOptions, [5, 10, 15]);
   });
 
+  it('should allow empty array rowsPerPageOptions when provided in options', () => {
+    const options = {
+      rowsPerPageOptions: [],
+    };
+
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+    const state = shallowWrapper.dive().state();
+    assert.deepEqual(state.rowsPerPageOptions, []);
+  });
+
   it('should render pagination when enabled in options', () => {
     const options = {
       pagination: true,
