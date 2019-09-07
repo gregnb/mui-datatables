@@ -11,7 +11,6 @@ const defaultBodyCellStyles = theme => ({
   cellStacked: {
     [theme.breakpoints.down('sm')]: {
       display: 'inline-block',
-      backgroundColor: theme.palette.background.paper,
       fontSize: '16px',
       height: '24px',
       width: 'calc(50% - 80px)',
