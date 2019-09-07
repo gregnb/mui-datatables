@@ -2,12 +2,11 @@ import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import MuiTable from '@material-ui/core/Table';
 import classnames from 'classnames';
-import assign from 'lodash.assign';
+import assignwith from 'lodash.assignwith';
 import cloneDeep from 'lodash.clonedeep';
 import find from 'lodash.find';
 import isUndefined from 'lodash.isundefined';
 import merge from 'lodash.merge';
-import assignwith from 'lodash.assignwith';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TableBody from './components/TableBody';
@@ -317,9 +316,6 @@ class MUIDataTable extends React.Component {
     }
     if (props.options.responsive === 'scroll') {
       console.error('This option has been deprecated. It is being replaced by scrollMaxHeight');
-    }
-    if (props.options.textLabels) {
-      this.options.textLabels = { ...textLabels, ...props.options.textLabels };
     }
   };
 

@@ -68,8 +68,8 @@ class TableHeadCell extends React.Component {
     hint: PropTypes.string,
     /** Column displayed in print */
     print: PropTypes.bool.isRequired,
-    /** Tooltip label to fall back to */
-    label: PropTypes.string,
+    /** Optional to be used with `textLabels.body.columnHeaderTooltip` */
+    column: PropTypes.object,
   };
 
   state = {
