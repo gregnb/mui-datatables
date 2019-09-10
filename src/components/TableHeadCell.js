@@ -27,6 +27,10 @@ const defaultHeadCellStyles = theme => ({
   data: {
     display: 'inline-block',
   },
+  noSortAction: {
+    display: 'flex',
+    verticalAlign: 'top',
+  },
   sortAction: {
     display: 'flex',
     verticalAlign: 'top',
@@ -161,7 +165,7 @@ class TableHeadCell extends React.Component {
             </span>
           </Tooltip>
         ) : (
-          <div className={classes.sortAction}>
+          <div className={hint ? classes.sortAction : classes.noSortAction}>
             {children}
             {hint && (
               <Tooltip
