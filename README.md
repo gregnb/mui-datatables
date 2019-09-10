@@ -154,6 +154,7 @@ The component accepts the following props:
 |**`customSort`**|function||Override default sorting with custom function. `function(data: array, colIndex: number, order: string) => array`
 |**`customSearch `**|function||Override default search with custom function. `customSearch(searchQuery: string, currentRow: array, columns: array) => boolean`
 |**`customSearchRender `**|function||Render a custom table search. `customSearchRender(searchText: string, handleSearch, hideSearch, options) => React Component`
+|**`customFilterDialogFooter `**|function||Add a custom footer to the filter dialog. `customFilterDialogFooter(filterList: array) => React Component`
 |**`elevation`**|number|4|Shadow depth applied to Paper component
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
 |**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: 'stacked', 'scrollMaxHeight' (limits height of table), 'scrollFullHeight' (table takes on as much height as needed to display all rows set in rowsPerPage)

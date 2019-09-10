@@ -266,7 +266,7 @@ class TableFilter extends React.Component {
   }
 
   render() {
-    const { classes, columns, options, onFilterReset } = this.props;
+    const { classes, columns, options, onFilterReset, customFooter, filterList } = this.props;
     const textLabels = options.textLabels.filter;
     const filterGridColumns = columns.filter(col => col.filter).length === 1 ? 1 : 2;
 
@@ -309,6 +309,7 @@ class TableFilter extends React.Component {
             }
           })}
         </GridList>
+        {customFooter ? customFooter(filterList) : ''}
       </div>
     );
   }
