@@ -126,6 +126,13 @@ class TableToolbar extends React.Component {
   };
 
   setActiveIcon = iconName => {
+    if (iconName === 'filter') {
+      this.props.setTableAction('onFilterDialogOpen');
+      if (this.props.options.onFilterDialogOpen) {
+        this.props.options.onFilterDialogOpen();
+      }
+    }
+
     this.setState(() => ({
       showSearch: this.isSearchShown(iconName),
       iconActive: iconName,
