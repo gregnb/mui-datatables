@@ -126,16 +126,23 @@ class TableToolbar extends React.Component {
   };
 
   setActiveIcon = iconName => {
-    this.setState({
+    this.setState(prevState => ({
       showSearch: this.isSearchShown(iconName),
       iconActive: iconName,
-    }, () => {
-      const { iconActive } = this.state;
+      prevIconActive: prevState.iconActive
+    }), () => {
+      const { iconActive, prevIconActive } = this.state;
 
       if (iconActive === 'filter') {
         this.props.setTableAction('onFilterDialogOpen');
         if (this.props.options.onFilterDialogOpen) {
           this.props.options.onFilterDialogOpen();
+        }
+      }
+      if (iconActive === undefined && prevIconActive === 'filter') {
+        this.props.setTableAction('onFilterDialogClose');
+        if (this.props.options.onFilterDialogClose) {
+          this.props.options.onFilterDialogClose();
         }
       }
     });

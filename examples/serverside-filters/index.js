@@ -161,6 +161,9 @@ class Example extends React.Component {
       onFilterDialogOpen: () => {
         console.log('filter dialog opened');
       },
+      onFilterDialogClose: () => {
+        console.log('filter dialog closed');
+      },
       onFilterChange: (column, filterList, type) => {
         if (type === 'chip') {
           console.log('updating filters via chip');

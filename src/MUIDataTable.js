@@ -152,6 +152,7 @@ class MUIDataTable extends React.Component {
       serverSide: PropTypes.bool,
       onFilterChange: PropTypes.func,
       onFilterDialogOpen: PropTypes.func,
+      onFilterDialogClose: PropTypes.func,
       onTableChange: PropTypes.func,
       onTableInit: PropTypes.func,
       caseSensitive: PropTypes.bool,
