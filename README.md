@@ -340,7 +340,7 @@ const options = {
     body: {
       noMatch: "Sorry, no matching records found",
       toolTip: "Sort",
-      columnHeaderTooltip: "Sort for `${column.label}`"
+      columnHeaderTooltip: column => `Sort for ${column.label}`
     },
     pagination: {
       next: "Next Page",
