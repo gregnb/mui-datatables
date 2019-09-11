@@ -15,9 +15,7 @@ const defaultBodyCellStyles = theme => ({
       width: '50%',
       whiteSpace: 'nowrap',
       boxSizing: 'border-box',
-      '&::after': {
-        content: "'\xa0'"
-      },
+      height: '32px',
       '&:nth-last-child(2)': {
         borderBottom: 'none'
       },
@@ -30,9 +28,7 @@ const defaultBodyCellStyles = theme => ({
       width: '50%',
       whiteSpace: 'nowrap',
       boxSizing: 'border-box',
-      '&::after': {
-        content: "'\xa0'"
-      },
+      height: '32px',
       '&:last-child': {
         borderBottom: 'none'
       },
