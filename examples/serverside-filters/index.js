@@ -5,6 +5,7 @@ import MUIDataTable from '../../src';
 
 class Example extends React.Component {
   state = {
+    serverSideFilterList: [],
     filters: [[], [], [], [], []],
     isLoading: false,
     data: [
@@ -107,7 +108,7 @@ class Example extends React.Component {
 
     // fake async request
     this.xhrRequest(`/myApiServer?filters=${filterList}`, filterList).then(res => {
-      this.setState({ isLoading: false, data: res.data });
+      this.setState({ isLoading: false, data: res.data, serverSideFilterList: filterList });
     });
   };
 
@@ -153,6 +154,7 @@ class Example extends React.Component {
 
     const options = {
       filter: true,
+      serverSideFilterList: this.state.serverSideFilterList,
       filterType: 'dropdown',
       responsive: 'scrollMaxHeight',
       serverSide: true,

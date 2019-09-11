@@ -135,6 +135,7 @@ The component accepts the following props:
 |**`page`**|number||User provided starting page for pagination
 |**`count`**|number||User provided override for total number of rows
 |**`serverSide`**|boolean|false|Enable remote data source
+|**`serverSideFilterList`**|array|[]|Sets the filter list display when using serverSide: true
 |**`rowsSelected`**|array||User provided selected rows
 |**`rowsExpanded`**|array||User provided expanded rows
 |**`filterType`**|string||Choice of filtering view. `enum('checkbox', 'dropdown', 'multiselect', 'textField', 'custom')`

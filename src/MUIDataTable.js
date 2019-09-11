@@ -280,6 +280,7 @@ class MUIDataTable extends React.Component {
     filterType: 'dropdown',
     pagination: true,
     textLabels,
+    serverSideFilterList: [],
     expandableRows: false,
     expandableRowsOnClick: false,
     resizableColumns: false,
@@ -1218,6 +1219,7 @@ class MUIDataTable extends React.Component {
       previousSelectedRow,
       expandedRows,
       searchText,
+      serverSideFilterList,
     } = this.state;
 
     const rowCount = this.state.count || displayData.length;
@@ -1277,6 +1279,7 @@ class MUIDataTable extends React.Component {
         )}
         <TableFilterList
           options={this.options}
+          serverSideFilterList={this.props.options.serverSideFilterList || []}
           filterListRenderers={columns.map(c => {
             return c.customFilterListRender ? c.customFilterListRender : f => f;
           })}
