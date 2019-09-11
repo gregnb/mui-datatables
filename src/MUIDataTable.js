@@ -1229,7 +1229,7 @@ class MUIDataTable extends React.Component {
         responsiveClass = classes.responsiveScrollMaxHeight;
         break;
       case 'scrollFullHeight':
-        responsiveClass = classes.responsiveFullHeight;
+        responsiveClass = classes.responsiveScrollFullHeight;
         break;
       case 'stacked':
         responsiveClass = classes.responsiveStacked;
