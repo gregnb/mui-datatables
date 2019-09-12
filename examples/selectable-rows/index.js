@@ -95,7 +95,8 @@ class Example extends React.Component {
         if (selectedRows.data.length > 2 && selectedRows.data.filter(d => d.dataIndex === dataIndex).length === 0) return false;
         //prevents selection of row with title "Attorney"
         return data[dataIndex][1] != "Attorney";
-      }
+      },
+      selectableRowsHeader: false
     };
 
     return (
