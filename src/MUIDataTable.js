@@ -960,6 +960,9 @@ class MUIDataTable extends React.Component {
           case 'multiselect':
             filterList[index] = value === '' ? [] : value;
             break;
+          case 'dropdown':
+            filterList[index] = value;
+            break;
           case 'custom':
             filterList[index] = value;
             break;
