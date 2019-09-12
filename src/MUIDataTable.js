@@ -779,7 +779,7 @@ class MUIDataTable extends React.Component {
 
   getDisplayData(columns, data, filterList, searchText, tableMeta) {
     let newRows = [];
-    const dataForTableMeta = tableMeta ? tableMeta.tableData : [];
+    const dataForTableMeta = tableMeta ? tableMeta.tableData : this.props.data;
 
     for (let index = 0; index < data.length; index++) {
       const value = data[index].data;
