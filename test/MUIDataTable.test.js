@@ -739,7 +739,7 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
   });
 
-  it('should sort provided column in descending order when calling toggleSortColum method for the first time', () => {
+  it('should sort provided column with defined data, in descending order when calling toggleSortColum method for the first time', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
     const instance = shallowWrapper.instance();
 
@@ -752,6 +752,24 @@ describe('<MUIDataTable />', function() {
       { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 1 }), 'NY', undefined], dataIndex: 0 },
       { data: ['Houston, James', 'Test Corp', renderCities('Dallas', { rowIndex: 2 }), 'TX', undefined], dataIndex: 3 },
       { data: ['Herm, Bob', 'Test Corp', renderCities('Tampa', { rowIndex: 3 }), 'FL', undefined], dataIndex: 2 },
+    ]);
+
+    assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
+  });
+
+  it('should sort provided column with undefined data as though it were an empty string, in descending order when calling toggleSortColum method for the first time', () => {
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.toggleSortColumn(4);
+    shallowWrapper.update();
+    const state = shallowWrapper.state();
+
+    const expectedResult = JSON.stringify([
+      { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 0 }), 'NY', undefined], dataIndex: 0 },
+      { data: ['Walsh, John', 'Test Corp', renderCities('Hartford', { rowIndex: 1 }), null, undefined], dataIndex: 1 },
+      { data: ['Herm, Bob', 'Test Corp', renderCities('Tampa', { rowIndex: 2 }), 'FL', undefined], dataIndex: 2 },
+      { data: ['Houston, James', 'Test Corp', renderCities('Dallas', { rowIndex: 3 }), 'TX', undefined], dataIndex: 3 },
     ]);
 
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
