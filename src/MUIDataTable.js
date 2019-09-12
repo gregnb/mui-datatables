@@ -462,6 +462,7 @@ class MUIDataTable extends React.Component {
     let { columns, filterData, filterList } = this.buildColumns(props.columns);
     let sortIndex = null;
     let sortDirection = 'none';
+    let tableMeta;
 
     const data = status === TABLE_LOAD.INITIAL ? this.transformData(columns, props.data) : props.data;
     const searchText = status === TABLE_LOAD.INITIAL ? this.options.searchText : null;
@@ -478,7 +479,8 @@ class MUIDataTable extends React.Component {
         }
 
         if (typeof column.customBodyRender === 'function') {
-          const tableMeta = this.getTableMeta(rowIndex, colIndex, value, column, [], this.state);
+          const rowData = tableData[rowIndex].data;
+          tableMeta = this.getTableMeta(rowIndex, colIndex, rowData, column, data, this.state);
           const funcResult = column.customBodyRender(value, tableMeta);
 
           if (React.isValidElement(funcResult) && funcResult.props.value) {
@@ -613,7 +615,7 @@ class MUIDataTable extends React.Component {
         expandedRows: expandedRowsData,
         count: this.options.count,
         data: tableData,
-        displayData: this.getDisplayData(columns, tableData, filterList, searchText),
+        displayData: this.getDisplayData(columns, tableData, filterList, searchText, tableMeta),
         previousSelectedRow: null,
       },
       callback,
@@ -623,18 +625,18 @@ class MUIDataTable extends React.Component {
   /*
    *  Build the table data used to display to the user (ie: after filter/search applied)
    */
-  computeDisplayRow(columns, row, rowIndex, filterList, searchText) {
+  computeDisplayRow(columns, row, rowIndex, filterList, searchText, dataForTableMeta) {
     let isFiltered = false;
     let isSearchFound = false;
     let displayRow = [];
-
+    const data = this.state.data.length ? this.state.data : this.props.data;
     for (let index = 0; index < row.length; index++) {
       let columnDisplay = row[index];
       let columnValue = row[index];
       let column = columns[index];
 
       if (column.customBodyRender) {
-        const tableMeta = this.getTableMeta(rowIndex, index, row, column, this.state.data, {
+        const tableMeta = this.getTableMeta(rowIndex, index, row, column, dataForTableMeta, {
           ...this.state,
           filterList: filterList,
           searchText: searchText,
@@ -775,12 +777,13 @@ class MUIDataTable extends React.Component {
     };
   };
 
-  getDisplayData(columns, data, filterList, searchText) {
+  getDisplayData(columns, data, filterList, searchText, tableMeta) {
     let newRows = [];
+    const dataForTableMeta = tableMeta ? tableMeta.tableData : [];
 
     for (let index = 0; index < data.length; index++) {
       const value = data[index].data;
-      const displayRow = this.computeDisplayRow(columns, value, index, filterList, searchText);
+      const displayRow = this.computeDisplayRow(columns, value, index, filterList, searchText, dataForTableMeta);
 
       if (displayRow) {
         newRows.push({
