@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    app: "./examples/customize-search/index.js"
+    app: "./examples/Router/index.js"
   },
   stats: "verbose",
   context: __dirname,
