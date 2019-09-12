@@ -919,6 +919,9 @@ class MUIDataTable extends React.Component {
       }),
       () => {
         this.setTableAction('search');
+        if (this.options.onSearchChange) {
+          this.options.onSearchChange(this.state.searchText);
+        }
       },
     );
   };

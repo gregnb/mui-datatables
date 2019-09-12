@@ -139,6 +139,7 @@ class TableToolbar extends React.Component {
         nextVal = true;
       } else {
         const { onSearchClose } = this.props.options;
+        this.props.setTableAction('onSearchClose');
         if (onSearchClose) onSearchClose();
         nextVal = false;
       }
@@ -153,14 +154,15 @@ class TableToolbar extends React.Component {
   };
 
   showSearch = () => {
-    !!this.props.options.onSearchOpen && this.props.options.onSearchOpen();
     this.props.setTableAction('onSearchOpen');
+    !!this.props.options.onSearchOpen && this.props.options.onSearchOpen();
     return true;
   };
 
   hideSearch = () => {
     const { onSearchClose } = this.props.options;
 
+    this.props.setTableAction('onSearchClose');
     if (onSearchClose) onSearchClose();
     this.props.searchTextUpdate(null);
 
