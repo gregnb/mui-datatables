@@ -26,9 +26,9 @@ function sortCompare(order) {
   };
 }
 
-function createCSVDownload(columns, data, options) {
+function assembleCSV(columns, data, options) {
   const replaceDoubleQuoteInString = columnData =>
-    typeof columnData === 'string' ? columnData.replace(/\"/g, '""') : columnData;
+  typeof columnData === 'string' ? columnData.replace(/\"/g, '""') : columnData;
 
   const buildHead = columns => {
     return (
@@ -66,15 +66,15 @@ function createCSVDownload(columns, data, options) {
     ? options.onDownload(buildHead, buildBody, columns, data)
     : `${CSVHead}${CSVBody}`.trim();
 
-  if (options.onDownload && csv === false) {
-    return;
-  }
+  return csv;
+}
 
+function downloadCSV(csv, filename) {
   const blob = new Blob([csv], { type: 'text/csv' });
 
   /* taken from react-csv */
   if (navigator && navigator.msSaveOrOpenBlob) {
-    navigator.msSaveOrOpenBlob(blob, options.downloadOptions.filename);
+    navigator.msSaveOrOpenBlob(blob, filename);
   } else {
     const dataURI = `data:text/csv;charset=utf-8,${csv}`;
 
@@ -83,10 +83,17 @@ function createCSVDownload(columns, data, options) {
 
     let link = document.createElement('a');
     link.setAttribute('href', downloadURI);
-    link.setAttribute('download', options.downloadOptions.filename);
+    link.setAttribute('download', filename);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  }
+}
+
+function createCSVDownload(columns, data, options) {
+  const csv = assembleCSV(columns, data, options);
+  if (csv) {
+    downloadCSV(csv, options.downloadOptions.filename);
   }
 }
 
