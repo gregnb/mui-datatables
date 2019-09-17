@@ -480,7 +480,8 @@ class MUIDataTable extends React.Component {
 
         if (typeof column.customBodyRender === 'function') {
           const rowData = tableData[rowIndex].data;
-          tableMeta = this.getTableMeta(rowIndex, colIndex, rowData, column, data, this.state);
+          const dataForTableMeta = this.transformData(columns, props.data);
+          tableMeta = this.getTableMeta(rowIndex, colIndex, rowData, column, dataForTableMeta, this.state);
           const funcResult = column.customBodyRender(value, tableMeta);
 
           if (React.isValidElement(funcResult) && funcResult.props.value) {
@@ -779,7 +780,7 @@ class MUIDataTable extends React.Component {
 
   getDisplayData(columns, data, filterList, searchText, tableMeta) {
     let newRows = [];
-    const dataForTableMeta = tableMeta ? tableMeta.tableData : this.props.data;
+    const dataForTableMeta = tableMeta ? tableMeta.tableData : this.transformData(columns, this.props.data);
 
     for (let index = 0; index < data.length; index++) {
       const value = data[index].data;
