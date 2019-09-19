@@ -79,7 +79,7 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'scroll',
+      responsive: 'scrollMaxHeight',
       expandableRows: true,
       expandableRowsOnClick: true,
       rowsExpanded: [0, 2, 3],
@@ -102,4 +102,4 @@ class Example extends React.Component {
   }
 }
 
-ReactDOM.render(<Example />, document.getElementById("app-root"));
+export default Example;

@@ -67,7 +67,7 @@ class Example extends React.Component {
     filter: true,
     selectableRows: true,
     filterType: 'dropdown',
-    responsive: 'scroll',
+    responsive: 'scrollMaxHeight',
     rowsPerPage: 10,
     download: false, // hide csv download option
     onTableInit: this.handleTableInit,
@@ -79,4 +79,4 @@ class Example extends React.Component {
   }
 }
 
-ReactDOM.render(<Example />, document.getElementById('app-root'));
+export default Example;
