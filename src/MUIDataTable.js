@@ -2,11 +2,11 @@ import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import MuiTable from '@material-ui/core/Table';
 import classnames from 'classnames';
+import assignwith from 'lodash.assignwith';
 import cloneDeep from 'lodash.clonedeep';
 import find from 'lodash.find';
 import isUndefined from 'lodash.isundefined';
 import merge from 'lodash.merge';
-import assign from 'lodash.assign';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TableBody from './components/TableBody';
@@ -150,6 +150,7 @@ class MUIDataTable extends React.Component {
       selectableRows: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['none', 'single', 'multiple'])]),
       selectableRowsOnClick: PropTypes.bool,
       isRowSelectable: PropTypes.func,
+      selectableRowsHeader: PropTypes.bool,
       serverSide: PropTypes.bool,
       onTableChange: PropTypes.func,
       onTableInit: PropTypes.func,
@@ -241,7 +242,7 @@ class MUIDataTable extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.data !== prevProps.data || this.props.columns !== prevProps.columns) {
-      this.updateOptions(this.props);
+      this.updateOptions(this.options, this.props);
       this.setTableData(this.props, TABLE_LOAD.INITIAL, () => {
         this.setTableAction('propsUpdate');
       });
@@ -258,71 +259,79 @@ class MUIDataTable extends React.Component {
     }
   }
 
-  updateOptions(props) {
-    this.options = assign(this.options, props.options);
+  updateOptions(options, props) {
+    this.options = assignwith(options, props.options, (objValue, srcValue, key) => {
+      // Merge any default options that are objects, as they will be overwritten otherwise
+      if (key === 'textLabels' || key === 'downloadOptions') return merge(objValue, srcValue);
+      return;
+    });
+
+    this.handleOptionDeprecation(props);
   }
 
   initializeTable(props) {
-    this.getDefaultOptions(props);
+    this.mergeDefaultOptions(props);
     this.setTableOptions();
     this.setTableData(props, TABLE_LOAD.INITIAL, () => {
       this.setTableInit('tableInitialized');
     });
   }
 
-  /*
-   * React currently does not support deep merge for defaultProps. Objects are overwritten
-   */
-  getDefaultOptions(props) {
-    const defaultOptions = {
-      responsive: 'stacked',
-      filterType: 'dropdown',
-      pagination: true,
-      textLabels,
-      expandableRows: false,
-      expandableRowsOnClick: false,
-      resizableColumns: false,
-      selectableRows: 'multiple',
-      selectableRowsOnClick: false,
-      caseSensitive: false,
-      serverSide: false,
-      rowHover: true,
-      fixedHeader: true,
-      elevation: 4,
-      rowsPerPage: 10,
-      rowsPerPageOptions: [10, 15, 100],
-      filter: true,
-      sortFilterList: true,
-      sort: true,
-      search: true,
-      print: true,
-      viewColumns: true,
-      download: true,
-      downloadOptions: {
-        filename: 'tableDownload.csv',
-        separator: ',',
-      },
-    };
+  getDefaultOptions = () => ({
+    responsive: 'stacked',
+    filterType: 'dropdown',
+    pagination: true,
+    textLabels,
+    expandableRows: false,
+    expandableRowsOnClick: false,
+    resizableColumns: false,
+    selectableRows: 'multiple',
+    selectableRowsOnClick: false,
+    selectableRowsHeader: true,
+    caseSensitive: false,
+    serverSide: false,
+    rowHover: true,
+    fixedHeader: true,
+    elevation: 4,
+    rowsPerPage: 10,
+    rowsPerPageOptions: [10, 15, 100],
+    filter: true,
+    sortFilterList: true,
+    sort: true,
+    search: true,
+    print: true,
+    viewColumns: true,
+    download: true,
+    downloadOptions: {
+      filename: 'tableDownload.csv',
+      separator: ',',
+    },
+  });
 
-    const extra = {};
+  handleOptionDeprecation = props => {
     if (typeof props.options.selectableRows === 'boolean') {
       console.error(
         'Using a boolean for selectableRows has been deprecated. Please use string option: multiple | single | none',
       );
-      extra.selectableRows = props.options.selectableRows ? 'multiple' : 'none';
+      this.options.selectableRows = props.options.selectableRows ? 'multiple' : 'none';
     }
-    this.options = merge(defaultOptions, props.options, extra);
-    if (props.options.rowsPerPageOptions) {
-      this.options.rowsPerPageOptions = props.options.rowsPerPageOptions;
-    }
-    if (['scrollMaxHeight', 'scrollFullHeight', 'stacked'].indexOf(this.options.responsive) === -1) {
+    if (['scrollMaxHeight', 'scrollFullHeight', 'stacked'].indexOf(props.options.responsive) === -1) {
       console.error(
         'Invalid option value for responsive. Please use string option: scrollMaxHeight | scrollFullHeight | stacked',
       );
     }
-    if (this.options.responsive === 'scroll') {
+    if (props.options.responsive === 'scroll') {
       console.error('This option has been deprecated. It is being replaced by scrollMaxHeight');
     }
+  };
+
+  /*
+   * React currently does not support deep merge for defaultProps. Objects are overwritten
+   */
+  mergeDefaultOptions(props) {
+    const defaultOptions = this.getDefaultOptions();
+
+    this.updateOptions(defaultOptions, this.props);
   }
 
   validateOptions(options) {
@@ -457,6 +466,7 @@ class MUIDataTable extends React.Component {
     let { columns, filterData, filterList } = this.buildColumns(props.columns);
     let sortIndex = null;
     let sortDirection = 'none';
+    let tableMeta;
 
     const data = status === TABLE_LOAD.INITIAL ? this.transformData(columns, props.data) : props.data;
     const searchText = status === TABLE_LOAD.INITIAL ? this.options.searchText : null;
@@ -473,7 +483,8 @@ class MUIDataTable extends React.Component {
         }
 
         if (typeof column.customBodyRender === 'function') {
-          const tableMeta = this.getTableMeta(rowIndex, colIndex, value, column, [], this.state);
+          const rowData = tableData[rowIndex].data;
+          tableMeta = this.getTableMeta(rowIndex, colIndex, rowData, column, data, this.state);
           const funcResult = column.customBodyRender(value, tableMeta);
 
           if (React.isValidElement(funcResult) && funcResult.props.value) {
@@ -608,7 +619,7 @@ class MUIDataTable extends React.Component {
         expandedRows: expandedRowsData,
         count: this.options.count,
         data: tableData,
-        displayData: this.getDisplayData(columns, tableData, filterList, searchText),
+        displayData: this.getDisplayData(columns, tableData, filterList, searchText, tableMeta),
         previousSelectedRow: null,
       },
       callback,
@@ -618,18 +629,18 @@ class MUIDataTable extends React.Component {
   /*
    *  Build the table data used to display to the user (ie: after filter/search applied)
    */
-  computeDisplayRow(columns, row, rowIndex, filterList, searchText) {
+  computeDisplayRow(columns, row, rowIndex, filterList, searchText, dataForTableMeta) {
     let isFiltered = false;
     let isSearchFound = false;
     let displayRow = [];
-
+    const data = this.state.data.length ? this.state.data : this.props.data;
     for (let index = 0; index < row.length; index++) {
       let columnDisplay = row[index];
       let columnValue = row[index];
       let column = columns[index];
 
       if (column.customBodyRender) {
-        const tableMeta = this.getTableMeta(rowIndex, index, row, column, this.state.data, {
+        const tableMeta = this.getTableMeta(rowIndex, index, row, column, dataForTableMeta, {
           ...this.state,
           filterList: filterList,
           searchText: searchText,
@@ -770,12 +781,13 @@ class MUIDataTable extends React.Component {
     };
   };
 
-  getDisplayData(columns, data, filterList, searchText) {
+  getDisplayData(columns, data, filterList, searchText, tableMeta) {
     let newRows = [];
+    const dataForTableMeta = tableMeta ? tableMeta.tableData : this.props.data;
 
     for (let index = 0; index < data.length; index++) {
       const value = data[index].data;
-      const displayRow = this.computeDisplayRow(columns, value, index, filterList, searchText);
+      const displayRow = this.computeDisplayRow(columns, value, index, filterList, searchText, dataForTableMeta);
 
       if (displayRow) {
         newRows.push({
@@ -916,6 +928,9 @@ class MUIDataTable extends React.Component {
       }),
       () => {
         this.setTableAction('search');
+        if (this.options.onSearchChange) {
+          this.options.onSearchChange(this.state.searchText);
+        }
       },
     );
   };
@@ -953,6 +968,9 @@ class MUIDataTable extends React.Component {
             break;
           case 'multiselect':
             filterList[index] = value === '' ? [] : value;
+            break;
+          case 'dropdown':
+            filterList[index] = value;
             break;
           case 'custom':
             filterList[index] = value;
@@ -1226,7 +1244,7 @@ class MUIDataTable extends React.Component {
         responsiveClass = classes.responsiveScrollMaxHeight;
         break;
       case 'scrollFullHeight':
-        responsiveClass = classes.responsiveFullHeight;
+        responsiveClass = classes.responsiveScrollFullHeight;
         break;
       case 'stacked':
         responsiveClass = classes.responsiveStacked;

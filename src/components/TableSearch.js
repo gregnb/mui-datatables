@@ -28,12 +28,6 @@ const defaultSearchStyles = theme => ({
 
 class TableSearch extends React.Component {
   handleTextChange = event => {
-    const { onSearchChange } = this.props.options;
-
-    if (onSearchChange) {
-      onSearchChange(event.target.value);
-    }
-
     this.props.onSearch(event.target.value);
   };
 

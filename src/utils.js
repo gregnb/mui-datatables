@@ -17,10 +17,10 @@ function getCollatorComparator() {
 
 function sortCompare(order) {
   return (a, b) => {
-    if (a.data === null) a.data = '';
-    if (b.data === null) b.data = '';
+    var aData = a.data === null || typeof a.data === 'undefined' ? '' : a.data;
+    var bData = b.data === null || typeof b.data === 'undefined' ? '' : b.data;
     return (
-      (typeof a.data.localeCompare === 'function' ? a.data.localeCompare(b.data) : a.data - b.data) *
+      (typeof aData.localeCompare === 'function' ? aData.localeCompare(bData) : aData - bData) *
       (order === 'asc' ? 1 : -1)
     );
   };
