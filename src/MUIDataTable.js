@@ -303,6 +303,7 @@ class MUIDataTable extends React.Component {
       filename: 'tableDownload.csv',
       separator: ',',
     },
+    setTableProps: () => ({}),
   });
 
   handleOptionDeprecation = props => {
@@ -823,11 +824,7 @@ class MUIDataTable extends React.Component {
 
   getTableProps() {
     const { classes } = this.props;
-    let tableProps = {};
-
-    if (typeof this.options.setTableProps === 'function') {
-      tableProps = this.options.setTableProps();
-    }
+    const tableProps = this.options.setTableProps();
 
     tableProps.className = classnames(classes.tableRoot, tableProps.className);
 
