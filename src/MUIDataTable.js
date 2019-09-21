@@ -823,7 +823,11 @@ class MUIDataTable extends React.Component {
 
   getTableProps() {
     const { classes } = this.props;
-    const tableProps = this.options.setTableProps();
+    let tableProps = {};
+
+    if (typeof this.options.setTableProps === 'function') {
+      tableProps = this.options.setTableProps();
+    }
 
     tableProps.className = classnames(classes.tableRoot, tableProps.className);
 
@@ -1307,11 +1311,7 @@ class MUIDataTable extends React.Component {
               setResizeable={fn => (this.setHeadResizeable = fn)}
             />
           )}
-          <MuiTable
-            ref={el => (this.tableRef = el)}
-            tabIndex={'0'}
-            role={'grid'}
-            {...this.getTableProps()}>
+          <MuiTable ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'} {...this.getTableProps()}>
             <caption className={classes.caption}>{title}</caption>
             <TableHead
               columns={columns}

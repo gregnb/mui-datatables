@@ -1262,7 +1262,7 @@ describe('<MUIDataTable />', function() {
     const instance = shallowWrapper.dive().instance();
     const expectedProps = {
       className: `${instance.props.classes.tableRoot} foo bar`,
-      title: 'baz'
+      title: 'baz',
     };
 
     assert.deepEqual(instance.getTableProps(), expectedProps);
