@@ -26,7 +26,7 @@ describe('<MUIDataTable />', function() {
   let defaultRenderCustomFilterList = f => f;
   let renderCustomFilterList = f => `Name: ${f}`;
 
-  before(() => {
+  beforeEach(() => {
     columns = [
       { name: 'Name', options: { customBodyRender: renderName, customFilterListRender: renderCustomFilterList } },
       'Company',
@@ -103,6 +103,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         customFilterListRender: renderCustomFilterList,
         customBodyRender: renderName,
+        sortFn: null,
       },
       {
         display: 'true',
@@ -116,6 +117,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         viewColumns: true,
         sortDirection: 'none',
+        sortFn: null,
       },
       {
         display: 'true',
@@ -131,6 +133,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         sortDirection: 'none',
         customBodyRender: renderCities,
+        sortFn: null,
       },
       {
         display: 'true',
@@ -147,6 +150,7 @@ describe('<MUIDataTable />', function() {
         sortDirection: 'none',
         customBodyRender: renderState,
         customHeadRender: renderHead,
+        sortFn: null,
       },
       {
         display: 'true',
@@ -161,6 +165,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         viewColumns: true,
         sortDirection: 'none',
+        sortFn: null,
       },
     ];
 
@@ -208,6 +213,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         customFilterListRender: renderCustomFilterList,
         customBodyRender: renderName,
+        sortFn: null,
       },
       {
         display: 'true',
@@ -221,6 +227,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         viewColumns: true,
         sortDirection: 'none',
+        sortFn: null,
       },
       {
         display: 'true',
@@ -236,6 +243,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         sortDirection: 'none',
         customBodyRender: renderCities,
+        sortFn: null,
       },
       {
         display: 'true',
@@ -252,6 +260,7 @@ describe('<MUIDataTable />', function() {
         sortDirection: 'none',
         customBodyRender: renderState,
         customHeadRender: renderHead,
+        sortFn: null,
       },
       {
         display: 'true',
@@ -266,6 +275,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         viewColumns: true,
         sortDirection: 'none',
+        sortFn: null,
       },
     ];
 
@@ -794,6 +804,25 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
   });
 
+  it('should sort provided column with custom column sort function (sort by name length) in descending order', () => {
+    columns[0].options.sortFn = (order) => ({data: val1}, {data: val2}) => (val1.length - val2.length) * (order === 'asc' ? 1 : -1);
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.toggleSortColumn(0);
+    shallowWrapper.update();
+    const state = shallowWrapper.state();
+
+    const expectedResult = JSON.stringify([            
+      { data: ['Houston, James', 'Test Corp', renderCities('Dallas', { rowIndex: 0 }), 'TX', undefined], dataIndex: 3 },
+      { data: ['Walsh, John', 'Test Corp', renderCities('Hartford', { rowIndex: 1 }), null, undefined], dataIndex: 1 },      
+      { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 2 }), 'NY', undefined], dataIndex: 0 },
+      { data: ['Herm, Bob', 'Test Corp', renderCities('Tampa', { rowIndex: 3 }), 'FL', undefined], dataIndex: 2 },
+    ]);
+
+    assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
+  });
+
   it('should toggle provided column when calling toggleViewCol method', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
     const instance = shallowWrapper.instance();
@@ -817,6 +846,7 @@ describe('<MUIDataTable />', function() {
         customBodyRender: renderName,
         viewColumns: true,
         customFilterListRender: renderCustomFilterList,
+        sortFn: null,
       },
       {
         name: 'Company',
@@ -830,6 +860,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         viewColumns: true,
         sortDirection: 'none',
+        sortFn: null,
       },
       {
         name: 'City',
@@ -845,6 +876,7 @@ describe('<MUIDataTable />', function() {
         sortDirection: 'none',
         customBodyRender: renderCities,
         viewColumns: true,
+        sortFn: null,
       },
       {
         name: 'State',
@@ -861,6 +893,7 @@ describe('<MUIDataTable />', function() {
         sortDirection: 'none',
         customBodyRender: renderState,
         customHeadRender: renderHead,
+        sortFn: null,
       },
       {
         name: 'Empty',
@@ -875,6 +908,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         viewColumns: true,
         sortDirection: 'none',
+        sortFn: null,
       },
     ];
 

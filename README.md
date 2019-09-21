@@ -228,6 +228,7 @@ const columns = [
 |**`sort`**|boolean|true|Enable/disable sorting on column
 |**`searchable`**|boolean|true|Exclude/include column from search results
 |**`sortDirection`**|string||Set default sort order `enum('asc', 'desc', 'none')`
+|**`sortFn`**|function||Custom sort function for that column: `(order) => ({data: val1}, {data: val2}) => -1|1|0` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-sort/index.js).<br>Note: currently doesn't work with table `customSort`|
 |**`print`**|boolean|true|Display column when printing
 |**`download`**|boolean|true|Display column in CSV download file
 |**`hint`**|string||Display hint icon with string as tooltip on hover.

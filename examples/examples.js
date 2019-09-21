@@ -27,6 +27,7 @@ import ServerSidePagination from "./serverside-pagination";
 import Simple from "./simple";
 import SimpleNoToolbar from "./simple-no-toolbar";
 import TextLocalization from "./text-localization";
+import ColumnSort from "./column-sort";
 import Themes from "./themes";
 
 /**
@@ -35,6 +36,7 @@ import Themes from "./themes";
 export default {
     'Array Value Columns': ArrayValueColumns,
     'Column Filters': ColumnFilters,
+    'Column Sort': ColumnSort,
     'Column Option Update': ColumnOptionsUpdate,
     'Component': Component,
     'CSV Export': CSVExport,
