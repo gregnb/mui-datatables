@@ -1250,6 +1250,24 @@ describe('<MUIDataTable />', function() {
     assert.equal(state.displayData.length, data.length);
   });
 
+  it('should correctly build internal tableProps when setTableProps passed in options', () => {
+    const options = {
+      setTableProps: () => ({
+        className: 'foo bar',
+        title: 'baz',
+      }),
+    };
+
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+    const instance = shallowWrapper.dive().instance();
+    const expectedProps = {
+      className: `${instance.props.classes.tableRoot} foo bar`,
+      title: 'baz'
+    };
+
+    assert.deepEqual(instance.getTableProps(), expectedProps);
+  });
+
   describe('should displayData consider filterOptions with logic', () => {
     it('with one column', () => {
       const customFilterColumns = columns.map(c => {
