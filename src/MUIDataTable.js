@@ -1064,7 +1064,7 @@ class MUIDataTable extends React.Component {
         prevState => {
           const { displayData, selectedRows: prevSelectedRows } = prevState;
           const selectedRowsLen = prevState.selectedRows.data.length;
-          const isDeselect =
+          let isDeselect =
             selectedRowsLen === displayData.length || (selectedRowsLen < displayData.length && selectedRowsLen > 0);
 
           let selectedRows = displayData.reduce((arr, d, i) => {
