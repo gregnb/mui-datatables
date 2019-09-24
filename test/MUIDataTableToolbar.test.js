@@ -79,8 +79,8 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(actualResult.props().options.searchText, 'searchText');
   });
 
-  it('should render a toolbar with search if option.showSearch = true', () => {
-    const newOptions = { ...options, showSearch: true };
+  it('should render a toolbar with search if option.searchOpen = true', () => {
+    const newOptions = { ...options, searchOpen: true };
     const mountWrapper = mount(
       <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
     );
