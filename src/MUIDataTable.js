@@ -121,6 +121,7 @@ class MUIDataTable extends React.Component {
               }),
             ]),
             filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField', 'custom']),
+            customHeadContentRender: PropTypes.func,
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,
             customFilterListRender: PropTypes.func,
