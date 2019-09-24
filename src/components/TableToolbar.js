@@ -80,7 +80,7 @@ export const defaultToolbarStyles = theme => ({
 class TableToolbar extends React.Component {
   state = {
     iconActive: null,
-    showSearch: Boolean(this.props.searchText || this.props.options.searchText || this.props.options.showSearch),
+    searchOpen: Boolean(this.props.searchText || this.props.options.searchText || this.props.options.searchOpen),
     searchText: this.props.searchText || null,
   };
 
@@ -127,14 +127,14 @@ class TableToolbar extends React.Component {
 
   setActiveIcon = iconName => {
     this.setState(() => ({
-      showSearch: this.isSearchShown(iconName),
+      searchOpen: this.isSearchShown(iconName),
       iconActive: iconName,
     }));
   };
 
   isSearchShown = iconName => {
     let nextVal = false;
-    if (this.state.showSearch) {
+    if (this.state.searchOpen) {
       if (this.state.searchText) {
         nextVal = true;
       } else {
@@ -143,7 +143,7 @@ class TableToolbar extends React.Component {
         nextVal = false;
       }
     } else if (iconName === 'search') {
-      nextVal = this.showSearch();
+      nextVal = this.searchOpen();
     }
     return nextVal;
   };
@@ -152,7 +152,7 @@ class TableToolbar extends React.Component {
     return this.state.iconActive !== iconName ? styles.icon : styles.iconActive;
   };
 
-  showSearch = () => {
+  searchOpen = () => {
     !!this.props.options.onSearchOpen && this.props.options.onSearchOpen();
     this.props.setTableAction('onSearchOpen');
     return true;
@@ -166,7 +166,7 @@ class TableToolbar extends React.Component {
 
     this.setState(() => ({
       iconActive: null,
-      showSearch: false,
+      searchOpen: false,
       searchText: null,
     }));
 
@@ -194,12 +194,12 @@ class TableToolbar extends React.Component {
     } = this.props;
 
     const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;
-    const { showSearch, searchText } = this.state;
+    const { searchOpen, searchText } = this.state;
 
     return (
       <Toolbar className={classes.root} role={'toolbar'} aria-label={'Table Toolbar'}>
         <div className={classes.left}>
-          {showSearch === true ? (
+          {searchOpen === true ? (
             options.customSearchRender ? (
               options.customSearchRender(searchText, this.handleSearch, this.hideSearch, options)
             ) : (
