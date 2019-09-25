@@ -15,7 +15,7 @@ class Example extends React.Component {
       {
         name: 'Language',
         options: {
-          customHeadContentRender: () => <TranslateIcon />,
+          customHeadLabelRender: () => <TranslateIcon />,
         },
       },
       {

@@ -70,7 +70,7 @@ class TableHead extends React.Component {
                   print={column.print}
                   options={options}
                   column={column}>
-                  {column.customHeadContentRender ? column.customHeadContentRender() : column.label}
+                  {column.customHeadLabelRender ? column.customHeadLabelRender() : column.label}
                 </TableHeadCell>
               )),
           )}
