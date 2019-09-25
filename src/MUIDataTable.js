@@ -18,10 +18,13 @@ import TableToolbar from './components/TableToolbar';
 import TableToolbarSelect from './components/TableToolbarSelect';
 import textLabels from './textLabels';
 import { buildMap, getCollatorComparator, sortCompare } from './utils';
+import LoaderOverlay from './components/LoaderOverlay';
 
 const defaultTableStyles = theme => ({
   root: {},
-  paper: {},
+  paper: {
+    position: 'relative'
+  },
   tableRoot: {
     outline: 'none',
   },
@@ -141,6 +144,7 @@ class MUIDataTable extends React.Component {
       customToolbarSelect: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customFooter: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customSearchRender: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+      loading: PropTypes.bool,
       customRowRender: PropTypes.func,
       onRowClick: PropTypes.func,
       onRowsSelect: PropTypes.func,
@@ -285,6 +289,7 @@ class MUIDataTable extends React.Component {
     selectableRowsOnClick: false,
     selectableRowsHeader: true,
     caseSensitive: false,
+    loading: false,
     serverSide: false,
     rowHover: true,
     fixedHeader: true,
@@ -1338,6 +1343,9 @@ class MUIDataTable extends React.Component {
           changeRowsPerPage={this.changeRowsPerPage}
           changePage={this.changePage}
         />
+        {
+          this.options.loading && <LoaderOverlay />
+        }
         <div className={classes.liveAnnounce} aria-live={'polite'}>
           {announceText}
         </div>
