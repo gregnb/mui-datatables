@@ -89,7 +89,7 @@ class TableViewCol extends React.Component {
                       value={column.name}
                     />
                   }
-                  label={column.label}
+                  label={typeof column.label === 'string' ? column.label : column.label()}
                 />
               )
             );

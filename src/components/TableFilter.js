@@ -131,7 +131,7 @@ class TableFilter extends React.Component {
         <FormGroup>
           <Grid item xs={12}>
             <Typography variant="body2" className={classes.checkboxListTitle}>
-              {column.label}
+              {typeof column.label === 'string' ? column.label : column.label()}
             </Typography>
           </Grid>
           <Grid container>
@@ -172,7 +172,9 @@ class TableFilter extends React.Component {
     return (
       <GridListTile key={index} cols={1} classes={{ tile: classes.gridListTile }}>
         <FormControl key={index} fullWidth>
-          <InputLabel htmlFor={column.name}>{column.label}</InputLabel>
+          <InputLabel htmlFor={column.name}>
+            {typeof column.label === 'string' ? column.label : column.label()}
+          </InputLabel>
           <Select
             fullWidth
             value={filterList[index].length ? filterList[index].toString() : textLabels.all}
@@ -201,7 +203,7 @@ class TableFilter extends React.Component {
         <FormControl key={index} fullWidth>
           <TextField
             fullWidth
-            label={column.label}
+            label={typeof column.label === 'string' ? column.label : column.label()}
             value={filterList[index].toString() || ''}
             onChange={event => this.handleTextFieldChange(event, index, column.name)}
           />
