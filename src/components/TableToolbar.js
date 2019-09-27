@@ -105,8 +105,9 @@ class TableToolbar extends React.Component {
             data: row.data.map(column => {
               i += 1;
 
-              // if we have a custom render, we must grab the actual value from data
-              return typeof column === 'object' ? data[row.dataIndex].data[i] : column;
+              // if we have a custom render, which will appear as a react element, we must grab the actual value from data
+              // TODO: Create a utility function for checking whether or not something is a react object
+              return typeof column === 'object' && column !== null && !Array.isArray(column) ? data[row.dataIndex].data[i] : column;
             }),
           };
         });
