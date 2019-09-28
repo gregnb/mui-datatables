@@ -28,7 +28,7 @@ function sortCompare(order) {
 
 function assembleCSV(columns, data, options) {
   const replaceDoubleQuoteInString = columnData =>
-  typeof columnData === 'string' ? columnData.replace(/\"/g, '""') : columnData;
+    typeof columnData === 'string' ? columnData.replace(/\"/g, '""') : columnData;
 
   const buildHead = columns => {
     return (
@@ -56,7 +56,7 @@ function assembleCSV(columns, data, options) {
             .map(columnData => replaceDoubleQuoteInString(columnData))
             .join('"' + options.downloadOptions.separator + '"') +
           '"\r\n',
-        "",
+        '',
       )
       .trim();
   };
