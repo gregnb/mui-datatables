@@ -40,7 +40,7 @@ class TableHead extends React.Component {
       <MuiTableHead
         className={classNames({ [classes.responsiveStacked]: options.responsive === 'stacked', [classes.main]: true })}>
         <TableHeadRow>
-          {!this.props.isPrinting && (
+          {!this.props.isPrintting && (
             <TableSelectCell
               ref={el => setCellRef(0, findDOMNode(el))}
               onChange={this.handleRowSelect.bind(null)}

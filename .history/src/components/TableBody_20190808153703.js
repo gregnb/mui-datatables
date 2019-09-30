@@ -164,7 +164,7 @@ class TableBody extends React.Component {
                   onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
                   data-testid={'MUIDataTableBodyRow-' + dataIndex}
                   id={'MUIDataTableBodyRow-' + dataIndex}>
-                  {!this.props.isPrinting && (
+                  {!this.props.isPrintting && (
                     <TableSelectCell
                       onChange={this.handleRowSelect.bind(null, {
                         index: this.getRowIndex(rowIndex),

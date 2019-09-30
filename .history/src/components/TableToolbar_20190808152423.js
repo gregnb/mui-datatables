@@ -247,9 +247,7 @@ class TableToolbar extends React.Component {
           {options.print && (
             <span>
               <ReactToPrint
-                onBeforePrint={this.props.isGoingToPrint}
-                onAfterPrint={this.props.hasPrintted}
-                onBeforeGetContent={this.props.isGoingToPrint}
+                onBeforePrint={() => console.log('printe')}
                 trigger={() => (
                   <Tooltip title={print}>
                     <IconButton data-testid={print + '-iconButton'} aria-label={print} classes={{ root: classes.icon }}>

@@ -237,8 +237,7 @@ class MUIDataTable extends React.Component {
     }
   }
 
-  isGoingToPrint = () =>
-    Promise.resolve(() => this.setState({ isPrinting: true }, () => setTimeout(() => console.log('setou true')), 500));
+  isGoingToPrint = () => this.setState({ isPrinting: true }, () => setTimeout(() => console.log('setou true')), 500);
 
   hasPrintted = () => this.setState({ isPrinting: false }, () => console.log('setou false'));
 

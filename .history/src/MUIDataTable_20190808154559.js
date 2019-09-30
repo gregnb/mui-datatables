@@ -237,8 +237,7 @@ class MUIDataTable extends React.Component {
     }
   }
 
-  isGoingToPrint = () =>
-    Promise.resolve(() => this.setState({ isPrinting: true }, () => setTimeout(() => console.log('setou true')), 500));
+  isGoingToPrint = () => setTimeout(this.setState({ isPrinting: true }, () => console.log('setou true')), 400);
 
   hasPrintted = () => this.setState({ isPrinting: false }, () => console.log('setou false'));
 
@@ -1132,7 +1131,6 @@ class MUIDataTable extends React.Component {
   // must be arrow function on local field to refer to the correct instance when passed around
   // assigning it as arrow function in the JSX would cause hard to track re-render errors
   getTableContentRef = () => {
-    this.setState({ isPrinting: true });
     return this.tableRef ? this.tableRef.current : this.tableContent.current;
   };
 
