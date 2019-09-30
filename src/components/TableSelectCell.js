@@ -107,7 +107,7 @@ class TableSelectCell extends React.Component {
     return (
       <TableCell className={cellClass} padding="checkbox">
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          {expandableOn && <KeyboardArrowRight id="expandable-button" className={iconClass} onClick={onExpand} />}
+          {expandableOn && <button onClick={onExpand} ><KeyboardArrowRight id="expandable-button" className={iconClass} /></button>}
           {selectableOn !== 'none' && renderCheckBox()}
         </div>
       </TableCell>
