@@ -1,9 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import MuiTable from '@material-ui/core/Table';
-import TableHead from './TableHead';
+import React from 'react';
 import TablePagination from './TablePagination';
-import { withStyles } from '@material-ui/core/styles';
 
 export const defaultFooterStyles = {};
 

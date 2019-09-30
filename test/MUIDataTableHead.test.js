@@ -103,7 +103,7 @@ describe('<TableHead />', function() {
   });
 
   it('should trigger selectRowUpdate prop callback and selectChecked state update when calling method handleRowSelect', () => {
-    const options = { sort: true, selectableRows: true };
+    const options = { sort: true, selectableRows: 'multiple' };
     const rowSelectUpdate = spy();
 
     const shallowWrapper = shallow(

@@ -7,7 +7,7 @@ class Example extends React.Component {
     super(props);
 
     this.state = {
-      table: {}
+      table: {},
     };
     this.handleTableInit = this.handleTableInit.bind(this);
     this.handleTableChange = this.handleTableChange.bind(this);
@@ -65,7 +65,7 @@ class Example extends React.Component {
 
   options = {
     filter: true,
-    selectableRows: true,
+    selectableRows: 'multiple',
     filterType: 'dropdown',
     responsive: 'scrollMaxHeight',
     rowsPerPage: 10,

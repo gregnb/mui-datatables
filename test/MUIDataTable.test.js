@@ -381,7 +381,7 @@ describe('<MUIDataTable />', function() {
     const options = {
       rowsPerPage: 1,
       rowsPerPageOptions: [1, 2, 4],
-      page: 1,
+      page: 0,
       onChangePage: current => (currentPage = current),
     };
     const fullWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);

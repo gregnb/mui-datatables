@@ -256,15 +256,11 @@ class MUIDataTable extends React.Component {
     }
   }
 
-<<<<<<< HEAD
   isGoingToPrint = () =>
     Promise.resolve(() => this.setState({ isPrinting: true }, () => setTimeout(() => console.log('setou true')), 500));
 
   hasPrintted = () => this.setState({ isPrinting: false }, () => console.log('setou false'));
 
-  updateOptions(props) {
-    this.options = merge(this.options, props.options);
-=======
   updateOptions(options, props) {
     this.options = assignwith(options, props.options, (objValue, srcValue, key) => {
       // Merge any default options that are objects, as they will be overwritten otherwise
@@ -273,7 +269,6 @@ class MUIDataTable extends React.Component {
     });
 
     this.handleOptionDeprecation(props);
->>>>>>> upstream/master
   }
 
   initializeTable(props) {
@@ -384,7 +379,6 @@ class MUIDataTable extends React.Component {
     this.headCellRefs[index] = el;
   };
 
-<<<<<<< HEAD
   rawColumns = cols => {
     return cols.map(item => {
       if (typeof item !== 'object') return item;
@@ -400,11 +394,6 @@ class MUIDataTable extends React.Component {
       return { ...otherOptions, ...otherProps };
     });
   };
-=======
-  // must be arrow function on local field to refer to the correct instance when passed around
-  // assigning it as arrow function in the JSX would cause hard to track re-render errors
-  getTableContentRef = () => this.tableContent.current;
->>>>>>> upstream/master
 
   /*
    *  Build the source table data
@@ -1237,7 +1226,6 @@ class MUIDataTable extends React.Component {
     };
   }
 
-<<<<<<< HEAD
   // must be arrow function on local field to refer to the correct instance when passed around
   // assigning it as arrow function in the JSX would cause hard to track re-render errors
   getTableContentRef = () => {
@@ -1245,8 +1233,6 @@ class MUIDataTable extends React.Component {
     return this.tableRef ? this.tableRef.current : this.tableContent.current;
   };
 
-=======
->>>>>>> upstream/master
   render() {
     const { classes, className, title } = this.props;
     const {
