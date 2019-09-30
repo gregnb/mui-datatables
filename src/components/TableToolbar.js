@@ -13,10 +13,10 @@ import PrintIcon from '@material-ui/icons/Print';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import FilterIcon from '@material-ui/icons/FilterList';
 import ReactToPrint from 'react-to-print';
-import styled from '../styled';
+import { withStyles } from '@material-ui/core/styles';
 import { createCSVDownload } from '../utils';
 
-export const defaultToolbarStyles = (theme, props) => ({
+export const defaultToolbarStyles = theme => ({
   root: {},
   left: {
     flex: '1 1 auto',
@@ -43,10 +43,6 @@ export const defaultToolbarStyles = (theme, props) => ({
     marginTop: '10px',
     marginRight: '8px',
   },
-  ...(props.options.responsive ? { ...responsiveToolbarStyles(theme) } : {}),
-});
-
-export const responsiveToolbarStyles = theme => ({
   [theme.breakpoints.down('sm')]: {
     titleRoot: {},
     titleText: {
@@ -143,6 +139,7 @@ class TableToolbar extends React.Component {
         nextVal = true;
       } else {
         const { onSearchClose } = this.props.options;
+        this.props.setTableAction('onSearchClose');
         if (onSearchClose) onSearchClose();
         nextVal = false;
       }
@@ -157,14 +154,15 @@ class TableToolbar extends React.Component {
   };
 
   showSearch = () => {
-    !!this.props.options.onSearchOpen && this.props.options.onSearchOpen();
     this.props.setTableAction('onSearchOpen');
+    !!this.props.options.onSearchOpen && this.props.options.onSearchOpen();
     return true;
   };
 
   hideSearch = () => {
     const { onSearchClose } = this.props.options;
 
+    this.props.setTableAction('onSearchClose');
     if (onSearchClose) onSearchClose();
     this.props.searchTextUpdate(null);
 
@@ -204,12 +202,16 @@ class TableToolbar extends React.Component {
       <Toolbar className={classes.root} role={'toolbar'} aria-label={'Table Toolbar'}>
         <div className={classes.left}>
           {showSearch === true ? (
-            <TableSearch
-              searchText={searchText}
-              onSearch={this.handleSearch}
-              onHide={this.hideSearch}
-              options={options}
-            />
+            options.customSearchRender ? (
+              options.customSearchRender(searchText, this.handleSearch, this.hideSearch, options)
+            ) : (
+              <TableSearch
+                searchText={searchText}
+                onSearch={this.handleSearch}
+                onHide={this.hideSearch}
+                options={options}
+              />
+            )
           ) : typeof title !== 'string' ? (
             title
           ) : (
@@ -251,11 +253,16 @@ class TableToolbar extends React.Component {
                 onAfterPrint={this.props.hasPrintted}
                 onBeforeGetContent={this.props.isGoingToPrint}
                 trigger={() => (
-                  <Tooltip title={print}>
-                    <IconButton data-testid={print + '-iconButton'} aria-label={print} classes={{ root: classes.icon }}>
-                      <PrintIcon />
-                    </IconButton>
-                  </Tooltip>
+                  <span>
+                    <Tooltip title={print}>
+                      <IconButton
+                        data-testid={print + '-iconButton'}
+                        aria-label={print}
+                        classes={{ root: classes.icon }}>
+                        <PrintIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </span>
                 )}
                 content={() => this.props.tableRef()}
               />
@@ -314,4 +321,4 @@ class TableToolbar extends React.Component {
   }
 }
 
-export default styled(TableToolbar)(defaultToolbarStyles, { name: 'MUIDataTableToolbar' });
+export default withStyles(defaultToolbarStyles, { name: 'MUIDataTableToolbar' })(TableToolbar);

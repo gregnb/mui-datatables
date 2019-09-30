@@ -1,11 +1,11 @@
+import { withStyles } from '@material-ui/core/styles';
+import MuiTableHead from '@material-ui/core/TableHead';
+import classNames from 'classnames';
 import React from 'react';
 import { findDOMNode } from 'react-dom';
-import classNames from 'classnames';
-import MuiTableHead from '@material-ui/core/TableHead';
-import TableHeadRow from './TableHeadRow';
 import TableHeadCell from './TableHeadCell';
+import TableHeadRow from './TableHeadRow';
 import TableSelectCell from './TableSelectCell';
-import { withStyles } from '@material-ui/core/styles';
 
 const defaultHeadStyles = theme => ({
   main: {},
@@ -40,6 +40,7 @@ class TableHead extends React.Component {
       <MuiTableHead
         className={classNames({ [classes.responsiveStacked]: options.responsive === 'stacked', [classes.main]: true })}>
         <TableHeadRow>
+<<<<<<< HEAD
           {!this.props.isPrinting && (
             <TableSelectCell
               ref={el => setCellRef(0, findDOMNode(el))}
@@ -53,6 +54,20 @@ class TableHead extends React.Component {
               isRowSelectable={true}
             />
           )}
+=======
+          <TableSelectCell
+            ref={el => setCellRef(0, findDOMNode(el))}
+            onChange={this.handleRowSelect.bind(null)}
+            indeterminate={isDeterminate}
+            checked={isChecked}
+            isHeaderCell={true}
+            expandableOn={options.expandableRows}
+            selectableOn={options.selectableRows}
+            fixedHeader={options.fixedHeader}
+            selectableRowsHeader={options.selectableRowsHeader}
+            isRowSelectable={true}
+          />
+>>>>>>> upstream/master
           {columns.map(
             (column, index) =>
               column.display === 'true' &&
@@ -69,7 +84,8 @@ class TableHead extends React.Component {
                   toggleSort={this.handleToggleColumn}
                   hint={column.hint}
                   print={column.print}
-                  options={options}>
+                  options={options}
+                  column={column}>
                   {column.label}
                 </TableHeadCell>
               )),

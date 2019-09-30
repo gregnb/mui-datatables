@@ -90,10 +90,13 @@ class Example extends React.Component {
       onRowClick: (rowData, rowState) => {
         console.log(rowData, rowState);
       },
-      isRowSelectable: (dataIndex) => {
+      isRowSelectable: (dataIndex, selectedRows) => {
+        //prevents selection of any additional row after the third
+        if (selectedRows.data.length > 2 && selectedRows.data.filter(d => d.dataIndex === dataIndex).length === 0) return false;
         //prevents selection of row with title "Attorney"
         return data[dataIndex][1] != "Attorney";
-      }
+      },
+      selectableRowsHeader: false
     };
 
     return (
@@ -103,4 +106,4 @@ class Example extends React.Component {
   }
 }
 
-ReactDOM.render(<Example />, document.getElementById("app-root"));
+export default Example;

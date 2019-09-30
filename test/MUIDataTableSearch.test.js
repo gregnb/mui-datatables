@@ -45,6 +45,17 @@ describe('<TableSearch />', function() {
     assert.strictEqual(actualResult.find(TextField).props().value, 'nextText');
   });
 
+  it('should render a search bar with placeholder when searchPlaceholder is set', () => {
+    const options = { textLabels, searchPlaceholder: 'TestingPlaceholder' };
+    const onSearch = () => {};
+    const onHide = () => {};
+
+    const mountWrapper = mount(<TableSearch onSearch={onSearch} onHide={onHide} options={options} />);
+    const actualResult = mountWrapper.find(TextField);
+    assert.strictEqual(actualResult.length, 1);
+    assert.strictEqual(actualResult.props().placeholder, 'TestingPlaceholder');
+  });
+
   it('should trigger handleTextChange prop callback when calling method handleTextChange', () => {
     const options = { onSearchChange: () => true, textLabels };
     const onSearch = spy();
