@@ -28,12 +28,6 @@ const defaultSearchStyles = theme => ({
 
 class TableSearch extends React.Component {
   handleTextChange = event => {
-    const { onSearchChange } = this.props.options;
-
-    if (onSearchChange) {
-      onSearchChange(event.target.value);
-    }
-
     this.props.onSearch(event.target.value);
   };
 
@@ -69,6 +63,7 @@ class TableSearch extends React.Component {
             onChange={this.handleTextChange}
             fullWidth={true}
             inputRef={el => (this.searchField = el)}
+            placeholder={options.searchPlaceholder}
           />
           <IconButton className={classes.clearIcon} onClick={onHide}>
             <ClearIcon />
