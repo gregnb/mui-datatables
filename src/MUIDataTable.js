@@ -222,8 +222,8 @@ class MUIDataTable extends React.Component {
     this.tableRef = React.createRef();
     this.tableContent = React.createRef();
     this.headCellRefs = {};
-    this.setHeadResizeable = () => {};
-    this.updateDividers = () => {};
+    this.setHeadResizeable = () => { };
+    this.updateDividers = () => { };
   }
 
   UNSAFE_componentWillMount() {
@@ -465,17 +465,17 @@ class MUIDataTable extends React.Component {
 
     return Array.isArray(data[0])
       ? data.map(row => {
-          let i = -1;
+        let i = -1;
 
-          return columns.map(col => {
-            if (!col.empty) i++;
-            return col.empty ? undefined : row[i];
-          });
-        })
+        return columns.map(col => {
+          if (!col.empty) i++;
+          return col.empty ? undefined : row[i];
+        });
+      })
       : data.map(row => columns.map(col => leaf(row, col.name)));
   };
 
-  setTableData(props, status, callback = () => {}) {
+  setTableData(props, status, callback = () => { }) {
     let tableData = [];
     let { columns, filterData, filterList } = this.buildColumns(props.columns);
     let sortIndex = null;
@@ -672,8 +672,8 @@ class MUIDataTable extends React.Component {
           typeof funcResult === 'string' || !funcResult
             ? funcResult
             : funcResult.props && funcResult.props.value
-            ? funcResult.props.value
-            : columnValue;
+              ? funcResult.props.value
+              : columnValue;
       }
 
       displayRow.push(columnDisplay);
@@ -1286,27 +1286,27 @@ class MUIDataTable extends React.Component {
             selectRowUpdate={this.selectRowUpdate}
           />
         ) : (
-          showToolbar && (
-            <TableToolbar
-              columns={columns}
-              displayData={displayData}
-              data={data}
-              filterData={filterData}
-              filterList={filterList}
-              filterUpdate={this.filterUpdate}
-              options={this.options}
-              resetFilters={this.resetFilters}
-              searchText={searchText}
-              searchTextUpdate={this.searchTextUpdate}
-              tableRef={this.getTableContentRef}
-              title={title}
-              toggleViewColumn={this.toggleViewColumn}
-              setTableAction={this.setTableAction}
-              isGoingToPrint={this.isGoingToPrint}
-              hasPrintted={this.hasPrintted}
-            />
-          )
-        )}
+            showToolbar && (
+              <TableToolbar
+                columns={columns}
+                displayData={displayData}
+                data={data}
+                filterData={filterData}
+                filterList={filterList}
+                filterUpdate={this.filterUpdate}
+                options={this.options}
+                resetFilters={this.resetFilters}
+                searchText={searchText}
+                searchTextUpdate={this.searchTextUpdate}
+                tableRef={this.getTableContentRef}
+                title={title}
+                toggleViewColumn={this.toggleViewColumn}
+                setTableAction={this.setTableAction}
+                isGoingToPrint={this.isGoingToPrint}
+                hasPrintted={this.hasPrintted}
+              />
+            )
+          )}
         <TableFilterList
           options={this.options}
           filterListRenderers={columns.map(c => {
