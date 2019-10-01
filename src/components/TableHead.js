@@ -40,7 +40,6 @@ class TableHead extends React.Component {
       <MuiTableHead
         className={classNames({ [classes.responsiveStacked]: options.responsive === 'stacked', [classes.main]: true })}>
         <TableHeadRow>
-<<<<<<< HEAD
           {!this.props.isPrinting && (
             <TableSelectCell
               ref={el => setCellRef(0, findDOMNode(el))}
@@ -51,23 +50,10 @@ class TableHead extends React.Component {
               expandableOn={options.expandableRows}
               selectableOn={options.selectableRows}
               fixedHeader={options.fixedHeader}
+              selectableRowsHeader={options.selectableRowsHeader}
               isRowSelectable={true}
             />
           )}
-=======
-          <TableSelectCell
-            ref={el => setCellRef(0, findDOMNode(el))}
-            onChange={this.handleRowSelect.bind(null)}
-            indeterminate={isDeterminate}
-            checked={isChecked}
-            isHeaderCell={true}
-            expandableOn={options.expandableRows}
-            selectableOn={options.selectableRows}
-            fixedHeader={options.fixedHeader}
-            selectableRowsHeader={options.selectableRowsHeader}
-            isRowSelectable={true}
-          />
->>>>>>> upstream/master
           {columns.map(
             (column, index) =>
               column.display === 'true' &&

@@ -15,14 +15,18 @@ class Example extends React.Component {
       {
         name: 'Location',
         options: {
-          display: 'false'
-        }
+          display: 'false',
+        },
       },
       {
         name: 'Age',
         options: {
-          customBodyRender: value => <div><span>{value}</span></div>
-        }
+          customBodyRender: value => (
+            <div>
+              <span>{value}</span>
+            </div>
+          ),
+        },
       },
       {
         name: 'Salary',
@@ -67,17 +71,17 @@ class Example extends React.Component {
 
     const options = {
       filter: true,
-      selectableRows: true,
+      selectableRows: 'multiple',
       filterType: 'dropdown',
       responsive: 'stacked',
       rowsPerPage: 10,
       downloadOptions: {
-          filename: 'excel-format.csv',
-          separator: ';',
-          filterOptions: {
-            useDisplayedColumnsOnly: true,
-            useDisplayedRowsOnly: true,
-          }
+        filename: 'excel-format.csv',
+        separator: ';',
+        filterOptions: {
+          useDisplayedColumnsOnly: true,
+          useDisplayedRowsOnly: true,
+        },
       },
       onDownload: (buildHead, buildBody, columns, data) => {
         if (this.state.downloadFile) {

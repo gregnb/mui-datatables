@@ -4,7 +4,7 @@ import MUIDataTable from '../../src/';
 
 class Example extends React.Component {
   state = {
-    searchText: 'Computer'
+    searchText: 'Computer',
   };
 
   render() {
@@ -81,7 +81,7 @@ class Example extends React.Component {
       filter: true,
       filterType: 'dropdown',
       responsive: 'stacked',
-      page: 1,
+      page: 0,
       searchText: this.state.searchText,
       searchPlaceholder: 'Your Custom Search Placeholder',
       customSearch: (searchQuery, currentRow, columns) => {

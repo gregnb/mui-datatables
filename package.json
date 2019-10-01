@@ -37,8 +37,8 @@
   },
   "homepage": "https://github.com/gregnb/mui-datatables#readme",
   "devDependencies": {
-    "@material-ui/core": "^3.2.0",
-    "@material-ui/icons": "^3.0.1",
+    "@material-ui/core": "^4.4.3",
+    "@material-ui/icons": "^4.4.3",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.3",
@@ -72,8 +72,8 @@
     "prettier": "^1.9.2",
     "prismjs": "^1.13.0",
     "raw-loader": "^0.5.1",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react": "^16.10.1",
+    "react-dom": "^16.10.1",
     "react-router-dom": "^5.0.1",
     "rollup": "^0.52.0",
     "rollup-plugin-babel": "^3.0.2",
@@ -87,10 +87,10 @@
     "webpack-dev-server": "^2.9.5"
   },
   "peerDependencies": {
-    "@material-ui/core": "^3.2.0",
-    "@material-ui/icons": "^3.0.1",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "@material-ui/core": "^4.4.3",
+    "@material-ui/icons": "^4.4.3",
+    "react": "^16.10.1",
+    "react-dom": "^16.10.1"
   },
   "dependencies": {
     "classnames": "^2.2.5",
@@ -103,7 +103,7 @@
     "lodash.memoize": "^4.1.2",
     "lodash.merge": "^4.6.0",
     "prop-types": "^15.6.0",
-    "react-to-print": "^2.0.0-alpha.7"
+    "react-to-print": "^2.4.0"
   },
   "side-effects": false,
   "nyc": {

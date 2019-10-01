@@ -222,8 +222,8 @@ class MUIDataTable extends React.Component {
     this.tableRef = React.createRef();
     this.tableContent = React.createRef();
     this.headCellRefs = {};
-    this.setHeadResizeable = () => {};
-    this.updateDividers = () => {};
+    this.setHeadResizeable = () => { };
+    this.updateDividers = () => { };
   }
 
   UNSAFE_componentWillMount() {
@@ -256,15 +256,11 @@ class MUIDataTable extends React.Component {
     }
   }
 
-<<<<<<< HEAD
   isGoingToPrint = () =>
     Promise.resolve(() => this.setState({ isPrinting: true }, () => setTimeout(() => console.log('setou true')), 500));
 
   hasPrintted = () => this.setState({ isPrinting: false }, () => console.log('setou false'));
 
-  updateOptions(props) {
-    this.options = merge(this.options, props.options);
-=======
   updateOptions(options, props) {
     this.options = assignwith(options, props.options, (objValue, srcValue, key) => {
       // Merge any default options that are objects, as they will be overwritten otherwise
@@ -273,7 +269,6 @@ class MUIDataTable extends React.Component {
     });
 
     this.handleOptionDeprecation(props);
->>>>>>> upstream/master
   }
 
   initializeTable(props) {
@@ -384,7 +379,6 @@ class MUIDataTable extends React.Component {
     this.headCellRefs[index] = el;
   };
 
-<<<<<<< HEAD
   rawColumns = cols => {
     return cols.map(item => {
       if (typeof item !== 'object') return item;
@@ -400,11 +394,6 @@ class MUIDataTable extends React.Component {
       return { ...otherOptions, ...otherProps };
     });
   };
-=======
-  // must be arrow function on local field to refer to the correct instance when passed around
-  // assigning it as arrow function in the JSX would cause hard to track re-render errors
-  getTableContentRef = () => this.tableContent.current;
->>>>>>> upstream/master
 
   /*
    *  Build the source table data
@@ -476,17 +465,17 @@ class MUIDataTable extends React.Component {
 
     return Array.isArray(data[0])
       ? data.map(row => {
-          let i = -1;
+        let i = -1;
 
-          return columns.map(col => {
-            if (!col.empty) i++;
-            return col.empty ? undefined : row[i];
-          });
-        })
+        return columns.map(col => {
+          if (!col.empty) i++;
+          return col.empty ? undefined : row[i];
+        });
+      })
       : data.map(row => columns.map(col => leaf(row, col.name)));
   };
 
-  setTableData(props, status, callback = () => {}) {
+  setTableData(props, status, callback = () => { }) {
     let tableData = [];
     let { columns, filterData, filterList } = this.buildColumns(props.columns);
     let sortIndex = null;
@@ -683,8 +672,8 @@ class MUIDataTable extends React.Component {
           typeof funcResult === 'string' || !funcResult
             ? funcResult
             : funcResult.props && funcResult.props.value
-            ? funcResult.props.value
-            : columnValue;
+              ? funcResult.props.value
+              : columnValue;
       }
 
       displayRow.push(columnDisplay);
@@ -1237,7 +1226,6 @@ class MUIDataTable extends React.Component {
     };
   }
 
-<<<<<<< HEAD
   // must be arrow function on local field to refer to the correct instance when passed around
   // assigning it as arrow function in the JSX would cause hard to track re-render errors
   getTableContentRef = () => {
@@ -1245,8 +1233,6 @@ class MUIDataTable extends React.Component {
     return this.tableRef ? this.tableRef.current : this.tableContent.current;
   };
 
-=======
->>>>>>> upstream/master
   render() {
     const { classes, className, title } = this.props;
     const {
@@ -1300,27 +1286,27 @@ class MUIDataTable extends React.Component {
             selectRowUpdate={this.selectRowUpdate}
           />
         ) : (
-          showToolbar && (
-            <TableToolbar
-              columns={columns}
-              displayData={displayData}
-              data={data}
-              filterData={filterData}
-              filterList={filterList}
-              filterUpdate={this.filterUpdate}
-              options={this.options}
-              resetFilters={this.resetFilters}
-              searchText={searchText}
-              searchTextUpdate={this.searchTextUpdate}
-              tableRef={this.getTableContentRef}
-              title={title}
-              toggleViewColumn={this.toggleViewColumn}
-              setTableAction={this.setTableAction}
-              isGoingToPrint={this.isGoingToPrint}
-              hasPrintted={this.hasPrintted}
-            />
-          )
-        )}
+            showToolbar && (
+              <TableToolbar
+                columns={columns}
+                displayData={displayData}
+                data={data}
+                filterData={filterData}
+                filterList={filterList}
+                filterUpdate={this.filterUpdate}
+                options={this.options}
+                resetFilters={this.resetFilters}
+                searchText={searchText}
+                searchTextUpdate={this.searchTextUpdate}
+                tableRef={this.getTableContentRef}
+                title={title}
+                toggleViewColumn={this.toggleViewColumn}
+                setTableAction={this.setTableAction}
+                isGoingToPrint={this.isGoingToPrint}
+                hasPrintted={this.hasPrintted}
+              />
+            )
+          )}
         <TableFilterList
           options={this.options}
           filterListRenderers={columns.map(c => {
