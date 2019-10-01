@@ -1,11 +1,11 @@
+import { withStyles } from '@material-ui/core/styles';
+import MuiTableHead from '@material-ui/core/TableHead';
+import classNames from 'classnames';
 import React from 'react';
 import { findDOMNode } from 'react-dom';
-import classNames from 'classnames';
-import MuiTableHead from '@material-ui/core/TableHead';
-import TableHeadRow from './TableHeadRow';
 import TableHeadCell from './TableHeadCell';
+import TableHeadRow from './TableHeadRow';
 import TableSelectCell from './TableSelectCell';
-import { withStyles } from '@material-ui/core/styles';
 
 const defaultHeadStyles = theme => ({
   main: {},
@@ -49,6 +49,7 @@ class TableHead extends React.Component {
             expandableOn={options.expandableRows}
             selectableOn={options.selectableRows}
             fixedHeader={options.fixedHeader}
+            selectableRowsHeader={options.selectableRowsHeader}
             isRowSelectable={true}
           />
           {columns.map(
@@ -67,7 +68,8 @@ class TableHead extends React.Component {
                   toggleSort={this.handleToggleColumn}
                   hint={column.hint}
                   print={column.print}
-                  options={options}>
+                  options={options}
+                  column={column}>
                   {column.label}
                 </TableHeadCell>
               )),

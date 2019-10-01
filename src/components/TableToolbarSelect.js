@@ -16,8 +16,8 @@ const defaultToolbarSelectStyles = theme => ({
     zIndex: 120,
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
+    paddingTop: typeof theme.spacing === 'function' ? theme.spacing(1) : theme.spacing.unit,
+    paddingBottom: typeof theme.spacing === 'function' ? theme.spacing(1) : theme.spacing.unit,
   },
   title: {
     paddingLeft: '26px',

@@ -83,6 +83,7 @@ class Example extends React.Component {
       responsive: 'stacked',
       page: 1,
       searchText: this.state.searchText,
+      searchPlaceholder: 'Your Custom Search Placeholder',
       customSearch: (searchQuery, currentRow, columns) => {
         let isFound = false;
         currentRow.forEach(col => {
@@ -103,4 +104,4 @@ class Example extends React.Component {
   }
 }
 
-ReactDOM.render(<Example />, document.getElementById('app-root'));
+export default Example;
