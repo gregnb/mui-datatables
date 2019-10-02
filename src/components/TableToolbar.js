@@ -98,8 +98,11 @@ class TableToolbar extends React.Component {
     if (options.downloadOptions && options.downloadOptions.filterOptions) {
       // check rows first:
       if (options.downloadOptions.filterOptions.useDisplayedRowsOnly) {
-        dataToDownload = displayData.map(row => {
+        dataToDownload = displayData.map((row, index) => {
           let i = -1;
+
+          // Help to preserve sort order in custom render columns
+          row.index = index;
 
           return {
             data: row.data.map(column => {
@@ -107,7 +110,7 @@ class TableToolbar extends React.Component {
 
               // if we have a custom render, which will appear as a react element, we must grab the actual value from data
               // TODO: Create a utility function for checking whether or not something is a react object
-              return typeof column === 'object' && column !== null && !Array.isArray(column) ? data[row.dataIndex].data[i] : column;
+              return typeof column === 'object' && column !== null && !Array.isArray(column) ? data[row.index].data[i] : column;
             }),
           };
         });
