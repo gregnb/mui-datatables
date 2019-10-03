@@ -79,6 +79,16 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(actualResult.props().options.searchText, 'searchText');
   });
 
+  it('should render a toolbar with search if option.searchOpen = true', () => {
+    const newOptions = { ...options, searchOpen: true };
+    const mountWrapper = mount(
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    );
+    const actualResult = mountWrapper.find(TableSearch);
+    assert.strictEqual(actualResult.length, 1);
+    assert.strictEqual(actualResult.props().options.searchText, undefined);
+  });
+
   it('should render a toolbar with no search icon if option.search = false', () => {
     const newOptions = { ...options, search: false };
     const mountWrapper = mount(
