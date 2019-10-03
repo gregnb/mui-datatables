@@ -606,6 +606,7 @@ describe('<MUIDataTable />', function() {
 
     const mountWrapper = mount(
       <TableFilterList
+        options={{ serverSide: false }}
         filterList={filterList}
         filterListRenderers={filterListRenderers}
         filterUpdate={() => true}
@@ -627,6 +628,7 @@ describe('<MUIDataTable />', function() {
 
     const mountWrapper = mount(
       <TableFilterList
+        options={{ serverSide: false }}
         filterList={filterList}
         filterListRenderers={filterListRenderers}
         filterUpdate={() => true}
@@ -636,6 +638,55 @@ describe('<MUIDataTable />', function() {
     const actualResult = mountWrapper.find(Chip);
     assert.strictEqual(actualResult.length, 1);
     assert.strictEqual(actualResult.prop('label'), 'Name: Joe James');
+  });
+
+  it('should render filter Chip(s) when options.serverSide = true and serverSideFilterList is populated', () => {
+    const serverSideFilterList = [['Joe James'], [], [], [], []];
+    const filterListRenderers = [
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+    ];
+    const columnNames = columns.map(column => ({ name: column.name }));
+
+    const mountWrapper = mount(
+      <TableFilterList
+        options={{ serverSide: true }}
+        serverSideFilterList={serverSideFilterList}
+        filterListRenderers={filterListRenderers}
+        filterUpdate={() => true}
+        columnNames={columnNames}
+      />,
+    );
+
+    const actualResult = mountWrapper.find(Chip);
+    assert.strictEqual(actualResult.length, 1);
+  });
+
+  it('should not render filter Chip(s) when options.serverSide = true and serverSideFilterList is not populated', () => {
+    const filterListRenderers = [
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+    ];
+    const columnNames = columns.map(column => ({ name: column.name }));
+
+    const mountWrapper = mount(
+      <TableFilterList
+        options={{ serverSide: true }}
+        serverSideFilterList={[]}
+        filterListRenderers={filterListRenderers}
+        filterUpdate={() => true}
+        columnNames={columnNames}
+      />,
+    );
+
+    const actualResult = mountWrapper.find(Chip);
+    assert.strictEqual(actualResult.length, 0);
   });
 
   it('should remove entry from filterList when calling filterUpdate method with type=dropdown and an empty array', () => {
@@ -1107,6 +1158,32 @@ describe('<MUIDataTable />', function() {
     ]);
 
     assert.deepEqual(JSON.stringify(newDisplayData), expectedResult);
+  });
+
+  it('should call onRowsExpand when row is expanded or collapsed', () => {
+    const options = {
+      expandableRows: true,
+      renderExpandableRow: () => <tr><td>foo</td></tr>,
+      expandableRowsOnClick: true,
+      onRowsExpand: spy()
+    };
+    const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('click');
+
+    assert.strictEqual(options.onRowsExpand.callCount, 1);
+    assert(options.onRowsExpand.calledWith([{ index: 2, dataIndex: 2 }], [{ index: 2, dataIndex: 2 }]));
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('click');
+
+    assert.strictEqual(options.onRowsExpand.callCount, 2);
+    assert(options.onRowsExpand.calledWith([{ index: 2, dataIndex: 2 }], []));
   });
 
   it('should not remove selected data on selectRowDelete when type=cell when onRowsDelete returns false', () => {

@@ -80,7 +80,7 @@ export const defaultToolbarStyles = theme => ({
 class TableToolbar extends React.Component {
   state = {
     iconActive: null,
-    showSearch: Boolean(this.props.searchText || this.props.options.searchText),
+    showSearch: Boolean(this.props.searchText || this.props.options.searchText || this.props.options.searchOpen),
     searchText: this.props.searchText || null,
   };
 
@@ -126,10 +126,26 @@ class TableToolbar extends React.Component {
   };
 
   setActiveIcon = iconName => {
-    this.setState(() => ({
+    this.setState(prevState => ({
       showSearch: this.isSearchShown(iconName),
       iconActive: iconName,
-    }));
+      prevIconActive: prevState.iconActive
+    }), () => {
+      const { iconActive, prevIconActive } = this.state;
+
+      if (iconActive === 'filter') {
+        this.props.setTableAction('onFilterDialogOpen');
+        if (this.props.options.onFilterDialogOpen) {
+          this.props.options.onFilterDialogOpen();
+        }
+      }
+      if (iconActive === undefined && prevIconActive === 'filter') {
+        this.props.setTableAction('onFilterDialogClose');
+        if (this.props.options.onFilterDialogClose) {
+          this.props.options.onFilterDialogClose();
+        }
+      }
+    });
   };
 
   isSearchShown = iconName => {
@@ -301,6 +317,7 @@ class TableToolbar extends React.Component {
               }
               content={
                 <TableFilter
+                  customFooter={options.customFilterDialogFooter}
                   columns={columns}
                   options={options}
                   filterList={filterList}

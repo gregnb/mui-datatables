@@ -22,6 +22,7 @@ import OnDownload from "./on-download";
 import OnTableInit from "./on-table-init";
 import ResizableColumns from "./resizable-columns";
 import SelectableRows from "./selectable-rows";
+import ServerSideFilters from "./serverside-filters";
 import ServerSideOptions from "./serverside-options";
 import ServerSidePagination from "./serverside-pagination";
 import Simple from "./simple";
@@ -57,6 +58,7 @@ export default {
     'OnTableInit': OnTableInit,
     'Resizable Columns': ResizableColumns,
     'Selectable Rows': SelectableRows,
+    'ServerSide Filters': ServerSideFilters,
     'ServerSide Options': ServerSideOptions,
     'ServerSide Pagination': ServerSidePagination,
     'Simple': Simple,
