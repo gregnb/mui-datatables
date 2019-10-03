@@ -421,7 +421,7 @@ class MUIDataTable extends React.Component {
             column.options.sortDirection = 'none';
           }
 
-          if (column.options.sortDirection !== undefined) {
+          if (column.options.sortDirection !== undefined && column.options.sortDirection !== 'none') {
             if (sortDirectionSet) {
               console.error('sortDirection is set for more than one column. Only the first column will be considered.');
               column.options.sortDirection = 'none';
