@@ -1026,6 +1026,8 @@ class MUIDataTable extends React.Component {
     let { expandedRows } = this.state;
     const expandedRowsData = [...expandedRows.data];
     let shouldCollapseExpandedRow = false;
+    let hasRemovedRow = false;
+    let removedRow = [];
 
     for (var cIndex = 0; cIndex < expandedRowsData.length; cIndex++) {
       if (expandedRowsData[cIndex].dataIndex === dataIndex) {
@@ -1035,7 +1037,10 @@ class MUIDataTable extends React.Component {
     }
 
     if (shouldCollapseExpandedRow) {
-      if (isRowExpandable && isRowExpandable(dataIndex, expandedRows)) expandedRowsData.splice(cIndex, 1);
+      if ((isRowExpandable && isRowExpandable(dataIndex, expandedRows) || !isRowExpandable)) {
+        removedRow = expandedRowsData.splice(cIndex, 1);
+        hasRemovedRow = true;
+      }
     } else {
       if (isRowExpandable && isRowExpandable(dataIndex, expandedRows)) expandedRowsData.push(row);
       else if (!isRowExpandable) expandedRowsData.push(row);
@@ -1043,7 +1048,7 @@ class MUIDataTable extends React.Component {
 
     this.setState(
       {
-        curExpandedRows: rowPos >= 0 ? removedRow : [row],
+        curExpandedRows: hasRemovedRow ? removedRow : [row],
         expandedRows: {
           lookup: buildMap(expandedRowsData),
           data: expandedRowsData,
