@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
 import CustomFooter from "./CustomFooter";
 
@@ -67,4 +66,4 @@ class Example extends React.Component {
   }
 }
 
-ReactDOM.render(<Example />, document.getElementById("app-root"));
+export default Example;

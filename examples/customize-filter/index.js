@@ -1,6 +1,5 @@
 import { FormGroup, FormLabel, TextField } from '@material-ui/core';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import MUIDataTable from '../../src';
 
 class Example extends React.Component {
@@ -150,4 +149,4 @@ class Example extends React.Component {
   }
 }
 
-ReactDOM.render(<Example />, document.getElementById('app-root'));
+export default Example;

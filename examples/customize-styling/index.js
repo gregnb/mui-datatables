@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
 import {createMuiTheme, MuiThemeProvider, withStyles} from '@material-ui/core/styles';
 import classnames from 'classnames';
@@ -134,6 +133,4 @@ class Example extends React.Component {
   }
 }
 
-const ExampleWithStyles = withStyles(customStyles, {name: "Example"})(Example);
-
-ReactDOM.render(<ExampleWithStyles/>, document.getElementById("app-root"));
+export default withStyles(customStyles, {name: "ExampleCard.js"})(Example);

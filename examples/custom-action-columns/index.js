@@ -47,7 +47,7 @@ class Example extends React.Component {
       {
         name: "Delete",
         options: {
-          filter: true,
+          filter: false,
           sort: false,
           empty: true,
           customBodyRender: (value, tableMeta, updateValue) => {
@@ -66,7 +66,7 @@ class Example extends React.Component {
       {
         name: "Edit",
         options: {
-          filter: true,
+          filter: false,
           sort: false,
           empty: true,
           customBodyRender: (value, tableMeta, updateValue) => {
@@ -113,7 +113,7 @@ class Example extends React.Component {
       {
         name: "Add",
         options: {
-          filter: true,
+          filter: false,
           sort: false,
           empty: true,
           customBodyRender: (value, tableMeta, updateValue) => {
@@ -181,4 +181,4 @@ class Example extends React.Component {
   }
 }
 
-ReactDOM.render(<Example />, document.getElementById("app-root"));
+export default Example;
