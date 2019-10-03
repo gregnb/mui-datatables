@@ -269,7 +269,7 @@ class MUIDataTable extends React.Component {
       return;
     });
 
-    this.handleOptionDeprecation(props);
+    this.handleOptionDeprecation();
   }
 
   initializeTable(props) {
@@ -312,19 +312,19 @@ class MUIDataTable extends React.Component {
     },
   });
 
-  handleOptionDeprecation = props => {
-    if (typeof props.options.selectableRows === 'boolean') {
+  handleOptionDeprecation = () => {
+    if (typeof this.options.selectableRows === 'boolean') {
       console.error(
         'Using a boolean for selectableRows has been deprecated. Please use string option: multiple | single | none',
       );
-      this.options.selectableRows = props.options.selectableRows ? 'multiple' : 'none';
+      this.options.selectableRows = this.options.selectableRows ? 'multiple' : 'none';
     }
-    if (['scrollMaxHeight', 'scrollFullHeight', 'stacked'].indexOf(props.options.responsive) === -1) {
+    if (['scrollMaxHeight', 'scrollFullHeight', 'stacked'].indexOf(this.options.responsive) === -1) {
       console.error(
         'Invalid option value for responsive. Please use string option: scrollMaxHeight | scrollFullHeight | stacked',
       );
     }
-    if (props.options.responsive === 'scroll') {
+    if (this.options.responsive === 'scroll') {
       console.error('This option has been deprecated. It is being replaced by scrollMaxHeight');
     }
   };
