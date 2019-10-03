@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Checkbox from '@material-ui/core/Checkbox';
 import TableCell from '@material-ui/core/TableCell';
+import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 
@@ -107,7 +108,7 @@ class TableSelectCell extends React.Component {
     return (
       <TableCell className={cellClass} padding="checkbox">
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          {expandableOn && <KeyboardArrowRight id="expandable-button" className={iconClass} onClick={onExpand} />}
+          {expandableOn && <IconButton onClick={onExpand} disabled={isHeaderCell} ><KeyboardArrowRight id="expandable-button" className={iconClass} /></IconButton>}
           {selectableOn !== 'none' && renderCheckBox()}
         </div>
       </TableCell>
