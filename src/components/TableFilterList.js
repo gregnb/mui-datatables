@@ -35,30 +35,42 @@ class TableFilterList extends React.Component {
   };
 
   render() {
-    const { classes, filterList, filterUpdate, filterListRenderers, columnNames } = this.props;
+    const { classes, filterList, filterUpdate, filterListRenderers, columnNames, serverSideFilterList } = this.props;
+    const { serverSide } = this.props.options;
+
+    const customFilterChip = (item, index) => (
+      <Chip
+        label={filterListRenderers[index](item)}
+        key={index}
+        onDelete={filterUpdate.bind(null, index, [], columnNames[index].name, columnNames[index].filterType)}
+        className={classes.chip}
+      />
+    );
+
+    const filterChip = (index, data, colIndex) => (
+      <Chip
+        label={filterListRenderers[index](data)}
+        key={colIndex}
+        onDelete={filterUpdate.bind(null, index, data, columnNames[index].name, 'chip')}
+        className={classes.chip}
+      />
+    );
 
     return (
       <div className={classes.root}>
-        {filterList.map((item, index) => {
+        {serverSide ? serverSideFilterList.map((item, index) => {
           if (columnNames[index].filterType === 'custom' && filterListRenderers[index](item)) {
-            return (
-              <Chip
-                label={filterListRenderers[index](item)}
-                key={index}
-                onDelete={filterUpdate.bind(null, index, [], columnNames[index].name, columnNames[index].filterType)}
-                className={classes.chip}
-              />
-            );
+            return customFilterChip(item, index);
           }
 
-          return item.map((data, colIndex) => (
-            <Chip
-              label={filterListRenderers[index](data)}
-              key={colIndex}
-              onDelete={filterUpdate.bind(null, index, data, columnNames[index].name, 'checkbox')}
-              className={classes.chip}
-            />
-          ));
+          return item.map((data, colIndex) => filterChip(index, data, colIndex));
+        }) :
+        filterList.map((item, index) => {
+          if (columnNames[index].filterType === 'custom' && filterListRenderers[index](item)) {
+            return customFilterChip(item, index);
+          }
+
+          return item.map((data, colIndex) => filterChip(index, data, colIndex));
         })}
       </div>
     );

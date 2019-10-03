@@ -192,6 +192,36 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(actualResult.length, 0);
   });
 
+  it('should call onFilterDialogOpen when opening filters via toolbar', () => {
+    const onFilterDialogOpen = spy();
+    const newOptions = { ...options, onFilterDialogOpen };
+    const shallowWrapper = shallow(
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    ).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.setActiveIcon('filter');
+    shallowWrapper.update();
+
+    assert.strictEqual(onFilterDialogOpen.callCount, 1);
+  });
+
+  it('should call onFilterDialogClose when closing filters dialog', () => {
+    const onFilterDialogClose = spy();
+    const newOptions = { ...options, onFilterDialogClose };
+    const shallowWrapper = shallow(
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    ).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.setActiveIcon('filter');
+    shallowWrapper.update();
+    instance.setActiveIcon(undefined);
+    shallowWrapper.update();
+
+    assert.strictEqual(onFilterDialogClose.callCount, 1);
+  });
+
   it('should set icon when calling method setActiveIcon', () => {
     const shallowWrapper = shallow(
       <TableToolbar columns={columns} data={data} options={options} setTableAction={setTableAction} />,
