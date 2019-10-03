@@ -110,7 +110,9 @@ class TableToolbar extends React.Component {
 
               // if we have a custom render, which will appear as a react element, we must grab the actual value from data
               // TODO: Create a utility function for checking whether or not something is a react object
-              return typeof column === 'object' && column !== null && !Array.isArray(column) ? data[row.index].data[i] : column;
+              return typeof column === 'object' && column !== null && !Array.isArray(column)
+                ? data[row.index].data[i]
+                : column;
             }),
           };
         });
@@ -130,26 +132,29 @@ class TableToolbar extends React.Component {
   };
 
   setActiveIcon = iconName => {
-    this.setState(prevState => ({
-      showSearch: this.isSearchShown(iconName),
-      iconActive: iconName,
-      prevIconActive: prevState.iconActive
-    }), () => {
-      const { iconActive, prevIconActive } = this.state;
+    this.setState(
+      prevState => ({
+        showSearch: this.isSearchShown(iconName),
+        iconActive: iconName,
+        prevIconActive: prevState.iconActive,
+      }),
+      () => {
+        const { iconActive, prevIconActive } = this.state;
 
-      if (iconActive === 'filter') {
-        this.props.setTableAction('onFilterDialogOpen');
-        if (this.props.options.onFilterDialogOpen) {
-          this.props.options.onFilterDialogOpen();
+        if (iconActive === 'filter') {
+          this.props.setTableAction('onFilterDialogOpen');
+          if (this.props.options.onFilterDialogOpen) {
+            this.props.options.onFilterDialogOpen();
+          }
         }
-      }
-      if (iconActive === undefined && prevIconActive === 'filter') {
-        this.props.setTableAction('onFilterDialogClose');
-        if (this.props.options.onFilterDialogClose) {
-          this.props.options.onFilterDialogClose();
+        if (iconActive === undefined && prevIconActive === 'filter') {
+          this.props.setTableAction('onFilterDialogClose');
+          if (this.props.options.onFilterDialogClose) {
+            this.props.options.onFilterDialogClose();
+          }
         }
-      }
-    });
+      },
+    );
   };
 
   isSearchShown = iconName => {

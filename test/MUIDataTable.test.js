@@ -953,7 +953,9 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should recalculate page when calling changeRowsPerPage method', () => {
-    const mountWrapper = mount(shallow(<MUIDataTable columns={columns} data={data} options={{ rowsPerPage: 2 }} />).get(0));
+    const mountWrapper = mount(
+      shallow(<MUIDataTable columns={columns} data={data} options={{ rowsPerPage: 2 }} />).get(0),
+    );
     const instance = mountWrapper.instance();
 
     instance.changePage(1);
@@ -1164,9 +1166,13 @@ describe('<MUIDataTable />', function() {
   it('should call onRowsExpand when row is expanded or collapsed', () => {
     const options = {
       expandableRows: true,
-      renderExpandableRow: () => <tr><td>foo</td></tr>,
+      renderExpandableRow: () => (
+        <tr>
+          <td>foo</td>
+        </tr>
+      ),
       expandableRowsOnClick: true,
-      onRowsExpand: spy()
+      onRowsExpand: spy(),
     };
     const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
 

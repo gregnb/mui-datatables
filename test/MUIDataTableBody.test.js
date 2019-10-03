@@ -311,11 +311,15 @@ describe('<TableBody />', function() {
     let expandedRowData;
     const options = {
       expandableRows: true,
-      renderExpandableRow: () => <tr><td>foo</td></tr>,
+      renderExpandableRow: () => (
+        <tr>
+          <td>foo</td>
+        </tr>
+      ),
       expandableRowsOnClick: true,
-      isRowExpandable: dataIndex => dataIndex === 2 ? false : true,
+      isRowExpandable: dataIndex => (dataIndex === 2 ? false : true),
     };
-    const toggleExpandRow = spy((_, data) => expandedRowData = data);
+    const toggleExpandRow = spy((_, data) => (expandedRowData = data));
 
     const mountWrapper = mount(
       <TableBody
@@ -426,11 +430,15 @@ describe('<TableBody />', function() {
     let expandedRowData;
     const options = {
       expandableRows: true,
-      renderExpandableRow: () => <tr><td>foo</td></tr>,
+      renderExpandableRow: () => (
+        <tr>
+          <td>foo</td>
+        </tr>
+      ),
       expandableRowsOnClick: true,
-      isRowExpandable: dataIndex => dataIndex === 2 ? true : false,
+      isRowExpandable: dataIndex => (dataIndex === 2 ? true : false),
     };
-    const toggleExpandRow = spy(data => expandedRowData = data);
+    const toggleExpandRow = spy(data => (expandedRowData = data));
 
     const mountWrapper = mount(
       <TableBody

@@ -1046,7 +1046,7 @@ class MUIDataTable extends React.Component {
     }
 
     if (shouldCollapseExpandedRow) {
-      if ((isRowExpandable && isRowExpandable(dataIndex, expandedRows) || !isRowExpandable)) {
+      if ((isRowExpandable && isRowExpandable(dataIndex, expandedRows)) || !isRowExpandable) {
         removedRow = expandedRowsData.splice(cIndex, 1);
         hasRemovedRow = true;
       }

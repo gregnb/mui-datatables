@@ -78,8 +78,7 @@ class Popover extends React.Component {
           ref={el => this.popoverEl}
           anchorOrigin={anchorOriginSpecs}
           transformOrigin={transformOriginSpecs}
-          {...providedProps}
-        >
+          {...providedProps}>
           {content}
         </MuiPopover>
         {triggerEl}
