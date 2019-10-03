@@ -1109,6 +1109,32 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(JSON.stringify(newDisplayData), expectedResult);
   });
 
+  it('should call onRowsExpand when row is expanded or collapsed', () => {
+    const options = {
+      expandableRows: true,
+      renderExpandableRow: () => <tr><td>foo</td></tr>,
+      expandableRowsOnClick: true,
+      onRowsExpand: spy()
+    };
+    const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('click');
+
+    assert.strictEqual(options.onRowsExpand.callCount, 1);
+    assert(options.onRowsExpand.calledWith([{ index: 2, dataIndex: 2 }], [{ index: 2, dataIndex: 2 }]));
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('click');
+
+    assert.strictEqual(options.onRowsExpand.callCount, 2);
+    assert(options.onRowsExpand.calledWith([{ index: 2, dataIndex: 2 }], []));
+  });
+
   it('should not remove selected data on selectRowDelete when type=cell when onRowsDelete returns false', () => {
     const options = {
       onRowsDelete: () => false,

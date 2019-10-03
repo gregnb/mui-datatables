@@ -143,6 +143,7 @@ class MUIDataTable extends React.Component {
       customSearchRender: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customRowRender: PropTypes.func,
       onRowClick: PropTypes.func,
+      onRowsExpand: PropTypes.func,
       onRowsSelect: PropTypes.func,
       resizableColumns: PropTypes.bool,
       selectableRows: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['none', 'single', 'multiple'])]),
@@ -1042,6 +1043,7 @@ class MUIDataTable extends React.Component {
 
     this.setState(
       {
+        curExpandedRows: rowPos >= 0 ? removedRow : [row],
         expandedRows: {
           lookup: buildMap(expandedRowsData),
           data: expandedRowsData,
@@ -1049,6 +1051,9 @@ class MUIDataTable extends React.Component {
       },
       () => {
         this.setTableAction('expandRow');
+        if (this.options.onRowsExpand) {
+          this.options.onRowsExpand(this.state.curExpandedRows, this.state.expandedRows.data);
+        }
       },
     );
   };
