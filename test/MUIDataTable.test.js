@@ -84,6 +84,11 @@ describe('<MUIDataTable />', function() {
     );
   });
 
+  it('should render a loader', () => {
+    const wrapper = mount(<MUIDataTable columns={columns} data={data} options={{ loading: true }} />);
+    assert.equal(wrapper.find('LoaderOverlay').length, 1)
+  });
+
   it('should correctly build internal columns data structure', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const actualResult = shallowWrapper.dive().state().columns;
