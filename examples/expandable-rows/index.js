@@ -92,7 +92,8 @@ class Example extends React.Component {
             </TableCell>
           </TableRow>
         );
-      }
+      },
+      onRowsExpand: (curExpanded, allExpanded) => console.log(curExpanded, allExpanded)
     };
 
     return (
