@@ -953,15 +953,16 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should recalculate page when calling changeRowsPerPage method', () => {
-    const data = new Array(29).fill('').map(() => ['Joe James', 'Test Corp', 'Yonkers', 'NY']);
-    const mountWrapper = mount(shallow(<MUIDataTable columns={columns} data={data} />).get(0));
+    const mountWrapper = mount(shallow(<MUIDataTable columns={columns} data={data} options={{ rowsPerPage: 2 }} />).get(0));
     const instance = mountWrapper.instance();
 
-    instance.changePage(2);
-    instance.changeRowsPerPage(15);
-
-    const state = mountWrapper.state();
+    instance.changePage(1);
+    let state = mountWrapper.state();
     assert.equal(state.page, 1);
+
+    instance.changeRowsPerPage(4);
+    state = mountWrapper.state();
+    assert.equal(state.page, 0);
   });
 
   it('should update page position when calling changePage method', () => {
