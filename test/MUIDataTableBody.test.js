@@ -307,12 +307,47 @@ describe('<TableBody />', function() {
     assert.strictEqual(toggleExpandRow.callCount, 0);
   });
 
+  it('should not gather expanded row data when clicking row with expandableRowsOnClick=true when it is disabled with isRowExpandable via dataIndex.', () => {
+    let expandedRowData;
+    const options = {
+      expandableRows: true,
+      renderExpandableRow: () => <tr><td>foo</td></tr>,
+      expandableRowsOnClick: true,
+      isRowExpandable: dataIndex => dataIndex === 2 ? false : true,
+    };
+    const toggleExpandRow = spy((_, data) => expandedRowData = data);
+
+    const mountWrapper = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={[]}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('click');
+
+    assert.isUndefined(expandedRowData);
+    assert.strictEqual(toggleExpandRow.callCount, 0);
+  });
+
   it('should not gather selected row data when clicking row with selectableRowsOnClick=true when it is disabled with isRowSelectable via selectedRows.', () => {
     let selectedRowData;
     const options = {
       selectableRows: true,
       selectableRowsOnClick: true,
-      isRowSelectable: (index, selectedRows) => selectedRows.lookup[index] || selectedRows.data.length < 1,
+      isRowSelectable: (dataIndex, selectedRows) => selectedRows.lookup[dataIndex] || selectedRows.data.length < 1,
     };
     const selectRowUpdate = (_, data) => (selectedRowData = data);
     const toggleExpandRow = spy();
@@ -347,12 +382,12 @@ describe('<TableBody />', function() {
     assert.strictEqual(toggleExpandRow.callCount, 0);
   });
 
-  it('should gather selected row data when clicking row with selectableRowsOnClick=true when it is enabled with isRowSelectable via index.', () => {
+  it('should gather selected row data when clicking row with selectableRowsOnClick=true when it is enabled with isRowSelectable via dataIndex.', () => {
     let selectedRowData;
     const options = {
       selectableRows: true,
       selectableRowsOnClick: true,
-      isRowSelectable: (index, selectedRows) => selectedRows.lookup[index] || selectedRows.data.length < 1,
+      isRowSelectable: (dataIndex, selectedRows) => selectedRows.lookup[dataIndex] || selectedRows.data.length < 1,
     };
     const selectRowUpdate = (_, data) => (selectedRowData = data);
     const toggleExpandRow = spy();
@@ -385,6 +420,41 @@ describe('<TableBody />', function() {
 
     assert.isDefined(selectedRowData);
     assert.strictEqual(toggleExpandRow.callCount, 0);
+  });
+
+  it('should gather expanded row data when clicking row with expandableRowsOnClick=true when it is enabled with isRowExpandable via dataIndex.', () => {
+    let expandedRowData;
+    const options = {
+      expandableRows: true,
+      renderExpandableRow: () => <tr><td>foo</td></tr>,
+      expandableRowsOnClick: true,
+      isRowExpandable: dataIndex => dataIndex === 2 ? true : false,
+    };
+    const toggleExpandRow = spy(data => expandedRowData = data);
+
+    const mountWrapper = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={[]}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('click');
+
+    assert.isDefined(expandedRowData);
+    assert.strictEqual(toggleExpandRow.callCount, 1);
   });
 
   it('should gather expanded row data when clicking row with expandableRows=true and expandableRowsOnClick=true.', () => {

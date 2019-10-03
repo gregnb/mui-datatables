@@ -149,6 +149,7 @@ class MUIDataTable extends React.Component {
       selectableRows: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['none', 'single', 'multiple'])]),
       selectableRowsOnClick: PropTypes.bool,
       isRowSelectable: PropTypes.func,
+      isRowExpandable: PropTypes.func,
       selectableRowsHeader: PropTypes.bool,
       serverSide: PropTypes.bool,
       onTableChange: PropTypes.func,
@@ -1021,29 +1022,36 @@ class MUIDataTable extends React.Component {
 
   toggleExpandRow = row => {
     const { dataIndex } = row;
-    let expandedRows = [...this.state.expandedRows.data];
-    let removedRow;
-    let rowPos = -1;
+    const { isRowExpandable } = this.options;
+    let { expandedRows } = this.state;
+    const expandedRowsData = [...expandedRows.data];
+    let shouldCollapseExpandedRow = false;
+    let hasRemovedRow = false;
+    let removedRow = [];
 
-    for (let cIndex = 0; cIndex < expandedRows.length; cIndex++) {
-      if (expandedRows[cIndex].dataIndex === dataIndex) {
-        rowPos = cIndex;
+    for (var cIndex = 0; cIndex < expandedRowsData.length; cIndex++) {
+      if (expandedRowsData[cIndex].dataIndex === dataIndex) {
+        shouldCollapseExpandedRow = true;
         break;
       }
     }
 
-    if (rowPos >= 0) {
-      removedRow = expandedRows.splice(rowPos, 1);
+    if (shouldCollapseExpandedRow) {
+      if ((isRowExpandable && isRowExpandable(dataIndex, expandedRows) || !isRowExpandable)) {
+        removedRow = expandedRowsData.splice(cIndex, 1);
+        hasRemovedRow = true;
+      }
     } else {
-      expandedRows.push(row);
+      if (isRowExpandable && isRowExpandable(dataIndex, expandedRows)) expandedRowsData.push(row);
+      else if (!isRowExpandable) expandedRowsData.push(row);
     }
 
     this.setState(
       {
-        curExpandedRows: rowPos >= 0 ? removedRow : [row],
+        curExpandedRows: hasRemovedRow ? removedRow : [row],
         expandedRows: {
-          lookup: buildMap(expandedRows),
-          data: expandedRows,
+          lookup: buildMap(expandedRowsData),
+          data: expandedRowsData,
         },
       },
       () => {

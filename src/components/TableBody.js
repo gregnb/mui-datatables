@@ -29,6 +29,8 @@ class TableBody extends React.Component {
     filterList: PropTypes.array,
     /** Callback to execute when row is clicked */
     onRowClick: PropTypes.func,
+    /** Table rows expanded */
+    expandedRows: PropTypes.object,
     /** Table rows selected */
     selectedRows: PropTypes.object,
     /** Callback to trigger table row select */
@@ -95,6 +97,15 @@ class TableBody extends React.Component {
 
     if (options.isRowSelectable) {
       return options.isRowSelectable(dataIndex, selectedRows);
+    } else {
+      return true;
+    }
+  }
+
+  isRowExpandable(dataIndex) {
+    const { options, expandedRows } = this.props;
+    if (options.isRowExpandable) {
+      return options.isRowExpandable(dataIndex, expandedRows);
     } else {
       return true;
     }
@@ -177,7 +188,11 @@ class TableBody extends React.Component {
       this.handleRowSelect(selectRow, event);
     }
     // Check if we should trigger row expand when row is clicked anywhere
-    if (this.props.options.expandableRowsOnClick && this.props.options.expandableRows) {
+    if (
+      this.props.options.expandableRowsOnClick &&
+      this.props.options.expandableRows &&
+      this.isRowExpandable(data.dataIndex, this.props.expandedRows)
+    ) {
       const expandRow = { index: data.rowIndex, dataIndex: data.dataIndex };
       this.props.toggleExpandRow(expandRow);
     }
