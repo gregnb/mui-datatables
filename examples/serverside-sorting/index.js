@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import MUIDataTable from '../../src';
+import { CircularProgress, Typography } from '@material-ui/core';
 import Cities from './Cities';
 
 class Example extends React.Component {
@@ -10,6 +11,7 @@ class Example extends React.Component {
     data: [['Loading Data...']],
     nameColumnSortDirection: null,
     columnSortDirection: ['none', 'none', 'none', 'none', 'none'],
+    loading: false,
   };
 
   componentDidMount() {
@@ -17,8 +19,9 @@ class Example extends React.Component {
   }
 
   getData = () => {
+    this.setState({ loading: true });
     this.xhrRequest().then(data => {
-      this.setState({ data });
+      this.setState({ data, loading: false });
     });
   };
 
@@ -192,7 +195,19 @@ class Example extends React.Component {
 
     return (
       <div>
-        <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />
+        <MUIDataTable
+          title={
+            <Typography variant="title">
+              ACME Employee list{' '}
+              {this.state.loading && (
+                <CircularProgress size={24} style={{ marginLeft: 15, position: 'relative', top: 4 }} />
+              )}
+            </Typography>
+          }
+          data={data}
+          columns={columns}
+          options={options}
+        />
       </div>
     );
   }
