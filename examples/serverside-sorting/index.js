@@ -189,7 +189,6 @@ class Example extends React.Component {
         }
 
         this.sort(changedColumn, order);
-        // this.sortChange(changedColumn, order);
       },
     };
 
