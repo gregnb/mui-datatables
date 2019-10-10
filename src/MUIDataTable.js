@@ -824,7 +824,7 @@ class MUIDataTable extends React.Component {
     );
   };
 
-  getSortDirection(column) {
+  getSortDirectionLabel(column) {
     return column.sortDirection === 'asc' ? 'ascending' : 'descending';
   }
 
@@ -843,7 +843,7 @@ class MUIDataTable extends React.Component {
           }
         }
 
-        const orderLabel = this.getSortDirection(columns[index]);
+        const orderLabel = this.getSortDirectionLabel(columns[index]);
         const announceText = `Table now sorted by ${columns[index].name} : ${orderLabel}`;
 
         let newState = {
@@ -878,7 +878,7 @@ class MUIDataTable extends React.Component {
         if (this.options.onColumnSortChange) {
           this.options.onColumnSortChange(
             this.state.columns[index].name,
-            this.getSortDirection(this.state.columns[index]),
+            this.state.columns[index].sortDirection,
           );
         }
       },
