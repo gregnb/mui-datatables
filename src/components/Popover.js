@@ -8,7 +8,7 @@ class Popover extends React.Component {
     open: false,
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.anchorEl = null;
   }
 

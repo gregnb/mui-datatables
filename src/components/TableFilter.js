@@ -1,19 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import { Grid, GridList, GridListTile, TextField } from '@material-ui/core';
+
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
 import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from '@material-ui/core/MenuItem';
+import PropTypes from 'prop-types';
+import React from 'react';
+import Select from '@material-ui/core/Select';
+import Typography from '@material-ui/core/Typography';
+import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-import { TextField, Grid, GridList, GridListTile } from '@material-ui/core';
 
 export const defaultFilterStyles = theme => ({
   root: {
@@ -79,29 +80,8 @@ export const defaultFilterStyles = theme => ({
     },
   },
   checked: {},
-  /* selects */
-  selectRoot: {
-    display: 'flex',
+  gridListTile: {
     marginTop: '16px',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    width: '100%',
-    height: '80%',
-    justifyContent: 'space-between',
-  },
-  selectFormControl: {
-    flex: '1 1 calc(50% - 24px)',
-  },
-  /* textField */
-  textFieldRoot: {
-    display: 'flex',
-    marginTop: '16px',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    width: '100%',
-  },
-  textFieldFormControl: {
-    flex: '1 1 calc(50% - 24px)',
   },
 });
 
@@ -127,7 +107,7 @@ class TableFilter extends React.Component {
 
   handleDropdownChange = (event, index, column) => {
     const labelFilterAll = this.props.options.textLabels.filter.all;
-    const value = event.target.value === labelFilterAll ? '' : event.target.value;
+    const value = event.target.value === labelFilterAll ? [] : [event.target.value];
     this.props.onFilterUpdate(index, value, column, 'dropdown');
   };
 
@@ -137,6 +117,10 @@ class TableFilter extends React.Component {
 
   handleTextFieldChange = (event, index, column) => {
     this.props.onFilterUpdate(index, event.target.value, column, 'textField');
+  };
+
+  handleCustomChange = (value, index, column) => {
+    this.props.onFilterUpdate(index, value, column.name, column.filterType);
   };
 
   renderCheckbox(column, index) {
@@ -186,26 +170,25 @@ class TableFilter extends React.Component {
     const textLabels = options.textLabels.filter;
 
     return (
-      <GridListTile key={index} cols={1}>
-        <div className={classes.selectRoot}>
-          <FormControl className={classes.selectFormControl} key={index}>
-            <InputLabel htmlFor={column.name}>{column.label}</InputLabel>
-            <Select
-              value={filterList[index].toString() || textLabels.all}
-              name={column.name}
-              onChange={event => this.handleDropdownChange(event, index, column.name)}
-              input={<Input name={column.name} id={column.name} />}>
-              <MenuItem value={textLabels.all} key={0}>
-                {textLabels.all}
+      <GridListTile key={index} cols={1} classes={{ tile: classes.gridListTile }}>
+        <FormControl key={index} fullWidth>
+          <InputLabel htmlFor={column.name}>{column.label}</InputLabel>
+          <Select
+            fullWidth
+            value={filterList[index].length ? filterList[index].toString() : textLabels.all}
+            name={column.name}
+            onChange={event => this.handleDropdownChange(event, index, column.name)}
+            input={<Input name={column.name} id={column.name} />}>
+            <MenuItem value={textLabels.all} key={0}>
+              {textLabels.all}
+            </MenuItem>
+            {filterData[index].map((filterValue, filterIndex) => (
+              <MenuItem value={filterValue} key={filterIndex + 1}>
+                {filterValue != null ? filterValue.toString() : ''}
               </MenuItem>
-              {filterData[index].map((filterValue, filterIndex) => (
-                <MenuItem value={filterValue} key={filterIndex + 1}>
-                  {filterValue != null ? filterValue.toString() : ''}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </div>
+            ))}
+          </Select>
+        </FormControl>
       </GridListTile>
     );
   }
@@ -214,58 +197,76 @@ class TableFilter extends React.Component {
     const { classes, filterList } = this.props;
 
     return (
-      <GridListTile key={index} cols={1}>
-        <div className={classes.textFieldRoot}>
-          <FormControl className={classes.textFieldFormControl} key={index}>
-            <TextField
-              label={column.label}
-              value={filterList[index].toString() || ''}
-              onChange={event => this.handleTextFieldChange(event, index, column.name)}
-            />
-          </FormControl>
-        </div>
+      <GridListTile key={index} cols={1} classes={{ tile: classes.gridListTile }}>
+        <FormControl key={index} fullWidth>
+          <TextField
+            fullWidth
+            label={column.label}
+            value={filterList[index].toString() || ''}
+            onChange={event => this.handleTextFieldChange(event, index, column.name)}
+          />
+        </FormControl>
       </GridListTile>
     );
   }
 
   renderMultiselect(column, index) {
-    const { classes, filterData, filterList, options } = this.props;
+    const { classes, filterData, filterList } = this.props;
 
     return (
-      <GridListTile key={index} cols={1}>
-        <div className={classes.selectRoot}>
-          <FormControl className={classes.selectFormControl} key={index}>
-            <InputLabel htmlFor={column.name}>{column.label}</InputLabel>
-            <Select
-              multiple
-              value={filterList[index] || []}
-              renderValue={selected => selected.join(', ')}
-              name={column.name}
-              onChange={event => this.handleMultiselectChange(index, event.target.value, column.name)}
-              input={<Input name={column.name} id={column.name} />}>
-              {filterData[index].map((filterValue, filterIndex) => (
-                <MenuItem value={filterValue} key={filterIndex + 1}>
-                  <Checkbox
-                    checked={filterList[index].indexOf(filterValue) >= 0 ? true : false}
-                    value={filterValue != null ? filterValue.toString() : ''}
-                    className={classes.checkboxIcon}
-                    classes={{
-                      root: classes.checkbox,
-                      checked: classes.checked,
-                    }}
-                  />
-                  <ListItemText primary={filterValue} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </div>
+      <GridListTile key={index} cols={1} classes={{ tile: classes.gridListTile }}>
+        <FormControl key={index} fullWidth>
+          <InputLabel htmlFor={column.name}>{column.label}</InputLabel>
+          <Select
+            multiple
+            fullWidth
+            value={filterList[index] || []}
+            renderValue={selected => selected.join(', ')}
+            name={column.name}
+            onChange={event => this.handleMultiselectChange(index, event.target.value, column.name)}
+            input={<Input name={column.name} id={column.name} />}>
+            {filterData[index].map((filterValue, filterIndex) => (
+              <MenuItem value={filterValue} key={filterIndex + 1}>
+                <Checkbox
+                  checked={filterList[index].indexOf(filterValue) >= 0 ? true : false}
+                  value={filterValue != null ? filterValue.toString() : ''}
+                  className={classes.checkboxIcon}
+                  classes={{
+                    root: classes.checkbox,
+                    checked: classes.checked,
+                  }}
+                />
+                <ListItemText primary={filterValue} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </GridListTile>
+    );
+  }
+
+  renderCustomField(column, index) {
+    const { classes, filterList, options } = this.props;
+    const display =
+      (column.filterOptions && column.filterOptions.display) ||
+      (options.filterOptions && options.filterOptions.display);
+
+    if (!display) {
+      console.error('Property "display" is required when using custom filter type.');
+      return;
+    }
+
+    return (
+      <GridListTile key={index} cols={1} classes={{ tile: classes.gridListTile }}>
+        <FormControl key={index} fullWidth>
+          {display(filterList, this.handleCustomChange, index, column)}
+        </FormControl>
       </GridListTile>
     );
   }
 
   render() {
-    const { classes, columns, options, onFilterReset } = this.props;
+    const { classes, columns, options, onFilterReset, customFooter, filterList } = this.props;
     const textLabels = options.textLabels.filter;
     const filterGridColumns = columns.filter(col => col.filter).length === 1 ? 1 : 2;
 
@@ -285,13 +286,14 @@ class TableFilter extends React.Component {
               className={classes.resetLink}
               tabIndex={0}
               aria-label={textLabels.reset}
+              data-testid={'filterReset-button'}
               onClick={onFilterReset}>
               {textLabels.reset}
             </Button>
           </div>
           <div className={classes.filtersSelected} />
         </div>
-        <GridList cellHeight="auto" cols={filterGridColumns} cellHeight={70} spacing={34}>
+        <GridList cellHeight="auto" cols={filterGridColumns} spacing={34}>
           {columns.map((column, index) => {
             if (column.filter) {
               const filterType = column.filterType || options.filterType;
@@ -301,10 +303,13 @@ class TableFilter extends React.Component {
                 ? this.renderMultiselect(column, index)
                 : filterType === 'textField'
                 ? this.renderTextField(column, index)
+                : filterType === 'custom'
+                ? this.renderCustomField(column, index)
                 : this.renderSelect(column, index);
             }
           })}
         </GridList>
+        {customFooter ? customFooter(filterList) : ''}
       </div>
     );
   }

@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import Chip from '@material-ui/core/Chip';
 import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const defaultFilterListStyles = {
   root: {
@@ -23,7 +23,10 @@ class TableFilterList extends React.Component {
     filterListRenderers: PropTypes.array.isRequired,
     /** Columns used to describe table */
     columnNames: PropTypes.PropTypes.arrayOf(
-      PropTypes.oneOfType([PropTypes.string, PropTypes.shape({ name: PropTypes.string.isRequired })]),
+      PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.shape({ name: PropTypes.string.isRequired, filterType: PropTypes.string }),
+      ]),
     ).isRequired,
     /** Callback to trigger filter update */
     onFilterUpdate: PropTypes.func,
@@ -32,20 +35,44 @@ class TableFilterList extends React.Component {
   };
 
   render() {
-    const { classes, filterList, filterUpdate, filterListRenderers, columnNames } = this.props;
+    const { classes, filterList, filterUpdate, filterListRenderers, columnNames, serverSideFilterList } = this.props;
+    const { serverSide } = this.props.options;
+
+    const customFilterChip = (item, index) => (
+      <Chip
+        label={filterListRenderers[index](item)}
+        key={index}
+        onDelete={filterUpdate.bind(null, index, [], columnNames[index].name, columnNames[index].filterType)}
+        className={classes.chip}
+      />
+    );
+
+    const filterChip = (index, data, colIndex) => (
+      <Chip
+        label={filterListRenderers[index](data)}
+        key={colIndex}
+        onDelete={filterUpdate.bind(null, index, data, columnNames[index].name, 'chip')}
+        className={classes.chip}
+      />
+    );
 
     return (
       <div className={classes.root}>
-        {filterList.map((item, index) =>
-          item.map((data, colIndex) => (
-            <Chip
-              label={filterListRenderers[index](data)}
-              key={colIndex}
-              onDelete={filterUpdate.bind(null, index, data, columnNames[index].name, 'checkbox')}
-              className={classes.chip}
-            />
-          )),
-        )}
+        {serverSide
+          ? serverSideFilterList.map((item, index) => {
+              if (columnNames[index].filterType === 'custom' && filterListRenderers[index](item)) {
+                return customFilterChip(item, index);
+              }
+
+              return item.map((data, colIndex) => filterChip(index, data, colIndex));
+            })
+          : filterList.map((item, index) => {
+              if (columnNames[index].filterType === 'custom' && filterListRenderers[index](item)) {
+                return customFilterChip(item, index);
+              }
+
+              return item.map((data, colIndex) => filterChip(index, data, colIndex));
+            })}
       </div>
     );
   }

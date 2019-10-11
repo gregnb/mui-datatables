@@ -79,9 +79,15 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'scroll',
+      responsive: 'scrollMaxHeight',
       expandableRows: true,
       expandableRowsOnClick: true,
+      isRowExpandable: (dataIndex, expandedRows) => {
+        // Prevent expand/collapse of any row after the 5th (but allow those already expanded to be collapsed)
+        if (expandedRows.data.length > 4 && expandedRows.data.filter(d => d.dataIndex === dataIndex).length === 0) return false;
+        return true;
+      },
+      rowsExpanded: [0, 1],
       renderExpandableRow: (rowData, rowMeta) => {
         const colSpan = rowData.length + 1;
         return (
@@ -91,7 +97,8 @@ class Example extends React.Component {
             </TableCell>
           </TableRow>
         );
-      }
+      },
+      onRowsExpand: (curExpanded, allExpanded) => console.log(curExpanded, allExpanded)
     };
 
     return (
@@ -101,4 +108,4 @@ class Example extends React.Component {
   }
 }
 
-ReactDOM.render(<Example />, document.getElementById("app-root"));
+export default Example;

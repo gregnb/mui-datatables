@@ -3,15 +3,12 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Checkbox from '@material-ui/core/Checkbox';
 import TableCell from '@material-ui/core/TableCell';
+import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 
 const defaultSelectCellStyles = theme => ({
-  root: {
-    [theme.breakpoints.down('sm')]: {
-      backgroundColor: theme.palette.background.paper,
-    },
-  },
+  root: {},
   fixedHeader: {
     position: 'sticky',
     top: '0px',
@@ -32,11 +29,7 @@ const defaultSelectCellStyles = theme => ({
     zIndex: 110,
     backgroundColor: theme.palette.background.paper,
   },
-  checkboxRoot: {
-    '&$checked': {
-      color: theme.palette.primary.main,
-    },
-  },
+  checkboxRoot: {},
   checked: {},
   disabled: {},
 });
@@ -75,6 +68,7 @@ class TableSelectCell extends React.Component {
       isRowExpanded,
       onExpand,
       isRowSelectable,
+      selectableRowsHeader,
       ...otherProps
     } = this.props;
 
@@ -93,7 +87,7 @@ class TableSelectCell extends React.Component {
     });
 
     const renderCheckBox = () => {
-      if (isHeaderCell && selectableOn !== 'multiple') {
+      if (isHeaderCell && (selectableOn !== 'multiple' || selectableRowsHeader === false)) {
         // only display the header checkbox for multiple selection.
         return null;
       }
@@ -104,6 +98,7 @@ class TableSelectCell extends React.Component {
             checked: classes.checked,
             disabled: classes.disabled,
           }}
+          color="primary"
           disabled={!isRowSelectable}
           {...otherProps}
         />
@@ -113,7 +108,11 @@ class TableSelectCell extends React.Component {
     return (
       <TableCell className={cellClass} padding="checkbox">
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          {expandableOn && <KeyboardArrowRight id="expandable-button" className={iconClass} onClick={onExpand} />}
+          {expandableOn && (
+            <IconButton onClick={onExpand} disabled={isHeaderCell}>
+              <KeyboardArrowRight id="expandable-button" className={iconClass} />
+            </IconButton>
+          )}
           {selectableOn !== 'none' && renderCheckBox()}
         </div>
       </TableCell>

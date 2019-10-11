@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
 import CustomFooter from "./CustomFooter";
 
@@ -44,13 +43,18 @@ class Example extends React.Component {
 
     const options = {
       filter: true,
-      selectableRows: true,
       filterType: 'dropdown',
       responsive: 'stacked',
       rowsPerPage: 10,
-      customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage) => {
+      customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage, textLabels) => {
         return (  
-          <CustomFooter changePage={changePage} count={count} />
+          <CustomFooter 
+            count={count} 
+            page={page} 
+            rowsPerPage={rowsPerPage} 
+            changeRowsPerPage={changeRowsPerPage} 
+            changePage={changePage} 
+            textLabels={textLabels} />
         );
       }
     };
@@ -62,4 +66,4 @@ class Example extends React.Component {
   }
 }
 
-ReactDOM.render(<Example />, document.getElementById("app-root"));
+export default Example;
