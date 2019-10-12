@@ -111,61 +111,53 @@ class TableHeadCell extends React.Component {
     return (
       <TableCell className={cellClass} scope={'col'} sortDirection={ariaSortDirection}>
         {options.sort && sort ? (
-          <Tooltip
-            title={
-              options.textLabels.body.columnHeaderTooltip
-                ? options.textLabels.body.columnHeaderTooltip(column)
-                : options.textLabels.body.toolTip
-            }
-            placement={'bottom-start'}
-            classes={{
-              tooltip: classes.tooltip,
-            }}
-            enterDelay={300}
-            classes={{ popper: classes.mypopper }}
-            open={isSortTooltipOpen}
-            onOpen={() =>
-              isHintTooltipOpen
-                ? this.setState({ isSortTooltipOpen: false })
-                : this.setState({ isSortTooltipOpen: true })
-            }
-            onClose={() => this.setState({ isSortTooltipOpen: false })}>
-            <span
-              role="button"
-              onKeyUp={this.handleKeyboardSortinput}
-              onClick={this.handleSortClick}
-              className={classes.toolButton}
-              tabIndex={0}>
-              <div
-                className={classNames({
-                  [classes.data]: true,
-                  [classes.sortActive]: sortActive,
-                })}>
-                {children}
-              </div>
+          <span
+            role="button"
+            onKeyUp={this.handleKeyboardSortinput}
+            onClick={this.handleSortClick}
+            className={classes.toolButton}
+            tabIndex={0}>
+            <Tooltip
+              title={
+                options.textLabels.body.columnHeaderTooltip
+                  ? options.textLabels.body.columnHeaderTooltip(column)
+                  : options.textLabels.body.toolTip
+              }
+              placement={'bottom-start'}
+              classes={{
+                tooltip: classes.tooltip,
+              }}
+              enterDelay={300}
+              classes={{ popper: classes.mypopper }}
+              open={isSortTooltipOpen}
+              onOpen={() =>
+                isHintTooltipOpen
+                  ? this.setState({ isSortTooltipOpen: false })
+                  : this.setState({ isSortTooltipOpen: true })
+              }
+              onClose={() => this.setState({ isSortTooltipOpen: false })}>
               <div className={classes.sortAction}>
-                <TableSortLabel {...sortLabelProps} />
-                {hint && (
-                  <Tooltip
-                    title={hint}
-                    placement={'bottom-end'}
-                    classes={{
-                      tooltip: classes.tooltip,
-                    }}
-                    enterDelay={300}
-                    classes={{ popper: classes.mypopper }}
-                    open={isHintTooltipOpen}
-                    onOpen={() => this.setState({ isSortTooltipOpen: false, isHintTooltipOpen: true })}
-                    onClose={() => this.setState({ isHintTooltipOpen: false })}>
-                    <HelpIcon
-                      className={!sortActive ? classes.hintIconAlone : classes.hintIconWithSortIcon}
-                      fontSize="small"
-                    />
-                  </Tooltip>
-                )}
+                <div
+                  className={classNames({
+                    [classes.data]: true,
+                    [classes.sortActive]: sortActive,
+                  })}>
+                  {children}
+                </div>
+                <div className={classes.sortAction}>
+                  <TableSortLabel {...sortLabelProps} />
+                </div>
               </div>
-            </span>
-          </Tooltip>
+            </Tooltip>
+            {hint && (
+              <Tooltip title={hint}>
+                <HelpIcon
+                  className={!sortActive ? classes.hintIconAlone : classes.hintIconWithSortIcon}
+                  fontSize="small"
+                />
+              </Tooltip>
+            )}
+          </span>
         ) : (
           <div className={classes.sortAction}>
             {children}
