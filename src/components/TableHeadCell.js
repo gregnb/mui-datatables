@@ -72,11 +72,6 @@ class TableHeadCell extends React.Component {
     column: PropTypes.object,
   };
 
-  state = {
-    isSortTooltipOpen: false,
-    isHintTooltipOpen: false,
-  };
-
   handleKeyboardSortinput = e => {
     if (e.key === 'Enter') {
       this.props.toggleSort(this.props.index);
@@ -90,7 +85,6 @@ class TableHeadCell extends React.Component {
   };
 
   render() {
-    const { isSortTooltipOpen, isHintTooltipOpen } = this.state;
     const { children, classes, options, sortDirection, sort, hint, print, column } = this.props;
     const sortActive = sortDirection !== 'none' && sortDirection !== undefined ? true : false;
     const ariaSortDirection = sortDirection === 'none' ? false : sortDirection;
@@ -127,15 +121,7 @@ class TableHeadCell extends React.Component {
               classes={{
                 tooltip: classes.tooltip,
               }}
-              enterDelay={300}
-              classes={{ popper: classes.mypopper }}
-              open={isSortTooltipOpen}
-              onOpen={() =>
-                isHintTooltipOpen
-                  ? this.setState({ isSortTooltipOpen: false })
-                  : this.setState({ isSortTooltipOpen: true })
-              }
-              onClose={() => this.setState({ isSortTooltipOpen: false })}>
+              classes={{ popper: classes.mypopper }}>
               <div className={classes.sortAction}>
                 <div
                   className={classNames({
