@@ -17,7 +17,7 @@ import TableResize from './components/TableResize';
 import TableToolbar from './components/TableToolbar';
 import TableToolbarSelect from './components/TableToolbarSelect';
 import textLabels from './textLabels';
-import { buildMap, getCollatorComparator, sortCompare } from './utils';
+import { buildMap, getCollatorComparator, sortCompare, getPageValue } from './utils';
 
 const defaultTableStyles = theme => ({
   root: {},
@@ -886,20 +886,16 @@ class MUIDataTable extends React.Component {
   };
 
   changeRowsPerPage = rows => {
-    /**
-     * After changing rows per page recalculate totalPages and checks its if current page not higher.
-     * Otherwise sets current page the value of nextTotalPages
-     */
     const rowCount = this.options.count || this.state.displayData.length;
-    const nextTotalPages = Math.floor(rowCount / rows);
 
     this.setState(
       () => ({
         rowsPerPage: rows,
-        page: this.state.page > nextTotalPages ? nextTotalPages : this.state.page,
+        page: getPageValue(rowCount, rows, this.state.page),
       }),
       () => {
         this.setTableAction('changeRowsPerPage');
+
         if (this.options.onChangeRowsPerPage) {
           this.options.onChangeRowsPerPage(this.state.rowsPerPage);
         }

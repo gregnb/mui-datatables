@@ -7,6 +7,7 @@ import TableBodyRow from './TableBodyRow';
 import TableSelectCell from './TableSelectCell';
 import { withStyles } from '@material-ui/core/styles';
 import cloneDeep from 'lodash.clonedeep';
+import { getPageValue } from '../utils';
 
 const defaultBodyStyles = {
   root: {},
@@ -55,12 +56,12 @@ class TableBody extends React.Component {
     if (this.props.options.serverSide) return data.length ? data : null;
 
     let rows = [];
-    const totalPages = Math.floor(count / rowsPerPage);
-    const fromIndex = page === 0 ? 0 : page * rowsPerPage;
-    const toIndex = Math.min(count, (page + 1) * rowsPerPage);
+    const highestPageInRange = getPageValue(count, rowsPerPage, page);
+    const fromIndex = highestPageInRange === 0 ? 0 : highestPageInRange * rowsPerPage;
+    const toIndex = Math.min(count, (highestPageInRange + 1) * rowsPerPage);
 
-    if (page > totalPages && totalPages !== 0) {
-      console.warn('Current page is out of range.');
+    if (page > highestPageInRange) {
+      console.warn('Current page is out of range, using the highest page that is in range instead.');
     }
 
     for (let rowIndex = fromIndex; rowIndex < count && rowIndex < toIndex; rowIndex++) {

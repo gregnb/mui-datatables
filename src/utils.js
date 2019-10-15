@@ -5,6 +5,12 @@ function buildMap(rows) {
   }, {});
 }
 
+function getPageValue(count, rowsPerPage, page) {
+  const totalPages = count === rowsPerPage ? 0 : Math.floor(count / rowsPerPage);
+
+  return page > totalPages ? totalPages : page;
+}
+
 function getCollatorComparator() {
   if (!!Intl) {
     const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
@@ -90,4 +96,4 @@ function createCSVDownload(columns, data, options) {
   }
 }
 
-export { buildMap, getCollatorComparator, sortCompare, createCSVDownload };
+export { buildMap, getPageValue, getCollatorComparator, sortCompare, createCSVDownload };

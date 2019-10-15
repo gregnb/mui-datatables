@@ -4,6 +4,7 @@ import MuiTableRow from '@material-ui/core/TableRow';
 import MuiTableFooter from '@material-ui/core/TableFooter';
 import MuiTablePagination from '@material-ui/core/TablePagination';
 import { withStyles } from '@material-ui/core/styles';
+import { getPageValue } from '../utils';
 
 const defaultPaginationStyles = {
   root: {
@@ -63,7 +64,7 @@ class TablePagination extends React.Component {
             }}
             count={count}
             rowsPerPage={rowsPerPage}
-            page={page}
+            page={getPageValue(count, rowsPerPage, page)}
             labelRowsPerPage={textLabels.rowsPerPage}
             labelDisplayedRows={({ from, to, count }) => `${from}-${to} ${textLabels.displayRows} ${count}`}
             backIconButtonProps={{
