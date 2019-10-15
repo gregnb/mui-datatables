@@ -409,22 +409,23 @@ class MUIDataTable extends React.Component {
       };
 
       if (typeof column === 'object') {
-        if (column.options) {
-          if (column.options.display !== undefined) {
-            column.options.display = column.options.display.toString();
+        const options = { ...column.options };
+        if (options) {
+          if (options.display !== undefined) {
+            options.display = options.display.toString();
           }
 
-          if (column.options.sortDirection === null) {
+          if (options.sortDirection === null) {
             console.error(
               'The "null" option for sortDirection is deprecated. sortDirection is an enum, use "asc" | "desc" | "none"',
             );
-            column.options.sortDirection = 'none';
+            options.sortDirection = 'none';
           }
 
-          if (column.options.sortDirection !== undefined && column.options.sortDirection !== 'none') {
+          if (options.sortDirection !== undefined && options.sortDirection !== 'none') {
             if (sortDirectionSet) {
               console.error('sortDirection is set for more than one column. Only the first column will be considered.');
-              column.options.sortDirection = 'none';
+              options.sortDirection = 'none';
             } else {
               sortDirectionSet = true;
             }
@@ -435,7 +436,7 @@ class MUIDataTable extends React.Component {
           name: column.name,
           label: column.label ? column.label : column.name,
           ...columnOptions,
-          ...(column.options ? column.options : {}),
+          ...options,
         };
       } else {
         columnOptions = { ...columnOptions, name: column, label: column };
