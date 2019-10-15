@@ -52,6 +52,7 @@ function createCSVDownload(columns, data, options) {
   const CSVHead = buildHead(columns);
 
   const buildBody = data => {
+    if (!data.length) return '';
     return data
       .reduce(
         (soFar, row) =>
