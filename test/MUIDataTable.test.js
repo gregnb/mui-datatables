@@ -779,12 +779,21 @@ describe('<MUIDataTable />', function() {
   it('should properly set searchText when hiding the search bar', () => {
     const options = {
       rowsPerPage: 1,
-      textLabels
+      textLabels,
     };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const table = shallowWrapper.dive();
     const instance = table.instance();
-    const shallowWrapperTableToolbar = shallow(<TableToolbar options={options} searchTextUpdate={spy()} searchClose={instance.searchClose} columns={columns} data={data} setTableAction={spy()} />);
+    const shallowWrapperTableToolbar = shallow(
+      <TableToolbar
+        options={options}
+        searchTextUpdate={spy()}
+        searchClose={instance.searchClose}
+        columns={columns}
+        data={data}
+        setTableAction={spy()}
+      />,
+    );
     const instanceTableToolbar = shallowWrapperTableToolbar.dive().instance();
 
     instance.searchTextUpdate('Joe');
@@ -800,12 +809,21 @@ describe('<MUIDataTable />', function() {
   it('should not change page when hiding the search bar', () => {
     const options = {
       rowsPerPage: 1,
-      textLabels
+      textLabels,
     };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
     const table = shallowWrapper.dive();
     const instance = table.instance();
-    const shallowWrapperTableToolbar = shallow(<TableToolbar options={options} searchTextUpdate={spy()} searchClose={instance.searchClose} columns={columns} data={data} setTableAction={spy()} />);
+    const shallowWrapperTableToolbar = shallow(
+      <TableToolbar
+        options={options}
+        searchTextUpdate={spy()}
+        searchClose={instance.searchClose}
+        columns={columns}
+        data={data}
+        setTableAction={spy()}
+      />,
+    );
     const instanceTableToolbar = shallowWrapperTableToolbar.dive().instance();
 
     // Simulate a search that has multiple pages of results
