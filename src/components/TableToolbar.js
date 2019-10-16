@@ -189,7 +189,7 @@ class TableToolbar extends React.Component {
 
     this.props.setTableAction('onSearchClose');
     if (onSearchClose) onSearchClose();
-    this.props.searchTextUpdate(null);
+    this.props.searchClose();
 
     this.setState(() => ({
       iconActive: null,
