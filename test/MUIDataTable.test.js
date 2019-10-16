@@ -776,6 +776,27 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
   });
 
+  it('should properly set searchText when hiding the search bar', () => {
+    const options = {
+      rowsPerPage: 1,
+      textLabels
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+    const shallowWrapperTableToolbar = shallow(<TableToolbar options={options} searchTextUpdate={spy()} searchClose={instance.searchClose} columns={columns} data={data} setTableAction={spy()} />);
+    const instanceTableToolbar = shallowWrapperTableToolbar.dive().instance();
+
+    instance.searchTextUpdate('Joe');
+    table.update();
+    instanceTableToolbar.searchButton = { focus: () => {} };
+    instanceTableToolbar.hideSearch();
+    table.update();
+    const searchText = table.state().searchText;
+
+    assert.strictEqual(searchText, null);
+  });
+
   it('should not change page when hiding the search bar', () => {
     const options = {
       rowsPerPage: 1,
