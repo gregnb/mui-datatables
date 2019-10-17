@@ -922,6 +922,23 @@ class MUIDataTable extends React.Component {
     );
   };
 
+  searchClose = () => {
+    this.setState(
+      prevState => ({
+        searchText: null,
+        displayData: this.options.serverSide
+          ? prevState.displayData
+          : this.getDisplayData(prevState.columns, prevState.data, prevState.filterList, null),
+      }),
+      () => {
+        this.setTableAction('search');
+        if (this.options.onSearchChange) {
+          this.options.onSearchChange(this.state.searchText);
+        }
+      },
+    );
+  };
+
   searchTextUpdate = text => {
     this.setState(
       prevState => ({
@@ -1298,6 +1315,7 @@ class MUIDataTable extends React.Component {
               resetFilters={this.resetFilters}
               searchText={searchText}
               searchTextUpdate={this.searchTextUpdate}
+              searchClose={this.searchClose}
               tableRef={this.getTableContentRef}
               title={title}
               toggleViewColumn={this.toggleViewColumn}

@@ -776,6 +776,71 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
   });
 
+  it('should properly set searchText when hiding the search bar', () => {
+    const options = {
+      rowsPerPage: 1,
+      textLabels,
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+    const shallowWrapperTableToolbar = shallow(
+      <TableToolbar
+        options={options}
+        searchTextUpdate={spy()}
+        searchClose={instance.searchClose}
+        columns={columns}
+        data={data}
+        setTableAction={spy()}
+      />,
+    );
+    const instanceTableToolbar = shallowWrapperTableToolbar.dive().instance();
+
+    instance.searchTextUpdate('Joe');
+    table.update();
+    instanceTableToolbar.searchButton = { focus: () => {} };
+    instanceTableToolbar.hideSearch();
+    table.update();
+    const searchText = table.state().searchText;
+
+    assert.strictEqual(searchText, null);
+  });
+
+  it('should not change page when hiding the search bar', () => {
+    const options = {
+      rowsPerPage: 1,
+      textLabels,
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+    const shallowWrapperTableToolbar = shallow(
+      <TableToolbar
+        options={options}
+        searchTextUpdate={spy()}
+        searchClose={instance.searchClose}
+        columns={columns}
+        data={data}
+        setTableAction={spy()}
+      />,
+    );
+    const instanceTableToolbar = shallowWrapperTableToolbar.dive().instance();
+
+    // Simulate a search that has multiple pages of results
+    instanceTableToolbar.setActiveIcon('search');
+    instanceTableToolbar.searchButton = { focus: () => {} };
+    instance.searchTextUpdate('j');
+    table.update();
+
+    // Simulate changing the page and then hiding the search bar
+    instance.changePage(1);
+    instanceTableToolbar.hideSearch();
+    table.update();
+
+    const page = table.state().page;
+    assert.strictEqual(page, 1);
+  });
+
   it('should filter displayData when searchText is set', () => {
     const options = {
       searchText: 'Joe',
