@@ -463,11 +463,17 @@ class MUIDataTable extends React.Component {
         })
       : data.map(row => columns.map(col => leaf(row, col.name)));
 
-      // We need to determine if object data exists in the transformed structure, as this is currently not allowed
-      const hasInvalidData = transformedData.filter(data => data.filter(d => typeof d === 'object' && d !== null && !Array.isArray(d)).length > 0).length > 0;
-      if (hasInvalidData) throw Error(`Cannot accept objects for cell data. Cells need to contain strings | numbers. It\'s possible this error is the result of a missing dot in the column name field (e.g. name: "company" instead of name: "company.id")`);
+    // We need to determine if object data exists in the transformed structure, as this is currently not allowed
+    const hasInvalidData =
+      transformedData.filter(
+        data => data.filter(d => typeof d === 'object' && d !== null && !Array.isArray(d)).length > 0,
+      ).length > 0;
+    if (hasInvalidData)
+      throw Error(
+        `Cannot accept objects for cell data. Cells need to contain strings | numbers. It\'s possible this error is the result of a missing dot in the column name field (e.g. name: "company" instead of name: "company.id")`,
+      );
 
-      return transformedData;
+    return transformedData;
   };
 
   setTableData(props, status, callback = () => {}) {
