@@ -17,7 +17,7 @@ import TableResize from './components/TableResize';
 import TableToolbar from './components/TableToolbar';
 import TableToolbarSelect from './components/TableToolbarSelect';
 import textLabels from './textLabels';
-import { buildMap, getCollatorComparator, sortCompare, getPageValue } from './utils';
+import { buildMap, getCollatorComparator, sortCompare, getPageValue, isValidDateObj } from './utils';
 
 const defaultTableStyles = theme => ({
   root: {},
@@ -466,7 +466,8 @@ class MUIDataTable extends React.Component {
     // We need to determine if object data exists in the transformed structure, as this is currently not allowed
     const hasInvalidData =
       transformedData.filter(
-        data => data.filter(d => typeof d === 'object' && d !== null && !Array.isArray(d)).length > 0,
+        data =>
+          data.filter(d => typeof d === 'object' && !isValidDateObj(d) && d !== null && !Array.isArray(d)).length > 0,
       ).length > 0;
     if (hasInvalidData)
       throw Error(

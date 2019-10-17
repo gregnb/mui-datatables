@@ -97,4 +97,12 @@ function createCSVDownload(columns, data, options) {
   }
 }
 
-export { buildMap, getPageValue, getCollatorComparator, sortCompare, createCSVDownload };
+// check if valid js date object
+function isValidDateObj(date) {
+  if (Object.prototype.toString.call(date) === '[object Date]') {
+    return true;
+  }
+  return false;
+}
+
+export { buildMap, getPageValue, getCollatorComparator, sortCompare, createCSVDownload, isValidDateObj };
