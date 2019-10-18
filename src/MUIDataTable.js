@@ -469,9 +469,7 @@ class MUIDataTable extends React.Component {
         data => data.filter(d => typeof d === 'object' && d !== null && !Array.isArray(d)).length > 0,
       ).length > 0;
     if (hasInvalidData)
-      throw Error(
-        `Cannot accept objects for cell data. Cells need to contain strings | numbers. It\'s possible this error is the result of a missing dot in the column name field (e.g. name: "company" instead of name: "company.id")`,
-      );
+      console.error('Passing objects in as data is not supported, and will be prevented in a future release. Consider using ids in yoru data and linking it to external objects if you want to access object data from custom render functions.');
 
     return transformedData;
   };
