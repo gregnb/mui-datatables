@@ -469,7 +469,9 @@ class MUIDataTable extends React.Component {
         data => data.filter(d => typeof d === 'object' && d !== null && !Array.isArray(d)).length > 0,
       ).length > 0;
     if (hasInvalidData)
-      console.error('Deprecated: Passing objects in as data is not supported, and will be prevented in a future release. Consider using ids in your data and linking it to external objects if you want to access object data from custom render functions.');
+      console.error(
+        'Deprecated: Passing objects in as data is not supported, and will be prevented in a future release. Consider using ids in your data and linking it to external objects if you want to access object data from custom render functions.',
+      );
 
     return transformedData;
   };
