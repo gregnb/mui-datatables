@@ -6,9 +6,10 @@ function buildMap(rows) {
 }
 
 function getPageValue(count, rowsPerPage, page) {
-  const totalPages = count === rowsPerPage ? 0 : Math.floor(count / rowsPerPage);
+  const totalPages = count <= rowsPerPage ? 1 : Math.ceil(count / rowsPerPage);
 
-  return page > totalPages ? totalPages : page;
+  // `page` is 0-indexed
+  return page >= totalPages ? totalPages - 1 : page;
 }
 
 function getCollatorComparator() {
