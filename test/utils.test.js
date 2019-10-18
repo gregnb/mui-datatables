@@ -7,7 +7,6 @@ describe('utils.js', () => {
     let count = 30;
     let rowsPerPage = 10;
     let page = 5;
-
     let actualResult = getPageValue(count, rowsPerPage, page);
     assert.strictEqual(actualResult, 2);
 
@@ -15,7 +14,6 @@ describe('utils.js', () => {
     count = 30;
     rowsPerPage = 10;
     page = 1;
-
     actualResult = getPageValue(count, rowsPerPage, page);
     assert.strictEqual(actualResult, 1);
 
@@ -23,7 +21,6 @@ describe('utils.js', () => {
     count = 3;
     rowsPerPage = 10;
     page = 1;
-
     actualResult = getPageValue(count, rowsPerPage, page);
     assert.strictEqual(actualResult, 0);
 
@@ -31,7 +28,6 @@ describe('utils.js', () => {
     count = 3;
     rowsPerPage = 10;
     page = 0;
-
     actualResult = getPageValue(count, rowsPerPage, page);
     assert.strictEqual(actualResult, 0);
 
@@ -39,7 +35,6 @@ describe('utils.js', () => {
     count = 10;
     rowsPerPage = 10;
     page = 1;
-
     actualResult = getPageValue(count, rowsPerPage, page);
     assert.strictEqual(actualResult, 0);
 
@@ -47,7 +42,6 @@ describe('utils.js', () => {
     count = 10;
     rowsPerPage = 10;
     page = 0;
-
     actualResult = getPageValue(count, rowsPerPage, page);
     assert.strictEqual(actualResult, 0);
   });
