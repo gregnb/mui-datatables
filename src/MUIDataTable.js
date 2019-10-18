@@ -463,14 +463,14 @@ class MUIDataTable extends React.Component {
         })
       : data.map(row => columns.map(col => leaf(row, col.name)));
 
-    // We need to determine if object data exists in the transformed structure, as this is currently not allowed
+    // We need to determine if object data exists in the transformed structure, as this is currently not allowed and will cause errors if not handled by a custom renderer
     const hasInvalidData =
       transformedData.filter(
         data => data.filter(d => typeof d === 'object' && d !== null && !Array.isArray(d)).length > 0,
       ).length > 0;
     if (hasInvalidData)
-      throw Error(
-        `Cannot accept objects for cell data. Cells need to contain strings | numbers. It\'s possible this error is the result of a missing dot in the column name field (e.g. name: "company" instead of name: "company.id")`,
+      console.error(
+        'Deprecated: Passing objects in as data is not supported, and will be prevented in a future release. Consider using ids in your data and linking it to external objects if you want to access object data from custom render functions.',
       );
 
     return transformedData;
