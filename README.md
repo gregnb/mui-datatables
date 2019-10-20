@@ -318,7 +318,34 @@ class BodyCellExample extends React.Component {
 
   }
 }
+```
 
+If you are using TypeScript, you will need to add this as well:
+
+```ts
+import { Palette } from '@material-ui/core/styles/createPalette';
+
+declare module '@material-ui/core/styles/overrides' {
+  interface ComponentNameToClassKey {
+    // The following line is required, because in the example above, we are using MUIDataTableBodyCell overrides.
+    MUIDataTableBodyCell: any;
+    // The rest below are optional. This is just to elaborate which overrides are available.
+    MUIDataTableBody: any;
+    MUIDataTableBodyRow: any;
+    MUIDataTableFilter: any;
+    MUIDataTableFilterList: any;
+    MUIDataTableHead: any;
+    MUIDataTableHeadCell: any;
+    MUIDataTableHeadRow: any;
+    MUIDataTablePagination: any;
+    MUIDataTableResize: any;
+    MUIDataTableSearch: any;
+    MUIDataTableSelectCell: any;
+    MUIDataTableToolbar: any;
+    MUIDataTableToolbarSelect: any;
+    MUIDataTableViewCol: any;
+  }
+}
 ```
 
 ## Remote Data
