@@ -298,7 +298,7 @@ class TableFilter extends React.Component {
           </div>
           <div className={classes.filtersSelected} />
         </div>
-        <GridList cellHeight="auto" cols={filterGridColumns} spacing={34}>
+        <GridList cellHeight="auto" cols={filterGridColumns} spacing={2}>
           {columns.map((column, index) => {
             if (column.filter) {
               const filterType = column.filterType || options.filterType;
