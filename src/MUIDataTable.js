@@ -1,6 +1,3 @@
-import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
-import MuiTable from '@material-ui/core/Table';
 import classnames from 'classnames';
 import assignwith from 'lodash.assignwith';
 import cloneDeep from 'lodash.clonedeep';
@@ -18,6 +15,8 @@ import TableToolbar from './components/TableToolbar';
 import TableToolbarSelect from './components/TableToolbarSelect';
 import textLabels from './textLabels';
 import { buildMap, getCollatorComparator, sortCompare, getPageValue } from './utils';
+
+import { Paper, withStyles, Table as MuiTable } from '@material-ui/core';
 
 const defaultTableStyles = theme => ({
   root: {},

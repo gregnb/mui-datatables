@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import TableCell from '@material-ui/core/TableCell';
-import { withStyles } from '@material-ui/core/styles';
+import { TableCell, withStyles } from '@material-ui/core';
 
 const defaultBodyCellStyles = theme => ({
   root: {},

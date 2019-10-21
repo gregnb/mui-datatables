@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { withStyles } from '@material-ui/core/styles';
+import { Paper, IconButton, Tooltip, Typography, withStyles } from '@material-ui/core';
 
 const defaultToolbarSelectStyles = theme => ({
   root: {
@@ -16,8 +12,8 @@ const defaultToolbarSelectStyles = theme => ({
     zIndex: 120,
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: typeof theme.spacing === 'function' ? theme.spacing(1) : theme.spacing.unit,
-    paddingBottom: typeof theme.spacing === 'function' ? theme.spacing(1) : theme.spacing.unit,
+    paddingTop: typeof theme.spacing === 'function' ? theme.spacing(1) : theme.spacing(1),
+    paddingBottom: typeof theme.spacing === 'function' ? theme.spacing(1) : theme.spacing(1),
   },
   title: {
     paddingLeft: '26px',

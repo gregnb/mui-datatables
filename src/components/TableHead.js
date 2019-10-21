@@ -1,11 +1,11 @@
-import { withStyles } from '@material-ui/core/styles';
-import MuiTableHead from '@material-ui/core/TableHead';
 import classNames from 'classnames';
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import TableHeadCell from './TableHeadCell';
 import TableHeadRow from './TableHeadRow';
 import TableSelectCell from './TableSelectCell';
+
+import { withStyles, TableHead as MuiTableHead } from '@material-ui/core';
 
 const defaultHeadStyles = theme => ({
   main: {},

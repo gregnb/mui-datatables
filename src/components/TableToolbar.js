@@ -1,8 +1,4 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
 import Popover from './Popover';
 import TableFilter from './TableFilter';
 import TableViewCol from './TableViewCol';
@@ -13,8 +9,9 @@ import PrintIcon from '@material-ui/icons/Print';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import FilterIcon from '@material-ui/icons/FilterList';
 import ReactToPrint from 'react-to-print';
-import { withStyles } from '@material-ui/core/styles';
 import { createCSVDownload } from '../utils';
+
+import { Typography, Toolbar, Tooltip, IconButton, withStyles } from '@material-ui/core';
 
 export const defaultToolbarStyles = theme => ({
   root: {},
