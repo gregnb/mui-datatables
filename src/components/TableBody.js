@@ -239,11 +239,12 @@ class TableBody extends React.Component {
                     })}
                     fixedHeader={options.fixedHeader}
                     checked={this.isRowSelected(dataIndex)}
-                    // Only expandable when the row is expandable AND `expandableRows` options is true.
-                    expandableOn={this.isRowExpandable(dataIndex) && options.expandableRows}
+                    expandableOn={options.expandableRows}
                     // When rows are expandable and selectable, but this row isn't expandable, set this to enabled.
-                    // This is to make the checkboxes align in one column.
-                    padCheckbox={!this.isRowExpandable(dataIndex) && options.expandableRows && options.selectableRows}
+                    // This will add a new class, MUIDataTableSelectCell-expandDisabled and can be overridden when wanted.
+                    hideExpandButton={
+                      !this.isRowExpandable(dataIndex) && options.expandableRows && options.selectableRows
+                    }
                     selectableOn={options.selectableRows}
                     isRowExpanded={this.isRowExpanded(dataIndex)}
                     isRowSelectable={this.isRowSelectable(dataIndex)}
