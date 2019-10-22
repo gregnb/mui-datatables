@@ -100,9 +100,8 @@ class Example extends React.Component {
       overrides: {
         MUIDataTableSelectCell: {
           expandDisabled: {
-            // Soft hide the button, but keep the width.
+            // Soft hide the button.
             visibility: 'hidden',
-            width: 48,
           },
         },
       },
