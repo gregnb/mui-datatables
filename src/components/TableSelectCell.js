@@ -117,7 +117,6 @@ class TableSelectCell extends React.Component {
       <TableCell className={cellClass} padding="checkbox">
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {expandableOn && (
-            // Render toggle button when it is expandable.
             <IconButton onClick={onExpand} disabled={isHeaderCell} className={buttonClass}>
               <KeyboardArrowRight id="expandable-button" className={iconClass} />
             </IconButton>
