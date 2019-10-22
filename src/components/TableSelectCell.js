@@ -69,6 +69,7 @@ class TableSelectCell extends React.Component {
       onExpand,
       isRowSelectable,
       selectableRowsHeader,
+      padCheckbox,
       ...otherProps
     } = this.props;
 
@@ -108,10 +109,16 @@ class TableSelectCell extends React.Component {
     return (
       <TableCell className={cellClass} padding="checkbox">
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          {expandableOn && (
+          {expandableOn ? (
+            // Render toggle button when it is expandable.
             <IconButton onClick={onExpand} disabled={isHeaderCell}>
               <KeyboardArrowRight id="expandable-button" className={iconClass} />
             </IconButton>
+          ) : (
+            // If the table is expandable, but the row is not, then the `padCheckbox` prop will be true.
+            // This adds "empty space" so it will push the checkbox to the right.
+            // If padCheckbox is false, then it will not render anything.
+            padCheckbox && <div style={{ width: 48 }} />
           )}
           {selectableOn !== 'none' && renderCheckBox()}
         </div>
