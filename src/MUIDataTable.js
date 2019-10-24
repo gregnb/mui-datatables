@@ -136,6 +136,7 @@ class MUIDataTable extends React.Component {
       expandableRowsOnClick: PropTypes.bool,
       renderExpandableRow: PropTypes.func,
       customToolbar: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+      toolbarSelect: PropTypes.bool,
       customToolbarSelect: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customFooter: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customSearchRender: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
@@ -308,6 +309,7 @@ class MUIDataTable extends React.Component {
       filename: 'tableDownload.csv',
       separator: ',',
     },
+    toolbarSelect: true,
   });
 
   handleOptionDeprecation = () => {
@@ -1300,7 +1302,7 @@ class MUIDataTable extends React.Component {
         elevation={this.options.elevation}
         ref={this.tableContent}
         className={classnames(classes.paper, className)}>
-        {selectedRows.data.length ? (
+        {this.options.toolbarSelect && selectedRows.data.length ? (
           <TableToolbarSelect
             options={this.options}
             selectedRows={selectedRows}
