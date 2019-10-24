@@ -169,6 +169,7 @@ The component accepts the following props:
 |**`sort`**|boolean|true|Enable/disable sort on all columns
 |**`filter`**|boolean|true|Show/hide filter icon from toolbar
 |**`search`**|boolean|true|Show/hide search icon from toolbar
+|**`toolbarSelect`**|boolean|true|Show/hide Toolbar Select component
 |**`searchOpen`**|boolean|false|Initially displays search bar  
 |**`searchText`**|string||Initial search text
 |**`searchPlaceholder`**|string||Search text placeholder. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-search/index.js)
