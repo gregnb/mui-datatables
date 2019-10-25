@@ -13,6 +13,7 @@ import PrintIcon from '@material-ui/icons/Print';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import FilterIcon from '@material-ui/icons/FilterList';
 import ReactToPrint from 'react-to-print';
+import find from 'lodash.find';
 import { withStyles } from '@material-ui/core/styles';
 import { createCSVDownload } from '../utils';
 
@@ -109,9 +110,10 @@ class TableToolbar extends React.Component {
               i += 1;
 
               // if we have a custom render, which will appear as a react element, we must grab the actual value from data
+              // that matches the dataIndex and column
               // TODO: Create a utility function for checking whether or not something is a react object
               return typeof column === 'object' && column !== null && !Array.isArray(column)
-                ? data[row.index].data[i]
+                ? find(data, d => d.index === row.dataIndex).data[i]
                 : column;
             }),
           };
