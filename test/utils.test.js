@@ -51,5 +51,21 @@ describe('utils.js', () => {
         expect(csv).to.equal('"firstname";"lastname"');
       });
     });
+
+
+    describe("when switched off by returning `false` in `onDownload`", () => {
+      const dataSet = [['anton', 'abraham'], ['berta', 'buchel']].map(data => ({ data }));
+
+      const csv = assembleCSV(columns, dataSet, {
+        downloadOptions: {
+          separator: ";"
+        },
+        onDownload: () => false
+      });
+
+      it("returns null", () => {
+        expect(csv).to.be.null;
+      })
+    });
   });
 });

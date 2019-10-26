@@ -66,6 +66,11 @@ function assembleCSV(columns, data, options) {
     ? options.onDownload(buildHead, buildBody, columns, data)
     : `${CSVHead}${CSVBody}`.trim();
 
+  const downloadHasBeenAborted = csv === false;
+  if (downloadHasBeenAborted) {
+    return null;
+  }
+
   return csv;
 }
 
