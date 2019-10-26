@@ -1,5 +1,5 @@
 import { assembleCSV, getPageValue } from '../src/utils';
-import { expect, assert } from 'chai';
+import { assert } from 'chai';
 
 describe('utils.js', () => {
   describe('assembleCSV', () => {
@@ -27,7 +27,7 @@ describe('utils.js', () => {
       const csv = assembleCSV(columns, dataSet, options);
 
       it('renders a two-record csv', () => {
-        expect(csv).to.equal('"firstname";"lastname"\r\n' + '"anton";"abraham"\r\n' + '"berta";"buchel"');
+        assert.strictEqual(csv, '"firstname";"lastname"\r\n' + '"anton";"abraham"\r\n' + '"berta";"buchel"');
       });
     });
 
@@ -48,7 +48,7 @@ describe('utils.js', () => {
       const csv = assembleCSV(columns, dataSet, options);
 
       it('returns an empty csv with header', () => {
-        expect(csv).to.equal('"firstname";"lastname"');
+        assert.strictEqual(csv, '"firstname";"lastname"');
       });
     });
 
@@ -64,7 +64,7 @@ describe('utils.js', () => {
       });
 
       it("returns null", () => {
-        expect(csv).to.be.null;
+        assert.isNull(csv);
       })
     });
   });
