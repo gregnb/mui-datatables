@@ -606,6 +606,7 @@ describe('<MUIDataTable />', function() {
 
     const mountWrapper = mount(
       <TableFilterList
+        options={{ serverSide: false }}
         filterList={filterList}
         filterListRenderers={filterListRenderers}
         filterUpdate={() => true}
@@ -627,6 +628,7 @@ describe('<MUIDataTable />', function() {
 
     const mountWrapper = mount(
       <TableFilterList
+        options={{ serverSide: false }}
         filterList={filterList}
         filterListRenderers={filterListRenderers}
         filterUpdate={() => true}
@@ -636,6 +638,55 @@ describe('<MUIDataTable />', function() {
     const actualResult = mountWrapper.find(Chip);
     assert.strictEqual(actualResult.length, 1);
     assert.strictEqual(actualResult.prop('label'), 'Name: Joe James');
+  });
+
+  it('should render filter Chip(s) when options.serverSide = true and serverSideFilterList is populated', () => {
+    const serverSideFilterList = [['Joe James'], [], [], [], []];
+    const filterListRenderers = [
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+    ];
+    const columnNames = columns.map(column => ({ name: column.name }));
+
+    const mountWrapper = mount(
+      <TableFilterList
+        options={{ serverSide: true }}
+        serverSideFilterList={serverSideFilterList}
+        filterListRenderers={filterListRenderers}
+        filterUpdate={() => true}
+        columnNames={columnNames}
+      />,
+    );
+
+    const actualResult = mountWrapper.find(Chip);
+    assert.strictEqual(actualResult.length, 1);
+  });
+
+  it('should not render filter Chip(s) when options.serverSide = true and serverSideFilterList is not populated', () => {
+    const filterListRenderers = [
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+    ];
+    const columnNames = columns.map(column => ({ name: column.name }));
+
+    const mountWrapper = mount(
+      <TableFilterList
+        options={{ serverSide: true }}
+        serverSideFilterList={[]}
+        filterListRenderers={filterListRenderers}
+        filterUpdate={() => true}
+        columnNames={columnNames}
+      />,
+    );
+
+    const actualResult = mountWrapper.find(Chip);
+    assert.strictEqual(actualResult.length, 0);
   });
 
   it('should remove entry from filterList when calling filterUpdate method with type=dropdown and an empty array', () => {
@@ -723,6 +774,71 @@ describe('<MUIDataTable />', function() {
     ]);
 
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
+  });
+
+  it('should properly set searchText when hiding the search bar', () => {
+    const options = {
+      rowsPerPage: 1,
+      textLabels,
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+    const shallowWrapperTableToolbar = shallow(
+      <TableToolbar
+        options={options}
+        searchTextUpdate={spy()}
+        searchClose={instance.searchClose}
+        columns={columns}
+        data={data}
+        setTableAction={spy()}
+      />,
+    );
+    const instanceTableToolbar = shallowWrapperTableToolbar.dive().instance();
+
+    instance.searchTextUpdate('Joe');
+    table.update();
+    instanceTableToolbar.searchButton = { focus: () => {} };
+    instanceTableToolbar.hideSearch();
+    table.update();
+    const searchText = table.state().searchText;
+
+    assert.strictEqual(searchText, null);
+  });
+
+  it('should not change page when hiding the search bar', () => {
+    const options = {
+      rowsPerPage: 1,
+      textLabels,
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+    const shallowWrapperTableToolbar = shallow(
+      <TableToolbar
+        options={options}
+        searchTextUpdate={spy()}
+        searchClose={instance.searchClose}
+        columns={columns}
+        data={data}
+        setTableAction={spy()}
+      />,
+    );
+    const instanceTableToolbar = shallowWrapperTableToolbar.dive().instance();
+
+    // Simulate a search that has multiple pages of results
+    instanceTableToolbar.setActiveIcon('search');
+    instanceTableToolbar.searchButton = { focus: () => {} };
+    instance.searchTextUpdate('j');
+    table.update();
+
+    // Simulate changing the page and then hiding the search bar
+    instance.changePage(1);
+    instanceTableToolbar.hideSearch();
+    table.update();
+
+    const page = table.state().page;
+    assert.strictEqual(page, 1);
   });
 
   it('should filter displayData when searchText is set', () => {
@@ -902,15 +1018,18 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should recalculate page when calling changeRowsPerPage method', () => {
-    const data = new Array(29).fill('').map(() => ['Joe James', 'Test Corp', 'Yonkers', 'NY']);
-    const mountWrapper = mount(shallow(<MUIDataTable columns={columns} data={data} />).get(0));
+    const mountWrapper = mount(
+      shallow(<MUIDataTable columns={columns} data={data} options={{ rowsPerPage: 2 }} />).get(0),
+    );
     const instance = mountWrapper.instance();
 
-    instance.changePage(2);
-    instance.changeRowsPerPage(15);
-
-    const state = mountWrapper.state();
+    instance.changePage(1);
+    let state = mountWrapper.state();
     assert.equal(state.page, 1);
+
+    instance.changeRowsPerPage(4);
+    state = mountWrapper.state();
+    assert.equal(state.page, 0);
   });
 
   it('should update page position when calling changePage method', () => {
@@ -1107,6 +1226,36 @@ describe('<MUIDataTable />', function() {
     ]);
 
     assert.deepEqual(JSON.stringify(newDisplayData), expectedResult);
+  });
+
+  it('should call onRowsExpand when row is expanded or collapsed', () => {
+    const options = {
+      expandableRows: true,
+      renderExpandableRow: () => (
+        <tr>
+          <td>foo</td>
+        </tr>
+      ),
+      expandableRowsOnClick: true,
+      onRowsExpand: spy(),
+    };
+    const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('click');
+
+    assert.strictEqual(options.onRowsExpand.callCount, 1);
+    assert(options.onRowsExpand.calledWith([{ index: 2, dataIndex: 2 }], [{ index: 2, dataIndex: 2 }]));
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('click');
+
+    assert.strictEqual(options.onRowsExpand.callCount, 2);
+    assert(options.onRowsExpand.calledWith([{ index: 2, dataIndex: 2 }], []));
   });
 
   it('should not remove selected data on selectRowDelete when type=cell when onRowsDelete returns false', () => {

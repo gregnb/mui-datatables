@@ -5,6 +5,13 @@ function buildMap(rows) {
   }, {});
 }
 
+function getPageValue(count, rowsPerPage, page) {
+  const totalPages = count <= rowsPerPage ? 1 : Math.ceil(count / rowsPerPage);
+
+  // `page` is 0-indexed
+  return page >= totalPages ? totalPages - 1 : page;
+}
+
 function getCollatorComparator() {
   if (!!Intl) {
     const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
@@ -46,6 +53,7 @@ function assembleCSV(columns, data, options) {
   const CSVHead = buildHead(columns);
 
   const buildBody = data => {
+    if (!data.length) return '';
     return data
       .reduce(
         (soFar, row) =>
@@ -102,4 +110,4 @@ function createCSVDownload(columns, data, options) {
   }
 }
 
-export { buildMap, getCollatorComparator, sortCompare, createCSVDownload, assembleCSV };
+export { buildMap, getCollatorComparator, sortCompare, createCSVDownload, assembleCSV, getPageValue };

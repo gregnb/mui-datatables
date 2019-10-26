@@ -22,6 +22,7 @@ import OnDownload from "./on-download";
 import OnTableInit from "./on-table-init";
 import ResizableColumns from "./resizable-columns";
 import SelectableRows from "./selectable-rows";
+import ServerSideFilters from "./serverside-filters";
 import ServerSideOptions from "./serverside-options";
 import ServerSidePagination from "./serverside-pagination";
 import Simple from "./simple";
@@ -38,8 +39,8 @@ export default {
     'Column Option Update': ColumnOptionsUpdate,
     'Component': Component,
     'CSV Export': CSVExport,
-    'Custom ActionColumns': CustomActionColumns,
-    'Customize columns': CustomizeColumns,
+    'Custom Action Columns': CustomActionColumns,
+    'Customize Columns': CustomizeColumns,
     'Customize Filter': CustomizeFilter,
     'Customize Footer': CustomizeFooter,
     'Customize Rows': CustomizeRows,
@@ -50,15 +51,16 @@ export default {
     'Customize Toolbar': CustomizeToolbar,
     'Customize Toolbar Select': CustomizeToolbarSelect,
     'Data As Objects': DataAsObjects,
-    'expandableRows': ExpandableRows,
-    'fixedHeader': FixedHeader,
+    'Expandable Rows': ExpandableRows,
+    'Fixed Header': FixedHeader,
     'Hide Columns Print': HideColumnsPrint,
     'OnDownload': OnDownload,
     'OnTableInit': OnTableInit,
-    'resizableColumns': ResizableColumns,
-    'selectableRows': SelectableRows,
-    'serverSide Options': ServerSideOptions,
-    'serverSide Pagination': ServerSidePagination,
+    'Resizable Columns': ResizableColumns,
+    'Selectable Rows': SelectableRows,
+    'ServerSide Filters': ServerSideFilters,
+    'ServerSide Options': ServerSideOptions,
+    'ServerSide Pagination': ServerSidePagination,
     'Simple': Simple,
     'Simple No Toolbar': SimpleNoToolbar,
     'Text Localization': TextLocalization,

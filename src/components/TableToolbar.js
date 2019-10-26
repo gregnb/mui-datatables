@@ -13,6 +13,7 @@ import PrintIcon from '@material-ui/icons/Print';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import FilterIcon from '@material-ui/icons/FilterList';
 import ReactToPrint from 'react-to-print';
+import find from 'lodash.find';
 import { withStyles } from '@material-ui/core/styles';
 import { createCSVDownload } from '../utils';
 
@@ -80,7 +81,7 @@ export const defaultToolbarStyles = theme => ({
 class TableToolbar extends React.Component {
   state = {
     iconActive: null,
-    showSearch: Boolean(this.props.searchText || this.props.options.searchText),
+    showSearch: Boolean(this.props.searchText || this.props.options.searchText || this.props.options.searchOpen),
     searchText: this.props.searchText || null,
   };
 
@@ -98,15 +99,22 @@ class TableToolbar extends React.Component {
     if (options.downloadOptions && options.downloadOptions.filterOptions) {
       // check rows first:
       if (options.downloadOptions.filterOptions.useDisplayedRowsOnly) {
-        dataToDownload = displayData.map(row => {
+        dataToDownload = displayData.map((row, index) => {
           let i = -1;
+
+          // Help to preserve sort order in custom render columns
+          row.index = index;
 
           return {
             data: row.data.map(column => {
               i += 1;
 
-              // if we have a custom render, we must grab the actual value from data
-              return typeof column === 'object' ? data[row.dataIndex].data[i] : column;
+              // if we have a custom render, which will appear as a react element, we must grab the actual value from data
+              // that matches the dataIndex and column
+              // TODO: Create a utility function for checking whether or not something is a react object
+              return typeof column === 'object' && column !== null && !Array.isArray(column)
+                ? find(data, d => d.index === row.dataIndex).data[i]
+                : column;
             }),
           };
         });
@@ -126,10 +134,29 @@ class TableToolbar extends React.Component {
   };
 
   setActiveIcon = iconName => {
-    this.setState(() => ({
-      showSearch: this.isSearchShown(iconName),
-      iconActive: iconName,
-    }));
+    this.setState(
+      prevState => ({
+        showSearch: this.isSearchShown(iconName),
+        iconActive: iconName,
+        prevIconActive: prevState.iconActive,
+      }),
+      () => {
+        const { iconActive, prevIconActive } = this.state;
+
+        if (iconActive === 'filter') {
+          this.props.setTableAction('onFilterDialogOpen');
+          if (this.props.options.onFilterDialogOpen) {
+            this.props.options.onFilterDialogOpen();
+          }
+        }
+        if (iconActive === undefined && prevIconActive === 'filter') {
+          this.props.setTableAction('onFilterDialogClose');
+          if (this.props.options.onFilterDialogClose) {
+            this.props.options.onFilterDialogClose();
+          }
+        }
+      },
+    );
   };
 
   isSearchShown = iconName => {
@@ -164,7 +191,7 @@ class TableToolbar extends React.Component {
 
     this.props.setTableAction('onSearchClose');
     if (onSearchClose) onSearchClose();
-    this.props.searchTextUpdate(null);
+    this.props.searchClose();
 
     this.setState(() => ({
       iconActive: null,
@@ -301,6 +328,7 @@ class TableToolbar extends React.Component {
               }
               content={
                 <TableFilter
+                  customFooter={options.customFilterDialogFooter}
                   columns={columns}
                   options={options}
                   filterList={filterList}

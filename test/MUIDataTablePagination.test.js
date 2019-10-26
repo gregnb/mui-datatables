@@ -46,4 +46,13 @@ describe('<TablePagination />', function() {
     instance.handlePageChange(null, 1);
     assert.strictEqual(changePage.callCount, 1);
   });
+
+  it('should correctly change page to be in bounds if out of bounds page was set', () => {
+    // Set a page that is too high for the count and rowsPerPage
+    const mountWrapper = mount(<TablePagination options={options} count={5} page={1} rowsPerPage={10} />);
+    const actualResult = mountWrapper.find(MuiTablePagination).props().page;
+
+    // material-ui v3 does some internal calculations to protect against out of bounds pages, but material v4 does not
+    assert.strictEqual(actualResult, 0);
+  });
 });

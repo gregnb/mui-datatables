@@ -186,6 +186,27 @@ describe('<TableFilter />', function() {
     assert.strictEqual(actualResult.length, 13);
   });
 
+  it('should render a filter dialog with custom footer when customFooter is provided', () => {
+    const CustomFooter = () => <div id="custom-footer">customFooter</div>;
+    const options = { textLabels };
+    const filterList = [[], [], [], []];
+    const onFilterUpdate = spy();
+
+    const shallowWrapper = shallow(
+      <TableFilter
+        customFooter={CustomFooter}
+        columns={columns}
+        onFilterUpdate={onFilterUpdate}
+        filterData={filterData}
+        filterList={filterList}
+        options={options}
+      />,
+    ).dive();
+
+    const actualResult = shallowWrapper.find('#custom-footer');
+    assert.strictEqual(actualResult.length, 1);
+  });
+
   it('should trigger onFilterUpdate prop callback when calling method handleCheckboxChange', () => {
     const options = { filterType: 'checkbox', textLabels };
     const filterList = [[], [], [], []];
