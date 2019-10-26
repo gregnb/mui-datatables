@@ -1,7 +1,7 @@
 import { assembleCSV } from '../src/utils';
 import { expect } from 'chai';
 
-describe('utils', () => {
+describe('utils.js', () => {
   describe('assembleCSV', () => {
     const options = {
       downloadOptions: {
