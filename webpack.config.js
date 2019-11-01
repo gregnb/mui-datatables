@@ -16,6 +16,7 @@ module.exports = {
     hot: true,
     inline: true,
     host: "0.0.0.0",
+    open: true,
     port: 5050
   },
   module: {
