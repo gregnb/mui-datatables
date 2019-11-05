@@ -9,7 +9,7 @@ import { getPageValue } from '../utils';
 const defaultPaginationStyles = {
   root: {
     '&:last-child': {
-      padding: '0px 24px 0px 24px',
+      padding: 0,
     },
   },
   toolbar: {},
