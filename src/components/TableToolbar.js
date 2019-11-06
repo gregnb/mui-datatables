@@ -257,7 +257,7 @@ class TableToolbar extends React.Component {
                 data-testid={search + '-iconButton'}
                 buttonRef={el => (this.searchButton = el)}
                 classes={{ root: this.getActiveIcon(classes, 'search') }}
-                onClick={this.setActiveIcon.bind(null, 'search')}>
+                onClick={showSearch ? this.hideSearch : this.setActiveIcon.bind(null, 'search')}>
                 <SearchIcon />
               </IconButton>
             </Tooltip>

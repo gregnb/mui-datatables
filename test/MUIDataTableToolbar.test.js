@@ -193,6 +193,36 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(actualResult.length, 0);
   });
 
+  it('should hide search when search icon is clicked while search is open', () => {
+    const searchTextUpdate = () => {};
+    const shallowWrapper = shallow(
+      <TableToolbar
+        searchClose={() => {}}
+        searchTextUpdate={searchTextUpdate}
+        columns={columns}
+        data={data}
+        options={options}
+        setTableAction={setTableAction}
+      />,
+    ).dive();
+    const instance = shallowWrapper.instance();
+    const searchButton = shallowWrapper.find('[data-testid="Search-iconButton"]');
+
+    // click search button to display search
+    searchButton.simulate('click');
+    shallowWrapper.update();
+
+    let actualResult = shallowWrapper.find(TableSearch);
+    assert.strictEqual(actualResult.length, 1);
+
+    // now click search button again and test
+    searchButton.simulate('click');
+    shallowWrapper.update();
+
+    actualResult = shallowWrapper.find(TableSearch);
+    assert.strictEqual(actualResult.length, 0);
+  });
+
   it('should call onFilterDialogOpen when opening filters via toolbar', () => {
     const onFilterDialogOpen = spy();
     const newOptions = { ...options, onFilterDialogOpen };
