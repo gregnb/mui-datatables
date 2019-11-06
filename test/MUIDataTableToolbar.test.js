@@ -206,19 +206,23 @@ describe('<TableToolbar />', function() {
       />,
     ).dive();
     const instance = shallowWrapper.instance();
-    const searchButton = shallowWrapper.find('[data-testid="Search-iconButton"]');
+    instance.searchButton = {
+      focus: () => {},
+    };
 
     // click search button to display search
-    searchButton.simulate('click');
+    shallowWrapper.find('[data-testid="Search-iconButton"]').simulate('click');
     shallowWrapper.update();
 
+    assert.strictEqual(shallowWrapper.state('iconActive'), 'search');
     let actualResult = shallowWrapper.find(TableSearch);
     assert.strictEqual(actualResult.length, 1);
 
     // now click search button again and test
-    searchButton.simulate('click');
+    shallowWrapper.find('[data-testid="Search-iconButton"]').simulate('click');
     shallowWrapper.update();
 
+    assert.strictEqual(shallowWrapper.state('iconActive'), null);
     actualResult = shallowWrapper.find(TableSearch);
     assert.strictEqual(actualResult.length, 0);
   });
