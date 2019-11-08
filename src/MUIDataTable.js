@@ -388,9 +388,10 @@ class MUIDataTable extends React.Component {
    */
 
   buildColumns = newColumns => {
-    let columnData = [];
-    let filterData = [];
-    let filterList = [];
+    let { columnData, filterList, filterData } = this.state;
+    columnData = columnData || [];
+    filterData = filterData || [];
+    filterList = filterList || [];
     let sortDirectionSet = false;
 
     newColumns.forEach((column, colIndex) => {
@@ -442,8 +443,8 @@ class MUIDataTable extends React.Component {
 
       columnData.push(columnOptions);
 
-      filterData[colIndex] = [];
-      filterList[colIndex] = [];
+      filterData[colIndex] = filterData[colIndex] || [];
+      filterList[colIndex] = filterList[colIndex] || [];
     });
 
     return { columns: columnData, filterData, filterList };
