@@ -160,7 +160,7 @@ class Example extends React.Component {
           sortDirection: this.state.columnSortDirection[2],
           customFilterListRender: v => `Location: ${v}`,
           customBodyRender: (value, tableMeta, updateValue) => {
-            return <Cities value={value} index={tableMeta.columnIndex} change={event => updateValue(event)} />;
+            return <Cities value={value || ''} index={tableMeta.columnIndex} change={event => updateValue(event)} />;
           },
         },
       },
