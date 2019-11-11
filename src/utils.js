@@ -43,7 +43,7 @@ function createCSVDownload(columns, data, options) {
         .reduce(
           (soFar, column) =>
             column.download
-              ? soFar + '"' + replaceDoubleQuoteInString(column.name) + '"' + options.downloadOptions.separator
+              ? soFar + '"' + replaceDoubleQuoteInString(column.label) + '"' + options.downloadOptions.separator
               : soFar,
           '',
         )
