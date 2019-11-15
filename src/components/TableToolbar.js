@@ -16,6 +16,7 @@ import ReactToPrint from 'react-to-print';
 import find from 'lodash.find';
 import { withStyles } from '@material-ui/core/styles';
 import { createCSVDownload } from '../utils';
+import cloneDeep from 'lodash.clonedeep';
 
 export const defaultToolbarStyles = theme => ({
   root: {},
@@ -93,7 +94,7 @@ class TableToolbar extends React.Component {
 
   handleCSVDownload = () => {
     const { data, displayData, columns, options } = this.props;
-    let dataToDownload = data;
+    let dataToDownload = cloneDeep(data);
     let columnsToDownload = columns;
 
     if (options.downloadOptions && options.downloadOptions.filterOptions) {
