@@ -64,7 +64,7 @@ function buildCSV(columns, data, options) {
             .map(columnData => replaceDoubleQuoteInString(columnData))
             .join('"' + options.downloadOptions.separator + '"') +
           '"\r\n',
-        [],
+        '',
       )
       .trim();
   };
