@@ -33,7 +33,7 @@ function sortCompare(order) {
   };
 }
 
-function createCSVDownload(columns, data, options) {
+function buildCSV(columns, data, options) {
   const replaceDoubleQuoteInString = columnData =>
     typeof columnData === 'string' ? columnData.replace(/\"/g, '""') : columnData;
 
@@ -78,11 +78,15 @@ function createCSVDownload(columns, data, options) {
     return;
   }
 
+  createCSVDownload(csv, options.downloadOptions.filename);
+}
+
+function createCSVDownload(csv, filename) {
   const blob = new Blob([csv], { type: 'text/csv' });
 
   /* taken from react-csv */
   if (navigator && navigator.msSaveOrOpenBlob) {
-    navigator.msSaveOrOpenBlob(blob, options.downloadOptions.filename);
+    navigator.msSaveOrOpenBlob(blob, filename);
   } else {
     const dataURI = `data:text/csv;charset=utf-8,${csv}`;
 
@@ -91,11 +95,11 @@ function createCSVDownload(columns, data, options) {
 
     let link = document.createElement('a');
     link.setAttribute('href', downloadURI);
-    link.setAttribute('download', options.downloadOptions.filename);
+    link.setAttribute('download', filename);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   }
 }
 
-export { buildMap, getPageValue, getCollatorComparator, sortCompare, createCSVDownload };
+export { buildMap, getPageValue, getCollatorComparator, sortCompare, createCSVDownload, buildCSV };
