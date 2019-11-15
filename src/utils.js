@@ -74,14 +74,10 @@ function buildCSV(columns, data, options) {
     ? options.onDownload(buildHead, buildBody, columns, data)
     : `${CSVHead}${CSVBody}`.trim();
 
-  if (options.onDownload && csv === false) {
-    return;
-  }
-
-  createCSVDownload(csv, options.downloadOptions.filename);
+  return csv;
 }
 
-function createCSVDownload(csv, filename) {
+function downloadCSV(csv, filename) {
   const blob = new Blob([csv], { type: 'text/csv' });
 
   /* taken from react-csv */
@@ -102,4 +98,14 @@ function createCSVDownload(csv, filename) {
   }
 }
 
-export { buildMap, getPageValue, getCollatorComparator, sortCompare, createCSVDownload, buildCSV };
+function createCSVDownload(columns, data, options, downloadCSV) {
+  const csv = buildCSV(columns, data, options);
+
+  if (options.onDownload && csv === false) {
+    return;
+  }
+
+  downloadCSV(csv, options.downloadOptions.filename);
+}
+
+export { buildMap, getPageValue, getCollatorComparator, sortCompare, createCSVDownload, buildCSV, downloadCSV };

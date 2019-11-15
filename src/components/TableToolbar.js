@@ -15,7 +15,7 @@ import FilterIcon from '@material-ui/icons/FilterList';
 import ReactToPrint from 'react-to-print';
 import find from 'lodash.find';
 import { withStyles } from '@material-ui/core/styles';
-import { buildCSV } from '../utils';
+import { createCSVDownload, downloadCSV } from '../utils';
 import cloneDeep from 'lodash.clonedeep';
 
 export const defaultToolbarStyles = theme => ({
@@ -131,7 +131,7 @@ class TableToolbar extends React.Component {
         });
       }
     }
-    buildCSV(columnsToDownload, dataToDownload, options);
+    createCSVDownload(columnsToDownload, dataToDownload, options, downloadCSV);
   };
 
   setActiveIcon = iconName => {
