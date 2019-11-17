@@ -1,8 +1,12 @@
-import { FormGroup, FormLabel, TextField } from '@material-ui/core';
+import { FormGroup, FormLabel, TextField, Checkbox, FormControlLabel, Grid } from '@material-ui/core';
 import React from 'react';
 import MUIDataTable from '../../src';
 
 class Example extends React.Component {
+  state = {
+    ageFilterChecked: false
+  };
+
   render() {
     const columns = [
       {
@@ -33,7 +37,9 @@ class Example extends React.Component {
           filterType: 'custom',
           filterList: [25, 50],
           customFilterListRender: v => {
-            if (v[0] && v[1]) {
+            if (v[0] && v[1] && this.state.ageFilterChecked) {
+              return [`Min Age: ${v[0]}`, `Max Age: ${v[1]}`];
+            } else if (v[0] && v[1] && !this.state.ageFilterChecked) {
               return `Min Age: ${v[0]}, Max Age: ${v[1]}`;
             } else if (v[0]) {
               return `Min Age: ${v[0]}`;
@@ -41,6 +47,19 @@ class Example extends React.Component {
               return `Max Age: ${v[1]}`;
             }
             return false;
+          },
+          customFilterListOnDelete: (filterList, filterPos, index) => {
+            console.log('customFilterListOnDelete: ', filterList, filterPos, index);
+
+            if (filterPos === 0) {
+              filterList[index].splice(filterPos, 1, '');
+            } else if (filterPos === 1) {
+              filterList[index].splice(filterPos, 1);
+            } else if (filterPos === -1) {
+              filterList[index] = [];
+            }
+
+            return filterList;
           },
           filterOptions: {
             names: [],
@@ -75,6 +94,16 @@ class Example extends React.Component {
                       onChange(filterList[index], index, column);
                     }}
                     style={{ width: '45%' }}
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={this.state.ageFilterChecked}
+                        onChange={event => this.setState({ ageFilterChecked: event.target.checked })}
+                      />
+                    }
+                    label="Separate Values"
+                    style={{ marginLeft: '0px' }}
                   />
                 </FormGroup>
               </div>
@@ -139,7 +168,7 @@ class Example extends React.Component {
 
     const options = {
       filter: true,
-      filterType: 'dropdown',
+      filterType: 'multiselect',
       responsive: 'scrollMaxHeight',
     };
 
