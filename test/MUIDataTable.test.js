@@ -28,7 +28,14 @@ describe('<MUIDataTable />', function() {
 
   before(() => {
     columns = [
-      { name: 'Name', options: { customBodyRender: renderName, customFilterListRender: renderCustomFilterList } },
+      {
+        name: 'Name',
+        options: {
+          customBodyRender: renderName,
+          customFilterListRender: renderCustomFilterList, // DEPRECATED
+          customFilterListOptions: { render: renderCustomFilterList }
+        }
+      },
       'Company',
       { name: 'City', label: 'City Label', options: { customBodyRender: renderCities, filterType: 'textField' } },
       {
@@ -101,7 +108,8 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         sortDirection: 'none',
         viewColumns: true,
-        customFilterListRender: renderCustomFilterList,
+        customFilterListRender: renderCustomFilterList, // DEPRECATED
+        customFilterListOptions: { render: renderCustomFilterList },
         customBodyRender: renderName,
       },
       {
@@ -178,7 +186,8 @@ describe('<MUIDataTable />', function() {
             filter: false,
             display: 'excluded',
             customBodyRender: renderName,
-            customFilterListRender: renderCustomFilterList,
+            customFilterListRender: renderCustomFilterList, // DEPRECATED
+            customFilterListOptions: { render: renderCustomFilterList }
           },
         },
         'Company',
@@ -206,7 +215,8 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         sortDirection: 'none',
         viewColumns: true,
-        customFilterListRender: renderCustomFilterList,
+        customFilterListRender: renderCustomFilterList, // DEPRECATED
+        customFilterListOptions: { render: renderCustomFilterList },
         customBodyRender: renderName,
       },
       {
@@ -281,7 +291,14 @@ describe('<MUIDataTable />', function() {
 
   it('should correctly build internal table data and displayData structure when using nested data', () => {
     const columns = [
-      { name: 'Name', options: { customBodyRender: renderName, customFilterListRender: renderCustomFilterList } },
+      {
+        name: 'Name',
+        options: {
+          customBodyRender: renderName,
+          customFilterListRender: renderCustomFilterList, // DEPRECATED
+          customFilterListOptions: { render: renderCustomFilterList }
+        }
+      },
       'Company',
       { name: 'Location.City', label: 'City Label' },
       { name: 'Location.State' },
@@ -617,11 +634,34 @@ describe('<MUIDataTable />', function() {
     assert.strictEqual(actualResult.length, 1);
   });
 
-  it('should create Chip with custom label when filterList and customFilterListRender are populated', () => {
+  it('DEPRECATED: should create Chip with custom label when filterList and customFilterListRender are populated', () => {
     const filterList = [['Joe James'], [], [], [], []];
     const filterListRenderers = columns.map(c => {
       return c.options && c.options.customFilterListRender
         ? c.options.customFilterListRender
+        : defaultRenderCustomFilterList;
+    });
+    const columnNames = columns.map(column => ({ name: column.name }));
+
+    const mountWrapper = mount(
+      <TableFilterList
+        options={{ serverSide: false }}
+        filterList={filterList}
+        filterListRenderers={filterListRenderers}
+        filterUpdate={() => true}
+        columnNames={columnNames}
+      />,
+    );
+    const actualResult = mountWrapper.find(Chip);
+    assert.strictEqual(actualResult.length, 1);
+    assert.strictEqual(actualResult.prop('label'), 'Name: Joe James');
+  });
+
+  it('should create Chip with custom label when filterList and customFilterListOptions are populated', () => {
+    const filterList = [['Joe James'], [], [], [], []];
+    const filterListRenderers = columns.map(c => {
+      return c.options && c.options.customFilterListOptions && c.options.customFilterListOptions.render
+        ? c.options.customFilterListOptions.render
         : defaultRenderCustomFilterList;
     });
     const columnNames = columns.map(column => ({ name: column.name }));
@@ -932,7 +972,8 @@ describe('<MUIDataTable />', function() {
         sortDirection: 'none',
         customBodyRender: renderName,
         viewColumns: true,
-        customFilterListRender: renderCustomFilterList,
+        customFilterListRender: renderCustomFilterList, // DEPRECATED
+        customFilterListOptions: { render: renderCustomFilterList },
       },
       {
         name: 'Company',
