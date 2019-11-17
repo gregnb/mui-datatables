@@ -680,6 +680,18 @@ describe('<MUIDataTable />', function() {
     assert.strictEqual(actualResult.prop('label'), 'Name: Joe James');
   });
 
+  it('should call custom filter update function when it is passed into custom filter update', () => {
+    const customFilterListUpdate = spy(() => [[], [], [], [], []]);
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+
+    instance.filterUpdate(0, ['Joe James'], 'Name', 'custom', customFilterListUpdate);
+    table.update();
+
+    assert.deepEqual(customFilterListUpdate.callCount, 1);
+  });
+
   it('should render filter Chip(s) when options.serverSide = true and serverSideFilterList is populated', () => {
     const serverSideFilterList = [['Joe James'], [], [], [], []];
     const filterListRenderers = [
