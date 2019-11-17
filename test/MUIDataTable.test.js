@@ -33,8 +33,8 @@ describe('<MUIDataTable />', function() {
         options: {
           customBodyRender: renderName,
           customFilterListRender: renderCustomFilterList, // DEPRECATED
-          customFilterListOptions: { render: renderCustomFilterList }
-        }
+          customFilterListOptions: { render: renderCustomFilterList },
+        },
       },
       'Company',
       { name: 'City', label: 'City Label', options: { customBodyRender: renderCities, filterType: 'textField' } },
@@ -187,7 +187,7 @@ describe('<MUIDataTable />', function() {
             display: 'excluded',
             customBodyRender: renderName,
             customFilterListRender: renderCustomFilterList, // DEPRECATED
-            customFilterListOptions: { render: renderCustomFilterList }
+            customFilterListOptions: { render: renderCustomFilterList },
           },
         },
         'Company',
@@ -296,8 +296,8 @@ describe('<MUIDataTable />', function() {
         options: {
           customBodyRender: renderName,
           customFilterListRender: renderCustomFilterList, // DEPRECATED
-          customFilterListOptions: { render: renderCustomFilterList }
-        }
+          customFilterListOptions: { render: renderCustomFilterList },
+        },
       },
       'Company',
       { name: 'Location.City', label: 'City Label' },
