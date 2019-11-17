@@ -36,30 +36,32 @@ class Example extends React.Component {
           filter: true,
           filterType: 'custom',
           filterList: [25, 50],
-          customFilterListRender: v => {
-            if (v[0] && v[1] && this.state.ageFilterChecked) {
-              return [`Min Age: ${v[0]}`, `Max Age: ${v[1]}`];
-            } else if (v[0] && v[1] && !this.state.ageFilterChecked) {
-              return `Min Age: ${v[0]}, Max Age: ${v[1]}`;
-            } else if (v[0]) {
-              return `Min Age: ${v[0]}`;
-            } else if (v[1]) {
-              return `Max Age: ${v[1]}`;
-            }
-            return false;
-          },
-          customFilterListOnDelete: (filterList, filterPos, index) => {
-            console.log('customFilterListOnDelete: ', filterList, filterPos, index);
+          customFilterListOptions: {
+            render: v => {
+              if (v[0] && v[1] && this.state.ageFilterChecked) {
+                return [`Min Age: ${v[0]}`, `Max Age: ${v[1]}`];
+              } else if (v[0] && v[1] && !this.state.ageFilterChecked) {
+                return `Min Age: ${v[0]}, Max Age: ${v[1]}`;
+              } else if (v[0]) {
+                return `Min Age: ${v[0]}`;
+              } else if (v[1]) {
+                return `Max Age: ${v[1]}`;
+              }
+              return false;
+            },
+            update: (filterList, filterPos, index) => {
+              console.log('customFilterListOnDelete: ', filterList, filterPos, index);
 
-            if (filterPos === 0) {
-              filterList[index].splice(filterPos, 1, '');
-            } else if (filterPos === 1) {
-              filterList[index].splice(filterPos, 1);
-            } else if (filterPos === -1) {
-              filterList[index] = [];
-            }
+              if (filterPos === 0) {
+                filterList[index].splice(filterPos, 1, '');
+              } else if (filterPos === 1) {
+                filterList[index].splice(filterPos, 1);
+              } else if (filterPos === -1) {
+                filterList[index] = [];
+              }
 
-            return filterList;
+              return filterList;
+            },
           },
           filterOptions: {
             names: [],
