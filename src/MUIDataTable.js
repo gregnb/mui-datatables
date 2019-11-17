@@ -329,7 +329,7 @@ class MUIDataTable extends React.Component {
       );
     }
     if (this.options.responsive === 'scroll') {
-      console.error('This option has been deprecated. It is being replaced by scrollMaxHeight');
+      console.error('The "scroll" responsive option has been deprecated. It is being replaced by "scrollMaxHeight"');
     }
 
     this.props.columns.map(c => {
