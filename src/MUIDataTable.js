@@ -121,6 +121,12 @@ class MUIDataTable extends React.Component {
             filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField', 'custom']),
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,
+            customFilterListOptions: PropTypes.oneOfType([
+              PropTypes.shape({
+                render: PropTypes.func,
+                update: PropTypes.func,
+              }),
+            ]),
             customFilterListRender: PropTypes.func,
           }),
         }),
@@ -325,6 +331,14 @@ class MUIDataTable extends React.Component {
     if (this.options.responsive === 'scroll') {
       console.error('This option has been deprecated. It is being replaced by scrollMaxHeight');
     }
+
+    this.props.columns.map(c => {
+      if (c.options && c.options.customFilterListRender) {
+        console.error(
+          'The customFilterListRender option has been deprecated. It is being replaced by customFilterListOptions.render (Specify customFilterListOptions: { render: Function } in column options.)',
+        );
+      }
+    });
   };
 
   /*
@@ -1334,10 +1348,16 @@ class MUIDataTable extends React.Component {
           options={this.options}
           serverSideFilterList={this.props.options.serverSideFilterList || []}
           filterListRenderers={columns.map(c => {
-            return c.customFilterListRender ? c.customFilterListRender : f => f;
+            if (c.customFilterListOptions && c.customFilterListOptions.render) return c.customFilterListOptions.render;
+            // DEPRECATED: This option is being replaced with customFilterListOptions.render
+            if (c.customFilterListRender) return c.customFilterListRender;
+
+            return f => f;
           })}
-            return c.customFilterListOnDelete ? c.customFilterListOnDelete : f => f;
           customFilterListUpdate={columns.map(c => {
+            return c.customFilterListOptions && c.customFilterListOptions.update
+              ? c.customFilterListOptions.update
+              : f => f;
           })}
           filterList={filterList}
           filterUpdate={this.filterUpdate}
