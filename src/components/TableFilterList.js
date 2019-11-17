@@ -35,12 +35,20 @@ class TableFilterList extends React.Component {
   };
 
   render() {
-    const { classes, filterList, filterUpdate, filterListRenderers, columnNames, serverSideFilterList, customFilterListUpdate } = this.props;
+    const {
+      classes,
+      filterList,
+      filterUpdate,
+      filterListRenderers,
+      columnNames,
+      serverSideFilterList,
+      customFilterListUpdate,
+    } = this.props;
     const { serverSide } = this.props.options;
 
     const customFilterChipMultiValue = (customFilterItem, index, customFilterItemIndex, item, orig) => {
       let label = '';
-      const type = customFilterListUpdate[index]  ? 'custom' : 'chip';
+      const type = customFilterListUpdate[index] ? 'custom' : 'chip';
 
       if (Array.isArray(orig)) label = filterListRenderers[customFilterItemIndex](customFilterItem);
       else label = filterListRenderers[index](item);
@@ -49,7 +57,14 @@ class TableFilterList extends React.Component {
         <Chip
           label={label}
           key={customFilterItemIndex}
-          onDelete={filterUpdate.bind(null, index, item[customFilterItemIndex], columnNames[index].name, type, customFilterListUpdate[index])}
+          onDelete={filterUpdate.bind(
+            null,
+            index,
+            item[customFilterItemIndex],
+            columnNames[index].name,
+            type,
+            customFilterListUpdate[index],
+          )}
           className={classes.chip}
         />
       );
@@ -60,7 +75,14 @@ class TableFilterList extends React.Component {
         <Chip
           label={filterListRenderers[index](item)}
           key={index}
-          onDelete={filterUpdate.bind(null, index, [], columnNames[index].name, columnNames[index].filterType, customFilterListUpdate[index])}
+          onDelete={filterUpdate.bind(
+            null,
+            index,
+            [],
+            columnNames[index].name,
+            columnNames[index].filterType,
+            customFilterListUpdate[index],
+          )}
           className={classes.chip}
         />
       );
@@ -92,7 +114,15 @@ class TableFilterList extends React.Component {
 
               if (columnNames[index].filterType === 'custom' && customFilterListRenderersValue) {
                 if (Array.isArray(customFilterListRenderersValue)) {
-                  return customFilterListRenderersValue.map((customFilterItem, customFilterItemIndex) => customFilterChipMultiValue(customFilterItem, index, customFilterItemIndex, item, customFilterListRenderersValue));
+                  return customFilterListRenderersValue.map((customFilterItem, customFilterItemIndex) =>
+                    customFilterChipMultiValue(
+                      customFilterItem,
+                      index,
+                      customFilterItemIndex,
+                      item,
+                      customFilterListRenderersValue,
+                    ),
+                  );
                 } else {
                   return customFilterChipSingleValue(index, item);
                 }
