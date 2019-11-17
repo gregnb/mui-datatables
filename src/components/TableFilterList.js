@@ -104,7 +104,19 @@ class TableFilterList extends React.Component {
               const filterListRenderersValue = filterListRenderers[index](item);
 
               if (columnNames[index].filterType === 'custom' && filterListRenderersValue) {
-                return customFilterChipSingleValue(item, index);
+                if (Array.isArray(filterListRenderersValue)) {
+                  return filterListRenderersValue.map((customFilterItem, customFilterItemIndex) =>
+                    customFilterChipMultiValue(
+                      customFilterItem,
+                      index,
+                      customFilterItemIndex,
+                      item,
+                      filterListRenderersValue,
+                    ),
+                  );
+                } else {
+                  return customFilterChipSingleValue(index, item);
+                }
               }
 
               return item.map((data, colIndex) => filterChip(index, data, colIndex));
