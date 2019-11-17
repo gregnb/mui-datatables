@@ -1357,7 +1357,7 @@ class MUIDataTable extends React.Component {
           customFilterListUpdate={columns.map(c => {
             return c.customFilterListOptions && c.customFilterListOptions.update
               ? c.customFilterListOptions.update
-              : f => f;
+              : null;
           })}
           filterList={filterList}
           filterUpdate={this.filterUpdate}
