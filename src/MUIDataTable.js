@@ -1336,8 +1336,8 @@ class MUIDataTable extends React.Component {
           filterListRenderers={columns.map(c => {
             return c.customFilterListRender ? c.customFilterListRender : f => f;
           })}
-          customFilterListRenderOnDelete={columns.map(c => {
             return c.customFilterListOnDelete ? c.customFilterListOnDelete : f => f;
+          customFilterListUpdate={columns.map(c => {
           })}
           filterList={filterList}
           filterUpdate={this.filterUpdate}
