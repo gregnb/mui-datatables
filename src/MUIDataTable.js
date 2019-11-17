@@ -984,10 +984,10 @@ class MUIDataTable extends React.Component {
     );
   };
 
-  filterUpdate = (index, value, column, type) => {
+  filterUpdate = (index, value, column, type, customUpdate) => {
     this.setState(
       prevState => {
-        const filterList = prevState.filterList.slice(0);
+        let filterList = prevState.filterList.slice(0);
         const filterPos = filterList[index].indexOf(value);
 
         switch (type) {
@@ -1004,7 +1004,8 @@ class MUIDataTable extends React.Component {
             filterList[index] = value;
             break;
           case 'custom':
-            filterList[index] = value;
+            if (customUpdate) filterList = customUpdate(filterList, filterPos, index);
+            else filterList[index] = value;
             break;
           default:
             filterList[index] = filterPos >= 0 || value === '' ? [] : [value];
@@ -1334,6 +1335,9 @@ class MUIDataTable extends React.Component {
           serverSideFilterList={this.props.options.serverSideFilterList || []}
           filterListRenderers={columns.map(c => {
             return c.customFilterListRender ? c.customFilterListRender : f => f;
+          })}
+          customFilterListRenderOnDelete={columns.map(c => {
+            return c.customFilterListOnDelete ? c.customFilterListOnDelete : f => f;
           })}
           filterList={filterList}
           filterUpdate={this.filterUpdate}
