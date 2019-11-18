@@ -243,7 +243,7 @@ class TableBody extends React.Component {
                     // When rows are expandable and selectable, but this row isn't expandable, set this to enabled.
                     // This will add a new class, MUIDataTableSelectCell-expandDisabled and can be overridden when wanted.
                     hideExpandButton={
-                      !this.isRowExpandable(dataIndex) && options.expandableRows && options.selectableRows
+                      !this.isRowExpandable(dataIndex) && options.expandableRows
                     }
                     selectableOn={options.selectableRows}
                     isRowExpanded={this.isRowExpanded(dataIndex)}
