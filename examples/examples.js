@@ -16,7 +16,6 @@ import CustomizeToolbar from "./customize-toolbar";
 import CustomizeToolbarSelect from "./customize-toolbarselect";
 import DataAsObjects from "./data-as-objects";
 import ExpandableRows from "./expandable-rows";
-import ExpandableRowsWithHiddenExpand from "./expandable-rows-hidden-expand";
 import FixedHeader from "./fixed-header";
 import HideColumnsPrint from "./hide-columns-print";
 import OnDownload from "./on-download";
@@ -53,7 +52,6 @@ export default {
     'Customize Toolbar Select': CustomizeToolbarSelect,
     'Data As Objects': DataAsObjects,
     'Expandable Rows': ExpandableRows,
-    'Expandable Rows, Hidden Expand': ExpandableRowsWithHiddenExpand,
     'Fixed Header': FixedHeader,
     'Hide Columns Print': HideColumnsPrint,
     'OnDownload': OnDownload,
