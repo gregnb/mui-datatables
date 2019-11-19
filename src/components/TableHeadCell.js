@@ -92,7 +92,7 @@ class TableHeadCell extends React.Component {
   render() {
     const { isSortTooltipOpen, isHintTooltipOpen } = this.state;
 
-    const { children, classes, options, sortDirection, sort, hint, print, column, cellHeaderProps } = this.props;
+    const { children, classes, options, sortDirection, sort, hint, print, column, cellHeaderProps = {} } = this.props;
     const { className, ...otherProps } = cellHeaderProps;
 
     const sortActive = sortDirection !== 'none' && sortDirection !== undefined ? true : false;
