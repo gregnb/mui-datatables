@@ -79,7 +79,10 @@ class Example extends React.Component {
       filter: true,
       filterType: 'dropdown',
       responsive: 'scrollMaxHeight',
-      fixedHeader: true
+      fixedHeaderOptions: {
+        xAxis: false,
+        yAxis: true
+      },
     };
 
     return (
