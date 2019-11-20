@@ -238,6 +238,7 @@ class TableBody extends React.Component {
                       dataIndex: dataIndex,
                     })}
                     fixedHeader={options.fixedHeader}
+                    fixedHeaderOptions={options.fixedHeaderOptions}
                     checked={this.isRowSelected(dataIndex)}
                     expandableOn={options.expandableRows}
                     selectableOn={options.selectableRows}

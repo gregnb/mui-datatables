@@ -15,6 +15,17 @@ const defaultSelectCellStyles = theme => ({
     left: '0px',
     zIndex: 100,
   },
+  fixedHeaderCommon: {
+    position: 'sticky',
+    zIndex: 100,
+    backgroundColor: theme.palette.background.paper,
+  },
+  fixedHeaderXAxis: {
+    left: '0px',
+  },
+  fixedHeaderYAxis: {
+    top: '0px',
+  },
   icon: {
     cursor: 'pointer',
     transition: 'transform 0.25s',
@@ -39,7 +50,12 @@ class TableSelectCell extends React.Component {
     /** Select cell checked on/off */
     checked: PropTypes.bool.isRequired,
     /** Select cell part of fixed header */
-    fixedHeader: PropTypes.bool.isRequired,
+    fixedHeader: PropTypes.bool,
+    /** Select cell part of fixed header */
+    fixedHeaderOptions: PropTypes.shape({
+      xAxis: PropTypes.bool,
+      yAxis: PropTypes.bool,
+    }),
     /** Callback to trigger cell update */
     onChange: PropTypes.func,
     /** Extend the style applied to components */
@@ -62,6 +78,7 @@ class TableSelectCell extends React.Component {
     const {
       classes,
       fixedHeader,
+      fixedHeaderOptions,
       isHeaderCell,
       expandableOn,
       selectableOn,
@@ -71,12 +88,22 @@ class TableSelectCell extends React.Component {
       selectableRowsHeader,
       ...otherProps
     } = this.props;
+    let fixedHeaderClasses;
 
     if (!expandableOn && selectableOn === 'none') return false;
 
+    // DEPRECATED, make sure to replace defaults with new options when removing
+    if (fixedHeader) fixedHeaderClasses = classes.fixedHeader;
+
+    if (fixedHeaderOptions) {
+      fixedHeaderClasses = classes.fixedHeaderCommon;
+      if (fixedHeaderOptions.xAxis) fixedHeaderClasses += ` ${classes.fixedHeaderXAxis}`;
+      if (fixedHeaderOptions.yAxis) fixedHeaderClasses += ` ${classes.fixedHeaderYAxis}`;
+    }
+
     const cellClass = classNames({
       [classes.root]: true,
-      [classes.fixedHeader]: fixedHeader,
+      [fixedHeaderClasses]: true,
       [classes.headerCell]: isHeaderCell,
     });
 
