@@ -185,6 +185,7 @@ class MUIDataTable extends React.Component {
         }),
       }),
       onDownload: PropTypes.func,
+      setTableProps: PropTypes.func,
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
@@ -308,6 +309,7 @@ class MUIDataTable extends React.Component {
       filename: 'tableDownload.csv',
       separator: ',',
     },
+    setTableProps: () => ({}),
   });
 
   handleOptionDeprecation = () => {
@@ -839,6 +841,15 @@ class MUIDataTable extends React.Component {
     return column.sortDirection === 'asc' ? 'ascending' : 'descending';
   }
 
+  getTableProps() {
+    const { classes } = this.props;
+    const tableProps = this.options.setTableProps();
+
+    tableProps.className = classnames(classes.tableRoot, tableProps.className);
+
+    return tableProps;
+  }
+
   toggleSortColumn = index => {
     this.setState(
       prevState => {
@@ -1347,7 +1358,7 @@ class MUIDataTable extends React.Component {
               setResizeable={fn => (this.setHeadResizeable = fn)}
             />
           )}
-          <MuiTable ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'} className={classes.tableRoot}>
+          <MuiTable ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'} {...this.getTableProps()}>
             <caption className={classes.caption}>{title}</caption>
             <TableHead
               columns={columns}

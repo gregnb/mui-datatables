@@ -195,6 +195,7 @@ The component accepts the following props:
 |**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
 |**`onTableInit`**|function||Callback function that triggers when table state has been initialized. `function(action: string, tableState: object) => void`
 |**`setRowProps`**|function||Is called for each row and allows to return custom props for this row based on its data. `function(row: array, dataIndex: number) => object`
+|**`setTableProps`**|function||Is called to set properties to be applied to the material-ui table component. `function() => object`
 
 ## Customize Columns
 
