@@ -376,7 +376,7 @@ class MUIDataTable extends React.Component {
     if (options.expandableRows && options.renderExpandableRow === undefined) {
       throw Error('renderExpandableRow must be provided when using expandableRows option');
     }
-    if (this.props.options.filterList) {
+    if (this.props.options.filterList && process.env.node_env === 'development') {
       console.error(
         'Deprecated: filterList must now be provided under each column option. see https://github.com/gregnb/mui-datatables/tree/master/examples/column-filters example',
       );
@@ -501,7 +501,7 @@ class MUIDataTable extends React.Component {
       transformedData.filter(
         data => data.filter(d => typeof d === 'object' && d !== null && !Array.isArray(d)).length > 0,
       ).length > 0;
-    if (hasInvalidData)
+    if (hasInvalidData && process.env.node_env === 'development')
       console.error(
         'Deprecated: Passing objects in as data is not supported, and will be prevented in a future release. Consider using ids in your data and linking it to external objects if you want to access object data from custom render functions.',
       );
@@ -556,9 +556,11 @@ class MUIDataTable extends React.Component {
       if (column.filterOptions) {
         if (Array.isArray(column.filterOptions)) {
           filterData[colIndex] = cloneDeep(column.filterOptions);
-          console.error(
-            'Deprecated: filterOptions must now be an object. see https://github.com/gregnb/mui-datatables/tree/master/examples/customize-filter example',
-          );
+          if (process.env.node_env === 'development') {
+            console.error(
+              'Deprecated: filterOptions must now be an object. see https://github.com/gregnb/mui-datatables/tree/master/examples/customize-filter example',
+            );
+          }
         } else if (Array.isArray(column.filterOptions.names)) {
           filterData[colIndex] = cloneDeep(column.filterOptions.names);
         }
