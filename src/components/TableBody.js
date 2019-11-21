@@ -167,7 +167,7 @@ class TableBody extends React.Component {
       // In a future release, onRowClick will no longer be called here (for consistency).
       // For now, issue a deprecated warning.
       if (this.props.options.onRowClick) {
-        if (process.env.node_env === 'development') {
+        if (process.env.NODE_ENV === 'development') {
           console.warn(
             'Deprecated: Clicks on expandable button will not trigger onRowClick in an upcoming release, see: https://github.com/gregnb/mui-datatables/issues/516.',
           );
