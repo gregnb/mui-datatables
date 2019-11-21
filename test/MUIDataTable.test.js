@@ -7,6 +7,7 @@ import MUIDataTable from '../src/MUIDataTable';
 import TableFilterList from '../src/components/TableFilterList';
 import TablePagination from '../src/components/TablePagination';
 import TableToolbar from '../src/components/TableToolbar';
+import TableToolbarSelect from '../src/components/TableToolbarSelect';
 import textLabels from '../src/textLabels';
 import Chip from '@material-ui/core/Chip';
 import Cities from '../examples/component/cities';
@@ -537,6 +538,18 @@ describe('<MUIDataTable />', function() {
 
     const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
     const actualResult = mountWrapper.find(TableToolbar);
+    assert.lengthOf(actualResult, 0);
+  });
+
+  it('should not render select toolbar when disableToolbarSelect=true', () => {
+    const options = { disableToolbarSelect: true };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    // Simulate a selection
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 });
+
+    const actualResult = shallowWrapper.find(TableToolbarSelect);
     assert.lengthOf(actualResult, 0);
   });
 
