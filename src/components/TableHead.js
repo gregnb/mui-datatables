@@ -33,7 +33,7 @@ class TableHead extends React.Component {
     const { classes, columns, count, options, data, setCellRef, selectedRows } = this.props;
 
     const numSelected = (selectedRows && selectedRows.data.length) || 0;
-    let isDeterminate = numSelected > 0 && numSelected < count;
+    let isIndeterminate = numSelected > 0 && numSelected < count;
     let isChecked = numSelected === count ? true : false;
 
     // When the disableToolbarSelect option is true, there can be
@@ -44,13 +44,13 @@ class TableHead extends React.Component {
         for (let ii = 0; ii < data.length; ii++) {
           if (!selectedRows.lookup[data[ii].dataIndex]) {
              isChecked = false;
-             isDeterminate = true;
+             isIndeterminate = true;
             break;
           }
         }
       } else {
         if (numSelected > count) {
-           isDeterminate = true;
+           isIndeterminate = true;
         }
       }
     }
@@ -62,7 +62,7 @@ class TableHead extends React.Component {
           <TableSelectCell
             ref={el => setCellRef(0, findDOMNode(el))}
             onChange={this.handleRowSelect.bind(null)}
-            indeterminate={isDeterminate}
+            indeterminate={isIndeterminate}
             checked={isChecked}
             isHeaderCell={true}
             expandableOn={options.expandableRows}
