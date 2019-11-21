@@ -773,6 +773,21 @@ describe('<MUIDataTable />', function() {
     assert.strictEqual(changedColumn, null);
   });
 
+  it('should have the proper type in onFilterChange when calling resetFilters method', () => {
+    let type;
+    const options = {
+      onFilterChange: (changedColumn, filterList, changeType) => (type = changeType)
+    };
+
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+
+    instance.resetFilters();
+    table.update();
+    assert.strictEqual(type, 'reset');
+  });
+
   it('should properly set searchText when calling searchTextUpdate method', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const table = shallowWrapper.dive();
