@@ -7,6 +7,7 @@ import MUIDataTable from '../src/MUIDataTable';
 import TableFilterList from '../src/components/TableFilterList';
 import TablePagination from '../src/components/TablePagination';
 import TableToolbar from '../src/components/TableToolbar';
+import TableToolbarSelect from '../src/components/TableToolbarSelect';
 import textLabels from '../src/textLabels';
 import Chip from '@material-ui/core/Chip';
 import Cities from '../examples/component/cities';
@@ -28,7 +29,14 @@ describe('<MUIDataTable />', function() {
 
   before(() => {
     columns = [
-      { name: 'Name', options: { customBodyRender: renderName, customFilterListRender: renderCustomFilterList } },
+      {
+        name: 'Name',
+        options: {
+          customBodyRender: renderName,
+          customFilterListRender: renderCustomFilterList, // DEPRECATED
+          customFilterListOptions: { render: renderCustomFilterList },
+        },
+      },
       'Company',
       { name: 'City', label: 'City Label', options: { customBodyRender: renderCities, filterType: 'textField' } },
       {
@@ -101,7 +109,8 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         sortDirection: 'none',
         viewColumns: true,
-        customFilterListRender: renderCustomFilterList,
+        customFilterListRender: renderCustomFilterList, // DEPRECATED
+        customFilterListOptions: { render: renderCustomFilterList },
         customBodyRender: renderName,
       },
       {
@@ -178,7 +187,8 @@ describe('<MUIDataTable />', function() {
             filter: false,
             display: 'excluded',
             customBodyRender: renderName,
-            customFilterListRender: renderCustomFilterList,
+            customFilterListRender: renderCustomFilterList, // DEPRECATED
+            customFilterListOptions: { render: renderCustomFilterList },
           },
         },
         'Company',
@@ -206,7 +216,8 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         sortDirection: 'none',
         viewColumns: true,
-        customFilterListRender: renderCustomFilterList,
+        customFilterListRender: renderCustomFilterList, // DEPRECATED
+        customFilterListOptions: { render: renderCustomFilterList },
         customBodyRender: renderName,
       },
       {
@@ -281,7 +292,14 @@ describe('<MUIDataTable />', function() {
 
   it('should correctly build internal table data and displayData structure when using nested data', () => {
     const columns = [
-      { name: 'Name', options: { customBodyRender: renderName, customFilterListRender: renderCustomFilterList } },
+      {
+        name: 'Name',
+        options: {
+          customBodyRender: renderName,
+          customFilterListRender: renderCustomFilterList, // DEPRECATED
+          customFilterListOptions: { render: renderCustomFilterList },
+        },
+      },
       'Company',
       { name: 'Location.City', label: 'City Label' },
       { name: 'Location.State' },
@@ -556,6 +574,18 @@ describe('<MUIDataTable />', function() {
     assert.lengthOf(actualResult, 0);
   });
 
+  it('should not render select toolbar when disableToolbarSelect=true', () => {
+    const options = { disableToolbarSelect: true };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    // Simulate a selection
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 });
+
+    const actualResult = shallowWrapper.find(TableToolbarSelect);
+    assert.lengthOf(actualResult, 0);
+  });
+
   it('should properly set internal filterList when calling filterUpdate method with type=checkbox', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const table = shallowWrapper.dive();
@@ -622,6 +652,7 @@ describe('<MUIDataTable />', function() {
 
     const mountWrapper = mount(
       <TableFilterList
+        options={{ serverSide: false }}
         filterList={filterList}
         filterListRenderers={filterListRenderers}
         filterUpdate={() => true}
@@ -632,7 +663,7 @@ describe('<MUIDataTable />', function() {
     assert.strictEqual(actualResult.length, 1);
   });
 
-  it('should create Chip with custom label when filterList and customFilterListRender are populated', () => {
+  it('DEPRECATED: should create Chip with custom label when filterList and customFilterListRender are populated', () => {
     const filterList = [['Joe James'], [], [], [], []];
     const filterListRenderers = columns.map(c => {
       return c.options && c.options.customFilterListRender
@@ -643,6 +674,7 @@ describe('<MUIDataTable />', function() {
 
     const mountWrapper = mount(
       <TableFilterList
+        options={{ serverSide: false }}
         filterList={filterList}
         filterListRenderers={filterListRenderers}
         filterUpdate={() => true}
@@ -652,6 +684,90 @@ describe('<MUIDataTable />', function() {
     const actualResult = mountWrapper.find(Chip);
     assert.strictEqual(actualResult.length, 1);
     assert.strictEqual(actualResult.prop('label'), 'Name: Joe James');
+  });
+
+  it('should create Chip with custom label when filterList and customFilterListOptions are populated', () => {
+    const filterList = [['Joe James'], [], [], [], []];
+    const filterListRenderers = columns.map(c => {
+      return c.options && c.options.customFilterListOptions && c.options.customFilterListOptions.render
+        ? c.options.customFilterListOptions.render
+        : defaultRenderCustomFilterList;
+    });
+    const columnNames = columns.map(column => ({ name: column.name }));
+
+    const mountWrapper = mount(
+      <TableFilterList
+        options={{ serverSide: false }}
+        filterList={filterList}
+        filterListRenderers={filterListRenderers}
+        filterUpdate={() => true}
+        columnNames={columnNames}
+      />,
+    );
+    const actualResult = mountWrapper.find(Chip);
+    assert.strictEqual(actualResult.length, 1);
+    assert.strictEqual(actualResult.prop('label'), 'Name: Joe James');
+  });
+
+  it('should call custom filter update function when it is passed into custom filter update', () => {
+    const customFilterListUpdate = spy(() => [[], [], [], [], []]);
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+
+    instance.filterUpdate(0, ['Joe James'], 'Name', 'custom', customFilterListUpdate);
+    table.update();
+
+    assert.deepEqual(customFilterListUpdate.callCount, 1);
+  });
+
+  it('should render filter Chip(s) when options.serverSide = true and serverSideFilterList is populated', () => {
+    const serverSideFilterList = [['Joe James'], [], [], [], []];
+    const filterListRenderers = [
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+    ];
+    const columnNames = columns.map(column => ({ name: column.name }));
+
+    const mountWrapper = mount(
+      <TableFilterList
+        options={{ serverSide: true }}
+        serverSideFilterList={serverSideFilterList}
+        filterListRenderers={filterListRenderers}
+        filterUpdate={() => true}
+        columnNames={columnNames}
+      />,
+    );
+
+    const actualResult = mountWrapper.find(Chip);
+    assert.strictEqual(actualResult.length, 1);
+  });
+
+  it('should not render filter Chip(s) when options.serverSide = true and serverSideFilterList is not populated', () => {
+    const filterListRenderers = [
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+      defaultRenderCustomFilterList,
+    ];
+    const columnNames = columns.map(column => ({ name: column.name }));
+
+    const mountWrapper = mount(
+      <TableFilterList
+        options={{ serverSide: true }}
+        serverSideFilterList={[]}
+        filterListRenderers={filterListRenderers}
+        filterUpdate={() => true}
+        columnNames={columnNames}
+      />,
+    );
+
+    const actualResult = mountWrapper.find(Chip);
+    assert.strictEqual(actualResult.length, 0);
   });
 
   it('should remove entry from filterList when calling filterUpdate method with type=dropdown and an empty array', () => {
@@ -725,6 +841,21 @@ describe('<MUIDataTable />', function() {
     assert.strictEqual(changedColumn, null);
   });
 
+  it('should have the proper type in onFilterChange when calling resetFilters method', () => {
+    let type;
+    const options = {
+      onFilterChange: (changedColumn, filterList, changeType) => (type = changeType)
+    };
+
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+
+    instance.resetFilters();
+    table.update();
+    assert.strictEqual(type, 'reset');
+  });
+
   it('should properly set searchText when calling searchTextUpdate method', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const table = shallowWrapper.dive();
@@ -739,6 +870,71 @@ describe('<MUIDataTable />', function() {
     ]);
 
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
+  });
+
+  it('should properly set searchText when hiding the search bar', () => {
+    const options = {
+      rowsPerPage: 1,
+      textLabels,
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+    const shallowWrapperTableToolbar = shallow(
+      <TableToolbar
+        options={options}
+        searchTextUpdate={spy()}
+        searchClose={instance.searchClose}
+        columns={columns}
+        data={data}
+        setTableAction={spy()}
+      />,
+    );
+    const instanceTableToolbar = shallowWrapperTableToolbar.dive().instance();
+
+    instance.searchTextUpdate('Joe');
+    table.update();
+    instanceTableToolbar.searchButton = { focus: () => {} };
+    instanceTableToolbar.hideSearch();
+    table.update();
+    const searchText = table.state().searchText;
+
+    assert.strictEqual(searchText, null);
+  });
+
+  it('should not change page when hiding the search bar', () => {
+    const options = {
+      rowsPerPage: 1,
+      textLabels,
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+    const shallowWrapperTableToolbar = shallow(
+      <TableToolbar
+        options={options}
+        searchTextUpdate={spy()}
+        searchClose={instance.searchClose}
+        columns={columns}
+        data={data}
+        setTableAction={spy()}
+      />,
+    );
+    const instanceTableToolbar = shallowWrapperTableToolbar.dive().instance();
+
+    // Simulate a search that has multiple pages of results
+    instanceTableToolbar.setActiveIcon('search');
+    instanceTableToolbar.searchButton = { focus: () => {} };
+    instance.searchTextUpdate('j');
+    table.update();
+
+    // Simulate changing the page and then hiding the search bar
+    instance.changePage(1);
+    instanceTableToolbar.hideSearch();
+    table.update();
+
+    const page = table.state().page;
+    assert.strictEqual(page, 1);
   });
 
   it('should filter displayData when searchText is set', () => {
@@ -832,7 +1028,8 @@ describe('<MUIDataTable />', function() {
         sortDirection: 'none',
         customBodyRender: renderName,
         viewColumns: true,
-        customFilterListRender: renderCustomFilterList,
+        customFilterListRender: renderCustomFilterList, // DEPRECATED
+        customFilterListOptions: { render: renderCustomFilterList },
       },
       {
         name: 'Company',
@@ -918,15 +1115,18 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should recalculate page when calling changeRowsPerPage method', () => {
-    const data = new Array(29).fill('').map(() => ['Joe James', 'Test Corp', 'Yonkers', 'NY']);
-    const mountWrapper = mount(shallow(<MUIDataTable columns={columns} data={data} />).get(0));
+    const mountWrapper = mount(
+      shallow(<MUIDataTable columns={columns} data={data} options={{ rowsPerPage: 2 }} />).get(0),
+    );
     const instance = mountWrapper.instance();
 
-    instance.changePage(2);
-    instance.changeRowsPerPage(15);
-
-    const state = mountWrapper.state();
+    instance.changePage(1);
+    let state = mountWrapper.state();
     assert.equal(state.page, 1);
+
+    instance.changeRowsPerPage(4);
+    state = mountWrapper.state();
+    assert.equal(state.page, 0);
   });
 
   it('should update page position when calling changePage method', () => {
@@ -1125,6 +1325,36 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(JSON.stringify(newDisplayData), expectedResult);
   });
 
+  it('should call onRowsExpand when row is expanded or collapsed', () => {
+    const options = {
+      expandableRows: true,
+      renderExpandableRow: () => (
+        <tr>
+          <td>foo</td>
+        </tr>
+      ),
+      expandableRowsOnClick: true,
+      onRowsExpand: spy(),
+    };
+    const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('click');
+
+    assert.strictEqual(options.onRowsExpand.callCount, 1);
+    assert(options.onRowsExpand.calledWith([{ index: 2, dataIndex: 2 }], [{ index: 2, dataIndex: 2 }]));
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('click');
+
+    assert.strictEqual(options.onRowsExpand.callCount, 2);
+    assert(options.onRowsExpand.calledWith([{ index: 2, dataIndex: 2 }], []));
+  });
+
   it('should not remove selected data on selectRowDelete when type=cell when onRowsDelete returns false', () => {
     const options = {
       onRowsDelete: () => false,
@@ -1264,6 +1494,24 @@ describe('<MUIDataTable />', function() {
     const state = table.state();
 
     assert.equal(state.displayData.length, data.length);
+  });
+
+  it('should correctly build internal tableProps when setTableProps passed in options', () => {
+    const options = {
+      setTableProps: () => ({
+        className: 'foo bar',
+        title: 'baz',
+      }),
+    };
+
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+    const instance = shallowWrapper.dive().instance();
+    const expectedProps = {
+      className: `${instance.props.classes.tableRoot} foo bar`,
+      title: 'baz',
+    };
+
+    assert.deepEqual(instance.getTableProps(), expectedProps);
   });
 
   describe('should displayData consider filterOptions with logic', () => {

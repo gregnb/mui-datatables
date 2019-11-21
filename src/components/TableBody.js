@@ -7,6 +7,7 @@ import TableBodyRow from './TableBodyRow';
 import TableSelectCell from './TableSelectCell';
 import { withStyles } from '@material-ui/core/styles';
 import cloneDeep from 'lodash.clonedeep';
+import { getPageValue } from '../utils';
 
 const defaultBodyStyles = {
   root: {},
@@ -29,6 +30,8 @@ class TableBody extends React.Component {
     filterList: PropTypes.array,
     /** Callback to execute when row is clicked */
     onRowClick: PropTypes.func,
+    /** Table rows expanded */
+    expandedRows: PropTypes.object,
     /** Table rows selected */
     selectedRows: PropTypes.object,
     /** Callback to trigger table row select */
@@ -53,12 +56,12 @@ class TableBody extends React.Component {
     if (this.props.options.serverSide) return data.length ? data : null;
 
     let rows = [];
-    const totalPages = Math.floor(count / rowsPerPage);
-    const fromIndex = page === 0 ? 0 : page * rowsPerPage;
-    const toIndex = Math.min(count, (page + 1) * rowsPerPage);
+    const highestPageInRange = getPageValue(count, rowsPerPage, page);
+    const fromIndex = highestPageInRange === 0 ? 0 : highestPageInRange * rowsPerPage;
+    const toIndex = Math.min(count, (highestPageInRange + 1) * rowsPerPage);
 
-    if (page > totalPages && totalPages !== 0) {
-      console.warn('Current page is out of range.');
+    if (page > highestPageInRange) {
+      console.warn('Current page is out of range, using the highest page that is in range instead.');
     }
 
     for (let rowIndex = fromIndex; rowIndex < count && rowIndex < toIndex; rowIndex++) {
@@ -95,6 +98,15 @@ class TableBody extends React.Component {
 
     if (options.isRowSelectable) {
       return options.isRowSelectable(dataIndex, selectedRows);
+    } else {
+      return true;
+    }
+  }
+
+  isRowExpandable(dataIndex) {
+    const { options, expandedRows } = this.props;
+    if (options.isRowExpandable) {
+      return options.isRowExpandable(dataIndex, expandedRows);
     } else {
       return true;
     }
@@ -177,7 +189,11 @@ class TableBody extends React.Component {
       this.handleRowSelect(selectRow, event);
     }
     // Check if we should trigger row expand when row is clicked anywhere
-    if (this.props.options.expandableRowsOnClick && this.props.options.expandableRows) {
+    if (
+      this.props.options.expandableRowsOnClick &&
+      this.props.options.expandableRows &&
+      this.isRowExpandable(data.dataIndex, this.props.expandedRows)
+    ) {
       const expandRow = { index: data.rowIndex, dataIndex: data.dataIndex };
       this.props.toggleExpandRow(expandRow);
     }
@@ -224,6 +240,11 @@ class TableBody extends React.Component {
                     fixedHeader={options.fixedHeader}
                     checked={this.isRowSelected(dataIndex)}
                     expandableOn={options.expandableRows}
+                    // When rows are expandable, but this particular row isn't expandable, set this to true.
+                    // This will add a new class to the toggle button, MUIDataTableSelectCell-expandDisabled.
+                    hideExpandButton={
+                      !this.isRowExpandable(dataIndex) && options.expandableRows
+                    }
                     selectableOn={options.selectableRows}
                     isRowExpanded={this.isRowExpanded(dataIndex)}
                     isRowSelectable={this.isRowSelectable(dataIndex)}

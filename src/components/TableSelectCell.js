@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Checkbox from '@material-ui/core/Checkbox';
 import TableCell from '@material-ui/core/TableCell';
+import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 
@@ -28,6 +29,7 @@ const defaultSelectCellStyles = theme => ({
     zIndex: 110,
     backgroundColor: theme.palette.background.paper,
   },
+  expandDisabled: {},
   checkboxRoot: {},
   checked: {},
   disabled: {},
@@ -45,6 +47,8 @@ class TableSelectCell extends React.Component {
     classes: PropTypes.object,
     /** Is expandable option enabled */
     expandableOn: PropTypes.bool,
+    /** Adds extra class, `expandDisabled` when the row is not expandable. */
+    hideExpandButton: PropTypes.bool,
     /** Is selectable option enabled */
     selectableOn: PropTypes.string,
     /** Select cell disabled on/off */
@@ -68,6 +72,7 @@ class TableSelectCell extends React.Component {
       onExpand,
       isRowSelectable,
       selectableRowsHeader,
+      hideExpandButton,
       ...otherProps
     } = this.props;
 
@@ -77,6 +82,10 @@ class TableSelectCell extends React.Component {
       [classes.root]: true,
       [classes.fixedHeader]: fixedHeader,
       [classes.headerCell]: isHeaderCell,
+    });
+
+    const buttonClass = classNames({
+      [classes.expandDisabled]: hideExpandButton,
     });
 
     const iconClass = classNames({
@@ -107,7 +116,11 @@ class TableSelectCell extends React.Component {
     return (
       <TableCell className={cellClass} padding="checkbox">
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          {expandableOn && <KeyboardArrowRight id="expandable-button" className={iconClass} onClick={onExpand} />}
+          {expandableOn && (
+            <IconButton onClick={onExpand} disabled={isHeaderCell} className={buttonClass}>
+              <KeyboardArrowRight id="expandable-button" className={iconClass} />
+            </IconButton>
+          )}
           {selectableOn !== 'none' && renderCheckBox()}
         </div>
       </TableCell>

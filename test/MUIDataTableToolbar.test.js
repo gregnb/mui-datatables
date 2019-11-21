@@ -79,6 +79,16 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(actualResult.props().options.searchText, 'searchText');
   });
 
+  it('should render a toolbar with search if option.searchOpen = true', () => {
+    const newOptions = { ...options, searchOpen: true };
+    const mountWrapper = mount(
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    );
+    const actualResult = mountWrapper.find(TableSearch);
+    assert.strictEqual(actualResult.length, 1);
+    assert.strictEqual(actualResult.props().options.searchText, undefined);
+  });
+
   it('should render a toolbar with no search icon if option.search = false', () => {
     const newOptions = { ...options, search: false };
     const mountWrapper = mount(
@@ -154,6 +164,7 @@ describe('<TableToolbar />', function() {
     const searchTextUpdate = () => {};
     const shallowWrapper = shallow(
       <TableToolbar
+        searchClose={() => {}}
         searchTextUpdate={searchTextUpdate}
         columns={columns}
         data={data}
@@ -180,6 +191,36 @@ describe('<TableToolbar />', function() {
 
     actualResult = shallowWrapper.find(TableSearch);
     assert.strictEqual(actualResult.length, 0);
+  });
+
+  it('should call onFilterDialogOpen when opening filters via toolbar', () => {
+    const onFilterDialogOpen = spy();
+    const newOptions = { ...options, onFilterDialogOpen };
+    const shallowWrapper = shallow(
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    ).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.setActiveIcon('filter');
+    shallowWrapper.update();
+
+    assert.strictEqual(onFilterDialogOpen.callCount, 1);
+  });
+
+  it('should call onFilterDialogClose when closing filters dialog', () => {
+    const onFilterDialogClose = spy();
+    const newOptions = { ...options, onFilterDialogClose };
+    const shallowWrapper = shallow(
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    ).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.setActiveIcon('filter');
+    shallowWrapper.update();
+    instance.setActiveIcon(undefined);
+    shallowWrapper.update();
+
+    assert.strictEqual(onFilterDialogClose.callCount, 1);
   });
 
   it('should set icon when calling method setActiveIcon', () => {
