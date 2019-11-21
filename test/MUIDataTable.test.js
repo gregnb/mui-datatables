@@ -1,5 +1,5 @@
 import React from 'react';
-import { spy } from 'sinon';
+import { spy, stub } from 'sinon';
 import { mount, shallow } from 'enzyme';
 import { assert, expect } from 'chai';
 import cloneDeep from 'lodash.clonedeep';
@@ -469,6 +469,22 @@ describe('<MUIDataTable />', function() {
 
     assert.deepEqual(JSON.stringify(state.displayData), displayData);
     assert.deepEqual(initializeTableSpy.callCount, 1);
+  });
+
+  it('should add custom props to table if setTableProps provided', () => {
+    const options = { setTableProps: stub().returns({ myProp: 'test', className: 'testClass' }) };
+    const fullWrapper = mount(<MUIDataTable columns={columns} data={[]} options={options} />);
+    const props = fullWrapper
+      .find('table')
+      .first()
+      .props();
+
+    const classNames = props.className.split(' ');
+    const finalClass = classNames[classNames.length - 1];
+
+    assert.strictEqual(props.myProp, 'test');
+    assert.strictEqual(finalClass, 'testClass');
+    assert.isAtLeast(options.setTableProps.callCount, 1);
   });
 
   it('should correctly build internal filterList structure', () => {

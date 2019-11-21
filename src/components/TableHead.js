@@ -78,6 +78,7 @@ class TableHead extends React.Component {
                 column.customHeadRender({ index, ...column }, this.handleToggleColumn)
               ) : (
                 <TableHeadCell
+                  cellHeaderProps={columns[index].setCellHeaderProps ? columns[index].setCellHeaderProps({ index, ...column }) : {}}
                   key={index}
                   index={index}
                   type={'cell'}

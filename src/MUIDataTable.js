@@ -128,6 +128,8 @@ class MUIDataTable extends React.Component {
               }),
             ]),
             customFilterListRender: PropTypes.func,
+            setCellProps: PropTypes.func,
+            setCellHeaderProps: PropTypes.func,
           }),
         }),
       ]),
@@ -193,6 +195,7 @@ class MUIDataTable extends React.Component {
       }),
       onDownload: PropTypes.func,
       setTableProps: PropTypes.func,
+      setRowProps: PropTypes.func,
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
@@ -1336,6 +1339,10 @@ class MUIDataTable extends React.Component {
         break;
     }
 
+    let tableProps = this.options.setTableProps ? this.options.setTableProps() : {};
+    let tableClassNames = classnames(classes.tableRoot, tableProps.className);
+    delete tableProps.className; // remove className from props to avoid the className being applied twice
+
     return (
       <Paper
         elevation={this.options.elevation}
@@ -1397,7 +1404,12 @@ class MUIDataTable extends React.Component {
               setResizeable={fn => (this.setHeadResizeable = fn)}
             />
           )}
-          <MuiTable ref={el => (this.tableRef = el)} tabIndex={'0'} role={'grid'} {...this.getTableProps()}>
+          <MuiTable
+            ref={el => (this.tableRef = el)}
+            tabIndex={'0'}
+            role={'grid'}
+            className={tableClassNames}
+            {...tableProps}>
             <caption className={classes.caption}>{title}</caption>
             <TableHead
               columns={columns}

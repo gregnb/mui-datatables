@@ -195,8 +195,8 @@ The component accepts the following props:
 |**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
 |**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
 |**`onTableInit`**|function||Callback function that triggers when table state has been initialized. `function(action: string, tableState: object) => void`
-|**`setRowProps`**|function||Is called for each row and allows to return custom props for this row based on its data. `function(row: array, dataIndex: number) => object`
-|**`setTableProps`**|function||Is called to set properties to be applied to the material-ui table component. `function() => object`
+|**`setRowProps`**|function||Is called for each row and allows you to return custom props for this row based on its data. `function(row: array, dataIndex: number) => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
+|**`setTableProps`**|function||Is called for the table and allows you to return custom props for the table based on its data. `function() => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
 
 ## Customize Columns
 
@@ -243,7 +243,8 @@ const columns = [
 |**`hint`**|string||Display hint icon with string as tooltip on hover.
 |**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(columnMeta, handleToggleColumn) => string`&#124;` React Component`
 |**`customBodyRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
-|**`setCellProps`**|function||Is called for each cell and allows to return custom props for this cell based on its data. `function(cellValue: string, rowIndex: number, columnIndex: number) => object`
+|**`setCellProps`**|function||Is called for each cell and allows to you return custom props for this cell based on its data. `function(cellValue: string, rowIndex: number, columnIndex: number) => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
+|**`setCellHeaderProps`**|function||Is called for each header cell and allows you to return custom props for the header cell based on its data. `function(columnMeta: object) => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
 
 `customHeadRender` is called with these arguments:
 
