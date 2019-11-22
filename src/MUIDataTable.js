@@ -38,6 +38,8 @@ const defaultTableStyles = theme => ({
     maxHeight: '499px',
   },
   responsiveScrollFullHeight: {
+    overflowX: 'auto',
+    overflow: 'auto',
     height: '100%',
     maxHeight: 'none',
   },

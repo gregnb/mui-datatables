@@ -8,7 +8,9 @@ import { withStyles } from '@material-ui/core/styles';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 
 const defaultSelectCellStyles = theme => ({
-  root: {},
+  root: {
+    backgroundColor: theme.palette.background.paper,
+  },
   fixedHeader: {
     position: 'sticky',
     top: '0px',
