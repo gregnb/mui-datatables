@@ -16,6 +16,17 @@ const defaultHeadCellStyles = theme => ({
     zIndex: 100,
     backgroundColor: theme.palette.background.paper,
   },
+  fixedHeaderCommon: {
+    position: 'sticky',
+    zIndex: 100,
+    backgroundColor: theme.palette.background.paper,
+  },
+  fixedHeaderXAxis: {
+    left: '0px',
+  },
+  fixedHeaderYAxis: {
+    top: '0px',
+  },
   tooltip: {
     cursor: 'pointer',
   },
@@ -97,6 +108,7 @@ class TableHeadCell extends React.Component {
 
     const sortActive = sortDirection !== 'none' && sortDirection !== undefined ? true : false;
     const ariaSortDirection = sortDirection === 'none' ? false : sortDirection;
+    let fixedHeaderClasses;
 
     const sortLabelProps = {
       classes: { root: classes.sortLabelRoot },
@@ -105,14 +117,21 @@ class TableHeadCell extends React.Component {
       ...(ariaSortDirection ? { direction: sortDirection } : {}),
     };
 
-    const cellClass = classNames(
-      {
-        [classes.root]: true,
-        [classes.fixedHeader]: options.fixedHeader,
-        'datatables-noprint': !print,
-      },
-      className,
-    );
+    // DEPRECATED, make sure to replace defaults with new options when removing
+    if (options.fixedHeader) fixedHeaderClasses = classes.fixedHeader;
+
+    if (options.fixedHeaderOptions) {
+      fixedHeaderClasses = classes.fixedHeaderCommon;
+      if (options.fixedHeaderOptions.xAxis) fixedHeaderClasses += ` ${classes.fixedHeaderXAxis}`;
+      if (options.fixedHeaderOptions.yAxis) fixedHeaderClasses += ` ${classes.fixedHeaderYAxis}`;
+    }
+
+    const cellClass = classNames({
+      [classes.root]: true,
+      [fixedHeaderClasses]: true,
+      'datatables-noprint': !print,
+      [className]: className,
+    });
 
     return (
       <TableCell className={cellClass} scope={'col'} sortDirection={ariaSortDirection} {...otherProps}>
