@@ -78,10 +78,7 @@ describe('utils.js', () => {
     ];
 
     it('properly builds a csv when given a non-empty dataset', () => {
-      const data = [
-        { data: ['anton', 'abraham'] },
-        { data: ['berta', 'buchel'] }
-      ];
+      const data = [{ data: ['anton', 'abraham'] }, { data: ['berta', 'buchel'] }];
       const csv = buildCSV(columns, data, options);
 
       assert.strictEqual(csv, '"firstname";"lastname"\r\n' + '"anton";"abraham"\r\n' + '"berta";"buchel"');
@@ -106,17 +103,14 @@ describe('utils.js', () => {
         download: true,
       },
     ];
-    const data = [
-      { data: ['anton', 'abraham'] },
-      { data: ['berta', 'buchel'] }
-    ];
+    const data = [{ data: ['anton', 'abraham'] }, { data: ['berta', 'buchel'] }];
 
-    it("does not call download function if download callback returns `false`", () => {
+    it('does not call download function if download callback returns `false`', () => {
       const options = {
         downloadOptions: {
-          separator: ";"
+          separator: ';',
         },
-        onDownload: () => false
+        onDownload: () => false,
       };
       const downloadCSV = spy();
 
@@ -125,12 +119,12 @@ describe('utils.js', () => {
       assert.strictEqual(downloadCSV.callCount, 0);
     });
 
-    it("calls download function if download callback returns truthy", () => {
+    it('calls download function if download callback returns truthy', () => {
       const options = {
         downloadOptions: {
-          separator: ";"
+          separator: ';',
         },
-        onDownload: () => true
+        onDownload: () => true,
       };
       const downloadCSV = spy();
 

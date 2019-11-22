@@ -1147,7 +1147,7 @@ class MUIDataTable extends React.Component {
             const selected = isRowSelectable ? isRowSelectable(displayData[i].dataIndex, prevSelectedRows) : true;
             selected && arr.push({ index: i, dataIndex: displayData[i].dataIndex });
             return arr;
-           }, []);
+          }, []);
 
           let newRows = [...prevState.selectedRows, ...selectedRows];
           let selectedMap = buildMap(newRows);
@@ -1155,15 +1155,15 @@ class MUIDataTable extends React.Component {
           // if the select toolbar is disabled, the rules are a little different
           if (this.options.disableToolbarSelect === true) {
             if (selectedRowsLen > displayData.length) {
-               isDeselect = true;
-             } else {
+              isDeselect = true;
+            } else {
               for (let ii = 0; ii < displayData.length; ii++) {
                 if (!selectedMap[displayData[ii].dataIndex]) {
-                   isDeselect = true;
-                 }
-               }
-             }
-           }
+                  isDeselect = true;
+                }
+              }
+            }
+          }
 
           if (isDeselect) {
             newRows = prevState.selectedRows.data.filter(({ dataIndex }) => !selectedMap[dataIndex]);
@@ -1348,7 +1348,7 @@ class MUIDataTable extends React.Component {
         elevation={this.options.elevation}
         ref={this.tableContent}
         className={classnames(classes.paper, className)}>
-        {(selectedRows.data.length && this.options.disableToolbarSelect !== true) ? (
+        {selectedRows.data.length && this.options.disableToolbarSelect !== true ? (
           <TableToolbarSelect
             options={this.options}
             selectedRows={selectedRows}

@@ -844,7 +844,7 @@ describe('<MUIDataTable />', function() {
   it('should have the proper type in onFilterChange when calling resetFilters method', () => {
     let type;
     const options = {
-      onFilterChange: (changedColumn, filterList, changeType) => (type = changeType)
+      onFilterChange: (changedColumn, filterList, changeType) => (type = changeType),
     };
 
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);

@@ -43,14 +43,14 @@ class TableHead extends React.Component {
       if (isChecked) {
         for (let ii = 0; ii < data.length; ii++) {
           if (!selectedRows.lookup[data[ii].dataIndex]) {
-             isChecked = false;
-             isIndeterminate = true;
+            isChecked = false;
+            isIndeterminate = true;
             break;
           }
         }
       } else {
         if (numSelected > count) {
-           isIndeterminate = true;
+          isIndeterminate = true;
         }
       }
     }
@@ -78,7 +78,9 @@ class TableHead extends React.Component {
                 column.customHeadRender({ index, ...column }, this.handleToggleColumn)
               ) : (
                 <TableHeadCell
-                  cellHeaderProps={columns[index].setCellHeaderProps ? columns[index].setCellHeaderProps({ index, ...column }) : {}}
+                  cellHeaderProps={
+                    columns[index].setCellHeaderProps ? columns[index].setCellHeaderProps({ index, ...column }) : {}
+                  }
                   key={index}
                   index={index}
                   type={'cell'}

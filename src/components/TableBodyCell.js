@@ -17,7 +17,7 @@ const defaultBodyCellStyles = theme => ({
       boxSizing: 'border-box',
       height: '32px',
       '&:nth-last-child(2)': {
-        borderBottom: 'none'
+        borderBottom: 'none',
       },
     },
   },
@@ -30,7 +30,7 @@ const defaultBodyCellStyles = theme => ({
       boxSizing: 'border-box',
       height: '32px',
       '&:last-child': {
-        borderBottom: 'none'
+        borderBottom: 'none',
       },
     },
   },

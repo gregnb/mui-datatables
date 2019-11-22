@@ -25,7 +25,13 @@ describe('<TableHeadCell />', function() {
     const toggleExpandRow = () => {};
 
     const mountWrapper = mount(
-      <TableHeadCell cellHeaderProps={setCellHeaderProps} options={options} sortDirection={'asc'} sort={true} toggleSort={toggleSort} classes={classes}>
+      <TableHeadCell
+        cellHeaderProps={setCellHeaderProps}
+        options={options}
+        sortDirection={'asc'}
+        sort={true}
+        toggleSort={toggleSort}
+        classes={classes}>
         some content
       </TableHeadCell>,
     );
