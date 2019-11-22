@@ -40,6 +40,7 @@ const defaultSelectCellStyles = theme => ({
     zIndex: 110,
     backgroundColor: theme.palette.background.paper,
   },
+  expandDisabled: {},
   checkboxRoot: {},
   checked: {},
   disabled: {},
@@ -62,6 +63,8 @@ class TableSelectCell extends React.Component {
     classes: PropTypes.object,
     /** Is expandable option enabled */
     expandableOn: PropTypes.bool,
+    /** Adds extra class, `expandDisabled` when the row is not expandable. */
+    hideExpandButton: PropTypes.bool,
     /** Is selectable option enabled */
     selectableOn: PropTypes.string,
     /** Select cell disabled on/off */
@@ -86,6 +89,7 @@ class TableSelectCell extends React.Component {
       onExpand,
       isRowSelectable,
       selectableRowsHeader,
+      hideExpandButton,
       ...otherProps
     } = this.props;
     let fixedHeaderClasses;
@@ -105,6 +109,10 @@ class TableSelectCell extends React.Component {
       [classes.root]: true,
       [fixedHeaderClasses]: true,
       [classes.headerCell]: isHeaderCell,
+    });
+
+    const buttonClass = classNames({
+      [classes.expandDisabled]: hideExpandButton,
     });
 
     const iconClass = classNames({
@@ -136,7 +144,7 @@ class TableSelectCell extends React.Component {
       <TableCell className={cellClass} padding="checkbox">
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {expandableOn && (
-            <IconButton onClick={onExpand} disabled={isHeaderCell}>
+            <IconButton onClick={onExpand} disabled={isHeaderCell} className={buttonClass}>
               <KeyboardArrowRight id="expandable-button" className={iconClass} />
             </IconButton>
           )}
