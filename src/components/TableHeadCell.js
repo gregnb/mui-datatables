@@ -130,6 +130,7 @@ class TableHeadCell extends React.Component {
       [classes.root]: true,
       [fixedHeaderClasses]: true,
       'datatables-noprint': !print,
+      [className]: className,
     });
 
     return (
