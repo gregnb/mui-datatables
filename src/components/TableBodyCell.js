@@ -12,18 +12,26 @@ const defaultBodyCellStyles = theme => ({
     [theme.breakpoints.down('sm')]: {
       display: 'inline-block',
       fontSize: '16px',
-      height: '24px',
-      width: 'calc(50% - 80px)',
+      width: '50%',
       whiteSpace: 'nowrap',
+      boxSizing: 'border-box',
+      height: '32px',
+      '&:nth-last-child(2)': {
+        borderBottom: 'none',
+      },
     },
   },
   responsiveStacked: {
     [theme.breakpoints.down('sm')]: {
       display: 'inline-block',
       fontSize: '16px',
-      width: 'calc(50% - 80px)',
+      width: '50%',
       whiteSpace: 'nowrap',
-      height: '24px',
+      boxSizing: 'border-box',
+      height: '32px',
+      '&:last-child': {
+        borderBottom: 'none',
+      },
     },
   },
 });

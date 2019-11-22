@@ -1,5 +1,5 @@
 import React from 'react';
-import { spy } from 'sinon';
+import { spy, stub } from 'sinon';
 import { mount, shallow } from 'enzyme';
 import { assert, expect } from 'chai';
 import cloneDeep from 'lodash.clonedeep';
@@ -7,6 +7,7 @@ import MUIDataTable from '../src/MUIDataTable';
 import TableFilterList from '../src/components/TableFilterList';
 import TablePagination from '../src/components/TablePagination';
 import TableToolbar from '../src/components/TableToolbar';
+import TableToolbarSelect from '../src/components/TableToolbarSelect';
 import textLabels from '../src/textLabels';
 import Chip from '@material-ui/core/Chip';
 import Cities from '../examples/component/cities';
@@ -28,7 +29,14 @@ describe('<MUIDataTable />', function() {
 
   before(() => {
     columns = [
-      { name: 'Name', options: { customBodyRender: renderName, customFilterListRender: renderCustomFilterList } },
+      {
+        name: 'Name',
+        options: {
+          customBodyRender: renderName,
+          customFilterListRender: renderCustomFilterList, // DEPRECATED
+          customFilterListOptions: { render: renderCustomFilterList },
+        },
+      },
       'Company',
       { name: 'City', label: 'City Label', options: { customBodyRender: renderCities, filterType: 'textField' } },
       {
@@ -101,7 +109,8 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         sortDirection: 'none',
         viewColumns: true,
-        customFilterListRender: renderCustomFilterList,
+        customFilterListRender: renderCustomFilterList, // DEPRECATED
+        customFilterListOptions: { render: renderCustomFilterList },
         customBodyRender: renderName,
       },
       {
@@ -178,7 +187,8 @@ describe('<MUIDataTable />', function() {
             filter: false,
             display: 'excluded',
             customBodyRender: renderName,
-            customFilterListRender: renderCustomFilterList,
+            customFilterListRender: renderCustomFilterList, // DEPRECATED
+            customFilterListOptions: { render: renderCustomFilterList },
           },
         },
         'Company',
@@ -206,7 +216,8 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         sortDirection: 'none',
         viewColumns: true,
-        customFilterListRender: renderCustomFilterList,
+        customFilterListRender: renderCustomFilterList, // DEPRECATED
+        customFilterListOptions: { render: renderCustomFilterList },
         customBodyRender: renderName,
       },
       {
@@ -281,7 +292,14 @@ describe('<MUIDataTable />', function() {
 
   it('should correctly build internal table data and displayData structure when using nested data', () => {
     const columns = [
-      { name: 'Name', options: { customBodyRender: renderName, customFilterListRender: renderCustomFilterList } },
+      {
+        name: 'Name',
+        options: {
+          customBodyRender: renderName,
+          customFilterListRender: renderCustomFilterList, // DEPRECATED
+          customFilterListOptions: { render: renderCustomFilterList },
+        },
+      },
       'Company',
       { name: 'Location.City', label: 'City Label' },
       { name: 'Location.State' },
@@ -453,6 +471,22 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(initializeTableSpy.callCount, 1);
   });
 
+  it('should add custom props to table if setTableProps provided', () => {
+    const options = { setTableProps: stub().returns({ myProp: 'test', className: 'testClass' }) };
+    const fullWrapper = mount(<MUIDataTable columns={columns} data={[]} options={options} />);
+    const props = fullWrapper
+      .find('table')
+      .first()
+      .props();
+
+    const classNames = props.className.split(' ');
+    const finalClass = classNames[classNames.length - 1];
+
+    assert.strictEqual(props.myProp, 'test');
+    assert.strictEqual(finalClass, 'testClass');
+    assert.isAtLeast(options.setTableProps.callCount, 1);
+  });
+
   it('should correctly build internal filterList structure', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const state = shallowWrapper.dive().state();
@@ -540,6 +574,18 @@ describe('<MUIDataTable />', function() {
     assert.lengthOf(actualResult, 0);
   });
 
+  it('should not render select toolbar when disableToolbarSelect=true', () => {
+    const options = { disableToolbarSelect: true };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    // Simulate a selection
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 });
+
+    const actualResult = shallowWrapper.find(TableToolbarSelect);
+    assert.lengthOf(actualResult, 0);
+  });
+
   it('should properly set internal filterList when calling filterUpdate method with type=checkbox', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const table = shallowWrapper.dive();
@@ -617,7 +663,7 @@ describe('<MUIDataTable />', function() {
     assert.strictEqual(actualResult.length, 1);
   });
 
-  it('should create Chip with custom label when filterList and customFilterListRender are populated', () => {
+  it('DEPRECATED: should create Chip with custom label when filterList and customFilterListRender are populated', () => {
     const filterList = [['Joe James'], [], [], [], []];
     const filterListRenderers = columns.map(c => {
       return c.options && c.options.customFilterListRender
@@ -638,6 +684,41 @@ describe('<MUIDataTable />', function() {
     const actualResult = mountWrapper.find(Chip);
     assert.strictEqual(actualResult.length, 1);
     assert.strictEqual(actualResult.prop('label'), 'Name: Joe James');
+  });
+
+  it('should create Chip with custom label when filterList and customFilterListOptions are populated', () => {
+    const filterList = [['Joe James'], [], [], [], []];
+    const filterListRenderers = columns.map(c => {
+      return c.options && c.options.customFilterListOptions && c.options.customFilterListOptions.render
+        ? c.options.customFilterListOptions.render
+        : defaultRenderCustomFilterList;
+    });
+    const columnNames = columns.map(column => ({ name: column.name }));
+
+    const mountWrapper = mount(
+      <TableFilterList
+        options={{ serverSide: false }}
+        filterList={filterList}
+        filterListRenderers={filterListRenderers}
+        filterUpdate={() => true}
+        columnNames={columnNames}
+      />,
+    );
+    const actualResult = mountWrapper.find(Chip);
+    assert.strictEqual(actualResult.length, 1);
+    assert.strictEqual(actualResult.prop('label'), 'Name: Joe James');
+  });
+
+  it('should call custom filter update function when it is passed into custom filter update', () => {
+    const customFilterListUpdate = spy(() => [[], [], [], [], []]);
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+
+    instance.filterUpdate(0, ['Joe James'], 'Name', 'custom', customFilterListUpdate);
+    table.update();
+
+    assert.deepEqual(customFilterListUpdate.callCount, 1);
   });
 
   it('should render filter Chip(s) when options.serverSide = true and serverSideFilterList is populated', () => {
@@ -758,6 +839,21 @@ describe('<MUIDataTable />', function() {
     instance.resetFilters();
     table.update();
     assert.strictEqual(changedColumn, null);
+  });
+
+  it('should have the proper type in onFilterChange when calling resetFilters method', () => {
+    let type;
+    const options = {
+      onFilterChange: (changedColumn, filterList, changeType) => (type = changeType),
+    };
+
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+    const table = shallowWrapper.dive();
+    const instance = table.instance();
+
+    instance.resetFilters();
+    table.update();
+    assert.strictEqual(type, 'reset');
   });
 
   it('should properly set searchText when calling searchTextUpdate method', () => {
@@ -932,7 +1028,8 @@ describe('<MUIDataTable />', function() {
         sortDirection: 'none',
         customBodyRender: renderName,
         viewColumns: true,
-        customFilterListRender: renderCustomFilterList,
+        customFilterListRender: renderCustomFilterList, // DEPRECATED
+        customFilterListOptions: { render: renderCustomFilterList },
       },
       {
         name: 'Company',
@@ -1397,6 +1494,24 @@ describe('<MUIDataTable />', function() {
     const state = table.state();
 
     assert.equal(state.displayData.length, data.length);
+  });
+
+  it('should correctly build internal tableProps when setTableProps passed in options', () => {
+    const options = {
+      setTableProps: () => ({
+        className: 'foo bar',
+        title: 'baz',
+      }),
+    };
+
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
+    const instance = shallowWrapper.dive().instance();
+    const expectedProps = {
+      className: `${instance.props.classes.tableRoot} foo bar`,
+      title: 'baz',
+    };
+
+    assert.deepEqual(instance.getTableProps(), expectedProps);
   });
 
   describe('should displayData consider filterOptions with logic', () => {

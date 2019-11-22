@@ -91,7 +91,10 @@ class TableHeadCell extends React.Component {
 
   render() {
     const { isSortTooltipOpen, isHintTooltipOpen } = this.state;
-    const { children, classes, options, sortDirection, sort, hint, print, column } = this.props;
+
+    const { children, classes, options, sortDirection, sort, hint, print, column, cellHeaderProps = {} } = this.props;
+    const { className, ...otherProps } = cellHeaderProps;
+
     const sortActive = sortDirection !== 'none' && sortDirection !== undefined ? true : false;
     const ariaSortDirection = sortDirection === 'none' ? false : sortDirection;
 
@@ -102,14 +105,17 @@ class TableHeadCell extends React.Component {
       ...(ariaSortDirection ? { direction: sortDirection } : {}),
     };
 
-    const cellClass = classNames({
-      [classes.root]: true,
-      [classes.fixedHeader]: options.fixedHeader,
-      'datatables-noprint': !print,
-    });
+    const cellClass = classNames(
+      {
+        [classes.root]: true,
+        [classes.fixedHeader]: options.fixedHeader,
+        'datatables-noprint': !print,
+      },
+      className,
+    );
 
     return (
-      <TableCell className={cellClass} scope={'col'} sortDirection={ariaSortDirection}>
+      <TableCell className={cellClass} scope={'col'} sortDirection={ariaSortDirection} {...otherProps}>
         {options.sort && sort ? (
           <Tooltip
             title={
@@ -167,7 +173,7 @@ class TableHeadCell extends React.Component {
             </span>
           </Tooltip>
         ) : (
-          <div className={classes.sortAction}>
+          <div className={hint ? classes.sortAction : null}>
             {children}
             {hint && (
               <Tooltip

@@ -1,11 +1,14 @@
 import React from "react";
 import MUIDataTable from "../../src/";
 import {createMuiTheme, MuiThemeProvider, withStyles} from '@material-ui/core/styles';
+import Switch from '@material-ui/core/Switch';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import classnames from 'classnames';
 
 const customStyles = {
   BusinessAnalystRow: {
-    '& td': {backgroundColor: "#F00"}
+    '& td': {backgroundColor: "#FAA"}
   },
   NameCell: {
     fontWeight: 900
@@ -14,11 +17,19 @@ const customStyles = {
 
 class Example extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      denseTable: false,
+      stacked: true
+    };
+  }
+
   getMuiTheme = () => createMuiTheme({
     overrides: {
       MUIDataTable: {
         root: {
-          backgroundColor: "#FF000",
+          backgroundColor: "#AAF",
         },
         paper: {
           boxShadow: "none",
@@ -31,6 +42,18 @@ class Example extends React.Component {
       }
     }
   });
+
+  toggleDenseTable = (event) => {
+    this.setState({
+      denseTable: event.target.checked
+    });
+  }
+
+  toggleResponsive = (event) => {
+    this.setState({
+      stacked: event.target.checked ? true : false
+    });
+  }
 
   render() {
     const columns = [
@@ -45,6 +68,17 @@ class Example extends React.Component {
                   [this.props.classes.NameCell]: value === "Mel Brooks"
                 })
             };
+          },
+          setCellHeaderProps: (value) => {
+            return {
+              className: classnames(
+                {
+                  [this.props.classes.NameCell]: true
+                }),
+                style: {
+                  textDecoration: 'underline'
+                }
+            };
           }
         }
       },
@@ -52,6 +86,7 @@ class Example extends React.Component {
         name: "Title",
         options: {
           filter: true,
+          setCellHeaderProps: (value) => ({style:{textDecoration:'underline'}}),
         }
       },
       {
@@ -111,7 +146,9 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: this.state.stacked ? 'stacked' : 'scrollMaxHeight',
+      fixedHeader: true,
+      rowHover: false,
       setRowProps: (row) => {
         return {
           className: classnames(
@@ -120,12 +157,44 @@ class Example extends React.Component {
             }),
           style: {border: '3px solid blue',}
         };
+      },
+      setTableProps: () => {
+        return {
+          padding: this.state.denseTable ? "none" : "default",
+          
+          // material ui v4 only
+          size: this.state.denseTable ? "small" : "medium",
+        };
       }
 
     };
 
     return (
       <MuiThemeProvider theme={this.getMuiTheme()}>
+        <FormGroup row>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={this.state.denseTable}
+                onChange={this.toggleDenseTable}
+                value="denseTable"
+                color="primary"
+              />
+            }
+            label="Dense Table"
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={this.state.stacked}
+                onChange={this.toggleResponsive}
+                value="stacked"
+                color="primary"
+              />
+            }
+            label="Stacked Table"
+          />
+        </FormGroup>
         <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options}/>
       </MuiThemeProvider>
     );
