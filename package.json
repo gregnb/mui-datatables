@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server -d --progress --colors",
-    "test": "mocha --require @babel/register test/**/*.test.js",
+    "test": "cross-env NODE_ENV=test mocha --require @babel/register test/**/*.test.js",
     "docs:dev": "next docs",
     "docs:build": "cross-env NODE_ENV=production next build docs",
     "docs:export": "next export docs -o docs/export",

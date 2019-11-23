@@ -2,7 +2,6 @@ import React from 'react';
 import { match, spy, stub } from 'sinon';
 import { mount, shallow } from 'enzyme';
 import { assert, expect, should } from 'chai';
-import DeleteIcon from '@material-ui/icons/Delete';
 import TableToolbarSelect from '../src/components/TableToolbarSelect';
 import getTextLabels from '../src/textLabels';
 
@@ -19,7 +18,7 @@ describe('<TableToolbarSelect />', function() {
       />,
     );
 
-    const actualResult = mountWrapper.find(DeleteIcon);
+    const actualResult = mountWrapper.find('svg[data-icon="DeleteIcon"]');
     assert.strictEqual(actualResult.length, 1);
   });
 
