@@ -1116,7 +1116,7 @@ describe('<MUIDataTable />', function() {
 
   it('should recalculate page when calling changeRowsPerPage method', () => {
     const mountWrapper = mount(
-      shallow(<MUIDataTable columns={columns} data={data} options={{ rowsPerPage: 2 }} />).get(0),
+      shallow(<MUIDataTable columns={columns} data={data} options={{ rowsPerPageOptions: [2], rowsPerPage: 2 }} />).get(0),
     );
     const instance = mountWrapper.instance();
 
