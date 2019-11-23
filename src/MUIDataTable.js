@@ -1161,7 +1161,7 @@ class MUIDataTable extends React.Component {
             return arr;
           }, []);
 
-          let newRows = [...prevState.selectedRows, ...selectedRows];
+          let newRows = [...selectedRows];
           let selectedMap = buildMap(newRows);
 
           // if the select toolbar is disabled, the rules are a little different
