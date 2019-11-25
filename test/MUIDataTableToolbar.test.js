@@ -305,6 +305,26 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(state.iconActive, 'filter');
   });
 
+  it('should render search icon as active if option.searchOpen = true', () => {
+    const newOptions = { ...options, search: true, searchOpen: true };
+    const shallowWrapper = shallow(
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    ).dive();
+    const actualResult = shallowWrapper.find('[data-testid="Search-iconButton"]');
+    assert.strictEqual(actualResult.prop('classes').root.indexOf('MUIDataTableToolbar-iconActive-'), 0);
+
+  });
+
+  it('should render search icon as active if option.searchText = some_text', () => {
+    const newOptions = { ...options, search: true, searchText: 'searchText' };
+    const shallowWrapper = shallow(
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    ).dive();
+    const actualResult = shallowWrapper.find('[data-testid="Search-iconButton"]');
+    assert.strictEqual(actualResult.prop('classes').root.indexOf('MUIDataTableToolbar-iconActive-'), 0);
+
+  });
+
   it('should download CSV when calling method handleCSVDownload', () => {
     const shallowWrapper = shallow(
       <TableToolbar
