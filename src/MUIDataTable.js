@@ -315,7 +315,7 @@ class MUIDataTable extends React.Component {
     filter: true,
     fixedHeaderOptions: {
       xAxis: true,
-      yAxis: true
+      yAxis: true,
     },
     sortFilterList: true,
     sort: true,
