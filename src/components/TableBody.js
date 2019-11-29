@@ -238,8 +238,12 @@ class TableBody extends React.Component {
                       dataIndex: dataIndex,
                     })}
                     fixedHeader={options.fixedHeader}
+                    fixedHeaderOptions={options.fixedHeaderOptions}
                     checked={this.isRowSelected(dataIndex)}
                     expandableOn={options.expandableRows}
+                    // When rows are expandable, but this particular row isn't expandable, set this to true.
+                    // This will add a new class to the toggle button, MUIDataTableSelectCell-expandDisabled.
+                    hideExpandButton={!this.isRowExpandable(dataIndex) && options.expandableRows}
                     selectableOn={options.selectableRows}
                     isRowExpanded={this.isRowExpanded(dataIndex)}
                     isRowSelectable={this.isRowSelectable(dataIndex)}
