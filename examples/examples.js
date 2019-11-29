@@ -30,6 +30,7 @@ import Simple from './simple';
 import SimpleNoToolbar from './simple-no-toolbar';
 import TextLocalization from './text-localization';
 import Themes from './themes';
+import LargeDataSet from './large-data-set';
 
 /**
  * Here you can add any extra examples with the Card label as the key, and the component to render as the value
@@ -55,6 +56,7 @@ export default {
   'Expandable Rows': ExpandableRows,
   'Fixed Header': FixedHeader,
   'Hide Columns Print': HideColumnsPrint,
+  'Large Data Set': LargeDataSet,
   OnDownload: OnDownload,
   OnTableInit: OnTableInit,
   'Resizable Columns': ResizableColumns,
