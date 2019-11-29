@@ -8,23 +8,18 @@ import { withStyles } from '@material-ui/core/styles';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 
 const defaultSelectCellStyles = theme => ({
-  root: {},
+  root: {
+    backgroundColor: theme.palette.background.paper,
+  },
   fixedHeader: {
     position: 'sticky',
     top: '0px',
-    left: '0px',
     zIndex: 100,
   },
-  fixedHeaderCommon: {
+  fixedLeft: {
     position: 'sticky',
-    zIndex: 100,
-    backgroundColor: theme.palette.background.paper,
-  },
-  fixedHeaderXAxis: {
     left: '0px',
-  },
-  fixedHeaderYAxis: {
-    top: '0px',
+    zIndex: 100,
   },
   icon: {
     cursor: 'pointer',
@@ -52,11 +47,6 @@ class TableSelectCell extends React.Component {
     checked: PropTypes.bool.isRequired,
     /** Select cell part of fixed header */
     fixedHeader: PropTypes.bool,
-    /** Select cell part of fixed header */
-    fixedHeaderOptions: PropTypes.shape({
-      xAxis: PropTypes.bool,
-      yAxis: PropTypes.bool,
-    }),
     /** Callback to trigger cell update */
     onChange: PropTypes.func,
     /** Extend the style applied to components */
@@ -81,7 +71,7 @@ class TableSelectCell extends React.Component {
     const {
       classes,
       fixedHeader,
-      fixedHeaderOptions,
+      fixedSelectColumn,
       isHeaderCell,
       expandableOn,
       selectableOn,
@@ -96,18 +86,10 @@ class TableSelectCell extends React.Component {
 
     if (!expandableOn && selectableOn === 'none') return false;
 
-    // DEPRECATED, make sure to replace defaults with new options when removing
-    if (fixedHeader) fixedHeaderClasses = classes.fixedHeader;
-
-    if (fixedHeaderOptions) {
-      fixedHeaderClasses = classes.fixedHeaderCommon;
-      if (fixedHeaderOptions.xAxis) fixedHeaderClasses += ` ${classes.fixedHeaderXAxis}`;
-      if (fixedHeaderOptions.yAxis) fixedHeaderClasses += ` ${classes.fixedHeaderYAxis}`;
-    }
-
     const cellClass = classNames({
       [classes.root]: true,
-      [fixedHeaderClasses]: true,
+      [classes.fixedHeader]: fixedHeader && isHeaderCell,
+      [classes.fixedLeft]: fixedSelectColumn,
       [classes.headerCell]: isHeaderCell,
     });
 

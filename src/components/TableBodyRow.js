@@ -5,8 +5,29 @@ import TableRow from '@material-ui/core/TableRow';
 import { withStyles } from '@material-ui/core/styles';
 
 const defaultBodyRowStyles = theme => ({
-  root: {},
-  hover: {},
+  root: {
+    
+    // material v4
+    '&.Mui-selected': {
+      '& td': {
+        backgroundColor: theme.palette.type === 'dark' ? theme.palette.grey[700] :theme.palette.grey[200],
+      }        
+    },
+
+    // material v3 workaround
+    '&.mui-row-selected': {
+      '& td': {
+        backgroundColor: theme.palette.type === 'dark' ? theme.palette.grey[700] :theme.palette.grey[200],
+      }        
+    },
+  },
+  hover: {
+    '&:hover': {
+      '& td': {
+        backgroundColor: theme.palette.type === 'dark' ? theme.palette.grey[700] :theme.palette.grey[200],
+      }
+    }
+  },
   hoverCursor: { cursor: 'pointer' },
   responsiveStacked: {
     [theme.breakpoints.down('sm')]: {
@@ -40,6 +61,7 @@ class TableBodyRow extends React.Component {
             [classes.hover]: options.rowHover,
             [classes.hoverCursor]: options.selectableRowsOnClick || options.expandableRowsOnClick,
             [classes.responsiveStacked]: options.responsive === 'stacked',
+            'mui-row-selected': rowSelected
           },
           className,
         )}

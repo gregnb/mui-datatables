@@ -68,7 +68,7 @@ class TableHead extends React.Component {
             expandableOn={options.expandableRows}
             selectableOn={options.selectableRows}
             fixedHeader={options.fixedHeader}
-            fixedHeaderOptions={options.fixedHeaderOptions}
+            fixedSelectColumn={options.fixedSelectColumn}
             selectableRowsHeader={options.selectableRowsHeader}
             isRowSelectable={true}
           />

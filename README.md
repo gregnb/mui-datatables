@@ -165,8 +165,8 @@ The component accepts the following props:
 |**`rowsPerPage`**|number|10|Number of rows allowed per page
 |**`rowsPerPageOptions`**|array|[10,15,100]|Options to provide in pagination for number of rows a user can select
 |**`rowHover`**|boolean|true|Enable/disable hover style over rows
-|**`fixedHeader` DEPRECATED**|boolean|true|Enable/disable fixed header columns
-|**`fixedHeaderOptions`**|object|`{xAxis: true, yAxis: true}`|Enable/disable fixed header columns according to axis in any combination desired [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
+|**`fixedHeader`**|boolean|true|Enable/disable a fixed header for the table [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
+|**`fixedSelectColumn`**|boolean|true|Enable/disable fixed select column [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
 |**`sortFilterList`**|boolean|true|Enable/disable alphanumeric sorting of filter lists
 |**`sort`**|boolean|true|Enable/disable sort on all columns
 |**`filter`**|boolean|true|Show/hide filter icon from toolbar
