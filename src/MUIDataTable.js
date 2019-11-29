@@ -274,7 +274,6 @@ class MUIDataTable extends React.Component {
 
   updateOptions(options, props) {
     this.options = assignwith(options, props.options, (objValue, srcValue, key) => {
-
       // Merge any default options that are objects, as they will be overwritten otherwise
       if (key === 'textLabels' || key === 'downloadOptions') return merge(objValue, srcValue);
       return;
@@ -313,6 +312,10 @@ class MUIDataTable extends React.Component {
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 15, 100],
     filter: true,
+    fixedHeaderOptions: {
+      xAxis: true,
+      yAxis: true,
+    },
     sortFilterList: true,
     sort: true,
     search: true,
@@ -341,6 +344,7 @@ class MUIDataTable extends React.Component {
     if (this.options.responsive === 'scroll') {
       console.error('The "scroll" responsive option has been deprecated. It is being replaced by "scrollMaxHeight"');
     }
+
     if (this.options.fixedHeaderOptions) {
       console.error(
         'fixedHeaderOptions has been deprecated in favor of fixedHeader and fixedSelectColumn.',
