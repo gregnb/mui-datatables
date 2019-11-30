@@ -277,9 +277,6 @@ class MUIDataTable extends React.Component {
 
   updateOptions(options, props) {
     this.options = assignwith(options, props.options, (objValue, srcValue, key) => {
-      // If we have the new fixed header options, remove the deprecated one so we avoid unnecessary warnings
-      if (props.options.fixedHeaderOptions) delete options.fixedHeader;
-
       // Merge any default options that are objects, as they will be overwritten otherwise
       if (key === 'textLabels' || key === 'downloadOptions') return merge(objValue, srcValue);
       return;
@@ -312,11 +309,14 @@ class MUIDataTable extends React.Component {
     disableToolbarSelect: false,
     serverSide: false,
     rowHover: true,
-    fixedHeader: true,
     elevation: 4,
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 15, 100],
     filter: true,
+    fixedHeaderOptions: {
+      xAxis: true,
+      yAxis: true,
+    },
     sortFilterList: true,
     sort: true,
     search: true,
@@ -345,7 +345,7 @@ class MUIDataTable extends React.Component {
     if (this.options.responsive === 'scroll') {
       console.error('The "scroll" responsive option has been deprecated. It is being replaced by "scrollMaxHeight"');
     }
-    if (this.options.fixedHeader) {
+    if (this.options.fixedHeader === false || this.options.fixedHeader) {
       console.error(
         'fixedHeader has been deprecated in favor of fixedHeaderOptions: { xAxis: boolean, yAxis: boolean }. Once removed, the new options will be set by default to render like the old fixedHeader. However, if you are setting the fixedHeader value manually, it will no longer work in the next major version.',
       );
