@@ -30,7 +30,7 @@ class TableHead extends React.Component {
   };
 
   render() {
-    const { classes, columns, count, options, data, setCellRef, selectedRows } = this.props;
+    const { classes, columns, count, options, data, setCellRef, selectedRows, expandedRows } = this.props;
 
     const numSelected = (selectedRows && selectedRows.data.length) || 0;
     let isIndeterminate = numSelected > 0 && numSelected < count;
@@ -65,11 +65,14 @@ class TableHead extends React.Component {
             indeterminate={isIndeterminate}
             checked={isChecked}
             isHeaderCell={true}
+            expandedRows={expandedRows}
+            expandableRowsHeader={options.expandableRowsHeader}
             expandableOn={options.expandableRows}
             selectableOn={options.selectableRows}
             fixedHeader={options.fixedHeader}
             fixedHeaderOptions={options.fixedHeaderOptions}
             selectableRowsHeader={options.selectableRowsHeader}
+            onExpand={this.props.toggleAllExpandableRows}
             isRowSelectable={true}
           />
           {columns.map(

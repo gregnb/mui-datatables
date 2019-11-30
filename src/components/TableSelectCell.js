@@ -6,6 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import Remove from '@material-ui/icons/Remove';
 
 const defaultSelectCellStyles = theme => ({
   root: {},
@@ -90,6 +91,9 @@ class TableSelectCell extends React.Component {
       isRowSelectable,
       selectableRowsHeader,
       hideExpandButton,
+      expandableRowsHeader,
+      expandedRows,
+      areAllRowsExpanded = () => (false),
       ...otherProps
     } = this.props;
     let fixedHeaderClasses;
@@ -117,8 +121,12 @@ class TableSelectCell extends React.Component {
 
     const iconClass = classNames({
       [classes.icon]: true,
-      [classes.hide]: isHeaderCell,
-      [classes.expanded]: isRowExpanded,
+      [classes.hide]: isHeaderCell && !expandableRowsHeader,
+      [classes.expanded]: isRowExpanded || (isHeaderCell && areAllRowsExpanded()),
+    });
+    const iconIndeterminateClass = classNames({
+      [classes.icon]: true,
+      [classes.hide]: isHeaderCell && !expandableRowsHeader,
     });
 
     const renderCheckBox = () => {
@@ -144,9 +152,17 @@ class TableSelectCell extends React.Component {
       <TableCell className={cellClass} padding="checkbox">
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {expandableOn && (
-            <IconButton onClick={onExpand} disabled={isHeaderCell} className={buttonClass}>
-              <KeyboardArrowRight id="expandable-button" className={iconClass} />
-            </IconButton>
+            <React.Fragment>
+              {(isHeaderCell && !areAllRowsExpanded() && expandedRows && expandedRows.data.length > 0 ) ?
+                <IconButton onClick={onExpand} style={{padding:0}} disabled={expandableRowsHeader === false}>
+                  <Remove id="expandable-button" className={iconIndeterminateClass} />
+                </IconButton>
+                :
+                <IconButton onClick={onExpand} style={{padding:0}} disabled={expandableRowsHeader === false}>
+                  <KeyboardArrowRight id="expandable-button" className={iconClass} />
+                </IconButton>
+              }
+            </React.Fragment>
           )}
           {selectableOn !== 'none' && renderCheckBox()}
         </div>

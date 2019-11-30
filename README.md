@@ -148,6 +148,7 @@ The component accepts the following props:
 |**`isRowExpandable`**|function||Enable/disable expansion or collapse on certain expandable rows with custom function. Will be considered true if not provided. `function(dataIndex: number, expandedRows: object(lookup: {dataIndex: number}, data: arrayOfObjects: {index: number, dataIndex: number})) => boolean`.
 |**`selectableRowsHeader`**|boolean|true|Show/hide the select all/deselect all checkbox header for selectable rows
 |**`expandableRows`**|boolean|false|Enable/disable expandable rows
+|**`expandableRowsHeader`**|boolean|true|Show/hide the expand all/collapse all row header for expandable rows.
 |**`expandableRowsOnClick`**|boolean|false|Enable/disable expand trigger when row is clicked. When False, only expand icon will trigger this action.
 |**`renderExpandableRow`**|function||Render expandable row. `function(rowData, rowMeta) => React Component`
 |**`resizableColumns`**|boolean|false|Enable/disable resizable columns
