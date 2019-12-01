@@ -13,7 +13,7 @@
 MUI-Datatables is a data tables component built on [Material-UI](https://www.material-ui.com).  It comes with features like filtering, resizable + view/hide columns, search, export to CSV download, printing, selectable rows, expandable rows, pagination, and sorting. On top of the ability to customize styling on most views, there are three responsive modes "stacked", "scrollMaxHeight", and "scrollFullHeight" for mobile/tablet devices.
 
 <div align="center">
-	<img src="https://user-images.githubusercontent.com/19170080/38026128-eac9d506-3258-11e8-92a7-b0d06e5faa82.gif" />
+  <img src="https://user-images.githubusercontent.com/19170080/38026128-eac9d506-3258-11e8-92a7-b0d06e5faa82.gif" />
 </div>
 
 ## Install
@@ -136,6 +136,7 @@ The component accepts the following props:
 |**`count`**|number||User provided override for total number of rows
 |**`serverSide`**|boolean|false|Enable remote data source
 |**`serverSideFilterList`**|array|[]|Sets the filter list display when using serverSide: true
+|**`confirmFilters`**|boolean|false|Works in conjunction with the customFilterDialogFooter option and makes it so filters have to be confirmed before being applied to the table. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-filters---confirmfilters/index.js)
 |**`rowsSelected`**|array||User provided selected rows
 |**`rowsExpanded`**|array||User provided expanded rows
 |**`filterType`**|string||Choice of filtering view. `enum('checkbox', 'dropdown', 'multiselect', 'textField', 'custom')`
@@ -158,7 +159,7 @@ The component accepts the following props:
 |**`customSort`**|function||Override default sorting with custom function. `function(data: array, colIndex: number, order: string) => array`
 |**`customSearch `**|function||Override default search with custom function. `customSearch(searchQuery: string, currentRow: array, columns: array) => boolean`
 |**`customSearchRender `**|function||Render a custom table search. `customSearchRender(searchText: string, handleSearch, hideSearch, options) => React Component`
-|**`customFilterDialogFooter `**|function||Add a custom footer to the filter dialog. `customFilterDialogFooter(filterList: array) => React Component`
+|**`customFilterDialogFooter `**|function||Add a custom footer to the filter dialog. `customFilterDialogFooter(curentFilterList: array, applyFilters: function) => React Component`
 |**`elevation`**|number|4|Shadow depth applied to Paper component
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
 |**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: 'stacked', 'scrollMaxHeight' (limits height of table), 'scrollFullHeight' (table takes on as much height as needed to display all rows set in rowsPerPage)
@@ -174,7 +175,7 @@ The component accepts the following props:
 |**`searchOpen`**|boolean|false|Initially displays search bar  
 |**`searchText`**|string||Initial search text
 |**`searchPlaceholder`**|string||Search text placeholder. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-search/index.js)
-|**`print`**|boolean|true|Show/hide print	 icon from toolbar
+|**`print`**|boolean|true|Show/hide print  icon from toolbar
 |**`download`**|boolean|true|Show/hide download icon from toolbar
 |**`downloadOptions`**|object|`{filename: 'tableDownload.csv', separator: ','}`|Options to change the output of the CSV file: `filename`: string, `separator`: string, `filterOptions`: object(`useDisplayedColumnsOnly`: boolean, `useDisplayedRowsOnly`: boolean)
 |**`onDownload`**|function||A callback function that triggers when the user downloads the CSV file. In the callback, you can control what is written to the CSV file. `function(buildHead: (columns) => string, buildBody: (data) => string, columns, data) => string`. Return `false` to cancel download of file.

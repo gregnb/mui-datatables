@@ -221,6 +221,7 @@ class TableToolbar extends React.Component {
       toggleViewColumn,
       title,
       tableRef,
+      updateFilterByType,
     } = this.props;
 
     const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;
@@ -336,6 +337,7 @@ class TableToolbar extends React.Component {
                   filterData={filterData}
                   onFilterUpdate={filterUpdate}
                   onFilterReset={resetFilters}
+                  updateFilterByType={updateFilterByType}
                 />
               }
             />

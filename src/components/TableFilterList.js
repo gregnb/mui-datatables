@@ -99,7 +99,7 @@ class TableFilterList extends React.Component {
 
     return (
       <div className={classes.root}>
-        {serverSide
+        {serverSide && serverSideFilterList
           ? serverSideFilterList.map((item, index) => {
               const filterListRenderersValue = filterListRenderers[index](item);
 

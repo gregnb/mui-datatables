@@ -160,6 +160,7 @@ class MUIDataTable extends React.Component {
       isRowExpandable: PropTypes.func,
       selectableRowsHeader: PropTypes.bool,
       serverSide: PropTypes.bool,
+      confirmFilters: PropTypes.bool,
       onFilterChange: PropTypes.func,
       onFilterDialogOpen: PropTypes.func,
       onFilterDialogClose: PropTypes.func,
@@ -301,7 +302,7 @@ class MUIDataTable extends React.Component {
     filterType: 'dropdown',
     pagination: true,
     textLabels,
-    serverSideFilterList: [],
+    serverSideFilterList: null,
     expandableRows: false,
     expandableRowsOnClick: false,
     resizableColumns: false,
@@ -311,6 +312,7 @@ class MUIDataTable extends React.Component {
     caseSensitive: false,
     disableToolbarSelect: false,
     serverSide: false,
+    confirmFilters: false,
     rowHover: true,
     fixedHeader: true,
     elevation: 4,
@@ -1026,32 +1028,36 @@ class MUIDataTable extends React.Component {
     );
   };
 
-  filterUpdate = (index, value, column, type, customUpdate) => {
+  updateFilterByType = (filterList, index, value, type, customUpdate) => {
+    const filterPos = filterList[index].indexOf(value);
+
+    switch (type) {
+      case 'checkbox':
+        filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(value);
+        break;
+      case 'chip':
+        filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(value);
+        break;
+      case 'multiselect':
+        filterList[index] = value;
+        break;
+      case 'dropdown':
+        filterList[index] = value;
+        break;
+      case 'custom':
+        if (customUpdate) filterList = customUpdate(filterList, filterPos, index);
+        filterList[index] = value;
+        break;
+      default:
+        filterList[index] = filterPos >= 0 || value === '' ? [] : [value];
+    }
+  };
+
+  filterUpdate = (index, value, column, type, customUpdate, next) => {
     this.setState(
       prevState => {
-        let filterList = prevState.filterList.slice(0);
-        const filterPos = filterList[index].indexOf(value);
-
-        switch (type) {
-          case 'checkbox':
-            filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(value);
-            break;
-          case 'chip':
-            filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(value);
-            break;
-          case 'multiselect':
-            filterList[index] = value === '' ? [] : value;
-            break;
-          case 'dropdown':
-            filterList[index] = value;
-            break;
-          case 'custom':
-            if (customUpdate) filterList = customUpdate(filterList, filterPos, index);
-            else filterList[index] = value;
-            break;
-          default:
-            filterList[index] = filterPos >= 0 || value === '' ? [] : [value];
-        }
+        const filterList = cloneDeep(prevState.filterList);
+        this.updateFilterByType(filterList, index, value, type, customUpdate);
 
         return {
           page: 0,
@@ -1067,6 +1073,7 @@ class MUIDataTable extends React.Component {
         if (this.options.onFilterChange) {
           this.options.onFilterChange(column, this.state.filterList, type);
         }
+        next && next(this.state.filterList);
       },
     );
   };
@@ -1386,12 +1393,13 @@ class MUIDataTable extends React.Component {
               title={title}
               toggleViewColumn={this.toggleViewColumn}
               setTableAction={this.setTableAction}
+              updateFilterByType={this.updateFilterByType}
             />
           )
         )}
         <TableFilterList
           options={this.options}
-          serverSideFilterList={this.props.options.serverSideFilterList || []}
+          serverSideFilterList={this.props.options.serverSideFilterList}
           filterListRenderers={columns.map(c => {
             if (c.customFilterListOptions && c.customFilterListOptions.render) return c.customFilterListOptions.render;
             // DEPRECATED: This option is being replaced with customFilterListOptions.render
