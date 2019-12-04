@@ -147,7 +147,10 @@ class Example extends React.Component {
       filter: true,
       filterType: 'dropdown',
       responsive: this.state.stacked ? 'stacked' : 'scrollMaxHeight',
-      fixedHeader: true,
+      fixedHeaderOptions: {
+        xAxis: true,
+        yAxis: true
+      },
       rowHover: false,
       setRowProps: (row) => {
         return {
