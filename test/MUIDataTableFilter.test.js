@@ -7,7 +7,7 @@ import { mount, shallow } from 'enzyme';
 import React from 'react';
 import { spy } from 'sinon';
 import TableFilter from '../src/components/TableFilter';
-import textLabels from '../src/textLabels';
+import getTextLabels from '../src/textLabels';
 
 describe('<TableFilter />', function() {
   let data;
@@ -38,7 +38,7 @@ describe('<TableFilter />', function() {
   });
 
   it('should render label as filter name', () => {
-    const options = { filterType: 'checkbox', textLabels };
+    const options = { filterType: 'checkbox', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     const shallowWrapper = mount(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
@@ -51,7 +51,7 @@ describe('<TableFilter />', function() {
   });
 
   it("should render data table filter view with checkboxes if filterType = 'checkbox'", () => {
-    const options = { filterType: 'checkbox', textLabels };
+    const options = { filterType: 'checkbox', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     const shallowWrapper = mount(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
@@ -62,7 +62,7 @@ describe('<TableFilter />', function() {
   });
 
   it('should render data table filter view with no checkboxes if filter=false for each column', () => {
-    const options = { filterType: 'checkbox', textLabels };
+    const options = { filterType: 'checkbox', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     columns = columns.map(item => (item.filter = false));
 
@@ -75,7 +75,7 @@ describe('<TableFilter />', function() {
   });
 
   it("should render data table filter view with selects if filterType = 'select'", () => {
-    const options = { filterType: 'select', textLabels };
+    const options = { filterType: 'select', textLabels: getTextLabels() };
     const filterList = [['Joe James'], [], [], []];
 
     const mountWrapper = mount(
@@ -87,7 +87,7 @@ describe('<TableFilter />', function() {
   });
 
   it('should render data table filter view no selects if filter=false for each column', () => {
-    const options = { filterType: 'select', textLabels };
+    const options = { filterType: 'select', textLabels: getTextLabels() };
     const filterList = [['Joe James'], [], [], []];
     columns = columns.map(item => (item.filter = false));
 
@@ -100,7 +100,7 @@ describe('<TableFilter />', function() {
   });
 
   it("should render data table filter view with checkbox selects if filterType = 'multiselect'", () => {
-    const options = { filterType: 'multiselect', textLabels };
+    const options = { filterType: 'multiselect', textLabels: getTextLabels() };
     const filterList = [['Joe James', 'John Walsh'], [], [], []];
 
     const mountWrapper = mount(
@@ -114,7 +114,7 @@ describe('<TableFilter />', function() {
   it("should data table custom filter view with if filterType = 'custom' and a valid display filterOption is provided", () => {
     const options = {
       filterType: 'custom',
-      textLabels,
+      textLabels: getTextLabels(),
       filterOptions: {
         names: [],
         logic(city, filters) {
@@ -137,7 +137,7 @@ describe('<TableFilter />', function() {
   });
 
   it("should render column.label as filter label if filterType = 'textField'", () => {
-    const options = { filterType: 'textField', textLabels };
+    const options = { filterType: 'textField', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     const shallowWrapper = mount(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
@@ -150,7 +150,7 @@ describe('<TableFilter />', function() {
   });
 
   it("should data table filter view with TextFields if filterType = 'textfield'", () => {
-    const options = { filterType: 'textField', textLabels };
+    const options = { filterType: 'textField', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     const shallowWrapper = mount(
       <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
@@ -161,7 +161,7 @@ describe('<TableFilter />', function() {
   });
 
   it("should data table filter view with no TextFields if filter=false when filterType = 'textField'", () => {
-    const options = { filterType: 'textField', textLabels };
+    const options = { filterType: 'textField', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     columns = columns.map(item => (item.filter = false));
 
@@ -174,7 +174,7 @@ describe('<TableFilter />', function() {
   });
 
   it("should data table filter view with checkboxes if column.filterType = 'checkbox' irrespective of global filterType value", () => {
-    const options = { filterType: 'textField', textLabels };
+    const options = { filterType: 'textField', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     columns.forEach(item => (item.filterType = 'checkbox'));
 
@@ -188,7 +188,7 @@ describe('<TableFilter />', function() {
 
   it('should render a filter dialog with custom footer when customFooter is provided', () => {
     const CustomFooter = () => <div id="custom-footer">customFooter</div>;
-    const options = { textLabels };
+    const options = { textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     const onFilterUpdate = spy();
 
@@ -208,7 +208,7 @@ describe('<TableFilter />', function() {
   });
 
   it('should trigger onFilterUpdate prop callback when calling method handleCheckboxChange', () => {
-    const options = { filterType: 'checkbox', textLabels };
+    const options = { filterType: 'checkbox', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     const onFilterUpdate = spy();
 
@@ -229,7 +229,7 @@ describe('<TableFilter />', function() {
   });
 
   it('should trigger onFilterUpdate prop callback when calling method handleDropdownChange', () => {
-    const options = { filterType: 'select', textLabels };
+    const options = { filterType: 'select', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     const onFilterUpdate = spy();
 
@@ -260,7 +260,7 @@ describe('<TableFilter />', function() {
   });
 
   it('should trigger onFilterUpdate prop callback when calling method handleMultiselectChange', () => {
-    const options = { filterType: 'multiselect', textLabels };
+    const options = { filterType: 'multiselect', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     const onFilterUpdate = spy();
 
@@ -292,7 +292,7 @@ describe('<TableFilter />', function() {
   });
 
   it('should trigger onFilterUpdate prop callback when calling method handleTextFieldChange', () => {
-    const options = { filterType: 'textField', textLabels };
+    const options = { filterType: 'textField', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     const onFilterUpdate = spy();
 
