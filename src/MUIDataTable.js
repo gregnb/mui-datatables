@@ -197,10 +197,10 @@ class MUIDataTable extends React.Component {
           useDisplayedRowsOnly: PropTypes.bool,
         }),
       }),
-      alwaysRenderToolbar: PropTypes.bool,
       onDownload: PropTypes.func,
       setTableProps: PropTypes.func,
       setRowProps: PropTypes.func,
+      selectToolbarPlacement: PropTypes.string,
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
@@ -277,6 +277,12 @@ class MUIDataTable extends React.Component {
   }
 
   updateOptions(options, props) {
+    // set backwards compatibility options
+    if (props.options.disableToolbarSelect === true && props.options.selectToolbarPlacement === undefined) {
+      // if deprecated option disableToolbarSelect is set and selectToolbarPlacement is default then use it
+      props.options.selectToolbarPlacement = 'none';
+    }
+
     this.options = assignwith(options, props.options, (objValue, srcValue, key) => {
       // Merge any default options that are objects, as they will be overwritten otherwise
       if (key === 'textLabels' || key === 'downloadOptions') return merge(objValue, srcValue);
@@ -329,7 +335,7 @@ class MUIDataTable extends React.Component {
       separator: ',',
     },
     setTableProps: () => ({}),
-    alwaysRenderToolbar: false,
+    selectToolbarPlacement: 'replace',
   });
 
   handleOptionDeprecation = () => {
@@ -360,6 +366,12 @@ class MUIDataTable extends React.Component {
         );
       }
     });
+
+    if (this.options.disableToolbarSelect === true) {
+      console.error(
+        'The option "disableToolbarSelect" has been deprecated. It is being replaced by "selectToolbarPlacement"="none".',
+      );
+    }
   };
 
   /*
@@ -1167,7 +1179,7 @@ class MUIDataTable extends React.Component {
           let selectedMap = buildMap(newRows);
 
           // if the select toolbar is disabled, the rules are a little different
-          if (this.options.disableToolbarSelect === true) {
+          if (this.options.selectToolbarPlacement === 'none') {
             if (selectedRowsLen > displayData.length) {
               isDeselect = true;
             } else {
@@ -1362,7 +1374,7 @@ class MUIDataTable extends React.Component {
         elevation={this.options.elevation}
         ref={this.tableContent}
         className={classnames(classes.paper, className)}>
-        {selectedRows.data.length > 0 && this.options.disableToolbarSelect !== true && (
+        {selectedRows.data.length > 0 && this.options.selectToolbarPlacement !== 'none' && (
           <TableToolbarSelect
             options={this.options}
             selectedRows={selectedRows}
@@ -1371,25 +1383,26 @@ class MUIDataTable extends React.Component {
             selectRowUpdate={this.selectRowUpdate}
           />
         )}
-        {(selectedRows.data.length === 0 || this.options.alwaysRenderToolbar) && showToolbar && (
-          <TableToolbar
-            columns={columns}
-            displayData={displayData}
-            data={data}
-            filterData={filterData}
-            filterList={filterList}
-            filterUpdate={this.filterUpdate}
-            options={this.options}
-            resetFilters={this.resetFilters}
-            searchText={searchText}
-            searchTextUpdate={this.searchTextUpdate}
-            searchClose={this.searchClose}
-            tableRef={this.getTableContentRef}
-            title={title}
-            toggleViewColumn={this.toggleViewColumn}
-            setTableAction={this.setTableAction}
-          />
-        )}
+        {(selectedRows.data.length === 0 || ['above-toolbar', 'none'].includes(this.options.selectToolbarPlacement)) &&
+          showToolbar && (
+            <TableToolbar
+              columns={columns}
+              displayData={displayData}
+              data={data}
+              filterData={filterData}
+              filterList={filterList}
+              filterUpdate={this.filterUpdate}
+              options={this.options}
+              resetFilters={this.resetFilters}
+              searchText={searchText}
+              searchTextUpdate={this.searchTextUpdate}
+              searchClose={this.searchClose}
+              tableRef={this.getTableContentRef}
+              title={title}
+              toggleViewColumn={this.toggleViewColumn}
+              setTableAction={this.setTableAction}
+            />
+          )}
         <TableFilterList
           options={this.options}
           serverSideFilterList={this.props.options.serverSideFilterList || []}
