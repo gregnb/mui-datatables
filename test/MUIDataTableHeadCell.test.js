@@ -4,6 +4,7 @@ import { mount, shallow } from 'enzyme';
 import { assert, expect, should } from 'chai';
 import textLabels from '../src/textLabels';
 import TableHeadCell from '../src/components/TableHeadCell';
+import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import HelpIcon from '@material-ui/icons/Help';
 
@@ -14,6 +15,33 @@ describe('<TableHeadCell />', function() {
     classes = {
       root: {},
     };
+  });
+
+  it('should add custom props to header cell if "setCellHeaderProps" provided', () => {
+    const options = { sort: true, textLabels };
+    const toggleSort = () => {};
+    const setCellHeaderProps = { myProp: 'test', className: 'testClass' };
+    const selectRowUpdate = stub();
+    const toggleExpandRow = () => {};
+
+    const mountWrapper = mount(
+      <TableHeadCell
+        cellHeaderProps={setCellHeaderProps}
+        options={options}
+        sortDirection={'asc'}
+        sort={true}
+        toggleSort={toggleSort}
+        classes={classes}>
+        some content
+      </TableHeadCell>,
+    );
+
+    const props = mountWrapper.find(TableCell).props();
+    const classNames = props.className.split(' ');
+    const finalClass = classNames[classNames.length - 1];
+
+    assert.strictEqual(props.myProp, 'test');
+    assert.strictEqual(finalClass, 'testClass');
   });
 
   it('should render a table head cell with sort label when options.sort = true provided', () => {

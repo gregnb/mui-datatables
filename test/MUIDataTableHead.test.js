@@ -20,7 +20,7 @@ describe('<TableHead />', function() {
         name: 'State',
         label: 'State',
         display: 'true',
-        options: { fixedHeader: true },
+        options: { fixedHeaderOptions: { xAxis: true, yAxis: true } },
         customHeadRender: columnMeta => <TableHeadCell {...columnMeta}>{columnMeta.name + 's'}</TableHeadCell>,
         sort: null,
       },
