@@ -8,7 +8,7 @@ import TableFilterList from '../src/components/TableFilterList';
 import TablePagination from '../src/components/TablePagination';
 import TableToolbar from '../src/components/TableToolbar';
 import TableToolbarSelect from '../src/components/TableToolbarSelect';
-import textLabels from '../src/textLabels';
+import getTextLabels from '../src/textLabels';
 import Chip from '@material-ui/core/Chip';
 import Cities from '../examples/component/cities';
 import { getCollatorComparator } from '../src/utils';
@@ -512,7 +512,7 @@ describe('<MUIDataTable />', function() {
   it('should correctly build internal rowsPerPage when provided in options', () => {
     const options = {
       rowsPerPage: 20,
-      textLabels,
+      textLabels: getTextLabels(),
     };
 
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
@@ -875,7 +875,7 @@ describe('<MUIDataTable />', function() {
   it('should properly set searchText when hiding the search bar', () => {
     const options = {
       rowsPerPage: 1,
-      textLabels,
+      textLabels: getTextLabels(),
     };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const table = shallowWrapper.dive();
@@ -905,7 +905,7 @@ describe('<MUIDataTable />', function() {
   it('should not change page when hiding the search bar', () => {
     const options = {
       rowsPerPage: 1,
-      textLabels,
+      textLabels: getTextLabels(),
     };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />);
     const table = shallowWrapper.dive();

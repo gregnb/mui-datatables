@@ -16,7 +16,7 @@ import TableHead from './components/TableHead';
 import TableResize from './components/TableResize';
 import TableToolbar from './components/TableToolbar';
 import TableToolbarSelect from './components/TableToolbarSelect';
-import textLabels from './textLabels';
+import getTextLabels from './textLabels';
 import { buildMap, getCollatorComparator, sortCompare, getPageValue } from './utils';
 
 const defaultTableStyles = theme => ({
@@ -138,7 +138,7 @@ class MUIDataTable extends React.Component {
     options: PropTypes.shape({
       responsive: PropTypes.oneOf(['stacked', 'scrollMaxHeight', 'scrollFullHeight']),
       filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField', 'custom']),
-      textLabels: PropTypes.object,
+      getTextLabels: PropTypes.func,
       pagination: PropTypes.bool,
       expandableRows: PropTypes.bool,
       expandableRowsOnClick: PropTypes.bool,
@@ -297,7 +297,7 @@ class MUIDataTable extends React.Component {
     responsive: 'stacked',
     filterType: 'dropdown',
     pagination: true,
-    textLabels,
+    textLabels: getTextLabels(),
     serverSideFilterList: [],
     expandableRows: false,
     expandableRowsOnClick: false,

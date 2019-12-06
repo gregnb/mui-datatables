@@ -5,7 +5,7 @@ import { assert, expect, should } from 'chai';
 import TableRow from '@material-ui/core/TableRow';
 import TableFooter from '@material-ui/core/TableFooter';
 import MuiTablePagination from '@material-ui/core/TablePagination';
-import textLabels from '../src/textLabels';
+import getTextLabels from '../src/textLabels';
 import TablePagination from '../src/components/TablePagination';
 
 describe('<TablePagination />', function() {
@@ -14,7 +14,7 @@ describe('<TablePagination />', function() {
   before(() => {
     options = {
       rowsPerPageOptions: [5, 10, 15],
-      textLabels,
+      textLabels: getTextLabels(),
     };
   });
 
