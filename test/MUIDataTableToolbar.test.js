@@ -164,6 +164,7 @@ describe('<TableToolbar />', function() {
     const searchTextUpdate = () => {};
     const shallowWrapper = shallow(
       <TableToolbar
+        searchClose={() => {}}
         searchTextUpdate={searchTextUpdate}
         columns={columns}
         data={data}

@@ -16,6 +16,17 @@ const defaultHeadCellStyles = theme => ({
     zIndex: 100,
     backgroundColor: theme.palette.background.paper,
   },
+  fixedHeaderCommon: {
+    position: 'sticky',
+    zIndex: 100,
+    backgroundColor: theme.palette.background.paper,
+  },
+  fixedHeaderXAxis: {
+    left: '0px',
+  },
+  fixedHeaderYAxis: {
+    top: '0px',
+  },
   tooltip: {
     cursor: 'pointer',
   },
@@ -85,9 +96,12 @@ class TableHeadCell extends React.Component {
   };
 
   render() {
-    const { children, classes, options, sortDirection, sort, hint, print, column } = this.props;
+    const { children, classes, options, sortDirection, sort, hint, print, column, cellHeaderProps = {} } = this.props;
+    const { className, ...otherProps } = cellHeaderProps;
+
     const sortActive = sortDirection !== 'none' && sortDirection !== undefined ? true : false;
     const ariaSortDirection = sortDirection === 'none' ? false : sortDirection;
+    let fixedHeaderClasses;
 
     const sortLabelProps = {
       classes: { root: classes.sortLabelRoot },
@@ -96,14 +110,24 @@ class TableHeadCell extends React.Component {
       ...(ariaSortDirection ? { direction: sortDirection } : {}),
     };
 
+    // DEPRECATED, make sure to replace defaults with new options when removing
+    if (options.fixedHeader) fixedHeaderClasses = classes.fixedHeader;
+
+    if (options.fixedHeaderOptions) {
+      fixedHeaderClasses = classes.fixedHeaderCommon;
+      if (options.fixedHeaderOptions.xAxis) fixedHeaderClasses += ` ${classes.fixedHeaderXAxis}`;
+      if (options.fixedHeaderOptions.yAxis) fixedHeaderClasses += ` ${classes.fixedHeaderYAxis}`;
+    }
+
     const cellClass = classNames({
       [classes.root]: true,
-      [classes.fixedHeader]: options.fixedHeader,
+      [fixedHeaderClasses]: true,
       'datatables-noprint': !print,
+      [className]: className,
     });
 
     return (
-      <TableCell className={cellClass} scope={'col'} sortDirection={ariaSortDirection}>
+      <TableCell className={cellClass} scope={'col'} sortDirection={ariaSortDirection} {...otherProps}>
         {options.sort && sort ? (
           <span
             role="button"
@@ -145,7 +169,7 @@ class TableHeadCell extends React.Component {
             )}
           </span>
         ) : (
-          <div className={classes.sortAction}>
+          <div className={hint ? classes.sortAction : null}>
             {children}
             {hint && (
               <Tooltip
