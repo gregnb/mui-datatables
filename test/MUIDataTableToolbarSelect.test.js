@@ -12,7 +12,11 @@ describe('<TableToolbarSelect />', function() {
   it('should render table toolbar select', () => {
     const onRowsDelete = () => {};
     const mountWrapper = mount(
-      <TableToolbarSelect options={{ textLabels: getTextLabels() }} selectedRows={{ data: [1] }} onRowsDelete={onRowsDelete} />,
+      <TableToolbarSelect
+        options={{ textLabels: getTextLabels() }}
+        selectedRows={{ data: [1] }}
+        onRowsDelete={onRowsDelete}
+      />,
     );
 
     const actualResult = mountWrapper.find(DeleteIcon);
