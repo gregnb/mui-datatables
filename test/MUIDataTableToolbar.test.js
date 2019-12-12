@@ -10,7 +10,7 @@ import React from 'react';
 import { spy } from 'sinon';
 import TableSearch from '../src/components/TableSearch';
 import TableToolbar from '../src/components/TableToolbar';
-import textLabels from '../src/textLabels';
+import getTextLabels from '../src/textLabels';
 
 describe('<TableToolbar />', function() {
   let data;
@@ -25,7 +25,7 @@ describe('<TableToolbar />', function() {
       search: true,
       filter: true,
       viewColumns: true,
-      textLabels,
+      textLabels: getTextLabels(),
       downloadOptions: {
         separator: ',',
         filename: 'tableDownload.csv',
