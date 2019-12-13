@@ -233,7 +233,6 @@ class TableFilterInline extends React.Component {
 
   render() {
     const { columns, options, expandableOn, selectableOn } = this.props;
-    // TODO do we want to put somewhere "Reset" filters button?
 
     return <TableHeadRow>
       {!expandableOn && selectableOn === 'none' ? false : <TableCell />}
