@@ -1,5 +1,6 @@
 import ArrayValueColumns from './array-value-columns';
 import ColumnFilters from './column-filters';
+import FiltersInline from './filters-inline';
 import ColumnOptionsUpdate from './column-options-update';
 import Component from './component';
 import CSVExport from './csv-export';
@@ -37,6 +38,7 @@ import Themes from './themes';
 export default {
   'Array Value Columns': ArrayValueColumns,
   'Column Filters': ColumnFilters,
+  'Inline Filters': FiltersInline,
   'Column Option Update': ColumnOptionsUpdate,
   Component: Component,
   'CSV Export': CSVExport,

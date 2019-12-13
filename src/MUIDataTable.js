@@ -313,6 +313,7 @@ class MUIDataTable extends React.Component {
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 15, 100],
     filter: true,
+    filtersInline: false,
     fixedHeaderOptions: {
       xAxis: true,
       yAxis: true,
@@ -1436,6 +1437,10 @@ class MUIDataTable extends React.Component {
               toggleSort={this.toggleSortColumn}
               setCellRef={this.setHeadCellRef}
               options={this.options}
+              filterData={filterData}
+              filterList={filterList}
+              filterUpdate={this.filterUpdate}
+              resetFilters={this.resetFilters}
             />
             <TableBody
               data={displayData}

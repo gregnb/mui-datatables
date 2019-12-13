@@ -6,6 +6,7 @@ import { findDOMNode } from 'react-dom';
 import TableHeadCell from './TableHeadCell';
 import TableHeadRow from './TableHeadRow';
 import TableSelectCell from './TableSelectCell';
+import TableFilterInline from './TableFilterInline';
 
 const defaultHeadStyles = theme => ({
   main: {},
@@ -30,7 +31,9 @@ class TableHead extends React.Component {
   };
 
   render() {
-    const { classes, columns, count, options, data, setCellRef, selectedRows } = this.props;
+    const { classes, columns, count, options, data, setCellRef, selectedRows,
+      filterList, filterData, filterUpdate, resetFilters
+    } = this.props;
 
     const numSelected = (selectedRows && selectedRows.data.length) || 0;
     let isIndeterminate = numSelected > 0 && numSelected < count;
@@ -98,6 +101,17 @@ class TableHead extends React.Component {
               )),
           )}
         </TableHeadRow>
+        {options.filter && options.filtersInline === true && (
+          <TableFilterInline
+            columns={columns}
+            options={options}
+            filterList={filterList}
+            filterData={filterData}
+            onFilterUpdate={filterUpdate}
+            onFilterReset={resetFilters}
+            expandableOn={options.expandableRows}
+            selectableOn={options.selectableRows}
+          />)}
       </MuiTableHead>
     );
   }
