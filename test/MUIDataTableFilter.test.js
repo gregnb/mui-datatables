@@ -111,6 +111,19 @@ describe('<TableFilter />', function() {
     assert.strictEqual(actualResult.length, 4);
   });
 
+  it("should render data table filter view with custom rendering of items for filterType = 'multiselect' if renderValue is provided", () => {
+    columns.forEach(item => (item.filterOptions = { renderValue: v => v.toUpperCase() }));
+    const options = { filterType: 'multiselect', textLabels: getTextLabels(), filterOptions: { renderValue: v => v.toUpperCase() } };
+    const filterList = [['Joe James', 'John Walsh'], [], [], []];
+
+    const mountWrapper = mount(
+      <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
+    );
+
+    const actualResult = mountWrapper.find(Select);
+    assert.include(actualResult.first().html(), 'JOE JAMES, JOHN WALSH');
+  });
+
   it("should data table custom filter view with if filterType = 'custom' and a valid display filterOption is provided", () => {
     const options = {
       filterType: 'custom',
