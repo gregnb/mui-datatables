@@ -111,9 +111,23 @@ describe('<TableFilter />', function() {
     assert.strictEqual(actualResult.length, 4);
   });
 
+  it("should render data table filter view with custom rendering of items if filterType = 'select'", () => {
+    columns.forEach(item => (item.filterOptions = { renderValue: v => v.toUpperCase() }));
+    const options = { filterType: 'select', textLabels: getTextLabels(), filterOptions: { renderValue: v => v.toUpperCase() } };
+    const filterList = [['Joe James'], [null], [], []];
+
+    const mountWrapper = mount(
+      <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
+    );
+
+    const actualResult = mountWrapper.find(Select);
+    assert.strictEqual(actualResult.length, 4);
+    assert.include(actualResult.first().html(), 'JOE JAMES');
+  });
+
   it("should render data table filter view with custom rendering of items for filterType = 'multiselect' if renderValue is provided", () => {
     columns.forEach(item => (item.filterOptions = { renderValue: v => v.toUpperCase() }));
-    const options = { filterType: 'multiselect', textLabels: getTextLabels(), filterOptions: { renderValue: v => v.toUpperCase() } };
+    const options = { filterType: 'multiselect', textLabels: getTextLabels() };
     const filterList = [['Joe James', 'John Walsh'], [], [], []];
 
     const mountWrapper = mount(
@@ -121,6 +135,7 @@ describe('<TableFilter />', function() {
     );
 
     const actualResult = mountWrapper.find(Select);
+    assert.strictEqual(actualResult.length, 4);
     assert.include(actualResult.first().html(), 'JOE JAMES, JOHN WALSH');
   });
 
@@ -147,6 +162,25 @@ describe('<TableFilter />', function() {
 
     const actualResult = mountWrapper.find('#custom-filter-render');
     assert.isAtLeast(actualResult.length, 1);
+  });
+
+  it("does not render filter if filterType = 'custom' and no display filterOption is provided", () => {
+    const options = {
+      filterType: 'custom',
+      textLabels: getTextLabels(),
+      filterOptions: {
+        logic(city, filters) {
+          return false;
+        },
+      },
+    };
+    const filterList = [[], [], [], []];
+    const mountWrapper = mount(
+      <TableFilter columns={columns} filterData={filterData} filterList={filterList} options={options} />,
+    );
+
+    const actualResult = mountWrapper.find('#custom-filter-render');
+    assert.strictEqual(actualResult.length, 0);
   });
 
   it("should render column.label as filter label if filterType = 'textField'", () => {
