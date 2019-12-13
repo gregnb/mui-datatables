@@ -312,7 +312,7 @@ class TableToolbar extends React.Component {
               }
             />
           )}
-          {options.filter && options.filtersInline === false && (
+          {options.filter && options.filtersInline !== true && (
             <Popover
               refExit={this.setActiveIcon.bind(null)}
               classes={{ paper: classes.filterPaper }}
