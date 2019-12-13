@@ -13,9 +13,7 @@ class Example extends React.Component {
           filter: true,
           filterList: ['Franky Miles'],
           customFilterListOptions: { render: v => `Name: ${v}` },
-          filterOptions: {
-            names: ['a', 'b', 'c', 'Business Analyst']
-          },
+          filterType: 'textField' // set filterType's at the column level
         }
       },
       {
@@ -24,7 +22,9 @@ class Example extends React.Component {
           filter: true,
           filterList: ['Business Analyst'],
           customFilterListOptions: { render: v => `Title: ${v}` },
-          filterType: 'textField' // set filterType's at the column level
+          filterOptions: {
+            names: ['a', 'b', 'c', 'Business Analyst']
+          },
         }
       },
       {
