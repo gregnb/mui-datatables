@@ -122,21 +122,22 @@ class TableFilterList extends React.Component {
               return item.map((data, colIndex) => filterChip(index, data, colIndex));
             })
           : filterList.map((item, index) => {
-              const customFilterListRenderersValue = filterListRenderers[index](item);
-
-              if (columnNames[index].filterType === 'custom' && customFilterListRenderersValue) {
-                if (Array.isArray(customFilterListRenderersValue)) {
-                  return customFilterListRenderersValue.map((customFilterItem, customFilterItemIndex) =>
-                    customFilterChipMultiValue(
-                      customFilterItem,
-                      index,
-                      customFilterItemIndex,
-                      item,
-                      customFilterListRenderersValue,
-                    ),
-                  );
-                } else {
-                  return customFilterChipSingleValue(index, item);
+              if (columnNames[index].filterType === 'custom') {
+                const customFilterListRenderersValue = filterListRenderers[index](item);
+                if (customFilterListRenderersValue) {
+                  if (Array.isArray(customFilterListRenderersValue)) {
+                    return customFilterListRenderersValue.map((customFilterItem, customFilterItemIndex) =>
+                      customFilterChipMultiValue(
+                        customFilterItem,
+                        index,
+                        customFilterItemIndex,
+                        item,
+                        customFilterListRenderersValue,
+                      ),
+                    );
+                  } else {
+                    return customFilterChipSingleValue(index, item);
+                  }
                 }
               }
 
