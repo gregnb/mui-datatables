@@ -7,7 +7,7 @@ import TableBodyRow from './TableBodyRow';
 import TableSelectCell from './TableSelectCell';
 import { withStyles } from '@material-ui/core/styles';
 import cloneDeep from 'lodash.clonedeep';
-import { getPageValue } from '../utils';
+import { getPageValue, warnDeprecated } from '../utils';
 
 const defaultBodyStyles = {
   root: {},
@@ -167,11 +167,9 @@ class TableBody extends React.Component {
       // In a future release, onRowClick will no longer be called here (for consistency).
       // For now, issue a deprecated warning.
       if (this.props.options.onRowClick) {
-        if (process.env.NODE_ENV === 'development') {
-          console.warn(
-            'Deprecated: Clicks on expandable button will not trigger onRowClick in an upcoming release, see: https://github.com/gregnb/mui-datatables/issues/516.',
-          );
-        }
+        warnDeprecated(
+          'Clicks on expandable button will not trigger onRowClick in an upcoming release, see: https://github.com/gregnb/mui-datatables/issues/516.',
+        );
         this.props.options.onRowClick(row, data, event);
       }
 
