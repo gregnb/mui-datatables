@@ -6,7 +6,7 @@ import { assert } from 'chai';
 import { mount, shallow } from 'enzyme';
 import React from 'react';
 import { spy } from 'sinon';
-import TableFilter from '../src/components/TableFilter';
+import TableFilterInline from '../src/components/TableFilterInline';
 import getTextLabels from '../src/textLabels';
 
 describe('<TableFilterInline />', function() {
@@ -16,10 +16,10 @@ describe('<TableFilterInline />', function() {
 
   beforeEach(() => {
     columns = [
-      { name: 'firstName', label: 'First Name', display: true, sort: true, filter: true, sortDirection: 'desc' },
-      { name: 'company', label: 'Company', display: true, sort: true, filter: true, sortDirection: 'desc' },
-      { name: 'city', label: 'City Label', display: true, sort: true, filter: true, sortDirection: 'desc' },
-      { name: 'state', label: 'State', display: true, sort: true, filter: true, sortDirection: 'desc' },
+      { name: 'firstName', label: 'First Name', display: 'true', sort: true, filter: true, sortDirection: 'desc' },
+      { name: 'company', label: 'Company', display: 'true', sort: true, filter: true, sortDirection: 'desc' },
+      { name: 'city', label: 'City Label', display: 'true', sort: true, filter: true, sortDirection: 'desc' },
+      { name: 'state', label: 'State', display: 'true', sort: true, filter: true, sortDirection: 'desc' },
     ];
 
     data = [
@@ -37,7 +37,7 @@ describe('<TableFilterInline />', function() {
     ];
   });
 
-  it('should render label as filter name', () => {
+  it('should not render filter labels', () => {
     const options = { filterType: 'checkbox', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     const shallowWrapper = mount(
@@ -47,10 +47,10 @@ describe('<TableFilterInline />', function() {
       .find(Typography)
       .filterWhere(n => n.html().match(/MUIDataTableFilter-checkboxListTitle/))
       .map(n => n.text());
-    assert.deepEqual(labels, ['First Name', 'Company', 'City Label', 'State']);
+    assert.deepEqual(labels, []);
   });
 
-  it("should render data table filter view with checkboxes if filterType = 'checkbox'", () => {
+  it("should render row filter view with checkboxes if filterType = 'checkbox'", () => {
     const options = { filterType: 'checkbox', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     const shallowWrapper = mount(
@@ -61,7 +61,7 @@ describe('<TableFilterInline />', function() {
     assert.strictEqual(actualResult.length, 13);
   });
 
-  it('should render data table filter view with no checkboxes if filter=false for each column', () => {
+  it('should render row filter view with no checkboxes if filter=false for each column', () => {
     const options = { filterType: 'checkbox', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     columns = columns.map(item => (item.filter = false));
@@ -74,7 +74,33 @@ describe('<TableFilterInline />', function() {
     assert.strictEqual(actualResult.length, 0);
   });
 
-  it("should render data table filter view with selects if filterType = 'select'", () => {
+  it('should render row filter view with no checkboxes if display="false" for each column', () => {
+    const options = { filterType: 'checkbox', textLabels: getTextLabels() };
+    const filterList = [[], [], [], []];
+    columns = columns.map(item => (item.display = 'false'));
+
+    const mountWrapper = mount(
+      <TableFilterInline columns={columns} filterData={filterData} filterList={filterList} options={options} />,
+    );
+
+    const actualResult = mountWrapper.find(Checkbox);
+    assert.strictEqual(actualResult.length, 0);
+  });
+
+  it('should render row filter view with no checkboxes if display="excluded" for each column', () => {
+    const options = { filterType: 'checkbox', textLabels: getTextLabels() };
+    const filterList = [[], [], [], []];
+    columns = columns.map(item => (item.display = 'excluded'));
+
+    const mountWrapper = mount(
+      <TableFilterInline columns={columns} filterData={filterData} filterList={filterList} options={options} />,
+    );
+
+    const actualResult = mountWrapper.find(Checkbox);
+    assert.strictEqual(actualResult.length, 0);
+  });
+
+  it("should render row filter view with selects if filterType = 'select'", () => {
     const options = { filterType: 'select', textLabels: getTextLabels() };
     const filterList = [['Joe James'], [], [], []];
 
@@ -86,7 +112,7 @@ describe('<TableFilterInline />', function() {
     assert.strictEqual(actualResult.length, 4);
   });
 
-  it('should render data table filter view no selects if filter=false for each column', () => {
+  it('should render row filter view no selects if filter=false for each column', () => {
     const options = { filterType: 'select', textLabels: getTextLabels() };
     const filterList = [['Joe James'], [], [], []];
     columns = columns.map(item => (item.filter = false));
@@ -99,7 +125,7 @@ describe('<TableFilterInline />', function() {
     assert.strictEqual(actualResult.length, 0);
   });
 
-  it("should render data table filter view with checkbox selects if filterType = 'multiselect'", () => {
+  it("should render row filter view with checkbox selects if filterType = 'multiselect'", () => {
     const options = { filterType: 'multiselect', textLabels: getTextLabels() };
     const filterList = [['Joe James', 'John Walsh'], [], [], []];
 
@@ -136,7 +162,7 @@ describe('<TableFilterInline />', function() {
     assert.isAtLeast(actualResult.length, 1);
   });
 
-  it("should render column.label as filter label if filterType = 'textField'", () => {
+  it("should not render column.label as filter label if filterType = 'textField'", () => {
     const options = { filterType: 'textField', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     const shallowWrapper = mount(
@@ -146,10 +172,10 @@ describe('<TableFilterInline />', function() {
       .find(TextField)
       .filterWhere(n => n.html().match(/MuiInputLabel-formControl/))
       .map(n => n.text());
-    assert.deepEqual(labels, ['First Name', 'Company', 'City Label', 'State']);
+    assert.deepEqual(labels, []);
   });
 
-  it("should data table filter view with TextFields if filterType = 'textfield'", () => {
+  it("should row filter view with TextFields if filterType = 'textfield'", () => {
     const options = { filterType: 'textField', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     const shallowWrapper = mount(
@@ -160,7 +186,7 @@ describe('<TableFilterInline />', function() {
     assert.strictEqual(actualResult.length, 4);
   });
 
-  it("should data table filter view with no TextFields if filter=false when filterType = 'textField'", () => {
+  it("should row filter view with no TextFields if filter=false when filterType = 'textField'", () => {
     const options = { filterType: 'textField', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     columns = columns.map(item => (item.filter = false));
@@ -173,7 +199,7 @@ describe('<TableFilterInline />', function() {
     assert.strictEqual(actualResult.length, 0);
   });
 
-  it("should data table filter view with checkboxes if column.filterType = 'checkbox' irrespective of global filterType value", () => {
+  it("should row filter view with checkboxes if column.filterType = 'checkbox' irrespective of global filterType value", () => {
     const options = { filterType: 'textField', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     columns.forEach(item => (item.filterType = 'checkbox'));
@@ -184,27 +210,6 @@ describe('<TableFilterInline />', function() {
 
     const actualResult = shallowWrapper.find(Checkbox);
     assert.strictEqual(actualResult.length, 13);
-  });
-
-  it('should render a filter dialog with custom footer when customFooter is provided', () => {
-    const CustomFooter = () => <div id="custom-footer">customFooter</div>;
-    const options = { textLabels: getTextLabels() };
-    const filterList = [[], [], [], []];
-    const onFilterUpdate = spy();
-
-    const shallowWrapper = shallow(
-      <TableFilterInline
-        customFooter={CustomFooter}
-        columns={columns}
-        onFilterUpdate={onFilterUpdate}
-        filterData={filterData}
-        filterList={filterList}
-        options={options}
-      />,
-    ).dive();
-
-    const actualResult = shallowWrapper.find('#custom-footer');
-    assert.strictEqual(actualResult.length, 1);
   });
 
   it('should trigger onFilterUpdate prop callback when calling method handleCheckboxChange', () => {

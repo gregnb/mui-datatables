@@ -5,7 +5,7 @@ import { assert, expect, should } from 'chai';
 import TableHead from '../src/components/TableHead';
 import TableHeadCell from '../src/components/TableHeadCell';
 import Checkbox from '@material-ui/core/Checkbox';
-import Tooltip from '@material-ui/core/Tooltip';
+import TableFilterInline from '../src/components/TableFilterInline';
 
 describe('<TableHead />', function() {
   let columns;
@@ -155,5 +155,25 @@ describe('<TableHead />', function() {
 
     const actualResult = mountWrapper.find(Checkbox);
     assert.strictEqual(actualResult.length, 0);
+  });
+
+  it('should not render filters row if option.filtersInline = false', () => {
+    const options = { filtersInline: false, filter: true };
+
+    const mountWrapper = mount(
+      <TableHead columns={columns} options={options} setCellRef={() => {}} handleHeadUpdateRef={handleHeadUpdateRef} />,
+    );
+
+    assert.strictEqual(mountWrapper.find(TableFilterInline).length, 0);
+  });
+
+  it('should render filters row if option.filtersInline = true', () => {
+    const options = { filtersInline: true, filter: true };
+
+    const mountWrapper = mount(
+      <TableHead columns={columns} options={options} setCellRef={() => {}} handleHeadUpdateRef={handleHeadUpdateRef} />,
+    );
+
+    assert.strictEqual(mountWrapper.find(TableFilterInline).length, 1);
   });
 });

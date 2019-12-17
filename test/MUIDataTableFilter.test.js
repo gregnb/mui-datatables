@@ -16,10 +16,10 @@ describe('<TableFilter />', function() {
 
   beforeEach(() => {
     columns = [
-      { name: 'firstName', label: 'First Name', display: true, sort: true, filter: true, sortDirection: 'desc' },
-      { name: 'company', label: 'Company', display: true, sort: true, filter: true, sortDirection: 'desc' },
-      { name: 'city', label: 'City Label', display: true, sort: true, filter: true, sortDirection: 'desc' },
-      { name: 'state', label: 'State', display: true, sort: true, filter: true, sortDirection: 'desc' },
+      { name: 'firstName', label: 'First Name', display: 'true', sort: true, filter: true, sortDirection: 'desc' },
+      { name: 'company', label: 'Company', display: 'true', sort: true, filter: true, sortDirection: 'desc' },
+      { name: 'city', label: 'City Label', display: 'true', sort: true, filter: true, sortDirection: 'desc' },
+      { name: 'state', label: 'State', display: 'true', sort: true, filter: true, sortDirection: 'desc' },
     ];
 
     data = [
