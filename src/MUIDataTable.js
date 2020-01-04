@@ -29,17 +29,14 @@ const defaultTableStyles = theme => ({
     overflowX: 'auto',
     overflow: 'auto',
     height: '100%',
-    maxHeight: '499px',
   },
   responsiveScrollMaxHeight: {
     overflowX: 'auto',
     overflow: 'auto',
     height: '100%',
-    maxHeight: '499px',
   },
   responsiveScrollFullHeight: {
     height: '100%',
-    maxHeight: 'none',
   },
   responsiveStacked: {
     overflowX: 'auto',
@@ -1333,21 +1330,26 @@ class MUIDataTable extends React.Component {
     const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
     const showToolbar = hasToolbarItem(this.options, title);
     const columnNames = columns.map(column => ({ name: column.name, filterType: column.filterType }));
+    let maxHeight;
     let responsiveClass;
 
     switch (this.options.responsive) {
       // DEPRECATED: This options is beign transitioned to `responsiveScrollMaxHeight`
       case 'scroll':
         responsiveClass = classes.responsiveScroll;
+        maxHeight = '499px';
         break;
       case 'scrollMaxHeight':
         responsiveClass = classes.responsiveScrollMaxHeight;
+        maxHeight = '499px';
         break;
       case 'scrollFullHeight':
         responsiveClass = classes.responsiveScrollFullHeight;
+        maxHeight = 'none';
         break;
       case 'stacked':
         responsiveClass = classes.responsiveStacked;
+        maxHeight = 'none';
         break;
     }
 
@@ -1408,7 +1410,7 @@ class MUIDataTable extends React.Component {
           filterUpdate={this.filterUpdate}
           columnNames={columnNames}
         />
-        <div style={{ position: 'relative' }} className={responsiveClass}>
+        <div style={{ position: 'relative', maxHeight }} className={responsiveClass}>
           {this.options.resizableColumns && (
             <TableResize
               key={rowCount}
