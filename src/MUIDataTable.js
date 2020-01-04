@@ -49,6 +49,7 @@ const defaultTableStyles = theme => ({
       overflow: 'hidden',
     },
   },
+  responsiveStackedFullWidth: {},
   caption: {
     position: 'absolute',
     left: '-3000px',
@@ -136,7 +137,7 @@ class MUIDataTable extends React.Component {
     ).isRequired,
     /** Options used to describe table */
     options: PropTypes.shape({
-      responsive: PropTypes.oneOf(['stacked', 'scrollMaxHeight', 'scrollFullHeight', 'scrollFullHeightFullWidth']),
+      responsive: PropTypes.oneOf(['stacked', 'stackedFullWidth', 'scrollMaxHeight', 'scrollFullHeight', 'scrollFullHeightFullWidth']),
       filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField', 'custom']),
       getTextLabels: PropTypes.func,
       pagination: PropTypes.bool,
@@ -337,9 +338,9 @@ class MUIDataTable extends React.Component {
       );
       this.options.selectableRows = this.options.selectableRows ? 'multiple' : 'none';
     }
-    if (['scrollMaxHeight', 'scrollFullHeight', 'stacked', 'scrollFullHeightFullWidth'].indexOf(this.options.responsive) === -1) {
+    if (['scrollMaxHeight', 'scrollFullHeight', 'stacked', 'stackedFullWidth', 'scrollFullHeightFullWidth'].indexOf(this.options.responsive) === -1) {
       console.error(
-        'Invalid option value for responsive. Please use string option: scrollMaxHeight | scrollFullHeight | stacked | scrollFullHeightFullWidth',
+        'Invalid option value for responsive. Please use string option: scrollMaxHeight | scrollFullHeight | stacked | stackedFullWidth | scrollFullHeightFullWidth',
       );
     }
     if (this.options.responsive === 'scroll') {
@@ -1358,6 +1359,11 @@ class MUIDataTable extends React.Component {
         break;
       case 'stacked':
         responsiveClass = classes.responsiveStacked;
+        maxHeight = 'none';
+        break;
+      case 'stackedFullWidth':
+        responsiveClass = classes.responsiveStackedFullWidth;
+        paperClasses = `${classes.paperResponsiveScrollFullHeightFullWidth} ${className}`;
         maxHeight = 'none';
         break;
     }
