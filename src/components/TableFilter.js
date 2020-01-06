@@ -246,7 +246,7 @@ class TableFilter extends React.Component {
   }
 
   renderCustomField(column, index) {
-    const { classes, filterList, options } = this.props;
+    const { classes, filterData, filterList, options } = this.props;
     const display =
       (column.filterOptions && column.filterOptions.display) ||
       (options.filterOptions && options.filterOptions.display);
@@ -259,7 +259,7 @@ class TableFilter extends React.Component {
     return (
       <GridListTile key={index} cols={1} classes={{ tile: classes.gridListTile }}>
         <FormControl key={index} fullWidth>
-          {display(filterList, this.handleCustomChange, index, column)}
+          {display(filterList, this.handleCustomChange, index, column, filterData)}
         </FormControl>
       </GridListTile>
     );
