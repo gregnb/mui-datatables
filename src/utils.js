@@ -7,7 +7,7 @@ function buildMap(rows) {
 
 function warnDeprecated(warning) {
   if (process.env.NODE_ENV === 'development') {
-    console.warn(`DEPRECATED:  ${warning}`);
+    console.warn(`Deprecation Notice:  ${warning}`);
   }
 }
 
@@ -114,4 +114,13 @@ function createCSVDownload(columns, data, options, downloadCSV) {
   downloadCSV(csv, options.downloadOptions.filename);
 }
 
-export { buildMap, getPageValue, getCollatorComparator, sortCompare, createCSVDownload, buildCSV, downloadCSV, warnDeprecated};
+export {
+  buildMap,
+  getPageValue,
+  getCollatorComparator,
+  sortCompare,
+  createCSVDownload,
+  buildCSV,
+  downloadCSV,
+  warnDeprecated,
+};

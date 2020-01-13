@@ -16,7 +16,7 @@ import TableHead from './components/TableHead';
 import TableResize from './components/TableResize';
 import TableToolbar from './components/TableToolbar';
 import TableToolbarSelect from './components/TableToolbarSelect';
-import textLabels from './textLabels';
+import getTextLabels from './textLabels';
 import { buildMap, getCollatorComparator, sortCompare, getPageValue, warnDeprecated } from './utils';
 
 const defaultTableStyles = theme => ({
@@ -349,7 +349,6 @@ class MUIDataTable extends React.Component {
       warnDeprecated(
         'fixedHeader has been deprecated in favor of fixedHeaderOptions: { xAxis: boolean, yAxis: boolean }. Once removed, the new options will be set by default to render like the old fixedHeader. However, if you are setting the fixedHeader value manually, it will no longer work in the next major version.',
       );
-      
     }
 
     this.props.columns.map(c => {
