@@ -14,7 +14,7 @@ const defaultBodyCellStyles = theme => ({
       fontSize: '16px',
       height: '24px',
       whiteSpace: 'nowrap',
-      width: 'calc(50% - 80px)',
+      width: 'calc(50% - 60px)',
       whiteSpace: 'nowrap',
       '&:last-child': {
         borderBottom: 'none',
