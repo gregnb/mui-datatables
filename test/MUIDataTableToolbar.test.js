@@ -134,17 +134,6 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(actualResult.length, 0);
   });
 
-  it('should render a toolbar with no filter icon if option.filtersInline = true', () => {
-    const newOptions = { ...options, filtersInline: true };
-    const mountWrapper = mount(
-      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
-    );
-    const actualResult = mountWrapper.find(FilterIcon);
-    assert.strictEqual(actualResult.length, 0);
-
-    assert.strictEqual(mountWrapper.find(IconButton).length, 4);
-  });
-
   it('should render a toolbar with custom search when option.customSearchRender is provided', () => {
     const CustomSearchRender = () => <h1>customSearchRender</h1>;
     const newOptions = { ...options, customSearchRender: CustomSearchRender };

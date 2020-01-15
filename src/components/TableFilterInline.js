@@ -1,8 +1,10 @@
 import { Grid, TableCell, TextField } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
+import FilterListIcon from '@material-ui/icons/FilterList';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
@@ -10,7 +12,6 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TableHeadRow from './TableHeadRow';
-
 
 export const defaultFilterInlineStyles = theme => ({
   root: {
@@ -107,7 +108,6 @@ class TableFilterInline extends React.Component {
     this.props.onFilterUpdate(index, value, column.name, column.filterType);
   };
 
-  // TODO extend TableFilter
   renderCheckbox(column, index) {
     const { classes, filterData, filterList } = this.props;
 
@@ -152,7 +152,18 @@ class TableFilterInline extends React.Component {
           value={filterList[index].length ? filterList[index].toString() : textLabels.all}
           name={column.name}
           onChange={event => this.handleDropdownChange(event, index, column.name)}
-          input={<Input name={column.name} id={column.name} className={classes.input} />}>
+          input={
+            <Input
+              name={column.name}
+              id={column.name}
+              className={classes.input}
+              startAdornment={
+                <InputAdornment position="start">
+                  <FilterListIcon />
+                </InputAdornment>
+              }
+            />
+          }>
           <MenuItem value={textLabels.all} key={0}>
             {textLabels.all}
           </MenuItem>
@@ -176,6 +187,13 @@ class TableFilterInline extends React.Component {
           fullWidth
           value={filterList[index].toString() || ''}
           onChange={event => this.handleTextFieldChange(event, index, column.name)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <FilterListIcon />
+              </InputAdornment>
+            ),
+          }}
         />
       </FormControl>
     );
@@ -193,7 +211,18 @@ class TableFilterInline extends React.Component {
           renderValue={selected => selected.join(', ')}
           name={column.name}
           onChange={event => this.handleMultiselectChange(index, event.target.value, column.name)}
-          input={<Input name={column.name} id={column.name} className={classes.input} />}>
+          input={
+            <Input
+              name={column.name}
+              id={column.name}
+              className={classes.input}
+              startAdornment={
+                <InputAdornment position="start">
+                  <FilterListIcon />
+                </InputAdornment>
+              }
+            />
+          }>
           {filterData[index].map((filterValue, filterIndex) => (
             <MenuItem value={filterValue} key={filterIndex + 1}>
               <Checkbox
@@ -234,32 +263,33 @@ class TableFilterInline extends React.Component {
   render() {
     const { columns, options, expandableOn, selectableOn } = this.props;
 
-    return <TableHeadRow>
-      {!expandableOn && selectableOn === 'none' ? false : <TableCell />}
-      {columns.map(
-        (column, index) => {
+    return (
+      <TableHeadRow>
+        {!expandableOn && selectableOn === 'none' ? false : <TableCell />}
+        {columns.map((column, index) => {
           if (column.display !== 'true') {
             return false;
-
           } else if (!column.filter) {
-            return <TableCell key={index}/>;
-
+            return <TableCell key={index} />;
           } else {
             const filterType = column.filterType || options.filterType;
-            return <TableCell key={index}>
-              {filterType === 'checkbox'
-                ? this.renderCheckbox(column, index)
-                : filterType === 'multiselect'
+            return (
+              <TableCell key={index}>
+                {filterType === 'checkbox'
+                  ? this.renderCheckbox(column, index)
+                  : filterType === 'multiselect'
                   ? this.renderMultiselect(column, index)
                   : filterType === 'textField'
-                    ? this.renderTextField(column, index)
-                    : filterType === 'custom'
-                      ? this.renderCustomField(column, index)
-                      : this.renderSelect(column, index)}
-            </TableCell>;
+                  ? this.renderTextField(column, index)
+                  : filterType === 'custom'
+                  ? this.renderCustomField(column, index)
+                  : this.renderSelect(column, index)}
+              </TableCell>
+            );
           }
         })}
-    </TableHeadRow>;
+      </TableHeadRow>
+    );
   }
 }
 

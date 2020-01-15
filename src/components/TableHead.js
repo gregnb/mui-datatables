@@ -31,8 +31,18 @@ class TableHead extends React.Component {
   };
 
   render() {
-    const { classes, columns, count, options, data, setCellRef, selectedRows,
-      filterList, filterData, filterUpdate, resetFilters
+    const {
+      classes,
+      columns,
+      count,
+      options,
+      data,
+      setCellRef,
+      selectedRows,
+      filterList,
+      filterData,
+      filterUpdate,
+      resetFilters,
     } = this.props;
 
     const numSelected = (selectedRows && selectedRows.data.length) || 0;
@@ -111,7 +121,8 @@ class TableHead extends React.Component {
             onFilterReset={resetFilters}
             expandableOn={options.expandableRows}
             selectableOn={options.selectableRows}
-          />)}
+          />
+        )}
       </MuiTableHead>
     );
   }
