@@ -55,7 +55,7 @@ class TableSearch extends React.Component {
           <TextField
             className={classes.searchText}
             autoFocus={true}
-            InputProps={{
+            inputProps={{
               'data-test-id': options.textLabels.toolbar.search,
               'aria-label': options.textLabels.toolbar.search,
             }}
