@@ -7,7 +7,7 @@ function buildMap(rows) {
 
 function warnDeprecated(warning) {
   if (process.env.NODE_ENV === 'development') {
-    console.warn(`Deprecation Notice:  ${warning}`);
+    console.error(`Deprecation Notice:  ${warning}`);
   }
 }
 
