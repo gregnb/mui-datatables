@@ -94,45 +94,32 @@ class TableResize extends React.Component {
   };
 
   onResizeStart = (id, e) => {
-    this.setState({ isResize: true, id, startPosition: e.clientX });
+    this.setState({ isResize: true, id });
   };
 
   onResizeMove = (id, e) => {
-    const { startPosition, isResize, resizeCoords } = this.state;
-    const fixedMinWidth = 50;
-    let cellPositions = [];
+    const { isResize, resizeCoords } = this.state;
+    const fixedMinWidth = 100;
+    const idNumber = parseInt(id);
     const finalCells = Object.entries(this.cellsRef);
-    const elStyle2 = window.getComputedStyle(finalCells[id][1], null);
-    let previous = 0;
-    finalCells.forEach(([key, item]) => {
-      if (!item) return;
-      const elStyle = window.getComputedStyle(item, null);
-      const cellWidth = fixedMinWidth + parseFloat(elStyle.paddingLeft) + parseFloat(elStyle.paddingRight);
-      cellPositions.push(previous + cellWidth);
-      previous = previous + cellWidth;
-    });
-    const minLeft = cellPositions[id].toFixed(2);
+    if (idNumber >= finalCells.length) return;
+    if (isResize) {
+      let leftPos = e.clientX;
+      if (leftPos > resizeCoords[idNumber + 1].left - fixedMinWidth)
+        leftPos = resizeCoords[idNumber + 1].left - fixedMinWidth;
+      if (
+        (idNumber === 0 && typeof resizeCoords[0] != 'undefined') ||
+        (idNumber === 1 && typeof resizeCoords[0] == 'undefined')
+      ) {
+        if (leftPos < fixedMinWidth) leftPos = fixedMinWidth;
+      } else if (leftPos < resizeCoords[idNumber - 1].left + fixedMinWidth)
+        leftPos = resizeCoords[idNumber - 1].left + fixedMinWidth;
 
-    try {
-      const maxRight = cellPositions[parseInt(id) + 1].toFixed(2);
-      const minWidth = maxRight - minLeft;
-
-      if (isResize) {
-        let leftPos = startPosition - (startPosition - e.clientX);
-        if (leftPos > resizeCoords[parseInt(id) + 1].left - minWidth)
-          leftPos = resizeCoords[parseInt(id) + 1].left - minWidth;
-        if (parseInt(id) > 0) {
-          if (leftPos < resizeCoords[parseInt(id) - 1].left + minWidth)
-            leftPos = resizeCoords[parseInt(id) - 1].left + minWidth;
-        } else if (leftPos < minWidth) leftPos = minWidth;
-        const curCoord = { ...resizeCoords[id], left: leftPos };
-        const newResizeCoords = { ...resizeCoords, [id]: curCoord };
-        this.setState({ resizeCoords: newResizeCoords }, this.updateWidths);
-      }
-    } catch (error) {
-      return;
+      const curCoord = { ...resizeCoords[id], left: leftPos };
+      const newResizeCoords = { ...resizeCoords, [id]: curCoord };
+      this.setState({ resizeCoords: newResizeCoords }, this.updateWidths);
     }
-  };
+  }; 
 
   onResizeEnd = (id, e) => {
     this.setState({ isResize: false, id: null });
