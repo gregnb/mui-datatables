@@ -5,10 +5,10 @@ import { assert } from 'chai';
 describe('utils.js', () => {
   describe('escapeDangerousCSVCharacters', () => {
     it('properly escapes the first character in a string if it can be used for injection', () => {
-      assert.strictEqual(escapeDangerousCSVCharacters('+SUM(1+1)'), '\'+SUM(1+1)');
-      assert.strictEqual(escapeDangerousCSVCharacters('-SUM(1+1)'), '\'-SUM(1+1)');
-      assert.strictEqual(escapeDangerousCSVCharacters('=SUM(1+1)'), '\'=SUM(1+1)');
-      assert.strictEqual(escapeDangerousCSVCharacters('@SUM(1+1)'), '\'@SUM(1+1)');
+      assert.strictEqual(escapeDangerousCSVCharacters('+SUM(1+1)'), "'+SUM(1+1)");
+      assert.strictEqual(escapeDangerousCSVCharacters('-SUM(1+1)'), "'-SUM(1+1)");
+      assert.strictEqual(escapeDangerousCSVCharacters('=SUM(1+1)'), "'=SUM(1+1)");
+      assert.strictEqual(escapeDangerousCSVCharacters('@SUM(1+1)'), "'@SUM(1+1)");
     });
   });
 

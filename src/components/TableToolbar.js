@@ -233,7 +233,7 @@ class TableToolbar extends React.Component {
     } else {
       this.setActiveIcon('search');
     }
-  }
+  };
 
   render() {
     const {
@@ -254,7 +254,10 @@ class TableToolbar extends React.Component {
     const { showSearch, searchText } = this.state;
 
     return (
-      <Toolbar className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.root : classes.fullWidthRoot} role={'toolbar'} aria-label={'Table Toolbar'}>
+      <Toolbar
+        className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.root : classes.fullWidthRoot}
+        role={'toolbar'}
+        aria-label={'Table Toolbar'}>
         <div className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.left : classes.fullWidthLeft}>
           {showSearch === true ? (
             options.customSearchRender ? (
@@ -271,7 +274,11 @@ class TableToolbar extends React.Component {
             title
           ) : (
             <div className={classes.titleRoot} aria-hidden={'true'}>
-              <Typography variant="h6" className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.titleText : classes.fullWidthTitleText}>
+              <Typography
+                variant="h6"
+                className={
+                  options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.titleText : classes.fullWidthTitleText
+                }>
                 {title}
               </Typography>
             </div>
