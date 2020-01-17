@@ -253,7 +253,7 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(actualResult.length, 1);
 
     // now set searchText and click search button again and test
-    shallowWrapper.setState({ searchText: 'fakeSearchText'});
+    shallowWrapper.setState({ searchText: 'fakeSearchText' });
     shallowWrapper.find('[data-testid="Search-iconButton"]').simulate('click');
     shallowWrapper.update();
 
@@ -312,7 +312,6 @@ describe('<TableToolbar />', function() {
     ).dive();
     const actualResult = shallowWrapper.find('[data-testid="Search-iconButton"]');
     assert.strictEqual(actualResult.prop('classes').root.indexOf('MUIDataTableToolbar-iconActive-'), 0);
-
   });
 
   it('should render search icon as active if option.searchText = some_text', () => {
@@ -322,7 +321,6 @@ describe('<TableToolbar />', function() {
     ).dive();
     const actualResult = shallowWrapper.find('[data-testid="Search-iconButton"]');
     assert.strictEqual(actualResult.prop('classes').root.indexOf('MUIDataTableToolbar-iconActive-'), 0);
-
   });
 
   it('should download CSV when calling method handleCSVDownload', () => {

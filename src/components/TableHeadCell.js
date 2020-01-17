@@ -144,7 +144,7 @@ class TableHeadCell extends React.Component {
               placement={'bottom-start'}
               classes={{
                 tooltip: classes.tooltip,
-                popper: classes.mypopper
+                popper: classes.mypopper,
               }}>
               <div className={classes.sortAction}>
                 <div
@@ -177,7 +177,7 @@ class TableHeadCell extends React.Component {
                 placement={'bottom-end'}
                 classes={{
                   tooltip: classes.tooltip,
-                  popper: classes.mypopper
+                  popper: classes.mypopper,
                 }}
                 enterDelay={300}>
                 <HelpIcon className={classes.hintIconAlone} fontSize="small" />

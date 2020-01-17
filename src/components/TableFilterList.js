@@ -80,7 +80,7 @@ class TableFilterList extends React.Component {
       />
     );
 
-    const getFilterList = (filterList) => {
+    const getFilterList = filterList => {
       return filterList.map((item, index) => {
         if (columnNames[index].filterType === 'custom' && filterList[index].length) {
           const filterListRenderersValue = filterListRenderers[index](item);
@@ -88,13 +88,7 @@ class TableFilterList extends React.Component {
           if (filterListRenderersValue) {
             if (Array.isArray(filterListRenderersValue)) {
               return filterListRenderersValue.map((customFilterItem, customFilterItemIndex) =>
-                customFilterChip(
-                  customFilterItem,
-                  index,
-                  customFilterItemIndex,
-                  item,
-                  true,
-                ),
+                customFilterChip(customFilterItem, index, customFilterItemIndex, item, true),
               );
             } else {
               return customFilterChip(filterListRenderersValue, index, index, item, false);
@@ -107,12 +101,7 @@ class TableFilterList extends React.Component {
     };
 
     return (
-      <div className={classes.root}>
-        {serverSide
-          ? getFilterList(serverSideFilterList)
-          : getFilterList(filterList)
-        }
-      </div>
+      <div className={classes.root}>{serverSide ? getFilterList(serverSideFilterList) : getFilterList(filterList)}</div>
     );
   }
 }
