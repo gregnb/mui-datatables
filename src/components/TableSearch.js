@@ -57,6 +57,8 @@ class TableSearch extends React.Component {
             autoFocus={true}
             InputProps={{
               'data-test-id': options.textLabels.toolbar.search,
+            }}
+            inputProps={{
               'aria-label': options.textLabels.toolbar.search,
             }}
             value={searchText || ''}
