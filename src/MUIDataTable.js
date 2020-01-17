@@ -22,6 +22,9 @@ import { buildMap, getCollatorComparator, sortCompare, getPageValue, warnDepreca
 const defaultTableStyles = theme => ({
   root: {},
   paper: {},
+  paperResponsiveScrollFullHeightFullWidth: {
+    position: 'absolute'
+  },
   tableRoot: {
     outline: 'none',
   },
@@ -29,17 +32,14 @@ const defaultTableStyles = theme => ({
     overflowX: 'auto',
     overflow: 'auto',
     height: '100%',
-    maxHeight: '499px',
   },
   responsiveScrollMaxHeight: {
     overflowX: 'auto',
     overflow: 'auto',
     height: '100%',
-    maxHeight: '499px',
   },
   responsiveScrollFullHeight: {
     height: '100%',
-    maxHeight: 'none',
   },
   responsiveStacked: {
     overflowX: 'auto',
@@ -49,6 +49,7 @@ const defaultTableStyles = theme => ({
       overflow: 'hidden',
     },
   },
+  responsiveStackedFullWidth: {},
   caption: {
     position: 'absolute',
     left: '-3000px',
@@ -136,7 +137,7 @@ class MUIDataTable extends React.Component {
     ).isRequired,
     /** Options used to describe table */
     options: PropTypes.shape({
-      responsive: PropTypes.oneOf(['stacked', 'scrollMaxHeight', 'scrollFullHeight']),
+      responsive: PropTypes.oneOf(['stacked', 'stackedFullWidth', 'scrollMaxHeight', 'scrollFullHeight', 'scrollFullHeightFullWidth']),
       filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField', 'custom']),
       getTextLabels: PropTypes.func,
       pagination: PropTypes.bool,
@@ -337,9 +338,9 @@ class MUIDataTable extends React.Component {
       );
       this.options.selectableRows = this.options.selectableRows ? 'multiple' : 'none';
     }
-    if (['scrollMaxHeight', 'scrollFullHeight', 'stacked'].indexOf(this.options.responsive) === -1) {
+    if (['scrollMaxHeight', 'scrollFullHeight', 'stacked', 'stackedFullWidth', 'scrollFullHeightFullWidth'].indexOf(this.options.responsive) === -1) {
       warnDeprecated(
-        'Invalid option value for responsive. Please use string option: scrollMaxHeight | scrollFullHeight | stacked',
+        'Invalid option value for responsive. Please use string option: scrollMaxHeight | scrollFullHeight | stacked | stackedFullWidth | scrollFullHeightFullWidth',
       );
     }
     if (this.options.responsive === 'scroll') {
@@ -1333,21 +1334,37 @@ class MUIDataTable extends React.Component {
     const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
     const showToolbar = hasToolbarItem(this.options, title);
     const columnNames = columns.map(column => ({ name: column.name, filterType: column.filterType || this.options.filterType }));
+    const responsiveOption = this.options.responsive;
+    let paperClasses = `${classes.paper} ${className}`;
+    let maxHeight;
     let responsiveClass;
 
-    switch (this.options.responsive) {
-      // DEPRECATED: This options is being transitioned to `responsiveScrollMaxHeight`
+    switch (responsiveOption) {
+      // DEPRECATED: This options is beign transitioned to `responsiveScrollMaxHeight`
       case 'scroll':
         responsiveClass = classes.responsiveScroll;
+        maxHeight = '499px';
         break;
       case 'scrollMaxHeight':
         responsiveClass = classes.responsiveScrollMaxHeight;
+        maxHeight = '499px';
         break;
       case 'scrollFullHeight':
         responsiveClass = classes.responsiveScrollFullHeight;
+        maxHeight = 'none';
+        break;
+      case 'scrollFullHeightFullWidth':
+        responsiveClass = classes.responsiveScrollFullHeight;
+        paperClasses = `${classes.paperResponsiveScrollFullHeightFullWidth} ${className}`;
         break;
       case 'stacked':
         responsiveClass = classes.responsiveStacked;
+        maxHeight = 'none';
+        break;
+      case 'stackedFullWidth':
+        responsiveClass = classes.responsiveStackedFullWidth;
+        paperClasses = `${classes.paperResponsiveScrollFullHeightFullWidth} ${className}`;
+        maxHeight = 'none';
         break;
     }
 
@@ -1359,7 +1376,7 @@ class MUIDataTable extends React.Component {
       <Paper
         elevation={this.options.elevation}
         ref={this.tableContent}
-        className={classnames(classes.paper, className)}>
+        className={paperClasses}>
         {selectedRows.data.length && this.options.disableToolbarSelect !== true ? (
           <TableToolbarSelect
             options={this.options}
@@ -1408,7 +1425,7 @@ class MUIDataTable extends React.Component {
           filterUpdate={this.filterUpdate}
           columnNames={columnNames}
         />
-        <div style={{ position: 'relative' }} className={responsiveClass}>
+        <div style={{ position: 'relative', maxHeight }} className={responsiveClass}>
           {this.options.resizableColumns && (
             <TableResize
               key={rowCount}
