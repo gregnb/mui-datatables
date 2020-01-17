@@ -5,6 +5,12 @@ function buildMap(rows) {
   }, {});
 }
 
+function warnDeprecated(warning) {
+  if (process.env.NODE_ENV === 'development') {
+    console.error(`Deprecation Notice:  ${warning}`);
+  }
+}
+
 function getPageValue(count, rowsPerPage, page) {
   const totalPages = count <= rowsPerPage ? 1 : Math.ceil(count / rowsPerPage);
 
@@ -108,4 +114,13 @@ function createCSVDownload(columns, data, options, downloadCSV) {
   downloadCSV(csv, options.downloadOptions.filename);
 }
 
-export { buildMap, getPageValue, getCollatorComparator, sortCompare, createCSVDownload, buildCSV, downloadCSV };
+export {
+  buildMap,
+  getPageValue,
+  getCollatorComparator,
+  sortCompare,
+  createCSVDownload,
+  buildCSV,
+  downloadCSV,
+  warnDeprecated,
+};
