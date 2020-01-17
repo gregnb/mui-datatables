@@ -20,15 +20,26 @@ import cloneDeep from 'lodash.clonedeep';
 
 export const defaultToolbarStyles = theme => ({
   root: {},
+  fullWidthRoot: {},
   left: {
+    flex: '1 1 auto',
+  },
+  fullWidthLeft: {
     flex: '1 1 auto',
   },
   actions: {
     flex: '1 1 auto',
     textAlign: 'right',
   },
+  fullWidthActions: {
+    flex: '1 1 auto',
+    textAlign: 'right',
+  },
   titleRoot: {},
   titleText: {},
+  fullWidthTitleText: {
+    textAlign: 'left',
+  },
   icon: {
     '&:hover': {
       color: theme.palette.primary.main,
@@ -78,6 +89,8 @@ export const defaultToolbarStyles = theme => ({
   },
   '@media screen and (max-width: 480px)': {},
 });
+
+const RESPONSIVE_FULL_WIDTH_NAME = 'scrollFullHeightFullWidth';
 
 class TableToolbar extends React.Component {
   state = {
@@ -178,7 +191,12 @@ class TableToolbar extends React.Component {
   };
 
   getActiveIcon = (styles, iconName) => {
-    return this.state.iconActive !== iconName ? styles.icon : styles.iconActive;
+    let isActive = this.state.iconActive === iconName;
+    if (iconName === 'search') {
+      const { showSearch, searchText } = this.state;
+      isActive = isActive || showSearch || searchText;
+    }
+    return isActive ? styles.iconActive : styles.icon;
   };
 
   showSearch = () => {
@@ -208,6 +226,15 @@ class TableToolbar extends React.Component {
     this.props.searchTextUpdate(value);
   };
 
+  handleSearchIconClick = () => {
+    const { showSearch, searchText } = this.state;
+    if (showSearch && !searchText) {
+      this.hideSearch();
+    } else {
+      this.setActiveIcon('search');
+    }
+  }
+
   render() {
     const {
       data,
@@ -227,8 +254,8 @@ class TableToolbar extends React.Component {
     const { showSearch, searchText } = this.state;
 
     return (
-      <Toolbar className={classes.root} role={'toolbar'} aria-label={'Table Toolbar'}>
-        <div className={classes.left}>
+      <Toolbar className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.root : classes.fullWidthRoot} role={'toolbar'} aria-label={'Table Toolbar'}>
+        <div className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.left : classes.fullWidthLeft}>
           {showSearch === true ? (
             options.customSearchRender ? (
               options.customSearchRender(searchText, this.handleSearch, this.hideSearch, options)
@@ -244,13 +271,13 @@ class TableToolbar extends React.Component {
             title
           ) : (
             <div className={classes.titleRoot} aria-hidden={'true'}>
-              <Typography variant="h6" className={classes.titleText}>
+              <Typography variant="h6" className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.titleText : classes.fullWidthTitleText}>
                 {title}
               </Typography>
             </div>
           )}
         </div>
-        <div className={classes.actions}>
+        <div className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.actions : classes.fullWidthActions}>
           {options.search && (
             <Tooltip title={search} disableFocusListener>
               <IconButton
@@ -258,7 +285,7 @@ class TableToolbar extends React.Component {
                 data-testid={search + '-iconButton'}
                 buttonRef={el => (this.searchButton = el)}
                 classes={{ root: this.getActiveIcon(classes, 'search') }}
-                onClick={this.setActiveIcon.bind(null, 'search')}>
+                onClick={this.handleSearchIconClick}>
                 <SearchIcon />
               </IconButton>
             </Tooltip>

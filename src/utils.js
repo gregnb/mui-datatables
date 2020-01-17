@@ -15,6 +15,12 @@ function escapeDangerousCSVCharacters(data) {
   return data;
 };
 
+function warnDeprecated(warning) {
+  if (process.env.NODE_ENV === 'development') {
+    console.error(`Deprecation Notice:  ${warning}`);
+  }
+}
+
 function getPageValue(count, rowsPerPage, page) {
   const totalPages = count <= rowsPerPage ? 1 : Math.ceil(count / rowsPerPage);
 
@@ -53,7 +59,7 @@ function buildCSV(columns, data, options) {
         .reduce(
           (soFar, column) =>
             column.download
-              ? soFar + '"' + escapeDangerousCSVCharacters(replaceDoubleQuoteInString(column.name)) + '"' + options.downloadOptions.separator
+              ? soFar + '"' + escapeDangerousCSVCharacters(replaceDoubleQuoteInString(column.label || column.name)) + '"' + options.downloadOptions.separator
               : soFar,
           '',
         )
@@ -118,4 +124,4 @@ function createCSVDownload(columns, data, options, downloadCSV) {
   downloadCSV(csv, options.downloadOptions.filename);
 }
 
-export { buildMap, getPageValue, getCollatorComparator, sortCompare, createCSVDownload, buildCSV, downloadCSV, escapeDangerousCSVCharacters };
+export { buildMap, getPageValue, getCollatorComparator, sortCompare, createCSVDownload, buildCSV, downloadCSV, warnDeprecated, escapeDangerousCSVCharacters };

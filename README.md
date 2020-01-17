@@ -161,7 +161,7 @@ The component accepts the following props:
 |**`customFilterDialogFooter `**|function||Add a custom footer to the filter dialog. `customFilterDialogFooter(filterList: array) => React Component`
 |**`elevation`**|number|4|Shadow depth applied to Paper component
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
-|**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: 'stacked', 'scrollMaxHeight' (limits height of table), 'scrollFullHeight' (table takes on as much height as needed to display all rows set in rowsPerPage) **('scroll' option has been deprecated in favor of `scrollMaxHeight`)**
+|**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: 'stacked', 'scrollMaxHeight' (limits height of table), 'scrollFullHeight' (table takes on as much height as needed to display all rows set in rowsPerPage), 'scrollFullHeightFullWidth' (same as 'scrollFullHeight' except that paper container wraps the table and the width takes the full browser window), 'stackedFullWidth' (same as stacked with the addition of the paper container changes with 'scrollFullHeightFullWidth') **('scroll' option has been deprecated in favor of `scrollMaxHeight`)**
 |**`rowsPerPage`**|number|10|Number of rows allowed per page
 |**`rowsPerPageOptions`**|array|[10,15,100]|Options to provide in pagination for number of rows a user can select
 |**`rowHover`**|boolean|true|Enable/disable hover style over rows
