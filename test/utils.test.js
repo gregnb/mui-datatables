@@ -1,8 +1,17 @@
-import { getPageValue, buildCSV, createCSVDownload } from '../src/utils';
+import { getPageValue, buildCSV, createCSVDownload, escapeDangerousCSVCharacters } from '../src/utils';
 import { spy } from 'sinon';
 import { assert } from 'chai';
 
 describe('utils.js', () => {
+  describe('escapeDangerousCSVCharacters', () => {
+    it('properly escapes the first character in a string if it can be used for injection', () => {
+      assert.strictEqual(escapeDangerousCSVCharacters('+SUM(1+1)'), '\'+SUM(1+1)');
+      assert.strictEqual(escapeDangerousCSVCharacters('-SUM(1+1)'), '\'-SUM(1+1)');
+      assert.strictEqual(escapeDangerousCSVCharacters('=SUM(1+1)'), '\'=SUM(1+1)');
+      assert.strictEqual(escapeDangerousCSVCharacters('@SUM(1+1)'), '\'@SUM(1+1)');
+    });
+  });
+
   describe('getPageValue', () => {
     it('returns the highest in bounds page value when page is out of bounds and count is greater than rowsPerPage', () => {
       const count = 30;
