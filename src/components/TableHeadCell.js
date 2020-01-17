@@ -145,7 +145,7 @@ class TableHeadCell extends React.Component {
               classes={{
                 tooltip: classes.tooltip,
                 popper: classes.mypopper
-              }}
+              }}>
               <div className={classes.sortAction}>
                 <div
                   className={classNames({
