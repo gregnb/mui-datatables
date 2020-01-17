@@ -191,7 +191,12 @@ class TableToolbar extends React.Component {
   };
 
   getActiveIcon = (styles, iconName) => {
-    return this.state.iconActive !== iconName ? styles.icon : styles.iconActive;
+    let isActive = this.state.iconActive === iconName;
+    if (iconName === 'search') {
+      const { showSearch, searchText } = this.state;
+      isActive = isActive || showSearch || searchText;
+    }
+    return isActive ? styles.iconActive : styles.icon;
   };
 
   showSearch = () => {
@@ -220,6 +225,15 @@ class TableToolbar extends React.Component {
     this.setState({ searchText: value });
     this.props.searchTextUpdate(value);
   };
+
+  handleSearchIconClick = () => {
+    const { showSearch, searchText } = this.state;
+    if (showSearch && !searchText) {
+      this.hideSearch();
+    } else {
+      this.setActiveIcon('search');
+    }
+  }
 
   render() {
     const {
@@ -271,7 +285,7 @@ class TableToolbar extends React.Component {
                 data-testid={search + '-iconButton'}
                 buttonRef={el => (this.searchButton = el)}
                 classes={{ root: this.getActiveIcon(classes, 'search') }}
-                onClick={this.setActiveIcon.bind(null, 'search')}>
+                onClick={this.handleSearchIconClick}>
                 <SearchIcon />
               </IconButton>
             </Tooltip>

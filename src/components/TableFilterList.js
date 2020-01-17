@@ -46,41 +46,24 @@ class TableFilterList extends React.Component {
     } = this.props;
     const { serverSide } = this.props.options;
 
-    const customFilterChipMultiValue = (customFilterItem, index, customFilterItemIndex, item, orig) => {
-      let label = '';
-      const type = customFilterListUpdate[index] ? 'custom' : 'chip';
+    const customFilterChip = (customFilterItem, index, customFilterItemIndex, item, isArray) => {
+      let type;
 
-      if (Array.isArray(orig)) label = filterListRenderers[customFilterItemIndex](customFilterItem);
-      else label = filterListRenderers[index](item);
+      // If our custom filter list is an array, we need to check for custom update functions to determine
+      // default type. Otherwise we use the supplied type in options.
+      if (isArray) type = customFilterListUpdate[index] ? 'custom' : 'chip';
+      else type = columnNames[index].filterType;
 
       return (
         <Chip
-          label={label}
+          label={customFilterItem}
           key={customFilterItemIndex}
           onDelete={filterUpdate.bind(
             null,
             index,
-            item[customFilterItemIndex],
+            item[customFilterItemIndex] || [],
             columnNames[index].name,
             type,
-            customFilterListUpdate[index],
-          )}
-          className={classes.chip}
-        />
-      );
-    };
-
-    const customFilterChipSingleValue = (index, item) => {
-      return (
-        <Chip
-          label={filterListRenderers[index](item)}
-          key={index}
-          onDelete={filterUpdate.bind(
-            null,
-            index,
-            [],
-            columnNames[index].name,
-            columnNames[index].filterType,
             customFilterListUpdate[index],
           )}
           className={classes.chip}
@@ -97,51 +80,38 @@ class TableFilterList extends React.Component {
       />
     );
 
+    const getFilterList = (filterList) => {
+      return filterList.map((item, index) => {
+        if (columnNames[index].filterType === 'custom' && filterList[index].length) {
+          const filterListRenderersValue = filterListRenderers[index](item);
+
+          if (filterListRenderersValue) {
+            if (Array.isArray(filterListRenderersValue)) {
+              return filterListRenderersValue.map((customFilterItem, customFilterItemIndex) =>
+                customFilterChip(
+                  customFilterItem,
+                  index,
+                  customFilterItemIndex,
+                  item,
+                  true,
+                ),
+              );
+            } else {
+              return customFilterChip(filterListRenderersValue, index, index, item, false);
+            }
+          }
+        }
+
+        return item.map((data, colIndex) => filterChip(index, data, colIndex));
+      });
+    };
+
     return (
       <div className={classes.root}>
         {serverSide
-          ? serverSideFilterList.map((item, index) => {
-              const filterListRenderersValue = filterListRenderers[index](item);
-
-              if (columnNames[index].filterType === 'custom' && filterListRenderersValue) {
-                if (Array.isArray(filterListRenderersValue)) {
-                  return filterListRenderersValue.map((customFilterItem, customFilterItemIndex) =>
-                    customFilterChipMultiValue(
-                      customFilterItem,
-                      index,
-                      customFilterItemIndex,
-                      item,
-                      filterListRenderersValue,
-                    ),
-                  );
-                } else {
-                  return customFilterChipSingleValue(index, item);
-                }
-              }
-
-              return item.map((data, colIndex) => filterChip(index, data, colIndex));
-            })
-          : filterList.map((item, index) => {
-              const customFilterListRenderersValue = filterListRenderers[index](item);
-
-              if (columnNames[index].filterType === 'custom' && customFilterListRenderersValue) {
-                if (Array.isArray(customFilterListRenderersValue)) {
-                  return customFilterListRenderersValue.map((customFilterItem, customFilterItemIndex) =>
-                    customFilterChipMultiValue(
-                      customFilterItem,
-                      index,
-                      customFilterItemIndex,
-                      item,
-                      customFilterListRenderersValue,
-                    ),
-                  );
-                } else {
-                  return customFilterChipSingleValue(index, item);
-                }
-              }
-
-              return item.map((data, colIndex) => filterChip(index, data, colIndex));
-            })}
+          ? getFilterList(serverSideFilterList)
+          : getFilterList(filterList)
+        }
       </div>
     );
   }

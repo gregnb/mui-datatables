@@ -17,7 +17,7 @@ import TableResize from './components/TableResize';
 import TableToolbar from './components/TableToolbar';
 import TableToolbarSelect from './components/TableToolbarSelect';
 import getTextLabels from './textLabels';
-import { buildMap, getCollatorComparator, sortCompare, getPageValue } from './utils';
+import { buildMap, getCollatorComparator, sortCompare, getPageValue, warnDeprecated } from './utils';
 
 const defaultTableStyles = theme => ({
   root: {},
@@ -333,28 +333,28 @@ class MUIDataTable extends React.Component {
 
   handleOptionDeprecation = () => {
     if (typeof this.options.selectableRows === 'boolean') {
-      console.error(
+      warnDeprecated(
         'Using a boolean for selectableRows has been deprecated. Please use string option: multiple | single | none',
       );
       this.options.selectableRows = this.options.selectableRows ? 'multiple' : 'none';
     }
     if (['scrollMaxHeight', 'scrollFullHeight', 'stacked', 'stackedFullWidth', 'scrollFullHeightFullWidth'].indexOf(this.options.responsive) === -1) {
-      console.error(
+      warnDeprecated(
         'Invalid option value for responsive. Please use string option: scrollMaxHeight | scrollFullHeight | stacked | stackedFullWidth | scrollFullHeightFullWidth',
       );
     }
     if (this.options.responsive === 'scroll') {
-      console.error('The "scroll" responsive option has been deprecated. It is being replaced by "scrollMaxHeight"');
+      warnDeprecated('This option has been replaced by scrollMaxHeight');
     }
     if (this.options.fixedHeader === false || this.options.fixedHeader) {
-      console.error(
+      warnDeprecated(
         'fixedHeader has been deprecated in favor of fixedHeaderOptions: { xAxis: boolean, yAxis: boolean }. Once removed, the new options will be set by default to render like the old fixedHeader. However, if you are setting the fixedHeader value manually, it will no longer work in the next major version.',
       );
     }
 
     this.props.columns.map(c => {
       if (c.options && c.options.customFilterListRender) {
-        console.error(
+        warnDeprecated(
           'The customFilterListRender option has been deprecated. It is being replaced by customFilterListOptions.render (Specify customFilterListOptions: { render: Function } in column options.)',
         );
       }
@@ -378,8 +378,8 @@ class MUIDataTable extends React.Component {
       throw Error('renderExpandableRow must be provided when using expandableRows option');
     }
     if (this.props.options.filterList) {
-      console.error(
-        'Deprecated: filterList must now be provided under each column option. see https://github.com/gregnb/mui-datatables/tree/master/examples/column-filters example',
+      warnDeprecated(
+        'filterList must now be provided under each column option. see https://github.com/gregnb/mui-datatables/tree/master/examples/column-filters example',
       );
     }
   }
@@ -448,7 +448,7 @@ class MUIDataTable extends React.Component {
           }
 
           if (options.sortDirection === null) {
-            console.error(
+            warnDeprecated(
               'The "null" option for sortDirection is deprecated. sortDirection is an enum, use "asc" | "desc" | "none"',
             );
             options.sortDirection = 'none';
@@ -503,8 +503,8 @@ class MUIDataTable extends React.Component {
         data => data.filter(d => typeof d === 'object' && d !== null && !Array.isArray(d)).length > 0,
       ).length > 0;
     if (hasInvalidData)
-      console.error(
-        'Deprecated: Passing objects in as data is not supported, and will be prevented in a future release. Consider using ids in your data and linking it to external objects if you want to access object data from custom render functions.',
+      warnDeprecated(
+        'Passing objects in as data is not supported, and will be prevented in a future release. Consider using ids in your data and linking it to external objects if you want to access object data from custom render functions.',
       );
 
     return transformedData;
@@ -557,8 +557,8 @@ class MUIDataTable extends React.Component {
       if (column.filterOptions) {
         if (Array.isArray(column.filterOptions)) {
           filterData[colIndex] = cloneDeep(column.filterOptions);
-          console.error(
-            'Deprecated: filterOptions must now be an object. see https://github.com/gregnb/mui-datatables/tree/master/examples/customize-filter example',
+          warnDeprecated(
+            'filterOptions must now be an object. see https://github.com/gregnb/mui-datatables/tree/master/examples/customize-filter example',
           );
         } else if (Array.isArray(column.filterOptions.names)) {
           filterData[colIndex] = cloneDeep(column.filterOptions.names);
@@ -678,7 +678,7 @@ class MUIDataTable extends React.Component {
   /*
    *  Build the table data used to display to the user (ie: after filter/search applied)
    */
-  computeDisplayRow(columns, row, rowIndex, filterList, searchText, dataForTableMeta) {
+  computeDisplayRow(columns, row, rowIndex, filterList, searchText, dataForTableMeta, options) {
     let isFiltered = false;
     let isSearchFound = false;
     let displayRow = [];
@@ -716,8 +716,8 @@ class MUIDataTable extends React.Component {
       const columnVal = columnValue === null || columnValue === undefined ? '' : columnValue.toString();
 
       const filterVal = filterList[index];
-      const caseSensitive = this.options.caseSensitive;
-      const filterType = column.filterType || this.options.filterType;
+      const caseSensitive = options.caseSensitive;
+      const filterType = column.filterType || options.filterType;
       if (filterVal.length || filterType === 'custom') {
         if (column.filterOptions && column.filterOptions.logic) {
           if (column.filterOptions.logic(columnValue, filterVal)) isFiltered = true;
@@ -762,7 +762,7 @@ class MUIDataTable extends React.Component {
       }
     }
 
-    if (this.options.serverSide) {
+    if (options.serverSide) {
       if (customSearch) {
         console.warn('Server-side filtering is enabled, hence custom search will be ignored.');
       }
@@ -836,7 +836,7 @@ class MUIDataTable extends React.Component {
 
     for (let index = 0; index < data.length; index++) {
       const value = data[index].data;
-      const displayRow = this.computeDisplayRow(columns, value, index, filterList, searchText, dataForTableMeta);
+      const displayRow = this.computeDisplayRow(columns, value, index, filterList, searchText, dataForTableMeta, this.options);
 
       if (displayRow) {
         newRows.push({
@@ -1333,7 +1333,7 @@ class MUIDataTable extends React.Component {
     const rowCount = this.state.count || displayData.length;
     const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
     const showToolbar = hasToolbarItem(this.options, title);
-    const columnNames = columns.map(column => ({ name: column.name, filterType: column.filterType }));
+    const columnNames = columns.map(column => ({ name: column.name, filterType: column.filterType || this.options.filterType }));
     const responsiveOption = this.options.responsive;
     let paperClasses = `${classes.paper} ${className}`;
     let maxHeight;
