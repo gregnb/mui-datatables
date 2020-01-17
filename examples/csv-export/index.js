@@ -15,14 +15,18 @@ class Example extends React.Component {
       {
         name: 'Location',
         options: {
-          display: 'false'
-        }
+          display: 'false',
+        },
       },
       {
         name: 'Age',
         options: {
-          customBodyRender: value => <div><span>{value}</span></div>
-        }
+          customBodyRender: value => (
+            <div>
+              <span>{value}</span>
+            </div>
+          ),
+        },
       },
       {
         name: 'Salary',
@@ -72,12 +76,12 @@ class Example extends React.Component {
       responsive: 'stacked',
       rowsPerPage: 10,
       downloadOptions: {
-          filename: 'excel-format.csv',
-          separator: ';',
-          filterOptions: {
-            useDisplayedColumnsOnly: true,
-            useDisplayedRowsOnly: true,
-          }
+        filename: 'excel-format.csv',
+        separator: ';',
+        filterOptions: {
+          useDisplayedColumnsOnly: true,
+          useDisplayedRowsOnly: true,
+        },
       },
       onDownload: (buildHead, buildBody, columns, data) => {
         if (this.state.downloadFile) {
@@ -101,7 +105,7 @@ class Example extends React.Component {
       onColumnSortChange: (column, direction) => {
         console.log(column, direction);
       },
-      onColumnViewChange: (column, action) => {
+      onViewColumnsChange: (column, action) => {
         console.log(column, action);
       },
       onFilterChange: (column, filters) => {
