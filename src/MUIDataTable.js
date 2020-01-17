@@ -726,9 +726,9 @@ class MUIDataTable extends React.Component {
   }
 
   /*
-   *  Build the table data used to display to the user (ie: after filter/search applied)
-   */
-  computeDisplayRow(columns, row, rowIndex, filterList, searchText, dataForTableMeta) {
+   *  Build the table data used to display to the user (ie: after filter/search applied)
+   */
+  computeDisplayRow(columns, row, rowIndex, filterList, searchText, dataForTableMeta, options) {
     let isFiltered = false;
     let isSearchFound = false;
     let displayRow = [];
@@ -766,8 +766,8 @@ class MUIDataTable extends React.Component {
       const columnVal = columnValue === null || columnValue === undefined ? '' : columnValue.toString();
 
       const filterVal = filterList[index];
-      const caseSensitive = this.options.caseSensitive;
-      const filterType = column.filterType || this.options.filterType;
+      const caseSensitive = options.caseSensitive;
+      const filterType = column.filterType || options.filterType;
       if (filterVal.length || filterType === 'custom') {
         if (column.filterOptions && column.filterOptions.logic) {
           if (column.filterOptions.logic(columnValue, filterVal)) isFiltered = true;
@@ -812,7 +812,7 @@ class MUIDataTable extends React.Component {
       }
     }
 
-    if (this.options.serverSide) {
+    if (options.serverSide) {
       if (customSearch) {
         console.warn('Server-side filtering is enabled, hence custom search will be ignored.');
       }
@@ -886,7 +886,7 @@ class MUIDataTable extends React.Component {
 
     for (let index = 0; index < data.length; index++) {
       const value = data[index].data;
-      const displayRow = this.computeDisplayRow(columns, value, index, filterList, searchText, dataForTableMeta);
+      const displayRow = this.computeDisplayRow(columns, value, index, filterList, searchText, dataForTableMeta, this.options);
 
       if (displayRow) {
         newRows.push({
@@ -1384,7 +1384,7 @@ class MUIDataTable extends React.Component {
     const rowCount = this.state.count || displayData.length;
     const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
     const showToolbar = hasToolbarItem(this.options, title);
-    const columnNames = columns.map(column => ({ name: column.name, filterType: column.filterType }));
+    const columnNames = columns.map(column => ({ name: column.name, filterType: column.filterType || this.options.filterType }));
     let responsiveClass;
 
     switch (this.options.responsive) {
