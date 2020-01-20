@@ -26,7 +26,6 @@ class TableResize extends React.Component {
   state = {
     resizeCoords: {},
     priorPosition: {},
-    startPosition: 0,
     tableWidth: '100%',
     tableHeight: '100%',
   };
@@ -102,14 +101,14 @@ class TableResize extends React.Component {
     const fixedMinWidth = 100;
     const idNumber = parseInt(id);
     const finalCells = Object.entries(this.cellsRef);
-    if (idNumber >= finalCells.length) return;
+    if (idNumber >= finalCells.length-1) return;
     if (isResize) {
       let leftPos = e.clientX;
       if (leftPos > resizeCoords[idNumber + 1].left - fixedMinWidth)
         leftPos = resizeCoords[idNumber + 1].left - fixedMinWidth;
       if (
-        (idNumber === 0 && typeof resizeCoords[0] != 'undefined') ||
-        (idNumber === 1 && typeof resizeCoords[0] == 'undefined')
+        (idNumber === 0 && typeof resizeCoords[0] !== 'undefined') ||
+        (idNumber === 1 && typeof resizeCoords[0] === 'undefined')
       ) {
         if (leftPos < fixedMinWidth) leftPos = fixedMinWidth;
       } else if (leftPos < resizeCoords[idNumber - 1].left + fixedMinWidth)
