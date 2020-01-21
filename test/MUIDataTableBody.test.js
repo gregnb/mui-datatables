@@ -2,7 +2,7 @@ import React from 'react';
 import { spy, stub } from 'sinon';
 import { mount, shallow } from 'enzyme';
 import { assert, expect, should } from 'chai';
-import textLabels from '../src/textLabels';
+import getTextLabels from '../src/textLabels';
 import TableBody from '../src/components/TableBody';
 import TableSelectCell from '../src/components/TableSelectCell';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -67,7 +67,7 @@ describe('<TableBody />', function() {
   });
 
   it('should render a table body with no records if no data provided', () => {
-    const options = { selectableRows: false, textLabels };
+    const options = { selectableRows: false, textLabels: getTextLabels() };
     const selectRowUpdate = () => {};
     const toggleExpandRow = () => {};
 

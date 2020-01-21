@@ -57,7 +57,10 @@ class TableHead extends React.Component {
 
     return (
       <MuiTableHead
-        className={classNames({ [classes.responsiveStacked]: options.responsive === 'stacked', [classes.main]: true })}>
+        className={classNames({
+          [classes.responsiveStacked]: options.responsive === 'stacked' || options.responsive === 'stackedFullWidth',
+          [classes.main]: true,
+        })}>
         <TableHeadRow>
           <TableSelectCell
             ref={el => setCellRef(0, findDOMNode(el))}
