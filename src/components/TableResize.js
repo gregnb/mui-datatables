@@ -99,7 +99,7 @@ class TableResize extends React.Component {
   onResizeMove = (id, e) => {
     const { isResize, resizeCoords } = this.state;
     const fixedMinWidth = 100;
-    const idNumber = parseInt(id);
+    const idNumber = parseInt(id,10);
     const finalCells = Object.entries(this.cellsRef);
     if (idNumber >= finalCells.length-1) return;
     if (isResize) {
@@ -107,8 +107,8 @@ class TableResize extends React.Component {
       if (leftPos > resizeCoords[idNumber + 1].left - fixedMinWidth)
         leftPos = resizeCoords[idNumber + 1].left - fixedMinWidth;
       if (
-        (idNumber === 0 && typeof resizeCoords[0] !== 'undefined') ||
-        (idNumber === 1 && typeof resizeCoords[0] === 'undefined')
+        (idNumber === 0 && typeof resizeCoords[0] !== 'undefined') ||       //1st resizer with selectableRows enabled
+        (idNumber === 1 && typeof resizeCoords[0] === 'undefined')          //1st resizer with selectableRows: 'none'
       ) {
         if (leftPos < fixedMinWidth) leftPos = fixedMinWidth;
       } else if (leftPos < resizeCoords[idNumber - 1].left + fixedMinWidth)
