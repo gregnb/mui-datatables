@@ -29,6 +29,7 @@ import ServerSideSorting from './serverside-sorting';
 import Simple from './simple';
 import SimpleNoToolbar from './simple-no-toolbar';
 import TextLocalization from './text-localization';
+import CustomComponents from './custom-components';
 import Themes from './themes';
 
 /**
@@ -66,5 +67,6 @@ export default {
   Simple: Simple,
   'Simple No Toolbar': SimpleNoToolbar,
   'Text Localization': TextLocalization,
+  'Custom Components': CustomComponents,
   Themes: Themes,
 };

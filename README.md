@@ -128,6 +128,7 @@ The component accepts the following props:
 |**`columns`**|array|Columns used to describe table. Must be either an array of simple strings or objects describing a column
 |**`data`**|array|Data used to describe table. Must be either an array containing objects of key/value pairs with values that are strings or numbers, or arrays of strings or numbers (Ex: data: [{"Name": "Joe", "Job Title": "Plumber", "Age": 30}, {"Name": "Jane", "Job Title": "Electrician", "Age": 45}] or data: [["Joe", "Plumber", 30], ["Jane", "Electrician", 45]]) **Use of arbitrary objects as data is not supported, and is deprecated. Consider using ids and mapping to external object data in custom renderers instead e.g. `const data = [{"Name": "Joe", "ObjectData": 123}] --> const dataToMapInCustomRender = { 123: { foo: 'bar', baz: 'qux', ... } }`**
 |**`options`**|object|Options used to describe table
+|**`components`**|object|Custom components used to render the table
 
 #### Options:
 |Name|Type|Default|Description
@@ -325,6 +326,52 @@ class BodyCellExample extends React.Component {
 }
 
 ```
+
+## Custom Components
+
+You can pass custom components to further customize the table:
+```js
+import React from "react";
+import Chip from '@material-ui/core/Chip';
+import MUIDataTable, { TableFilterList } from "mui-datatables";
+
+const CustomChip = ({ label, onDelete }) => {
+    return (
+        <Chip
+            variant="outlined"
+            color="secondary"
+            label={label}
+            onDelete={onDelete}
+        />
+    );
+};
+
+const CustomFilterList = (props) => {
+    return <TableFilterList {...props} ItemComponent={CustomChip} />;
+};
+
+class CustomDataTable extends React.Component {
+    render() {
+        return (
+            <MUIDataTable
+                columns={columns}
+                data={data}
+                components={{
+                  TableFilterList: CustomFilterList,
+                }}
+            />
+        );
+    }
+}
+```
+Supported customizable components:
+ * `TableBody`
+ * `TableFilterList` - you can pass `ItemComponent` prop to render custom filter list item
+ * `TableFooter`
+ * `TableHead`
+ * `TableResize`
+ * `TableToolbar`
+ * `TableToolbarSelect`
 
 ## Remote Data
 
