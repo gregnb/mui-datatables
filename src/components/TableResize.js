@@ -60,7 +60,7 @@ class TableResize extends React.Component {
     const { priorPosition, resizeCoords } = this.state;
 
     let finalCells = Object.entries(this.cellsRef);
-
+    finalCells.pop();
     finalCells.forEach(([key, item]) => {
       if (!item) return;
 
@@ -99,26 +99,52 @@ class TableResize extends React.Component {
   onResizeMove = (id, e) => {
     const { isResize, resizeCoords } = this.state;
     const fixedMinWidth = 100;
-    const idNumber = parseInt(id,10);
+    const idNumber = parseInt(id, 10);
     const finalCells = Object.entries(this.cellsRef);
-    if (idNumber >= finalCells.length-1) return;
+    const tableEl = findDOMNode(this.tableRef);
+    const { width: tableWidth } = tableEl.getBoundingClientRect();
+
     if (isResize) {
       let leftPos = e.clientX;
-      if (leftPos > resizeCoords[idNumber + 1].left - fixedMinWidth)
-        leftPos = resizeCoords[idNumber + 1].left - fixedMinWidth;
-      if (
-        (idNumber === 0 && typeof resizeCoords[0] !== 'undefined') ||       //1st resizer with selectableRows enabled
-        (idNumber === 1 && typeof resizeCoords[0] === 'undefined')          //1st resizer with selectableRows: 'none'
-      ) {
+      function handleMoveLastRight() {
+        if (leftPos > tableWidth - fixedMinWidth) leftPos = tableWidth - fixedMinWidth;
+      }
+      function handleMoveFirstLeft() {
         if (leftPos < fixedMinWidth) leftPos = fixedMinWidth;
-      } else if (leftPos < resizeCoords[idNumber - 1].left + fixedMinWidth)
-        leftPos = resizeCoords[idNumber - 1].left + fixedMinWidth;
+      }
+      function handleMoveRight() {
+        if (leftPos > resizeCoords[idNumber + 1].left - fixedMinWidth)
+          leftPos = resizeCoords[idNumber + 1].left - fixedMinWidth;
+      }
+      function handleMoveLeft() {
+        if (leftPos < resizeCoords[idNumber - 1].left + fixedMinWidth)
+          leftPos = resizeCoords[idNumber - 1].left + fixedMinWidth;
+      }
+      function checkIfFirst(selectableRows) {
+        return (selectableRows !== 'none' && idNumber === 0) || (selectableRows === 'none' && idNumber === 1);
+      }
+
+      if (idNumber === finalCells.length - 2) {
+        if (checkIfFirst(this.props.options.selectableRows)) {
+          handleMoveFirstLeft();
+          handleMoveLastRight();
+        } else {
+          handleMoveLastRight();
+          handleMoveLeft();
+        }
+      } else if (checkIfFirst(this.props.options.selectableRows)) {
+        handleMoveFirstLeft();
+        handleMoveRight();
+      } else {
+        handleMoveLeft();
+        handleMoveRight();
+      }
 
       const curCoord = { ...resizeCoords[id], left: leftPos };
       const newResizeCoords = { ...resizeCoords, [id]: curCoord };
       this.setState({ resizeCoords: newResizeCoords }, this.updateWidths);
     }
-  }; 
+  };
 
   onResizeEnd = (id, e) => {
     this.setState({ isResize: false, id: null });

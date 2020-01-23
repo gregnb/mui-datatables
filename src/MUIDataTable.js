@@ -1414,6 +1414,7 @@ class MUIDataTable extends React.Component {
               key={rowCount}
               updateDividers={fn => (this.updateDividers = fn)}
               setResizeable={fn => (this.setHeadResizeable = fn)}
+              options={this.props.options}
             />
           )}
           <MuiTable
