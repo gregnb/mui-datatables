@@ -76,7 +76,7 @@ class TableFilterList extends React.Component {
           itemKey={customFilterItemIndex}
           index={index}
           data={item}
-          column={columnNames[index].name}
+          columnNames={columnNames}
         />
       );
     };
@@ -90,7 +90,7 @@ class TableFilterList extends React.Component {
         itemKey={colIndex}
         index={index}
         data={data}
-        column={columnNames[index].name}
+        columnNames={columnNames}
       />
     );
 

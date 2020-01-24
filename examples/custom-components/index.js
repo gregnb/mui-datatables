@@ -6,11 +6,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TableFilterList from '../../src/components/TableFilterList';
 
 const CustomChip = (props) => {
-  const { label, onDelete, column, className } = props;
+  const { label, onDelete, columnNames, className, index } = props;
   return (<Chip
       className={className}
       variant="outlined"
-      color={column === 'Company' ? 'secondary' : 'primary'}
+      color={columnNames[index].name === 'Company' ? 'secondary' : 'primary'}
       label={label}
       onDelete={onDelete}
   />);
