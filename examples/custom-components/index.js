@@ -5,10 +5,12 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import TableFilterList from '../../src/components/TableFilterList';
 
-const CustomChip = ({ label, onDelete }) => {
+const CustomChip = (props) => {
+  const { label, onDelete, column, className } = props;
   return (<Chip
+      className={className}
       variant="outlined"
-      color="secondary"
+      color={column === 'Company' ? 'secondary' : 'primary'}
       label={label}
       onDelete={onDelete}
   />);
@@ -61,7 +63,7 @@ class Example extends React.Component {
           },
         },
       },
-      { name: 'City', label: 'City Label' },
+      { name: 'City', label: 'City Label', options: { filterList: ['Dallas'] } },
       { name: 'State' },
       { name: 'Empty', options: { empty: true, filterType: 'checkbox' } },
     ];
