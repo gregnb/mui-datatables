@@ -5,11 +5,11 @@ import MUIDataTable from '../src/MUIDataTable';
 import Chip from '@material-ui/core/Chip';
 import TableFilterList from '../src/components/TableFilterList';
 
-const CustomChip = (props) => {
+const CustomChip = props => {
   return <Chip variant="outlined" color="secondary" label={props.label} />;
 };
 
-const CustomFilterList = (props) => {
+const CustomFilterList = props => {
   return <TableFilterList {...props} ItemComponent={CustomChip} />;
 };
 
@@ -42,16 +42,21 @@ describe('<MUIDataTable /> with custom components', function() {
 
   it('should render a table with custom Chip in TableFilterList', () => {
     const shallowWrapper = shallow(
-        <MUIDataTable
-            columns={columns}
-            data={data}
-            components={{
-              TableFilterList: CustomFilterList,
-            }}
-        />);
+      <MUIDataTable
+        columns={columns}
+        data={data}
+        components={{
+          TableFilterList: CustomFilterList,
+        }}
+      />,
+    );
     const customFilterList = shallowWrapper.dive().find(CustomFilterList);
     assert.lengthOf(customFilterList, 1);
-    const customChip = customFilterList.dive().dive().dive().find(CustomChip);
+    const customChip = customFilterList
+      .dive()
+      .dive()
+      .dive()
+      .find(CustomChip);
     assert.lengthOf(customChip, 1);
   });
 });

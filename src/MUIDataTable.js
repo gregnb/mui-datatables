@@ -1345,15 +1345,7 @@ class MUIDataTable extends React.Component {
       classes,
       className,
       title,
-      components: {
-        TableBody,
-        TableFilterList,
-        TableFooter,
-        TableHead,
-        TableResize,
-        TableToolbar,
-        TableToolbarSelect,
-      }
+      components: { TableBody, TableFilterList, TableFooter, TableHead, TableResize, TableToolbar, TableToolbarSelect },
     } = this.props;
     const {
       announceText,
