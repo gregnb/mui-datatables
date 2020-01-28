@@ -164,7 +164,7 @@ class Example extends React.Component {
       setTableProps: () => {
         return {
           padding: this.state.denseTable ? "none" : "default",
-          
+
           // material ui v4 only
           size: this.state.denseTable ? "small" : "medium",
         };

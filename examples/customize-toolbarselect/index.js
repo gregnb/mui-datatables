@@ -42,7 +42,7 @@ class Example extends React.Component {
 
     const options = {
       filter: true,
-      selectableRows: true,
+      selectableRows: 'multiple',
       filterType: "dropdown",
       responsive: "stacked",
       rowsPerPage: 10,
