@@ -103,41 +103,59 @@ class TableResize extends React.Component {
     const finalCells = Object.entries(this.cellsRef);
     const tableEl = findDOMNode(this.tableRef);
     const { width: tableWidth } = tableEl.getBoundingClientRect();
+    const { selectableRows } = this.props.options;
 
     if (isResize) {
       let leftPos = e.clientX;
-      function handleMoveLastRight() {
-        if (leftPos > tableWidth - fixedMinWidth) leftPos = tableWidth - fixedMinWidth;
-      }
-      function handleMoveFirstLeft() {
-        if (leftPos < fixedMinWidth) leftPos = fixedMinWidth;
-      }
-      function handleMoveRight() {
-        if (leftPos > resizeCoords[idNumber + 1].left - fixedMinWidth)
-          leftPos = resizeCoords[idNumber + 1].left - fixedMinWidth;
-      }
-      function handleMoveLeft() {
-        if (leftPos < resizeCoords[idNumber - 1].left + fixedMinWidth)
-          leftPos = resizeCoords[idNumber - 1].left + fixedMinWidth;
-      }
-      function checkIfFirst(selectableRows) {
-        return (selectableRows !== 'none' && idNumber === 0) || (selectableRows === 'none' && idNumber === 1);
-      }
 
-      if (idNumber === finalCells.length - 2) {
-        if (checkIfFirst(this.props.options.selectableRows)) {
-          handleMoveFirstLeft();
-          handleMoveLastRight();
-        } else {
-          handleMoveLastRight();
-          handleMoveLeft();
+      const handleMoveRightmostBoundary = (leftPos, tableWidth, fixedMinWidth) => {
+        if (leftPos > tableWidth - fixedMinWidth) {
+          return tableWidth - fixedMinWidth;
         }
-      } else if (checkIfFirst(this.props.options.selectableRows)) {
-        handleMoveFirstLeft();
-        handleMoveRight();
-      } else {
-        handleMoveLeft();
-        handleMoveRight();
+        return leftPos;
+      };
+
+      const handleMoveLeftmostBoundary = (leftPos, fixedMinWidth) => {
+        if (leftPos < fixedMinWidth) {
+          return fixedMinWidth;
+        }
+        return leftPos;
+      };
+
+      const handleMoveRight = (leftPos, resizeCoords, id, fixedMinWidth) => {
+        if (leftPos > resizeCoords[id + 1].left - fixedMinWidth) {
+          return resizeCoords[id + 1].left - fixedMinWidth;
+        }
+        return leftPos;
+      };
+
+      const handleMoveLeft = (leftPos, resizeCoords, id, fixedMinWidth) => {
+        if (leftPos < resizeCoords[id - 1].left + fixedMinWidth) {
+          return resizeCoords[id - 1].left + fixedMinWidth;
+        }
+        return leftPos;
+      };
+
+      const isFirstColumn = (selectableRows, id) => {
+        return (selectableRows !== 'none' && id === 0) || (selectableRows === 'none' && id === 1);
+      };
+
+      const isLastColumn = (id, finalCells) => {
+        return id === finalCells.length - 2;
+      };
+
+      if (isFirstColumn(selectableRows, idNumber) && isLastColumn(idNumber, finalCells)) {
+        leftPos = handleMoveLeftmostBoundary(leftPos, fixedMinWidth);
+        leftPos = handleMoveRightmostBoundary(leftPos, tableWidth, fixedMinWidth);
+      } else if (!isFirstColumn(selectableRows, idNumber) && isLastColumn(idNumber, finalCells)) {
+        leftPos = handleMoveRightmostBoundary(leftPos, tableWidth, fixedMinWidth);
+        leftPos = handleMoveLeft(leftPos, resizeCoords, idNumber, fixedMinWidth);
+      } else if (isFirstColumn(selectableRows, idNumber) && !isLastColumn(idNumber, finalCells)) {
+        leftPos = handleMoveLeftmostBoundary(leftPos, fixedMinWidth);
+        leftPos = handleMoveRight(leftPos, resizeCoords, idNumber, fixedMinWidth);
+      } else if (!isFirstColumn(selectableRows, idNumber) && !isLastColumn(idNumber, finalCells)) {
+        leftPos = handleMoveLeft(leftPos, resizeCoords, idNumber, fixedMinWidth);
+        leftPos = handleMoveRight(leftPos, resizeCoords, idNumber, fixedMinWidth);
       }
 
       const curCoord = { ...resizeCoords[id], left: leftPos };
