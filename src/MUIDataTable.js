@@ -138,6 +138,7 @@ class MUIDataTable extends React.Component {
     options: PropTypes.shape({
       responsive: PropTypes.oneOf(['stacked', 'scrollMaxHeight', 'scrollFullHeight']),
       filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField', 'custom']),
+      enableNestedDataAccess : PropTypes.bool,
       getTextLabels: PropTypes.func,
       pagination: PropTypes.bool,
       expandableRows: PropTypes.bool,
@@ -296,6 +297,7 @@ class MUIDataTable extends React.Component {
   getDefaultOptions = () => ({
     responsive: 'stacked',
     filterType: 'dropdown',
+    enableNestedDataAccess: true,
     pagination: true,
     textLabels: getTextLabels(),
     serverSideFilterList: [],
@@ -483,7 +485,9 @@ class MUIDataTable extends React.Component {
   };
 
   transformData = (columns, data) => {
-    const leaf = (obj, path) => path.split('.').reduce((value, el) => (value ? value[el] : undefined), obj);
+    const { enableNestedDataAccess } = this.options;
+    const leaf = (obj, path) => (enableNestedDataAccess ? path.split('.') : path.split())
+      .reduce((value, el) => (value ? value[el] : undefined), obj);
 
     const transformedData = Array.isArray(data[0])
       ? data.map(row => {
