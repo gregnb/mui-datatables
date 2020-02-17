@@ -138,7 +138,7 @@ class MUIDataTable extends React.Component {
     options: PropTypes.shape({
       responsive: PropTypes.oneOf(['stacked', 'scrollMaxHeight', 'scrollFullHeight']),
       filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField', 'custom']),
-      enableNestedDataAccess : PropTypes.bool,
+      enableNestedDataAccess : PropTypes.string,
       getTextLabels: PropTypes.func,
       pagination: PropTypes.bool,
       expandableRows: PropTypes.bool,
@@ -297,7 +297,7 @@ class MUIDataTable extends React.Component {
   getDefaultOptions = () => ({
     responsive: 'stacked',
     filterType: 'dropdown',
-    enableNestedDataAccess: true,
+    enableNestedDataAccess: '.',
     pagination: true,
     textLabels: getTextLabels(),
     serverSideFilterList: [],
@@ -486,7 +486,7 @@ class MUIDataTable extends React.Component {
 
   transformData = (columns, data) => {
     const { enableNestedDataAccess } = this.options;
-    const leaf = (obj, path) => (enableNestedDataAccess ? path.split('.') : path.split())
+    const leaf = (obj, path) =>  (enableNestedDataAccess ? path.split(enableNestedDataAccess) : path.split())
       .reduce((value, el) => (value ? value[el] : undefined), obj);
 
     const transformedData = Array.isArray(data[0])
@@ -509,7 +509,7 @@ class MUIDataTable extends React.Component {
       console.error(
         'Deprecated: Passing objects in as data is not supported, and will be prevented in a future release. Consider using ids in your data and linking it to external objects if you want to access object data from custom render functions.',
       );
-
+    
     return transformedData;
   };
 
