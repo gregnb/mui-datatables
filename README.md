@@ -16,7 +16,7 @@ MUI-Datatables is a data tables component built on [Material-UI](https://www.mat
 	<img src="https://user-images.githubusercontent.com/19170080/38026128-eac9d506-3258-11e8-92a7-b0d06e5faa82.gif" />
 </div>
 
-# Table of content
+# Table of contents
 * [Install](#install)
 * [Demo](#demo)
 * [Usage](#usage)
