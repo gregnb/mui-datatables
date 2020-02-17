@@ -388,7 +388,7 @@ describe('<MUIDataTable />', function() {
 
   assert.deepEqual(JSON.stringify(state.displayData), displayData);
   });
-/*
+
   it('should correctly re-build display after xhr with serverSide=true', done => {
     const fullWrapper = mount(<MUIDataTable columns={columns} data={[]} options={{ serverSide: true }} />);
     assert.strictEqual(fullWrapper.find('tbody tr').length, 1);
@@ -689,7 +689,7 @@ describe('<MUIDataTable />', function() {
     const state = table.state();
     assert.deepEqual(state.filterList, [['Joe James'], [], [], [], []]);
   });
-*/
+
   it('should apply columns prop change for filterList', () => {
     const mountShallowWrapper = mount(shallow(<MUIDataTable columns={columns} data={data} />).get(0));
     const instance = mountShallowWrapper.instance();
@@ -704,7 +704,7 @@ describe('<MUIDataTable />', function() {
     const updatedState = mountShallowWrapper.state();
     assert.deepEqual(updatedState.filterList, [['Joe James'], [], [], [], []]);
   });
-/*
+
   it('should create Chip when filterList is populated', () => {
     const filterList = [['Joe James'], [], [], [], []];
     const filterListRenderers = [
@@ -1761,7 +1761,7 @@ describe('<MUIDataTable />', function() {
       assert.deepEqual(JSON.stringify(filterData), expectedResult);
     });
   });
-*/
+
   describe('should correctly run comparator function', () => {
     it('correctly compares two equal strings', () => {
       expect(getCollatorComparator()('testString', 'testString')).to.equal(0);
