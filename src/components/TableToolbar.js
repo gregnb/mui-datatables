@@ -217,8 +217,6 @@ class TableToolbar extends React.Component {
       showSearch: false,
       searchText: null,
     }));
-
-    this.searchButton.focus();
   };
 
   handleSearch = value => {
