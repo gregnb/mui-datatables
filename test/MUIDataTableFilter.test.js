@@ -10,9 +10,8 @@ import { default as TableFilterInToolbar } from '../src/components/TableFilter';
 import getTextLabels from '../src/textLabels';
 import TableFilterInline from '../src/components/TableFilterInline';
 
-
 [['TableFilter', TableFilterInToolbar], ['TableFilterInline', TableFilterInline]].forEach(([name, TableFilter]) => {
-  describe(`<${name}/>`, function () {
+  describe(`<${name}/>`, function() {
     let columns;
     let filterData;
 
@@ -221,8 +220,6 @@ import TableFilterInline from '../src/components/TableFilterInline';
       assert.isAtLeast(actualResult.length, 1);
     });
 
-
-
     it("should data table filter view with TextFields if filterType = 'textfield'", () => {
       const options = { filterType: 'textField', textLabels: getTextLabels() };
       const filterList = [[], [], [], []];
@@ -259,7 +256,6 @@ import TableFilterInline from '../src/components/TableFilterInline';
       const actualResult = shallowWrapper.find(Checkbox);
       assert.strictEqual(actualResult.length, 13);
     });
-
 
     it('should trigger onFilterUpdate prop callback when calling method handleCheckboxChange', () => {
       const options = { filterType: 'checkbox', textLabels: getTextLabels() };
