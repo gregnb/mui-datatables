@@ -30,7 +30,7 @@ class TableHead extends React.Component {
   };
 
   render() {
-    const { classes, columns, count, options, data, setCellRef, selectedRows } = this.props;
+    const { classes, columns, count, options, data, setCellRef, selectedRows, Tooltip } = this.props;
 
     const numSelected = (selectedRows && selectedRows.data.length) || 0;
     let isIndeterminate = numSelected > 0 && numSelected < count;
@@ -95,7 +95,8 @@ class TableHead extends React.Component {
                   hint={column.hint}
                   print={column.print}
                   options={options}
-                  column={column}>
+                  column={column}
+                  Tooltip={Tooltip}>
                   {column.label}
                 </TableHeadCell>
               )),

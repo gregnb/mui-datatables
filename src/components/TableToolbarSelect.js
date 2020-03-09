@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
+import MuiTooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { withStyles } from '@material-ui/core/styles';
@@ -38,6 +38,8 @@ class TableToolbarSelect extends React.Component {
     onRowsDelete: PropTypes.func,
     /** Extend the style applied to components */
     classes: PropTypes.object,
+    /** Injectable tooltip component **/
+    Tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   };
 
   /**
@@ -60,7 +62,7 @@ class TableToolbarSelect extends React.Component {
   };
 
   render() {
-    const { classes, onRowsDelete, selectedRows, options, displayData } = this.props;
+    const { classes, onRowsDelete, selectedRows, options, displayData, Tooltip = MuiTooltip } = this.props;
     const textLabels = options.textLabels.selectedRows;
 
     return (

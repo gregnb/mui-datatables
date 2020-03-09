@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
+import MuiTooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Popover from './Popover';
 import TableFilter from './TableFilter';
@@ -248,6 +248,7 @@ class TableToolbar extends React.Component {
       toggleViewColumn,
       title,
       tableRef,
+      Tooltip = MuiTooltip,
     } = this.props;
 
     const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;

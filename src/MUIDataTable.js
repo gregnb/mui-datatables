@@ -1331,7 +1331,7 @@ class MUIDataTable extends React.Component {
   }
 
   render() {
-    const { classes, className, title } = this.props;
+    const { classes, className, title, Tooltip } = this.props;
     const {
       announceText,
       activeColumn,
@@ -1402,6 +1402,7 @@ class MUIDataTable extends React.Component {
             onRowsDelete={this.selectRowDelete}
             displayData={displayData}
             selectRowUpdate={this.selectRowUpdate}
+            Tooltip={Tooltip}
           />
         ) : (
           showToolbar && (
@@ -1421,6 +1422,7 @@ class MUIDataTable extends React.Component {
               title={title}
               toggleViewColumn={this.toggleViewColumn}
               setTableAction={this.setTableAction}
+              Tooltip={Tooltip}
             />
           )
         )}
@@ -1471,6 +1473,7 @@ class MUIDataTable extends React.Component {
               toggleSort={this.toggleSortColumn}
               setCellRef={this.setHeadCellRef}
               options={this.options}
+              Tooltip={Tooltip}
             />
             <TableBody
               data={displayData}
