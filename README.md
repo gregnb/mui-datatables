@@ -149,7 +149,7 @@ The component accepts the following props:
 |**`selectableRowsHeader`**|boolean|true|Show/hide the select all/deselect all checkbox header for selectable rows
 |**`expandableRows`**|boolean|false|Enable/disable expandable rows
 |**`expandableRowsOnClick`**|boolean|false|Enable/disable expand trigger when row is clicked. When False, only expand icon will trigger this action.
-|**`renderExpandableRow`**|function||Render expandable row. `function(rowData, rowMeta) => React Component`
+|**`renderExpandableRow`**|function||Render expandable row. `function(rowData, rowMeta) => React Component`. The component should return `<TableRow><TableCell>...your stuff here...</TableCell></TableRow>`.
 |**`resizableColumns`**|boolean|false|Enable/disable resizable columns
 |**`customToolbar`**|function||Render a custom toolbar
 |**`customToolbarSelect`**|function||Render a custom selected rows toolbar. `function(selectedRows, displayData, setSelectedRows) => void`
