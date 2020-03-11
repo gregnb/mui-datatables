@@ -33,6 +33,8 @@ MUI-Datatables is a data tables component built on [Material-UI](https://www.mat
 
 `npm install mui-datatables --save`
 
+If your project doesn't already use them, you need to install `@material-ui/core` and `@material-ui/icons` as well.
+
 ## Demo
 
 [![Edit react-to-print](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/wy2rl1nyzl)
