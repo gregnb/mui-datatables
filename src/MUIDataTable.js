@@ -1490,6 +1490,7 @@ class MUIDataTable extends React.Component {
         </div>
         <TableFooter
           options={this.options}
+          tableState={this.state}
           page={page}
           rowCount={rowCount}
           rowsPerPage={rowsPerPage}

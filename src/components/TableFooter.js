@@ -11,7 +11,7 @@ class TableFooter extends React.Component {
   static propTypes = {};
 
   render() {
-    const { options, rowCount, page, rowsPerPage, changeRowsPerPage, changePage } = this.props;
+    const { options, rowCount, page, rowsPerPage, changeRowsPerPage, changePage, tableState } = this.props;
 
     return (
       <MuiTable>
@@ -23,6 +23,7 @@ class TableFooter extends React.Component {
               changeRowsPerPage,
               changePage,
               options.textLabels.pagination,
+              tableState
             )
           : options.pagination && (
               <TablePagination
