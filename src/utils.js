@@ -98,13 +98,13 @@ function buildCSV(columns, data, options) {
 }
 
 function downloadCSV(csv, filename) {
-  const blob = new Blob([csv], { type: 'text/csv' });
+  const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' });
 
   /* taken from react-csv */
   if (navigator && navigator.msSaveOrOpenBlob) {
     navigator.msSaveOrOpenBlob(blob, filename);
   } else {
-    const dataURI = `data:text/csv;charset=utf-8,%EF%BB%BF${csv}`;
+    const dataURI = `data:text/csv;charset=utf-8,${csv}`;
 
     const URL = window.URL || window.webkitURL;
     const downloadURI = typeof URL.createObjectURL === 'undefined' ? dataURI : URL.createObjectURL(blob);
