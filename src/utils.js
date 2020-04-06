@@ -104,7 +104,7 @@ function downloadCSV(csv, filename) {
   if (navigator && navigator.msSaveOrOpenBlob) {
     navigator.msSaveOrOpenBlob(blob, filename);
   } else {
-    const dataURI = `data:text/csv;charset=utf-8,${csv}`;
+    const dataURI = `data:text/csv;charset=utf-8,%EF%BB%BF${csv}`;
 
     const URL = window.URL || window.webkitURL;
     const downloadURI = typeof URL.createObjectURL === 'undefined' ? dataURI : URL.createObjectURL(blob);
