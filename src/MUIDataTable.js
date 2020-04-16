@@ -240,7 +240,7 @@ class MUIDataTable extends React.Component {
       lookup: {},
     },
     showResponsive: false,
-    searchText: null,
+    searchText: null
   };
 
   constructor() {
@@ -248,8 +248,9 @@ class MUIDataTable extends React.Component {
     this.tableRef = false;
     this.tableContent = React.createRef();
     this.headCellRefs = {};
-    this.setHeadResizeable = () => {};
-    this.updateDividers = () => {};
+    this.columnWidthsInDOM = [];
+    this.setHeadResizeable = () => { };
+    this.updateDividers = () => { };
   }
 
   UNSAFE_componentWillMount() {
@@ -261,6 +262,25 @@ class MUIDataTable extends React.Component {
 
     // When we have a search, we must reset page to view it unless on serverSide since paging is handled by the user.
     if (this.props.options.searchText && !this.props.options.serverSide) this.setState({ page: 0 });
+
+    // init width ref
+    this.columnWidthsInDOM = {};
+    for (const index in this.headCellRefs) {
+
+      const el = this.headCellRefs[index];
+      try {
+        if (el && typeof el === 'object') {
+          //console.log(index, window.getComputedStyle(el).width);
+          const colWidth = window.getComputedStyle(el).width;
+          this.columnWidthsInDOM = { ...this.columnWidthsInDOM, [index]: colWidth };
+          //this.setState({ columnWidthsInDOM: {...this.state.columnWidthsInDOM, 'col': colWidth}  });
+          //console.log(this.columnWidthsInDOM);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
   }
 
   componentDidUpdate(prevProps) {
@@ -279,6 +299,24 @@ class MUIDataTable extends React.Component {
     if (this.options.resizableColumns) {
       this.setHeadResizeable(this.headCellRefs, this.tableRef);
       this.updateDividers();
+    }
+
+    // init width ref
+    this.columnWidthsInDOM = {};
+    for (const index in this.headCellRefs) {
+
+      const el = this.headCellRefs[index];
+      try {
+        if (el && typeof el === 'object') {
+          //console.log(index, window.getComputedStyle(el).width);
+          const colWidth = window.getComputedStyle(el).width;
+          this.columnWidthsInDOM = { ...this.columnWidthsInDOM, [index]: colWidth };
+          //this.setState({ columnWidthsInDOM: {...this.state.columnWidthsInDOM, 'col': colWidth}  });
+          //console.log(this.columnWidthsInDOM);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
@@ -421,6 +459,19 @@ class MUIDataTable extends React.Component {
 
   setHeadCellRef = (index, el) => {
     this.headCellRefs[index] = el;
+    /*     try {
+          if(el && typeof el === 'object'){
+            //console.log(index, window.getComputedStyle(el).width);
+            const colWidth = window.getComputedStyle(el).width;
+            this.columnWidthsInDOM = {...this.columnWidthsInDOM, [index]: colWidth};
+            //this.setState({ columnWidthsInDOM: {...this.state.columnWidthsInDOM, 'col': colWidth}  });
+            //console.log(this.columnWidthsInDOM);
+          }
+        } catch (error) {
+          console.log(error);
+        } */
+
+    //console.log(el);
   };
 
   // must be arrow function on local field to refer to the correct instance when passed around
@@ -498,13 +549,13 @@ class MUIDataTable extends React.Component {
 
     const transformedData = Array.isArray(data[0])
       ? data.map(row => {
-          let i = -1;
+        let i = -1;
 
-          return columns.map(col => {
-            if (!col.empty) i++;
-            return col.empty ? undefined : row[i];
-          });
-        })
+        return columns.map(col => {
+          if (!col.empty) i++;
+          return col.empty ? undefined : row[i];
+        });
+      })
       : data.map(row => columns.map(col => leaf(row, col.name)));
 
     // We need to determine if object data exists in the transformed structure, as this is currently not allowed and will cause errors if not handled by a custom renderer
@@ -520,7 +571,7 @@ class MUIDataTable extends React.Component {
     return transformedData;
   };
 
-  setTableData(props, status, callback = () => {}) {
+  setTableData(props, status, callback = () => { }) {
     let tableData = [];
     let { columns, filterData, filterList } = this.buildColumns(props.columns);
     let sortIndex = null;
@@ -717,8 +768,8 @@ class MUIDataTable extends React.Component {
           typeof funcResult === 'string' || !funcResult
             ? funcResult
             : funcResult.props && funcResult.props.value
-            ? funcResult.props.value
-            : columnValue;
+              ? funcResult.props.value
+              : columnValue;
       }
 
       displayRow.push(columnDisplay);
@@ -1404,26 +1455,26 @@ class MUIDataTable extends React.Component {
             selectRowUpdate={this.selectRowUpdate}
           />
         ) : (
-          showToolbar && (
-            <TableToolbar
-              columns={columns}
-              displayData={displayData}
-              data={data}
-              filterData={filterData}
-              filterList={filterList}
-              filterUpdate={this.filterUpdate}
-              options={this.options}
-              resetFilters={this.resetFilters}
-              searchText={searchText}
-              searchTextUpdate={this.searchTextUpdate}
-              searchClose={this.searchClose}
-              tableRef={this.getTableContentRef}
-              title={title}
-              toggleViewColumn={this.toggleViewColumn}
-              setTableAction={this.setTableAction}
-            />
-          )
-        )}
+            showToolbar && (
+              <TableToolbar
+                columns={columns}
+                displayData={displayData}
+                data={data}
+                filterData={filterData}
+                filterList={filterList}
+                filterUpdate={this.filterUpdate}
+                options={this.options}
+                resetFilters={this.resetFilters}
+                searchText={searchText}
+                searchTextUpdate={this.searchTextUpdate}
+                searchClose={this.searchClose}
+                tableRef={this.getTableContentRef}
+                title={title}
+                toggleViewColumn={this.toggleViewColumn}
+                setTableAction={this.setTableAction}
+              />
+            )
+          )}
         <TableFilterList
           options={this.options}
           serverSideFilterList={this.props.options.serverSideFilterList || []}
@@ -1491,6 +1542,7 @@ class MUIDataTable extends React.Component {
         <TableFooter
           options={this.options}
           tableState={this.state}
+          cellRefs={this.headCellRefs}
           page={page}
           rowCount={rowCount}
           rowsPerPage={rowsPerPage}
