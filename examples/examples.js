@@ -7,6 +7,7 @@ import CustomActionColumns from './custom-action-columns';
 import CustomizeColumns from './customize-columns';
 import CustomizeFilter from './customize-filter';
 import CustomizeFooter from './customize-footer';
+import CustomizeFooterStats from './customize-footer-stats';
 import CustomizeRows from './customize-rows';
 import CustomizeSearch from './customize-search';
 import CustomizeSearchRender from './customize-search-render';
@@ -44,6 +45,7 @@ export default {
   'Customize Columns': CustomizeColumns,
   'Customize Filter': CustomizeFilter,
   'Customize Footer': CustomizeFooter,
+  'Customize Footer Statistics': CustomizeFooterStats,
   'Customize Rows': CustomizeRows,
   'Customize Search': CustomizeSearch,
   'Customize Search Render': CustomizeSearchRender,
