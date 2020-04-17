@@ -18,7 +18,7 @@ const TableFooter = ({ options, rowCount, page, rowsPerPage, changeRowsPerPage, 
           rowsPerPage,
           changeRowsPerPage,
           changePage,
-          options.textLabels.pagination,
+          options,
           tableState,
           cellRefs
         )

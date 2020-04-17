@@ -19,20 +19,22 @@ class CustomFooter extends React.Component {
   };
 
   render() {
-    const { count, classes, textLabels, rowsPerPage, page } = this.props;
+    const { count, classes, options, rowsPerPage, page } = this.props;
 
     const footerStyle = {
-      display:'flex', 
+      display:'flex',
       justifyContent: 'flex-end',
       padding: '0px 24px 0px 24px'
     };
+
+    const textLabels = {...options.textLabels.pagination};
 
     return (
       <TableFooter>
         <TableRow>
           <TableCell style={footerStyle} colSpan={1000}>
             <button>Custom Option</button>
-          
+
             <MuiTablePagination
               component="div"
               count={count}

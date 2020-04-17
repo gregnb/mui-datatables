@@ -33,6 +33,20 @@ const getTextLabels = () => ({
     delete: 'Delete',
     deleteAria: 'Delete Selected Rows',
   },
+  stats: {
+    title: 'Select stats',
+    toolTip: 'Select stats to show for column',
+    types: {
+      mean: 'Mean',
+      sd: 'Standard deviation',
+      median: 'Median',
+      qty: 'Qty',
+      sum: 'Sum',
+      min: 'Min',
+      max: 'Max',
+      mode: 'Mode'
+    }
+  },
 });
 
 export default getTextLabels;

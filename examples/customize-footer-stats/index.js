@@ -6,8 +6,6 @@ const Example = () => {
 
   const columns = ["Name", "Title", "Location", "Age", "Salary"];
 
-  const columnStats = [['count', 'sum'], [], ['max'], ['min', 'max', 'sum', 'mean', 'median', 'sd', 'mode'], ['mean', 'sum', 'count', 'median', 'sd']];
-
   let data = [
     ["Gabby George", "Business Analyst", "Minneapolis", 30, 100000],
     ["Aiden Lloyd", "Business Consultant", "Dallas", 55, 200000],
@@ -49,7 +47,7 @@ const Example = () => {
     selectableRows: selectableRows,
     responsive: 'stacked',
     rowsPerPage: 10,
-    customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage, textLabels, tableState, cellRefs) => {
+    customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage, options, tableState, cellRefs) => {
       return (
         <CustomStatsFooter
           count={count}
@@ -57,9 +55,8 @@ const Example = () => {
           rowsPerPage={rowsPerPage}
           changeRowsPerPage={changeRowsPerPage}
           changePage={changePage}
-          textLabels={textLabels}
+          options={options}
           tableState={{...tableState, selectableRows}}
-          columnStats={columnStats}
           cellRefs={cellRefs}
         />
       );
