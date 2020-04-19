@@ -37,11 +37,11 @@ const getTextLabels = () => ({
     title: 'Select stats',
     toolTip: 'Select stats to show for column',
     types: {
-      mean: 'Mean',
-      sd: 'Standard deviation',
-      median: 'Median',
-      qty: 'Qty',
       sum: 'Sum',
+      mean: 'Mean',
+      median: 'Median',
+      sd: 'Standard deviation',
+      qty: 'Quantity',
       min: 'Min',
       max: 'Max',
       mode: 'Mode'

@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/gregnb/mui-datatables#readme",
   "devDependencies": {
-    "@material-ui/core": "^3.2.0",
+    "@material-ui/core": "^3.9.4",
     "@material-ui/icons": "^3.0.1",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
@@ -96,6 +96,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "d3-array": "^2.4.0",
+    "d3-format": "^1.4.4",
     "lodash.assignwith": "^4.2.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.find": "^4.6.0",
