@@ -41,6 +41,19 @@ const CustomStatsFooter = ({ count, classes, options, rowsPerPage, page, tableSt
   const textLabels = { ...options.textLabels };
 
   useLayoutEffect(() => {
+    updateColumnWidths();
+
+    // add eventlisteners
+    window.addEventListener('resize', updateColumnWidths, false);
+
+    // clean up eventlisteners
+    return () => {
+      window.removeEventListener('resize', updateColumnWidths, false);
+    };
+
+  });
+
+  const updateColumnWidths = () => {
 
     // init width ref
     let columnWidthsInDOM = {};
@@ -57,15 +70,14 @@ const CustomStatsFooter = ({ count, classes, options, rowsPerPage, page, tableSt
       }
     }
 
-    const strVal = Object.entries(columnWidthsInDOM).map(([key, val]) => val).join();
+    const strVal = Object.values(columnWidthsInDOM).join();
 
     // update on width change
     if (strVal !== colWidthsStr) {
       setColWidthsStr(strVal);
-      setColWidthsArr(Object.entries(columnWidthsInDOM).map(([key, val]) => val));
+      setColWidthsArr(Object.values(columnWidthsInDOM));
     }
-
-  });
+  };
 
   const handleRowChange = event => {
     changeRowsPerPage(event.target.value);
@@ -75,6 +87,7 @@ const CustomStatsFooter = ({ count, classes, options, rowsPerPage, page, tableSt
     changePage(page);
   };
 
+  // d3.js formatter. Don't show decimals if there is none.
   const formatter = (value) => {
     return isNaN(value) ? '-' : (value % 1 === 0) ? format(".1d")(value) : format(".1f")(value);
   };
@@ -89,13 +102,15 @@ const CustomStatsFooter = ({ count, classes, options, rowsPerPage, page, tableSt
     display: 'flex',
     justifyContent: 'flex-start',
     margin: 0,
-    padding: '0px 0px 0px 0px'
+    padding: '0px 0px 0px 0px',
+    height: 'auto'
   };
 
   const footerStatsStyleMobile = {
     display: 'block',
     margin: 0,
     padding: '0px 0px 0px 0px',
+    height: 'auto'
   };
 
   const getModes = (valArr) => {
@@ -146,6 +161,7 @@ const CustomStatsFooter = ({ count, classes, options, rowsPerPage, page, tableSt
       return col;
     }
 
+    // no statistics for 'select row' column
     if (col.selectCol) {
       return col;
     }
@@ -170,10 +186,6 @@ const CustomStatsFooter = ({ count, classes, options, rowsPerPage, page, tableSt
 
     // no stats to calculate
     if (!statsArr || statsArr.length === 0) {
-      stats = null;
-    }
-
-    if (!statsArr) {
       return col;
     }
 
@@ -244,107 +256,59 @@ const CustomStatsFooter = ({ count, classes, options, rowsPerPage, page, tableSt
   return (
     <TableFooter>
       {/* statistics footer */}
-      <TableRow>
-        <TableCell style={md ? footerStatsStyle : footerStatsStyleMobile} colSpan={1000}>
-          {statColumns.filter(col => col.display === 'true').map((col, index) => {
-            if (col.selectCol) {
-              return md ? <TableCell key={`${col.name}-${index}-dummy`} style={{ padding: '4px 0px 4px 24px' }} width={md ? colWidthsArr[index] : 'auto'} /> : null;
-            } else if (!col.stats) {
-              return md ? <TableCell key={`${col.name}-${index}`} width={md ? colWidthsArr[index] : 'auto'} /> : null;
-            } else {
-              return (!md && col.dataType !== 'number') ? null :
-                md ?
-                  <TableCell width={md ? colWidthsArr[index] : 'unset'} key={`${col.name}-${index}`}>
-                    {col.dataType === 'number' ? (
-                      <Popover
-                        anchorOrigin={{
-                          vertical: 'top',
-                          horizontal: 'right',
-                        }}
-                        transformOrigin={{
-                          vertical: 'bottom',
-                          horizontal: 'right',
-                        }}
-
-                        classes={{ paper: classes.filterPaper }}
-                        trigger={
-                          <Tooltip title={textLabels.stats.toolTip} disableFocusListener>
-                            <Chip
-                              icon={<FunctionsIcon fontSize="small" />}
-                              label={col.name}
-                              variant="outlined"
-                              onClick={() => null}
-                              size="small"
-                              style={{ marginBottom: '0.3em', marginTop: '0.3em' }}
-                            />
-                          </Tooltip>
-                        }
-                        content={
-                          <ColStatSelect
-                            selections={colStats[col.origIndex]}
-                            dataType={col.dataType}
-                            options={options}
-                            onFilterClick={handleFilterClick(col.origIndex)}
-                          />
-                        }
+      <TableRow style={md ? footerStatsStyle : footerStatsStyleMobile} colSpan={1000}>
+        {statColumns.filter(col => col.display === 'true').map((col, index) => {
+          if (col.selectCol) {
+            return md ? <TableCell key={`${col.name}-${index}-dummy`} style={{ padding: '4px 0px 4px 24px' }} width={md ? colWidthsArr[index] : 'auto'} /> : null;
+          } else if (!col.stats) {
+            return md ? <TableCell key={`${col.name}-${index}`} width={md ? colWidthsArr[index] : 'auto'} /> : null;
+          } else {
+            return (!md && col.dataType !== 'number') ? null :
+              <TableCell className={md ? null : classes.mobileStat} width={md ? colWidthsArr[index] : 'unset'} key={`${col.name}-${index}`}>
+                {col.dataType === 'number' ? (
+                  <Popover
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right',
+                    }}
+                    classes={{ paper: classes.filterPaper }}
+                    trigger={
+                      <Tooltip title={textLabels.stats.toolTip} disableFocusListener>
+                        <Chip
+                          icon={<FunctionsIcon fontSize="small" />}
+                          label={col.name}
+                          variant="outlined"
+                          onClick={() => null}
+                          size="small"
+                          style={{ marginBottom: '0.3em', marginTop: '0.3em' }}
+                        />
+                      </Tooltip>
+                    }
+                    content={
+                      <ColStatSelect
+                        selections={colStats[col.origIndex]}
+                        dataType={col.dataType}
+                        options={options}
+                        onFilterClick={handleFilterClick(col.origIndex)}
                       />
-                    ) : null}
-                    {Object.entries(col.stats).map(([statName, val]) => (
-                      <Fade in={true}>
-                        <Typography variant="caption" display="block" gutterBottom key={`${col.name}-${index}-${statName}`}>
-                          {`${textLabels.stats.types[statName]} ${val}`}
-                        </Typography>
-                      </Fade>
-                    )
-                    )}
-                  </TableCell> :
-                  <TableCell className={classes.mobileStat} key={`${col.name}-${index}`}>
-                    {col.dataType === 'number' ? (
-                      <Popover
-                        anchorOrigin={{
-                          vertical: 'top',
-                          horizontal: 'right',
-                        }}
-                        transformOrigin={{
-                          vertical: 'bottom',
-                          horizontal: 'right',
-                        }}
-
-                        classes={{ paper: classes.filterPaper }}
-                        trigger={
-                          <Tooltip title={textLabels.stats.title} disableFocusListener>
-                            <Chip
-                              icon={<FunctionsIcon fontSize="small" />}
-                              label={col.name}
-                              variant="outlined"
-                              onClick={() => null}
-                              size="small"
-                              style={{ marginBottom: '0.3em', marginTop: '0.3em' }}
-                            />
-                          </Tooltip>
-                        }
-                        content={
-                          <ColStatSelect
-                            selections={colStats[col.origIndex]}
-                            dataType={col.dataType}
-                            options={options}
-                            onFilterClick={handleFilterClick(col.origIndex)}
-                          />
-                        }
-                      />
-                    ) : null}
-                    {Object.entries(col.stats).map(([statName, val]) => (
-                      <Fade in={true}>
-                        <Typography variant="caption" display="block" gutterBottom key={`${col.name}-${index}-${statName}`}>
-                          {`${textLabels.stats.types[statName]} ${val}`}
-                        </Typography>
-                      </Fade>
-                    )
-                    )}
-                  </TableCell>;
-            }
-          })}
-        </TableCell>
+                    }
+                  />
+                ) : null}
+                {Object.entries(col.stats).map(([statName, val]) => (
+                  <Fade key={`${col.name}-${index}-${statName}`} in={true}>
+                    <Typography variant="caption" display="block" gutterBottom>
+                      {`${textLabels.stats.types[statName]} ${val}`}
+                    </Typography>
+                  </Fade>
+                )
+                )}
+              </TableCell>;
+          }
+        })}
       </TableRow>
 
       {/* pagination control footer */}

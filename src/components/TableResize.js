@@ -21,6 +21,8 @@ class TableResize extends React.Component {
   static propTypes = {
     /** Extend the style applied to components */
     classes: PropTypes.object,
+    /** On column resize end event */
+    onColumnResizeEnd: PropTypes.func,
   };
 
   state = {
@@ -107,11 +109,13 @@ class TableResize extends React.Component {
       const newResizeCoords = { ...resizeCoords, [id]: curCoord };
 
       this.setState({ resizeCoords: newResizeCoords }, this.updateWidths);
+
     }
   };
 
   onResizeEnd = (id, e) => {
     this.setState({ isResize: false, id: null });
+    this.props.onColumnResizeEnd();
   };
 
   render() {

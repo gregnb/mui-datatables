@@ -459,19 +459,6 @@ class MUIDataTable extends React.Component {
 
   setHeadCellRef = (index, el) => {
     this.headCellRefs[index] = el;
-    /*     try {
-          if(el && typeof el === 'object'){
-            //console.log(index, window.getComputedStyle(el).width);
-            const colWidth = window.getComputedStyle(el).width;
-            this.columnWidthsInDOM = {...this.columnWidthsInDOM, [index]: colWidth};
-            //this.setState({ columnWidthsInDOM: {...this.state.columnWidthsInDOM, 'col': colWidth}  });
-            //console.log(this.columnWidthsInDOM);
-          }
-        } catch (error) {
-          console.log(error);
-        } */
-
-    //console.log(el);
   };
 
   // must be arrow function on local field to refer to the correct instance when passed around
@@ -1500,6 +1487,7 @@ class MUIDataTable extends React.Component {
               key={rowCount}
               updateDividers={fn => (this.updateDividers = fn)}
               setResizeable={fn => (this.setHeadResizeable = fn)}
+              onColumnResizeEnd={() => this.setState(prevState => ({resizer: prevState.resizer + 1}))} // update state to refresh table on resize end
             />
           )}
           <MuiTable

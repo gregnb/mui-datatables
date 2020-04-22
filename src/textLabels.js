@@ -34,13 +34,13 @@ const getTextLabels = () => ({
     deleteAria: 'Delete Selected Rows',
   },
   stats: {
-    title: 'Select stats',
-    toolTip: 'Select stats to show for column',
+    title: 'Select Statistics',
+    toolTip: 'Select statistics to show for column',
     types: {
       sum: 'Sum',
       mean: 'Mean',
       median: 'Median',
-      sd: 'Standard deviation',
+      sd: 'Standard Deviation',
       qty: 'Quantity',
       min: 'Min',
       max: 'Max',

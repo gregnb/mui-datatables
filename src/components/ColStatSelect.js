@@ -74,7 +74,7 @@ const ColStatSelect = ({ classes, dataType, selections, options, onFilterClick }
                   }}
                   disabled={dataType !== 'number' && column[0] !== 'qty'}
                   onClick={handleStatSelChange(column[0])}
-                  checked={selections && selections[column[0]] === true}
+                  checked={selections && selections[column[0]] === true ? true : false}
                   value={column[0]}
                 />
               }
@@ -88,12 +88,8 @@ const ColStatSelect = ({ classes, dataType, selections, options, onFilterClick }
 };
 
 ColStatSelect.propTypes = {
-  /** Columns used to describe table */
-  columns: PropTypes.array.isRequired,
   /** Options used to describe table */
   options: PropTypes.object.isRequired,
-  /** Callback to trigger View column update */
-  onColumnUpdate: PropTypes.func,
   /** Extend the style applied to components */
   classes: PropTypes.object,
 };

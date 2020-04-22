@@ -63,22 +63,11 @@ const Example = () => {
     }
   };
 
-  const columnOptions = {
-    display: true
-  };
-
   return (
     <MUIDataTable
       title={"ACME Employee list"}
       data={data}
-      columns={columns.map((col, index) => {
-
-        return {
-          name: col,
-          options: columnOptions
-        };
-
-      })}
+      columns={columns}
       options={options} />
   );
 
