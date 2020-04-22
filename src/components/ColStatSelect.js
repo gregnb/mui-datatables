@@ -44,7 +44,7 @@ export const defaultViewColStyles = theme => ({
 const ColStatSelect = ({ classes, dataType, selections, options, onFilterClick }) => {
 
   const handleStatSelChange = statName => e => {
-    onFilterClick(statName, event.target.checked);
+    onFilterClick(statName, e.target.checked);
   };
 
   const textLabels = options.textLabels.stats;
