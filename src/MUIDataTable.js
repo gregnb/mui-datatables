@@ -241,11 +241,12 @@ class MUIDataTable extends React.Component {
     },
     showResponsive: false,
     searchText: null,
+    isPrinting: false,
   };
 
   constructor() {
     super();
-    this.tableRef = false;
+    this.tableRef = React.createRef();
     this.tableContent = React.createRef();
     this.headCellRefs = {};
     this.setHeadResizeable = () => {};
@@ -281,6 +282,13 @@ class MUIDataTable extends React.Component {
       this.updateDividers();
     }
   }
+
+  isGoingToPrint = () =>
+    new Promise((resolve, reject) => {
+      this.setState({ isPrinting: true }, () => setTimeout(() => resolve(), 500));
+    });
+
+  hasPrintted = () => this.setState({ isPrinting: false });
 
   updateOptions(options, props) {
     this.options = assignwith(options, props.options, (objValue, srcValue, key) => {
@@ -425,7 +433,10 @@ class MUIDataTable extends React.Component {
 
   // must be arrow function on local field to refer to the correct instance when passed around
   // assigning it as arrow function in the JSX would cause hard to track re-render errors
-  getTableContentRef = () => this.tableContent.current;
+  getTableContentRef = () => {
+    this.setState({ isPrinting: true });
+    return this.tableRef ? this.tableRef.current : this.tableContent.current;
+  };
 
   /*
    *  Build the source table data
@@ -1394,7 +1405,7 @@ class MUIDataTable extends React.Component {
     delete tableProps.className; // remove className from props to avoid the className being applied twice
 
     return (
-      <Paper elevation={this.options.elevation} ref={this.tableContent} className={paperClasses}>
+      <Paper elevation={this.options.elevation} className={paperClasses} ref={this.tableContent}>
         {selectedRows.data.length && this.options.disableToolbarSelect !== true ? (
           <TableToolbarSelect
             options={this.options}
@@ -1421,6 +1432,8 @@ class MUIDataTable extends React.Component {
               title={title}
               toggleViewColumn={this.toggleViewColumn}
               setTableAction={this.setTableAction}
+              hasPrintted={this.hasPrintted}
+              isGoingToPrint={this.isGoingToPrint}
             />
           )
         )}
@@ -1451,12 +1464,7 @@ class MUIDataTable extends React.Component {
               setResizeable={fn => (this.setHeadResizeable = fn)}
             />
           )}
-          <MuiTable
-            ref={el => (this.tableRef = el)}
-            tabIndex={'0'}
-            role={'grid'}
-            className={tableClassNames}
-            {...tableProps}>
+          <MuiTable ref={this.tableRef} tabIndex={'0'} role={'grid'} className={tableClassNames} {...tableProps}>
             <caption className={classes.caption}>{title}</caption>
             <TableHead
               columns={columns}
@@ -1471,6 +1479,7 @@ class MUIDataTable extends React.Component {
               toggleSort={this.toggleSortColumn}
               setCellRef={this.setHeadCellRef}
               options={this.options}
+              isPrinting={this.state.isPrinting}
             />
             <TableBody
               data={displayData}
@@ -1485,6 +1494,7 @@ class MUIDataTable extends React.Component {
               toggleExpandRow={this.toggleExpandRow}
               options={this.options}
               filterList={filterList}
+              isPrinting={this.state.isPrinting}
             />
           </MuiTable>
         </div>

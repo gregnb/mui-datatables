@@ -311,6 +311,9 @@ class TableToolbar extends React.Component {
           {options.print && (
             <span>
               <ReactToPrint
+                onBeforePrint={this.props.isGoingToPrint}
+                onAfterPrint={this.props.hasPrintted}
+                onBeforeGetContent={this.props.isGoingToPrint}
                 trigger={() => (
                   <span>
                     <Tooltip title={print}>

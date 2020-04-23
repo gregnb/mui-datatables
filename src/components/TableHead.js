@@ -30,8 +30,7 @@ class TableHead extends React.Component {
   };
 
   render() {
-    const { classes, columns, count, options, data, setCellRef, selectedRows } = this.props;
-
+    const { classes, columns, count, options, data, setCellRef, selectedRows, isPrinting } = this.props;
     const numSelected = (selectedRows && selectedRows.data.length) || 0;
     let isIndeterminate = numSelected > 0 && numSelected < count;
     let isChecked = numSelected === count ? true : false;
@@ -62,19 +61,21 @@ class TableHead extends React.Component {
           [classes.main]: true,
         })}>
         <TableHeadRow>
-          <TableSelectCell
-            ref={el => setCellRef(0, findDOMNode(el))}
-            onChange={this.handleRowSelect.bind(null)}
-            indeterminate={isIndeterminate}
-            checked={isChecked}
-            isHeaderCell={true}
-            expandableOn={options.expandableRows}
-            selectableOn={options.selectableRows}
-            fixedHeader={options.fixedHeader}
-            fixedHeaderOptions={options.fixedHeaderOptions}
-            selectableRowsHeader={options.selectableRowsHeader}
-            isRowSelectable={true}
-          />
+          {!isPrinting && (
+            <TableSelectCell
+              ref={el => setCellRef(0, findDOMNode(el))}
+              onChange={this.handleRowSelect.bind(null)}
+              indeterminate={isIndeterminate}
+              checked={isChecked}
+              isHeaderCell={true}
+              expandableOn={options.expandableRows}
+              selectableOn={options.selectableRows}
+              fixedHeader={options.fixedHeader}
+              fixedHeaderOptions={options.fixedHeaderOptions}
+              selectableRowsHeader={options.selectableRowsHeader}
+              isRowSelectable={true}
+            />
+          )}
           {columns.map(
             (column, index) =>
               column.display === 'true' &&
