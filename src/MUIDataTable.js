@@ -260,6 +260,8 @@ class MUIDataTable extends React.Component {
   componentDidMount() {
     this.setHeadResizeable(this.headCellRefs, this.tableRef);
 
+    this.setState({ pagination: this.options.pagination });
+
     // When we have a search, we must reset page to view it unless on serverSide since paging is handled by the user.
     if (this.props.options.searchText && !this.props.options.serverSide) this.setState({ page: 0 });
   }
@@ -285,10 +287,10 @@ class MUIDataTable extends React.Component {
 
   isGoingToPrint = () =>
     new Promise((resolve, reject) => {
-      this.setState({ isPrinting: true }, () => setTimeout(() => resolve(), 500));
+      this.setState({ isPrinting: true, pagination: false }, () => setTimeout(() => resolve(), 500));
     });
 
-  hasPrintted = () => this.setState({ isPrinting: false });
+  hasPrintted = () => this.setState({ isPrinting: false, pagination: this.options.pagination });
 
   updateOptions(options, props) {
     this.options = assignwith(options, props.options, (objValue, srcValue, key) => {
@@ -435,7 +437,7 @@ class MUIDataTable extends React.Component {
   // assigning it as arrow function in the JSX would cause hard to track re-render errors
   getTableContentRef = () => {
     this.setState({ isPrinting: true });
-    return this.tableRef ? this.tableRef.current : this.tableContent.current;
+    return this.tableRef ? this.tableRef.current : this.tableRef.current;
   };
 
   /*
@@ -1360,7 +1362,7 @@ class MUIDataTable extends React.Component {
     } = this.state;
 
     const rowCount = this.state.count || displayData.length;
-    const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
+    const rowsPerPage = this.state.pagination ? this.state.rowsPerPage : displayData.length;
     const showToolbar = hasToolbarItem(this.options, title);
     const columnNames = columns.map(column => ({
       name: column.name,
@@ -1464,7 +1466,7 @@ class MUIDataTable extends React.Component {
               setResizeable={fn => (this.setHeadResizeable = fn)}
             />
           )}
-          <MuiTable ref={this.tableRef} tabIndex={'0'} role={'grid'} className={tableClassNames} {...tableProps}>
+          <MuiTable innerRef={this.tableRef} tabIndex={'0'} role={'grid'} className={tableClassNames} {...tableProps}>
             <caption className={classes.caption}>{title}</caption>
             <TableHead
               columns={columns}
