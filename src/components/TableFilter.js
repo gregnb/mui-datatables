@@ -96,7 +96,7 @@ class TableFilter extends React.Component {
     /** Callback to trigger filter update */
     onFilterUpdate: PropTypes.func,
     /** Callback to trigger filter reset */
-    onFilterRest: PropTypes.func,
+    onFilterReset: PropTypes.func,
     /** Extend the style applied to components */
     classes: PropTypes.object,
   };
