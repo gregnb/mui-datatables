@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MuiPopover from '@material-ui/core/Popover';
+import IconButton from '@material-ui/core/IconButton';
 import { findDOMNode } from 'react-dom';
+import CloseIcon from '@material-ui/icons/Close';
 
 class Popover extends React.Component {
   state = {
@@ -46,6 +48,11 @@ class Popover extends React.Component {
 
   render() {
     const { className, placement, trigger, refExit, content, ...providedProps } = this.props;
+    let closeIconClass;
+    if (providedProps.classes && providedProps.classes.closeIcon) {
+      closeIconClass = providedProps.classes.closeIcon;
+      delete providedProps.classes.closeIcon;
+    }
 
     const transformOriginSpecs = {
       vertical: 'top',
@@ -79,6 +86,13 @@ class Popover extends React.Component {
           anchorOrigin={anchorOriginSpecs}
           transformOrigin={transformOriginSpecs}
           {...providedProps}>
+          <IconButton
+            aria-label="Close"
+            onClick={this.handleRequestClose}
+            className={closeIconClass}
+          >
+            <CloseIcon />
+          </IconButton>
           {content}
         </MuiPopover>
         {triggerEl}
