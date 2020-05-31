@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import Grow from '@material-ui/core/Grow';
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
@@ -9,7 +9,8 @@ import { withStyles } from '@material-ui/core/styles';
 function debounce(func, wait, immediate) {
   var timeout;
   return function() {
-    var context = this, args = arguments;
+    var context = this,
+      args = arguments;
     var later = function() {
       timeout = null;
       if (!immediate) func.apply(context, args);
@@ -19,9 +20,9 @@ function debounce(func, wait, immediate) {
     timeout = setTimeout(later, wait);
     if (callNow) func.apply(context, args);
   };
-};
+}
 
-const defaultStyles = (theme) => ({
+const defaultStyles = theme => ({
   main: {
     display: 'flex',
     flex: '1 0 auto',
@@ -42,7 +43,6 @@ const defaultStyles = (theme) => ({
 });
 
 class _DebounceTableSearch extends React.Component {
-
   handleTextChangeWrapper = debouncedSearch => {
     return function(event) {
       debouncedSearch(event.target.value);
@@ -66,7 +66,7 @@ class _DebounceTableSearch extends React.Component {
   render() {
     const { classes, options, onHide, searchText, debounceWait } = this.props;
 
-    const debouncedSearch = debounce((value) => {
+    const debouncedSearch = debounce(value => {
       this.props.onSearch(value);
     }, debounceWait);
 
@@ -111,4 +111,4 @@ export function debounceSearchRender(debounceWait = 200) {
       />
     );
   };
-};
+}
