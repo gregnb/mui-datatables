@@ -8,30 +8,30 @@ const defaultBodyCellStyles = theme => ({
   cellHide: {
     display: 'none',
   },
-  cellStacked: {
+  stackedCommon: {
     [theme.breakpoints.down('sm')]: {
       display: 'inline-block',
       fontSize: '16px',
-      width: '50%',
+      height: '24px',
       whiteSpace: 'nowrap',
-      boxSizing: 'border-box',
-      height: '32px',
+      width: 'calc(50% - 80px)',
+      whiteSpace: 'nowrap',
+      '&:last-child': {
+        borderBottom: 'none',
+      },
       '&:nth-last-child(2)': {
         borderBottom: 'none',
       },
     },
   },
-  responsiveStacked: {
+  cellStackedSmall: {
     [theme.breakpoints.down('sm')]: {
-      display: 'inline-block',
-      fontSize: '16px',
       width: '50%',
-      whiteSpace: 'nowrap',
-      boxSizing: 'border-box',
-      height: '32px',
-      '&:last-child': {
-        borderBottom: 'none',
-      },
+    },
+  },
+  responsiveStackedSmall: {
+    [theme.breakpoints.down('sm')]: {
+      width: '50%',
     },
   },
 });
@@ -65,7 +65,11 @@ class TableBodyCell extends React.Component {
           {
             [classes.root]: true,
             [classes.cellHide]: true,
-            [classes.cellStacked]: options.responsive === 'stacked',
+            [classes.stackedCommon]: options.responsive === 'stacked' || options.responsive === 'stackedFullWidth',
+            [classes.cellStackedSmall]:
+              options.responsive === 'stacked' ||
+              (options.responsive === 'stackedFullWidth' &&
+                (options.setTableProps().padding === 'none' || options.setTableProps().size === 'small')),
             'datatables-noprint': !print,
           },
           className,
@@ -78,7 +82,11 @@ class TableBodyCell extends React.Component {
         className={classNames(
           {
             [classes.root]: true,
-            [classes.responsiveStacked]: options.responsive === 'stacked',
+            [classes.stackedCommon]: options.responsive === 'stacked' || options.responsive === 'stackedFullWidth',
+            [classes.responsiveStackedSmall]:
+              options.responsive === 'stacked' ||
+              (options.responsive === 'stackedFullWidth' &&
+                (options.setTableProps().padding === 'none' || options.setTableProps().size === 'small')),
             'datatables-noprint': !print,
           },
           className,

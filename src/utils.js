@@ -5,6 +5,22 @@ function buildMap(rows) {
   }, {});
 }
 
+function escapeDangerousCSVCharacters(data) {
+  if (typeof data === 'string') {
+    // Places single quote before the appearance of dangerous characters if they
+    // are the first in the data string.
+    return data.replace(/^\+|^\-|^\=|^\@/g, "'$&");
+  }
+
+  return data;
+}
+
+function warnDeprecated(warning) {
+  if (process.env.NODE_ENV === 'development') {
+    console.error(`Deprecation Notice:  ${warning}`);
+  }
+}
+
 function getPageValue(count, rowsPerPage, page) {
   const totalPages = count <= rowsPerPage ? 1 : Math.ceil(count / rowsPerPage);
 
@@ -43,7 +59,11 @@ function buildCSV(columns, data, options) {
         .reduce(
           (soFar, column) =>
             column.download
-              ? soFar + '"' + replaceDoubleQuoteInString(column.name) + '"' + options.downloadOptions.separator
+              ? soFar +
+                '"' +
+                escapeDangerousCSVCharacters(replaceDoubleQuoteInString(column.label || column.name)) +
+                '"' +
+                options.downloadOptions.separator
               : soFar,
           '',
         )
@@ -61,7 +81,7 @@ function buildCSV(columns, data, options) {
           '"' +
           row.data
             .filter((_, index) => columns[index].download)
-            .map(columnData => replaceDoubleQuoteInString(columnData))
+            .map(columnData => escapeDangerousCSVCharacters(replaceDoubleQuoteInString(columnData)))
             .join('"' + options.downloadOptions.separator + '"') +
           '"\r\n',
         '',
@@ -108,4 +128,14 @@ function createCSVDownload(columns, data, options, downloadCSV) {
   downloadCSV(csv, options.downloadOptions.filename);
 }
 
-export { buildMap, getPageValue, getCollatorComparator, sortCompare, createCSVDownload, buildCSV, downloadCSV };
+export {
+  buildMap,
+  getPageValue,
+  getCollatorComparator,
+  sortCompare,
+  createCSVDownload,
+  buildCSV,
+  downloadCSV,
+  warnDeprecated,
+  escapeDangerousCSVCharacters,
+};

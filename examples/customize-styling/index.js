@@ -147,7 +147,10 @@ class Example extends React.Component {
       filter: true,
       filterType: 'dropdown',
       responsive: this.state.stacked ? 'stacked' : 'scrollMaxHeight',
-      fixedHeader: true,
+      fixedHeaderOptions: {
+        xAxis: true,
+        yAxis: true
+      },
       rowHover: false,
       setRowProps: (row) => {
         return {
@@ -161,7 +164,7 @@ class Example extends React.Component {
       setTableProps: () => {
         return {
           padding: this.state.denseTable ? "none" : "default",
-          
+
           // material ui v4 only
           size: this.state.denseTable ? "small" : "medium",
         };

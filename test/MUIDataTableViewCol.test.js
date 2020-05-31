@@ -4,7 +4,7 @@ import { mount, shallow } from 'enzyme';
 import { assert, expect, should } from 'chai';
 import Checkbox from '@material-ui/core/Checkbox';
 import TableViewCol from '../src/components/TableViewCol';
-import textLabels from '../src/textLabels';
+import getTextLabels from '../src/textLabels';
 import { FormControlLabel } from '@material-ui/core';
 
 describe('<TableViewCol />', function() {
@@ -19,7 +19,7 @@ describe('<TableViewCol />', function() {
       { name: 'd', label: 'D' },
     ];
     options = {
-      textLabels,
+      textLabels: getTextLabels(),
     };
   });
 
