@@ -292,6 +292,15 @@ function(value: any, tableMeta: {
 }, updateValue: function)
 ```
 
+## Plug-ins
+
+The table lends itself to plug-ins in many areas, especially in the customRender functions. Many use cases for these render functions are common, so a set of plug-ins are available that you can use.
+
+#### Available Plug-ins:
+|Name|Type|Default|Description
+|:--:|:-----|:--|:-----|
+|**`debounceSearchRender`**|function||Function that returns a function for the customSearchRender method. This plug-in allows you to create a debounced search which can be useful for server-side tables and tables with large data sets. `function(debounceWait) => function` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/large-data-set/index.js)
+
 ## Customize Styling
 
 Using Material-UI theme overrides will allow you to customize styling to your liking. First, determine which component you would want to target and then lookup the override classname. Let's start with a simple example where we will change the background color of a body cell to be red:

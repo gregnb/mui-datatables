@@ -16,3 +16,7 @@ export { default as TableSelectCell } from './components/TableSelectCell';
 export { default as TableToolbar } from './components/TableToolbar';
 export { default as TableToolbarSelect } from './components/TableToolbarSelect';
 export { default as TableViewCol } from './components/TableViewCol';
+export { 
+  debounceSearchRender, 
+  DebounceTableSearch 
+} from './plug-ins/DebounceSearchRender';
