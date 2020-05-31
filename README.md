@@ -163,7 +163,8 @@ The component accepts the following props:
 |**`isRowSelectable`**|function||Enable/disable selection on certain rows with custom function. Returns true if not provided. `function(dataIndex: number, selectedRows: object(lookup: {dataindex: boolean}, data: arrayOfObjects: {index, dataIndex})) => boolean`.
 |**`isRowExpandable`**|function||Enable/disable expansion or collapse on certain expandable rows with custom function. Will be considered true if not provided. `function(dataIndex: number, expandedRows: object(lookup: {dataIndex: number}, data: arrayOfObjects: {index: number, dataIndex: number})) => boolean`.
 |**`selectableRowsHeader`**|boolean|true|Show/hide the select all/deselect all checkbox header for selectable rows
-|**`expandableRows`**|boolean|false|Enable/disable expandable rows
+|**`expandableRows`**|boolean|false|Enable/disable expandable rows.
+|**`expandableRowsHeader`**|boolean|true|Show/hide the expand all/collapse all row header for expandable rows.
 |**`expandableRowsOnClick`**|boolean|false|Enable/disable expand trigger when row is clicked. When False, only expand icon will trigger this action.
 |**`renderExpandableRow`**|function||Render expandable row. `function(rowData, rowMeta) => React Component`
 |**`resizableColumns`**|boolean|false|Enable/disable resizable columns
@@ -181,8 +182,8 @@ The component accepts the following props:
 |**`rowsPerPage`**|number|10|Number of rows allowed per page
 |**`rowsPerPageOptions`**|array|[10,15,100]|Options to provide in pagination for number of rows a user can select
 |**`rowHover`**|boolean|true|Enable/disable hover style over rows
-|**`fixedHeader` DEPRECATED (use `fixedHeaderOptions`)**|boolean|true|Enable/disable fixed header columns
-|**`fixedHeaderOptions`**|object|`{xAxis: true, yAxis: true}`|Enable/disable fixed header columns according to axis in any combination desired [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
+|**`fixedHeader`**|boolean|true|Enable/disable a fixed header for the table [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
+|**`fixedSelectColumn`**|boolean|true|Enable/disable fixed select column [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
 |**`sortFilterList`**|boolean|true|Enable/disable alphanumeric sorting of filter lists
 |**`sort`**|boolean|true|Enable/disable sort on all columns
 |**`filter`**|boolean|true|Show/hide filter icon from toolbar

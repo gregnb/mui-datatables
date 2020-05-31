@@ -82,6 +82,7 @@ class Example extends React.Component {
       filterType: 'dropdown',
       responsive: 'scrollMaxHeight',
       expandableRows: true,
+      expandableRowsHeader: true,
       expandableRowsOnClick: true,
       isRowExpandable: (dataIndex, expandedRows) => {
         // Prevent expand/collapse of any row if there are 4 rows expanded already (but allow those already expanded to be collapsed)
