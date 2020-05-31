@@ -951,7 +951,7 @@ class MUIDataTable extends React.Component {
       prevState => {
         let columns = cloneDeep(prevState.columns);
         let data = prevState.data;
-        const newOrder = columns[index].sortDirection === 'desc' ? 'asc' : 'desc';
+        const newOrder = columns[index].sortDirection !== 'asc' ? 'asc' : 'desc';
 
         for (let pos = 0; pos < columns.length; pos++) {
           if (index !== pos) {
