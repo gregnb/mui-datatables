@@ -57,7 +57,7 @@ class TableResize extends React.Component {
   setDividers = () => {
     const tableEl = findDOMNode(this.tableRef);
     const { width: tableWidth, height: tableHeight } = tableEl.getBoundingClientRect();
-    const { priorPosition, resizeCoords } = this.state;
+    const { resizeCoords } = this.state;
 
     let finalCells = Object.entries(this.cellsRef);
     finalCells.pop();
@@ -66,17 +66,10 @@ class TableResize extends React.Component {
 
       const elRect = item.getBoundingClientRect();
       const elStyle = window.getComputedStyle(item, null);
-      const left = resizeCoords[key] !== undefined ? resizeCoords[key].left : undefined;
-      const oldLeft = priorPosition[key] || 0;
-      let newLeft = elRect.left + item.offsetWidth - parseInt(elStyle.paddingLeft) / 2;
-
-      if (left === oldLeft) return;
-
-      resizeCoords[key] = { left: newLeft };
-      priorPosition[key] = newLeft;
+      resizeCoords[key] = { left: elRect.left + item.offsetWidth - parseInt(elStyle.paddingLeft) / 2 };
     });
 
-    this.setState({ tableWidth, tableHeight, resizeCoords, priorPosition }, this.updateWidths);
+    this.setState({ tableWidth, tableHeight, resizeCoords }, this.updateWidths);
   };
 
   updateWidths = () => {
