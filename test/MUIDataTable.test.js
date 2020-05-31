@@ -411,7 +411,7 @@ describe('<MUIDataTable />', function() {
       .simulate('click');
     assert.strictEqual(currentPage, 0);
 
-/*
+    /*
     TODO: simulating a click on #pagination-rows no longer seems to bring up the menu.
           doing "document.querySelector('#pagination-rows').click()" in the console doesn't
           work either. However, that method does work for #pagination-back and #pagination-next.
@@ -431,7 +431,6 @@ describe('<MUIDataTable />', function() {
       .at(0)
       .text();
     assert.strictEqual(inputValue, '1'); // TODO: see above comment, was 2
-
 
     // add data to simulate state change
     let newData = data.map(item => [...item]);
@@ -462,7 +461,6 @@ describe('<MUIDataTable />', function() {
       ['Harry Smith', 'Test Corp', 'Philadelphia', 'PA', undefined],
     ];
     assert.deepEqual(props.data, expectedResult);
-
   });
 
   it('should not re-build internal table data and displayData structure with no prop change to data or columns', () => {

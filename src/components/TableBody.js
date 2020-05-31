@@ -47,7 +47,7 @@ class TableBody extends React.Component {
   };
 
   static defaultProps = {
-    toggleExpandRow: () => { },
+    toggleExpandRow: () => {},
   };
 
   buildRows() {
@@ -274,18 +274,18 @@ class TableBody extends React.Component {
             );
           })
         ) : (
-            <TableBodyRow options={options}>
-              <TableBodyCell
-                colSpan={options.selectableRows !== 'none' || options.expandableRows ? visibleColCnt + 1 : visibleColCnt}
-                options={options}
-                colIndex={0}
-                rowIndex={0}>
-                <Typography variant="subtitle1" className={classes.emptyTitle}>
-                  {options.textLabels.body.noMatch}
-                </Typography>
-              </TableBodyCell>
-            </TableBodyRow>
-          )}
+          <TableBodyRow options={options}>
+            <TableBodyCell
+              colSpan={options.selectableRows !== 'none' || options.expandableRows ? visibleColCnt + 1 : visibleColCnt}
+              options={options}
+              colIndex={0}
+              rowIndex={0}>
+              <Typography variant="subtitle1" className={classes.emptyTitle}>
+                {options.textLabels.body.noMatch}
+              </Typography>
+            </TableBodyCell>
+          </TableBodyRow>
+        )}
       </MuiTableBody>
     );
   }
