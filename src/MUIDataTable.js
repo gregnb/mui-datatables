@@ -9,13 +9,13 @@ import isUndefined from 'lodash.isundefined';
 import merge from 'lodash.merge';
 import PropTypes from 'prop-types';
 import React from 'react';
-import TableBody from './components/TableBody';
-import TableFilterList from './components/TableFilterList';
-import TableFooter from './components/TableFooter';
-import TableHead from './components/TableHead';
-import TableResize from './components/TableResize';
-import TableToolbar from './components/TableToolbar';
-import TableToolbarSelect from './components/TableToolbarSelect';
+import DefaultTableBody from './components/TableBody';
+import DefaultTableFilterList from './components/TableFilterList';
+import DefaultTableFooter from './components/TableFooter';
+import DefaultTableHead from './components/TableHead';
+import DefaultTableResize from './components/TableResize';
+import DefaultTableToolbar from './components/TableToolbar';
+import DefaultTableToolbarSelect from './components/TableToolbarSelect';
 import getTextLabels from './textLabels';
 import { buildMap, getCollatorComparator, sortCompare, getPageValue, warnDeprecated } from './utils';
 
@@ -209,6 +209,7 @@ class MUIDataTable extends React.Component {
     }),
     /** Pass and use className to style MUIDataTable as desired */
     className: PropTypes.string,
+    components: PropTypes.objectOf(PropTypes.any),
   };
 
   static defaultProps = {
@@ -216,6 +217,15 @@ class MUIDataTable extends React.Component {
     options: {},
     data: [],
     columns: [],
+    components: {
+      TableBody: DefaultTableBody,
+      TableFilterList: DefaultTableFilterList,
+      TableFooter: DefaultTableFooter,
+      TableHead: DefaultTableHead,
+      TableResize: DefaultTableResize,
+      TableToolbar: DefaultTableToolbar,
+      TableToolbarSelect: DefaultTableToolbarSelect,
+    },
   };
 
   state = {
@@ -1435,7 +1445,12 @@ class MUIDataTable extends React.Component {
   }
 
   render() {
-    const { classes, className, title } = this.props;
+    const {
+      classes,
+      className,
+      title,
+      components: { TableBody, TableFilterList, TableFooter, TableHead, TableResize, TableToolbar, TableToolbarSelect },
+    } = this.props;
     const {
       announceText,
       activeColumn,
@@ -1451,6 +1466,14 @@ class MUIDataTable extends React.Component {
       searchText,
       serverSideFilterList,
     } = this.state;
+
+    const TableBodyComponent = TableBody || DefaultTableBody;
+    const TableFilterListComponent = TableFilterList || DefaultTableFilterList;
+    const TableFooterComponent = TableFooter || DefaultTableFooter;
+    const TableHeadComponent = TableHead || DefaultTableHead;
+    const TableResizeComponent = TableResize || DefaultTableResize;
+    const TableToolbarComponent = TableToolbar || DefaultTableToolbar;
+    const TableToolbarSelectComponent = TableToolbarSelect || DefaultTableToolbarSelect;
 
     const rowCount = this.state.count || displayData.length;
     const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
@@ -1500,7 +1523,7 @@ class MUIDataTable extends React.Component {
     return (
       <Paper elevation={this.options.elevation} ref={this.tableContent} className={paperClasses}>
         {selectedRows.data.length && this.options.disableToolbarSelect !== true ? (
-          <TableToolbarSelect
+          <TableToolbarSelectComponent
             options={this.options}
             selectedRows={selectedRows}
             onRowsDelete={this.selectRowDelete}
@@ -1509,7 +1532,7 @@ class MUIDataTable extends React.Component {
           />
         ) : (
           showToolbar && (
-            <TableToolbar
+            <TableToolbarComponent
               columns={columns}
               displayData={displayData}
               data={data}
@@ -1528,7 +1551,7 @@ class MUIDataTable extends React.Component {
             />
           )
         )}
-        <TableFilterList
+        <TableFilterListComponent
           options={this.options}
           serverSideFilterList={this.props.options.serverSideFilterList || []}
           filterListRenderers={columns.map(c => {
@@ -1549,7 +1572,7 @@ class MUIDataTable extends React.Component {
         />
         <div style={{ position: 'relative', maxHeight }} className={responsiveClass}>
           {this.options.resizableColumns && (
-            <TableResize
+            <TableResizeComponent
               key={rowCount}
               updateDividers={fn => (this.updateDividers = fn)}
               setResizeable={fn => (this.setHeadResizeable = fn)}
@@ -1563,7 +1586,7 @@ class MUIDataTable extends React.Component {
             className={tableClassNames}
             {...tableProps}>
             <caption className={classes.caption}>{title}</caption>
-            <TableHead
+            <TableHeadComponent
               columns={columns}
               activeColumn={activeColumn}
               data={displayData}
@@ -1580,7 +1603,7 @@ class MUIDataTable extends React.Component {
               toggleAllExpandableRows={this.toggleAllExpandableRows}
               options={this.options}
             />
-            <TableBody
+            <TableBodyComponent
               data={displayData}
               count={rowCount}
               columns={columns}
@@ -1596,7 +1619,7 @@ class MUIDataTable extends React.Component {
             />
           </MuiTable>
         </div>
-        <TableFooter
+        <TableFooterComponent
           options={this.options}
           page={page}
           rowCount={rowCount}
