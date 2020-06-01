@@ -158,6 +158,7 @@ The component accepts the following props:
 |**`textLabels`**|object||User provided labels to localize text
 |**`pagination`**|boolean|true|Enable/disable pagination
 |**`selectableRows`**|string|'multiple'|Numbers of rows that can be selected. Options are "multiple", "single", "none". **(Boolean options have been deprecated.)**
+|**`selectableRowsHideCheckboxes`**|boolean|false|Hides the checkboxes that appear when selectableRows is set to "multiple" or "single". Can provide a more custom UX, especially when paired with selectableRowsOnClick.
 |**`selectableRowsOnClick`**|boolean|false|Enable/disable select toggle when row is clicked. When False, only checkbox will trigger this action.
 |**`disableToolbarSelect`**|boolean|false|Enable/disable the Select Toolbar that appears when a row is selected.
 |**`isRowSelectable`**|function||Enable/disable selection on certain rows with custom function. Returns true if not provided. `function(dataIndex: number, selectedRows: object(lookup: {dataindex: boolean}, data: arrayOfObjects: {index, dataIndex})) => boolean`.
@@ -194,7 +195,7 @@ The component accepts the following props:
 |**`print`**|boolean|true|Show/hide print	 icon from toolbar
 |**`download`**|boolean|true|Show/hide download icon from toolbar
 |**`downloadOptions`**|object|`{filename: 'tableDownload.csv', separator: ','}`|Options to change the output of the CSV file: `filename`: string, `separator`: string, `filterOptions`: object(`useDisplayedColumnsOnly`: boolean, `useDisplayedRowsOnly`: boolean)
-|**`onDownload`**|function||A callback function that triggers when the user downloads the CSV file. In the callback, you can control what is written to the CSV file. `function(buildHead: (columns) => string, buildBody: (data) => string, columns, data) => string`. Return `false` to cancel download of file.
+|**`onDownload`**|function||A callback function that triggers when the user downloads the CSV file. In the callback, you can control what is written to the CSV file. This method can be used to add the Excel specific BOM character (see this [example](https://github.com/gregnb/mui-datatables/pull/722#issuecomment-526346440)). `function(buildHead: (columns) => string, buildBody: (data) => string, columns, data) => string`. Return `false` to cancel download of file.
 |**`viewColumns`**|boolean|true|Show/hide viewColumns icon from toolbar
 |**`onRowsSelect`**|function||Callback function that triggers when row(s) are selected. `function(currentRowsSelected: array, allRowsSelected: array) => void`
 |**`onRowsExpand`**|function||Callback function that triggers when row(s) are expanded. `function(currentRowsExpanded: array, allRowsExpanded: array) => void`

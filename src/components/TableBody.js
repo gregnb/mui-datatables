@@ -225,6 +225,7 @@ class TableBody extends React.Component {
                   {...(options.setRowProps ? options.setRowProps(row, dataIndex, rowIndex) : {})}
                   options={options}
                   rowSelected={options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false}
+                  isRowSelectable={this.isRowSelectable(dataIndex)}
                   onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
                   data-testid={'MUIDataTableBodyRow-' + dataIndex}
                   id={'MUIDataTableBodyRow-' + dataIndex}>
@@ -245,6 +246,7 @@ class TableBody extends React.Component {
                     // This will add a new class to the toggle button, MUIDataTableSelectCell-expandDisabled.
                     hideExpandButton={!this.isRowExpandable(dataIndex) && options.expandableRows}
                     selectableOn={options.selectableRows}
+                    selectableRowsHideCheckboxes={options.selectableRowsHideCheckboxes}
                     isRowExpanded={this.isRowExpanded(dataIndex)}
                     isRowSelectable={this.isRowSelectable(dataIndex)}
                     id={'MUIDataTableSelectCell-' + dataIndex}

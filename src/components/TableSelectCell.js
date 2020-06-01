@@ -9,9 +9,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import Remove from '@material-ui/icons/Remove';
 
 const defaultSelectCellStyles = theme => ({
-  root: {
-    backgroundColor: theme.palette.background.paper,
-  },
+  root: {},
   fixedHeader: {
     position: 'sticky',
     top: '0px',
@@ -84,6 +82,7 @@ class TableSelectCell extends React.Component {
       expandableRowsHeader,
       expandedRows,
       areAllRowsExpanded = () => false,
+      selectableRowsHideCheckboxes,
       ...otherProps
     } = this.props;
     let fixedHeaderClasses;
@@ -154,7 +153,7 @@ class TableSelectCell extends React.Component {
               )}
             </React.Fragment>
           )}
-          {selectableOn !== 'none' && renderCheckBox()}
+          { (selectableOn !== 'none' && selectableRowsHideCheckboxes !== true) && renderCheckBox()}
         </div>
       </TableCell>
     );

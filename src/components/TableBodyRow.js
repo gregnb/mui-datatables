@@ -48,7 +48,7 @@ class TableBodyRow extends React.Component {
   };
 
   render() {
-    const { classes, options, rowSelected, onClick, className, ...rest } = this.props;
+    const { classes, options, rowSelected, onClick, className, isRowSelectable, ...rest } = this.props;
 
     return (
       <TableRow
@@ -58,7 +58,7 @@ class TableBodyRow extends React.Component {
           {
             [classes.root]: true,
             [classes.hover]: options.rowHover,
-            [classes.hoverCursor]: options.selectableRowsOnClick || options.expandableRowsOnClick,
+            [classes.hoverCursor]: (options.selectableRowsOnClick && isRowSelectable) || options.expandableRowsOnClick,
             [classes.responsiveStacked]: options.responsive === 'stacked' || options.responsive === 'stackedFullWidth',
             'mui-row-selected': rowSelected,
           },

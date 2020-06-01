@@ -150,10 +150,8 @@ class Example extends React.Component {
       filter: true,
       filterType: 'dropdown',
       responsive: this.state.stacked ? 'stacked' : 'scrollMaxHeight',
-      fixedHeaderOptions: {
-        xAxis: true,
-        yAxis: true
-      },
+      fixedHeader: false,
+      fixedSelectColumn: false,
       rowHover: false,
       setRowProps: (row, dataIndex, rowIndex) => {
         return {

@@ -60,7 +60,9 @@ class Example extends React.Component {
         label: "Modified Title Label",
         options: {
           filter: true,
-          customBodyRender: (val) => {
+          customBodyRender: (val, tableMeta) => {
+            console.log(val);
+            console.dir(tableMeta);
             return val;
           }
         }

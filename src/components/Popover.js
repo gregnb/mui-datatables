@@ -86,7 +86,7 @@ class Popover extends React.Component {
           anchorOrigin={anchorOriginSpecs}
           transformOrigin={transformOriginSpecs}
           {...providedProps}>
-          <IconButton aria-label="Close" onClick={this.handleRequestClose} className={closeIconClass}>
+          <IconButton aria-label="Close" onClick={this.handleRequestClose} className={closeIconClass} style={{position:'absolute',right:'4px',top:'4px'}}>
             <CloseIcon />
           </IconButton>
           {content}
