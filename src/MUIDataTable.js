@@ -16,6 +16,7 @@ import DefaultTableHead from './components/TableHead';
 import DefaultTableResize from './components/TableResize';
 import DefaultTableToolbar from './components/TableToolbar';
 import DefaultTableToolbarSelect from './components/TableToolbarSelect';
+import MuiTooltip from '@material-ui/core/Tooltip';
 import getTextLabels from './textLabels';
 import { buildMap, getCollatorComparator, sortCompare, getPageValue, warnDeprecated } from './utils';
 
@@ -225,6 +226,7 @@ class MUIDataTable extends React.Component {
       TableResize: DefaultTableResize,
       TableToolbar: DefaultTableToolbar,
       TableToolbarSelect: DefaultTableToolbarSelect,
+      Tooltip: MuiTooltip,
     },
   };
 
@@ -1529,6 +1531,7 @@ class MUIDataTable extends React.Component {
             onRowsDelete={this.selectRowDelete}
             displayData={displayData}
             selectRowUpdate={this.selectRowUpdate}
+            components={this.props.components}
           />
         ) : (
           showToolbar && (
@@ -1548,6 +1551,7 @@ class MUIDataTable extends React.Component {
               title={title}
               toggleViewColumn={this.toggleViewColumn}
               setTableAction={this.setTableAction}
+              components={this.props.components}
             />
           )
         )}
@@ -1602,6 +1606,7 @@ class MUIDataTable extends React.Component {
               areAllRowsExpanded={this.areAllRowsExpanded}
               toggleAllExpandableRows={this.toggleAllExpandableRows}
               options={this.options}
+              components={this.props.components}
             />
             <TableBodyComponent
               data={displayData}

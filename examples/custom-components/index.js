@@ -4,6 +4,8 @@ import Chip from '@material-ui/core/Chip';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import TableFilterList from '../../src/components/TableFilterList';
+import MuiTooltip from '@material-ui/core/Tooltip';
+import Fade from "@material-ui/core/Fade";
 
 const CustomChip = (props) => {
   const { label, onDelete, columnNames, className, index } = props;
@@ -14,6 +16,17 @@ const CustomChip = (props) => {
       label={label}
       onDelete={onDelete}
   />);
+};
+
+const CustomTooltip = (props) => {
+  return (
+    <MuiTooltip 
+      title={props.title} 
+      interactive={true} 
+      TransitionComponent={Fade}
+      TransitionProps={{ timeout: 500 }}
+      leaveDelay={500}>{props.children}</MuiTooltip>
+  );
 };
 
 const CustomFilterList = (props) => {
@@ -81,6 +94,7 @@ class Example extends React.Component {
           columns={columns}
           components={{
             TableFilterList: CustomFilterList,
+            Tooltip: CustomTooltip,
           }}
       />
     );

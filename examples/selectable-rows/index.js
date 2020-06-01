@@ -60,6 +60,11 @@ class Example extends React.Component {
     ];
 
     const options = {
+      textLabels: {
+        body: {
+          noMatch: '',
+        }
+      },
       filter: true,
       selectableRows: 'multiple',
       selectableRowsOnClick: true,

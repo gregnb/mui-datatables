@@ -1,11 +1,11 @@
 import { withStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Tooltip from '@material-ui/core/Tooltip';
 import HelpIcon from '@material-ui/icons/Help';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import MuiTooltip from '@material-ui/core/Tooltip';
 
 const defaultHeadCellStyles = theme => ({
   root: {},
@@ -69,6 +69,8 @@ class TableHeadCell extends React.Component {
     print: PropTypes.bool.isRequired,
     /** Optional to be used with `textLabels.body.columnHeaderTooltip` */
     column: PropTypes.object,
+    /** Injectable component structure **/
+    components: PropTypes.object,
   };
 
   handleKeyboardSortinput = e => {
@@ -84,9 +86,9 @@ class TableHeadCell extends React.Component {
   };
 
   render() {
-    const { children, classes, options, sortDirection, sort, hint, print, column, cellHeaderProps = {} } = this.props;
+    const { children, classes, options, sortDirection, sort, hint, print, column, cellHeaderProps = {}, components } = this.props;
     const { className, ...otherProps } = cellHeaderProps;
-
+    const Tooltip = components.Tooltip || MuiTooltip;
     const sortActive = sortDirection !== 'none' && sortDirection !== undefined ? true : false;
     const ariaSortDirection = sortDirection === 'none' ? false : sortDirection;
 
