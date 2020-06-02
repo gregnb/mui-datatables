@@ -38,6 +38,9 @@
     "no-tabs": 2,
     "react/self-closing-comp": 2,
     "react/no-typos": 2,
+    "react/jsx-no-duplicate-props": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
     "jsx-a11y/no-autofocus": [ 2, {
       "ignoreNonDOM": true
     }]
@@ -46,6 +49,7 @@
     "import",
     "react",
     "jsx-a11y",
-    "filenames"
+    "filenames",
+    "react-hooks"
   ]
 }

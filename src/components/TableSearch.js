@@ -6,6 +6,8 @@ import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
 import { withStyles } from '@material-ui/core/styles';
 
+const ESC_KEY_CODE = 27;
+
 const defaultSearchStyles = theme => ({
   main: {
     display: 'flex',
@@ -31,16 +33,8 @@ class TableSearch extends React.Component {
     this.props.onSearch(event.target.value);
   };
 
-  componentDidMount() {
-    document.addEventListener('keydown', this.onKeyDown, false);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.onKeyDown, false);
-  }
-
   onKeyDown = event => {
-    if (event.keyCode === 27) {
+    if (event.keyCode === ESC_KEY_CODE) {
       this.props.onHide();
     }
   };
@@ -57,9 +51,12 @@ class TableSearch extends React.Component {
             autoFocus={true}
             InputProps={{
               'data-test-id': options.textLabels.toolbar.search,
+            }}
+            inputProps={{
               'aria-label': options.textLabels.toolbar.search,
             }}
             value={searchText || ''}
+            onKeyDown={this.onKeyDown}
             onChange={this.handleTextChange}
             fullWidth={true}
             inputRef={el => (this.searchField = el)}

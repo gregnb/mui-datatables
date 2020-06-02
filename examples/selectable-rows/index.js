@@ -1,11 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
+import Switch from '@material-ui/core/Switch';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 class Example extends React.Component {
   state = {
-    rowsSelected: []
+    selectableRowsHideCheckboxes: false
   };
+
+  updateSelectableRowsHideCheckboxes = (event) => {
+    this.setState({
+      selectableRowsHideCheckboxes: event.target.checked
+    });
+  }
 
   render() {
 
@@ -51,9 +60,15 @@ class Example extends React.Component {
     ];
 
     const options = {
+      textLabels: {
+        body: {
+          noMatch: '',
+        }
+      },
       filter: true,
       selectableRows: 'multiple',
       selectableRowsOnClick: true,
+      selectableRowsHideCheckboxes: this.state.selectableRowsHideCheckboxes,
       filterType: 'dropdown',
       responsive: 'stacked',
       rowsPerPage: 10,
@@ -100,7 +115,23 @@ class Example extends React.Component {
     };
 
     return (
-      <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+      <>
+        <div>Note: Example code is setup to limit the number of selections to 3</div>
+        <FormGroup row>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={this.state.selectableRowsHideCheckboxes}
+                onChange={this.updateSelectableRowsHideCheckboxes}
+                value="selectableRowsHideCheckboxes"
+                color="primary"
+              />
+            }
+            label="Hide Checkboxes"
+          />
+        </FormGroup>
+        <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+      </>
     );
 
   }

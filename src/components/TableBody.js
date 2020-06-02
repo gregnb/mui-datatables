@@ -7,7 +7,7 @@ import TableBodyRow from './TableBodyRow';
 import TableSelectCell from './TableSelectCell';
 import { withStyles } from '@material-ui/core/styles';
 import cloneDeep from 'lodash.clonedeep';
-import { getPageValue } from '../utils';
+import { getPageValue, warnDeprecated } from '../utils';
 
 const defaultBodyStyles = {
   root: {},
@@ -167,8 +167,8 @@ class TableBody extends React.Component {
       // In a future release, onRowClick will no longer be called here (for consistency).
       // For now, issue a deprecated warning.
       if (this.props.options.onRowClick) {
-        console.warn(
-          'Deprecated: Clicks on expandable button will not trigger onRowClick in an upcoming release, see: https://github.com/gregnb/mui-datatables/issues/516.',
+        warnDeprecated(
+          'Clicks on expandable button will not trigger onRowClick in an upcoming release, see: https://github.com/gregnb/mui-datatables/issues/516.',
         );
         this.props.options.onRowClick(row, data, event);
       }
@@ -222,9 +222,10 @@ class TableBody extends React.Component {
             return (
               <React.Fragment key={rowIndex}>
                 <TableBodyRow
-                  {...(options.setRowProps ? options.setRowProps(row, dataIndex) : {})}
+                  {...(options.setRowProps ? options.setRowProps(row, dataIndex, rowIndex) : {})}
                   options={options}
                   rowSelected={options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false}
+                  isRowSelectable={this.isRowSelectable(dataIndex)}
                   onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
                   data-testid={'MUIDataTableBodyRow-' + dataIndex}
                   id={'MUIDataTableBodyRow-' + dataIndex}>
@@ -238,13 +239,14 @@ class TableBody extends React.Component {
                       dataIndex: dataIndex,
                     })}
                     fixedHeader={options.fixedHeader}
-                    fixedHeaderOptions={options.fixedHeaderOptions}
+                    fixedSelectColumn={options.fixedSelectColumn}
                     checked={this.isRowSelected(dataIndex)}
                     expandableOn={options.expandableRows}
                     // When rows are expandable, but this particular row isn't expandable, set this to true.
                     // This will add a new class to the toggle button, MUIDataTableSelectCell-expandDisabled.
                     hideExpandButton={!this.isRowExpandable(dataIndex) && options.expandableRows}
                     selectableOn={options.selectableRows}
+                    selectableRowsHideCheckboxes={options.selectableRowsHideCheckboxes}
                     isRowExpanded={this.isRowExpanded(dataIndex)}
                     isRowSelectable={this.isRowSelectable(dataIndex)}
                     id={'MUIDataTableSelectCell-' + dataIndex}

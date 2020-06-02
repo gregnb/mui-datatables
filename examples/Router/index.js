@@ -4,6 +4,8 @@ import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {withStyles} from "@material-ui/core/styles/index";
 import ExamplesGrid from "./ExamplesGrid";
 import examples from "../examples";
+import Button from "@material-ui/core/Button";
+import {withRouter} from 'react-router-dom';
 
 const styles = {
     root: {
@@ -15,22 +17,45 @@ const styles = {
     },
 };
 
-function Examples(props) {
-    const {classes} = props;
-    return <main className={classes.root}>
-        <div className={classes.contentWrapper}>
-            <Router hashType="noslash">
+class Examples extends React.Component {
+
+    returnHome = () => {
+        this.props.history.push('/');
+    };
+
+    render() {
+        const {classes} = this.props;
+
+        var returnHomeStyle = {padding:'0px', margin:'20px 0 20px 0'};
+
+        return <main className={classes.root}>
+            <div className={classes.contentWrapper}>
                 <Switch>
                     <Route path="/" exact render={() => <ExamplesGrid examples={examples}/>}/>
                     {Object.keys(examples).map((label, index) => (
                         <Route key={index} path={`/${label.replace(/\s+/g, '-').toLowerCase()}`} exact component={examples[label]}/>
                     ))}
                 </Switch>
-            </Router>
-        </div>
-    </main>;
+                <div>
+                    {this.props.location.pathname !== '/' && (
+                      <div style={returnHomeStyle}>
+                        <Button color="primary" onClick={this.returnHome}>Back to Example Index</Button>
+                      </div>
+                    )}
+                </div>
+            </div>
+        </main>;
+    }
 }
 
-const StyledExamples = withStyles(styles)(Examples);
+const StyledExamples = withRouter( withStyles(styles)(Examples) );
 
-ReactDOM.render(<StyledExamples/>, document.getElementById('app-root'));
+function App() {
+  return (
+    <Router hashType="noslash">
+      <StyledExamples />
+    </Router>
+  );
+}
+
+ReactDOM.render(<App/>, document.getElementById('app-root'));
