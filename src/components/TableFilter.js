@@ -125,6 +125,9 @@ class TableFilter extends React.Component {
 
   renderCheckbox(column, index) {
     const { classes, filterData, filterList } = this.props;
+    const renderItem = column.filterOptions && column.filterOptions.renderValue
+      ? column.filterOptions.renderValue
+      : v => v;
 
     return (
       <GridListTile key={index} cols={2}>
@@ -155,7 +158,7 @@ class TableFilter extends React.Component {
                       value={filterValue != null ? filterValue.toString() : ''}
                     />
                   }
-                  label={filterValue}
+                  label={renderItem(filterValue)}
                 />
               </Grid>
             ))}
@@ -168,6 +171,9 @@ class TableFilter extends React.Component {
   renderSelect(column, index) {
     const { classes, filterData, filterList, options } = this.props;
     const textLabels = options.textLabels.filter;
+    const renderItem = column.filterOptions && column.filterOptions.renderValue
+      ? column.filterOptions.renderValue
+      : v => v != null ? v.toString() : '';
 
     return (
       <GridListTile key={index} cols={1} classes={{ tile: classes.gridListTile }}>
@@ -184,7 +190,7 @@ class TableFilter extends React.Component {
             </MenuItem>
             {filterData[index].map((filterValue, filterIndex) => (
               <MenuItem value={filterValue} key={filterIndex + 1}>
-                {filterValue != null ? filterValue.toString() : ''}
+                {renderItem(filterValue)}
               </MenuItem>
             ))}
           </Select>
@@ -195,6 +201,9 @@ class TableFilter extends React.Component {
 
   renderTextField(column, index) {
     const { classes, filterList } = this.props;
+    if (column.filterOptions && column.filterOptions.render) {
+      console.error('Custom renderItem not supported for textField filters');
+    }
 
     return (
       <GridListTile key={index} cols={1} classes={{ tile: classes.gridListTile }}>
@@ -212,7 +221,9 @@ class TableFilter extends React.Component {
 
   renderMultiselect(column, index) {
     const { classes, filterData, filterList } = this.props;
-
+    const renderItem = column.filterOptions && column.filterOptions.renderValue
+      ? column.filterOptions.renderValue
+      : v => v;
     return (
       <GridListTile key={index} cols={1} classes={{ tile: classes.gridListTile }}>
         <FormControl key={index} fullWidth>
@@ -221,7 +232,7 @@ class TableFilter extends React.Component {
             multiple
             fullWidth
             value={filterList[index] || []}
-            renderValue={selected => selected.join(', ')}
+            renderValue={selected => selected.map(renderItem).join(', ')}
             name={column.name}
             onChange={event => this.handleMultiselectChange(index, event.target.value, column.name)}
             input={<Input name={column.name} id={column.name} />}>
@@ -236,7 +247,7 @@ class TableFilter extends React.Component {
                     checked: classes.checked,
                   }}
                 />
-                <ListItemText primary={filterValue} />
+                <ListItemText primary={renderItem(filterValue)} />
               </MenuItem>
             ))}
           </Select>
@@ -254,6 +265,9 @@ class TableFilter extends React.Component {
     if (!display) {
       console.error('Property "display" is required when using custom filter type.');
       return;
+    }
+    if (column.filterListOptions && column.filterListOptions.renderValue) {
+      console.warning('"renderValue" is ignored for custom filter fields');
     }
 
     return (
