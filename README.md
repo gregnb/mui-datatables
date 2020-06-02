@@ -401,7 +401,7 @@ Supported customizable components:
  * `TableToolbarSelect`
  * `Tooltip`
 
-For more information, please see this [example](https://github.com/gregnb/mui-datatables/examples/custom-components/index.js). Additionally, all examples can be viewd [live](https://codesandbox.io/s/github/greg/mui-datatables) at our CodeSandbox.
+For more information, please see this [example](https://github.com/gregnb/mui-datatables/examples/custom-components/index.js). Additionally, all examples can be viewd [live](https://codesandbox.io/s/github/gregnb/mui-datatables) at our CodeSandbox.
 
 ## Remote Data
 
