@@ -1,31 +1,19 @@
 import { withStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Tooltip from '@material-ui/core/Tooltip';
 import HelpIcon from '@material-ui/icons/Help';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import MuiTooltip from '@material-ui/core/Tooltip';
 
 const defaultHeadCellStyles = theme => ({
   root: {},
   fixedHeader: {
     position: 'sticky',
     top: '0px',
-    left: '0px',
     zIndex: 100,
     backgroundColor: theme.palette.background.paper,
-  },
-  fixedHeaderCommon: {
-    position: 'sticky',
-    zIndex: 100,
-    backgroundColor: theme.palette.background.paper,
-  },
-  fixedHeaderXAxis: {
-    left: '0px',
-  },
-  fixedHeaderYAxis: {
-    top: '0px',
   },
   tooltip: {
     cursor: 'pointer',
@@ -81,6 +69,8 @@ class TableHeadCell extends React.Component {
     print: PropTypes.bool.isRequired,
     /** Optional to be used with `textLabels.body.columnHeaderTooltip` */
     column: PropTypes.object,
+    /** Injectable component structure **/
+    components: PropTypes.object,
   };
 
   handleKeyboardSortinput = e => {
@@ -96,12 +86,11 @@ class TableHeadCell extends React.Component {
   };
 
   render() {
-    const { children, classes, options, sortDirection, sort, hint, print, column, cellHeaderProps = {} } = this.props;
+    const { children, classes, options, sortDirection, sort, hint, print, column, cellHeaderProps = {}, components = {} } = this.props;
     const { className, ...otherProps } = cellHeaderProps;
-
+    const Tooltip = components.Tooltip || MuiTooltip;
     const sortActive = sortDirection !== 'none' && sortDirection !== undefined ? true : false;
     const ariaSortDirection = sortDirection === 'none' ? false : sortDirection;
-    let fixedHeaderClasses;
 
     const sortLabelProps = {
       classes: { root: classes.sortLabelRoot },
@@ -110,18 +99,9 @@ class TableHeadCell extends React.Component {
       ...(ariaSortDirection ? { direction: sortDirection } : {}),
     };
 
-    // DEPRECATED, make sure to replace defaults with new options when removing
-    if (options.fixedHeader) fixedHeaderClasses = classes.fixedHeader;
-
-    if (options.fixedHeaderOptions) {
-      fixedHeaderClasses = classes.fixedHeaderCommon;
-      if (options.fixedHeaderOptions.xAxis) fixedHeaderClasses += ` ${classes.fixedHeaderXAxis}`;
-      if (options.fixedHeaderOptions.yAxis) fixedHeaderClasses += ` ${classes.fixedHeaderYAxis}`;
-    }
-
     const cellClass = classNames({
       [classes.root]: true,
-      [fixedHeaderClasses]: true,
+      [classes.fixedHeader]: options.fixedHeader,
       'datatables-noprint': !print,
       [className]: className,
     });
@@ -144,8 +124,8 @@ class TableHeadCell extends React.Component {
               placement={'bottom-start'}
               classes={{
                 tooltip: classes.tooltip,
-              }}
-              classes={{ popper: classes.mypopper }}>
+                popper: classes.mypopper,
+              }}>
               <div className={classes.sortAction}>
                 <div
                   className={classNames({
@@ -177,9 +157,9 @@ class TableHeadCell extends React.Component {
                 placement={'bottom-end'}
                 classes={{
                   tooltip: classes.tooltip,
+                  popper: classes.mypopper,
                 }}
-                enterDelay={300}
-                classes={{ popper: classes.mypopper }}>
+                enterDelay={300}>
                 <HelpIcon className={classes.hintIconAlone} fontSize="small" />
               </Tooltip>
             )}

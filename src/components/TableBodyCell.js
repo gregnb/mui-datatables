@@ -65,10 +65,11 @@ class TableBodyCell extends React.Component {
           {
             [classes.root]: true,
             [classes.cellHide]: true,
-            [classes.stackedCommon]: options.responsive === 'stacked',
+            [classes.stackedCommon]: options.responsive === 'stacked' || options.responsive === 'stackedFullWidth',
             [classes.cellStackedSmall]:
-              options.responsive === 'stacked' &&
-              (options.setTableProps().padding === 'none' || options.setTableProps().size === 'small'),
+              options.responsive === 'stacked' ||
+              (options.responsive === 'stackedFullWidth' &&
+                (options.setTableProps().padding === 'none' || options.setTableProps().size === 'small')),
             'datatables-noprint': !print,
           },
           className,
@@ -81,10 +82,11 @@ class TableBodyCell extends React.Component {
         className={classNames(
           {
             [classes.root]: true,
-            [classes.stackedCommon]: options.responsive === 'stacked',
+            [classes.stackedCommon]: options.responsive === 'stacked' || options.responsive === 'stackedFullWidth',
             [classes.responsiveStackedSmall]:
-              options.responsive === 'stacked' &&
-              (options.setTableProps().padding === 'none' || options.setTableProps().size === 'small'),
+              options.responsive === 'stacked' ||
+              (options.responsive === 'stackedFullWidth' &&
+                (options.setTableProps().padding === 'none' || options.setTableProps().size === 'small')),
             'datatables-noprint': !print,
           },
           className,

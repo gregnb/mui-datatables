@@ -3,6 +3,7 @@ import {Card, CardContent, Grid, Typography} from "@material-ui/core";
 import React from "react";
 import examples from "../examples";
 import {withStyles} from "@material-ui/core/styles/index";
+import TextField from '@material-ui/core/TextField';
 
 const styles = {
     container: {
@@ -30,8 +31,20 @@ const styles = {
     }
 };
 
-function ExamplesGrid(props) {
-    const {classes} = props;
+class ExamplesGrid extends React.Component {
+
+  state = {
+    searchVal: ''
+  }
+
+  setSearchVal = (val) => {
+    this.setState({
+      searchVal: val
+    });
+  }
+
+  render() {
+    const {classes} = this.props;
 
     // Sort Examples alphabetically
     const examplesSorted = {};
@@ -39,25 +52,37 @@ function ExamplesGrid(props) {
         examplesSorted[key] = examples[key];
     });
 
-    const examplesSortedKeys = Object.keys(examplesSorted);
+    const examplesSortedKeys = Object.keys(examplesSorted).filter((item) => {
+      if (this.state.searchVal === '') return true;
+      console.dir(item);
+      return item.toLowerCase().indexOf( this.state.searchVal.toLowerCase() ) !== -1 ? true : false;
+    });
 
-    return <React.Fragment>
+    return (
+      <React.Fragment>
         <Typography variant="h5" align="center">Choose an Example</Typography>
         <Typography variant="subtitle2" align="center">({examplesSortedKeys.length}) Examples</Typography>
-        <Grid container className={classes.container} spacing={16}>
-            {examplesSortedKeys.map((label, index) => (
-                <Grid key={index} item md={2}>
-                    <Link className={classes.link} to={`/${label.replace(/\s+/g, '-').toLowerCase()}`}>
-                        <Card className={classes.card}>
-                            <CardContent className={classes.cardContent}>
-                                <Typography variant="subtitle1" className={classes.label} align="center">{label}</Typography>
-                            </CardContent>
-                        </Card>
-                    </Link>
-                </Grid>
-            ))}
+
+        <Typography variant="subtitle2" align="center" style={{margin:'10px'}}>
+          <TextField placeholder="Search Examples" value={this.state.searchVal} onChange={(e) => this.setSearchVal(e.target.value)} />
+        </Typography>
+
+        <Grid container className={classes.container} spacing={1}>
+          {examplesSortedKeys.map((label, index) => (
+            <Grid key={index} item md={2}>
+              <Link className={classes.link} to={`/${label.replace(/\s+/g, '-').toLowerCase()}`}>
+                <Card className={classes.card}>
+                  <CardContent className={classes.cardContent}>
+                    <Typography variant="subtitle1" className={classes.label} align="center">{label}</Typography>
+                  </CardContent>
+                </Card>
+              </Link>
+            </Grid>
+          ))}
         </Grid>
-    </React.Fragment>;
+      </React.Fragment>
+    );
+  }
 }
 
 export default withStyles(styles)(ExamplesGrid);
