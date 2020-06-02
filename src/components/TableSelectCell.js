@@ -153,7 +153,7 @@ class TableSelectCell extends React.Component {
               )}
             </React.Fragment>
           )}
-          { (selectableOn !== 'none' && selectableRowsHideCheckboxes !== true) && renderCheckBox()}
+          {selectableOn !== 'none' && selectableRowsHideCheckboxes !== true && renderCheckBox()}
         </div>
       </TableCell>
     );

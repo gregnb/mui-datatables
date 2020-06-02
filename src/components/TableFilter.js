@@ -125,9 +125,8 @@ class TableFilter extends React.Component {
 
   renderCheckbox(column, index) {
     const { classes, filterData, filterList } = this.props;
-    const renderItem = column.filterOptions && column.filterOptions.renderValue
-      ? column.filterOptions.renderValue
-      : v => v;
+    const renderItem =
+      column.filterOptions && column.filterOptions.renderValue ? column.filterOptions.renderValue : v => v;
 
     return (
       <GridListTile key={index} cols={2}>
@@ -171,9 +170,10 @@ class TableFilter extends React.Component {
   renderSelect(column, index) {
     const { classes, filterData, filterList, options } = this.props;
     const textLabels = options.textLabels.filter;
-    const renderItem = column.filterOptions && column.filterOptions.renderValue
-      ? column.filterOptions.renderValue
-      : v => v != null ? v.toString() : '';
+    const renderItem =
+      column.filterOptions && column.filterOptions.renderValue
+        ? column.filterOptions.renderValue
+        : v => (v != null ? v.toString() : '');
 
     return (
       <GridListTile key={index} cols={1} classes={{ tile: classes.gridListTile }}>
@@ -221,9 +221,8 @@ class TableFilter extends React.Component {
 
   renderMultiselect(column, index) {
     const { classes, filterData, filterList } = this.props;
-    const renderItem = column.filterOptions && column.filterOptions.renderValue
-      ? column.filterOptions.renderValue
-      : v => v;
+    const renderItem =
+      column.filterOptions && column.filterOptions.renderValue ? column.filterOptions.renderValue : v => v;
     return (
       <GridListTile key={index} cols={1} classes={{ tile: classes.gridListTile }}>
         <FormControl key={index} fullWidth>

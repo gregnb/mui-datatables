@@ -113,7 +113,11 @@ describe('<TableFilter />', function() {
 
   it("should render data table filter view with custom rendering of items if filterType = 'select'", () => {
     columns.forEach(item => (item.filterOptions = { renderValue: v => v.toUpperCase() }));
-    const options = { filterType: 'select', textLabels: getTextLabels(), filterOptions: { renderValue: v => v.toUpperCase() } };
+    const options = {
+      filterType: 'select',
+      textLabels: getTextLabels(),
+      filterOptions: { renderValue: v => v.toUpperCase() },
+    };
     const filterList = [['Joe James'], [null], [], []];
 
     const mountWrapper = mount(

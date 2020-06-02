@@ -202,7 +202,7 @@ describe('<MUIDataTable />', function() {
     });
 
     const actualResult = shallowWrapper.dive().state().columns;
-    
+
     const expectedResult = [
       {
         display: 'excluded',
@@ -323,7 +323,7 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(JSON.stringify(state.displayData), displayData);
   });
 
-  it('should correctly build internal table data and displayData structure with enabled nested data custom marker (option enableNestedDataAccess : "/OK/" )',() => {
+  it('should correctly build internal table data and displayData structure with enabled nested data custom marker (option enableNestedDataAccess : "/OK/" )', () => {
     const columns = [
       {
         name: 'Name',
@@ -350,13 +350,15 @@ describe('<MUIDataTable />', function() {
       { data: ['Herm, Bob', 'Test Corp', undefined, 'FL', undefined], dataIndex: 2 },
       { data: ['Houston, James', 'Test Corp', 'Dallas', 'TX', undefined], dataIndex: 3 },
     ]);
-    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={{enableNestedDataAccess :'/OK/'}} />);
+    const shallowWrapper = shallow(
+      <MUIDataTable columns={columns} data={data} options={{ enableNestedDataAccess: '/OK/' }} />,
+    );
     const state = shallowWrapper.dive().state();
 
     assert.deepEqual(JSON.stringify(state.displayData), displayData);
   });
 
-  it('should correctly build internal table data and displayData structure with disabled nested data (option enableNestedDataAccess : "" )',() => {
+  it('should correctly build internal table data and displayData structure with disabled nested data (option enableNestedDataAccess : "" )', () => {
     const columns = [
       {
         name: 'Name',
@@ -383,7 +385,9 @@ describe('<MUIDataTable />', function() {
       { data: ['Herm, Bob', 'Test Corp', null, null, undefined], dataIndex: 2 },
       { data: ['Houston, James', 'Test Corp', null, null, undefined], dataIndex: 3 },
     ]);
-    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={{enableNestedDataAccess :''}}  />);
+    const shallowWrapper = shallow(
+      <MUIDataTable columns={columns} data={data} options={{ enableNestedDataAccess: '' }} />,
+    );
     const state = shallowWrapper.dive().state();
 
     assert.deepEqual(JSON.stringify(state.displayData), displayData);
