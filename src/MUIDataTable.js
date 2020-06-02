@@ -331,7 +331,7 @@ class MUIDataTable extends React.Component {
       separator: ',',
     },
     elevation: 4,
-    enableNestedDataAccess: '.',
+    enableNestedDataAccess: '',
     expandableRows: false,
     expandableRowsHeader: true,
     expandableRowsOnClick: false,
