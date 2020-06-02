@@ -201,7 +201,7 @@ class TableFilter extends React.Component {
 
   renderTextField(column, index) {
     const { classes, filterList } = this.props;
-    if (column.filterOptions && column.filterOptions.render) {
+    if (column.filterOptions && column.filterOptions.renderValue) {
       console.error('Custom renderItem not supported for textField filters');
     }
 
