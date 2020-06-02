@@ -282,8 +282,8 @@ class TableBody extends React.Component {
               options={options}
               colIndex={0}
               rowIndex={0}>
-              <Typography variant="subtitle1" className={classes.emptyTitle}>
-                {options.textLabels.body.noMatch}
+              <Typography variant="body1" className={classes.emptyTitle}>
+                <strong>{options.textLabels.body.noMatch}</strong>
               </Typography>
             </TableBodyCell>
           </TableBodyRow>
