@@ -60,7 +60,7 @@ class TableToolbarSelect extends React.Component {
   };
 
   render() {
-    const { classes, onRowsDelete, selectedRows, options, displayData, components } = this.props;
+    const { classes, onRowsDelete, selectedRows, options, displayData, components = {} } = this.props;
     const textLabels = options.textLabels.selectedRows;
     const Tooltip = components.Tooltip || MuiTooltip;
 

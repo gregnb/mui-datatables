@@ -252,7 +252,7 @@ class TableToolbar extends React.Component {
       toggleViewColumn,
       title,
       tableRef,
-      components
+      components = {}
     } = this.props;
 
     const Tooltip = components.Tooltip || MuiTooltip;
