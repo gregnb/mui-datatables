@@ -283,7 +283,7 @@ class TableBody extends React.Component {
               colIndex={0}
               rowIndex={0}>
               <Typography variant="body1" className={classes.emptyTitle}>
-                <strong>{options.textLabels.body.noMatch}</strong>
+                {options.textLabels.body.noMatch}
               </Typography>
             </TableBodyCell>
           </TableBodyRow>
