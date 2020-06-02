@@ -148,6 +148,7 @@ class MUIDataTable extends React.Component {
       customSort: PropTypes.func,
       customToolbar: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customToolbarSelect: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+      enableNestedDataAccess : PropTypes.string,
       expandableRows: PropTypes.bool,
       expandableRowsHeader: PropTypes.bool,
       expandableRowsOnClick: PropTypes.bool,
@@ -330,6 +331,7 @@ class MUIDataTable extends React.Component {
       separator: ',',
     },
     elevation: 4,
+    enableNestedDataAccess: '.',
     expandableRows: false,
     expandableRowsHeader: true,
     expandableRowsOnClick: false,
@@ -540,7 +542,9 @@ class MUIDataTable extends React.Component {
   };
 
   transformData = (columns, data) => {
-    const leaf = (obj, path) => path.split('.').reduce((value, el) => (value ? value[el] : undefined), obj);
+    const { enableNestedDataAccess } = this.options;
+    const leaf = (obj, path) =>  (enableNestedDataAccess ? path.split(enableNestedDataAccess) : path.split())
+      .reduce((value, el) => (value ? value[el] : undefined), obj);
 
     const transformedData = Array.isArray(data[0])
       ? data.map(row => {
@@ -562,7 +566,7 @@ class MUIDataTable extends React.Component {
       warnDeprecated(
         'Passing objects in as data is not supported, and will be prevented in a future release. Consider using ids in your data and linking it to external objects if you want to access object data from custom render functions.',
       );
-
+    
     return transformedData;
   };
 
