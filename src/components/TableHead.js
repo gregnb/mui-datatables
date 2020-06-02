@@ -34,7 +34,7 @@ class TableHead extends React.Component {
 
     const numSelected = (selectedRows && selectedRows.data.length) || 0;
     let isIndeterminate = numSelected > 0 && numSelected < count;
-    let isChecked = numSelected === count ? true : false;
+    let isChecked = numSelected > 0 && numSelected === count ? true : false;
 
     // When the disableToolbarSelect option is true, there can be
     // selected items that aren't visible, so we need to be more
