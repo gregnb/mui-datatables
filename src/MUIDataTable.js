@@ -181,6 +181,7 @@ class MUIDataTable extends React.Component {
       page: PropTypes.number,
       pagination: PropTypes.bool,
       print: PropTypes.bool,
+      searchProps: PropTypes.object,
       selectableRows: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['none', 'single', 'multiple'])]),
       selectableRowsHeader: PropTypes.bool,
       selectableRowsHideCheckboxes: PropTypes.bool,
@@ -247,6 +248,7 @@ class MUIDataTable extends React.Component {
     page: 0,
     previousSelectedRow: null,
     rowsPerPage: 0,
+    searchProps: {},
     searchText: null,
     selectedRows: {
       data: [],
