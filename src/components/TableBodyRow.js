@@ -23,7 +23,7 @@ const defaultBodyRowStyles = theme => ({
   hover: {
     '&:hover': {
       '& td': {
-        backgroundColor: theme.palette.action.selected,
+        backgroundColor: theme.palette.action.hover,
       },
     },
   },
