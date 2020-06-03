@@ -943,11 +943,19 @@ class MUIDataTable extends React.Component {
         };
       },
       () => {
-        this.setTableAction('columnViewChange');
-        if (this.options.onColumnViewChange) {
-          this.options.onColumnViewChange(
+        this.setTableAction('viewColumnsChange');
+        var cb = this.options.onViewColumnsChange || this.options.onColumnViewChange;
+
+        if (cb) {
+          cb(
             this.state.columns[index].name,
             this.state.columns[index].display === 'true' ? 'add' : 'remove',
+          );
+        }
+
+        if (this.options.onColumnViewChange) {
+          warnDeprecated(
+            'onColumnViewChange has been changed to onViewColumnsChange.',
           );
         }
       },

@@ -213,7 +213,7 @@ The component accepts the following props:
 |**`onFilterChange`**|function||Callback function that triggers when filters have changed. `function(changedColumn: string, filterList: array, type: enum('checkbox', 'dropdown', 'multiselect', 'textField', 'custom', 'chip', 'reset')) => void`
 |**`onSearchClose`**|function||Callback function that triggers when the searchbox closes. `function() => void`
 |**`onColumnSortChange`**|function||Callback function that triggers when a column has been sorted. `function(changedColumn: string, direction: string) => void`
-|**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
+|**`onViewColumnsChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
 |**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
 |**`onTableInit`**|function||Callback function that triggers when table state has been initialized. `function(action: string, tableState: object) => void`
 |**`setRowProps`**|function||Is called for each row and allows you to return custom props for this row based on its data. `function(row: array, dataIndex: number) => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
