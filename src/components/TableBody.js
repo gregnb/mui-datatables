@@ -219,13 +219,16 @@ class TableBody extends React.Component {
               return options.customRowRender(row, dataIndex, rowIndex);
             }
 
+            let isRowSelected = options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false;
+            let isRowSelectable = this.isRowSelectable(dataIndex);
+
             return (
               <React.Fragment key={rowIndex}>
                 <TableBodyRow
                   {...(options.setRowProps ? options.setRowProps(row, dataIndex, rowIndex) : {})}
                   options={options}
-                  rowSelected={options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false}
-                  isRowSelectable={this.isRowSelectable(dataIndex)}
+                  rowSelected={isRowSelected}
+                  isRowSelectable={isRowSelectable}
                   onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
                   data-testid={'MUIDataTableBodyRow-' + dataIndex}
                   id={'MUIDataTableBodyRow-' + dataIndex}>
@@ -240,7 +243,7 @@ class TableBody extends React.Component {
                     })}
                     fixedHeader={options.fixedHeader}
                     fixedSelectColumn={options.fixedSelectColumn}
-                    checked={this.isRowSelected(dataIndex)}
+                    checked={isRowSelected}
                     expandableOn={options.expandableRows}
                     // When rows are expandable, but this particular row isn't expandable, set this to true.
                     // This will add a new class to the toggle button, MUIDataTableSelectCell-expandDisabled.
@@ -248,7 +251,7 @@ class TableBody extends React.Component {
                     selectableOn={options.selectableRows}
                     selectableRowsHideCheckboxes={options.selectableRowsHideCheckboxes}
                     isRowExpanded={this.isRowExpanded(dataIndex)}
-                    isRowSelectable={this.isRowSelectable(dataIndex)}
+                    isRowSelectable={isRowSelectable}
                     id={'MUIDataTableSelectCell-' + dataIndex}
                   />
                   {row.map(

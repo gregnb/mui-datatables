@@ -716,6 +716,6 @@ describe('<TableBody />', function() {
       />,
     );
 
-    assert.equal(isRowSelectable.callCount, displayData.length + displayData.length); // called an additional time for the tablebodyrow
+    assert.equal(isRowSelectable.callCount, displayData.length);
   });
 });
