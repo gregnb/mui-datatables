@@ -483,7 +483,7 @@ class MUIDataTable extends React.Component {
 
           if (options.sortDirection === null || options.sortDirection) {
             warnDeprecated(
-              'The sortDirection column field has been replaced by the sortOrder option on the options object.',
+              'The sortDirection column field has been deprecated. Please use the sortOrder option on the options object.',
             );
           }
         }
@@ -562,10 +562,20 @@ class MUIDataTable extends React.Component {
     let tableMeta;
 
     let sortOrder;
-    if (this.options.sortOrder && this.options.sortOrder.sortDirection && this.options.sortOrder.columnName) {
+    if (this.options.sortOrder && this.options.sortOrder.direction && this.options.sortOrder.name) {
       sortOrder = Object.assign({}, this.options.sortOrder);
     } else {
       sortOrder = Object.assign({}, this.state.sortOrder);
+
+      // if no sortOrder, check and see if there's a sortDirection on one of the columns (deprecation notice for this is given above)
+      if (!sortOrder.direction) {
+        props.columns.forEach((column, colIndex) => {
+          if (column.options && (column.options.sortDirection === 'asc' || column.options.sortDirection === 'desc')) {
+            sortOrder.name = column.name;
+            sortOrder.sortDirection = column.sortDirection;
+          }
+        });
+      }
     }
 
     const data = status === TABLE_LOAD.INITIAL ? this.transformData(columns, props.data) : props.data;
@@ -635,8 +645,8 @@ class MUIDataTable extends React.Component {
         filterData[colIndex].sort(comparator);
       }
 
-      if (column.name === sortOrder.columnName) {
-        sortDirection = sortOrder.sortDirection;
+      if (column.name === sortOrder.name) {
+        sortDirection = sortOrder.direction;
         sortIndex = colIndex;
       }
     });
@@ -946,11 +956,8 @@ class MUIDataTable extends React.Component {
     );
   };
 
-  getSortDirectionLabel(column) {
-    if (column.name === this.state.sortOrder.columnName) {
-      return this.state.sortOrder.sortDirection === 'asc' ? 'ascending' : 'descending';
-    }
-    return null;
+  getSortDirectionLabel(sortOrder) {
+    return sortOrder.direction === 'asc' ? 'ascending' : 'descending';
   }
 
   getTableProps() {
@@ -968,23 +975,15 @@ class MUIDataTable extends React.Component {
         let columns = cloneDeep(prevState.columns);
         let data = prevState.data;
         const newOrder =
-          columns[index].name === this.state.sortOrder.columnName && this.state.sortOrder.sortDirection !== 'desc'
+          columns[index].name === this.state.sortOrder.name && this.state.sortOrder.direction !== 'desc'
             ? 'desc'
             : 'asc';
         const newSortOrder = {
-          columnName: columns[index].name,
-          sortDirection: newOrder,
+          name: columns[index].name,
+          direction: newOrder,
         };
 
-        for (let pos = 0; pos < columns.length; pos++) {
-          if (index !== pos) {
-            columns[pos].sortDirection = 'none';
-          } else {
-            columns[pos].sortDirection = newOrder;
-          }
-        }
-
-        const orderLabel = this.getSortDirectionLabel(columns[index]);
+        const orderLabel = this.getSortDirectionLabel(newSortOrder);
         const announceText = `Table now sorted by ${columns[index].name} : ${orderLabel}`;
 
         let newState = {
@@ -1019,7 +1018,7 @@ class MUIDataTable extends React.Component {
       () => {
         this.setTableAction('sort');
         if (this.options.onColumnSortChange) {
-          this.options.onColumnSortChange(this.state.columns[index].name, this.state.columns[index].sortDirection);
+          this.options.onColumnSortChange(this.state.sortOrder.name, this.state.sortOrder.direction);
         }
       },
     );

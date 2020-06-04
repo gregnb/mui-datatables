@@ -86,8 +86,8 @@ class Example extends React.Component {
       filterType: 'dropdown',
       responsive: 'stacked',
       sortOrder: {
-        columnName: 'Title',
-        sortDirection: 'asc'
+        name: 'Title',
+        direction: 'asc'
       }
     };
 

@@ -219,7 +219,7 @@ The component accepts the following props:
 |**`onTableInit`**|function||Callback function that triggers when table state has been initialized. `function(action: string, tableState: object) => void`
 |**`setRowProps`**|function||Is called for each row and allows you to return custom props for this row based on its data. `function(row: array, dataIndex: number) => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
 |**`setTableProps`**|function||Is called for the table and allows you to return custom props for the table based on its data. `function() => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
-|**`sortOrder`**|object|{}|Sets the column to sort by and its sort direction. To remove/reset sorting, input in an empty object. Options: `columnName: string, sortDirection: enum('asc', 'desc')` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-columns/index.js)
+|**`sortOrder`**|object|{}|Sets the column to sort by and its sort direction. To remove/reset sorting, input in an empty object. The object options are the column name and the direction: `name: string, direction: enum('asc', 'desc')` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-columns/index.js)
 
 ## Customize Columns
 

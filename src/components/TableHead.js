@@ -104,7 +104,7 @@ class TableHead extends React.Component {
                   type={'cell'}
                   ref={el => setCellRef(index + 1, findDOMNode(el))}
                   sort={column.sort}
-                  sortDirection={column.name === sortOrder.columnName ? sortOrder.sortDirection : 'none'}
+                  sortDirection={column.name === sortOrder.name ? sortOrder.direction : 'none'}
                   toggleSort={this.handleToggleColumn}
                   hint={column.hint}
                   print={column.print}

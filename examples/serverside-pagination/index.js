@@ -105,8 +105,8 @@ class Example extends React.Component {
       let fullData = this.getSrcData();
       const total = fullData.length;  // mock record count from server - normally this would be a number attached to the return data
 
-      let sortField = sortOrder.columnName;
-      let sortDir = sortOrder.sortDirection;
+      let sortField = sortOrder.name;
+      let sortDir = sortOrder.direction;
 
       if (sortField) {
         fullData = fullData.sort((a, b) => {

@@ -125,6 +125,7 @@ class TableHeadCell extends React.Component {
             onKeyUp={this.handleKeyboardSortinput}
             onClick={this.handleSortClick}
             className={classes.toolButton}
+            data-testid={'headcol-' + this.props.index}
             tabIndex={0}>
             <Tooltip
               title={

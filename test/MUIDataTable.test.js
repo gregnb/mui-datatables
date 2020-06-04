@@ -399,11 +399,7 @@ describe('<MUIDataTable />', function() {
       { data: ['James Houston', 'Test Corp', 'Santa Fe'], dataIndex: 3 },
     ]);
     const shallowWrapper = shallow(
-      <MUIDataTable
-        columns={columns}
-        data={data}
-        options={{ sortOrder: { columnName: 'Location', sortDirection: 'asc' } }}
-      />,
+      <MUIDataTable columns={columns} data={data} options={{ sortOrder: { name: 'Location', direction: 'asc' } }} />,
     );
     const state = shallowWrapper.dive().state();
 
@@ -479,6 +475,38 @@ describe('<MUIDataTable />', function() {
     props = fullWrapper.props();
 
     assert.deepEqual(props.options, newOptions);
+  });
+
+  it('should correctly pass the sorted column name and direction to onColumnSortChange', () => {
+    let sortedCol, sortedDir;
+    const options = {
+      rowsPerPage: 1,
+      rowsPerPageOptions: [1, 2, 4],
+      page: 1,
+      onColumnSortChange: (col, dir) => {
+        sortedCol = col;
+        sortedDir = dir;
+      },
+    };
+    const fullWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
+
+    // simulate sorting a column
+    fullWrapper
+      .find('[data-testid="headcol-1"]')
+      .at(0)
+      .simulate('click');
+
+    assert.strictEqual(sortedCol, 'Company');
+    assert.strictEqual(sortedDir, 'asc');
+
+    // simulate toggling the sort
+    fullWrapper
+      .find('[data-testid="headcol-1"]')
+      .at(0)
+      .simulate('click');
+
+    assert.strictEqual(sortedCol, 'Company');
+    assert.strictEqual(sortedDir, 'desc');
   });
 
   it('should correctly re-build internal table data while maintaining pagination after state change', () => {
