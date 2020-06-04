@@ -1,4 +1,4 @@
-import { getPageValue, buildCSV, createCSVDownload, escapeDangerousCSVCharacters } from '../src/utils';
+import { getPageValue, buildCSV, createCSVDownload, escapeDangerousCSVCharacters, convertMaxHeight } from '../src/utils';
 import { spy } from 'sinon';
 import { assert } from 'chai';
 
@@ -140,6 +140,22 @@ describe('utils.js', () => {
       createCSVDownload(columns, data, options, downloadCSV);
 
       assert.strictEqual(downloadCSV.callCount, 1);
+    });
+  });
+
+  describe('convertMaxHeight', () => {
+    it('convert number to px', () => {
+      const maxHeight = 100;
+
+      assert.strictEqual('100px', convertMaxHeight(maxHeight));
+    });
+
+    it('not converting maxHeight ', () => {
+      assert.strictEqual('none', convertMaxHeight('none'));
+      assert.strictEqual('max-content', convertMaxHeight('max-content'));
+      assert.strictEqual('min-content', convertMaxHeight('min-content'));
+      assert.strictEqual('fit-content', convertMaxHeight('fit-content'));
+      assert.strictEqual('fill-available', convertMaxHeight('fill-available'));
     });
   });
 });

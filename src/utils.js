@@ -34,8 +34,7 @@ function getCollatorComparator() {
     return collator.compare;
   }
 
-  const fallbackComparator = (a, b) => a.localeCompare(b);
-  return fallbackComparator;
+  return (a, b) => a.localeCompare(b);
 }
 
 function sortCompare(order) {
@@ -90,11 +89,9 @@ function buildCSV(columns, data, options) {
   };
   const CSVBody = buildBody(data);
 
-  const csv = options.onDownload
-    ? options.onDownload(buildHead, buildBody, columns, data)
-    : `${CSVHead}${CSVBody}`.trim();
-
-  return csv;
+  return options.onDownload
+      ? options.onDownload(buildHead, buildBody, columns, data)
+      : `${CSVHead}${CSVBody}`.trim();
 }
 
 function downloadCSV(csv, filename) {
@@ -128,8 +125,20 @@ function createCSVDownload(columns, data, options, downloadCSV) {
   downloadCSV(csv, options.downloadOptions.filename);
 }
 
+function convertMaxHeight(maxHeight) {
+  if(Number.isInteger(maxHeight) || !isNaN(parseInt(maxHeight, 10))){
+    return maxHeight + 'px';
+  } else if(['none', 'max-content', 'min-content', 'fit-content', 'fill-available'].includes(maxHeight)) {
+    return maxHeight;
+  } else if(maxHeight.endsWith('px')) {
+    return maxHeight;
+  }
+  return '499px';
+}
+
 export {
   buildMap,
+  convertMaxHeight,
   getPageValue,
   getCollatorComparator,
   sortCompare,

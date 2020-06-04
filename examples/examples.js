@@ -18,6 +18,7 @@ import DataAsObjects from './data-as-objects';
 import ExpandableRows from './expandable-rows';
 import FixedHeader from './fixed-header';
 import HideColumnsPrint from './hide-columns-print';
+import MaxHeight from './max-height';
 import OnDownload from './on-download';
 import OnTableInit from './on-table-init';
 import ResizableColumns from './resizable-columns';
@@ -58,6 +59,7 @@ export default {
   'Fixed Header': FixedHeader,
   'Hide Columns Print': HideColumnsPrint,
   'Large Data Set': LargeDataSet,
+  'Max Height': MaxHeight,
   OnDownload: OnDownload,
   OnTableInit: OnTableInit,
   'Resizable Columns': ResizableColumns,

@@ -18,7 +18,7 @@ import DefaultTableToolbar from './components/TableToolbar';
 import DefaultTableToolbarSelect from './components/TableToolbarSelect';
 import MuiTooltip from '@material-ui/core/Tooltip';
 import getTextLabels from './textLabels';
-import { buildMap, getCollatorComparator, sortCompare, getPageValue, warnDeprecated } from './utils';
+import { buildMap, convertMaxHeight, getCollatorComparator, sortCompare, getPageValue, warnDeprecated } from './utils';
 
 const defaultTableStyles = theme => ({
   root: {},
@@ -169,6 +169,10 @@ class MUIDataTable extends React.Component {
       getTextLabels: PropTypes.func,
       isRowExpandable: PropTypes.func,
       isRowSelectable: PropTypes.func,
+      maxHeight: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.oneOf(['none', 'max-content', 'min-content', 'fit-content', 'fill-available'])
+      ]),
       onDownload: PropTypes.func,
       onFilterChange: PropTypes.func,
       onFilterDialogOpen: PropTypes.func,
@@ -341,6 +345,7 @@ class MUIDataTable extends React.Component {
     filterType: 'dropdown',
     fixedHeader: true,
     fixedSelectColumn: true,
+    maxHeight: '499',
     pagination: true,
     print: true,
     resizableColumns: false,
@@ -1500,18 +1505,16 @@ class MUIDataTable extends React.Component {
     }));
     const responsiveOption = this.options.responsive;
     let paperClasses = `${classes.paper} ${className}`;
-    let maxHeight;
+    let maxHeight = convertMaxHeight(this.options.maxHeight);
     let responsiveClass;
 
     switch (responsiveOption) {
       // DEPRECATED: This options is beign transitioned to `responsiveScrollMaxHeight`
       case 'scroll':
         responsiveClass = classes.responsiveScroll;
-        maxHeight = '499px';
         break;
       case 'scrollMaxHeight':
         responsiveClass = classes.responsiveScrollMaxHeight;
-        maxHeight = '499px';
         break;
       case 'scrollFullHeight':
         responsiveClass = classes.responsiveScrollFullHeight;
