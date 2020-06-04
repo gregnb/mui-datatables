@@ -16,9 +16,25 @@ MUI-Datatables is a data tables component built on [Material-UI](https://www.mat
 	<img src="https://user-images.githubusercontent.com/19170080/38026128-eac9d506-3258-11e8-92a7-b0d06e5faa82.gif" />
 </div>
 
+# Table of contents
+* [Install](#install)
+* [Demo](#demo)
+* [Usage](#usage)
+* [API](#api)
+* [Customize Columns](#customize-columns)
+* [Plug-ins](#plug-ins)
+* [Customize Styling](#customize-styling)
+* [Remote Data](#remote-data)
+* [Localization](#localization)
+* [Contributing](#contributing)
+* [License](#licence)
+* [Thanks](#thanks)
+
 ## Install
 
 `npm install mui-datatables --save`
+
+If your project doesn't already use them, you need to install `@material-ui/core` and `@material-ui/icons` as well.
 
 ## Demo
 
@@ -231,7 +247,7 @@ const columns = [
 |**`empty`**|boolean|false|This denotes whether the column has data or not (for use with intentionally empty columns)
 |**`viewColumns`**|boolean|true|Allow user to toggle column visibility through 'View Column' list
 |**`filterList`**|array||Filter value list [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
-|**`filterOptions`**|{names, logic, display}||(These options affect the filter display and functionality from the filter dialog. To modify the filter chips that display after selecting filters, see `customFilterListOptions`) With filter options, it's possible to use custom names for the filter fields [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js), custom filter logic [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js), and custom rendering [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js)
+|**`filterOptions`**|{names, logic, display(filterList, onChange(filterList, index, column), index, column)}||(These options affect the filter display and functionality from the filter dialog. To modify the filter chips that display after selecting filters, see `customFilterListOptions`) With filter options, it's possible to use custom names for the filter fields [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js), custom filter logic [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js), and custom rendering [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js). `filterList` must be of the same type in the main column options, that is an array of arrays, where each array corresponds to the filter list for a given column.
 |**`customFilterListRender` DEPRECATED (use `customFilterListOptions`)**|function||Function that returns a string or array of strings used as the chip label(s). `function(value) => string OR arrayOfStrings` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`customFilterListOptions`**|{render: function, update: function}|| (These options only affect the filter chips that display after filters are selected. To modify the filters themselves, see `filterOptions`) `render` returns a string or array of strings used as the chip label(s). `function(value) => string OR arrayOfStrings`, `update` returns a `filterList (see above)` allowing for custom filter updates when removing the filter chip [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`filter`**|boolean|true|Display column in filter list
@@ -291,6 +307,15 @@ function(value: any, tableMeta: {
   },
 }, updateValue: function)
 ```
+
+## Plug-ins
+
+The table lends itself to plug-ins in many areas, especially in the customRender functions. Many use cases for these render functions are common, so a set of plug-ins are available that you can use.
+
+#### Available Plug-ins:
+|Name|Type|Default|Description
+|:--:|:-----|:--|:-----|
+|**`debounceSearchRender`**|function||Function that returns a function for the customSearchRender method. This plug-in allows you to create a debounced search which can be useful for server-side tables and tables with large data sets. `function(debounceWait) => function` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/large-data-set/index.js)
 
 ## Customize Styling
 

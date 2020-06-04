@@ -102,7 +102,7 @@ class Example extends React.Component {
               } else if (v[1]) {
                 return `Max Age: ${v[1]}`;
               }
-              return false;
+              return [];
             },
             update: (filterList, filterPos, index) => {
               console.log('customFilterListOnDelete: ', filterList, filterPos, index);
