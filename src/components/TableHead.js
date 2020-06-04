@@ -39,6 +39,7 @@ class TableHead extends React.Component {
       setCellRef,
       selectedRows,
       expandedRows,
+      sortOrder = {},
       components = {},
     } = this.props;
 
@@ -92,7 +93,7 @@ class TableHead extends React.Component {
             (column, index) =>
               column.display === 'true' &&
               (column.customHeadRender ? (
-                column.customHeadRender({ index, ...column }, this.handleToggleColumn)
+                column.customHeadRender({ index, ...column }, this.handleToggleColumn, sortOrder)
               ) : (
                 <TableHeadCell
                   cellHeaderProps={
@@ -103,7 +104,7 @@ class TableHead extends React.Component {
                   type={'cell'}
                   ref={el => setCellRef(index + 1, findDOMNode(el))}
                   sort={column.sort}
-                  sortDirection={column.sortDirection}
+                  sortDirection={column.name === sortOrder.columnName ? sortOrder.sortDirection : 'none'}
                   toggleSort={this.handleToggleColumn}
                   hint={column.hint}
                   print={column.print}

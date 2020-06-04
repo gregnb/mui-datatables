@@ -219,6 +219,7 @@ The component accepts the following props:
 |**`onTableInit`**|function||Callback function that triggers when table state has been initialized. `function(action: string, tableState: object) => void`
 |**`setRowProps`**|function||Is called for each row and allows you to return custom props for this row based on its data. `function(row: array, dataIndex: number) => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
 |**`setTableProps`**|function||Is called for the table and allows you to return custom props for the table based on its data. `function() => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
+|**`sortOrder`**|object|{}|Sets the column to sort by and its sort direction. To remove/reset sorting, input in an empty object. Options: `columnName: string, sortDirection: enum('asc', 'desc')` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-columns/index.js)
 
 ## Customize Columns
 
@@ -259,11 +260,10 @@ const columns = [
 |**`filterType `**|string|'dropdown'|Choice of filtering view. Takes priority over global filterType option.`enum('checkbox', 'dropdown', 'multiselect', 'textField', 'custom')` Use 'custom' if you are supplying your own rendering via `filterOptions`.
 |**`sort`**|boolean|true|Enable/disable sorting on column
 |**`searchable`**|boolean|true|Exclude/include column from search results
-|**`sortDirection`**|string||Set default sort order `enum('asc', 'desc', 'none')` **(`null` option has been deprecated, use 'none' instead)**
 |**`print`**|boolean|true|Display column when printing
 |**`download`**|boolean|true|Display column in CSV download file
 |**`hint`**|string||Display hint icon with string as tooltip on hover.
-|**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(columnMeta, handleToggleColumn) => string`&#124;` React Component`
+|**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(columnMeta, handleToggleColumn, sortOrder) => string`&#124;` React Component`
 |**`customBodyRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
 |**`setCellProps`**|function||Is called for each cell and allows to you return custom props for this cell based on its data. `function(cellValue: string, rowIndex: number, columnIndex: number) => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
 |**`setCellHeaderProps`**|function||Is called for each header cell and allows you to return custom props for the header cell based on its data. `function(columnMeta: object) => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
@@ -276,7 +276,6 @@ function(columnMeta: {
   display: enum('true', 'false', 'excluded'),
   filter: boolean,
   sort: boolean,
-  sortDirection: boolean,
   download: boolean,
   empty: boolean,
   index: number,

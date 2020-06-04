@@ -107,7 +107,6 @@ describe('<MUIDataTable />', function() {
         label: 'Name',
         download: true,
         searchable: true,
-        sortDirection: 'none',
         viewColumns: true,
         customFilterListRender: renderCustomFilterList, // DEPRECATED
         customFilterListOptions: { render: renderCustomFilterList },
@@ -124,7 +123,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
       },
       {
         display: 'true',
@@ -138,7 +136,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
         customBodyRender: renderCities,
       },
       {
@@ -153,7 +150,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
         customBodyRender: renderState,
         customHeadRender: renderHead,
       },
@@ -169,7 +165,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
       },
     ];
 
@@ -214,7 +209,6 @@ describe('<MUIDataTable />', function() {
         label: 'Test Name',
         download: true,
         searchable: true,
-        sortDirection: 'none',
         viewColumns: true,
         customFilterListRender: renderCustomFilterList, // DEPRECATED
         customFilterListOptions: { render: renderCustomFilterList },
@@ -231,7 +225,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
       },
       {
         display: 'true',
@@ -245,7 +238,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
         customBodyRender: renderCities,
       },
       {
@@ -260,7 +252,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
         customBodyRender: renderState,
         customHeadRender: renderHead,
       },
@@ -276,7 +267,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
       },
     ];
 
@@ -387,6 +377,33 @@ describe('<MUIDataTable />', function() {
     ]);
     const shallowWrapper = shallow(
       <MUIDataTable columns={columns} data={data} options={{ enableNestedDataAccess: '' }} />,
+    );
+    const state = shallowWrapper.dive().state();
+
+    assert.deepEqual(JSON.stringify(state.displayData), displayData);
+  });
+
+  it('should correctly build internal table data and displayData structure with sortOrder set', () => {
+    const columns = ['Name', 'Company', 'Location'];
+
+    const data = [
+      { Name: 'Joe James', Company: 'Test Corp', Location: 'Las Cruces' },
+      { Name: 'John Walsh', Company: 'Test Corp', Location: 'El Paso' },
+      { Name: 'Bob Herm', Company: 'Test Corp', Location: 'Albuquerque' },
+      { Name: 'James Houston', Company: 'Test Corp', Location: 'Santa Fe' },
+    ];
+    const displayData = JSON.stringify([
+      { data: ['Bob Herm', 'Test Corp', 'Albuquerque'], dataIndex: 2 },
+      { data: ['John Walsh', 'Test Corp', 'El Paso'], dataIndex: 1 },
+      { data: ['Joe James', 'Test Corp', 'Las Cruces'], dataIndex: 0 },
+      { data: ['James Houston', 'Test Corp', 'Santa Fe'], dataIndex: 3 },
+    ]);
+    const shallowWrapper = shallow(
+      <MUIDataTable
+        columns={columns}
+        data={data}
+        options={{ sortOrder: { columnName: 'Location', sortDirection: 'asc' } }}
+      />,
     );
     const state = shallowWrapper.dive().state();
 
@@ -1104,7 +1121,6 @@ describe('<MUIDataTable />', function() {
         label: 'Name',
         download: true,
         searchable: true,
-        sortDirection: 'none',
         customBodyRender: renderName,
         viewColumns: true,
         customFilterListRender: renderCustomFilterList, // DEPRECATED
@@ -1121,7 +1137,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
       },
       {
         name: 'City',
@@ -1134,7 +1149,6 @@ describe('<MUIDataTable />', function() {
         label: 'City Label',
         download: true,
         searchable: true,
-        sortDirection: 'none',
         customBodyRender: renderCities,
         viewColumns: true,
       },
@@ -1150,7 +1164,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
         customBodyRender: renderState,
         customHeadRender: renderHead,
       },
@@ -1166,7 +1179,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
       },
     ];
 
