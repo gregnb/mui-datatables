@@ -101,7 +101,7 @@ class Example extends React.Component {
       onColumnSortChange: (column, direction) => {
         console.log(column, direction);
       },
-      onColumnViewChange: (column, action) => {
+      onViewColumnsChange: (column, action) => {
         console.log(column, action);
       },
       onFilterChange: (column, filters) => {

@@ -5,8 +5,28 @@ import TableRow from '@material-ui/core/TableRow';
 import { withStyles } from '@material-ui/core/styles';
 
 const defaultBodyRowStyles = theme => ({
-  root: {},
-  hover: {},
+  root: {
+    // material v4
+    '&.Mui-selected': {
+      '& td': {
+        backgroundColor: theme.palette.action.selected,
+      },
+    },
+
+    // material v3 workaround
+    '&.mui-row-selected': {
+      '& td': {
+        backgroundColor: theme.palette.action.selected,
+      },
+    },
+  },
+  hover: {
+    '&:hover': {
+      '& td': {
+        backgroundColor: theme.palette.action.hover,
+      },
+    },
+  },
   hoverCursor: { cursor: 'pointer' },
   responsiveStacked: {
     [theme.breakpoints.down('sm')]: {
@@ -28,7 +48,7 @@ class TableBodyRow extends React.Component {
   };
 
   render() {
-    const { classes, options, rowSelected, onClick, className, ...rest } = this.props;
+    const { classes, options, rowSelected, onClick, className, isRowSelectable, ...rest } = this.props;
 
     return (
       <TableRow
@@ -38,8 +58,9 @@ class TableBodyRow extends React.Component {
           {
             [classes.root]: true,
             [classes.hover]: options.rowHover,
-            [classes.hoverCursor]: options.selectableRowsOnClick || options.expandableRowsOnClick,
+            [classes.hoverCursor]: (options.selectableRowsOnClick && isRowSelectable) || options.expandableRowsOnClick,
             [classes.responsiveStacked]: options.responsive === 'stacked' || options.responsive === 'stackedFullWidth',
+            'mui-row-selected': rowSelected,
           },
           className,
         )}

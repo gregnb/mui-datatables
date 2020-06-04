@@ -1,7 +1,7 @@
-import babel from 'rollup-plugin-babel';
-import commonjs from 'rollup-plugin-commonjs';
-import replace from 'rollup-plugin-replace';
-import uglify from 'rollup-plugin-uglify';
+import babel from '@rollup/plugin-babel';
+import commonjs from '@rollup/plugin-commonjs';
+import replace from '@rollup/plugin-replace';
+import { uglify } from 'rollup-plugin-uglify';
 
 export default {
   input: 'src/index.js',
@@ -14,9 +14,9 @@ export default {
     }),
     babel({
       presets: [
-        'react',
+        '@babel/react',
         [
-          'env',
+          '@babel/env',
           {
             targets: {
               browsers: ['last 2 versions', 'ie >= 10'],
@@ -27,9 +27,8 @@ export default {
         ],
       ],
       plugins: [
-        'external-helpers',
-        'transform-object-rest-spread',
-        'babel-plugin-transform-class-properties',
+        '@babel/plugin-proposal-object-rest-spread',
+        '@babel/plugin-proposal-class-properties',
         'transform-react-remove-prop-types',
       ],
       babelrc: false,
@@ -54,6 +53,6 @@ export default {
     file: 'dist/index.js',
     format: 'cjs',
     exports: 'named',
+    sourcemap: true,
   },
-  sourcemap: true,
 };

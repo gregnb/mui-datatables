@@ -144,6 +144,7 @@ The component accepts the following props:
 |**`columns`**|array|Columns used to describe table. Must be either an array of simple strings or objects describing a column
 |**`data`**|array|Data used to describe table. Must be either an array containing objects of key/value pairs with values that are strings or numbers, or arrays of strings or numbers (Ex: data: [{"Name": "Joe", "Job Title": "Plumber", "Age": 30}, {"Name": "Jane", "Job Title": "Electrician", "Age": 45}] or data: [["Joe", "Plumber", 30], ["Jane", "Electrician", 45]]) **Use of arbitrary objects as data is not supported, and is deprecated. Consider using ids and mapping to external object data in custom renderers instead e.g. `const data = [{"Name": "Joe", "ObjectData": 123}] --> const dataToMapInCustomRender = { 123: { foo: 'bar', baz: 'qux', ... } }`**
 |**`options`**|object|Options used to describe table
+|**`components`**|object|Custom components used to render the table
 
 #### Options:
 |Name|Type|Default|Description
@@ -158,14 +159,16 @@ The component accepts the following props:
 |**`textLabels`**|object||User provided labels to localize text
 |**`pagination`**|boolean|true|Enable/disable pagination
 |**`selectableRows`**|string|'multiple'|Numbers of rows that can be selected. Options are "multiple", "single", "none". **(Boolean options have been deprecated.)**
+|**`selectableRowsHideCheckboxes`**|boolean|false|Hides the checkboxes that appear when selectableRows is set to "multiple" or "single". Can provide a more custom UX, especially when paired with selectableRowsOnClick.
 |**`selectableRowsOnClick`**|boolean|false|Enable/disable select toggle when row is clicked. When False, only checkbox will trigger this action.
 |**`disableToolbarSelect` DEPRECATED (use `selectToolbarPlacement='none'`)**|boolean|false|Enable/disable the Select Toolbar that appears when a row is selected.
 |**`isRowSelectable`**|function||Enable/disable selection on certain rows with custom function. Returns true if not provided. `function(dataIndex: number, selectedRows: object(lookup: {dataindex: boolean}, data: arrayOfObjects: {index, dataIndex})) => boolean`.
 |**`isRowExpandable`**|function||Enable/disable expansion or collapse on certain expandable rows with custom function. Will be considered true if not provided. `function(dataIndex: number, expandedRows: object(lookup: {dataIndex: number}, data: arrayOfObjects: {index: number, dataIndex: number})) => boolean`.
 |**`selectableRowsHeader`**|boolean|true|Show/hide the select all/deselect all checkbox header for selectable rows
-|**`expandableRows`**|boolean|false|Enable/disable expandable rows
+|**`expandableRows`**|boolean|false|Enable/disable expandable rows.
+|**`expandableRowsHeader`**|boolean|true|Show/hide the expand all/collapse all row header for expandable rows.
 |**`expandableRowsOnClick`**|boolean|false|Enable/disable expand trigger when row is clicked. When False, only expand icon will trigger this action.
-|**`renderExpandableRow`**|function||Render expandable row. `function(rowData, rowMeta) => React Component`
+|**`renderExpandableRow`**|function||Render expandable row. `function(rowData, rowMeta) => React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/expandable-rows/index.js)
 |**`resizableColumns`**|boolean|false|Enable/disable resizable columns
 |**`customToolbar`**|function||Render a custom toolbar
 |**`customToolbarSelect`**|function||Render a custom selected rows toolbar. `function(selectedRows, displayData, setSelectedRows) => void`
@@ -181,8 +184,8 @@ The component accepts the following props:
 |**`rowsPerPage`**|number|10|Number of rows allowed per page
 |**`rowsPerPageOptions`**|array|[10,15,100]|Options to provide in pagination for number of rows a user can select
 |**`rowHover`**|boolean|true|Enable/disable hover style over rows
-|**`fixedHeader` DEPRECATED (use `fixedHeaderOptions`)**|boolean|true|Enable/disable fixed header columns
-|**`fixedHeaderOptions`**|object|`{xAxis: true, yAxis: true}`|Enable/disable fixed header columns according to axis in any combination desired [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
+|**`fixedHeader`**|boolean|true|Enable/disable a fixed header for the table [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
+|**`fixedSelectColumn`**|boolean|true|Enable/disable fixed select column [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
 |**`sortFilterList`**|boolean|true|Enable/disable alphanumeric sorting of filter lists
 |**`sort`**|boolean|true|Enable/disable sort on all columns
 |**`filter`**|boolean|true|Show/hide filter icon from toolbar
@@ -190,10 +193,12 @@ The component accepts the following props:
 |**`searchOpen`**|boolean|false|Initially displays search bar  
 |**`searchText`**|string||Initial search text
 |**`searchPlaceholder`**|string||Search text placeholder. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-search/index.js)
+|**`searchProps`**|object|{}|Props applied to the search text box. You can set method callbacks like onBlur, onKeyUp, etc, this way. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-search/index.js)
 |**`print`**|boolean|true|Show/hide print	 icon from toolbar
 |**`download`**|boolean|true|Show/hide download icon from toolbar
 |**`downloadOptions`**|object|`{filename: 'tableDownload.csv', separator: ','}`|Options to change the output of the CSV file: `filename`: string, `separator`: string, `filterOptions`: object(`useDisplayedColumnsOnly`: boolean, `useDisplayedRowsOnly`: boolean)
-|**`onDownload`**|function||A callback function that triggers when the user downloads the CSV file. In the callback, you can control what is written to the CSV file. `function(buildHead: (columns) => string, buildBody: (data) => string, columns, data) => string`. Return `false` to cancel download of file.
+|**`onDownload`**|function||A callback function that triggers when the user downloads the CSV file. In the callback, you can control what is written to the CSV file. This method can be used to add the Excel specific BOM character (see this [example](https://github.com/gregnb/mui-datatables/pull/722#issuecomment-526346440)). `function(buildHead: (columns) => string, buildBody: (data) => string, columns, data) => string`. Return `false` to cancel download of file.
+|**`enableNestedDataAccess`**|string|""|If provided a non-empty string (ex: "."), it will use that value in the column's names to access nested data. For example, given a enableNestedDataAccess value of "." and a column name of "phone.cell", the column would use the value found in `phone:{cell:"555-5555"}`. Any amount of nesting will work. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/data-as-objects/index.js) demonstrates the functionality. 
 |**`viewColumns`**|boolean|true|Show/hide viewColumns icon from toolbar
 |**`onRowsSelect`**|function||Callback function that triggers when row(s) are selected. `function(currentRowsSelected: array, allRowsSelected: array) => void`
 |**`onRowsExpand`**|function||Callback function that triggers when row(s) are expanded. `function(currentRowsExpanded: array, allRowsExpanded: array) => void`
@@ -209,7 +214,7 @@ The component accepts the following props:
 |**`onFilterChange`**|function||Callback function that triggers when filters have changed. `function(changedColumn: string, filterList: array, type: enum('checkbox', 'dropdown', 'multiselect', 'textField', 'custom', 'chip', 'reset')) => void`
 |**`onSearchClose`**|function||Callback function that triggers when the searchbox closes. `function() => void`
 |**`onColumnSortChange`**|function||Callback function that triggers when a column has been sorted. `function(changedColumn: string, direction: string) => void`
-|**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
+|**`onViewColumnsChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
 |**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
 |**`onTableInit`**|function||Callback function that triggers when table state has been initialized. `function(action: string, tableState: object) => void`
 |**`setRowProps`**|function||Is called for each row and allows you to return custom props for this row based on its data. `function(row: array, dataIndex: number) => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
@@ -247,7 +252,7 @@ const columns = [
 |**`empty`**|boolean|false|This denotes whether the column has data or not (for use with intentionally empty columns)
 |**`viewColumns`**|boolean|true|Allow user to toggle column visibility through 'View Column' list
 |**`filterList`**|array||Filter value list [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
-|**`filterOptions`**|{names, logic, display(filterList, onChange(filterList, index, column), index, column)}||(These options affect the filter display and functionality from the filter dialog. To modify the filter chips that display after selecting filters, see `customFilterListOptions`) With filter options, it's possible to use custom names for the filter fields [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js), custom filter logic [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js), and custom rendering [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js). `filterList` must be of the same type in the main column options, that is an array of arrays, where each array corresponds to the filter list for a given column.
+|**`filterOptions`**|{names, logic, display(filterList, onChange(filterList, index, column), index, column, filterData), renderValue}||(These options affect the filter display and functionality from the filter dialog. To modify the filter chips that display after selecting filters, see `customFilterListOptions`) With filter options, it's possible to use custom names for the filter fields [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js), custom filter logic [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js), and custom rendering [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js). `filterList` must be of the same type in the main column options, that is an array of arrays, where each array corresponds to the filter list for a given column.
 |**`customFilterListRender` DEPRECATED (use `customFilterListOptions`)**|function||Function that returns a string or array of strings used as the chip label(s). `function(value) => string OR arrayOfStrings` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`customFilterListOptions`**|{render: function, update: function}|| (These options only affect the filter chips that display after filters are selected. To modify the filters themselves, see `filterOptions`) `render` returns a string or array of strings used as the chip label(s). `function(value) => string OR arrayOfStrings`, `update` returns a `filterList (see above)` allowing for custom filter updates when removing the filter chip [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`filter`**|boolean|true|Display column in filter list
@@ -350,6 +355,55 @@ class BodyCellExample extends React.Component {
 }
 
 ```
+
+## Custom Components
+
+You can pass custom components to further customize the table:
+```js
+import React from "react";
+import Chip from '@material-ui/core/Chip';
+import MUIDataTable, { TableFilterList } from "mui-datatables";
+
+const CustomChip = ({ label, onDelete }) => {
+    return (
+        <Chip
+            variant="outlined"
+            color="secondary"
+            label={label}
+            onDelete={onDelete}
+        />
+    );
+};
+
+const CustomFilterList = (props) => {
+    return <TableFilterList {...props} ItemComponent={CustomChip} />;
+};
+
+class CustomDataTable extends React.Component {
+    render() {
+        return (
+            <MUIDataTable
+                columns={columns}
+                data={data}
+                components={{
+                  TableFilterList: CustomFilterList,
+                }}
+            />
+        );
+    }
+}
+```
+Supported customizable components:
+ * `TableBody`
+ * `TableFilterList` - you can pass `ItemComponent` prop to render custom filter list item
+ * `TableFooter`
+ * `TableHead`
+ * `TableResize`
+ * `TableToolbar`
+ * `TableToolbarSelect`
+ * `Tooltip`
+
+For more information, please see this [example](https://github.com/gregnb/mui-datatables/examples/custom-components/index.js). Additionally, all examples can be viewd [live](https://codesandbox.io/s/github/gregnb/mui-datatables) at our CodeSandbox.
 
 ## Remote Data
 

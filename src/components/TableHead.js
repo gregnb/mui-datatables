@@ -30,11 +30,21 @@ class TableHead extends React.Component {
   };
 
   render() {
-    const { classes, columns, count, options, data, setCellRef, selectedRows } = this.props;
+    const {
+      classes,
+      columns,
+      count,
+      options,
+      data,
+      setCellRef,
+      selectedRows,
+      expandedRows,
+      components = {},
+    } = this.props;
 
     const numSelected = (selectedRows && selectedRows.data.length) || 0;
     let isIndeterminate = numSelected > 0 && numSelected < count;
-    let isChecked = numSelected === count ? true : false;
+    let isChecked = numSelected > 0 && numSelected === count;
 
     // When the disableToolbarSelect option is true, there can be
     // selected items that aren't visible, so we need to be more
@@ -68,11 +78,14 @@ class TableHead extends React.Component {
             indeterminate={isIndeterminate}
             checked={isChecked}
             isHeaderCell={true}
+            expandedRows={expandedRows}
+            expandableRowsHeader={options.expandableRowsHeader}
             expandableOn={options.expandableRows}
             selectableOn={options.selectableRows}
             fixedHeader={options.fixedHeader}
-            fixedHeaderOptions={options.fixedHeaderOptions}
+            fixedSelectColumn={options.fixedSelectColumn}
             selectableRowsHeader={options.selectableRowsHeader}
+            onExpand={this.props.toggleAllExpandableRows}
             isRowSelectable={true}
           />
           {columns.map(
@@ -95,7 +108,8 @@ class TableHead extends React.Component {
                   hint={column.hint}
                   print={column.print}
                   options={options}
-                  column={column}>
+                  column={column}
+                  components={components}>
                   {column.label}
                 </TableHeadCell>
               )),
