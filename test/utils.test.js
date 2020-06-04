@@ -145,17 +145,20 @@ describe('utils.js', () => {
 
   describe('convertMaxHeight', () => {
     it('convert number to px', () => {
-      const maxHeight = 100;
-
-      assert.strictEqual('100px', convertMaxHeight(maxHeight));
+      assert.strictEqual('100px', convertMaxHeight(100));
+      assert.strictEqual('100px', convertMaxHeight('100'));
     });
 
     it('not converting maxHeight ', () => {
-      assert.strictEqual('none', convertMaxHeight('none'));
       assert.strictEqual('max-content', convertMaxHeight('max-content'));
       assert.strictEqual('min-content', convertMaxHeight('min-content'));
       assert.strictEqual('fit-content', convertMaxHeight('fit-content'));
       assert.strictEqual('fill-available', convertMaxHeight('fill-available'));
+    });
+
+    it('default maxHeight ', () => {
+      assert.strictEqual('499px', convertMaxHeight('none'));
+      assert.strictEqual('499px', convertMaxHeight('wrong'));
     });
   });
 });

@@ -128,7 +128,7 @@ function createCSVDownload(columns, data, options, downloadCSV) {
 function convertMaxHeight(maxHeight) {
   if(Number.isInteger(maxHeight) || !isNaN(parseInt(maxHeight, 10))){
     return maxHeight + 'px';
-  } else if(['none', 'max-content', 'min-content', 'fit-content', 'fill-available'].includes(maxHeight)) {
+  } else if(['max-content', 'min-content', 'fit-content', 'fill-available'].includes(maxHeight)) {
     return maxHeight;
   } else if(maxHeight.endsWith('px')) {
     return maxHeight;
