@@ -949,16 +949,11 @@ class MUIDataTable extends React.Component {
         var cb = this.options.onViewColumnsChange || this.options.onColumnViewChange;
 
         if (cb) {
-          cb(
-            this.state.columns[index].name,
-            this.state.columns[index].display === 'true' ? 'add' : 'remove',
-          );
+          cb(this.state.columns[index].name, this.state.columns[index].display === 'true' ? 'add' : 'remove');
         }
 
         if (this.options.onColumnViewChange) {
-          warnDeprecated(
-            'onColumnViewChange has been changed to onViewColumnsChange.',
-          );
+          warnDeprecated('onColumnViewChange has been changed to onViewColumnsChange.');
         }
       },
     );
@@ -1636,6 +1631,15 @@ class MUIDataTable extends React.Component {
               options={this.options}
               filterList={filterList}
             />
+            {this.options.customTableBodyFooter
+              ? this.options.customTableBodyFooter({
+                  data: displayData,
+                  count: rowCount,
+                  columns,
+                  selectedRows,
+                  selectableRows: this.options.selectableRows
+                })
+              : null}
           </MuiTable>
         </div>
         <TableFooterComponent
