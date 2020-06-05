@@ -88,6 +88,12 @@ const hasToolbarItem = (options, title) => {
   return !isUndefined(find(TOOLBAR_ITEMS, i => options[i]));
 };
 
+const SELECT_TOOLBAR_PLACEMENT_OPTIONS = {
+  REPLACE: 'replace',
+  ABOVE: 'above',
+  NONE: 'none'
+}
+
 class MUIDataTable extends React.Component {
   static propTypes = {
     /** Title of the table */
@@ -205,6 +211,7 @@ class MUIDataTable extends React.Component {
       searchPlaceholder: PropTypes.string,
       searchText: PropTypes.string,
       setRowProps: PropTypes.func,
+      selectToolbarPlacement: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf([SELECT_TOOLBAR_PLACEMENT_OPTIONS.REPLACE, SELECT_TOOLBAR_PLACEMENT_OPTIONS.ABOVE, SELECT_TOOLBAR_PLACEMENT_OPTIONS.NONE])]),
       setTableProps: PropTypes.func,
       sort: PropTypes.bool,
       sortOrder: PropTypes.object,
@@ -308,6 +315,12 @@ class MUIDataTable extends React.Component {
   }
 
   updateOptions(options, props) {
+    // set backwards compatibility options
+    if (props.options.disableToolbarSelect === true && props.options.selectToolbarPlacement === undefined) {
+      // if deprecated option disableToolbarSelect is set and selectToolbarPlacement is default then use it
+      props.options.selectToolbarPlacement = SELECT_TOOLBAR_PLACEMENT_OPTIONS.NONE;
+    }
+
     this.options = assignwith(options, props.options, (objValue, srcValue, key) => {
       // Merge any default options that are objects, as they will be overwritten otherwise
       if (key === 'textLabels' || key === 'downloadOptions') return merge(objValue, srcValue);
@@ -362,6 +375,7 @@ class MUIDataTable extends React.Component {
     sortOrder: {},
     textLabels: getTextLabels(),
     viewColumns: true,
+    selectToolbarPlacement: SELECT_TOOLBAR_PLACEMENT_OPTIONS.REPLACE,
   });
 
   handleOptionDeprecation = () => {
@@ -394,6 +408,18 @@ class MUIDataTable extends React.Component {
         );
       }
     });
+
+    if (this.options.disableToolbarSelect === true) {
+      console.error(
+        'The option "disableToolbarSelect" has been deprecated. It is being replaced by "selectToolbarPlacement"="none".',
+      );
+    }
+
+    if (Object.values(SELECT_TOOLBAR_PLACEMENT_OPTIONS).indexOf(this.options.selectToolbarPlacement) === -1) {
+      console.error(
+        'Invalid option value for selectToolbarPlacement. Please check the documentation.',
+      );
+    }
   };
 
   /*
@@ -1307,7 +1333,7 @@ class MUIDataTable extends React.Component {
           let selectedMap = buildMap(newRows);
 
           // if the select toolbar is disabled, the rules are a little different
-          if (this.options.disableToolbarSelect === true) {
+          if (this.options.selectToolbarPlacement === SELECT_TOOLBAR_PLACEMENT_OPTIONS.NONE) {
             if (selectedRowsLen > displayData.length) {
               isDeselect = true;
             } else {
@@ -1532,7 +1558,7 @@ class MUIDataTable extends React.Component {
 
     return (
       <Paper elevation={this.options.elevation} ref={this.tableContent} className={paperClasses}>
-        {selectedRows.data.length && this.options.disableToolbarSelect !== true ? (
+        {selectedRows.data.length > 0 && this.options.selectToolbarPlacement !== SELECT_TOOLBAR_PLACEMENT_OPTIONS.NONE && (
           <TableToolbarSelectComponent
             options={this.options}
             selectedRows={selectedRows}
@@ -1541,7 +1567,8 @@ class MUIDataTable extends React.Component {
             selectRowUpdate={this.selectRowUpdate}
             components={this.props.components}
           />
-        ) : (
+        )}
+        {(selectedRows.data.length === 0 || [SELECT_TOOLBAR_PLACEMENT_OPTIONS.ABOVE, SELECT_TOOLBAR_PLACEMENT_OPTIONS.NONE].includes(this.options.selectToolbarPlacement)) &&
           showToolbar && (
             <TableToolbarComponent
               columns={columns}
@@ -1561,8 +1588,7 @@ class MUIDataTable extends React.Component {
               setTableAction={this.setTableAction}
               components={this.props.components}
             />
-          )
-        )}
+          )}
         <TableFilterListComponent
           options={this.options}
           serverSideFilterList={this.props.options.serverSideFilterList || []}
