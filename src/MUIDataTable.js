@@ -18,7 +18,7 @@ import DefaultTableToolbar from './components/TableToolbar';
 import DefaultTableToolbarSelect from './components/TableToolbarSelect';
 import MuiTooltip from '@material-ui/core/Tooltip';
 import getTextLabels from './textLabels';
-import { buildMap, getCollatorComparator, sortCompare, getPageValue, warnDeprecated } from './utils';
+import { buildMap, getCollatorComparator, sortCompare, getPageValue, warnDeprecated, warnInfo } from './utils';
 
 const defaultTableStyles = theme => ({
   root: {},
@@ -29,19 +29,28 @@ const defaultTableStyles = theme => ({
   tableRoot: {
     outline: 'none',
   },
+  responsiveBase: {
+    overflowX: 'auto',
+    overflow: 'auto',
+  },
+
+  // deprecated, but continuing support through v3.x
   responsiveScroll: {
     overflowX: 'auto',
     overflow: 'auto',
     height: '100%',
   },
+  // deprecated, but continuing support through v3.x
   responsiveScrollMaxHeight: {
     overflowX: 'auto',
     overflow: 'auto',
     height: '100%',
   },
+  // deprecated, but continuing support through v3.x
   responsiveScrollFullHeight: {
     height: '100%',
   },
+  // deprecated, but continuing support through v3.x
   responsiveStacked: {
     overflowX: 'auto',
     overflow: 'auto',
@@ -50,11 +59,13 @@ const defaultTableStyles = theme => ({
       overflow: 'hidden',
     },
   },
+  // deprecated, but continuing support through v3.x
   responsiveStackedFullWidth: {},
   caption: {
     position: 'absolute',
     left: '-3000px',
   },
+
   liveAnnounce: {
     border: '0',
     clip: 'rect(0 0 0 0)',
@@ -187,15 +198,11 @@ class MUIDataTable extends React.Component {
       selectableRowsHideCheckboxes: PropTypes.bool,
       selectableRowsOnClick: PropTypes.bool,
       serverSide: PropTypes.bool,
+      tableBodyHeight: PropTypes.string,
+      tableBodyMaxHeight: PropTypes.string,
       renderExpandableRow: PropTypes.func,
       resizableColumns: PropTypes.bool,
-      responsive: PropTypes.oneOf([
-        'stacked',
-        'stackedFullWidth',
-        'scrollMaxHeight',
-        'scrollFullHeight',
-        'scrollFullHeightFullWidth',
-      ]),
+      responsive: PropTypes.oneOf(['standard', 'vertical', 'simple']),
       rowHover: PropTypes.bool,
       rowsExpanded: PropTypes.array,
       rowsPerPage: PropTypes.number,
@@ -344,7 +351,7 @@ class MUIDataTable extends React.Component {
     pagination: true,
     print: true,
     resizableColumns: false,
-    responsive: 'stacked',
+    responsive: 'vertical',
     rowHover: true,
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 15, 100],
@@ -358,6 +365,8 @@ class MUIDataTable extends React.Component {
     setTableProps: () => ({}),
     sort: true,
     sortFilterList: true,
+    tableBodyHeight: 'auto',
+    tableBodyMaxHeight: null, // if set, it will override tableBodyHeight
     textLabels: getTextLabels(),
     viewColumns: true,
   });
@@ -369,17 +378,10 @@ class MUIDataTable extends React.Component {
       );
       this.options.selectableRows = this.options.selectableRows ? 'multiple' : 'none';
     }
-    if (
-      ['scrollMaxHeight', 'scrollFullHeight', 'stacked', 'stackedFullWidth', 'scrollFullHeightFullWidth'].indexOf(
-        this.options.responsive,
-      ) === -1
-    ) {
+    if (['standard', 'vertical', 'simple'].indexOf(this.options.responsive) === -1) {
       warnDeprecated(
-        'Invalid option value for responsive. Please use string option: scrollMaxHeight | scrollFullHeight | stacked | stackedFullWidth | scrollFullHeightFullWidth',
+        'Invalid option value for responsive. The field has been refactored for v3. Please use string option: standard | vertical | simple',
       );
-    }
-    if (this.options.responsive === 'scroll') {
-      warnDeprecated('This option has been replaced by scrollMaxHeight');
     }
     if (this.options.fixedHeaderOptions) {
       warnDeprecated('fixedHeaderOptions has been deprecated in favor of fixedHeader and fixedSelectColumn.');
@@ -949,16 +951,11 @@ class MUIDataTable extends React.Component {
         var cb = this.options.onViewColumnsChange || this.options.onColumnViewChange;
 
         if (cb) {
-          cb(
-            this.state.columns[index].name,
-            this.state.columns[index].display === 'true' ? 'add' : 'remove',
-          );
+          cb(this.state.columns[index].name, this.state.columns[index].display === 'true' ? 'add' : 'remove');
         }
 
         if (this.options.onColumnViewChange) {
-          warnDeprecated(
-            'onColumnViewChange has been changed to onViewColumnsChange.',
-          );
+          warnDeprecated('onColumnViewChange has been changed to onViewColumnsChange.');
         }
       },
     );
@@ -1500,11 +1497,21 @@ class MUIDataTable extends React.Component {
     }));
     const responsiveOption = this.options.responsive;
     let paperClasses = `${classes.paper} ${className}`;
-    let maxHeight;
+    let maxHeight = this.options.tableBodyMaxHeight;
     let responsiveClass;
 
+    if (this.options.tableBodyMaxHeight && this.options.tableBodyHeight){
+      warnInfo('Both tableBodyMaxHeight and tableBodyHeight, tableBodyMaxHeight will be used.');
+    }
+
     switch (responsiveOption) {
-      // DEPRECATED: This options is beign transitioned to `responsiveScrollMaxHeight`
+      case 'standard':
+      case 'simple':
+      case 'vertical':
+        responsiveClass = classes.responsiveBase;
+        break;
+
+      // All of the below cases are DEPRECATED, but will be supported through v3.x
       case 'scroll':
         responsiveClass = classes.responsiveScroll;
         maxHeight = '499px';
@@ -1532,6 +1539,13 @@ class MUIDataTable extends React.Component {
         break;
     }
 
+    var tableHeightVal = {};
+    if (maxHeight) {
+      tableHeightVal.maxHeight = tableHeightVal;
+    } else {
+      tableHeightVal.height = this.options.tableBodyHeight;
+    }
+    
     let tableProps = this.options.setTableProps ? this.options.setTableProps() : {};
     let tableClassNames = classnames(classes.tableRoot, tableProps.className);
     delete tableProps.className; // remove className from props to avoid the className being applied twice
@@ -1588,7 +1602,7 @@ class MUIDataTable extends React.Component {
           filterUpdate={this.filterUpdate}
           columnNames={columnNames}
         />
-        <div style={{ position: 'relative', maxHeight }} className={responsiveClass}>
+        <div style={{ position: 'relative', ...tableHeightVal }} className={responsiveClass}>
           {this.options.resizableColumns && (
             <TableResizeComponent
               key={rowCount}

@@ -8,28 +8,22 @@ const defaultBodyRowStyles = theme => ({
   root: {
     // material v4
     '&.Mui-selected': {
-      '& td': {
-        backgroundColor: theme.palette.action.selected,
-      },
+      backgroundColor: theme.palette.action.selected,
     },
 
     // material v3 workaround
     '&.mui-row-selected': {
-      '& td': {
-        backgroundColor: theme.palette.action.selected,
-      },
-    },
-  },
-  hover: {
-    '&:hover': {
-      '& td': {
-        backgroundColor: theme.palette.action.hover,
-      },
+      backgroundColor: theme.palette.action.selected,
     },
   },
   hoverCursor: { cursor: 'pointer' },
   responsiveStacked: {
     [theme.breakpoints.down('sm')]: {
+      border: 'solid 2px rgba(0, 0, 0, 0.15)',
+    },
+  },
+  responsiveSimple: {
+    [theme.breakpoints.down('xs')]: {
       border: 'solid 2px rgba(0, 0, 0, 0.15)',
     },
   },
@@ -59,7 +53,11 @@ class TableBodyRow extends React.Component {
             [classes.root]: true,
             [classes.hover]: options.rowHover,
             [classes.hoverCursor]: (options.selectableRowsOnClick && isRowSelectable) || options.expandableRowsOnClick,
-            [classes.responsiveStacked]: options.responsive === 'stacked' || options.responsive === 'stackedFullWidth',
+            [classes.responsiveSimple]: options.responsive === 'simple',
+            [classes.responsiveStacked]:
+              options.responsive === 'vertical' ||
+              options.responsive === 'stacked' ||
+              options.responsive === 'stackedFullWidth',
             'mui-row-selected': rowSelected,
           },
           className,
