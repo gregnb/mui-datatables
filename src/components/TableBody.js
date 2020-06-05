@@ -236,11 +236,12 @@ class TableBody extends React.Component {
 
             let isRowSelected = options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false;
             let isRowSelectable = this.isRowSelectable(dataIndex);
+            let bodyClasses = (options.setRowProps ? options.setRowProps(row, dataIndex, rowIndex) : {});
 
             return (
               <React.Fragment key={rowIndex}>
                 <TableBodyRow
-                  {...(options.setRowProps ? options.setRowProps(row, dataIndex, rowIndex) : {})}
+                  {...bodyClasses}
                   options={options}
                   rowSelected={isRowSelected}
                   isRowSelectable={isRowSelectable}
@@ -248,6 +249,7 @@ class TableBody extends React.Component {
                   className={classNames({
                     [classes.lastStackedCell]: options.responsive === 'vertical' || options.responsive === 'stacked' || options.responsive === 'stackedFullWidth',
                     [classes.lastSimpleCell]: options.responsive === 'simple',
+                    [bodyClasses.className]: bodyClasses.className
                   })}
                   data-testid={'MUIDataTableBodyRow-' + dataIndex}
                   id={'MUIDataTableBodyRow-' + dataIndex}>

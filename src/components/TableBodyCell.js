@@ -2,9 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import TableCell from '@material-ui/core/TableCell';
 import { withStyles } from '@material-ui/core/styles';
-import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
-
-const ConditionalWrapper = ({ condition, wrapper, children }) => (condition ? wrapper(children) : children);
 
 const defaultBodyCellStyles = theme => ({
   root: {},
@@ -87,7 +84,6 @@ class TableBodyCell extends React.Component {
       rowIndex,
       className,
       print,
-      tmp,
       ...otherProps
     } = this.props;
 
@@ -175,4 +171,4 @@ class TableBodyCell extends React.Component {
   }
 }
 
-export default withWidth()(withStyles(defaultBodyCellStyles, { name: 'MUIDataTableBodyCell' })(TableBodyCell));
+export default withStyles(defaultBodyCellStyles, { name: 'MUIDataTableBodyCell' })(TableBodyCell);
