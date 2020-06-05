@@ -161,7 +161,7 @@ The component accepts the following props:
 |**`selectableRows`**|string|'multiple'|Numbers of rows that can be selected. Options are "multiple", "single", "none". **(Boolean options have been deprecated.)**
 |**`selectableRowsHideCheckboxes`**|boolean|false|Hides the checkboxes that appear when selectableRows is set to "multiple" or "single". Can provide a more custom UX, especially when paired with selectableRowsOnClick.
 |**`selectableRowsOnClick`**|boolean|false|Enable/disable select toggle when row is clicked. When False, only checkbox will trigger this action.
-|**`disableToolbarSelect`**|boolean|false|Enable/disable the Select Toolbar that appears when a row is selected.
+|**`disableToolbarSelect` DEPRECATED (use `selectToolbarPlacement='none'`)**|boolean|false|Enable/disable the Select Toolbar that appears when a row is selected.
 |**`isRowSelectable`**|function||Enable/disable selection on certain rows with custom function. Returns true if not provided. `function(dataIndex: number, selectedRows: object(lookup: {dataindex: boolean}, data: arrayOfObjects: {index, dataIndex})) => boolean`.
 |**`isRowExpandable`**|function||Enable/disable expansion or collapse on certain expandable rows with custom function. Will be considered true if not provided. `function(dataIndex: number, expandedRows: object(lookup: {dataIndex: number}, data: arrayOfObjects: {index: number, dataIndex: number})) => boolean`.
 |**`selectableRowsHeader`**|boolean|true|Show/hide the select all/deselect all checkbox header for selectable rows
@@ -219,7 +219,7 @@ The component accepts the following props:
 |**`onTableInit`**|function||Callback function that triggers when table state has been initialized. `function(action: string, tableState: object) => void`
 |**`setRowProps`**|function||Is called for each row and allows you to return custom props for this row based on its data. `function(row: array, dataIndex: number) => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
 |**`setTableProps`**|function||Is called for the table and allows you to return custom props for the table based on its data. `function() => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
-
+|**`selectToolbarPlacement`**|string|'replace'|Controls the visibility of the Select Toolbar, options are 'replace' (select toolbar replaces default toolbar when a row is selected), 'above' (select toolbar will appear above default toolbar when a row is selected) and 'none' (select toolbar will never appear)
 ## Customize Columns
 
 On each column object, you have the ability to customize columns to your liking with the 'options' property. Example:
