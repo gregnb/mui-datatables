@@ -19,12 +19,18 @@ const defaultBodyRowStyles = theme => ({
   hoverCursor: { cursor: 'pointer' },
   responsiveStacked: {
     [theme.breakpoints.down('sm')]: {
-      border: 'solid 2px rgba(0, 0, 0, 0.15)',
+      borderTop: 'solid 2px rgba(0, 0, 0, 0.15)',
+      borderBottom: 'solid 2px rgba(0, 0, 0, 0.15)',
+      padding:0,
+      margin:0,
     },
   },
   responsiveSimple: {
     [theme.breakpoints.down('xs')]: {
-      border: 'solid 2px rgba(0, 0, 0, 0.15)',
+      borderTop: 'solid 2px rgba(0, 0, 0, 0.15)',
+      borderBottom: 'solid 2px rgba(0, 0, 0, 0.15)',
+      padding:0,
+      margin:0,
     },
   },
 });

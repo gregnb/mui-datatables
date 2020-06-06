@@ -13,12 +13,14 @@ const defaultBodyCellStyles = theme => ({
       display: 'inline-block',
       fontWeight: 'bold',
       width: '100%',
+      boxSizing: 'border-box',
     },
   },
   simpleCell: {
     [theme.breakpoints.down('xs')]: {
       display: 'inline-block',
       width: '100%',
+      boxSizing: 'border-box',
     },
   },
   stackedHeader: {
@@ -51,16 +53,19 @@ const defaultBodyCellStyles = theme => ({
   cellStackedSmall: {
     [theme.breakpoints.down('sm')]: {
       width: '50%',
+      boxSizing: 'border-box',
     },
   },
   responsiveStackedSmall: {
     [theme.breakpoints.down('sm')]: {
       width: '50%',
+      boxSizing: 'border-box',
     },
   },
   responsiveStackedSmallParent: {
     [theme.breakpoints.down('sm')]: {
       width: '100%',
+      boxSizing: 'border-box',
     },
   },
 });

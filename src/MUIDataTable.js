@@ -378,10 +378,14 @@ class MUIDataTable extends React.Component {
       );
       this.options.selectableRows = this.options.selectableRows ? 'multiple' : 'none';
     }
-    if (['standard', 'vertical', 'simple'].indexOf(this.options.responsive) === -1) {
-      warnDeprecated(
-        'Invalid option value for responsive. The field has been refactored for v3. Please use string option: standard | vertical | simple',
-      );
+    if (!['standard', 'vertical', 'simple'].includes(this.options.responsive)) {
+      if ( ['scrollMaxHeight', 'scrollFullHeight', 'stacked', 'stackedFullWidth', 'scrollFullHeightFullWidth', 'scroll'].includes(this.options.responsive) ) {
+        warnDeprecated(
+          this.options.responsive + ' has been deprecated. Please use string option: standard | vertical | simple',
+        );
+      } else {
+        warnInfo(this.options.responsive + ' is not recognized as a valid input for responsive option. Please use string option: standard | vertical | simple');
+      }
     }
     if (this.options.fixedHeaderOptions) {
       warnDeprecated('fixedHeaderOptions has been deprecated in favor of fixedHeader and fixedSelectColumn.');
@@ -1500,49 +1504,50 @@ class MUIDataTable extends React.Component {
     let maxHeight = this.options.tableBodyMaxHeight;
     let responsiveClass;
 
-    if (this.options.tableBodyMaxHeight && this.options.tableBodyHeight){
-      warnInfo('Both tableBodyMaxHeight and tableBodyHeight, tableBodyMaxHeight will be used.');
-    }
-
     switch (responsiveOption) {
-      case 'standard':
-      case 'simple':
-      case 'vertical':
-        responsiveClass = classes.responsiveBase;
-        break;
-
-      // All of the below cases are DEPRECATED, but will be supported through v3.x
-      case 'scroll':
+      // deprecated
+      case 'scroll': 
         responsiveClass = classes.responsiveScroll;
         maxHeight = '499px';
         break;
+      // deprecated
       case 'scrollMaxHeight':
         responsiveClass = classes.responsiveScrollMaxHeight;
         maxHeight = '499px';
         break;
+      // deprecated
       case 'scrollFullHeight':
         responsiveClass = classes.responsiveScrollFullHeight;
         maxHeight = 'none';
         break;
+      // deprecated
       case 'scrollFullHeightFullWidth':
         responsiveClass = classes.responsiveScrollFullHeight;
         paperClasses = `${classes.paperResponsiveScrollFullHeightFullWidth} ${className}`;
         break;
+      // deprecated
       case 'stacked':
         responsiveClass = classes.responsiveStacked;
         maxHeight = 'none';
         break;
+      // deprecated
       case 'stackedFullWidth':
         responsiveClass = classes.responsiveStackedFullWidth;
         paperClasses = `${classes.paperResponsiveScrollFullHeightFullWidth} ${className}`;
         maxHeight = 'none';
         break;
+
+      default:
+        responsiveClass = classes.responsiveBase;
+        break;
     }
 
     var tableHeightVal = {};
     if (maxHeight) {
-      tableHeightVal.maxHeight = tableHeightVal;
-    } else {
+      console.log('max!');
+      tableHeightVal.maxHeight = maxHeight;
+    }
+    if (this.options.tableBodyHeight) {
       tableHeightVal.height = this.options.tableBodyHeight;
     }
     
