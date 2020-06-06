@@ -710,6 +710,48 @@ describe('<MUIDataTable />', function() {
     assert.lengthOf(actualResult, 0);
   });
 
+  it('should not render select toolbar when selectToolbarPlacement="none"', () => {
+    const options = { selectToolbarPlacement: "none" };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    // Simulate a selection
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 });
+
+    const actualResult = shallowWrapper.find(TableToolbarSelect);
+    assert.lengthOf(actualResult, 0);
+    const actualResult2 = shallowWrapper.find(TableToolbar);
+    assert.lengthOf(actualResult2, 1);
+  });
+
+  it('should render both select toolbar and toolbar when selectToolbarPlacement="above"', () => {
+    const options = { selectToolbarPlacement: "above" };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    // Simulate a selection
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 });
+
+    const actualResult = shallowWrapper.find(TableToolbarSelect);
+    assert.lengthOf(actualResult, 1);
+    const actualResult2 = shallowWrapper.find(TableToolbar);
+    assert.lengthOf(actualResult2, 1);
+  });
+
+  it('should render select toolbar by default', () => {
+    const options = {};
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    // Simulate a selection
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 });
+
+    const actualResult = shallowWrapper.find(TableToolbarSelect);
+    assert.lengthOf(actualResult, 1);
+    const actualResult2 = shallowWrapper.find(TableToolbar);
+    assert.lengthOf(actualResult2, 0);
+  });
+
   it('should properly set internal filterList when calling filterUpdate method with type=checkbox', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     const table = shallowWrapper.dive();

@@ -88,11 +88,12 @@ const hasToolbarItem = (options, title) => {
   return !isUndefined(find(TOOLBAR_ITEMS, i => options[i]));
 };
 
-const SELECT_TOOLBAR_PLACEMENT_OPTIONS = {
+// Select Toolbar Placement options
+const STP = {
   REPLACE: 'replace',
   ABOVE: 'above',
   NONE: 'none'
-}
+};
 
 class MUIDataTable extends React.Component {
   static propTypes = {
@@ -211,7 +212,7 @@ class MUIDataTable extends React.Component {
       searchPlaceholder: PropTypes.string,
       searchText: PropTypes.string,
       setRowProps: PropTypes.func,
-      selectToolbarPlacement: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf([SELECT_TOOLBAR_PLACEMENT_OPTIONS.REPLACE, SELECT_TOOLBAR_PLACEMENT_OPTIONS.ABOVE, SELECT_TOOLBAR_PLACEMENT_OPTIONS.NONE])]),
+      selectToolbarPlacement: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf([STP.REPLACE, STP.ABOVE, STP.NONE])]),
       setTableProps: PropTypes.func,
       sort: PropTypes.bool,
       sortOrder: PropTypes.object,
@@ -318,7 +319,7 @@ class MUIDataTable extends React.Component {
     // set backwards compatibility options
     if (props.options.disableToolbarSelect === true && props.options.selectToolbarPlacement === undefined) {
       // if deprecated option disableToolbarSelect is set and selectToolbarPlacement is default then use it
-      props.options.selectToolbarPlacement = SELECT_TOOLBAR_PLACEMENT_OPTIONS.NONE;
+      props.options.selectToolbarPlacement = STP.NONE;
     }
 
     this.options = assignwith(options, props.options, (objValue, srcValue, key) => {
@@ -375,7 +376,7 @@ class MUIDataTable extends React.Component {
     sortOrder: {},
     textLabels: getTextLabels(),
     viewColumns: true,
-    selectToolbarPlacement: SELECT_TOOLBAR_PLACEMENT_OPTIONS.REPLACE,
+    selectToolbarPlacement: STP.REPLACE,
   });
 
   handleOptionDeprecation = () => {
@@ -415,7 +416,7 @@ class MUIDataTable extends React.Component {
       );
     }
 
-    if (Object.values(SELECT_TOOLBAR_PLACEMENT_OPTIONS).indexOf(this.options.selectToolbarPlacement) === -1) {
+    if (Object.values(STP).indexOf(this.options.selectToolbarPlacement) === -1) {
       console.error(
         'Invalid option value for selectToolbarPlacement. Please check the documentation.',
       );
@@ -549,6 +550,15 @@ class MUIDataTable extends React.Component {
   };
 
   transformData = (columns, data) => {
+
+    // deprecation warning for nested data parsing
+    columns.forEach( col => {
+      if (col.name && col.name.indexOf('.') !== -1) {
+        // TODO: warnInfo defined in another branch, when merged in, uncomment this
+        //warnInfo('Columns with a dot will no longer be treated as nested data by default. Please see the enableNestedDataAccess option for more information.');
+      }
+    });
+
     const { enableNestedDataAccess } = this.options;
     const leaf = (obj, path) =>
       (enableNestedDataAccess ? path.split(enableNestedDataAccess) : path.split()).reduce(
@@ -1333,7 +1343,7 @@ class MUIDataTable extends React.Component {
           let selectedMap = buildMap(newRows);
 
           // if the select toolbar is disabled, the rules are a little different
-          if (this.options.selectToolbarPlacement === SELECT_TOOLBAR_PLACEMENT_OPTIONS.NONE) {
+          if (this.options.selectToolbarPlacement === STP.NONE) {
             if (selectedRowsLen > displayData.length) {
               isDeselect = true;
             } else {
@@ -1558,7 +1568,7 @@ class MUIDataTable extends React.Component {
 
     return (
       <Paper elevation={this.options.elevation} ref={this.tableContent} className={paperClasses}>
-        {selectedRows.data.length > 0 && this.options.selectToolbarPlacement !== SELECT_TOOLBAR_PLACEMENT_OPTIONS.NONE && (
+        {selectedRows.data.length > 0 && this.options.selectToolbarPlacement !== STP.NONE && (
           <TableToolbarSelectComponent
             options={this.options}
             selectedRows={selectedRows}
@@ -1568,7 +1578,7 @@ class MUIDataTable extends React.Component {
             components={this.props.components}
           />
         )}
-        {(selectedRows.data.length === 0 || [SELECT_TOOLBAR_PLACEMENT_OPTIONS.ABOVE, SELECT_TOOLBAR_PLACEMENT_OPTIONS.NONE].includes(this.options.selectToolbarPlacement)) &&
+        {(selectedRows.data.length === 0 || [STP.ABOVE, STP.NONE].includes(this.options.selectToolbarPlacement)) &&
           showToolbar && (
             <TableToolbarComponent
               columns={columns}
