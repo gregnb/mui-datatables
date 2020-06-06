@@ -85,7 +85,7 @@ function Example() {
           textLabels={textLabels} />
       );
     },
-    customTableBodyFooter: function(opts) {
+    customTableBodyFooterRender: function(opts) {
       console.dir(opts);
 
       let avgAge = opts.data.reduce( (accu, item) => {

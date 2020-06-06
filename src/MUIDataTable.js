@@ -1631,8 +1631,8 @@ class MUIDataTable extends React.Component {
               options={this.options}
               filterList={filterList}
             />
-            {this.options.customTableBodyFooter
-              ? this.options.customTableBodyFooter({
+            {this.options.customTableBodyFooterRender
+              ? this.options.customTableBodyFooterRender({
                   data: displayData,
                   count: rowCount,
                   columns,
