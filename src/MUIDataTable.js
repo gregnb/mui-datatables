@@ -106,7 +106,7 @@ class MUIDataTable extends React.Component {
       PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.shape({
-          label: PropTypes.string,
+          label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
           name: PropTypes.string.isRequired,
           options: PropTypes.shape({
             display: PropTypes.oneOf(['true', 'false', 'excluded']),
