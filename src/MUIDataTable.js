@@ -30,19 +30,16 @@ const defaultTableStyles = theme => ({
     outline: 'none',
   },
   responsiveBase: {
-    overflowX: 'auto',
     overflow: 'auto',
   },
 
   // deprecated, but continuing support through v3.x
   responsiveScroll: {
-    overflowX: 'auto',
     overflow: 'auto',
     height: '100%',
   },
   // deprecated, but continuing support through v3.x
   responsiveScrollMaxHeight: {
-    overflowX: 'auto',
     overflow: 'auto',
     height: '100%',
   },
@@ -52,10 +49,8 @@ const defaultTableStyles = theme => ({
   },
   // deprecated, but continuing support through v3.x
   responsiveStacked: {
-    overflowX: 'auto',
     overflow: 'auto',
     [theme.breakpoints.down('sm')]: {
-      overflowX: 'hidden',
       overflow: 'hidden',
     },
   },
@@ -379,12 +374,24 @@ class MUIDataTable extends React.Component {
       this.options.selectableRows = this.options.selectableRows ? 'multiple' : 'none';
     }
     if (!['standard', 'vertical', 'simple'].includes(this.options.responsive)) {
-      if ( ['scrollMaxHeight', 'scrollFullHeight', 'stacked', 'stackedFullWidth', 'scrollFullHeightFullWidth', 'scroll'].includes(this.options.responsive) ) {
+      if (
+        [
+          'scrollMaxHeight',
+          'scrollFullHeight',
+          'stacked',
+          'stackedFullWidth',
+          'scrollFullHeightFullWidth',
+          'scroll',
+        ].includes(this.options.responsive)
+      ) {
         warnDeprecated(
           this.options.responsive + ' has been deprecated. Please use string option: standard | vertical | simple',
         );
       } else {
-        warnInfo(this.options.responsive + ' is not recognized as a valid input for responsive option. Please use string option: standard | vertical | simple');
+        warnInfo(
+          this.options.responsive +
+            ' is not recognized as a valid input for responsive option. Please use string option: standard | vertical | simple',
+        );
       }
     }
     if (this.options.fixedHeaderOptions) {
@@ -1506,7 +1513,7 @@ class MUIDataTable extends React.Component {
 
     switch (responsiveOption) {
       // deprecated
-      case 'scroll': 
+      case 'scroll':
         responsiveClass = classes.responsiveScroll;
         maxHeight = '499px';
         break;
@@ -1550,7 +1557,7 @@ class MUIDataTable extends React.Component {
     if (this.options.tableBodyHeight) {
       tableHeightVal.height = this.options.tableBodyHeight;
     }
-    
+
     let tableProps = this.options.setTableProps ? this.options.setTableProps() : {};
     let tableClassNames = classnames(classes.tableRoot, tableProps.className);
     delete tableProps.className; // remove className from props to avoid the className being applied twice

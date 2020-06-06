@@ -156,7 +156,7 @@ class Example extends React.Component {
       filter: true,
       serverSideFilterList: this.state.serverSideFilterList,
       filterType: 'dropdown',
-      responsive: 'scrollMaxHeight',
+      responsive: 'standard',
       serverSide: true,
       onFilterDialogOpen: () => {
         console.log('filter dialog opened');

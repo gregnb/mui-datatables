@@ -21,16 +21,16 @@ const defaultBodyRowStyles = theme => ({
     [theme.breakpoints.down('sm')]: {
       borderTop: 'solid 2px rgba(0, 0, 0, 0.15)',
       borderBottom: 'solid 2px rgba(0, 0, 0, 0.15)',
-      padding:0,
-      margin:0,
+      padding: 0,
+      margin: 0,
     },
   },
   responsiveSimple: {
     [theme.breakpoints.down('xs')]: {
       borderTop: 'solid 2px rgba(0, 0, 0, 0.15)',
       borderBottom: 'solid 2px rgba(0, 0, 0, 0.15)',
-      padding:0,
-      margin:0,
+      padding: 0,
+      margin: 0,
     },
   },
 });

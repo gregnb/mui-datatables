@@ -18,16 +18,16 @@ const defaultBodyStyles = theme => ({
   lastStackedCell: {
     [theme.breakpoints.down('sm')]: {
       '& td:last-child': {
-        borderBottom: 'none'
-      }
-    }
+        borderBottom: 'none',
+      },
+    },
   },
   lastSimpleCell: {
     [theme.breakpoints.down('xs')]: {
       '& td:last-child': {
-        borderBottom: 'none'
-      }
-    }
+        borderBottom: 'none',
+      },
+    },
   },
 });
 
@@ -236,7 +236,7 @@ class TableBody extends React.Component {
 
             let isRowSelected = options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false;
             let isRowSelectable = this.isRowSelectable(dataIndex);
-            let bodyClasses = (options.setRowProps ? options.setRowProps(row, dataIndex, rowIndex) : {});
+            let bodyClasses = options.setRowProps ? options.setRowProps(row, dataIndex, rowIndex) : {};
 
             return (
               <React.Fragment key={rowIndex}>
@@ -247,9 +247,12 @@ class TableBody extends React.Component {
                   isRowSelectable={isRowSelectable}
                   onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
                   className={classNames({
-                    [classes.lastStackedCell]: options.responsive === 'vertical' || options.responsive === 'stacked' || options.responsive === 'stackedFullWidth',
+                    [classes.lastStackedCell]:
+                      options.responsive === 'vertical' ||
+                      options.responsive === 'stacked' ||
+                      options.responsive === 'stackedFullWidth',
                     [classes.lastSimpleCell]: options.responsive === 'simple',
-                    [bodyClasses.className]: bodyClasses.className
+                    [bodyClasses.className]: bodyClasses.className,
                   })}
                   data-testid={'MUIDataTableBodyRow-' + dataIndex}
                   id={'MUIDataTableBodyRow-' + dataIndex}>

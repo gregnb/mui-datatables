@@ -73,7 +73,7 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: 'vertical',
       serverSide: true,
       count: count,
       page: page,

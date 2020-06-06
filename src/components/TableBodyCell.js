@@ -24,7 +24,7 @@ const defaultBodyCellStyles = theme => ({
     },
   },
   stackedHeader: {
-    verticalAlign:'top',
+    verticalAlign: 'top',
   },
   stackedCommon: {
     [theme.breakpoints.down('sm')]: {
@@ -153,24 +153,24 @@ class TableBodyCell extends React.Component {
       <TableCell
         onClick={this.handleClick}
         className={classNames(
-        {
-          [classes.root]: true,
-          [classes.stackedParent]:
-            options.responsive === 'vertical' ||
-            options.responsive === 'stacked' ||
-            options.responsive === 'stackedFullWidth',
-          [classes.responsiveStackedSmallParent]:
-            options.responsive === 'vertical' ||
-            options.responsive === 'stacked' ||
-            (options.responsive === 'stackedFullWidth' &&
-              (options.setTableProps().padding === 'none' || options.setTableProps().size === 'small')),
-          [classes.simpleCell]: options.responsive === 'simple',
-          'datatables-noprint': !print,
-        },
-        className,
-      )}
-      {...otherProps}>
-      {innerCells}
+          {
+            [classes.root]: true,
+            [classes.stackedParent]:
+              options.responsive === 'vertical' ||
+              options.responsive === 'stacked' ||
+              options.responsive === 'stackedFullWidth',
+            [classes.responsiveStackedSmallParent]:
+              options.responsive === 'vertical' ||
+              options.responsive === 'stacked' ||
+              (options.responsive === 'stackedFullWidth' &&
+                (options.setTableProps().padding === 'none' || options.setTableProps().size === 'small')),
+            [classes.simpleCell]: options.responsive === 'simple',
+            'datatables-noprint': !print,
+          },
+          className,
+        )}
+        {...otherProps}>
+        {innerCells}
       </TableCell>
     );
   }

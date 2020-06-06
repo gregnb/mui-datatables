@@ -121,7 +121,7 @@ class Example extends React.Component {
       rowsPerPageOptions: [10, 100, 250, 500, 1000],
       filter: true,
       filterType: 'dropdown',
-      responsive: 'scrollMaxHeight',
+      responsive: 'standard',
       customSearchRender: debounceSearchRender(500),
     };
 

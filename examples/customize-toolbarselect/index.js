@@ -44,7 +44,7 @@ class Example extends React.Component {
       filter: true,
       selectableRows: 'multiple',
       filterType: "dropdown",
-      responsive: "stacked",
+      responsive: "vertical",
       rowsPerPage: 10,
       customToolbarSelect: (selectedRows, displayData, setSelectedRows) => (
         <CustomToolbarSelect selectedRows={selectedRows} displayData={displayData} setSelectedRows={setSelectedRows} />
