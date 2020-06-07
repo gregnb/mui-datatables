@@ -29,6 +29,13 @@ class Example extends React.Component {
       filter: true,
       filterType: 'dropdown',
       responsive: 'stacked',
+      onFilterChange: (column, filterList, type) => {
+        
+        console.log('filterList');
+        console.dir(filterList);
+
+
+      },
     };
 
     return (

@@ -262,6 +262,7 @@ describe('<TableFilter />', function() {
     const options = { filterType: 'checkbox', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     const onFilterUpdate = spy();
+    const updateFilterByType = () => {};
 
     const shallowWrapper = shallow(
       <TableFilter
@@ -270,6 +271,7 @@ describe('<TableFilter />', function() {
         filterData={filterData}
         filterList={filterList}
         options={options}
+        updateFilterByType={updateFilterByType}
       />,
     ).dive();
     const instance = shallowWrapper.instance();
@@ -283,6 +285,7 @@ describe('<TableFilter />', function() {
     const options = { filterType: 'select', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     const onFilterUpdate = spy();
+    const updateFilterByType = () => {};
 
     const shallowWrapper = shallow(
       <TableFilter
@@ -291,6 +294,7 @@ describe('<TableFilter />', function() {
         filterData={filterData}
         filterList={filterList}
         options={options}
+        updateFilterByType={updateFilterByType}
       />,
     ).dive();
     const instance = shallowWrapper.instance();
@@ -314,6 +318,7 @@ describe('<TableFilter />', function() {
     const options = { filterType: 'multiselect', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     const onFilterUpdate = spy();
+    const updateFilterByType = () => {};
 
     const shallowWrapper = shallow(
       <TableFilter
@@ -322,6 +327,7 @@ describe('<TableFilter />', function() {
         filterData={filterData}
         filterList={filterList}
         options={options}
+        updateFilterByType={updateFilterByType}
       />,
     ).dive();
     const instance = shallowWrapper.instance();
@@ -346,6 +352,7 @@ describe('<TableFilter />', function() {
     const options = { filterType: 'textField', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];
     const onFilterUpdate = spy();
+    const updateFilterByType = () => {};
 
     const shallowWrapper = shallow(
       <TableFilter
@@ -354,6 +361,7 @@ describe('<TableFilter />', function() {
         filterData={filterData}
         filterList={filterList}
         options={options}
+        updateFilterByType={updateFilterByType}
       />,
     ).dive();
     const instance = shallowWrapper.instance();

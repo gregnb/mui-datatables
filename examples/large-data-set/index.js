@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
 import { debounceSearchRender } from "../../src/";
+import { Button } from '@material-ui/core';
 
 class Example extends React.Component {
 
@@ -61,8 +62,6 @@ class Example extends React.Component {
         options: {
           filter: true,
           customBodyRender: (val, tableMeta) => {
-            console.log(val);
-            console.dir(tableMeta);
             return val;
           }
         }
@@ -123,6 +122,18 @@ class Example extends React.Component {
       filterType: 'dropdown',
       responsive: 'scrollMaxHeight',
       customSearchRender: debounceSearchRender(500),
+
+      // These next two options allow you to make it so filters need to be confirmed.
+      confirmFilters: true,
+
+      // Calling the applyNewFilters parameter applies the selected filters to the table
+      customFilterDialogFooter: (currentFilterList, applyNewFilters) => {
+        return (
+          <div style={{ marginTop: '40px' }}>
+            <Button variant="contained" onClick={applyNewFilters}>Apply Filters</Button>
+          </div>
+        );
+      }
     };
 
     return (
