@@ -1235,7 +1235,7 @@ describe('<MUIDataTable />', function() {
 
   it('should recalculate page when calling changeRowsPerPage method', () => {
     const mountWrapper = mount(
-      shallow(<MUIDataTable columns={columns} data={data} options={{ rowsPerPage: 2 }} />).get(0),
+      shallow(<MUIDataTable columns={columns} data={data} options={{ rowsPerPageOptions: [2,4,10,15,100], rowsPerPage: 2 }} />).get(0),
     );
     const instance = mountWrapper.instance();
 
@@ -1839,6 +1839,37 @@ describe('<MUIDataTable />', function() {
       ]);
       assert.deepEqual(JSON.stringify(filterData), expectedResult);
     });
+  });
+
+  it('should correctly filter data from filter popover menu', () => {
+
+    let filteredData = [];
+    const options = {
+      filter: true,
+      filterType: 'dropdown',
+      onFilterChange: (column, filterList, type, index, displayData) => {
+        filteredData = displayData;
+      }
+    };
+    
+    const fullWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
+
+    fullWrapper
+      .find('[data-testid="Filter Table-iconButton"]')
+      .at(0)
+      .simulate('click');
+
+    fullWrapper
+      .find('[data-testid="filtertextfield-Name"] input')
+      .at(0)
+      .simulate('change', { target: { value: 'James' } })
+
+    fullWrapper.unmount();
+
+    assert.strictEqual(filteredData.length, 2);
+    assert.strictEqual(filteredData[0].data[0], 'James, Joe');
+    assert.strictEqual(filteredData[1].data[0], 'Houston, James');
+
   });
 
   describe('should correctly run comparator function', () => {

@@ -252,6 +252,7 @@ class TableFilter extends React.Component {
             fullWidth
             label={column.label}
             value={filterList[index].toString() || ''}
+            data-testid={"filtertextfield-" + column.name}
             onChange={event => this.handleTextFieldChange(event, index, column.name)}
           />
         </FormControl>

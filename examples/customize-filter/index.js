@@ -29,6 +29,7 @@ class Example extends React.Component {
             renderValue: v => v ? v.replace(/^(\w).* (.*)$/, '$1. $2') : ''
           },
           display: 'excluded',
+          filterType: 'textField'
         },
       },
       {

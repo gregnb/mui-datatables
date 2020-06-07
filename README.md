@@ -210,7 +210,7 @@ The component accepts the following props:
 |**`onSearchOpen`**|function||Callback function that triggers when the searchbox opens. `function() => void`
 |**`onFilterDialogOpen`**|function||Callback function that triggers when the filter dialog opens. `function() => void`
 |**`onFilterDialogClose`**|function||Callback function that triggers when the filter dialog closes. `function() => void`
-|**`onFilterChange`**|function||Callback function that triggers when filters have changed. `function(changedColumn: string, filterList: array, type: enum('checkbox', 'dropdown', 'multiselect', 'textField', 'custom', 'chip', 'reset'), changedColumnIndex) => void`
+|**`onFilterChange`**|function||Callback function that triggers when filters have changed. `function(changedColumn: string, filterList: array, type: enum('checkbox', 'dropdown', 'multiselect', 'textField', 'custom', 'chip', 'reset'), changedColumnIndex, displayData) => void`
 |**`onFilterConfirm`**|function||Callback function that is triggered when a user presses the "confirm" button on the filter popover. This occurs only if you've set **confirmFilters** option to true. `function(filterList: array) => void` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-filters/index.js)
 |**`onSearchClose`**|function||Callback function that triggers when the searchbox closes. `function() => void`
 |**`onColumnSortChange`**|function||Callback function that triggers when a column has been sorted. `function(changedColumn: string, direction: string) => void`
