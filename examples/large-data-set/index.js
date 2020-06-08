@@ -61,8 +61,8 @@ class Example extends React.Component {
         options: {
           filter: true,
           customBodyRender: (val, tableMeta) => {
-            console.log(val);
-            console.dir(tableMeta);
+            //console.log(val);
+            //console.dir(tableMeta);
             return val;
           }
         }
@@ -121,7 +121,8 @@ class Example extends React.Component {
       rowsPerPageOptions: [10, 100, 250, 500, 1000],
       filter: true,
       filterType: 'dropdown',
-      responsive: 'scrollMaxHeight',
+      responsive: 'vertical',
+      tableBodyHeight:'500px',
       customSearchRender: debounceSearchRender(500),
     };
 

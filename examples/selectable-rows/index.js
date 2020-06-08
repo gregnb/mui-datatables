@@ -70,7 +70,7 @@ class Example extends React.Component {
       selectableRowsOnClick: true,
       selectableRowsHideCheckboxes: this.state.selectableRowsHideCheckboxes,
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: 'vertical',
       rowsPerPage: 10,
       rowsSelected: this.state.rowsSelected,
       onRowsSelect: (rowsSelectedData, allRows, rowsSelected) => {

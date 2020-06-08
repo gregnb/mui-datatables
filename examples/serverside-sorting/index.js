@@ -178,7 +178,7 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'scrollMaxHeight',
+      responsive: 'standard',
       serverSide: true,
       count: count,
       page: page,

@@ -229,7 +229,7 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'multiselect',
-      responsive: 'scrollMaxHeight',
+      responsive: 'standard',
     };
 
     return (

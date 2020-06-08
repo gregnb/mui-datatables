@@ -10,7 +10,7 @@
 [![dependencies Status](https://david-dm.org/gregnb/mui-datatables/status.svg)](https://david-dm.org/gregnb/mui-datatables)
 [![npm version](https://badge.fury.io/js/mui-datatables.svg)](https://badge.fury.io/js/mui-datatables)
 
-MUI-Datatables is a data tables component built on [Material-UI](https://www.material-ui.com).  It comes with features like filtering, resizable + view/hide columns, search, export to CSV download, printing, selectable rows, expandable rows, pagination, and sorting. On top of the ability to customize styling on most views, there are three responsive modes "stacked", "scrollMaxHeight", and "scrollFullHeight" for mobile/tablet devices.
+MUI-Datatables is a data tables component built on [Material-UI](https://www.material-ui.com).  It comes with features like filtering, resizable + view/hide columns, search, export to CSV download, printing, selectable rows, expandable rows, pagination, and sorting. On top of the ability to customize styling on most views, there are three responsive modes "vertical", "standard", and "simple" for mobile/tablet devices.
 
 Version 3 has been released! You can read about the [updates here](https://github.com/gregnb/mui-datatables/blob/master/docs/v2_to_v3_guide.md)!
 
@@ -158,10 +158,25 @@ The component accepts the following props:
 |**`customRowRender `**|function||Override default row rendering with custom function. `customRowRender(data, dataIndex, rowIndex) => React Component`
 |**`customSearch `**|function||Override default search with custom function. `customSearch(searchQuery: string, currentRow: array, columns: array) => boolean`
 |**`customSearchRender `**|function||Render a custom table search. `customSearchRender(searchText: string, handleSearch, hideSearch, options) => React Component`
-|**`customSort`**|function||Override default sorting with custom function. `function(data: array, colIndex: number, order: string) => array`
-|**`customToolbar`**|function||Render a custom toolbar
-|**`customToolbarSelect`**|function||Render a custom selected rows toolbar. `function(selectedRows, displayData, setSelectedRows) => void`
-|**`download`**|boolean|true|Show/hide download icon from toolbar.
+|**`customFilterDialogFooter `**|function||Add a custom footer to the filter dialog. `customFilterDialogFooter(filterList: array) => React Component`
+|**`elevation`**|number|4|Shadow depth applied to Paper component
+|**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
+|**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: <p><ul><li>"vertical" (default value): In smaller views the table cells will collapse such that the heading is to the left of the cell value.</li><li>"standard": Table will stay in the standard mode but make small changes to better fit the allocated space.<li>"simple": On very small devices the table rows will collapse into simple display.</li></ul></p>[Example](https://github.com/gregnb/mui-datatables/blob/master/examples/simple/index.js)
+|**`rowsPerPage`**|number|10|Number of rows allowed per page
+|**`rowsPerPageOptions`**|array|[10,15,100]|Options to provide in pagination for number of rows a user can select
+|**`rowHover`**|boolean|true|Enable/disable hover style over rows
+|**`fixedHeader`**|boolean|true|Enable/disable a fixed header for the table [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
+|**`fixedSelectColumn`**|boolean|true|Enable/disable fixed select column [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
+|**`sortFilterList`**|boolean|true|Enable/disable alphanumeric sorting of filter lists
+|**`sort`**|boolean|true|Enable/disable sort on all columns
+|**`filter`**|boolean|true|Show/hide filter icon from toolbar
+|**`search`**|boolean|true|Show/hide search icon from toolbar
+|**`searchOpen`**|boolean|false|Initially displays search bar  
+|**`searchText`**|string||Initial search text
+|**`searchPlaceholder`**|string||Search text placeholder. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-search/index.js)
+|**`searchProps`**|object|{}|Props applied to the search text box. You can set method callbacks like onBlur, onKeyUp, etc, this way. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-search/index.js)
+|**`print`**|boolean|true|Show/hide print	 icon from toolbar
+|**`download`**|boolean|true|Show/hide download icon from toolbar
 |**`downloadOptions`**|object|`{filename: 'tableDownload.csv', separator: ','}`|Options to change the output of the CSV file: `filename`: string, `separator`: string, `filterOptions`: object(`useDisplayedColumnsOnly`: boolean, `useDisplayedRowsOnly`: boolean)
 |**`elevation`**|number|4|Shadow depth applied to Paper component.
 |**`enableNestedDataAccess`**|string|""|If provided a non-empty string (ex: "."), it will use that value in the column's names to access nested data. For example, given a enableNestedDataAccess value of "." and a column name of "phone.cell", the column would use the value found in `phone:{cell:"555-5555"}`. Any amount of nesting will work. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/data-as-objects/index.js) demonstrates the functionality. 
@@ -197,7 +212,7 @@ The component accepts the following props:
 |**`print`**|boolean|true|Show/hide print  icon from toolbar.
 |**`renderExpandableRow`**|function||Render expandable row. `function(rowData, rowMeta) => React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/expandable-rows/index.js)
 |**`resizableColumns`**|boolean|false|Enable/disable resizable columns.
-|**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: 'stacked', 'scrollMaxHeight' (limits height of table), 'scrollFullHeight' (table takes on as much height as needed to display all rows set in rowsPerPage), 'scrollFullHeightFullWidth' (same as 'scrollFullHeight' except that paper container wraps the table and the width takes the full browser window), 'stackedFullWidth' (same as stacked with the addition of the paper container changes with 'scrollFullHeightFullWidth')
+|**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: <p><ul><li>"vertical" (default value): In smaller views the table cells will collapse such that the heading is to the left of the cell value.</li><li>"standard": Table will stay in the standard mode but make small changes to better fit the allocated space.<li>"simple": On very small devices the table rows will collapse into simple display.</li></ul></p>[Example](https://github.com/gregnb/mui-datatables/blob/master/examples/simple/index.js)
 |**`rowsExpanded`**|array||User provided expanded rows.
 |**`rowHover`**|boolean|true|Enable/disable hover style over rows.
 |**`rowsPerPage`**|number|10|Number of rows allowed per page.

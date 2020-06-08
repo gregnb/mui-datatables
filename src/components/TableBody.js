@@ -8,13 +8,28 @@ import TableSelectCell from './TableSelectCell';
 import { withStyles } from '@material-ui/core/styles';
 import cloneDeep from 'lodash.clonedeep';
 import { getPageValue, warnDeprecated } from '../utils';
+import classNames from 'classnames';
 
-const defaultBodyStyles = {
+const defaultBodyStyles = theme => ({
   root: {},
   emptyTitle: {
     textAlign: 'center',
   },
-};
+  lastStackedCell: {
+    [theme.breakpoints.down('sm')]: {
+      '& td:last-child': {
+        borderBottom: 'none',
+      },
+    },
+  },
+  lastSimpleCell: {
+    [theme.breakpoints.down('xs')]: {
+      '& td:last-child': {
+        borderBottom: 'none',
+      },
+    },
+  },
+});
 
 class TableBody extends React.Component {
   static propTypes = {
@@ -221,15 +236,24 @@ class TableBody extends React.Component {
 
             let isRowSelected = options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false;
             let isRowSelectable = this.isRowSelectable(dataIndex);
+            let bodyClasses = options.setRowProps ? options.setRowProps(row, dataIndex, rowIndex) : {};
 
             return (
               <React.Fragment key={rowIndex}>
                 <TableBodyRow
-                  {...(options.setRowProps ? options.setRowProps(row, dataIndex, rowIndex) : {})}
+                  {...bodyClasses}
                   options={options}
                   rowSelected={isRowSelected}
                   isRowSelectable={isRowSelectable}
                   onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
+                  className={classNames({
+                    [classes.lastStackedCell]:
+                      options.responsive === 'vertical' ||
+                      options.responsive === 'stacked' ||
+                      options.responsive === 'stackedFullWidth',
+                    [classes.lastSimpleCell]: options.responsive === 'simple',
+                    [bodyClasses.className]: bodyClasses.className,
+                  })}
                   data-testid={'MUIDataTableBodyRow-' + dataIndex}
                   id={'MUIDataTableBodyRow-' + dataIndex}>
                   <TableSelectCell

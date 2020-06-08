@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
 import CustomToolbarSelect from "./CustomToolbarSelect";
-
 import InputLabel from '@material-ui/core/InputLabel';
 
 import MenuItem from '@material-ui/core/MenuItem';
@@ -53,7 +52,7 @@ function Example() {
     filter: true,
     selectableRows: 'multiple',
     filterType: "dropdown",
-    responsive: "stacked",
+    responsive: "vertical",
     rowsPerPage: 10,
     selectToolbarPlacement: stp,
     customToolbarSelect: (selectedRows, displayData, setSelectedRows) => (

@@ -14,6 +14,11 @@ const defaultHeadStyles = theme => ({
       display: 'none',
     },
   },
+  responsiveSimple: {
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
+  },
 });
 
 class TableHead extends React.Component {
@@ -69,7 +74,11 @@ class TableHead extends React.Component {
     return (
       <MuiTableHead
         className={classNames({
-          [classes.responsiveStacked]: options.responsive === 'stacked' || options.responsive === 'stackedFullWidth',
+          [classes.responsiveStacked]:
+            options.responsive === 'vertical' ||
+            options.responsive === 'stacked' ||
+            options.responsive === 'stackedFullWidth',
+          [classes.responsiveSimple]: options.responsive === 'simple',
           [classes.main]: true,
         })}>
         <TableHeadRow>
