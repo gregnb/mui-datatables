@@ -21,6 +21,12 @@ function warnDeprecated(warning) {
   }
 }
 
+function warnInfo(warning) {
+  if (process.env.NODE_ENV === 'development') {
+    console.warn(`${warning}`);
+  }
+}
+
 function getPageValue(count, rowsPerPage, page) {
   const totalPages = count <= rowsPerPage ? 1 : Math.ceil(count / rowsPerPage);
 
@@ -137,5 +143,6 @@ export {
   buildCSV,
   downloadCSV,
   warnDeprecated,
+  warnInfo,
   escapeDangerousCSVCharacters,
 };

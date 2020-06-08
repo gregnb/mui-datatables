@@ -14,6 +14,11 @@ const defaultHeadStyles = theme => ({
       display: 'none',
     },
   },
+  responsiveSimple: {
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
+  },
 });
 
 class TableHead extends React.Component {
@@ -39,6 +44,7 @@ class TableHead extends React.Component {
       setCellRef,
       selectedRows,
       expandedRows,
+      sortOrder = {},
       components = {},
     } = this.props;
 
@@ -68,7 +74,11 @@ class TableHead extends React.Component {
     return (
       <MuiTableHead
         className={classNames({
-          [classes.responsiveStacked]: options.responsive === 'stacked' || options.responsive === 'stackedFullWidth',
+          [classes.responsiveStacked]:
+            options.responsive === 'vertical' ||
+            options.responsive === 'stacked' ||
+            options.responsive === 'stackedFullWidth',
+          [classes.responsiveSimple]: options.responsive === 'simple',
           [classes.main]: true,
         })}>
         <TableHeadRow>
@@ -92,7 +102,7 @@ class TableHead extends React.Component {
             (column, index) =>
               column.display === 'true' &&
               (column.customHeadRender ? (
-                column.customHeadRender({ index, ...column }, this.handleToggleColumn)
+                column.customHeadRender({ index, ...column }, this.handleToggleColumn, sortOrder)
               ) : (
                 <TableHeadCell
                   cellHeaderProps={
@@ -103,7 +113,7 @@ class TableHead extends React.Component {
                   type={'cell'}
                   ref={el => setCellRef(index + 1, findDOMNode(el))}
                   sort={column.sort}
-                  sortDirection={column.sortDirection}
+                  sortDirection={column.name === sortOrder.name ? sortOrder.direction : 'none'}
                   toggleSort={this.handleToggleColumn}
                   hint={column.hint}
                   print={column.print}

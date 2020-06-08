@@ -71,7 +71,7 @@ function Example() {
   const options = {
     filter: true,
     filterType: 'dropdown',
-    responsive: 'scrollMaxHeight',
+    responsive: 'vertical',
     rowsPerPage: 10,
     resizableColumns: resizableColumns,
     customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage, textLabels) => {

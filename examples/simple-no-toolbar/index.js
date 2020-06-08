@@ -21,7 +21,7 @@ class Example extends React.Component {
       download: false,
       viewColumns: false,
       customToolbar: null,
-      responsive: 'stacked'
+      responsive: 'vertical'
     };
 
     return (

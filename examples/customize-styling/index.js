@@ -24,7 +24,7 @@ class Example extends React.Component {
     super(props);
     this.state = {
       denseTable: false,
-      stacked: true
+      vertical: true
     };
   }
 
@@ -42,7 +42,22 @@ class Example extends React.Component {
         root: {
           backgroundColor: "#FFF"
         }
-      }
+      },
+      MuiToolbar: {
+        root: {
+          backgroundColor: '#f00'
+        }
+      },
+      MuiTableCell: {
+        head: {
+          backgroundColor: 'purple',
+        }
+      },
+      MUIDataTableSelectCell: {
+        headerCell: {
+          backgroundColor: 'blue',
+        }
+      },
     }
   });
 
@@ -54,7 +69,7 @@ class Example extends React.Component {
 
   toggleResponsive = (event) => {
     this.setState({
-      stacked: event.target.checked ? true : false
+      vertical: event.target.checked ? true : false
     });
   }
 
@@ -79,7 +94,7 @@ class Example extends React.Component {
                   [this.props.classes.NameCell]: true
                 }),
               style: {
-                textDecoration: 'underline'
+                textDecoration: 'underline',
               }
             };
           }
@@ -149,7 +164,7 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: this.state.stacked ? 'stacked' : 'scrollMaxHeight',
+      responsive: this.state.vertical ? 'vertical' : 'standard',
       fixedHeader: false,
       fixedSelectColumn: false,
       rowHover: false,
@@ -191,13 +206,13 @@ class Example extends React.Component {
           <FormControlLabel
             control={
               <Switch
-                checked={this.state.stacked}
+                checked={this.state.vertical}
                 onChange={this.toggleResponsive}
-                value="stacked"
+                value="vertical"
                 color="primary"
               />
             }
-            label="Stacked Table"
+            label="Responsive Vertical Table"
           />
         </FormGroup>
         <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />

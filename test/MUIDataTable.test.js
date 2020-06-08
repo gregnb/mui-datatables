@@ -110,7 +110,6 @@ describe('<MUIDataTable />', function() {
         label: 'Name',
         download: true,
         searchable: true,
-        sortDirection: 'none',
         viewColumns: true,
         customFilterListRender: renderCustomFilterList, // DEPRECATED
         customFilterListOptions: { render: renderCustomFilterList },
@@ -127,7 +126,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
       },
       {
         display: 'true',
@@ -141,7 +139,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
         customBodyRender: renderCities,
       },
       {
@@ -156,7 +153,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
         customBodyRender: renderState,
         customHeadRender: renderHead,
       },
@@ -172,7 +168,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
       },
     ];
 
@@ -217,7 +212,6 @@ describe('<MUIDataTable />', function() {
         label: 'Test Name',
         download: true,
         searchable: true,
-        sortDirection: 'none',
         viewColumns: true,
         customFilterListRender: renderCustomFilterList, // DEPRECATED
         customFilterListOptions: { render: renderCustomFilterList },
@@ -234,7 +228,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
       },
       {
         display: 'true',
@@ -248,7 +241,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
         customBodyRender: renderCities,
       },
       {
@@ -263,7 +255,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
         customBodyRender: renderState,
         customHeadRender: renderHead,
       },
@@ -279,7 +270,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
       },
     ];
 
@@ -396,6 +386,29 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(JSON.stringify(state.displayData), displayData);
   });
 
+  it('should correctly build internal table data and displayData structure with sortOrder set', () => {
+    const columns = ['Name', 'Company', 'Location'];
+
+    const data = [
+      { Name: 'Joe James', Company: 'Test Corp', Location: 'Las Cruces' },
+      { Name: 'John Walsh', Company: 'Test Corp', Location: 'El Paso' },
+      { Name: 'Bob Herm', Company: 'Test Corp', Location: 'Albuquerque' },
+      { Name: 'James Houston', Company: 'Test Corp', Location: 'Santa Fe' },
+    ];
+    const displayData = JSON.stringify([
+      { data: ['Bob Herm', 'Test Corp', 'Albuquerque'], dataIndex: 2 },
+      { data: ['John Walsh', 'Test Corp', 'El Paso'], dataIndex: 1 },
+      { data: ['Joe James', 'Test Corp', 'Las Cruces'], dataIndex: 0 },
+      { data: ['James Houston', 'Test Corp', 'Santa Fe'], dataIndex: 3 },
+    ]);
+    const shallowWrapper = shallow(
+      <MUIDataTable columns={columns} data={data} options={{ sortOrder: { name: 'Location', direction: 'asc' } }} />,
+    );
+    const state = shallowWrapper.dive().state();
+
+    assert.deepEqual(JSON.stringify(state.displayData), displayData);
+  });
+
   it('should correctly re-build display after xhr with serverSide=true', done => {
     const fullWrapper = mount(<MUIDataTable columns={columns} data={[]} options={{ serverSide: true }} />);
     assert.strictEqual(fullWrapper.find('tbody tr').length, 1);
@@ -468,6 +481,38 @@ describe('<MUIDataTable />', function() {
 
     assert.deepEqual(props.options, newOptions);
     fullWrapper.unmount();
+  });
+
+  it('should correctly pass the sorted column name and direction to onColumnSortChange', () => {
+    let sortedCol, sortedDir;
+    const options = {
+      rowsPerPage: 1,
+      rowsPerPageOptions: [1, 2, 4],
+      page: 1,
+      onColumnSortChange: (col, dir) => {
+        sortedCol = col;
+        sortedDir = dir;
+      },
+    };
+    const fullWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
+
+    // simulate sorting a column
+    fullWrapper
+      .find('[data-testid="headcol-1"]')
+      .at(0)
+      .simulate('click');
+
+    assert.strictEqual(sortedCol, 'Company');
+    assert.strictEqual(sortedDir, 'asc');
+
+    // simulate toggling the sort
+    fullWrapper
+      .find('[data-testid="headcol-1"]')
+      .at(0)
+      .simulate('click');
+
+    assert.strictEqual(sortedCol, 'Company');
+    assert.strictEqual(sortedDir, 'desc');
   });
 
   it('should correctly re-build internal table data while maintaining pagination after state change', () => {
@@ -670,6 +715,48 @@ describe('<MUIDataTable />', function() {
 
     const actualResult = shallowWrapper.find(TableToolbarSelect);
     assert.lengthOf(actualResult, 0);
+  });
+
+  it('should not render select toolbar when selectToolbarPlacement="none"', () => {
+    const options = { selectToolbarPlacement: 'none' };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    // Simulate a selection
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 });
+
+    const actualResult = shallowWrapper.find(TableToolbarSelect);
+    assert.lengthOf(actualResult, 0);
+    const actualResult2 = shallowWrapper.find(TableToolbar);
+    assert.lengthOf(actualResult2, 1);
+  });
+
+  it('should render both select toolbar and toolbar when selectToolbarPlacement="above"', () => {
+    const options = { selectToolbarPlacement: 'above' };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    // Simulate a selection
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 });
+
+    const actualResult = shallowWrapper.find(TableToolbarSelect);
+    assert.lengthOf(actualResult, 1);
+    const actualResult2 = shallowWrapper.find(TableToolbar);
+    assert.lengthOf(actualResult2, 1);
+  });
+
+  it('should render select toolbar by default', () => {
+    const options = {};
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    // Simulate a selection
+    instance.selectRowUpdate('cell', { index: 0, dataIndex: 0 });
+
+    const actualResult = shallowWrapper.find(TableToolbarSelect);
+    assert.lengthOf(actualResult, 1);
+    const actualResult2 = shallowWrapper.find(TableToolbar);
+    assert.lengthOf(actualResult2, 0);
   });
 
   it('should properly set internal filterList when calling filterUpdate method with type=checkbox', () => {
@@ -1125,7 +1212,6 @@ describe('<MUIDataTable />', function() {
         label: 'Name',
         download: true,
         searchable: true,
-        sortDirection: 'none',
         customBodyRender: renderName,
         viewColumns: true,
         customFilterListRender: renderCustomFilterList, // DEPRECATED
@@ -1142,7 +1228,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
       },
       {
         name: 'City',
@@ -1155,7 +1240,6 @@ describe('<MUIDataTable />', function() {
         label: 'City Label',
         download: true,
         searchable: true,
-        sortDirection: 'none',
         customBodyRender: renderCities,
         viewColumns: true,
       },
@@ -1171,7 +1255,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
         customBodyRender: renderState,
         customHeadRender: renderHead,
       },
@@ -1187,7 +1270,6 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortDirection: 'none',
       },
     ];
 
@@ -1443,7 +1525,7 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(JSON.stringify(newDisplayData), expectedResult);
   });
 
-  it('should call onRowsExpand when row is expanded or collapsed', () => {
+  it('should call onRowExpansionChange when row is expanded or collapsed', () => {
     const options = {
       expandableRows: true,
       renderExpandableRow: () => (
@@ -1452,7 +1534,7 @@ describe('<MUIDataTable />', function() {
         </tr>
       ),
       expandableRowsOnClick: true,
-      onRowsExpand: spy(),
+      onRowExpansionChange: spy(),
     };
     const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
 
@@ -1461,16 +1543,41 @@ describe('<MUIDataTable />', function() {
       .first()
       .simulate('click');
 
-    assert.strictEqual(options.onRowsExpand.callCount, 1);
-    assert(options.onRowsExpand.calledWith([{ index: 2, dataIndex: 2 }], [{ index: 2, dataIndex: 2 }]));
+    assert.strictEqual(options.onRowExpansionChange.callCount, 1);
+    assert(options.onRowExpansionChange.calledWith([{ index: 2, dataIndex: 2 }], [{ index: 2, dataIndex: 2 }]));
 
     mountWrapper
       .find('#MUIDataTableBodyRow-2')
       .first()
       .simulate('click');
 
-    assert.strictEqual(options.onRowsExpand.callCount, 2);
-    assert(options.onRowsExpand.calledWith([{ index: 2, dataIndex: 2 }], []));
+    assert.strictEqual(options.onRowExpansionChange.callCount, 2);
+    assert(options.onRowExpansionChange.calledWith([{ index: 2, dataIndex: 2 }], []));
+  });
+
+  it('should call onRowSelectionChange when row is selected or unselected', () => {
+    const options = {
+      selectableRows: true,
+      selectableRowsOnClick: true,
+      onRowSelectionChange: spy(),
+    };
+    const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('click');
+
+    assert.strictEqual(options.onRowSelectionChange.callCount, 1);
+    assert(options.onRowSelectionChange.calledWith([{ index: 2, dataIndex: 2 }], [{ index: 2, dataIndex: 2 }]));
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('click');
+
+    assert.strictEqual(options.onRowSelectionChange.callCount, 2);
+    assert(options.onRowSelectionChange.calledWith([{ index: 2, dataIndex: 2 }], []));
   });
 
   it('should not remove selected data on selectRowDelete when type=cell when onRowsDelete returns false', () => {
