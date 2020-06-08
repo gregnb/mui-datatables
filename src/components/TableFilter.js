@@ -15,6 +15,7 @@ import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
+import cloneDeep from 'lodash.clonedeep';
 
 export const defaultFilterStyles = theme => ({
   root: {
@@ -101,30 +102,67 @@ class TableFilter extends React.Component {
     classes: PropTypes.object,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      filterList: cloneDeep(props.filterList),
+    };
+  }
+
+  filterUpdate = (index, value, column, type, customUpdate) => {
+    let newFilterList = this.state.filterList.slice(0);
+
+    this.props.updateFilterByType(newFilterList, index, value, type, customUpdate);
+    this.setState({
+      filterList: newFilterList,
+    });
+  };
+
   handleCheckboxChange = (index, value, column) => {
-    this.props.onFilterUpdate(index, value, column, 'checkbox');
+    this.filterUpdate(index, value, column, 'checkbox');
+
+    if (this.props.options.confirmFilters !== true) {
+      this.props.onFilterUpdate(index, value, column, 'checkbox');
+    }
   };
 
   handleDropdownChange = (event, index, column) => {
     const labelFilterAll = this.props.options.textLabels.filter.all;
     const value = event.target.value === labelFilterAll ? [] : [event.target.value];
-    this.props.onFilterUpdate(index, value, column, 'dropdown');
+    this.filterUpdate(index, value, column, 'dropdown');
+
+    if (this.props.options.confirmFilters !== true) {
+      this.props.onFilterUpdate(index, value, column, 'dropdown');
+    }
   };
 
   handleMultiselectChange = (index, value, column) => {
-    this.props.onFilterUpdate(index, value, column, 'multiselect');
+    this.filterUpdate(index, value, column, 'multiselect');
+
+    if (this.props.options.confirmFilters !== true) {
+      this.props.onFilterUpdate(index, value, column, 'multiselect');
+    }
   };
 
   handleTextFieldChange = (event, index, column) => {
-    this.props.onFilterUpdate(index, event.target.value, column, 'textField');
+    this.filterUpdate(index, event.target.value, column, 'textField');
+
+    if (this.props.options.confirmFilters !== true) {
+      this.props.onFilterUpdate(index, event.target.value, column, 'textField');
+    }
   };
 
   handleCustomChange = (value, index, column) => {
-    this.props.onFilterUpdate(index, value, column.name, column.filterType);
+    this.filterUpdate(index, value, column.name, column.filterType);
+
+    if (this.props.options.confirmFilters !== true) {
+      this.props.onFilterUpdate(index, value, column.name, column.filterType);
+    }
   };
 
   renderCheckbox(column, index) {
-    const { classes, filterData, filterList } = this.props;
+    const { classes, filterData } = this.props;
+    const { filterList } = this.state;
     const renderItem =
       column.filterOptions && column.filterOptions.renderValue ? column.filterOptions.renderValue : v => v;
 
@@ -168,7 +206,8 @@ class TableFilter extends React.Component {
   }
 
   renderSelect(column, index) {
-    const { classes, filterData, filterList, options } = this.props;
+    const { classes, filterData, options } = this.props;
+    const { filterList } = this.state;
     const textLabels = options.textLabels.filter;
     const renderItem =
       column.filterOptions && column.filterOptions.renderValue
@@ -200,7 +239,8 @@ class TableFilter extends React.Component {
   }
 
   renderTextField(column, index) {
-    const { classes, filterList } = this.props;
+    const { classes } = this.props;
+    const { filterList } = this.state;
     if (column.filterOptions && column.filterOptions.renderValue) {
       console.error('Custom renderItem not supported for textField filters');
     }
@@ -212,6 +252,7 @@ class TableFilter extends React.Component {
             fullWidth
             label={column.label}
             value={filterList[index].toString() || ''}
+            data-testid={"filtertextfield-" + column.name}
             onChange={event => this.handleTextFieldChange(event, index, column.name)}
           />
         </FormControl>
@@ -220,7 +261,8 @@ class TableFilter extends React.Component {
   }
 
   renderMultiselect(column, index) {
-    const { classes, filterData, filterList } = this.props;
+    const { classes, filterData } = this.props;
+    const { filterList } = this.state;
     const renderItem =
       column.filterOptions && column.filterOptions.renderValue ? column.filterOptions.renderValue : v => v;
     return (
@@ -256,7 +298,8 @@ class TableFilter extends React.Component {
   }
 
   renderCustomField(column, index) {
-    const { classes, filterData, filterList, options } = this.props;
+    const { classes, filterData, options } = this.props;
+    const { filterList } = this.state;
     const display =
       (column.filterOptions && column.filterOptions.display) ||
       (options.filterOptions && options.filterOptions.display);
@@ -277,6 +320,30 @@ class TableFilter extends React.Component {
       </GridListTile>
     );
   }
+
+  applyFilters = () => {
+    this.state.filterList.forEach((filter, index) => {
+      this.props.onFilterUpdate(index, filter, this.props.columns[index], 'custom');
+    });
+
+    this.props.handleClose(); // close filter dialog popover
+
+    if (this.props.options.onFilterConfirm) {
+      this.props.options.onFilterConfirm(this.state.filterList);
+    }
+
+    return this.state.filterList;
+  };
+
+  resetFilters = () => {
+    if (this.props.options.confirmFilters === true) {
+      this.setState({
+        filterList: this.props.columns.map(() => []),
+      });
+    } else {
+      this.props.onFilterReset();
+    }
+  };
 
   render() {
     const { classes, columns, options, onFilterReset, customFooter, filterList } = this.props;
@@ -300,7 +367,7 @@ class TableFilter extends React.Component {
               tabIndex={0}
               aria-label={textLabels.reset}
               data-testid={'filterReset-button'}
-              onClick={onFilterReset}>
+              onClick={this.resetFilters}>
               {textLabels.reset}
             </Button>
           </div>
@@ -322,7 +389,7 @@ class TableFilter extends React.Component {
             }
           })}
         </GridList>
-        {customFooter ? customFooter(filterList) : ''}
+        {customFooter ? customFooter(filterList, this.applyFilters) : ''}
       </div>
     );
   }

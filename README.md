@@ -152,14 +152,15 @@ The component accepts the following props:
 |Name|Type|Default|Description
 |:--:|:-----|:--|:-----|
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search.
+|**`confirmFilters`**|boolean|false|Works in conjunction with the **customFilterDialogFooter** option and makes it so filters have to be confirmed before being applied to the table. When this option is true, the customFilterDialogFooter callback will receive an applyFilters function which, when called, will apply the filters to the table. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-filters/index.js)
 |**`count`**|number||User provided override for total number of rows.
-|**`customFilterDialogFooter `**|function||Add a custom footer to the filter dialog. `customFilterDialogFooter(filterList: array) => React Component`
+|**`customFilterDialogFooter `**|function||Add a custom footer to the filter dialog. `customFilterDialogFooter(curentFilterList: array, applyFilters: function) => React Component`
 |**`customFooter`**|function||Render a custom table footer. `function(count, page, rowsPerPage, changeRowsPerPage, changePage, `[`textLabels: object`](https://github.com/gregnb/mui-datatables/blob/master/src/textLabels.js)`) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-footer/index.js)
 |**`customTableBodyFooterRender`**|function||Render a footer under the table body but above the table's standard footer. This is useful for creating footers for individual columns. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-footer/index.js)
 |**`customRowRender `**|function||Override default row rendering with custom function. `customRowRender(data, dataIndex, rowIndex) => React Component`
 |**`customSearch `**|function||Override default search with custom function. `customSearch(searchQuery: string, currentRow: array, columns: array) => boolean`
 |**`customSearchRender `**|function||Render a custom table search. `customSearchRender(searchText: string, handleSearch, hideSearch, options) => React Component`
-|**`customFilterDialogFooter `**|function||Add a custom footer to the filter dialog. `customFilterDialogFooter(filterList: array) => React Component`
+|**`customFilterDialogFooter `**|function||Add a custom footer to the filter dialog. `customFilterDialogFooter(curentFilterList: array, applyFilters: function) => React Component`
 |**`elevation`**|number|4|Shadow depth applied to Paper component
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
 |**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: <p><ul><li>"vertical" (default value): In smaller views the table cells will collapse such that the heading is to the left of the cell value.</li><li>"standard": Table will stay in the standard mode but make small changes to better fit the allocated space.<li>"simple": On very small devices the table rows will collapse into simple display.</li></ul></p>[Example](https://github.com/gregnb/mui-datatables/blob/master/examples/simple/index.js)
@@ -195,7 +196,8 @@ The component accepts the following props:
 |**`onChangeRowsPerPage`**|function||Callback function that triggers when the number of rows per page has changed. `function(numberOfRows: number) => void`
 |**`onColumnSortChange`**|function||Callback function that triggers when a column has been sorted. `function(changedColumn: string, direction: string) => void`
 |**`onDownload`**|function||A callback function that triggers when the user downloads the CSV file. In the callback, you can control what is written to the CSV file. This method can be used to add the Excel specific BOM character (see this [example](https://github.com/gregnb/mui-datatables/pull/722#issuecomment-526346440)). `function(buildHead: (columns) => string, buildBody: (data) => string, columns, data) => string`. Return `false` to cancel download of file.
-|**`onFilterChange`**|function||Callback function that triggers when filters have changed. `function(changedColumn: string, filterList: array, type: enum('checkbox', 'dropdown', 'multiselect', 'textField', 'custom', 'chip', 'reset')) => void`
+|**`onFilterChange`**|function||Callback function that triggers when filters have changed. `function(changedColumn: string, filterList: array, type: enum('checkbox', 'dropdown', 'multiselect', 'textField', 'custom', 'chip', 'reset'), changedColumnIndex, displayData) => void`
+|**`onFilterConfirm`**|function||Callback function that is triggered when a user presses the "confirm" button on the filter popover. This occurs only if you've set **confirmFilters** option to true. `function(filterList: array) => void` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-filters/index.js)
 |**`onFilterDialogClose`**|function||Callback function that triggers when the filter dialog closes. `function() => void`
 |**`onFilterDialogOpen`**|function||Callback function that triggers when the filter dialog opens. `function() => void`
 |**`onRowClick`**|function||Callback function that triggers when a row is clicked. `function(rowData: string[], rowMeta: { dataIndex: number, rowIndex: number }) => void`

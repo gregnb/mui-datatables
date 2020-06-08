@@ -152,6 +152,7 @@ class MUIDataTable extends React.Component {
     options: PropTypes.shape({
       caseSensitive: PropTypes.bool,
       count: PropTypes.number,
+      confirmFilters: PropTypes.bool,
       customFilterDialogFooter: PropTypes.func,
       customFooter: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customRowRender: PropTypes.func,
@@ -376,7 +377,7 @@ class MUIDataTable extends React.Component {
     selectableRowsOnClick: false,
     selectableRowsHeader: true,
     serverSide: false,
-    serverSideFilterList: [],
+    serverSideFilterList: null,
     setTableProps: () => ({}),
     sort: true,
     sortFilterList: true,
@@ -442,6 +443,9 @@ class MUIDataTable extends React.Component {
         this.options.fixedSelectColumn = this.options.fixedHeaderOptions.xAxis;
       }
       warnDeprecated('fixedHeaderOptions has been deprecated in favor of fixedHeader and fixedSelectColumn.');
+    }
+    if (this.options.serverSideFilterList) {
+      warnDeprecated('serverSideFilterList has been deprecated in favor of the confirmFilters option (though the feature will still work for version 3.x). See this example for details: https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-filters/index.js');
     }
 
     this.props.columns.map(c => {
@@ -1181,38 +1185,45 @@ class MUIDataTable extends React.Component {
       () => {
         this.setTableAction('resetFilters');
         if (this.options.onFilterChange) {
-          this.options.onFilterChange(null, this.state.filterList, 'reset');
+          this.options.onFilterChange(null, this.state.filterList, 'reset', null);
         }
       },
     );
   };
 
-  filterUpdate = (index, value, column, type, customUpdate) => {
+  updateFilterByType = (filterList, index, value, type, customUpdate) => {
+    const filterPos = filterList[index].indexOf(value);
+
+    switch (type) {
+      case 'checkbox':
+        filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(value);
+        break;
+      case 'chip':
+        filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(value);
+        break;
+      case 'multiselect':
+        filterList[index] = value === '' ? [] : value;
+        break;
+      case 'dropdown':
+        filterList[index] = value;
+        break;
+      case 'custom':
+        if (customUpdate) {
+          filterList = customUpdate(filterList, filterPos, index);
+        } else {
+          filterList[index] = value;
+        }
+        break;
+      default:
+        filterList[index] = filterPos >= 0 || value === '' ? [] : [value];
+    }
+  };
+
+  filterUpdate = (index, value, column, type, customUpdate, next) => {
     this.setState(
       prevState => {
-        let filterList = prevState.filterList.slice(0);
-        const filterPos = filterList[index].indexOf(value);
-
-        switch (type) {
-          case 'checkbox':
-            filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(value);
-            break;
-          case 'chip':
-            filterPos >= 0 ? filterList[index].splice(filterPos, 1) : filterList[index].push(value);
-            break;
-          case 'multiselect':
-            filterList[index] = value === '' ? [] : value;
-            break;
-          case 'dropdown':
-            filterList[index] = value;
-            break;
-          case 'custom':
-            if (customUpdate) filterList = customUpdate(filterList, filterPos, index);
-            else filterList[index] = value;
-            break;
-          default:
-            filterList[index] = filterPos >= 0 || value === '' ? [] : [value];
-        }
+        const filterList = cloneDeep(prevState.filterList);
+        this.updateFilterByType(filterList, index, value, type, customUpdate);
 
         return {
           page: 0,
@@ -1226,8 +1237,9 @@ class MUIDataTable extends React.Component {
       () => {
         this.setTableAction('filterChange');
         if (this.options.onFilterChange) {
-          this.options.onFilterChange(column, this.state.filterList, type);
+          this.options.onFilterChange(column, this.state.filterList, type, index, this.state.displayData);
         }
+        next && next(this.state.filterList);
       },
     );
   };
@@ -1657,17 +1669,21 @@ class MUIDataTable extends React.Component {
 
     return (
       <Paper elevation={this.options.elevation} ref={this.tableContent} className={paperClasses}>
-        {selectedRows.data.length > 0 && this.options.selectToolbarPlacement !== STP.NONE && (
-          <TableToolbarSelectComponent
-            options={this.options}
-            selectedRows={selectedRows}
-            onRowsDelete={this.selectRowDelete}
-            displayData={displayData}
-            selectRowUpdate={this.selectRowUpdate}
-            components={this.props.components}
-          />
-        )}
-        {(selectedRows.data.length === 0 || [STP.ABOVE, STP.NONE].includes(this.options.selectToolbarPlacement)) &&
+        {selectedRows.data.length > 0 &&
+          this.options.selectToolbarPlacement !== STP.NONE && (
+            <TableToolbarSelectComponent
+              options={this.options}
+              selectedRows={selectedRows}
+              onRowsDelete={this.selectRowDelete}
+              displayData={displayData}
+              selectRowUpdate={this.selectRowUpdate}
+              components={this.props.components}
+            />
+          )}
+        {(selectedRows.data.length === 0 ||
+          [STP.ABOVE, STP.NONE].includes(
+            this.options.selectToolbarPlacement,
+          )) &&
           showToolbar && (
             <TableToolbarComponent
               columns={columns}
@@ -1676,6 +1692,7 @@ class MUIDataTable extends React.Component {
               filterData={filterData}
               filterList={filterList}
               filterUpdate={this.filterUpdate}
+              updateFilterByType={this.updateFilterByType}
               options={this.options}
               resetFilters={this.resetFilters}
               searchText={searchText}
@@ -1690,7 +1707,7 @@ class MUIDataTable extends React.Component {
           )}
         <TableFilterListComponent
           options={this.options}
-          serverSideFilterList={this.props.options.serverSideFilterList || []}
+          serverSideFilterList={this.props.options.serverSideFilterList}
           filterListRenderers={columns.map(c => {
             if (c.customFilterListOptions && c.customFilterListOptions.render) return c.customFilterListOptions.render;
             // DEPRECATED: This option is being replaced with customFilterListOptions.render

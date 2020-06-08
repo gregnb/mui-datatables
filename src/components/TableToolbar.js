@@ -253,11 +253,21 @@ class TableToolbar extends React.Component {
       title,
       tableRef,
       components = {},
+      updateFilterByType,
     } = this.props;
 
     const Tooltip = components.Tooltip || MuiTooltip;
     const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;
     const { showSearch, searchText } = this.state;
+
+    const filterPopoverExit = () => {
+      this.setState({hideFilterPopover: false});
+      this.setActiveIcon.bind(null);
+    };
+
+    const closeFilterPopover = () => {
+      this.setState({hideFilterPopover: true});
+    };
 
     return (
       <Toolbar
@@ -354,7 +364,8 @@ class TableToolbar extends React.Component {
           )}
           {options.filter && (
             <Popover
-              refExit={this.setActiveIcon.bind(null)}
+              refExit={filterPopoverExit}
+              hide={this.state.hideFilterPopover}
               classes={{ paper: classes.filterPaper, closeIcon: classes.filterCloseIcon }}
               trigger={
                 <Tooltip title={filterTable} disableFocusListener>
@@ -376,6 +387,8 @@ class TableToolbar extends React.Component {
                   filterData={filterData}
                   onFilterUpdate={filterUpdate}
                   onFilterReset={resetFilters}
+                  handleClose={closeFilterPopover}
+                  updateFilterByType={updateFilterByType}
                 />
               }
             />

@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
-
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';

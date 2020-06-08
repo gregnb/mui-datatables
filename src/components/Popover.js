@@ -27,7 +27,13 @@ class Popover extends React.Component {
      */
     if (this.state.open === true) {
       this.anchorEl = findDOMNode(this.anchorEl);
-      this.popoverActions.updatePosition();
+      if (this.popoverActions) {
+        this.popoverActions.updatePosition();
+      }
+      const shouldHide = (typeof this.props.hide === 'boolean') ? this.props.hide : false;
+      if (shouldHide) {
+        this.handleRequestClose();
+      }
     }
   }
 
@@ -47,7 +53,7 @@ class Popover extends React.Component {
   };
 
   render() {
-    const { className, placement, trigger, refExit, content, ...providedProps } = this.props;
+    const { className, placement, trigger, refExit, content, hide, ...providedProps } = this.props;
     let closeIconClass;
     if (providedProps.classes && providedProps.classes.closeIcon) {
       closeIconClass = providedProps.classes.closeIcon;

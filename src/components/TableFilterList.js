@@ -115,7 +115,9 @@ class TableFilterList extends React.Component {
     };
 
     return (
-      <div className={classes.root}>{serverSide ? getFilterList(serverSideFilterList) : getFilterList(filterList)}</div>
+      <div className={classes.root}>
+        {serverSide && serverSideFilterList ? getFilterList(serverSideFilterList) : getFilterList(filterList)}
+      </div>
     );
   }
 }
