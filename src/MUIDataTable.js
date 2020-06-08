@@ -18,7 +18,7 @@ import DefaultTableToolbar from './components/TableToolbar';
 import DefaultTableToolbarSelect from './components/TableToolbarSelect';
 import MuiTooltip from '@material-ui/core/Tooltip';
 import getTextLabels from './textLabels';
-import { buildMap, getCollatorComparator, sortCompare, getPageValue, warnDeprecated } from './utils';
+import { buildMap, getCollatorComparator, sortCompare, getPageValue, warnDeprecated, warnInfo } from './utils';
 
 const defaultTableStyles = theme => ({
   root: {},
@@ -29,32 +29,38 @@ const defaultTableStyles = theme => ({
   tableRoot: {
     outline: 'none',
   },
+  responsiveBase: {
+    overflow: 'auto',
+  },
+
+  // deprecated, but continuing support through v3.x
   responsiveScroll: {
-    overflowX: 'auto',
     overflow: 'auto',
     height: '100%',
   },
+  // deprecated, but continuing support through v3.x
   responsiveScrollMaxHeight: {
-    overflowX: 'auto',
     overflow: 'auto',
     height: '100%',
   },
+  // deprecated, but continuing support through v3.x
   responsiveScrollFullHeight: {
     height: '100%',
   },
+  // deprecated, but continuing support through v3.x
   responsiveStacked: {
-    overflowX: 'auto',
     overflow: 'auto',
     [theme.breakpoints.down('sm')]: {
-      overflowX: 'hidden',
       overflow: 'hidden',
     },
   },
+  // deprecated, but continuing support through v3.x
   responsiveStackedFullWidth: {},
   caption: {
     position: 'absolute',
     left: '-3000px',
   },
+
   liveAnnounce: {
     border: '0',
     clip: 'rect(0 0 0 0)',
@@ -182,7 +188,9 @@ class MUIDataTable extends React.Component {
       onFilterDialogClose: PropTypes.func,
       onRowClick: PropTypes.func,
       onRowsExpand: PropTypes.func,
+      onRowExpansionChange: PropTypes.func,
       onRowsSelect: PropTypes.func,
+      onRowSelectionChange: PropTypes.func,
       onTableChange: PropTypes.func,
       onTableInit: PropTypes.func,
       page: PropTypes.number,
@@ -194,15 +202,11 @@ class MUIDataTable extends React.Component {
       selectableRowsHideCheckboxes: PropTypes.bool,
       selectableRowsOnClick: PropTypes.bool,
       serverSide: PropTypes.bool,
+      tableBodyHeight: PropTypes.string,
+      tableBodyMaxHeight: PropTypes.string,
       renderExpandableRow: PropTypes.func,
       resizableColumns: PropTypes.bool,
-      responsive: PropTypes.oneOf([
-        'stacked',
-        'stackedFullWidth',
-        'scrollMaxHeight',
-        'scrollFullHeight',
-        'scrollFullHeightFullWidth',
-      ]),
+      responsive: PropTypes.oneOf(['standard', 'vertical', 'simple']),
       rowHover: PropTypes.bool,
       rowsExpanded: PropTypes.array,
       rowsPerPage: PropTypes.number,
@@ -213,7 +217,10 @@ class MUIDataTable extends React.Component {
       searchPlaceholder: PropTypes.string,
       searchText: PropTypes.string,
       setRowProps: PropTypes.func,
-      selectToolbarPlacement: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf([STP.REPLACE, STP.ABOVE, STP.NONE])]),
+      selectToolbarPlacement: PropTypes.oneOfType([
+        PropTypes.bool,
+        PropTypes.oneOf([STP.REPLACE, STP.ABOVE, STP.NONE]),
+      ]),
       setTableProps: PropTypes.func,
       sort: PropTypes.bool,
       sortOrder: PropTypes.object,
@@ -360,7 +367,7 @@ class MUIDataTable extends React.Component {
     pagination: true,
     print: true,
     resizableColumns: false,
-    responsive: 'stacked',
+    responsive: 'vertical',
     rowHover: true,
     rowsPerPage: 10,
     rowsPerPageOptions: [10, 15, 100],
@@ -374,6 +381,8 @@ class MUIDataTable extends React.Component {
     setTableProps: () => ({}),
     sort: true,
     sortFilterList: true,
+    tableBodyHeight: 'auto',
+    tableBodyMaxHeight: null, // if set, it will override tableBodyHeight
     sortOrder: {},
     textLabels: getTextLabels(),
     viewColumns: true,
@@ -386,6 +395,33 @@ class MUIDataTable extends React.Component {
         'Using a boolean for selectableRows has been deprecated. Please use string option: multiple | single | none',
       );
       this.options.selectableRows = this.options.selectableRows ? 'multiple' : 'none';
+    }
+    if (!['standard', 'vertical', 'simple'].includes(this.options.responsive)) {
+      if (
+        [
+          'scrollMaxHeight',
+          'scrollFullHeight',
+          'stacked',
+          'stackedFullWidth',
+          'scrollFullHeightFullWidth',
+          'scroll',
+        ].includes(this.options.responsive)
+      ) {
+        warnDeprecated(
+          this.options.responsive + ' has been deprecated. Please use string option: standard | vertical | simple',
+        );
+      } else {
+        warnInfo(
+          this.options.responsive +
+            ' is not recognized as a valid input for responsive option. Please use string option: standard | vertical | simple',
+        );
+      }
+    }
+    if (this.options.onRowsSelect) {
+      warnDeprecated('onRowsSelect has been renamed onRowSelectionChange.');
+    }
+    if (this.options.onRowsExpand) {
+      warnDeprecated('onRowsSelect has been renamed onRowExpansionChange.');
     }
     if (
       ['scrollMaxHeight', 'scrollFullHeight', 'stacked', 'stackedFullWidth', 'scrollFullHeightFullWidth'].indexOf(
@@ -400,6 +436,12 @@ class MUIDataTable extends React.Component {
       warnDeprecated('This option has been replaced by scrollMaxHeight');
     }
     if (this.options.fixedHeaderOptions) {
+      if ( typeof this.options.fixedHeaderOptions.yAxis !== 'undefined' && typeof this.options.fixedHeader !== 'undefined') {
+        this.options.fixedHeader = this.options.fixedHeaderOptions.yAxis;
+      }
+      if ( typeof this.options.fixedHeaderOptions.xAxis !== 'undefined' && typeof this.options.fixedSelectColumn !== 'undefined') {
+        this.options.fixedSelectColumn = this.options.fixedHeaderOptions.xAxis;
+      }
       warnDeprecated('fixedHeaderOptions has been deprecated in favor of fixedHeader and fixedSelectColumn.');
     }
     if (this.options.serverSideFilterList) {
@@ -421,9 +463,7 @@ class MUIDataTable extends React.Component {
     }
 
     if (Object.values(STP).indexOf(this.options.selectToolbarPlacement) === -1) {
-      console.error(
-        'Invalid option value for selectToolbarPlacement. Please check the documentation.',
-      );
+      console.error('Invalid option value for selectToolbarPlacement. Please check the documentation.');
     }
   };
 
@@ -554,9 +594,8 @@ class MUIDataTable extends React.Component {
   };
 
   transformData = (columns, data) => {
-
     // deprecation warning for nested data parsing
-    columns.forEach( col => {
+    columns.forEach(col => {
       if (col.name && col.name.indexOf('.') !== -1) {
         // TODO: warnInfo defined in another branch, when merged in, uncomment this
         //warnInfo('Columns with a dot will no longer be treated as nested data by default. Please see the enableNestedDataAccess option for more information.');
@@ -1321,8 +1360,10 @@ class MUIDataTable extends React.Component {
         },
       },
       () => {
-        this.setTableAction('expandRow');
-        if (this.options.onRowsExpand) {
+        this.setTableAction('rowExpansionChange');
+        if (this.options.onRowExpansionChange) {
+          this.options.onRowExpansionChange(this.state.curExpandedRows, this.state.expandedRows.data);
+        } else if (this.options.onRowsExpand) {
           this.options.onRowsExpand(this.state.curExpandedRows, this.state.expandedRows.data);
         }
       },
@@ -1382,9 +1423,19 @@ class MUIDataTable extends React.Component {
           };
         },
         () => {
-          this.setTableAction('rowsSelect');
-          if (this.options.onRowsSelect) {
-            this.options.onRowsSelect(this.state.curSelectedRows, this.state.selectedRows.data);
+          this.setTableAction('rowSelectionChange');
+          if (this.options.onRowSelectionChange) {
+            this.options.onRowSelectionChange(
+              this.state.curSelectedRows,
+              this.state.selectedRows.data,
+              this.state.selectedRows.data.map(item => item.dataIndex),
+            );
+          } else if (this.options.onRowsSelect) {
+            this.options.onRowsSelect(
+              this.state.curSelectedRows,
+              this.state.selectedRows.data,
+              this.state.selectedRows.data.map(item => item.dataIndex),
+            );
           }
         },
       );
@@ -1440,9 +1491,19 @@ class MUIDataTable extends React.Component {
           };
         },
         () => {
-          this.setTableAction('rowsSelect');
-          if (this.options.onRowsSelect) {
-            this.options.onRowsSelect([value], this.state.selectedRows.data);
+          this.setTableAction('rowSelectionChange');
+          if (this.options.onRowSelectionChange) {
+            this.options.onRowSelectionChange(
+              [value],
+              this.state.selectedRows.data,
+              this.state.selectedRows.data.map(item => item.dataIndex),
+            );
+          } else if (this.options.onRowsSelect) {
+            this.options.onRowsSelect(
+              [value],
+              this.state.selectedRows.data,
+              this.state.selectedRows.data.map(item => item.dataIndex),
+            );
           }
         },
       );
@@ -1458,9 +1519,19 @@ class MUIDataTable extends React.Component {
           previousSelectedRow: null,
         },
         () => {
-          this.setTableAction('rowsSelect');
-          if (this.options.onRowsSelect) {
-            this.options.onRowsSelect(this.state.selectedRows.data, this.state.selectedRows.data);
+          this.setTableAction('rowSelectionChange');
+          if (this.options.onRowSelectionChange) {
+            this.options.onRowSelectionChange(
+              this.state.selectedRows.data,
+              this.state.selectedRows.data,
+              this.state.selectedRows.data.map(item => item.dataIndex),
+            );
+          } else if (this.options.onRowsSelect) {
+            this.options.onRowsSelect(
+              this.state.selectedRows.data,
+              this.state.selectedRows.data,
+              this.state.selectedRows.data.map(item => item.dataIndex),
+            );
           }
         },
       );
@@ -1542,36 +1613,54 @@ class MUIDataTable extends React.Component {
     }));
     const responsiveOption = this.options.responsive;
     let paperClasses = `${classes.paper} ${className}`;
-    let maxHeight;
+    let maxHeight = this.options.tableBodyMaxHeight;
     let responsiveClass;
 
     switch (responsiveOption) {
-      // DEPRECATED: This options is beign transitioned to `responsiveScrollMaxHeight`
+      // deprecated
       case 'scroll':
         responsiveClass = classes.responsiveScroll;
         maxHeight = '499px';
         break;
+      // deprecated
       case 'scrollMaxHeight':
         responsiveClass = classes.responsiveScrollMaxHeight;
         maxHeight = '499px';
         break;
+      // deprecated
       case 'scrollFullHeight':
         responsiveClass = classes.responsiveScrollFullHeight;
         maxHeight = 'none';
         break;
+      // deprecated
       case 'scrollFullHeightFullWidth':
         responsiveClass = classes.responsiveScrollFullHeight;
         paperClasses = `${classes.paperResponsiveScrollFullHeightFullWidth} ${className}`;
         break;
+      // deprecated
       case 'stacked':
         responsiveClass = classes.responsiveStacked;
         maxHeight = 'none';
         break;
+      // deprecated
       case 'stackedFullWidth':
         responsiveClass = classes.responsiveStackedFullWidth;
         paperClasses = `${classes.paperResponsiveScrollFullHeightFullWidth} ${className}`;
         maxHeight = 'none';
         break;
+
+      default:
+        responsiveClass = classes.responsiveBase;
+        break;
+    }
+
+    var tableHeightVal = {};
+    if (maxHeight) {
+      console.log('max!');
+      tableHeightVal.maxHeight = maxHeight;
+    }
+    if (this.options.tableBodyHeight) {
+      tableHeightVal.height = this.options.tableBodyHeight;
     }
 
     let tableProps = this.options.setTableProps ? this.options.setTableProps() : {};
@@ -1635,7 +1724,7 @@ class MUIDataTable extends React.Component {
           filterUpdate={this.filterUpdate}
           columnNames={columnNames}
         />
-        <div style={{ position: 'relative', maxHeight }} className={responsiveClass}>
+        <div style={{ position: 'relative', ...tableHeightVal }} className={responsiveClass}>
           {this.options.resizableColumns && (
             <TableResizeComponent
               key={rowCount}
@@ -1684,6 +1773,15 @@ class MUIDataTable extends React.Component {
               options={this.options}
               filterList={filterList}
             />
+            {this.options.customTableBodyFooterRender
+              ? this.options.customTableBodyFooterRender({
+                  data: displayData,
+                  count: rowCount,
+                  columns,
+                  selectedRows,
+                  selectableRows: this.options.selectableRows
+                })
+              : null}
           </MuiTable>
         </div>
         <TableFooterComponent

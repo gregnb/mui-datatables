@@ -12,6 +12,9 @@ import getTextLabels from '../src/textLabels';
 import Chip from '@material-ui/core/Chip';
 import Cities from '../examples/component/cities';
 import { getCollatorComparator } from '../src/utils';
+import TableFooter from "@material-ui/core/TableFooter";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
 
 describe('<MUIDataTable />', function() {
   let data;
@@ -416,6 +419,8 @@ describe('<MUIDataTable />', function() {
         fullWrapper.setProps({ data });
         fullWrapper.update();
         assert.strictEqual(fullWrapper.find('tbody tr').length, 4);
+
+        fullWrapper.unmount();
         done();
       }, 10);
     });
@@ -475,6 +480,7 @@ describe('<MUIDataTable />', function() {
     props = fullWrapper.props();
 
     assert.deepEqual(props.options, newOptions);
+    fullWrapper.unmount();
   });
 
   it('should correctly pass the sorted column name and direction to onColumnSortChange', () => {
@@ -576,6 +582,7 @@ describe('<MUIDataTable />', function() {
       ['Harry Smith', 'Test Corp', 'Philadelphia', 'PA', undefined],
     ];
     assert.deepEqual(props.data, expectedResult);
+    fullWrapper.unmount();
   });
 
   it('should not re-build internal table data and displayData structure with no prop change to data or columns', () => {
@@ -711,7 +718,7 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should not render select toolbar when selectToolbarPlacement="none"', () => {
-    const options = { selectToolbarPlacement: "none" };
+    const options = { selectToolbarPlacement: 'none' };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
     const instance = shallowWrapper.instance();
 
@@ -725,7 +732,7 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should render both select toolbar and toolbar when selectToolbarPlacement="above"', () => {
-    const options = { selectToolbarPlacement: "above" };
+    const options = { selectToolbarPlacement: 'above' };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
     const instance = shallowWrapper.instance();
 
@@ -1020,6 +1027,20 @@ describe('<MUIDataTable />', function() {
     instance.resetFilters();
     table.update();
     assert.strictEqual(type, 'reset');
+  });
+
+  it('should render a footer after the tbody element when customTableBodyFooterRender is called', () => {
+    const options = {
+
+    };
+    
+    const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
+    const actualResult = mountWrapper.find("#custom_column_footer");
+    assert.strictEqual(actualResult.exists(), false);
+
+    console.log( mountWrapper.find("table").length );
+
+    mountWrapper.unmount();
   });
 
   it('should properly set searchText when calling searchTextUpdate method', () => {
@@ -1504,7 +1525,7 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(JSON.stringify(newDisplayData), expectedResult);
   });
 
-  it('should call onRowsExpand when row is expanded or collapsed', () => {
+  it('should call onRowExpansionChange when row is expanded or collapsed', () => {
     const options = {
       expandableRows: true,
       renderExpandableRow: () => (
@@ -1513,7 +1534,7 @@ describe('<MUIDataTable />', function() {
         </tr>
       ),
       expandableRowsOnClick: true,
-      onRowsExpand: spy(),
+      onRowExpansionChange: spy(),
     };
     const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
 
@@ -1522,16 +1543,41 @@ describe('<MUIDataTable />', function() {
       .first()
       .simulate('click');
 
-    assert.strictEqual(options.onRowsExpand.callCount, 1);
-    assert(options.onRowsExpand.calledWith([{ index: 2, dataIndex: 2 }], [{ index: 2, dataIndex: 2 }]));
+    assert.strictEqual(options.onRowExpansionChange.callCount, 1);
+    assert(options.onRowExpansionChange.calledWith([{ index: 2, dataIndex: 2 }], [{ index: 2, dataIndex: 2 }]));
 
     mountWrapper
       .find('#MUIDataTableBodyRow-2')
       .first()
       .simulate('click');
 
-    assert.strictEqual(options.onRowsExpand.callCount, 2);
-    assert(options.onRowsExpand.calledWith([{ index: 2, dataIndex: 2 }], []));
+    assert.strictEqual(options.onRowExpansionChange.callCount, 2);
+    assert(options.onRowExpansionChange.calledWith([{ index: 2, dataIndex: 2 }], []));
+  });
+
+  it('should call onRowSelectionChange when row is selected or unselected', () => {
+    const options = {
+      selectableRows: true,
+      selectableRowsOnClick: true,
+      onRowSelectionChange: spy(),
+    };
+    const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('click');
+
+    assert.strictEqual(options.onRowSelectionChange.callCount, 1);
+    assert(options.onRowSelectionChange.calledWith([{ index: 2, dataIndex: 2 }], [{ index: 2, dataIndex: 2 }]));
+
+    mountWrapper
+      .find('#MUIDataTableBodyRow-2')
+      .first()
+      .simulate('click');
+
+    assert.strictEqual(options.onRowSelectionChange.callCount, 2);
+    assert(options.onRowSelectionChange.calledWith([{ index: 2, dataIndex: 2 }], []));
   });
 
   it('should not remove selected data on selectRowDelete when type=cell when onRowsDelete returns false', () => {

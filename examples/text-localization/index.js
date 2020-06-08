@@ -44,7 +44,7 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: 'vertical',
       textLabels: {
         body: {
           noMatch: "Sorry we could not find any records!",

@@ -120,7 +120,8 @@ class Example extends React.Component {
       rowsPerPageOptions: [10, 100, 250, 500, 1000],
       filter: true,
       filterType: 'dropdown',
-      responsive: 'scrollMaxHeight',
+      responsive: 'vertical',
+      tableBodyHeight:'500px',
       customSearchRender: debounceSearchRender(500),
 
       // These next two options allow you to make it so filters need to be confirmed.

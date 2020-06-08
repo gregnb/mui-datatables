@@ -1,4 +1,4 @@
-import React from "react";
+ import React from "react";
 import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
 import TableRow from "@material-ui/core/TableRow";
@@ -80,7 +80,7 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'scrollMaxHeight',
+      responsive: 'standard',
       expandableRows: true,
       expandableRowsHeader: true,
       expandableRowsOnClick: true,
@@ -100,7 +100,7 @@ class Example extends React.Component {
           </TableRow>
         );
       },
-      onRowsExpand: (curExpanded, allExpanded) => console.log(curExpanded, allExpanded)
+      onRowExpansionChange: (curExpanded, allExpanded, rowsExpanded) => console.log(curExpanded, allExpanded, rowsExpanded)
     };
 
     const theme = createMuiTheme({

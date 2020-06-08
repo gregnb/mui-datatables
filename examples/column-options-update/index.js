@@ -125,7 +125,7 @@ class Example extends React.Component {
       },
       selectableRows: 'multiple',
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: 'vertical',
       rowsPerPage: 10,
       page: 1,
     };

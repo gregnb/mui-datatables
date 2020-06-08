@@ -77,7 +77,7 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: 'vertical',
       enableNestedDataAccess: '.', // allows nested data separated by "." (see column names and the data structure above)
     };
 

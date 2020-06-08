@@ -128,7 +128,7 @@ class Example extends React.Component {
     const options = {
       filter: true, // show the filter icon in the toolbar (true by default)
       filterType: 'dropdown',
-      responsive: 'scrollMaxHeight',
+      responsive: 'standard',
       serverSide: true,
 
       // makes it so filters have to be "confirmed" before being applied to the 

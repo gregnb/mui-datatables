@@ -46,7 +46,7 @@ class Example extends React.Component {
       filter: true,
       selectableRows: 'multiple',
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: 'vertical',
       rowsPerPage: 10,
       customToolbar: () => {
         return (

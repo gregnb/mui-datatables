@@ -80,7 +80,7 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: 'vertical',
       page: 0,
       searchText: this.state.searchText,
       searchProps: {
