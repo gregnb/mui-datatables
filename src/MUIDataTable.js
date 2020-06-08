@@ -290,7 +290,7 @@ class MUIDataTable extends React.Component {
       this.setState({ isPrinting: true, pagination: false }, () => setTimeout(() => resolve(), 500));
     });
 
-  hasPrintted = () => this.setState({ isPrinting: false, pagination: this.options.pagination });
+  hasPrinted = () => this.setState({ isPrinting: false, pagination: this.options.pagination });
 
   updateOptions(options, props) {
     this.options = assignwith(options, props.options, (objValue, srcValue, key) => {
@@ -437,7 +437,7 @@ class MUIDataTable extends React.Component {
   // assigning it as arrow function in the JSX would cause hard to track re-render errors
   getTableContentRef = () => {
     this.setState({ isPrinting: true });
-    return this.tableRef ? this.tableRef.current : this.tableRef.current;
+    return this.tableRef.current;
   };
 
   /*
