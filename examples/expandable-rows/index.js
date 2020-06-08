@@ -100,7 +100,7 @@ class Example extends React.Component {
           </TableRow>
         );
       },
-      onRowsExpand: (curExpanded, allExpanded) => console.log(curExpanded, allExpanded)
+      onRowExpansionChange: (curExpanded, allExpanded, rowsExpanded) => console.log(curExpanded, allExpanded, rowsExpanded)
     };
 
     const theme = createMuiTheme({

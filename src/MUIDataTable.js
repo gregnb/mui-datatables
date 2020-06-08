@@ -92,7 +92,7 @@ const hasToolbarItem = (options, title) => {
 const STP = {
   REPLACE: 'replace',
   ABOVE: 'above',
-  NONE: 'none'
+  NONE: 'none',
 };
 
 class MUIDataTable extends React.Component {
@@ -181,7 +181,9 @@ class MUIDataTable extends React.Component {
       onFilterDialogClose: PropTypes.func,
       onRowClick: PropTypes.func,
       onRowsExpand: PropTypes.func,
+      onRowExpansionChange: PropTypes.func,
       onRowsSelect: PropTypes.func,
+      onRowSelectionChange: PropTypes.func,
       onTableChange: PropTypes.func,
       onTableInit: PropTypes.func,
       page: PropTypes.number,
@@ -212,7 +214,10 @@ class MUIDataTable extends React.Component {
       searchPlaceholder: PropTypes.string,
       searchText: PropTypes.string,
       setRowProps: PropTypes.func,
-      selectToolbarPlacement: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf([STP.REPLACE, STP.ABOVE, STP.NONE])]),
+      selectToolbarPlacement: PropTypes.oneOfType([
+        PropTypes.bool,
+        PropTypes.oneOf([STP.REPLACE, STP.ABOVE, STP.NONE]),
+      ]),
       setTableProps: PropTypes.func,
       sort: PropTypes.bool,
       sortOrder: PropTypes.object,
@@ -386,6 +391,12 @@ class MUIDataTable extends React.Component {
       );
       this.options.selectableRows = this.options.selectableRows ? 'multiple' : 'none';
     }
+    if (this.options.onRowsSelect) {
+      warnDeprecated('onRowsSelect has been renamed onRowSelectionChange.');
+    }
+    if (this.options.onRowsExpand) {
+      warnDeprecated('onRowsSelect has been renamed onRowExpansionChange.');
+    }
     if (
       ['scrollMaxHeight', 'scrollFullHeight', 'stacked', 'stackedFullWidth', 'scrollFullHeightFullWidth'].indexOf(
         this.options.responsive,
@@ -399,6 +410,12 @@ class MUIDataTable extends React.Component {
       warnDeprecated('This option has been replaced by scrollMaxHeight');
     }
     if (this.options.fixedHeaderOptions) {
+      if ( typeof this.options.fixedHeaderOptions.yAxis !== 'undefined' && typeof this.options.fixedHeader !== 'undefined') {
+        this.options.fixedHeader = this.options.fixedHeaderOptions.yAxis;
+      }
+      if ( typeof this.options.fixedHeaderOptions.xAxis !== 'undefined' && typeof this.options.fixedSelectColumn !== 'undefined') {
+        this.options.fixedSelectColumn = this.options.fixedHeaderOptions.xAxis;
+      }
       warnDeprecated('fixedHeaderOptions has been deprecated in favor of fixedHeader and fixedSelectColumn.');
     }
 
@@ -417,9 +434,7 @@ class MUIDataTable extends React.Component {
     }
 
     if (Object.values(STP).indexOf(this.options.selectToolbarPlacement) === -1) {
-      console.error(
-        'Invalid option value for selectToolbarPlacement. Please check the documentation.',
-      );
+      console.error('Invalid option value for selectToolbarPlacement. Please check the documentation.');
     }
   };
 
@@ -550,9 +565,8 @@ class MUIDataTable extends React.Component {
   };
 
   transformData = (columns, data) => {
-
     // deprecation warning for nested data parsing
-    columns.forEach( col => {
+    columns.forEach(col => {
       if (col.name && col.name.indexOf('.') !== -1) {
         // TODO: warnInfo defined in another branch, when merged in, uncomment this
         //warnInfo('Columns with a dot will no longer be treated as nested data by default. Please see the enableNestedDataAccess option for more information.');
@@ -1309,8 +1323,10 @@ class MUIDataTable extends React.Component {
         },
       },
       () => {
-        this.setTableAction('expandRow');
-        if (this.options.onRowsExpand) {
+        this.setTableAction('rowExpansionChange');
+        if (this.options.onRowExpansionChange) {
+          this.options.onRowExpansionChange(this.state.curExpandedRows, this.state.expandedRows.data);
+        } else if (this.options.onRowsExpand) {
           this.options.onRowsExpand(this.state.curExpandedRows, this.state.expandedRows.data);
         }
       },
@@ -1370,9 +1386,19 @@ class MUIDataTable extends React.Component {
           };
         },
         () => {
-          this.setTableAction('rowsSelect');
-          if (this.options.onRowsSelect) {
-            this.options.onRowsSelect(this.state.curSelectedRows, this.state.selectedRows.data);
+          this.setTableAction('rowSelectionChange');
+          if (this.options.onRowSelectionChange) {
+            this.options.onRowSelectionChange(
+              this.state.curSelectedRows,
+              this.state.selectedRows.data,
+              this.state.selectedRows.data.map(item => item.dataIndex),
+            );
+          } else if (this.options.onRowsSelect) {
+            this.options.onRowsSelect(
+              this.state.curSelectedRows,
+              this.state.selectedRows.data,
+              this.state.selectedRows.data.map(item => item.dataIndex),
+            );
           }
         },
       );
@@ -1428,9 +1454,19 @@ class MUIDataTable extends React.Component {
           };
         },
         () => {
-          this.setTableAction('rowsSelect');
-          if (this.options.onRowsSelect) {
-            this.options.onRowsSelect([value], this.state.selectedRows.data);
+          this.setTableAction('rowSelectionChange');
+          if (this.options.onRowSelectionChange) {
+            this.options.onRowSelectionChange(
+              [value],
+              this.state.selectedRows.data,
+              this.state.selectedRows.data.map(item => item.dataIndex),
+            );
+          } else if (this.options.onRowsSelect) {
+            this.options.onRowsSelect(
+              [value],
+              this.state.selectedRows.data,
+              this.state.selectedRows.data.map(item => item.dataIndex),
+            );
           }
         },
       );
@@ -1446,9 +1482,19 @@ class MUIDataTable extends React.Component {
           previousSelectedRow: null,
         },
         () => {
-          this.setTableAction('rowsSelect');
-          if (this.options.onRowsSelect) {
-            this.options.onRowsSelect(this.state.selectedRows.data, this.state.selectedRows.data);
+          this.setTableAction('rowSelectionChange');
+          if (this.options.onRowSelectionChange) {
+            this.options.onRowSelectionChange(
+              this.state.selectedRows.data,
+              this.state.selectedRows.data,
+              this.state.selectedRows.data.map(item => item.dataIndex),
+            );
+          } else if (this.options.onRowsSelect) {
+            this.options.onRowsSelect(
+              this.state.selectedRows.data,
+              this.state.selectedRows.data,
+              this.state.selectedRows.data.map(item => item.dataIndex),
+            );
           }
         },
       );
