@@ -202,7 +202,7 @@ The component accepts the following props:
 |**`onFilterDialogOpen`**|function||Callback function that triggers when the filter dialog opens. `function() => void`
 |**`onRowClick`**|function||Callback function that triggers when a row is clicked. `function(rowData: string[], rowMeta: { dataIndex: number, rowIndex: number }) => void`
 |**`onRowExpansionChange`**|function||Callback function that triggers when row(s) are expanded/collapsed. `function(currentRowsExpanded: array, allRowsExpanded: array, rowsExpanded: array) => void`
-|**`onRowsDelete`**|function||Callback function that triggers when row(s) are deleted. `function(rowsDeleted: object(lookup: {[dataIndex]: boolean}, data: arrayOfObjects: {index: number, dataIndex: number})) => void OR false` (Returning `false` prevents row deletion.)
+|**`onRowsDelete`**|function||Callback function that triggers when row(s) are deleted. `function(rowsDeleted: object(lookup: {[dataIndex]: boolean}, data: arrayOfObjects: {index: number, dataIndex: number}), newTableData) => void OR false` (Returning `false` prevents row deletion.)
 |**`onRowSelectionChange`**|function||Callback function that triggers when row(s) are selected/deselected. `function(currentRowsSelected: array, allRowsSelected: array, rowsSelected: array) => void`
 |**`onSearchChange`**|function||Callback function that triggers when the search text value has changed. `function(searchText: string) => void`
 |**`onSearchClose`**|function||Callback function that triggers when the searchbox closes. `function() => void`

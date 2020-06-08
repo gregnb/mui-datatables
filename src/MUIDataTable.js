@@ -426,18 +426,6 @@ class MUIDataTable extends React.Component {
     if (this.options.onRowsExpand) {
       warnDeprecated('onRowsSelect has been renamed onRowExpansionChange.');
     }
-    if (
-      ['scrollMaxHeight', 'scrollFullHeight', 'stacked', 'stackedFullWidth', 'scrollFullHeightFullWidth'].indexOf(
-        this.options.responsive,
-      ) === -1
-    ) {
-      warnDeprecated(
-        'Invalid option value for responsive. Please use string option: scrollMaxHeight | scrollFullHeight | stacked | stackedFullWidth | scrollFullHeightFullWidth',
-      );
-    }
-    if (this.options.responsive === 'scroll') {
-      warnDeprecated('This option has been replaced by scrollMaxHeight');
-    }
     if (this.options.fixedHeaderOptions) {
       if ( typeof this.options.fixedHeaderOptions.yAxis !== 'undefined' && typeof this.options.fixedHeader !== 'undefined') {
         this.options.fixedHeader = this.options.fixedHeaderOptions.yAxis;
@@ -1309,7 +1297,7 @@ class MUIDataTable extends React.Component {
     const cleanRows = data.filter(({ index }) => !selectedMap[index]);
 
     if (this.options.onRowsDelete) {
-      if (this.options.onRowsDelete(selectedRows) === false) return;
+      if (this.options.onRowsDelete(selectedRows, cleanRows.map(ii=>ii.data)) === false) return;
     }
 
     this.setTableData(
