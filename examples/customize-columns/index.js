@@ -19,7 +19,6 @@ class Example extends React.Component {
         name: "Title",
         options: {
           filter: true,
-          sortDirection: 'asc'
         }
       },
       {
@@ -86,6 +85,10 @@ class Example extends React.Component {
       filter: true,
       filterType: 'dropdown',
       responsive: 'vertical',
+      sortOrder: {
+        name: 'Title',
+        direction: 'asc'
+      }
     };
 
     return (

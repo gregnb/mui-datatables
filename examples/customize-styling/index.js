@@ -42,7 +42,22 @@ class Example extends React.Component {
         root: {
           backgroundColor: "#FFF"
         }
-      }
+      },
+      MuiToolbar: {
+        root: {
+          backgroundColor: '#f00'
+        }
+      },
+      MuiTableCell: {
+        head: {
+          backgroundColor: 'purple',
+        }
+      },
+      MUIDataTableSelectCell: {
+        headerCell: {
+          backgroundColor: 'blue',
+        }
+      },
     }
   });
 
@@ -79,7 +94,7 @@ class Example extends React.Component {
                   [this.props.classes.NameCell]: true
                 }),
               style: {
-                textDecoration: 'underline'
+                textDecoration: 'underline',
               }
             };
           }

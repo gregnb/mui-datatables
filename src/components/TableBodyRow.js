@@ -50,10 +50,15 @@ class TableBodyRow extends React.Component {
   render() {
     const { classes, options, rowSelected, onClick, className, isRowSelectable, ...rest } = this.props;
 
+    var methods = {};
+    if (onClick) {
+      methods.onClick = onClick;
+    }
+
     return (
       <TableRow
         hover={options.rowHover ? true : false}
-        onClick={onClick}
+        {...methods}
         className={classNames(
           {
             [classes.root]: true,

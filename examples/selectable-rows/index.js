@@ -73,11 +73,12 @@ class Example extends React.Component {
       responsive: 'vertical',
       rowsPerPage: 10,
       rowsSelected: this.state.rowsSelected,
-      onRowsSelect: (rowsSelected, allRows) => {
-        console.log(rowsSelected, allRows);
-        this.setState({ rowsSelected: allRows.map(row => row.dataIndex) });
+      onRowsSelect: (rowsSelectedData, allRows, rowsSelected) => {
+        console.log(rowsSelectedData, allRows, rowsSelected);
+        this.setState({ rowsSelected: rowsSelected });
       },
-      onRowsDelete: (rowsDeleted) => {
+      onRowSelectionChange: (rowsDeleted) => {
+        console.log('onRowSelectionChange');
         if (rowsDeleted.data[0].dataIndex === 0) {
           window.alert('Can\'t delete this!');
           return false;
