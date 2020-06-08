@@ -4,16 +4,22 @@ import MuiTable from '@material-ui/core/Table';
 import TablePagination from './TablePagination';
 import { withStyles } from '@material-ui/core/styles';
 
-export const defaultFooterStyles = {};
+export const defaultFooterStyles = {
+  root: {
+    '@media print': {
+      display: 'none',
+    }
+  }
+};
 
 class TableFooter extends React.Component {
   static propTypes = {};
 
   render() {
-    const { options, rowCount, page, rowsPerPage, changeRowsPerPage, changePage } = this.props;
+    const { options, rowCount, page, rowsPerPage, changeRowsPerPage, changePage, classes } = this.props;
 
     return (
-      <MuiTable>
+      <MuiTable className={classes.root}>
         {options.customFooter
           ? options.customFooter(
               rowCount,
@@ -39,4 +45,4 @@ class TableFooter extends React.Component {
   }
 }
 
-export default TableFooter;
+export default withStyles(defaultFooterStyles, { name: 'MUIDataTableFooter' })(TableFooter);

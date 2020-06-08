@@ -43,7 +43,6 @@ class TableHead extends React.Component {
       data,
       setCellRef,
       selectedRows,
-      isPrinting,
       expandedRows,
       sortOrder = {},
       components = {},
@@ -83,24 +82,22 @@ class TableHead extends React.Component {
           [classes.main]: true,
         })}>
         <TableHeadRow>
-          {!isPrinting && (
-            <TableSelectCell
-              ref={el => setCellRef(0, findDOMNode(el))}
-              onChange={this.handleRowSelect.bind(null)}
-              indeterminate={isIndeterminate}
-              checked={isChecked}
-              isHeaderCell={true}
-              expandedRows={expandedRows}
-              expandableRowsHeader={options.expandableRowsHeader}
-              expandableOn={options.expandableRows}
-              selectableOn={options.selectableRows}
-              fixedHeader={options.fixedHeader}
-              fixedSelectColumn={options.fixedSelectColumn}
-              selectableRowsHeader={options.selectableRowsHeader}
-              onExpand={this.props.toggleAllExpandableRows}
-              isRowSelectable={true}
-            />
-          )}
+          <TableSelectCell
+            ref={el => setCellRef(0, findDOMNode(el))}
+            onChange={this.handleRowSelect.bind(null)}
+            indeterminate={isIndeterminate}
+            checked={isChecked}
+            isHeaderCell={true}
+            expandedRows={expandedRows}
+            expandableRowsHeader={options.expandableRowsHeader}
+            expandableOn={options.expandableRows}
+            selectableOn={options.selectableRows}
+            fixedHeader={options.fixedHeader}
+            fixedSelectColumn={options.fixedSelectColumn}
+            selectableRowsHeader={options.selectableRowsHeader}
+            onExpand={this.props.toggleAllExpandableRows}
+            isRowSelectable={true}
+          />
           {columns.map(
             (column, index) =>
               column.display === 'true' &&

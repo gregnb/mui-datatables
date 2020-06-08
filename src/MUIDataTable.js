@@ -31,6 +31,9 @@ const defaultTableStyles = theme => ({
   },
   responsiveBase: {
     overflow: 'auto',
+    '@media print': {
+      height: 'auto !important',
+    }
   },
 
   // deprecated, but continuing support through v3.x
@@ -261,7 +264,6 @@ class MUIDataTable extends React.Component {
     displayData: [],
     filterData: [],
     filterList: [],
-    isPrinting: false,
     page: 0,
     previousSelectedRow: null,
     rowsPerPage: 0,
@@ -272,7 +274,6 @@ class MUIDataTable extends React.Component {
       lookup: {},
     },
     showResponsive: false,
-    searchText: null,
     sortOrder: {},
   };
 
@@ -291,8 +292,6 @@ class MUIDataTable extends React.Component {
 
   componentDidMount() {
     this.setHeadResizeable(this.headCellRefs, this.tableRef);
-
-    this.setState({ pagination: this.options.pagination });
 
     // When we have a search, we must reset page to view it unless on serverSide since paging is handled by the user.
     if (this.props.options.searchText && !this.props.options.serverSide) this.setState({ page: 0 });
@@ -326,13 +325,6 @@ class MUIDataTable extends React.Component {
       this.updateDividers();
     }
   }
-
-  isGoingToPrint = () =>
-    new Promise((resolve, reject) => {
-      this.setState({ isPrinting: true, pagination: false }, () => setTimeout(() => resolve(), 500));
-    });
-
-  hasPrinted = () => this.setState({ isPrinting: false, pagination: this.options.pagination });
 
   updateOptions(options, props) {
     // set backwards compatibility options
@@ -532,10 +524,7 @@ class MUIDataTable extends React.Component {
 
   // must be arrow function on local field to refer to the correct instance when passed around
   // assigning it as arrow function in the JSX would cause hard to track re-render errors
-  getTableContentRef = () => {
-    this.setState({ isPrinting: true });
-    return this.tableRef.current;
-  };
+  getTableContentRef = () => this.tableContent.current;
 
   /*
    *  Build the source table data
@@ -1619,7 +1608,7 @@ class MUIDataTable extends React.Component {
     const TableToolbarSelectComponent = TableToolbarSelect || DefaultTableToolbarSelect;
 
     const rowCount = this.state.count || displayData.length;
-    const rowsPerPage = this.state.pagination ? this.state.rowsPerPage : displayData.length;
+    const rowsPerPage = this.options.pagination ? this.state.rowsPerPage : displayData.length;
     const showToolbar = hasToolbarItem(this.options, title);
     const columnNames = columns.map(column => ({
       name: column.name,
@@ -1716,8 +1705,6 @@ class MUIDataTable extends React.Component {
               title={title}
               toggleViewColumn={this.toggleViewColumn}
               setTableAction={this.setTableAction}
-              hasPrintted={this.hasPrintted}
-              isGoingToPrint={this.isGoingToPrint}
               components={this.props.components}
             />
           )}
@@ -1749,7 +1736,12 @@ class MUIDataTable extends React.Component {
               options={this.props.options}
             />
           )}
-          <MuiTable innerRef={this.tableRef} tabIndex={'0'} role={'grid'} className={tableClassNames} {...tableProps}>
+          <MuiTable
+            ref={el => (this.tableRef = el)}
+            tabIndex={'0'}
+            role={'grid'}
+            className={tableClassNames}
+            {...tableProps}>
             <caption className={classes.caption}>{title}</caption>
             <TableHeadComponent
               columns={columns}
@@ -1767,7 +1759,6 @@ class MUIDataTable extends React.Component {
               areAllRowsExpanded={this.areAllRowsExpanded}
               toggleAllExpandableRows={this.toggleAllExpandableRows}
               options={this.options}
-              isPrinting={this.state.isPrinting}
               sortOrder={sortOrder}
               components={this.props.components}
             />
@@ -1784,7 +1775,6 @@ class MUIDataTable extends React.Component {
               toggleExpandRow={this.toggleExpandRow}
               options={this.options}
               filterList={filterList}
-              isPrinting={this.state.isPrinting}
             />
             {this.options.customTableBodyFooterRender
               ? this.options.customTableBodyFooterRender({

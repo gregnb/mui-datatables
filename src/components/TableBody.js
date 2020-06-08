@@ -59,8 +59,6 @@ class TableBody extends React.Component {
     toggleExpandRow: PropTypes.func,
     /** Extend the style applied to components */
     classes: PropTypes.object,
-    /**Controls when to display or not the selection cell */
-    isPrinting: PropTypes.bool
   };
 
   static defaultProps = {
@@ -222,7 +220,7 @@ class TableBody extends React.Component {
   };
 
   render() {
-    const { classes, columns, toggleExpandRow, options, isPrinting } = this.props;
+    const { classes, columns, toggleExpandRow, options } = this.props;
     const tableRows = this.buildRows();
     const visibleColCnt = columns.filter(c => c.display === 'true').length;
 
@@ -258,7 +256,7 @@ class TableBody extends React.Component {
                   })}
                   data-testid={'MUIDataTableBodyRow-' + dataIndex}
                   id={'MUIDataTableBodyRow-' + dataIndex}>
-                  {!isPrinting && (<TableSelectCell
+                  <TableSelectCell
                     onChange={this.handleRowSelect.bind(null, {
                       index: this.getRowIndex(rowIndex),
                       dataIndex: dataIndex,
@@ -279,7 +277,7 @@ class TableBody extends React.Component {
                     isRowExpanded={this.isRowExpanded(dataIndex)}
                     isRowSelectable={isRowSelectable}
                     id={'MUIDataTableSelectCell-' + dataIndex}
-                  />)}
+                  />
                   {row.map(
                     (column, columnIndex) =>
                       columns[columnIndex].display === 'true' && (
