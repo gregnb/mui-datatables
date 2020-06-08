@@ -25,7 +25,11 @@ class Example extends React.Component {
         name: 'Name',
         options: {
           filter: true,
+          filterOptions: {
+            renderValue: v => v ? v.replace(/^(\w).* (.*)$/, '$1. $2') : ''
+          },
           display: 'excluded',
+          filterType: 'textField'
         },
       },
       {
@@ -102,7 +106,7 @@ class Example extends React.Component {
               } else if (v[1]) {
                 return `Max Age: ${v[1]}`;
               }
-              return false;
+              return [];
             },
             update: (filterList, filterPos, index) => {
               console.log('customFilterListOnDelete: ', filterList, filterPos, index);
@@ -226,7 +230,7 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'multiselect',
-      responsive: 'scrollMaxHeight',
+      responsive: 'standard',
     };
 
     return (

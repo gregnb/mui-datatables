@@ -8,13 +8,28 @@ import TableSelectCell from './TableSelectCell';
 import { withStyles } from '@material-ui/core/styles';
 import cloneDeep from 'lodash.clonedeep';
 import { getPageValue, warnDeprecated } from '../utils';
+import classNames from 'classnames';
 
-const defaultBodyStyles = {
+const defaultBodyStyles = theme => ({
   root: {},
   emptyTitle: {
     textAlign: 'center',
   },
-};
+  lastStackedCell: {
+    [theme.breakpoints.down('sm')]: {
+      '& td:last-child': {
+        borderBottom: 'none',
+      },
+    },
+  },
+  lastSimpleCell: {
+    [theme.breakpoints.down('xs')]: {
+      '& td:last-child': {
+        borderBottom: 'none',
+      },
+    },
+  },
+});
 
 class TableBody extends React.Component {
   static propTypes = {
@@ -221,13 +236,26 @@ class TableBody extends React.Component {
               return options.customRowRender(row, dataIndex, rowIndex);
             }
 
+            let isRowSelected = options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false;
+            let isRowSelectable = this.isRowSelectable(dataIndex);
+            let bodyClasses = options.setRowProps ? options.setRowProps(row, dataIndex, rowIndex) : {};
+
             return (
               <React.Fragment key={rowIndex}>
                 <TableBodyRow
-                  {...(options.setRowProps ? options.setRowProps(row, dataIndex) : {})}
+                  {...bodyClasses}
                   options={options}
-                  rowSelected={options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false}
+                  rowSelected={isRowSelected}
+                  isRowSelectable={isRowSelectable}
                   onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
+                  className={classNames({
+                    [classes.lastStackedCell]:
+                      options.responsive === 'vertical' ||
+                      options.responsive === 'stacked' ||
+                      options.responsive === 'stackedFullWidth',
+                    [classes.lastSimpleCell]: options.responsive === 'simple',
+                    [bodyClasses.className]: bodyClasses.className,
+                  })}
                   data-testid={'MUIDataTableBodyRow-' + dataIndex}
                   id={'MUIDataTableBodyRow-' + dataIndex}>
                   {!isPrinting && (<TableSelectCell
@@ -240,15 +268,16 @@ class TableBody extends React.Component {
                       dataIndex: dataIndex,
                     })}
                     fixedHeader={options.fixedHeader}
-                    fixedHeaderOptions={options.fixedHeaderOptions}
-                    checked={this.isRowSelected(dataIndex)}
+                    fixedSelectColumn={options.fixedSelectColumn}
+                    checked={isRowSelected}
                     expandableOn={options.expandableRows}
                     // When rows are expandable, but this particular row isn't expandable, set this to true.
                     // This will add a new class to the toggle button, MUIDataTableSelectCell-expandDisabled.
                     hideExpandButton={!this.isRowExpandable(dataIndex) && options.expandableRows}
                     selectableOn={options.selectableRows}
+                    selectableRowsHideCheckboxes={options.selectableRowsHideCheckboxes}
                     isRowExpanded={this.isRowExpanded(dataIndex)}
-                    isRowSelectable={this.isRowSelectable(dataIndex)}
+                    isRowSelectable={isRowSelectable}
                     id={'MUIDataTableSelectCell-' + dataIndex}
                   />)}
                   {row.map(
@@ -282,7 +311,7 @@ class TableBody extends React.Component {
               options={options}
               colIndex={0}
               rowIndex={0}>
-              <Typography variant="subtitle1" className={classes.emptyTitle}>
+              <Typography variant="body1" className={classes.emptyTitle}>
                 {options.textLabels.body.noMatch}
               </Typography>
             </TableBodyCell>

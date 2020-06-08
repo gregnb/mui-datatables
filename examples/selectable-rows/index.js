@@ -1,11 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
+import Switch from '@material-ui/core/Switch';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 class Example extends React.Component {
   state = {
-    rowsSelected: []
+    selectableRowsHideCheckboxes: false
   };
+
+  updateSelectableRowsHideCheckboxes = (event) => {
+    this.setState({
+      selectableRowsHideCheckboxes: event.target.checked
+    });
+  }
 
   render() {
 
@@ -51,18 +60,25 @@ class Example extends React.Component {
     ];
 
     const options = {
+      textLabels: {
+        body: {
+          noMatch: '',
+        }
+      },
       filter: true,
       selectableRows: 'multiple',
       selectableRowsOnClick: true,
+      selectableRowsHideCheckboxes: this.state.selectableRowsHideCheckboxes,
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: 'vertical',
       rowsPerPage: 10,
       rowsSelected: this.state.rowsSelected,
-      onRowsSelect: (rowsSelected, allRows) => {
-        console.log(rowsSelected, allRows);
-        this.setState({ rowsSelected: allRows.map(row => row.dataIndex) });
+      onRowsSelect: (rowsSelectedData, allRows, rowsSelected) => {
+        console.log(rowsSelectedData, allRows, rowsSelected);
+        this.setState({ rowsSelected: rowsSelected });
       },
-      onRowsDelete: (rowsDeleted) => {
+      onRowSelectionChange: (rowsDeleted) => {
+        console.log('onRowSelectionChange');
         if (rowsDeleted.data[0].dataIndex === 0) {
           window.alert('Can\'t delete this!');
           return false;
@@ -78,7 +94,7 @@ class Example extends React.Component {
       onColumnSortChange: (column, direction) => {
         console.log(column, direction);
       },
-      onColumnViewChange: (column, action) => {
+      onViewColumnsChange: (column, action) => {
         console.log(column, action);
       },
       onFilterChange: (column, filters) => {
@@ -100,7 +116,23 @@ class Example extends React.Component {
     };
 
     return (
-      <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+      <>
+        <div>Note: Example code is setup to limit the number of selections to 3</div>
+        <FormGroup row>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={this.state.selectableRowsHideCheckboxes}
+                onChange={this.updateSelectableRowsHideCheckboxes}
+                value="selectableRowsHideCheckboxes"
+                color="primary"
+              />
+            }
+            label="Hide Checkboxes"
+          />
+        </FormGroup>
+        <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+      </>
     );
 
   }

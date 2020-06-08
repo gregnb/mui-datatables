@@ -4,6 +4,22 @@ import MUIDataTable from "../../src/";
 
 class Example extends React.Component {
 
+  state = {
+    counter: 0,
+    data: [
+      { name: "Gabby George", title: "Business Analyst", location: "Minneapolis", age: 30, salary: "$100,000", phone: { home: '867-5309', cell: '123-4567' } },
+      { name: "Aiden Lloyd", title: "Business Consultant", location: "Dallas",  age: 55, salary: "$200,000", phone: { home: '867-5310', cell: '123-4568' } },
+      { name: "Jaden Collins", title: "Attorney", location: "Santa Ana", age: 27, salary: "$500,000", phone: { home: '867-5311', cell: '123-4569' } },
+      { name: "Franky Rees", title: "Business Analyst", location: "St. Petersburg", age: 22, salary: "$50,000", phone: { home: '867-5312', cell: '123-4569' } }
+    ]
+  }
+
+  rerender = () => {
+    this.setState((prevState, props) => ({
+      counter: prevState.counter + 1
+    })); 
+  }
+
   render() {
 
     const columns = [
@@ -14,7 +30,7 @@ class Example extends React.Component {
           filter: true,
           display: 'excluded',
         }
-      },      
+      },      
       {
         name: "title",
         label: "Modified Title Label",
@@ -22,7 +38,7 @@ class Example extends React.Component {
           filter: true,
         }
       },
-      {        
+      {        
         name: "location",
         label: "Location",
         options: {
@@ -49,8 +65,8 @@ class Example extends React.Component {
         label: "Home Phone",
       },
       {
-        name: "phone.fake",
-        label: "Not a Phone #",
+        name: "phone.cell",
+        label: "Cell Phone #",
       },
       {
         name: "phone2.home",
@@ -58,22 +74,18 @@ class Example extends React.Component {
       }
     ];
 
-
-    const data = [
-      { name: "Gabby George", title: "Business Analyst", location: "Minneapolis", age: 30, salary: "$100,000", phone: { home: '867-5309', cell: '123-4567' } },
-      { name: "Aiden Lloyd", title: "Business Consultant", location: "Dallas",  age: 55, salary: "$200,000", phone: { home: '867-5310', cell: '123-4568' } },
-      { name: "Jaden Collins", title: "Attorney", location: "Santa Ana", age: 27, salary: "$500,000", phone: { home: '867-5311', cell: '123-4569' } },
-      { name: "Franky Rees", title: "Business Analyst", location: "St. Petersburg", age: 22, salary: "$50,000", phone: { home: '867-5312', cell: '123-4569' } }
-    ];
-
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: 'vertical',
+      enableNestedDataAccess: '.', // allows nested data separated by "." (see column names and the data structure above)
     };
 
     return (
-      <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+      <React.Fragment>
+        <button onClick={this.rerender}>Re-render - {this.state.counter}</button>
+        <MUIDataTable title={"ACME Employee list"} data={this.state.data} columns={columns} options={options} />
+      </React.Fragment>
     );
 
   }

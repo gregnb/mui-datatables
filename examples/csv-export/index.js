@@ -69,7 +69,7 @@ class Example extends React.Component {
       filter: true,
       selectableRows: 'multiple',
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: 'vertical',
       rowsPerPage: 10,
       downloadOptions: {
           filename: 'excel-format.csv',
@@ -101,7 +101,7 @@ class Example extends React.Component {
       onColumnSortChange: (column, direction) => {
         console.log(column, direction);
       },
-      onColumnViewChange: (column, action) => {
+      onViewColumnsChange: (column, action) => {
         console.log(column, action);
       },
       onFilterChange: (column, filters) => {

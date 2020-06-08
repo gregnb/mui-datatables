@@ -1,11 +1,10 @@
-const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
   entry: {
     app: "./examples/Router/index.js"
   },
-  stats: "verbose",
+  stats: 'verbose',
   context: __dirname,
   output: {
     filename: 'bundle.js'
@@ -13,10 +12,11 @@ module.exports = {
   devtool: 'source-map',
   devServer: {
     disableHostCheck: true,
+    host: 'localhost',
     hot: true,
     inline: true,
-    host: "0.0.0.0",
-    port: 5050
+    port: 5050,
+    stats: 'errors-warnings'
   },
   module: {
     rules: [
