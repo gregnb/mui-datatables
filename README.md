@@ -40,7 +40,7 @@ If your project doesn't already use them, you need to install `@material-ui/core
 
 ## Demo
 
-[![Edit react-to-print](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/greg/mui-datatables)
+[![Edit react-to-print](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/gregnb/mui-datatables)
 
 ## Usage
 

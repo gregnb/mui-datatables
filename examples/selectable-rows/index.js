@@ -73,8 +73,8 @@ class Example extends React.Component {
       responsive: 'stacked',
       rowsPerPage: 10,
       rowsSelected: this.state.rowsSelected,
-      onRowsSelect: (rowsSelected, allRows, rowsSelected) => {
-        console.log(rowsSelected, allRows, rowsSelected);
+      onRowsSelect: (rowsSelectedData, allRows, rowsSelected) => {
+        console.log(rowsSelectedData, allRows, rowsSelected);
         this.setState({ rowsSelected: rowsSelected });
       },
       onRowSelectionChange: (rowsDeleted) => {
