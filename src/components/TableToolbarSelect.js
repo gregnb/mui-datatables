@@ -18,6 +18,9 @@ const defaultToolbarSelectStyles = theme => ({
     alignItems: 'center',
     paddingTop: typeof theme.spacing === 'function' ? theme.spacing(1) : theme.spacing.unit,
     paddingBottom: typeof theme.spacing === 'function' ? theme.spacing(1) : theme.spacing.unit,
+    '@media print': {
+      display: 'none',
+    }
   },
   title: {
     paddingLeft: '26px',

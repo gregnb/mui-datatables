@@ -9,7 +9,11 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import Remove from '@material-ui/icons/Remove';
 
 const defaultSelectCellStyles = theme => ({
-  root: {},
+  root: {
+    '@media print': {
+      display: 'none',
+    }
+  },
   fixedHeader: {
     position: 'sticky',
     top: '0px',

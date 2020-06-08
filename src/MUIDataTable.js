@@ -31,6 +31,9 @@ const defaultTableStyles = theme => ({
   },
   responsiveBase: {
     overflow: 'auto',
+    '@media print': {
+      height: 'auto !important',
+    }
   },
 
   // deprecated, but continuing support through v3.x
@@ -276,7 +279,7 @@ class MUIDataTable extends React.Component {
 
   constructor() {
     super();
-    this.tableRef = false;
+    this.tableRef = React.createRef();
     this.tableContent = React.createRef();
     this.headCellRefs = {};
     this.setHeadResizeable = () => {};

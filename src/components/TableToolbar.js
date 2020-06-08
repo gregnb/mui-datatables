@@ -19,7 +19,11 @@ import cloneDeep from 'lodash.clonedeep';
 import MuiTooltip from '@material-ui/core/Tooltip';
 
 export const defaultToolbarStyles = theme => ({
-  root: {},
+  root: {
+    '@media print': {
+      display: 'none',
+    }
+  },
   fullWidthRoot: {},
   left: {
     flex: '1 1 auto',
@@ -82,6 +86,9 @@ export const defaultToolbarStyles = theme => ({
   [theme.breakpoints.down('xs')]: {
     root: {
       display: 'block',
+      '@media print': {
+        display: 'none !important',
+      }
     },
     left: {
       padding: '8px 0px 0px 0px',
