@@ -1756,6 +1756,15 @@ class MUIDataTable extends React.Component {
               options={this.options}
               filterList={filterList}
             />
+            {this.options.customTableBodyFooterRender
+              ? this.options.customTableBodyFooterRender({
+                  data: displayData,
+                  count: rowCount,
+                  columns,
+                  selectedRows,
+                  selectableRows: this.options.selectableRows
+                })
+              : null}
           </MuiTable>
         </div>
         <TableFooterComponent

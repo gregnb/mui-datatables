@@ -12,6 +12,9 @@ import getTextLabels from '../src/textLabels';
 import Chip from '@material-ui/core/Chip';
 import Cities from '../examples/component/cities';
 import { getCollatorComparator } from '../src/utils';
+import TableFooter from "@material-ui/core/TableFooter";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
 
 describe('<MUIDataTable />', function() {
   let data;
@@ -416,6 +419,8 @@ describe('<MUIDataTable />', function() {
         fullWrapper.setProps({ data });
         fullWrapper.update();
         assert.strictEqual(fullWrapper.find('tbody tr').length, 4);
+
+        fullWrapper.unmount();
         done();
       }, 10);
     });
@@ -475,6 +480,7 @@ describe('<MUIDataTable />', function() {
     props = fullWrapper.props();
 
     assert.deepEqual(props.options, newOptions);
+    fullWrapper.unmount();
   });
 
   it('should correctly pass the sorted column name and direction to onColumnSortChange', () => {
@@ -576,6 +582,7 @@ describe('<MUIDataTable />', function() {
       ['Harry Smith', 'Test Corp', 'Philadelphia', 'PA', undefined],
     ];
     assert.deepEqual(props.data, expectedResult);
+    fullWrapper.unmount();
   });
 
   it('should not re-build internal table data and displayData structure with no prop change to data or columns', () => {
@@ -1020,6 +1027,20 @@ describe('<MUIDataTable />', function() {
     instance.resetFilters();
     table.update();
     assert.strictEqual(type, 'reset');
+  });
+
+  it('should render a footer after the tbody element when customTableBodyFooterRender is called', () => {
+    const options = {
+
+    };
+    
+    const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
+    const actualResult = mountWrapper.find("#custom_column_footer");
+    assert.strictEqual(actualResult.exists(), false);
+
+    console.log( mountWrapper.find("table").length );
+
+    mountWrapper.unmount();
   });
 
   it('should properly set searchText when calling searchTextUpdate method', () => {

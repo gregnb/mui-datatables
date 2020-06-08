@@ -155,6 +155,7 @@ The component accepts the following props:
 |**`count`**|number||User provided override for total number of rows.
 |**`customFilterDialogFooter `**|function||Add a custom footer to the filter dialog. `customFilterDialogFooter(filterList: array) => React Component`
 |**`customFooter`**|function||Render a custom table footer. `function(count, page, rowsPerPage, changeRowsPerPage, changePage, `[`textLabels: object`](https://github.com/gregnb/mui-datatables/blob/master/src/textLabels.js)`) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-footer/index.js)
+|**`customTableBodyFooterRender`**|function||Render a footer under the table body but above the table's standard footer. This is useful for creating footers for individual columns. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-footer/index.js)
 |**`customRowRender `**|function||Override default row rendering with custom function. `customRowRender(data, dataIndex, rowIndex) => React Component`
 |**`customSearch `**|function||Override default search with custom function. `customSearch(searchQuery: string, currentRow: array, columns: array) => boolean`
 |**`customSearchRender `**|function||Render a custom table search. `customSearchRender(searchText: string, handleSearch, hideSearch, options) => React Component`
