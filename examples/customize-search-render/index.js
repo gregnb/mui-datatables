@@ -44,7 +44,7 @@ class Example extends React.Component {
 
     const options = {
       filter: true,
-      selectableRows: 'mulitple',
+      selectableRows: 'multiple',
       filterType: 'dropdown',
       responsive: 'vertical',
       rowsPerPage: 10,

@@ -104,7 +104,8 @@ class Example extends React.Component {
       filterType: 'dropdown',
       responsive: 'standard',
       fixedHeader: true,
-      fixedSelectColumn: true
+      fixedSelectColumn: true,
+      tableBodyHeight: '400px'
     };
 
     return (

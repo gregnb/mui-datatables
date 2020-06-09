@@ -72,6 +72,7 @@ function Example() {
     filter: true,
     filterType: 'dropdown',
     responsive: 'vertical',
+    tableBodyHeight: '500px',
     rowsPerPage: 10,
     resizableColumns: resizableColumns,
     customFooter: (count, page, rowsPerPage, changeRowsPerPage, changePage, textLabels) => {

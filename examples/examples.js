@@ -23,7 +23,6 @@ import OnTableInit from './on-table-init';
 import ResizableColumns from './resizable-columns';
 import SelectableRows from './selectable-rows';
 import ServerSideFilters from './serverside-filters';
-import ServerSideOptions from './serverside-options';
 import ServerSidePagination from './serverside-pagination';
 import ServerSideSorting from './serverside-sorting';
 import Simple from './simple';
@@ -63,7 +62,6 @@ export default {
   'Resizable Columns': ResizableColumns,
   'Selectable Rows': SelectableRows,
   'ServerSide Filters': ServerSideFilters,
-  'ServerSide Options': ServerSideOptions,
   'ServerSide Pagination': ServerSidePagination,
   'ServerSide Sorting': ServerSideSorting,
   Simple: Simple,

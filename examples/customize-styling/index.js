@@ -58,6 +58,13 @@ class Example extends React.Component {
           backgroundColor: 'blue',
         }
       },
+      MuiTableFooter: {
+        root: {
+          '& .MuiToolbar-root': {
+            backgroundColor: 'white',
+          }
+        }
+      }
     }
   });
 

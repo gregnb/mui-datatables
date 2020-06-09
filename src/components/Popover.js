@@ -30,7 +30,7 @@ class Popover extends React.Component {
       if (this.popoverActions) {
         this.popoverActions.updatePosition();
       }
-      const shouldHide = (typeof this.props.hide === 'boolean') ? this.props.hide : false;
+      const shouldHide = typeof this.props.hide === 'boolean' ? this.props.hide : false;
       if (shouldHide) {
         this.handleRequestClose();
       }

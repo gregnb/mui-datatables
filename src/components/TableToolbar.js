@@ -22,7 +22,7 @@ export const defaultToolbarStyles = theme => ({
   root: {
     '@media print': {
       display: 'none',
-    }
+    },
   },
   fullWidthRoot: {},
   left: {
@@ -88,7 +88,7 @@ export const defaultToolbarStyles = theme => ({
       display: 'block',
       '@media print': {
         display: 'none !important',
-      }
+      },
     },
     left: {
       padding: '8px 0px 0px 0px',
@@ -268,12 +268,12 @@ class TableToolbar extends React.Component {
     const { showSearch, searchText } = this.state;
 
     const filterPopoverExit = () => {
-      this.setState({hideFilterPopover: false});
+      this.setState({ hideFilterPopover: false });
       this.setActiveIcon.bind(null);
     };
 
     const closeFilterPopover = () => {
-      this.setState({hideFilterPopover: true});
+      this.setState({ hideFilterPopover: true });
     };
 
     return (

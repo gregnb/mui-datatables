@@ -39,7 +39,7 @@ describe('<TableBodyCell />', function() {
         colIndex = colMeta.colIndex;
         rowIndex = colMeta.rowIndex;
         colData = val;
-      }
+      },
     };
 
     const fullWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
@@ -70,8 +70,5 @@ describe('<TableBodyCell />', function() {
     assert.strictEqual(colIndex, 1);
     assert.strictEqual(rowIndex, 2);
     assert.strictEqual(colData, 'Test Corp X');
-
   });
-
 });
-

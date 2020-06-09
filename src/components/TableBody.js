@@ -7,7 +7,7 @@ import TableBodyRow from './TableBodyRow';
 import TableSelectCell from './TableSelectCell';
 import { withStyles } from '@material-ui/core/styles';
 import cloneDeep from 'lodash.clonedeep';
-import { getPageValue, warnDeprecated } from '../utils';
+import { getPageValue } from '../utils';
 import classNames from 'classnames';
 
 const defaultBodyStyles = theme => ({
@@ -179,15 +179,6 @@ class TableBody extends React.Component {
       event.target.id === 'expandable-button' ||
       (event.target.nodeName === 'path' && event.target.parentNode.id === 'expandable-button')
     ) {
-      // In a future release, onRowClick will no longer be called here (for consistency).
-      // For now, issue a deprecated warning.
-      if (this.props.options.onRowClick) {
-        warnDeprecated(
-          'Clicks on expandable button will not trigger onRowClick in an upcoming release, see: https://github.com/gregnb/mui-datatables/issues/516.',
-        );
-        this.props.options.onRowClick(row, data, event);
-      }
-
       return;
     }
 

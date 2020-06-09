@@ -86,8 +86,8 @@ class Example extends React.Component {
 
         return false;
       },
-      onRowsSelect: (rowsSelected, allRows) => {
-        console.log(rowsSelected, allRows);
+      onRowSelectionChange: (currentRowsSelected, allRows, rowsSelected) => {
+        console.log(currentRowsSelected, allRows, rowsSelected);
       },
       onRowsDelete: rowsDeleted => {
         console.log(rowsDeleted, 'were deleted!');

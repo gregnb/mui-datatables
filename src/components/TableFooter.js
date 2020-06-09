@@ -8,8 +8,8 @@ export const defaultFooterStyles = {
   root: {
     '@media print': {
       display: 'none',
-    }
-  }
+    },
+  },
 };
 
 class TableFooter extends React.Component {

@@ -96,7 +96,6 @@ class Example extends React.Component {
       filterType: 'dropdown',
       responsive: 'vertical',
       rowsPerPage: 10,
-      page: 1,
     };
 
     return (

@@ -33,7 +33,7 @@ const defaultTableStyles = theme => ({
     overflow: 'auto',
     '@media print': {
       height: 'auto !important',
-    }
+    },
   },
 
   // deprecated, but continuing support through v3.x
@@ -156,6 +156,7 @@ class MUIDataTable extends React.Component {
       caseSensitive: PropTypes.bool,
       count: PropTypes.number,
       confirmFilters: PropTypes.bool,
+      consoleWarnings: PropTypes.bool,
       customFilterDialogFooter: PropTypes.func,
       customFooter: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customRowRender: PropTypes.func,
@@ -352,6 +353,7 @@ class MUIDataTable extends React.Component {
 
   getDefaultOptions = () => ({
     caseSensitive: false,
+    consoleWarnings: true,
     disableToolbarSelect: false,
     download: true,
     downloadOptions: {
@@ -392,9 +394,17 @@ class MUIDataTable extends React.Component {
     selectToolbarPlacement: STP.REPLACE,
   });
 
+  warnDep = (msg, consoleWarnings) => {
+    warnDeprecated(msg, this.options.consoleWarnings);
+  };
+
+  warnInfo = (msg, consoleWarnings) => {
+    warnInfo(msg, this.options.consoleWarnings);
+  };
+
   handleOptionDeprecation = () => {
     if (typeof this.options.selectableRows === 'boolean') {
-      warnDeprecated(
+      this.warnDep(
         'Using a boolean for selectableRows has been deprecated. Please use string option: multiple | single | none',
       );
       this.options.selectableRows = this.options.selectableRows ? 'multiple' : 'none';
@@ -410,51 +420,68 @@ class MUIDataTable extends React.Component {
           'scroll',
         ].includes(this.options.responsive)
       ) {
-        warnDeprecated(
-          this.options.responsive + ' has been deprecated. Please use string option: standard | vertical | simple',
+        this.warnDep(
+          this.options.responsive +
+            ' has been deprecated, but will still work in version 3.x. Please use string option: standard | vertical | simple. More info: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
         );
       } else {
-        warnInfo(
+        this.warnInfo(
           this.options.responsive +
-            ' is not recognized as a valid input for responsive option. Please use string option: standard | vertical | simple',
+            ' is not recognized as a valid input for responsive option. Please use string option: standard | vertical | simple. More info: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
         );
       }
     }
     if (this.options.onRowsSelect) {
-      warnDeprecated('onRowsSelect has been renamed onRowSelectionChange.');
+      this.warnDep(
+        'onRowsSelect has been renamed onRowSelectionChange. More info: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
+      );
     }
     if (this.options.onRowsExpand) {
-      warnDeprecated('onRowsSelect has been renamed onRowExpansionChange.');
+      this.warnDep(
+        'onRowsSelect has been renamed onRowExpansionChange. More info: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
+      );
     }
     if (this.options.fixedHeaderOptions) {
-      if ( typeof this.options.fixedHeaderOptions.yAxis !== 'undefined' && typeof this.options.fixedHeader !== 'undefined') {
+      if (
+        typeof this.options.fixedHeaderOptions.yAxis !== 'undefined' &&
+        typeof this.options.fixedHeader !== 'undefined'
+      ) {
         this.options.fixedHeader = this.options.fixedHeaderOptions.yAxis;
       }
-      if ( typeof this.options.fixedHeaderOptions.xAxis !== 'undefined' && typeof this.options.fixedSelectColumn !== 'undefined') {
+      if (
+        typeof this.options.fixedHeaderOptions.xAxis !== 'undefined' &&
+        typeof this.options.fixedSelectColumn !== 'undefined'
+      ) {
         this.options.fixedSelectColumn = this.options.fixedHeaderOptions.xAxis;
       }
-      warnDeprecated('fixedHeaderOptions has been deprecated in favor of fixedHeader and fixedSelectColumn.');
+      this.warnDep(
+        'fixedHeaderOptions will still work but has been deprecated in favor of fixedHeader and fixedSelectColumn. More info: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
+      );
     }
     if (this.options.serverSideFilterList) {
-      warnDeprecated('serverSideFilterList has been deprecated in favor of the confirmFilters option (though the feature will still work for version 3.x). See this example for details: https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-filters/index.js');
+      this.warnDep(
+        'serverSideFilterList will still work but has been deprecated in favor of the confirmFilters option. See this example for details: https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-filters/index.js More info here: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
+      );
     }
 
     this.props.columns.map(c => {
       if (c.options && c.options.customFilterListRender) {
-        warnDeprecated(
+        this.warnDep(
           'The customFilterListRender option has been deprecated. It is being replaced by customFilterListOptions.render (Specify customFilterListOptions: { render: Function } in column options.)',
         );
       }
     });
 
     if (this.options.disableToolbarSelect === true) {
-      console.error(
-        'The option "disableToolbarSelect" has been deprecated. It is being replaced by "selectToolbarPlacement"="none".',
+      this.warnDep(
+        'disableToolbarSelect has been deprecated but will still work in version 3.x. It is being replaced by "selectToolbarPlacement"="none". More info: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
       );
     }
 
     if (Object.values(STP).indexOf(this.options.selectToolbarPlacement) === -1) {
-      console.error('Invalid option value for selectToolbarPlacement. Please check the documentation.');
+      this.warnDep(
+        'Invalid option value for selectToolbarPlacement. Please check the documentation: https://github.com/gregnb/mui-datatables#options',
+      );
     }
   };
 
@@ -475,7 +502,7 @@ class MUIDataTable extends React.Component {
       throw Error('renderExpandableRow must be provided when using expandableRows option');
     }
     if (this.props.options.filterList) {
-      warnDeprecated(
+      this.warnDep(
         'filterList must now be provided under each column option. see https://github.com/gregnb/mui-datatables/tree/master/examples/column-filters example',
       );
     }
@@ -544,8 +571,8 @@ class MUIDataTable extends React.Component {
           }
 
           if (options.sortDirection === null || options.sortDirection) {
-            warnDeprecated(
-              'The sortDirection column field has been deprecated. Please use the sortOrder option on the options object.',
+            this.warnDep(
+              'The sortDirection column field has been deprecated. Please use the sortOrder option on the options object. More info: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
             );
           }
         }
@@ -587,9 +614,10 @@ class MUIDataTable extends React.Component {
   transformData = (columns, data) => {
     // deprecation warning for nested data parsing
     columns.forEach(col => {
-      if (col.name && col.name.indexOf('.') !== -1) {
-        // TODO: warnInfo defined in another branch, when merged in, uncomment this
-        //warnInfo('Columns with a dot will no longer be treated as nested data by default. Please see the enableNestedDataAccess option for more information.');
+      if (col.name && col.name.indexOf('.') !== -1 && !this.options.enableNestedDataAccess) {
+        this.warnInfo(
+          'Columns with a dot will no longer be treated as nested data by default. Please see the enableNestedDataAccess option for more information: https://github.com/gregnb/mui-datatables#options',
+        );
       }
     });
 
@@ -617,8 +645,8 @@ class MUIDataTable extends React.Component {
         data => data.filter(d => typeof d === 'object' && d !== null && !Array.isArray(d)).length > 0,
       ).length > 0;
     if (hasInvalidData)
-      warnDeprecated(
-        'Passing objects in as data is not supported, and will be prevented in a future release. Consider using ids in your data and linking it to external objects if you want to access object data from custom render functions.',
+      this.warnDep(
+        'Passing objects in as data is not supported. Consider using ids in your data and linking it to external objects if you want to access object data from custom render functions.',
       );
 
     return transformedData;
@@ -692,7 +720,7 @@ class MUIDataTable extends React.Component {
       if (column.filterOptions) {
         if (Array.isArray(column.filterOptions)) {
           filterData[colIndex] = cloneDeep(column.filterOptions);
-          warnDeprecated(
+          this.warnDep(
             'filterOptions must now be an object. see https://github.com/gregnb/mui-datatables/tree/master/examples/customize-filter example',
           );
         } else if (Array.isArray(column.filterOptions.names)) {
@@ -1020,7 +1048,9 @@ class MUIDataTable extends React.Component {
         }
 
         if (this.options.onColumnViewChange) {
-          warnDeprecated('onColumnViewChange has been changed to onViewColumnsChange.');
+          this.warnDep(
+            'onColumnViewChange has been changed to onViewColumnsChange. More info: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
+          );
         }
       },
     );
@@ -1297,7 +1327,13 @@ class MUIDataTable extends React.Component {
     const cleanRows = data.filter(({ index }) => !selectedMap[index]);
 
     if (this.options.onRowsDelete) {
-      if (this.options.onRowsDelete(selectedRows, cleanRows.map(ii=>ii.data)) === false) return;
+      if (
+        this.options.onRowsDelete(
+          selectedRows,
+          cleanRows.map(ii => ii.data),
+        ) === false
+      )
+        return;
     }
 
     this.setTableData(
@@ -1647,7 +1683,6 @@ class MUIDataTable extends React.Component {
 
     var tableHeightVal = {};
     if (maxHeight) {
-      console.log('max!');
       tableHeightVal.maxHeight = maxHeight;
     }
     if (this.options.tableBodyHeight) {
@@ -1660,21 +1695,17 @@ class MUIDataTable extends React.Component {
 
     return (
       <Paper elevation={this.options.elevation} ref={this.tableContent} className={paperClasses}>
-        {selectedRows.data.length > 0 &&
-          this.options.selectToolbarPlacement !== STP.NONE && (
-            <TableToolbarSelectComponent
-              options={this.options}
-              selectedRows={selectedRows}
-              onRowsDelete={this.selectRowDelete}
-              displayData={displayData}
-              selectRowUpdate={this.selectRowUpdate}
-              components={this.props.components}
-            />
-          )}
-        {(selectedRows.data.length === 0 ||
-          [STP.ABOVE, STP.NONE].includes(
-            this.options.selectToolbarPlacement,
-          )) &&
+        {selectedRows.data.length > 0 && this.options.selectToolbarPlacement !== STP.NONE && (
+          <TableToolbarSelectComponent
+            options={this.options}
+            selectedRows={selectedRows}
+            onRowsDelete={this.selectRowDelete}
+            displayData={displayData}
+            selectRowUpdate={this.selectRowUpdate}
+            components={this.props.components}
+          />
+        )}
+        {(selectedRows.data.length === 0 || [STP.ABOVE, STP.NONE].includes(this.options.selectToolbarPlacement)) &&
           showToolbar && (
             <TableToolbarComponent
               columns={columns}
@@ -1770,7 +1801,7 @@ class MUIDataTable extends React.Component {
                   count: rowCount,
                   columns,
                   selectedRows,
-                  selectableRows: this.options.selectableRows
+                  selectableRows: this.options.selectableRows,
                 })
               : null}
           </MuiTable>

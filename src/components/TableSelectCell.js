@@ -12,7 +12,7 @@ const defaultSelectCellStyles = theme => ({
   root: {
     '@media print': {
       display: 'none',
-    }
+    },
   },
   fixedHeader: {
     position: 'sticky',

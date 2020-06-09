@@ -70,7 +70,8 @@ class TableFilterList extends React.Component {
             item[customFilterItemIndex] || [],
             columnNames[index].name,
             type,
-            customFilterListUpdate[index],
+            null,
+            null,
           )}
           className={classes.chip}
           itemKey={customFilterItemIndex}
@@ -85,7 +86,7 @@ class TableFilterList extends React.Component {
       <ItemComponent
         label={filterListRenderers[index](data)}
         key={colIndex}
-        onDelete={filterUpdate.bind(null, index, data, columnNames[index].name, 'chip')}
+        onDelete={filterUpdate.bind(null, index, data, columnNames[index].name, 'chip', null, null)}
         className={classes.chip}
         itemKey={colIndex}
         index={index}
