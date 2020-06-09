@@ -217,7 +217,7 @@ The component accepts the following props:
 |**`selectableRowsOnClick`**|boolean|false|Enable/disable select toggle when row is clicked. When False, only checkbox will trigger this action.
 |**`selectToolbarPlacement`**|string|'replace'|Controls the visibility of the Select Toolbar, options are 'replace' (select toolbar replaces default toolbar when a row is selected), 'above' (select toolbar will appear above default toolbar when a row is selected) and 'none' (select toolbar will never appear)
 |**`serverSide`**|boolean|false|Enable remote data source.
-|**`setRowProps`**|function||Is called for each row and allows you to return custom props for this row based on its data. `function(row: array, dataIndex: number) => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
+|**`setRowProps`**|function||Is called for each row and allows you to return custom props for this row based on its data. `function(row: array, dataIndex: number, rowIndex: number) => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
 |**`setTableProps`**|function||Is called for the table and allows you to return custom props for the table based on its data. `function() => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
 |**`sort`**|boolean|true|Enable/disable sort on all columns.
 |**`sortFilterList`**|boolean|true|Enable/disable alphanumeric sorting of filter lists.
