@@ -1,7 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Popover from './Popover';
 import TableFilter from './TableFilter';
@@ -17,9 +16,14 @@ import find from 'lodash.find';
 import { withStyles } from '@material-ui/core/styles';
 import { createCSVDownload, downloadCSV } from '../utils';
 import cloneDeep from 'lodash.clonedeep';
+import MuiTooltip from '@material-ui/core/Tooltip';
 
 export const defaultToolbarStyles = theme => ({
-  root: {},
+  root: {
+    '@media print': {
+      display: 'none',
+    },
+  },
   fullWidthRoot: {},
   left: {
     flex: '1 1 auto',
@@ -51,6 +55,12 @@ export const defaultToolbarStyles = theme => ({
   filterPaper: {
     maxWidth: '50%',
   },
+  filterCloseIcon: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 100,
+  },
   searchIcon: {
     display: 'inline-flex',
     marginTop: '10px',
@@ -76,6 +86,9 @@ export const defaultToolbarStyles = theme => ({
   [theme.breakpoints.down('xs')]: {
     root: {
       display: 'block',
+      '@media print': {
+        display: 'none !important',
+      },
     },
     left: {
       padding: '8px 0px 0px 0px',
@@ -217,8 +230,6 @@ class TableToolbar extends React.Component {
       showSearch: false,
       searchText: null,
     }));
-
-    this.searchButton.focus();
   };
 
   handleSearch = value => {
@@ -248,10 +259,22 @@ class TableToolbar extends React.Component {
       toggleViewColumn,
       title,
       tableRef,
+      components = {},
+      updateFilterByType,
     } = this.props;
 
+    const Tooltip = components.Tooltip || MuiTooltip;
     const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;
     const { showSearch, searchText } = this.state;
+
+    const filterPopoverExit = () => {
+      this.setState({ hideFilterPopover: false });
+      this.setActiveIcon.bind(null);
+    };
+
+    const closeFilterPopover = () => {
+      this.setState({ hideFilterPopover: true });
+    };
 
     return (
       <Toolbar
@@ -348,8 +371,9 @@ class TableToolbar extends React.Component {
           )}
           {options.filter && (
             <Popover
-              refExit={this.setActiveIcon.bind(null)}
-              classes={{ paper: classes.filterPaper }}
+              refExit={filterPopoverExit}
+              hide={this.state.hideFilterPopover}
+              classes={{ paper: classes.filterPaper, closeIcon: classes.filterCloseIcon }}
               trigger={
                 <Tooltip title={filterTable} disableFocusListener>
                   <IconButton
@@ -370,6 +394,8 @@ class TableToolbar extends React.Component {
                   filterData={filterData}
                   onFilterUpdate={filterUpdate}
                   onFilterReset={resetFilters}
+                  handleClose={closeFilterPopover}
+                  updateFilterByType={updateFilterByType}
                 />
               }
             />

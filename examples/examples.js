@@ -23,12 +23,12 @@ import OnTableInit from './on-table-init';
 import ResizableColumns from './resizable-columns';
 import SelectableRows from './selectable-rows';
 import ServerSideFilters from './serverside-filters';
-import ServerSideOptions from './serverside-options';
 import ServerSidePagination from './serverside-pagination';
 import ServerSideSorting from './serverside-sorting';
 import Simple from './simple';
 import SimpleNoToolbar from './simple-no-toolbar';
 import TextLocalization from './text-localization';
+import CustomComponents from './custom-components';
 import Themes from './themes';
 import LargeDataSet from './large-data-set';
 
@@ -62,11 +62,11 @@ export default {
   'Resizable Columns': ResizableColumns,
   'Selectable Rows': SelectableRows,
   'ServerSide Filters': ServerSideFilters,
-  'ServerSide Options': ServerSideOptions,
   'ServerSide Pagination': ServerSidePagination,
   'ServerSide Sorting': ServerSideSorting,
   Simple: Simple,
   'Simple No Toolbar': SimpleNoToolbar,
   'Text Localization': TextLocalization,
+  'Custom Components': CustomComponents,
   Themes: Themes,
 };

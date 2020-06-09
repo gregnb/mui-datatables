@@ -14,6 +14,11 @@ const defaultHeadStyles = theme => ({
       display: 'none',
     },
   },
+  responsiveSimple: {
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
+  },
 });
 
 class TableHead extends React.Component {
@@ -30,11 +35,22 @@ class TableHead extends React.Component {
   };
 
   render() {
-    const { classes, columns, count, options, data, setCellRef, selectedRows } = this.props;
+    const {
+      classes,
+      columns,
+      count,
+      options,
+      data,
+      setCellRef,
+      selectedRows,
+      expandedRows,
+      sortOrder = {},
+      components = {},
+    } = this.props;
 
     const numSelected = (selectedRows && selectedRows.data.length) || 0;
     let isIndeterminate = numSelected > 0 && numSelected < count;
-    let isChecked = numSelected === count ? true : false;
+    let isChecked = numSelected > 0 && numSelected === count;
 
     // When the disableToolbarSelect option is true, there can be
     // selected items that aren't visible, so we need to be more
@@ -58,7 +74,11 @@ class TableHead extends React.Component {
     return (
       <MuiTableHead
         className={classNames({
-          [classes.responsiveStacked]: options.responsive === 'stacked' || options.responsive === 'stackedFullWidth',
+          [classes.responsiveStacked]:
+            options.responsive === 'vertical' ||
+            options.responsive === 'stacked' ||
+            options.responsive === 'stackedFullWidth',
+          [classes.responsiveSimple]: options.responsive === 'simple',
           [classes.main]: true,
         })}>
         <TableHeadRow>
@@ -68,18 +88,21 @@ class TableHead extends React.Component {
             indeterminate={isIndeterminate}
             checked={isChecked}
             isHeaderCell={true}
+            expandedRows={expandedRows}
+            expandableRowsHeader={options.expandableRowsHeader}
             expandableOn={options.expandableRows}
             selectableOn={options.selectableRows}
             fixedHeader={options.fixedHeader}
-            fixedHeaderOptions={options.fixedHeaderOptions}
+            fixedSelectColumn={options.fixedSelectColumn}
             selectableRowsHeader={options.selectableRowsHeader}
+            onExpand={this.props.toggleAllExpandableRows}
             isRowSelectable={true}
           />
           {columns.map(
             (column, index) =>
               column.display === 'true' &&
               (column.customHeadRender ? (
-                column.customHeadRender({ index, ...column }, this.handleToggleColumn)
+                column.customHeadRender({ index, ...column }, this.handleToggleColumn, sortOrder)
               ) : (
                 <TableHeadCell
                   cellHeaderProps={
@@ -90,12 +113,13 @@ class TableHead extends React.Component {
                   type={'cell'}
                   ref={el => setCellRef(index + 1, findDOMNode(el))}
                   sort={column.sort}
-                  sortDirection={column.sortDirection}
+                  sortDirection={column.name === sortOrder.name ? sortOrder.direction : 'none'}
                   toggleSort={this.handleToggleColumn}
                   hint={column.hint}
                   print={column.print}
                   options={options}
-                  column={column}>
+                  column={column}
+                  components={components}>
                   {column.label}
                 </TableHeadCell>
               )),

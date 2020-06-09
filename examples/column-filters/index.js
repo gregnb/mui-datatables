@@ -36,6 +36,11 @@ class Example extends React.Component {
       {
         name: "Age",
         options: {
+          customBodyRender: (val, tableMeta) => {
+            console.log(val);
+            console.dir(tableMeta);
+            return val;
+          },
           filter: true,
           customFilterListOptions: { render: v => `Age: ${v}` },
         }
@@ -89,9 +94,8 @@ class Example extends React.Component {
       },
       selectableRows: 'multiple',
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: 'vertical',
       rowsPerPage: 10,
-      page: 1,
     };
 
     return (

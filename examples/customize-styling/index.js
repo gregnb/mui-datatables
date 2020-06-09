@@ -1,19 +1,22 @@
 import React from "react";
 import MUIDataTable from "../../src/";
-import {createMuiTheme, MuiThemeProvider, withStyles} from '@material-ui/core/styles';
+import { createMuiTheme, MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import classnames from 'classnames';
 
-const customStyles = {
+const customStyles = theme => ({
   BusinessAnalystRow: {
-    '& td': {backgroundColor: "#FAA"}
+    '& td': { backgroundColor: "#FAA" }
+  },
+  GreyLine: {
+    '& td': { backgroundColor: theme.palette.grey[200] }
   },
   NameCell: {
     fontWeight: 900
   },
-};
+});
 
 class Example extends React.Component {
 
@@ -21,7 +24,7 @@ class Example extends React.Component {
     super(props);
     this.state = {
       denseTable: false,
-      stacked: true
+      vertical: true
     };
   }
 
@@ -39,6 +42,28 @@ class Example extends React.Component {
         root: {
           backgroundColor: "#FFF"
         }
+      },
+      MuiToolbar: {
+        root: {
+          backgroundColor: '#f00'
+        }
+      },
+      MuiTableCell: {
+        head: {
+          backgroundColor: 'purple',
+        }
+      },
+      MUIDataTableSelectCell: {
+        headerCell: {
+          backgroundColor: 'blue',
+        }
+      },
+      MuiTableFooter: {
+        root: {
+          '& .MuiToolbar-root': {
+            backgroundColor: 'white',
+          }
+        }
       }
     }
   });
@@ -51,7 +76,7 @@ class Example extends React.Component {
 
   toggleResponsive = (event) => {
     this.setState({
-      stacked: event.target.checked ? true : false
+      vertical: event.target.checked ? true : false
     });
   }
 
@@ -75,9 +100,9 @@ class Example extends React.Component {
                 {
                   [this.props.classes.NameCell]: true
                 }),
-                style: {
-                  textDecoration: 'underline'
-                }
+              style: {
+                textDecoration: 'underline',
+              }
             };
           }
         }
@@ -86,7 +111,7 @@ class Example extends React.Component {
         name: "Title",
         options: {
           filter: true,
-          setCellHeaderProps: (value) => ({style:{textDecoration:'underline'}}),
+          setCellHeaderProps: (value) => ({ style: { textDecoration: 'underline' } }),
         }
       },
       {
@@ -146,19 +171,18 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: this.state.stacked ? 'stacked' : 'scrollMaxHeight',
-      fixedHeaderOptions: {
-        xAxis: true,
-        yAxis: true
-      },
+      responsive: this.state.vertical ? 'vertical' : 'standard',
+      fixedHeader: false,
+      fixedSelectColumn: false,
       rowHover: false,
-      setRowProps: (row) => {
+      setRowProps: (row, dataIndex, rowIndex) => {
         return {
           className: classnames(
             {
-              [this.props.classes.BusinessAnalystRow]: row[1] === "Business Analyst"
+              [this.props.classes.BusinessAnalystRow]: row[1] === "Business Analyst",
+              [this.props.classes.GreyLine]: rowIndex % 2 === 0 && row[1] !== "Business Analyst"
             }),
-          style: {border: '3px solid blue',}
+          style: { border: '3px solid blue', }
         };
       },
       setTableProps: () => {
@@ -189,20 +213,20 @@ class Example extends React.Component {
           <FormControlLabel
             control={
               <Switch
-                checked={this.state.stacked}
+                checked={this.state.vertical}
                 onChange={this.toggleResponsive}
-                value="stacked"
+                value="vertical"
                 color="primary"
               />
             }
-            label="Stacked Table"
+            label="Responsive Vertical Table"
           />
         </FormGroup>
-        <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options}/>
+        <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
       </MuiThemeProvider>
     );
 
   }
 }
 
-export default withStyles(customStyles, {name: "ExampleCard.js"})(Example);
+export default withStyles(customStyles, { name: "ExampleCard.js" })(Example);

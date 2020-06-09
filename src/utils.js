@@ -15,9 +15,15 @@ function escapeDangerousCSVCharacters(data) {
   return data;
 }
 
-function warnDeprecated(warning) {
-  if (process.env.NODE_ENV === 'development') {
-    console.error(`Deprecation Notice:  ${warning}`);
+function warnDeprecated(warning, consoleWarnings = true) {
+  if (consoleWarnings) {
+    console.warn(`Deprecation Notice:  ${warning}`);
+  }
+}
+
+function warnInfo(warning, consoleWarnings = true) {
+  if (consoleWarnings) {
+    console.warn(`${warning}`);
   }
 }
 
@@ -137,5 +143,6 @@ export {
   buildCSV,
   downloadCSV,
   warnDeprecated,
+  warnInfo,
   escapeDangerousCSVCharacters,
 };

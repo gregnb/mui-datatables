@@ -65,8 +65,8 @@ class Example extends React.Component {
         label: "Home Phone",
       },
       {
-        name: "phone.fake",
-        label: "Not a Phone #",
+        name: "phone.cell",
+        label: "Cell Phone #",
       },
       {
         name: "phone2.home",
@@ -77,7 +77,8 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: 'vertical',
+      enableNestedDataAccess: '.', // allows nested data separated by "." (see column names and the data structure above)
     };
 
     return (

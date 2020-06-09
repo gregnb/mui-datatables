@@ -9,8 +9,7 @@ class Example extends React.Component {
     page: 0,
     count: 100,
     data: [['Loading Data...']],
-    nameColumnSortDirection: null,
-    columnSortDirection: ['none', 'none', 'none', 'none', 'none'],
+    sortOrder: {},
     loading: false,
   };
 
@@ -66,13 +65,20 @@ class Example extends React.Component {
         ['Glen Nixon', 'Corporate Counselor', 'Arlington', 44, '$80,000'],
       ];
 
+      // here we're faking the sorting that would happen on the server-side
+
       var offset = page * 10;
       var data = [];
 
       if (order !== '') {
+        var sortCol = ['Name', 'Title', 'Location', 'Age', 'Salary'].indexOf(column);
+        if (sortCol === -1) sortCol = 3;
+
         if (order === 'asc') {
           var tempData = srcData.sort((a, b) => {
-            return a[3] - b[3];
+            if ( a[sortCol] < b[sortCol] ) return -1;
+            if ( a[sortCol] > b[sortCol] ) return 1;
+            return 0;
           });
 
           data =
@@ -81,7 +87,9 @@ class Example extends React.Component {
               : tempData.slice(offset, offset + 10);
         } else {
           tempData = srcData.sort((a, b) => {
-            return b[3] - a[3];
+            if ( a[sortCol] < b[sortCol] ) return 1;
+            if ( a[sortCol] > b[sortCol] ) return -1;
+            return 0;
           });
 
           data =
@@ -89,6 +97,7 @@ class Example extends React.Component {
               ? tempData.slice(offset, srcData.length)
               : tempData.slice(offset, offset + 10);
         }
+
       } else {
         data =
           offset + 10 >= srcData.length ? srcData.slice(offset, srcData.length) : srcData.slice(offset, offset + 10);
@@ -106,34 +115,13 @@ class Example extends React.Component {
     temp.order = order;
     temp.page = this.state.page;
 
-    let newColumnSortDirections = ['none', 'none', 'none', 'none', 'none'];
-
-    switch (column) {
-      case 'Name':
-        newColumnSortDirections[0] = order;
-        break;
-      case 'Title':
-        newColumnSortDirections[1] = order;
-        break;
-      case 'Location':
-        newColumnSortDirections[2] = order;
-        break;
-      case 'Age':
-        newColumnSortDirections[3] = order;
-        break;
-      case 'Salary':
-        newColumnSortDirections[4] = order;
-        break;
-      default:
-        break;
-    }
-
-    newColumnSortDirections[column.index] = order;
-
     this.xhrRequest(temp).then(data => {
       this.setState({
         data,
-        columnSortDirection: newColumnSortDirections,
+        sortOrder: {
+          name: column,
+          direction: order
+        }
       });
     });
   };
@@ -143,22 +131,25 @@ class Example extends React.Component {
       {
         name: 'Name',
         options: {
-          sortDirection: this.state.columnSortDirection[0],
-          customFilterListRender: v => `Name: ${v}`,
+          customFilterListOptions: {
+            render: v => `Name: ${v}`,
+          }
         },
       },
       {
         name: 'Title',
         options: {
-          sortDirection: this.state.columnSortDirection[1],
-          customFilterListRender: v => `Title: ${v}`,
+          customFilterListOptions: {
+            render: v => `Title: ${v}`,
+          }
         },
       },
       {
         name: 'Location',
         options: {
-          sortDirection: this.state.columnSortDirection[2],
-          customFilterListRender: v => `Location: ${v}`,
+          customFilterListOptions: {
+            render: v => `Location: ${v}`,
+          },
           customBodyRender: (value, tableMeta, updateValue) => {
             return <Cities value={value || ''} index={tableMeta.columnIndex} change={event => updateValue(event)} />;
           },
@@ -166,11 +157,9 @@ class Example extends React.Component {
       },
       {
         name: 'Age',
-        options: { sortDirection: this.state.columnSortDirection[3] },
       },
       {
         name: 'Salary',
-        options: { sortDirection: this.state.columnSortDirection[4] },
       },
     ];
     const { page, count, data } = this.state;
@@ -178,13 +167,13 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'scrollMaxHeight',
+      responsive: 'standard',
       serverSide: true,
       count: count,
       page: page,
       onColumnSortChange: (changedColumn, direction) => {
         let order = 'desc';
-        if (direction === 'ascending') {
+        if (direction === 'asc') {
           order = 'asc';
         }
 
@@ -196,7 +185,7 @@ class Example extends React.Component {
       <div>
         <MUIDataTable
           title={
-            <Typography variant="title">
+            <Typography variant="subtitle2">
               ACME Employee list{' '}
               {this.state.loading && (
                 <CircularProgress size={24} style={{ marginLeft: 15, position: 'relative', top: 4 }} />

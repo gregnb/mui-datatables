@@ -1,7 +1,7 @@
-import Chip from '@material-ui/core/Chip';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
+import TableFilterListItem from './TableFilterListItem';
 
 const defaultFilterListStyles = {
   root: {
@@ -32,6 +32,11 @@ class TableFilterList extends React.Component {
     onFilterUpdate: PropTypes.func,
     /** Extend the style applied to components */
     classes: PropTypes.object,
+    ItemComponent: PropTypes.any,
+  };
+
+  static defaultProps = {
+    ItemComponent: TableFilterListItem,
   };
 
   render() {
@@ -43,6 +48,7 @@ class TableFilterList extends React.Component {
       columnNames,
       serverSideFilterList,
       customFilterListUpdate,
+      ItemComponent,
     } = this.props;
     const { serverSide } = this.props.options;
 
@@ -55,7 +61,7 @@ class TableFilterList extends React.Component {
       else type = columnNames[index].filterType;
 
       return (
-        <Chip
+        <ItemComponent
           label={customFilterItem}
           key={customFilterItemIndex}
           onDelete={filterUpdate.bind(
@@ -64,19 +70,28 @@ class TableFilterList extends React.Component {
             item[customFilterItemIndex] || [],
             columnNames[index].name,
             type,
-            customFilterListUpdate[index],
+            null,
+            null,
           )}
           className={classes.chip}
+          itemKey={customFilterItemIndex}
+          index={index}
+          data={item}
+          columnNames={columnNames}
         />
       );
     };
 
     const filterChip = (index, data, colIndex) => (
-      <Chip
+      <ItemComponent
         label={filterListRenderers[index](data)}
         key={colIndex}
-        onDelete={filterUpdate.bind(null, index, data, columnNames[index].name, 'chip')}
+        onDelete={filterUpdate.bind(null, index, data, columnNames[index].name, 'chip', null, null)}
         className={classes.chip}
+        itemKey={colIndex}
+        index={index}
+        data={data}
+        columnNames={columnNames}
       />
     );
 
@@ -101,7 +116,9 @@ class TableFilterList extends React.Component {
     };
 
     return (
-      <div className={classes.root}>{serverSide ? getFilterList(serverSideFilterList) : getFilterList(filterList)}</div>
+      <div className={classes.root}>
+        {serverSide && serverSideFilterList ? getFilterList(serverSideFilterList) : getFilterList(filterList)}
+      </div>
     );
   }
 }
