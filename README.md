@@ -163,21 +163,6 @@ The component accepts the following props:
 |**`customFilterDialogFooter `**|function||Add a custom footer to the filter dialog. `customFilterDialogFooter(curentFilterList: array, applyFilters: function) => React Component`
 |**`elevation`**|number|4|Shadow depth applied to Paper component
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search
-|**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: <p><ul><li>"vertical" (default value): In smaller views the table cells will collapse such that the heading is to the left of the cell value.</li><li>"standard": Table will stay in the standard mode but make small changes to better fit the allocated space.<li>"simple": On very small devices the table rows will collapse into simple display.</li></ul></p>[Example](https://github.com/gregnb/mui-datatables/blob/master/examples/simple/index.js)
-|**`rowsPerPage`**|number|10|Number of rows allowed per page
-|**`rowsPerPageOptions`**|array|[10,15,100]|Options to provide in pagination for number of rows a user can select
-|**`rowHover`**|boolean|true|Enable/disable hover style over rows
-|**`fixedHeader`**|boolean|true|Enable/disable a fixed header for the table [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
-|**`fixedSelectColumn`**|boolean|true|Enable/disable fixed select column [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
-|**`sortFilterList`**|boolean|true|Enable/disable alphanumeric sorting of filter lists
-|**`sort`**|boolean|true|Enable/disable sort on all columns
-|**`filter`**|boolean|true|Show/hide filter icon from toolbar
-|**`search`**|boolean|true|Show/hide search icon from toolbar
-|**`searchOpen`**|boolean|false|Initially displays search bar  
-|**`searchText`**|string||Initial search text
-|**`searchPlaceholder`**|string||Search text placeholder. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-search/index.js)
-|**`searchProps`**|object|{}|Props applied to the search text box. You can set method callbacks like onBlur, onKeyUp, etc, this way. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-search/index.js)
-|**`print`**|boolean|true|Show/hide print	 icon from toolbar
 |**`download`**|boolean|true|Show/hide download icon from toolbar
 |**`downloadOptions`**|object|`{filename: 'tableDownload.csv', separator: ','}`|Options to change the output of the CSV file: `filename`: string, `separator`: string, `filterOptions`: object(`useDisplayedColumnsOnly`: boolean, `useDisplayedRowsOnly`: boolean)
 |**`elevation`**|number|4|Shadow depth applied to Paper component.
