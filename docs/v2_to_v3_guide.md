@@ -114,6 +114,10 @@ Allows the following placement options for the select toolbar:
 
 Boolean option that allows checkboxes for selectable rows to be hidden.
 
+### tableBodyHeight and tableBodyMaxHeight
+
+Options that allows developers to control the height of the table. Both take in a css string (ex: '500px', 'auto', '100%', etc). If both are set, tableBodyHeight will take precedence.
+
 ### sortOrder
 
 An option that allows developers to control the sortDirection of the table (previously this was done through a sortDirection option in the columns object). This option may eventually allow for secondary sorts. 
