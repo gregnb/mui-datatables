@@ -1,12 +1,21 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import MuiPopover from '@material-ui/core/Popover';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
-const Popover = ({ className, trigger, refExit, content, ...providedProps }) => {
+const Popover = ({ className, trigger, refExit, hide, content, ...providedProps }) => {
   const [isOpen, open] = useState(false);
   const anchorEl = useRef(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      const shouldHide = typeof hide === 'boolean' ? hide : false;
+      if (shouldHide) {
+        open(false);
+      }
+    }
+  }, [hide, isOpen, open]);
 
   const handleClick = event => {
     anchorEl.current = event.currentTarget;
@@ -72,6 +81,7 @@ Popover.propTypes = {
   refExit: PropTypes.func,
   trigger: PropTypes.node.isRequired,
   content: PropTypes.node.isRequired,
+  hide: PropTypes.bool,
 };
 
 export default Popover;
