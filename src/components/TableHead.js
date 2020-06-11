@@ -55,7 +55,7 @@ class TableHead extends React.Component {
     // When the disableToolbarSelect option is true, there can be
     // selected items that aren't visible, so we need to be more
     // precise when determining if the head checkbox should be checked.
-    if (options.disableToolbarSelect === true || (options.selectToolbarPlacement === 'none' || options.selectToolbarPlacement === 'above')) {
+    if (options.disableToolbarSelect === true || options.selectToolbarPlacement === 'none' || options.selectToolbarPlacement === 'above') {
       if (isChecked) {
         for (let ii = 0; ii < data.length; ii++) {
           if (!selectedRows.lookup[data[ii].dataIndex]) {
