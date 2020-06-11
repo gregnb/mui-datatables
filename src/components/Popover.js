@@ -13,18 +13,11 @@ const Popover = ({ className, trigger, refExit, content, ...providedProps }) => 
     open(true);
   };
 
-  const handleRequestClose = callback => {
+  const handleRequestClose = () => {
     open(false);
-    if (callback && typeof callback === 'function') {
-      callback();
-    }
   };
 
-  let closeIconClass;
-  if (providedProps.classes && providedProps.classes.closeIcon) {
-    closeIconClass = providedProps.classes.closeIcon;
-    delete providedProps.classes.closeIcon;
-  }
+  const closeIconClass = providedProps.classes.closeIcon;
 
   const transformOriginSpecs = {
     vertical: 'top',
