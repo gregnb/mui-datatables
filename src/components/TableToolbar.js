@@ -352,6 +352,7 @@ class TableToolbar extends React.Component {
           {options.viewColumns && (
             <Popover
               refExit={this.setActiveIcon.bind(null)}
+              classes={{ closeIcon: classes.filterCloseIcon }}
               trigger={
                 <Tooltip title={viewColumns} disableFocusListener>
                   <IconButton
