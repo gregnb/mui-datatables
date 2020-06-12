@@ -894,7 +894,7 @@ class MUIDataTable extends React.Component {
       const filterType = column.filterType || options.filterType;
       if (filterVal.length || filterType === 'custom') {
         if (column.filterOptions && column.filterOptions.logic) {
-          if (column.filterOptions.logic(columnValue, filterVal)) isFiltered = true;
+          if (column.filterOptions.logic(columnValue, filterVal, row)) isFiltered = true;
         } else if (filterType === 'textField' && !this.hasSearchText(columnVal, filterVal, caseSensitive)) {
           isFiltered = true;
         } else if (
