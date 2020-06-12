@@ -153,6 +153,7 @@ The component accepts the following props:
 |:--:|:-----|:--|:-----|
 |**`caseSensitive `**|boolean|false|Enable/disable case sensitivity for search.
 |**`confirmFilters`**|boolean|false|Works in conjunction with the **customFilterDialogFooter** option and makes it so filters have to be confirmed before being applied to the table. When this option is true, the customFilterDialogFooter callback will receive an applyFilters function which, when called, will apply the filters to the table. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-filters/index.js)
+|**`columnOrder`**|array||An array of numbers (column indices) indicating the order the columns should be displayed in. Defaults to the order provided by the Columns prop. This option is useful if you'd like certain columns to swap positions (see draggableColumns option).
 |**`count`**|number||User provided override for total number of rows.
 |**`customFooter`**|function||Render a custom table footer. `function(count, page, rowsPerPage, changeRowsPerPage, changePage, `[`textLabels: object`](https://github.com/gregnb/mui-datatables/blob/master/src/textLabels.js)`) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-footer/index.js)
 |**`customSort`**|function||Override default sorting with custom function. `function(data: array, colIndex: number, order: string) => array`
@@ -165,7 +166,8 @@ The component accepts the following props:
 |**`customFilterDialogFooter `**|function||Add a custom footer to the filter dialog. `customFilterDialogFooter(curentFilterList: array, applyFilters: function) => React Component`
 |**`download`**|boolean|true|Show/hide download icon from toolbar
 |**`downloadOptions`**|object|`{filename: 'tableDownload.csv', separator: ','}`|Options to change the output of the CSV file: `filename`: string, `separator`: string, `filterOptions`: object(`useDisplayedColumnsOnly`: boolean, `useDisplayedRowsOnly`: boolean)
-|**`elevation`**|number|4|Shadow depth applied to Paper component.
+|**`draggableColumns`**|object|{}|An object of options describing how dragging columns should work. The options are: <p><ul><li>`enabled:boolean`: Indicates if draggable columns are enabled. Defaults to false.</li><li>`transitionTime:number`: The time in milliseconds it takes for columns to swap positions. Defaults to 300.</li></ul></p>To disable the dragging of a particular column, see the "draggable" option in the columns options. Dragging a column to a new position updates the columnOrder array and triggers the onColumnOrderChange callback.
+|**`elevation`**|number|4|Shadow depth applied to Paper component. 
 |**`enableNestedDataAccess`**|string|""|If provided a non-empty string (ex: "."), it will use that value in the column's names to access nested data. For example, given a enableNestedDataAccess value of "." and a column name of "phone.cell", the column would use the value found in `phone:{cell:"555-5555"}`. Any amount of nesting will work. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/data-as-objects/index.js) demonstrates the functionality. 
 |**`expandableRows`**|boolean|false|Enable/disable expandable rows.
 |**`expandableRowsHeader`**|boolean|true|Show/hide the expand all/collapse all row header for expandable rows.
@@ -179,6 +181,7 @@ The component accepts the following props:
 |**`onCellClick`**|function||Callback function that triggers when a cell is clicked. `function(colData: any, cellMeta: { colIndex: number, rowIndex: number, dataIndex: number }) => void`
 |**`onChangePage`**|function||Callback function that triggers when a page has changed. `function(currentPage: number) => void`
 |**`onChangeRowsPerPage`**|function||Callback function that triggers when the number of rows per page has changed. `function(numberOfRows: number) => void`
+|**`onColumnOrderChange`**|function||Callback function that triggers when a column has been dragged to a new location. `function(newColumnOrder:array, columnIndex:number, newPosition:number) => void`
 |**`onColumnSortChange`**|function||Callback function that triggers when a column has been sorted. `function(changedColumn: string, direction: string) => void`
 |**`onDownload`**|function||A callback function that triggers when the user downloads the CSV file. In the callback, you can control what is written to the CSV file. This method can be used to add the Excel specific BOM character (see this [example](https://github.com/gregnb/mui-datatables/pull/722#issuecomment-526346440)). `function(buildHead: (columns) => string, buildBody: (data) => string, columns, data) => string`. Return `false` to cancel download of file.
 |**`onFilterChange`**|function||Callback function that triggers when filters have changed. `function(changedColumn: string, filterList: array, type: enum('checkbox', 'dropdown', 'multiselect', 'textField', 'custom', 'chip', 'reset'), changedColumnIndex, displayData) => void`
@@ -260,6 +263,7 @@ const columns = [
 |**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(columnMeta, handleToggleColumn, sortOrder) => string`&#124;` React Component`
 |**`display`**|string|'true'|Display column in table. `enum('true', 'false', 'excluded')`
 |**`download`**|boolean|true|Display column in CSV download file.
+|**`draggable`**|boolean|true|Determines if a column can be dragged. The draggableColumns.enabled option must also be true.
 |**`empty`**|boolean|false|This denotes whether the column has data or not (for use with intentionally empty columns).
 |**`filter`**|boolean|true|Display column in filter list.
 |**`filterList`**|array||Filter value list [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)

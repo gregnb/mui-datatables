@@ -19,6 +19,8 @@ import DefaultTableToolbarSelect from './components/TableToolbarSelect';
 import MuiTooltip from '@material-ui/core/Tooltip';
 import getTextLabels from './textLabels';
 import { buildMap, getCollatorComparator, sortCompare, getPageValue, warnDeprecated, warnInfo } from './utils';
+import { DndProvider } from 'react-dnd';
+  import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const defaultTableStyles = theme => ({
   root: {},
@@ -154,6 +156,7 @@ class MUIDataTable extends React.Component {
     /** Options used to describe table */
     options: PropTypes.shape({
       caseSensitive: PropTypes.bool,
+      columnOrder: PropTypes.array,
       count: PropTypes.number,
       confirmFilters: PropTypes.bool,
       consoleWarnings: PropTypes.bool,
@@ -165,6 +168,7 @@ class MUIDataTable extends React.Component {
       customSort: PropTypes.func,
       customToolbar: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customToolbarSelect: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+      draggableColumns: PropTypes.object,
       enableNestedDataAccess: PropTypes.string,
       expandableRows: PropTypes.bool,
       expandableRowsHeader: PropTypes.bool,
@@ -283,6 +287,7 @@ class MUIDataTable extends React.Component {
     this.tableRef = React.createRef();
     this.tableContent = React.createRef();
     this.headCellRefs = {};
+    this.timers = {};
     this.setHeadResizeable = () => {};
     this.updateDividers = () => {};
   }
@@ -359,6 +364,10 @@ class MUIDataTable extends React.Component {
     downloadOptions: {
       filename: 'tableDownload.csv',
       separator: ',',
+    },
+    draggableColumns: {
+      enabled: false,
+      transitionTime: 300
     },
     elevation: 4,
     enableNestedDataAccess: '',
@@ -543,12 +552,18 @@ class MUIDataTable extends React.Component {
 
   /*
    *  Build the source table data
+   *
+   *  newColumns - columns from the options object.
+   *  prevColumns - columns object saved onto ths state.
+   *  newColumnOrder - columnOrder from the options object.
+   *  prevColumnOrder - columnOrder object saved onto the state.
    */
 
-  buildColumns = (newColumns, prevColumns) => {
+  buildColumns = (newColumns, prevColumns, newColumnOrder, prevColumnOrder) => {
     let columnData = [];
     let filterData = [];
     let filterList = [];
+    let columnOrder = [];
 
     newColumns.forEach((column, colIndex) => {
       let columnOptions = {
@@ -562,6 +577,7 @@ class MUIDataTable extends React.Component {
         viewColumns: true,
       };
 
+      columnOrder.push(colIndex);
       const options = { ...column.options };
 
       if (typeof column === 'object') {
@@ -608,7 +624,18 @@ class MUIDataTable extends React.Component {
       filterList[colIndex] = [];
     });
 
-    return { columns: columnData, filterData, filterList };
+    if ( Array.isArray(newColumnOrder) ) {
+      columnOrder = newColumnOrder;
+    } else if ( 
+      Array.isArray(prevColumnOrder) && 
+      Array.isArray(newColumns) && 
+      Array.isArray(prevColumns) && 
+      newColumns.length === prevColumns.length
+    ) {
+      columnOrder = prevColumnOrder;
+    }
+
+    return { columns: columnData, filterData, filterList, columnOrder };
   };
 
   transformData = (columns, data) => {
@@ -654,7 +681,7 @@ class MUIDataTable extends React.Component {
 
   setTableData(props, status, dataUpdated, callback = () => {}) {
     let tableData = [];
-    let { columns, filterData, filterList } = this.buildColumns(props.columns, this.state.columns);
+    let { columns, filterData, filterList, columnOrder } = this.buildColumns(props.columns, this.state.columns, this.options.columnOrder, this.state.columnOrder);
     let sortIndex = null;
     let sortDirection = 'none';
     let tableMeta;
@@ -844,6 +871,7 @@ class MUIDataTable extends React.Component {
         data: tableData,
         sortOrder: sortOrder,
         displayData: this.getDisplayData(columns, tableData, filterList, searchText, tableMeta),
+        columnOrder
       },
       callback,
     );
@@ -1320,6 +1348,37 @@ class MUIDataTable extends React.Component {
     return this.state.expandedRows.data.length === this.state.data.length;
   };
 
+  reorderColumns = (prevColumnOrder, columnIndex, newPosition) => {
+      let columnOrder = prevColumnOrder.slice();
+      var srcIndex = columnOrder.indexOf(columnIndex);
+      var targetIndex = columnOrder.indexOf(newPosition);
+
+      if (srcIndex !== -1 && targetIndex !== -1) {
+        let newItem = columnOrder[srcIndex];
+        columnOrder = [...columnOrder.slice(0,srcIndex), ...columnOrder.slice(srcIndex+1)];
+        columnOrder = [...columnOrder.slice(0,targetIndex), newItem, ...columnOrder.slice(targetIndex)];
+      }
+      return columnOrder;
+  }
+
+  updateColumnOrder = (prevColumnOrder, columnIndex, newPosition) => {
+    this.setState(
+      prevState => {
+        let columnOrder = this.reorderColumns(prevColumnOrder, columnIndex, newPosition);
+
+        return {
+          columnOrder,
+        };
+      },
+      () => {
+        this.setTableAction('columnOrderChange');
+        if (this.options.onColumnOrderChange) {
+          this.options.onColumnOrderChange(this.state.columnOrder, columnIndex, newPosition);
+        }
+      },
+    );
+  };
+
   selectRowDelete = () => {
     const { selectedRows, data, filterList } = this.state;
 
@@ -1621,6 +1680,7 @@ class MUIDataTable extends React.Component {
       searchText,
       sortOrder,
       serverSideFilterList,
+      columnOrder,
     } = this.state;
 
     const TableBodyComponent = TableBody || DefaultTableBody;
@@ -1755,6 +1815,7 @@ class MUIDataTable extends React.Component {
               options={this.props.options}
             />
           )}
+          <DndProvider backend={HTML5Backend}>
           <MuiTable
             ref={el => (this.tableRef = el)}
             tabIndex={'0'}
@@ -1769,7 +1830,6 @@ class MUIDataTable extends React.Component {
               count={rowCount}
               page={page}
               rowsPerPage={rowsPerPage}
-              handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
               selectedRows={selectedRows}
               selectRowUpdate={this.selectRowUpdate}
               toggleSort={this.toggleSortColumn}
@@ -1779,6 +1839,12 @@ class MUIDataTable extends React.Component {
               toggleAllExpandableRows={this.toggleAllExpandableRows}
               options={this.options}
               sortOrder={sortOrder}
+              columnOrder={columnOrder}
+              reorderColumns={this.reorderColumns}
+              updateColumnOrder={this.updateColumnOrder}
+              headCellRefs={this.headCellRefs}
+              tableRef={this.getTableContentRef}
+              timers={this.timers}
               components={this.props.components}
             />
             <TableBodyComponent
@@ -1793,6 +1859,7 @@ class MUIDataTable extends React.Component {
               expandedRows={expandedRows}
               toggleExpandRow={this.toggleExpandRow}
               options={this.options}
+              columnOrder={columnOrder}
               filterList={filterList}
             />
             {this.options.customTableBodyFooterRender
@@ -1805,6 +1872,7 @@ class MUIDataTable extends React.Component {
                 })
               : null}
           </MuiTable>
+          </DndProvider>
         </div>
         <TableFooterComponent
           options={this.options}

@@ -210,8 +210,21 @@ class TableBody extends React.Component {
     this.props.options.onRowClick && this.props.options.onRowClick(row, data, event);
   };
 
+  processRow = (row, columnOrder) => {
+    var ret = [];
+
+    for (var ii = 0; ii < row.length; ii++) {
+      ret.push({
+        value: row[ columnOrder[ii] ],
+        index: columnOrder[ii]
+      });
+    }
+
+    return ret;
+  };
+
   render() {
-    const { classes, columns, toggleExpandRow, options } = this.props;
+    const { classes, columns, toggleExpandRow, options, columnOrder } = this.props;
     const tableRows = this.buildRows();
     const visibleColCnt = columns.filter(c => c.display === 'true').length;
 
@@ -228,6 +241,8 @@ class TableBody extends React.Component {
             let isRowSelected = options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false;
             let isRowSelectable = this.isRowSelectable(dataIndex);
             let bodyClasses = options.setRowProps ? options.setRowProps(row, dataIndex, rowIndex) : {};
+
+            const processedRow = this.processRow(row, columnOrder);
 
             return (
               <React.Fragment key={rowIndex}>
@@ -269,22 +284,22 @@ class TableBody extends React.Component {
                     isRowSelectable={isRowSelectable}
                     id={'MUIDataTableSelectCell-' + dataIndex}
                   />
-                  {row.map(
-                    (column, columnIndex) =>
-                      columns[columnIndex].display === 'true' && (
+                  {processedRow.map(
+                    (column) =>
+                      columns[column.index].display === 'true' && (
                         <TableBodyCell
-                          {...(columns[columnIndex].setCellProps
-                            ? columns[columnIndex].setCellProps(column, dataIndex, columnIndex)
+                          {...(columns[column.index].setCellProps
+                            ? columns[column.index].setCellProps(column.value, dataIndex, column.index)
                             : {})}
-                          data-testid={`MuiDataTableBodyCell-${columnIndex}-${rowIndex}`}
+                          data-testid={`MuiDataTableBodyCell-${column.index}-${rowIndex}`}
                           dataIndex={dataIndex}
                           rowIndex={rowIndex}
-                          colIndex={columnIndex}
-                          columnHeader={columns[columnIndex].label}
-                          print={columns[columnIndex].print}
+                          colIndex={column.index}
+                          columnHeader={columns[column.index].label}
+                          print={columns[column.index].print}
                           options={options}
-                          key={columnIndex}>
-                          {column}
+                          key={column.index}>
+                          {column.value}
                         </TableBodyCell>
                       ),
                   )}
