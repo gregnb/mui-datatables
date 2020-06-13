@@ -17,6 +17,22 @@ const defaultResizeStyles = {
   },
 };
 
+function getParentOffsetLeft(tableEl) {
+  let ii = 0,
+    parentOffsetLeft = 0,
+    offsetParent = tableEl.offsetParent;
+  while (offsetParent){
+    parentOffsetLeft = parentOffsetLeft + (offsetParent.offsetLeft || 0);
+    offsetParent = offsetParent.offsetParent;
+    ii++;
+    if (ii > 1000) {
+      console.warn('Table nested within 1000 divs. Maybe an error.');
+      break;
+    }
+  }
+  return parentOffsetLeft;
+}
+
 class TableResize extends React.Component {
   static propTypes = {
     /** Extend the style applied to components */
@@ -59,14 +75,19 @@ class TableResize extends React.Component {
     const { width: tableWidth, height: tableHeight } = tableEl.getBoundingClientRect();
     const { resizeCoords } = this.state;
 
+    let parentOffsetLeft = getParentOffsetLeft(tableEl);
     let finalCells = Object.entries(this.cellsRef);
     finalCells.pop();
-    finalCells.forEach(([key, item]) => {
+    finalCells.forEach(([key, item], idx) => {
       if (!item) return;
 
-      const elRect = item.getBoundingClientRect();
+      let elRect = item.getBoundingClientRect();
+      let left = elRect.left;
+      //if (idx === 0) {
+        left = (left || 0) - parentOffsetLeft;
+      //}
       const elStyle = window.getComputedStyle(item, null);
-      resizeCoords[key] = { left: elRect.left + item.offsetWidth - parseInt(elStyle.paddingLeft) / 2 };
+      resizeCoords[key] = { left: left + item.offsetWidth - parseInt(elStyle.paddingLeft) / 2 };
     });
 
     this.setState({ tableWidth, tableHeight, resizeCoords }, this.updateWidths);
@@ -98,8 +119,10 @@ class TableResize extends React.Component {
     const { width: tableWidth } = tableEl.getBoundingClientRect();
     const { selectableRows } = this.props.options;
 
+    let parentOffsetLeft = getParentOffsetLeft(tableEl);
+
     if (isResize) {
-      let leftPos = e.clientX;
+      let leftPos = e.clientX - parentOffsetLeft;
 
       const handleMoveRightmostBoundary = (leftPos, tableWidth, fixedMinWidth) => {
         if (leftPos > tableWidth - fixedMinWidth) {
