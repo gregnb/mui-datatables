@@ -209,7 +209,7 @@ class MUIDataTable extends React.Component {
       tableBodyHeight: PropTypes.string,
       tableBodyMaxHeight: PropTypes.string,
       renderExpandableRow: PropTypes.func,
-      resizableColumns: PropTypes.bool,
+      resizableColumns: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
       responsive: PropTypes.oneOf(['standard', 'vertical', 'simple']),
       rowHover: PropTypes.bool,
       rowsExpanded: PropTypes.array,
@@ -321,7 +321,7 @@ class MUIDataTable extends React.Component {
       this.setState({ page: 0 });
     }
 
-    if (this.options.resizableColumns) {
+    if (this.options.resizableColumns === true || (this.options.resizableColumns && this.options.resizableColumns.enabled) ) {
       this.setHeadResizeable(this.headCellRefs, this.tableRef);
       this.updateDividers();
     }
@@ -1747,7 +1747,7 @@ class MUIDataTable extends React.Component {
           columnNames={columnNames}
         />
         <div style={{ position: 'relative', ...tableHeightVal }} className={responsiveClass}>
-          {this.options.resizableColumns && (
+          { (this.options.resizableColumns === true || (this.options.resizableColumns && this.options.resizableColumns.enabled)) && (
             <TableResizeComponent
               key={rowCount}
               updateDividers={fn => (this.updateDividers = fn)}

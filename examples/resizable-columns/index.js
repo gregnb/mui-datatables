@@ -30,7 +30,7 @@ function Example(props) {
       }
     },
     {
-      name: "Title",
+      name: "Business Title",
       options: {
         hint: "?"
       }
@@ -49,7 +49,7 @@ function Example(props) {
   const options = {
     filter: true,
     filterType: 'dropdown',
-    resizableColumns: true
+    resizableColumns: true,
   };
 
   return (
