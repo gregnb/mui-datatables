@@ -211,15 +211,13 @@ class TableBody extends React.Component {
   };
 
   processRow = (row, columnOrder) => {
-    var ret = [];
-
-    for (var ii = 0; ii < row.length; ii++) {
+    let ret = [];
+    for (let ii = 0; ii < row.length; ii++) {
       ret.push({
         value: row[ columnOrder[ii] ],
         index: columnOrder[ii]
       });
     }
-
     return ret;
   };
 

@@ -33,7 +33,6 @@ function TableHead(props) {
     setCellRef,
     selectedRows,
     expandedRows,
-    reorderColumns,
     updateColumnOrder,
     columnOrder,
     headCellRefs,
@@ -82,7 +81,7 @@ function TableHead(props) {
       index: colIndex,
     };
   });
-  
+
   return (
     <MuiTableHead
       className={classNames({
@@ -131,7 +130,6 @@ function TableHead(props) {
                 print={column.print}
                 options={options}
                 column={column}
-                reorderColumns={reorderColumns}
                 updateColumnOrder={updateColumnOrder}
                 columnOrder={columnOrder}
                 timers={timers}

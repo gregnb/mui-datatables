@@ -20,7 +20,7 @@ import MuiTooltip from '@material-ui/core/Tooltip';
 import getTextLabels from './textLabels';
 import { buildMap, getCollatorComparator, sortCompare, getPageValue, warnDeprecated, warnInfo } from './utils';
 import { DndProvider } from 'react-dnd';
-  import { HTML5Backend } from 'react-dnd-html5-backend';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const defaultTableStyles = theme => ({
   root: {},
@@ -1348,24 +1348,9 @@ class MUIDataTable extends React.Component {
     return this.state.expandedRows.data.length === this.state.data.length;
   };
 
-  reorderColumns = (prevColumnOrder, columnIndex, newPosition) => {
-      let columnOrder = prevColumnOrder.slice();
-      var srcIndex = columnOrder.indexOf(columnIndex);
-      var targetIndex = columnOrder.indexOf(newPosition);
-
-      if (srcIndex !== -1 && targetIndex !== -1) {
-        let newItem = columnOrder[srcIndex];
-        columnOrder = [...columnOrder.slice(0,srcIndex), ...columnOrder.slice(srcIndex+1)];
-        columnOrder = [...columnOrder.slice(0,targetIndex), newItem, ...columnOrder.slice(targetIndex)];
-      }
-      return columnOrder;
-  }
-
-  updateColumnOrder = (prevColumnOrder, columnIndex, newPosition) => {
+  updateColumnOrder = (columnOrder, columnIndex, newPosition) => {
     this.setState(
       prevState => {
-        let columnOrder = this.reorderColumns(prevColumnOrder, columnIndex, newPosition);
-
         return {
           columnOrder,
         };
@@ -1840,7 +1825,6 @@ class MUIDataTable extends React.Component {
               options={this.options}
               sortOrder={sortOrder}
               columnOrder={columnOrder}
-              reorderColumns={this.reorderColumns}
               updateColumnOrder={this.updateColumnOrder}
               headCellRefs={this.headCellRefs}
               tableRef={this.getTableContentRef}
