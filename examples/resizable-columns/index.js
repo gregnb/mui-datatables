@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 
 function Example(props) {
 
-  const [marginLeft, setMarginLeft] = useState(200);
+  const [marginLeft, setMarginLeft] = useState(10);
 
   const [counter, setCounter] = useState(1);
   const incrCount = () => { // We update an arbitrary value here to test table resizing on state updates
