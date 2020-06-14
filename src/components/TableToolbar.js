@@ -149,7 +149,7 @@ class TableToolbar extends React.Component {
 
       // now, check columns:
       if (options.downloadOptions.filterOptions.useDisplayedColumnsOnly) {
-        columnsToDownload = columns.filter((_, index) => _.display === 'true');
+        columnsToDownload = columns.filter(_ => _.display === 'true');
 
         dataToDownload = dataToDownload.map(row => {
           row.data = row.data.filter((_, index) => columns[index].display === 'true');
@@ -258,7 +258,6 @@ class TableToolbar extends React.Component {
       resetFilters,
       toggleViewColumn,
       title,
-      tableRef,
       components = {},
       updateFilterByType,
     } = this.props;
@@ -353,6 +352,7 @@ class TableToolbar extends React.Component {
           {options.viewColumns && (
             <Popover
               refExit={this.setActiveIcon.bind(null)}
+              classes={{ closeIcon: classes.filterCloseIcon }}
               trigger={
                 <Tooltip title={viewColumns} disableFocusListener>
                   <IconButton
