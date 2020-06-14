@@ -1,70 +1,67 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
 
-class Example extends React.Component {
+import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
 
-  constructor(props) {
-    super(props);
+function Example(props) {
 
-    this.state = { counter: 1 };
-  }
+  const [marginLeft, setMarginLeft] = useState(10);
 
-  // We update an arbitrary value here to test table resizing on state updates
-  update = () => {
-    let { counter } = this.state;
-    counter += 1;
-
-    this.setState({ counter });
+  const [counter, setCounter] = useState(1);
+  const incrCount = () => { // We update an arbitrary value here to test table resizing on state updates
+    setCounter(counter + 1);
   };
 
-  render() {
-    const { counter } = this.state;
+  const columns = [
+    {
+      name: "Counter",
+      options: {
+        empty: true,
+        customBodyRender: value => <button onClick={incrCount}>+</button>
+      }
+    },
+    {
+      name: "Name",
+      options: {
+        sort: false,
+        hint: "?"
+      }
+    },
+    {
+      name: "Business Title",
+      options: {
+        hint: "?"
+      }
+    },
+    "Location"
+  ];
 
-    const columns = [
-      {
-        name: "Counter",
-        options: {
-          empty: true,
-          customBodyRender: value => <button onClick={this.update}>+</button>
-        }
-      },
-      {
-        name: "Name",
-        options: {
-          sort: false,
-          hint: "?"
-        }
-      },
-      {
-        name: "Title",
-        options: {
-          hint: "?"
-        }
-      },
-      "Location"
-    ];
+  const data = [
+    ["Gabby George", "Business Analyst", "Minneapolis"],
+    ["Aiden Lloyd", "Business Consultant", "Dallas"],
+    ["Jaden Collins", "Attorney", "Santa Ana"],
+    ["Franky Rees", "Business Analyst", "St. Petersburg"],
+    ["Aaren Rose", null, "Toledo"]
+  ];
 
-    const data = [
-      ["Gabby George", "Business Analyst", "Minneapolis"],
-      ["Aiden Lloyd", "Business Consultant", "Dallas"],
-      ["Jaden Collins", "Attorney", "Santa Ana"],
-      ["Franky Rees", "Business Analyst", "St. Petersburg"],
-      ["Aaren Rose", null, "Toledo"]
-    ];
+  const options = {
+    filter: true,
+    filterType: 'dropdown',
+    resizableColumns: true,
+  };
 
-
-    const options = {
-      filter: true,
-      filterType: 'dropdown',
-      resizableColumns: true
-    };
-
-    return (
-      <MUIDataTable title={"ACME Employee list" + " [" + counter + "]"} data={data} columns={columns} options={options} />
-    );
-
-  }
+  return (
+    <>
+      <FormControl>
+        <TextField label="Left Margin" type="number" value={marginLeft} onChange={(e) => setMarginLeft(e.target.value)} />
+      </FormControl>
+      <div style={{marginLeft: marginLeft + 'px'}}>
+        <MUIDataTable title={"ACME Employee list" + " [" + counter + "]"} data={data} columns={columns} options={options} />
+      </div>
+    </>
+  );
 }
 
 export default Example;
