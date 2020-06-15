@@ -1,110 +1,88 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import MuiPopover from '@material-ui/core/Popover';
 import IconButton from '@material-ui/core/IconButton';
-import { findDOMNode } from 'react-dom';
 import CloseIcon from '@material-ui/icons/Close';
 
-class Popover extends React.Component {
-  state = {
-    open: false,
-  };
+const Popover = ({ className, trigger, refExit, hide, content, ...providedProps }) => {
+  const [isOpen, open] = useState(false);
+  const anchorEl = useRef(null);
 
-  UNSAFE_componentWillMount() {
-    this.anchorEl = null;
-  }
-
-  componentDidMount() {
-    if (this.props.refClose) {
-      this.props.refClose(this.handleRequestClose);
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    /*
-     * Update Popover position if a filter removes data from the table because
-     * it affects the window height which would cause the Popover to in the wrong place
-     */
-    if (this.state.open === true) {
-      this.anchorEl = findDOMNode(this.anchorEl);
-      if (this.popoverActions) {
-        this.popoverActions.updatePosition();
-      }
-      const shouldHide = typeof this.props.hide === 'boolean' ? this.props.hide : false;
+  useEffect(() => {
+    if (isOpen) {
+      const shouldHide = typeof hide === 'boolean' ? hide : false;
       if (shouldHide) {
-        this.handleRequestClose();
+        open(false);
       }
     }
-  }
+  }, [hide, isOpen, open]);
 
-  handleClick = () => {
-    this.anchorEl = findDOMNode(this.anchorEl);
-    this.setState({ open: true });
+  const handleClick = event => {
+    anchorEl.current = event.currentTarget;
+    open(true);
   };
 
-  handleRequestClose = cb => {
-    this.setState({ open: false }, cb && typeof cb === 'function' ? cb() : () => {});
+  const handleRequestClose = () => {
+    open(false);
   };
 
-  handleOnExit = () => {
-    if (this.props.refExit) {
-      this.props.refExit();
+  const closeIconClass = providedProps.classes.closeIcon;
+  delete providedProps.classes.closeIcon; // remove non-standard class from being passed to the popover component
+
+  const transformOriginSpecs = {
+    vertical: 'top',
+    horizontal: 'center',
+  };
+
+  const anchorOriginSpecs = {
+    vertical: 'bottom',
+    horizontal: 'center',
+  };
+
+  const handleOnExit = () => {
+    if (refExit) {
+      refExit();
     }
   };
 
-  render() {
-    const { className, placement, trigger, refExit, content, hide, ...providedProps } = this.props;
-    let closeIconClass;
-    if (providedProps.classes && providedProps.classes.closeIcon) {
-      closeIconClass = providedProps.classes.closeIcon;
-      delete providedProps.classes.closeIcon;
-    }
+  const triggerProps = {
+    key: 'content',
+    onClick: event => {
+      if (trigger.props.onClick) trigger.props.onClick();
+      handleClick(event);
+    },
+  };
 
-    const transformOriginSpecs = {
-      vertical: 'top',
-      horizontal: 'center',
-    };
+  return (
+    <>
+      <span {...triggerProps}>{trigger}</span>
+      <MuiPopover
+        elevation={2}
+        open={isOpen}
+        onClose={handleRequestClose}
+        onExited={handleOnExit}
+        anchorEl={anchorEl.current}
+        anchorOrigin={anchorOriginSpecs}
+        transformOrigin={transformOriginSpecs}
+        {...providedProps}>
+        <IconButton
+          aria-label="Close"
+          onClick={handleRequestClose}
+          className={closeIconClass}
+          style={{ position: 'absolute', right: '4px', top: '4px' }}>
+          <CloseIcon />
+        </IconButton>
+        {content}
+      </MuiPopover>
+    </>
+  );
+};
 
-    const anchorOriginSpecs = {
-      vertical: 'bottom',
-      horizontal: 'center',
-    };
-
-    const triggerEl = React.cloneElement(<span>{trigger}</span>, {
-      key: 'content',
-      ref: el => (this.anchorEl = el),
-      onClick: () => {
-        if (trigger.props.onClick) trigger.props.onClick();
-        this.handleClick();
-      },
-    });
-
-    return (
-      <React.Fragment>
-        <MuiPopover
-          action={actions => (this.popoverActions = actions)}
-          elevation={2}
-          open={this.state.open}
-          onClose={this.handleRequestClose}
-          onExited={this.handleOnExit}
-          anchorEl={this.anchorEl}
-          ref={el => this.popoverEl}
-          anchorOrigin={anchorOriginSpecs}
-          transformOrigin={transformOriginSpecs}
-          {...providedProps}>
-          <IconButton
-            aria-label="Close"
-            onClick={this.handleRequestClose}
-            className={closeIconClass}
-            style={{ position: 'absolute', right: '4px', top: '4px' }}>
-            <CloseIcon />
-          </IconButton>
-          {content}
-        </MuiPopover>
-        {triggerEl}
-      </React.Fragment>
-    );
-  }
-}
+Popover.propTypes = {
+  refExit: PropTypes.func,
+  trigger: PropTypes.node.isRequired,
+  content: PropTypes.node.isRequired,
+  hide: PropTypes.bool,
+};
 
 export default Popover;

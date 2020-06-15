@@ -10,7 +10,7 @@
 [![dependencies Status](https://david-dm.org/gregnb/mui-datatables/status.svg)](https://david-dm.org/gregnb/mui-datatables)
 [![npm version](https://badge.fury.io/js/mui-datatables.svg)](https://badge.fury.io/js/mui-datatables)
 
-MUI-Datatables is a data tables component built on [Material-UI](https://www.material-ui.com).  It comes with features like filtering, resizable + view/hide columns, search, export to CSV download, printing, selectable rows, expandable rows, pagination, and sorting. On top of the ability to customize styling on most views, there are three responsive modes "vertical", "standard", and "simple" for mobile/tablet devices.
+MUI-Datatables is a responsive datatables component built on [Material-UI](https://www.material-ui.com).  It comes with features like filtering, [resizable columns](https://codesandbox.io/s/muidatatables-custom-toolbar-zomv5?file=/index.js), view/hide columns, search, export to CSV download, printing, selectable rows, expandable rows, pagination, and sorting. On top of the ability to customize styling on most views, there are three responsive modes "vertical", "standard", and "simple" for mobile/tablet devices.
 
 Version 3 has been released! You can read about the [updates here](https://github.com/gregnb/mui-datatables/blob/master/docs/v2_to_v3_guide.md)!
 
@@ -40,7 +40,9 @@ If your project doesn't already use them, you need to install `@material-ui/core
 
 ## Demo
 
-[![Edit react-to-print](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/gregnb/mui-datatables)
+[![Edit react-to-print](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/muidatatables-custom-toolbar-rvmcj?file=/index.js)
+
+Browse live demos of all examples in this repo in [here](https://codesandbox.io/s/github/gregnb/mui-datatables)!
 
 ## Usage
 
@@ -155,15 +157,15 @@ The component accepts the following props:
 |**`confirmFilters`**|boolean|false|Works in conjunction with the **customFilterDialogFooter** option and makes it so filters have to be confirmed before being applied to the table. When this option is true, the customFilterDialogFooter callback will receive an applyFilters function which, when called, will apply the filters to the table. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/serverside-filters/index.js)
 |**`columnOrder`**|array||An array of numbers (column indices) indicating the order the columns should be displayed in. Defaults to the order provided by the Columns prop. This option is useful if you'd like certain columns to swap positions (see draggableColumns option).
 |**`count`**|number||User provided override for total number of rows.
+|**`customFilterDialogFooter `**|function||Add a custom footer to the filter dialog. `customFilterDialogFooter(curentFilterList: array, applyFilters: function) => React Component`
 |**`customFooter`**|function||Render a custom table footer. `function(count, page, rowsPerPage, changeRowsPerPage, changePage, `[`textLabels: object`](https://github.com/gregnb/mui-datatables/blob/master/src/textLabels.js)`) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-footer/index.js)
+|**`customRowRender `**|function||Override default row rendering with custom function. `customRowRender(data, dataIndex, rowIndex) => React Component`
+|**`customSearch `**|function||Override default search with custom function. `customSearch(searchQuery: string, currentRow: array, columns: array) => boolean`
+|**`customSearchRender `**|function||Render a custom table search. `customSearchRender(searchText: string, handleSearch, hideSearch, options) => React Component`
 |**`customSort`**|function||Override default sorting with custom function. `function(data: array, colIndex: number, order: string) => array`
 |**`customTableBodyFooterRender`**|function||Render a footer under the table body but above the table's standard footer. This is useful for creating footers for individual columns. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-footer/index.js)
 |**`customToolbar`**|function||Render a custom toolbar
 |**`customToolbarSelect`**|function||Render a custom selected rows toolbar. `function(selectedRows, displayData, setSelectedRows) => void`
-|**`customRowRender `**|function||Override default row rendering with custom function. `customRowRender(data, dataIndex, rowIndex) => React Component`
-|**`customSearch `**|function||Override default search with custom function. `customSearch(searchQuery: string, currentRow: array, columns: array) => boolean`
-|**`customSearchRender `**|function||Render a custom table search. `customSearchRender(searchText: string, handleSearch, hideSearch, options) => React Component`
-|**`customFilterDialogFooter `**|function||Add a custom footer to the filter dialog. `customFilterDialogFooter(curentFilterList: array, applyFilters: function) => React Component`
 |**`download`**|boolean|true|Show/hide download icon from toolbar
 |**`downloadOptions`**|object|`{filename: 'tableDownload.csv', separator: ','}`|Options to change the output of the CSV file: `filename`: string, `separator`: string, `filterOptions`: object(`useDisplayedColumnsOnly`: boolean, `useDisplayedRowsOnly`: boolean)
 |**`draggableColumns`**|object|{}|An object of options describing how dragging columns should work. The options are: <p><ul><li>`enabled:boolean`: Indicates if draggable columns are enabled. Defaults to false.</li><li>`transitionTime:number`: The time in milliseconds it takes for columns to swap positions. Defaults to 300.</li></ul></p>To disable the dragging of a particular column, see the "draggable" option in the columns options. Dragging a column to a new position updates the columnOrder array and triggers the onColumnOrderChange callback.
@@ -204,8 +206,8 @@ The component accepts the following props:
 |**`renderExpandableRow`**|function||Render expandable row. `function(rowData, rowMeta) => React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/expandable-rows/index.js)
 |**`resizableColumns`**|boolean|false|Enable/disable resizable columns.
 |**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: <p><ul><li>"vertical" (default value): In smaller views the table cells will collapse such that the heading is to the left of the cell value.</li><li>"standard": Table will stay in the standard mode but make small changes to better fit the allocated space.<li>"simple": On very small devices the table rows will collapse into simple display.</li></ul></p>[Example](https://github.com/gregnb/mui-datatables/blob/master/examples/simple/index.js)
-|**`rowsExpanded`**|array||User provided expanded rows.
 |**`rowHover`**|boolean|true|Enable/disable hover style over rows.
+|**`rowsExpanded`**|array||User provided expanded rows.
 |**`rowsPerPage`**|number|10|Number of rows allowed per page.
 |**`rowsPerPageOptions`**|array|[10,15,100]|Options to provide in pagination for number of rows a user can select.
 |**`rowsSelected`**|array||User provided selected rows.

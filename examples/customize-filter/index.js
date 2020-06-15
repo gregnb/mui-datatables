@@ -28,8 +28,8 @@ class Example extends React.Component {
           filterOptions: {
             renderValue: v => v ? v.replace(/^(\w).* (.*)$/, '$1. $2') : ''
           },
-          display: 'excluded',
-          filterType: 'textField'
+          //display: 'excluded',
+          filterType: 'dropdown'
         },
       },
       {
@@ -53,7 +53,7 @@ class Example extends React.Component {
             render: v => v.map(l => l.toUpperCase())
           },
           filterOptions: {
-            logic: (location, filters) => {
+            logic: (location, filters, row) => {
               if (filters.length) return !filters.includes(location);
               return false;
             },

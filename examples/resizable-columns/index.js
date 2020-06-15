@@ -1,70 +1,95 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
 
-class Example extends React.Component {
+import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
 
-  constructor(props) {
-    super(props);
+function Example(props) {
 
-    this.state = { counter: 1 };
-  }
+  const [marginLeft, setMarginLeft] = useState(10);
 
-  // We update an arbitrary value here to test table resizing on state updates
-  update = () => {
-    let { counter } = this.state;
-    counter += 1;
-
-    this.setState({ counter });
+  const [counter, setCounter] = useState(1);
+  const incrCount = () => { // We update an arbitrary value here to test table resizing on state updates
+    setCounter(counter + 1);
   };
 
-  render() {
-    const { counter } = this.state;
-
-    const columns = [
-      {
-        name: "Counter",
-        options: {
-          empty: true,
-          customBodyRender: value => <button onClick={this.update}>+</button>
+  const columns = [
+    {
+      name: "Counter",
+      options: {
+        empty: true,
+        customBodyRender: value => <button onClick={incrCount}>+</button>
+      }
+    },
+    {
+      name: "Name",
+      options: {
+        sort: false,
+        hint: "?",
+        setCellProps: () => ({style: {whiteSpace:'nowrap'}})
+      }
+    },
+    {
+      name: "Business Title",
+      options: {
+        hint: "?",
+        customBodyRender: (val) => {
+          let parentStyle = {
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            boxSizing: 'border-box',
+            display: 'block',
+            width: '100%',
+          };
+          let cellStyle = {
+            boxSizing: 'border-box',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          };
+          return (
+            <div style={{position:'relative', height: '20px'}}>
+              <div style={parentStyle}>
+                <div style={cellStyle}>
+                  {val}
+                </div>
+              </div>
+            </div>
+          );
         }
-      },
-      {
-        name: "Name",
-        options: {
-          sort: false,
-          hint: "?"
-        }
-      },
-      {
-        name: "Title",
-        options: {
-          hint: "?"
-        }
-      },
-      "Location"
-    ];
+      }
+    },
+    "Location"
+  ];
 
-    const data = [
-      ["Gabby George", "Business Analyst", "Minneapolis"],
-      ["Aiden Lloyd", "Business Consultant", "Dallas"],
-      ["Jaden Collins", "Attorney", "Santa Ana"],
-      ["Franky Rees", "Business Analyst", "St. Petersburg"],
-      ["Aaren Rose", null, "Toledo"]
-    ];
+  const data = [
+    ["Gabby George ", "Business Analyst", "Minneapolis"],
+    ["Aiden Lloyd", "Business Consultant at Tony's Burger Palace and CEO of Johnny's Blueberry Sundaes", "Dallas"],
+    ["Jaden Collins", "Attorney", "Santa Ana"],
+    ["Franky Rees", "Business Analyst", "St. Petersburg"],
+    ["Aaren Rose", null, "Toledo"]
+  ];
 
+  const options = {
+    filter: true,
+    filterType: 'dropdown',
+    resizableColumns: true,
+  };
 
-    const options = {
-      filter: true,
-      filterType: 'dropdown',
-      resizableColumns: true
-    };
-
-    return (
-      <MUIDataTable title={"ACME Employee list" + " [" + counter + "]"} data={data} columns={columns} options={options} />
-    );
-
-  }
+  return (
+    <>
+      <FormControl>
+        <TextField label="Left Margin" type="number" value={marginLeft} onChange={(e) => setMarginLeft(e.target.value)} />
+      </FormControl>
+      <div style={{marginLeft: marginLeft + 'px'}}>
+        <MUIDataTable title={"ACME Employee list" + " [" + counter + "]"} data={data} columns={columns} options={options} />
+      </div>
+    </>
+  );
 }
 
 export default Example;
