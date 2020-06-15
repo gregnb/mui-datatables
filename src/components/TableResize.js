@@ -20,7 +20,7 @@ function getParentOffsetLeft(tableEl) {
   let ii = 0,
     parentOffsetLeft = 0,
     offsetParent = tableEl.offsetParent;
-  while (offsetParent){
+  while (offsetParent) {
     parentOffsetLeft = parentOffsetLeft + (offsetParent.offsetLeft || 0);
     offsetParent = offsetParent.offsetParent;
     ii++;
@@ -83,7 +83,7 @@ class TableResize extends React.Component {
 
       let elRect = item.getBoundingClientRect();
       let left = elRect.left;
-      left = (left || 0) - (parentOffsetLeft);
+      left = (left || 0) - parentOffsetLeft;
       const elStyle = window.getComputedStyle(item, null);
       resizeCoords[key] = { left: left + item.offsetWidth };
     });
@@ -132,7 +132,7 @@ class TableResize extends React.Component {
   onResizeMove = (id, e) => {
     const { isResize, resizeCoords } = this.state;
     const fixedMinWidth1 = this.minWidths[id];
-    const fixedMinWidth2 = this.minWidths[ parseInt(id,10)+1] || this.minWidths[id];
+    const fixedMinWidth2 = this.minWidths[parseInt(id, 10) + 1] || this.minWidths[id];
     const idNumber = parseInt(id, 10);
     const finalCells = Object.entries(this.cellsRef);
     const tableEl = this.tableRef;

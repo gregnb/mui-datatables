@@ -11,7 +11,7 @@ describe('<TableResize />', function() {
   before(() => {
     options = {
       resizableColumns: true,
-      tableBodyHeight: '500px'
+      tableBodyHeight: '500px',
     };
   });
 
@@ -19,7 +19,9 @@ describe('<TableResize />', function() {
     const updateDividers = spy();
     const setResizeable = spy();
 
-    const mountWrapper = mount(<TableResize options={options} updateDividers={updateDividers} setResizeable={setResizeable} />);
+    const mountWrapper = mount(
+      <TableResize options={options} updateDividers={updateDividers} setResizeable={setResizeable} />,
+    );
 
     const actualResult = mountWrapper.find(TableResize);
     assert.strictEqual(actualResult.length, 1);
@@ -29,14 +31,15 @@ describe('<TableResize />', function() {
   });
 
   it('should create a coordinate map for each column', () => {
-    const columns = ["Name", "Age", "Location", "Phone"];
-    const data = [
-      ["Joe", 26, "Chile", "555-5555"]
-    ];
+    const columns = ['Name', 'Age', 'Location', 'Phone'];
+    const data = [['Joe', 26, 'Chile', '555-5555']];
 
     const shallowWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
 
-    var state = shallowWrapper.find(TableResize).childAt(0).state();
+    var state = shallowWrapper
+      .find(TableResize)
+      .childAt(0)
+      .state();
 
     var colCoordCount = 0;
     for (let prop in state.resizeCoords) {
@@ -45,5 +48,4 @@ describe('<TableResize />', function() {
 
     assert.strictEqual(colCoordCount, 4);
   });
-
 });
