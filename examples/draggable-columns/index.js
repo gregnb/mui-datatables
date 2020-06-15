@@ -31,7 +31,8 @@ function Example() {
     draggableColumns: {
       enabled: true,
       transitionTime
-    }
+    },
+    resizableColumns: false,
   };
 
   const data = [
@@ -51,7 +52,7 @@ function Example() {
   ];
 
   return (
-    <React.Fragment>
+    <>
       <FormControl>
         <InputLabel id="demo-simple-select-label">Responsive Option</InputLabel>
         <Select
@@ -104,7 +105,7 @@ function Example() {
         <TextField label="Transition Time" type="number" value={transitionTime} onChange={(e) => setTransitionTime(e.target.value)} />
       </FormControl>
       <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
-    </React.Fragment>
+    </>
   );
 }
 

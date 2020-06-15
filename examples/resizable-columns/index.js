@@ -61,7 +61,9 @@ class Example extends React.Component {
     };
 
     return (
-      <MUIDataTable title={"ACME Employee list" + " [" + counter + "]"} data={data} columns={columns} options={options} />
+      <div style={{marginLeft:'100px'}}>
+        <MUIDataTable title={"ACME Employee list" + " [" + counter + "]"} data={data} columns={columns} options={options} />
+      </div>
     );
 
   }

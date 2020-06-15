@@ -83,7 +83,7 @@ function TableHeadCell(props) {
     print,
     column,
     updateColumnOrder,
-    columnOrder,
+    columnOrder = [],
     setCellRef,
     cellHeaderProps = {},
     headCellRefs,
@@ -136,14 +136,14 @@ function TableHeadCell(props) {
     headCellRefs,
     updateColumnOrder,
     columnOrder,
-    transitionTime: options.draggableColumns.transitionTime,
-    tableRef: tableRef(),
+    transitionTime: options.draggableColumns ? options.draggableColumns.transitionTime : 300,
+    tableRef: tableRef ? tableRef() : null,
     timers
   });
 
   const isDraggingEnabled = () => {
     if (!props.draggingHook) return false;
-    return options.draggableColumns.enabled && column.draggable !== false;
+    return options.draggableColumns && options.draggableColumns.enabled && column.draggable !== false;
   };
 
   const cellClass = classNames({
@@ -166,6 +166,7 @@ function TableHeadCell(props) {
   
   const getTooltipTitle = () => {
     if (dragging) return '';
+    if (!options.textLabels) return '';
     return options.textLabels.body.columnHeaderTooltip
                 ? options.textLabels.body.columnHeaderTooltip(column)
                 : options.textLabels.body.toolTip;

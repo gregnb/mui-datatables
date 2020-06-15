@@ -34,7 +34,7 @@ function TableHead(props) {
     selectedRows,
     expandedRows,
     updateColumnOrder,
-    columnOrder,
+    columnOrder = props.columns ? props.columns.map((item,idx) => idx) : [],
     headCellRefs,
     timers,
     toggleSort,
@@ -75,7 +75,7 @@ function TableHead(props) {
     }
   }
 
-  let orderedColumns = props.columnOrder.map( colIndex => {
+  let orderedColumns = columnOrder.map( colIndex => {
     return {
       column: columns[colIndex],
       index: colIndex,
