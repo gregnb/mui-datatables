@@ -242,7 +242,7 @@ class TableFilter extends React.Component {
     const { classes } = this.props;
     const { filterList } = this.state;
     if (column.filterOptions && column.filterOptions.renderValue) {
-      console.error('Custom renderItem not supported for textField filters');
+      console.warn('Custom renderValue not supported for textField filters');
     }
 
     return (
