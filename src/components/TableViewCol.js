@@ -14,6 +14,7 @@ export const defaultViewColStyles = theme => ({
   },
   title: {
     marginLeft: '-7px',
+    marginRight: '24px',
     fontSize: '14px',
     color: theme.palette.text.secondary,
     textAlign: 'left',

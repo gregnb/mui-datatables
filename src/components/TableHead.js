@@ -54,12 +54,16 @@ function TableHead(props) {
 
   const numSelected = (selectedRows && selectedRows.data.length) || 0;
   let isIndeterminate = numSelected > 0 && numSelected < count;
-  let isChecked = numSelected > 0 && numSelected === count;
+  let isChecked = numSelected > 0 && numSelected >= count;
 
   // When the disableToolbarSelect option is true, there can be
   // selected items that aren't visible, so we need to be more
   // precise when determining if the head checkbox should be checked.
-  if (options.disableToolbarSelect === true) {
+  if (
+    options.disableToolbarSelect === true ||
+    options.selectToolbarPlacement === 'none' ||
+    options.selectToolbarPlacement === 'above'
+  ) {
     if (isChecked) {
       for (let ii = 0; ii < data.length; ii++) {
         if (!selectedRows.lookup[data[ii].dataIndex]) {
