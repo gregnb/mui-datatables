@@ -27,6 +27,7 @@ const Popover = ({ className, trigger, refExit, hide, content, ...providedProps 
   };
 
   const closeIconClass = providedProps.classes.closeIcon;
+  delete providedProps.classes.closeIcon; // remove non-standard class from being passed to the popover component
 
   const transformOriginSpecs = {
     vertical: 'top',
