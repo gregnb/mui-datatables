@@ -286,7 +286,8 @@ class MUIDataTable extends React.Component {
     super();
     this.tableRef = React.createRef();
     this.tableContent = React.createRef();
-    this.headCellRefs = {};
+    this.draggableHeadCellRefs = {};
+    this.resizeHeadCellRefs = {};
     this.timers = {};
     this.setHeadResizeable = () => {};
     this.updateDividers = () => {};
@@ -297,7 +298,7 @@ class MUIDataTable extends React.Component {
   }
 
   componentDidMount() {
-    this.setHeadResizeable(this.headCellRefs, this.tableRef);
+    this.setHeadResizeable(this.resizeHeadCellRefs, this.tableRef);
 
     // When we have a search, we must reset page to view it unless on serverSide since paging is handled by the user.
     if (this.props.options.searchText && !this.props.options.serverSide) this.setState({ page: 0 });
@@ -330,7 +331,7 @@ class MUIDataTable extends React.Component {
       this.options.resizableColumns === true ||
       (this.options.resizableColumns && this.options.resizableColumns.enabled)
     ) {
-      this.setHeadResizeable(this.headCellRefs, this.tableRef);
+      this.setHeadResizeable(this.resizeHeadCellRefs, this.tableRef);
       this.updateDividers();
     }
   }
@@ -545,8 +546,9 @@ class MUIDataTable extends React.Component {
     this.setState(optState);
   }
 
-  setHeadCellRef = (index, el) => {
-    this.headCellRefs[index] = el;
+  setHeadCellRef = (index, pos, el) => {
+    this.draggableHeadCellRefs[index] = el;
+    this.resizeHeadCellRefs[pos] = el;
   };
 
   // must be arrow function on local field to refer to the correct instance when passed around
@@ -1800,6 +1802,7 @@ class MUIDataTable extends React.Component {
             (this.options.resizableColumns && this.options.resizableColumns.enabled)) && (
             <TableResizeComponent
               key={rowCount}
+              columnOrder={columnOrder}
               updateDividers={fn => (this.updateDividers = fn)}
               setResizeable={fn => (this.setHeadResizeable = fn)}
               options={this.props.options}
@@ -1831,7 +1834,7 @@ class MUIDataTable extends React.Component {
               sortOrder={sortOrder}
               columnOrder={columnOrder}
               updateColumnOrder={this.updateColumnOrder}
-              headCellRefs={this.headCellRefs}
+              draggableHeadCellRefs={this.draggableHeadCellRefs}
               tableRef={this.getTableContentRef}
               timers={this.timers}
               components={this.props.components}

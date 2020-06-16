@@ -77,10 +77,9 @@ class TableResize extends React.Component {
 
     let parentOffsetLeft = getParentOffsetLeft(tableEl);
     let finalCells = Object.entries(this.cellsRef);
-    finalCells.pop();
+    //finalCells.pop();
     finalCells.forEach(([key, item], idx) => {
       if (!item) return;
-
       let elRect = item.getBoundingClientRect();
       let left = elRect.left;
       left = (left || 0) - parentOffsetLeft;
@@ -213,6 +212,7 @@ class TableResize extends React.Component {
         {Object.entries(resizeCoords).map(([key, val]) => {
           return (
             <div
+              data-divider-index={key}
               aria-hidden="true"
               key={key}
               onMouseMove={this.onResizeMove.bind(null, key)}

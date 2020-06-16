@@ -106,6 +106,7 @@ const useColumnDrop = (opts) => {
           };
 
           let allElms = [];
+          let dividers = [];
           for (let ii = 0; ii < columnOrder.length; ii++) { 
             let elms = tableRef ? tableRef.querySelectorAll('[data-colindex="' + ii + '"]') : [];
             for (let jj = 0; jj < elms.length; jj++) {
@@ -113,11 +114,22 @@ const useColumnDrop = (opts) => {
               elms[jj].style.transform = 'translateX(' + transitions[ii] + 'px)';
               allElms.push( elms[jj] );
             }
+
+            let divider = tableRef ? tableRef.querySelectorAll('[data-divider-index="' + (ii+1) + '"]') : [];
+            for (let jj = 0; jj < divider.length; jj++) {
+              divider[jj].style.transition = transitionTime + 'ms';
+              divider[jj].style.transform = 'translateX(' + transitions[ columnOrder[ii] ] + 'px)';
+              dividers.push(divider[jj]);
+            }
           }
 
           let newColIndex = mon.getItem().colIndex;
           timers.columnShift = setTimeout(() => {
             allElms.forEach( item => {
+              item.style.transition = '0s';
+              item.style.transform = 'translateX(0)';
+            });
+            dividers.forEach( item => {
               item.style.transition = '0s';
               item.style.transform = 'translateX(0)';
             });

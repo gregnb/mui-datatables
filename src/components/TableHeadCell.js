@@ -34,6 +34,9 @@ const useStyles = makeStyles(theme => ({
     verticalAlign: 'top',
     cursor: 'pointer',
   },
+  dragCursor: {
+    cursor: 'grab'
+  },
   sortLabelRoot: {
     height: '10px',
   },
@@ -80,13 +83,14 @@ function TableHeadCell(props) {
     sort,
     hint,
     index,
+    colPosition,
     print,
     column,
     updateColumnOrder,
     columnOrder = [],
     setCellRef,
     cellHeaderProps = {},
-    headCellRefs,
+    draggableHeadCellRefs,
     tableRef,
     timers,
     components = {},
@@ -133,7 +137,7 @@ function TableHeadCell(props) {
       setDragging(false);
     },
     index,
-    headCellRefs,
+    headCellRefs: draggableHeadCellRefs,
     updateColumnOrder,
     columnOrder,
     transitionTime: options.draggableColumns ? options.draggableColumns.transitionTime : 300,
@@ -161,7 +165,7 @@ function TableHeadCell(props) {
   let refProp = {};
   refProp.ref = el => {
     drop(el);
-    setCellRef && setCellRef(index + 1, el);
+    setCellRef && setCellRef(index + 1, colPosition + 1, el);
   };
   
   const getTooltipTitle = () => {
@@ -203,6 +207,7 @@ function TableHeadCell(props) {
                 className={classNames({
                   [classes.data]: true,
                   [classes.sortActive]: sortActive,
+                  [classes.dragCursor]: isDraggingEnabled
                 })}>
                 {children}
               </div>

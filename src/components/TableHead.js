@@ -35,7 +35,7 @@ function TableHead(props) {
     expandedRows,
     updateColumnOrder,
     columnOrder = props.columns ? props.columns.map((item,idx) => idx) : [],
-    headCellRefs,
+    draggableHeadCellRefs,
     timers,
     toggleSort,
     tableRef,
@@ -79,10 +79,11 @@ function TableHead(props) {
     }
   }
 
-  let orderedColumns = columnOrder.map( colIndex => {
+  let orderedColumns = columnOrder.map( (colIndex, idx) => {
     return {
       column: columns[colIndex],
       index: colIndex,
+      colPos: idx,
     };
   });
 
@@ -98,7 +99,7 @@ function TableHead(props) {
       })}>
       <TableHeadRow>
         <TableSelectCell
-          ref={el => setCellRef(0, findDOMNode(el))}
+          ref={el => setCellRef(0, 0, findDOMNode(el))}
           onChange={handleRowSelect.bind(null)}
           indeterminate={isIndeterminate}
           checked={isChecked}
@@ -114,7 +115,7 @@ function TableHead(props) {
           isRowSelectable={true}
         />
         {orderedColumns.map(
-          ({column, index}) =>
+          ({column, index, colPos}) =>
             column.display === 'true' &&
             (column.customHeadRender ? (
               column.customHeadRender({ index, ...column }, handleToggleColumn, sortOrder)
@@ -125,6 +126,7 @@ function TableHead(props) {
                 }
                 key={index}
                 index={index}
+                colPosition={colPos}
                 type={'cell'}
                 setCellRef={setCellRef}
                 sort={column.sort}
@@ -138,7 +140,7 @@ function TableHead(props) {
                 columnOrder={columnOrder}
                 timers={timers}
                 draggingHook={[dragging, setDragging]}
-                headCellRefs={headCellRefs}
+                draggableHeadCellRefs={draggableHeadCellRefs}
                 tableRef={tableRef}
                 components={components}>
                 {column.label}
