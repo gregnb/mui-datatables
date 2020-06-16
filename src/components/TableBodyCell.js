@@ -73,9 +73,18 @@ const useStyles = makeStyles(
   { name: 'MUIDataTableBodyCell' },
 );
 
-function TableBodyCell(props) {
+function TableBodyCell({
+  children,
+  colIndex,
+  columnHeader,
+  options,
+  dataIndex,
+  rowIndex,
+  className,
+  print,
+  ...otherProps
+}) {
   const classes = useStyles();
-  const { children, colIndex, columnHeader, options, dataIndex, rowIndex, className, print, ...otherProps } = props;
   const onCellClick = options.onCellClick;
 
   const handleClick = useCallback(
@@ -138,10 +147,9 @@ function TableBodyCell(props) {
     </div>,
   ];
 
-  var innerCells;
-  if (
-    ['standard', 'scrollMaxHeight', 'scrollFullHeight', 'scrollFullHeightFullWidth'].indexOf(options.responsive) !== -1
-  ) {
+  let innerCells;
+
+  if (['standard', 'scrollMaxHeight', 'scrollFullHeight', 'scrollFullHeightFullWidth'].includes(options.responsive)) {
     innerCells = cells.slice(1, 2);
   } else {
     innerCells = cells;
