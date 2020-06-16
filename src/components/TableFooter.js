@@ -1,48 +1,55 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import MuiTable from '@material-ui/core/Table';
 import TablePagination from './TablePagination';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-export const defaultFooterStyles = {
-  root: {
-    '@media print': {
-      display: 'none',
+const useStyles = makeStyles(
+  () => ({
+    root: {
+      '@media print': {
+        display: 'none',
+      },
     },
-  },
-};
+  }),
+  { name: 'MUIDataTableFooter' },
+);
 
-class TableFooter extends React.Component {
-  static propTypes = {};
+const TableFooter = ({ options, rowCount, page, rowsPerPage, changeRowsPerPage, changePage }) => {
+  const classes = useStyles();
+  const { customFooter, pagination = true } = options;
 
-  render() {
-    const { options, rowCount, page, rowsPerPage, changeRowsPerPage, changePage, classes } = this.props;
-
+  if (customFooter) {
     return (
       <MuiTable className={classes.root}>
-        {options.customFooter
-          ? options.customFooter(
-              rowCount,
-              page,
-              rowsPerPage,
-              changeRowsPerPage,
-              changePage,
-              options.textLabels.pagination,
-            )
-          : options.pagination && (
-              <TablePagination
-                count={rowCount}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                changeRowsPerPage={changeRowsPerPage}
-                changePage={changePage}
-                component={'div'}
-                options={options}
-              />
-            )}
+        {options.customFooter(
+          rowCount,
+          page,
+          rowsPerPage,
+          changeRowsPerPage,
+          changePage,
+          options.textLabels.pagination,
+        )}
       </MuiTable>
     );
   }
-}
 
-export default withStyles(defaultFooterStyles, { name: 'MUIDataTableFooter' })(TableFooter);
+  if (pagination) {
+    return (
+      <MuiTable className={classes.root}>
+        <TablePagination
+          count={rowCount}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          changeRowsPerPage={changeRowsPerPage}
+          changePage={changePage}
+          component={'div'}
+          options={options}
+        />
+      </MuiTable>
+    );
+  }
+
+  return <MuiTable className={classes.root} />;
+};
+
+export default TableFooter;
