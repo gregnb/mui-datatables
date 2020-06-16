@@ -2,30 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import TableRow from '@material-ui/core/TableRow';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-const defaultHeadRowStyles = {
-  root: {},
+const useStyles = makeStyles(
+  () => ({
+    root: {},
+  }),
+  { name: 'MUIDataTableHeadRow' },
+);
+
+const TableHeadRow = ({ children }) => {
+  const classes = useStyles();
+
+  return (
+    <TableRow
+      className={classNames({
+        [classes.root]: true,
+      })}>
+      {children}
+    </TableRow>
+  );
 };
 
-class TableHeadRow extends React.Component {
-  static propTypes = {
-    /** Extend the style applied to components */
-    classes: PropTypes.object,
-  };
+TableHeadRow.propTypes = {
+  children: PropTypes.node,
+};
 
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <TableRow
-        className={classNames({
-          [classes.root]: true,
-        })}>
-        {this.props.children}
-      </TableRow>
-    );
-  }
-}
-
-export default withStyles(defaultHeadRowStyles, { name: 'MUIDataTableHeadRow' })(TableHeadRow);
+export default TableHeadRow;
