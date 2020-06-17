@@ -138,6 +138,7 @@ class MUIDataTable extends React.Component {
             filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField', 'custom']),
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,
+            customBodyRenderLite: PropTypes.func,
             customFilterListOptions: PropTypes.oneOfType([
               PropTypes.shape({
                 render: PropTypes.func,
@@ -642,16 +643,6 @@ class MUIDataTable extends React.Component {
         })
       : data.map(row => columns.map(col => leaf(row, col.name)));
 
-    // We need to determine if object data exists in the transformed structure, as this is currently not allowed and will cause errors if not handled by a custom renderer
-    const hasInvalidData =
-      transformedData.filter(
-        data => data.filter(d => typeof d === 'object' && d !== null && !Array.isArray(d)).length > 0,
-      ).length > 0;
-    if (hasInvalidData)
-      this.warnDep(
-        'Passing objects in as data is not supported. Consider using ids in your data and linking it to external objects if you want to access object data from custom render functions.',
-      );
-
     return transformedData;
   };
 
@@ -697,26 +688,41 @@ class MUIDataTable extends React.Component {
           });
         }
 
-        if (typeof column.customBodyRender === 'function') {
-          const rowData = tableData[rowIndex].data;
-          tableMeta = this.getTableMeta(rowIndex, colIndex, rowData, column, data, this.state);
-          const funcResult = column.customBodyRender(value, tableMeta);
+        if (column.filter !== false) {
+          if (typeof column.customBodyRender === 'function') {
+            const rowData = tableData[rowIndex].data;
+            tableMeta = this.getTableMeta(rowIndex, colIndex, rowData, column, data, this.state);
+            const funcResult = column.customBodyRender(value, tableMeta);
 
-          if (React.isValidElement(funcResult) && funcResult.props.value) {
-            value = funcResult.props.value;
-          } else if (typeof funcResult === 'string') {
-            value = funcResult;
-          }
-        }
-
-        if (filterData[colIndex].indexOf(value) < 0 && !Array.isArray(value)) {
-          filterData[colIndex].push(value);
-        } else if (Array.isArray(value)) {
-          value.forEach(element => {
-            if (filterData[colIndex].indexOf(element) < 0) {
-              filterData[colIndex].push(element);
+            if (React.isValidElement(funcResult) && funcResult.props.value) {
+              value = funcResult.props.value;
+            } else if (typeof funcResult === 'string') {
+              value = funcResult;
             }
-          });
+          }
+
+          if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
+            // it's extremely rare but possible to create an object without a toString method, ex: var x = Object.create(null);
+            // so this check has to be made
+            value = value.toString ? value.toString() : "";
+          }
+
+          if (filterData[colIndex].indexOf(value) < 0 && !Array.isArray(value)) {
+            filterData[colIndex].push(value);
+          } else if (Array.isArray(value)) {
+            value.forEach(element => {
+              let elmVal;
+              if ( (typeof element === 'object' && element !== null) || typeof element === 'function') {
+                elmVal = element.toString ? element.toString() : "";
+              } else {
+                elmVal = element;
+              }
+
+              if (filterData[colIndex].indexOf(elmVal) < 0) {
+                filterData[colIndex].push(elmVal);
+              }
+            });
+          }
         }
       }
 
@@ -865,7 +871,9 @@ class MUIDataTable extends React.Component {
       let columnValue = row[index];
       let column = columns[index];
 
-      if (column.customBodyRender) {
+      if (column.customBodyRenderLite) {
+        displayRow.push( column.customBodyRenderLite );
+      } else if (column.customBodyRender) {
         const tableMeta = this.getTableMeta(rowIndex, index, row, column, dataForTableMeta, {
           ...this.state,
           filterList: filterList,
@@ -886,9 +894,11 @@ class MUIDataTable extends React.Component {
             : funcResult.props && funcResult.props.value
             ? funcResult.props.value
             : columnValue;
+          
+        displayRow.push(columnDisplay);
+      } else {
+        displayRow.push(columnDisplay);
       }
-
-      displayRow.push(columnDisplay);
 
       const columnVal = columnValue === null || columnValue === undefined ? '' : columnValue.toString();
 
