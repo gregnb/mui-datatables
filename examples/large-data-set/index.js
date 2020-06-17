@@ -51,6 +51,7 @@ class Example extends React.Component {
         label: "Name",
         options: {
           filter: true,
+          filterType: 'textField',
           customBodyRender: (val) => {
             return val;
           }
