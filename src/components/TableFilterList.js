@@ -43,7 +43,6 @@ class TableFilterList extends React.Component {
     const {
       classes,
       filterList,
-      filterUpdate,
       filterListRenderers,
       columnNames,
       serverSideFilterList,
@@ -51,6 +50,19 @@ class TableFilterList extends React.Component {
       ItemComponent,
     } = this.props;
     const { serverSide } = this.props.options;
+
+    const removeFilter = (index, filterValue, columnName, filterType) => {
+      let removedFilter = filterValue;
+      if ( Array.isArray(removedFilter) && removedFilter.length === 0) {
+        removedFilter = this.props.filterList[index];
+      }
+
+      this.props.filterUpdate(index, filterValue, columnName, filterType, null, (filterList) => {
+        if (this.props.options.onFilterChipClose) {
+          this.props.options.onFilterChipClose(index, removedFilter, filterList);
+        }
+      });
+    };
 
     const customFilterChip = (customFilterItem, index, customFilterItemIndex, item, isArray) => {
       let type;
@@ -64,14 +76,11 @@ class TableFilterList extends React.Component {
         <ItemComponent
           label={customFilterItem}
           key={customFilterItemIndex}
-          onDelete={filterUpdate.bind(
-            null,
+          onDelete={() => removeFilter(
             index,
             item[customFilterItemIndex] || [],
             columnNames[index].name,
-            type,
-            null,
-            null,
+            type
           )}
           className={classes.chip}
           itemKey={customFilterItemIndex}
@@ -86,7 +95,7 @@ class TableFilterList extends React.Component {
       <ItemComponent
         label={filterListRenderers[index](data)}
         key={colIndex}
-        onDelete={filterUpdate.bind(null, index, data, columnNames[index].name, 'chip', null, null)}
+        onDelete={() => removeFilter(index, data, columnNames[index].name, 'chip')}
         className={classes.chip}
         itemKey={colIndex}
         index={index}
