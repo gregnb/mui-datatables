@@ -46,6 +46,6 @@ describe('<TableResize />', function() {
       colCoordCount++;
     }
 
-    assert.strictEqual(colCoordCount, 4);
+    assert.strictEqual(colCoordCount, 5);
   });
 });

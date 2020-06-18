@@ -1,6 +1,6 @@
 # mui-datatables 3.0.0 upgrade guide
 
-All existing options from version 2 should still work in version 3, however, some options will give deprecation warnings in the console urging you to update to different options. This guide goes over what's new in version 3. 
+All existing options from version 2 will still work in version 3, however, some options will give deprecation warnings in the console urging you to update to different options. This guide goes over what's new in version 3. 
 
 ## API Changes 
 

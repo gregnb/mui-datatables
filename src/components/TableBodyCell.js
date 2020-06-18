@@ -150,6 +150,7 @@ function TableBodyCell(props) {
   return (
     <TableCell
       {...methods}
+      data-colindex={colIndex}
       className={classNames(
         {
           [classes.root]: true,
