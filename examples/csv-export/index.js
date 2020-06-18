@@ -21,7 +21,10 @@ class Example extends React.Component {
       {
         name: 'Age',
         options: {
-          customBodyRender: value => <div><span>{value}</span></div>
+          customBodyRenderLite: (dataIndex) => {
+            let value = data[dataIndex][3];
+            return <div><span>{value}</span></div>;
+          }
         }
       },
       {

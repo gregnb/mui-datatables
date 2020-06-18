@@ -134,7 +134,7 @@ function TableBodyCell(props) {
         className,
       )}
       {...otherProps}>
-      {children}
+      {typeof children === 'function' ? children(dataIndex, rowIndex) : children}
     </div>,
   ];
 
@@ -150,6 +150,7 @@ function TableBodyCell(props) {
   return (
     <TableCell
       {...methods}
+      data-colindex={colIndex}
       className={classNames(
         {
           [classes.root]: true,
