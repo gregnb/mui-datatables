@@ -704,7 +704,7 @@ class MUIDataTable extends React.Component {
           if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
             // it's extremely rare but possible to create an object without a toString method, ex: var x = Object.create(null);
             // so this check has to be made
-            value = value.toString ? value.toString() : "";
+            value = value.toString ? value.toString() : '';
           }
 
           if (filterData[colIndex].indexOf(value) < 0 && !Array.isArray(value)) {
@@ -712,8 +712,8 @@ class MUIDataTable extends React.Component {
           } else if (Array.isArray(value)) {
             value.forEach(element => {
               let elmVal;
-              if ( (typeof element === 'object' && element !== null) || typeof element === 'function') {
-                elmVal = element.toString ? element.toString() : "";
+              if ((typeof element === 'object' && element !== null) || typeof element === 'function') {
+                elmVal = element.toString ? element.toString() : '';
               } else {
                 elmVal = element;
               }
@@ -872,7 +872,7 @@ class MUIDataTable extends React.Component {
       let column = columns[index];
 
       if (column.customBodyRenderLite) {
-        displayRow.push( column.customBodyRenderLite );
+        displayRow.push(column.customBodyRenderLite);
       } else if (column.customBodyRender) {
         const tableMeta = this.getTableMeta(rowIndex, index, row, column, dataForTableMeta, {
           ...this.state,
@@ -894,7 +894,7 @@ class MUIDataTable extends React.Component {
             : funcResult.props && funcResult.props.value
             ? funcResult.props.value
             : columnValue;
-          
+
         displayRow.push(columnDisplay);
       } else {
         displayRow.push(columnDisplay);
