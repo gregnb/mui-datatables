@@ -193,6 +193,8 @@ class MUIDataTable extends React.Component {
       isRowSelectable: PropTypes.func,
       onDownload: PropTypes.func,
       onFilterChange: PropTypes.func,
+      onFilterChipClose: PropTypes.func,
+      onFilterConfirm: PropTypes.func,
       onFilterDialogOpen: PropTypes.func,
       onFilterDialogClose: PropTypes.func,
       onRowClick: PropTypes.func,
