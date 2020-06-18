@@ -213,9 +213,10 @@ class TableFilter extends React.Component {
       column.filterOptions && column.filterOptions.renderValue
         ? column.filterOptions.renderValue
         : v => (v != null ? v.toString() : '');
+    const cols = (column.filterOptions && column.filterOptions.fullWidth) === true ? 2 : 1;
 
     return (
-      <GridListTile key={index} cols={1} classes={{ tile: classes.gridListTile }}>
+      <GridListTile key={index} cols={cols} classes={{ tile: classes.gridListTile }}>
         <FormControl key={index} fullWidth>
           <InputLabel htmlFor={column.name}>{column.label}</InputLabel>
           <Select
@@ -244,9 +245,10 @@ class TableFilter extends React.Component {
     if (column.filterOptions && column.filterOptions.renderValue) {
       console.warn('Custom renderValue not supported for textField filters');
     }
+    const cols = (column.filterOptions && column.filterOptions.fullWidth) === true ? 2 : 1;
 
     return (
-      <GridListTile key={index} cols={1} classes={{ tile: classes.gridListTile }}>
+      <GridListTile key={index} cols={cols} classes={{ tile: classes.gridListTile }}>
         <FormControl key={index} fullWidth>
           <TextField
             fullWidth
@@ -265,8 +267,9 @@ class TableFilter extends React.Component {
     const { filterList } = this.state;
     const renderItem =
       column.filterOptions && column.filterOptions.renderValue ? column.filterOptions.renderValue : v => v;
+    const cols = (column.filterOptions && column.filterOptions.fullWidth) === true ? 2 : 1;
     return (
-      <GridListTile key={index} cols={1} classes={{ tile: classes.gridListTile }}>
+      <GridListTile key={index} cols={cols} classes={{ tile: classes.gridListTile }}>
         <FormControl key={index} fullWidth>
           <InputLabel htmlFor={column.name}>{column.label}</InputLabel>
           <Select
@@ -300,6 +303,7 @@ class TableFilter extends React.Component {
   renderCustomField(column, index) {
     const { classes, filterData, options } = this.props;
     const { filterList } = this.state;
+    const cols = (column.filterOptions && column.filterOptions.fullWidth) === true ? 2 : 1;
     const display =
       (column.filterOptions && column.filterOptions.display) ||
       (options.filterOptions && options.filterOptions.display);
@@ -313,7 +317,7 @@ class TableFilter extends React.Component {
     }
 
     return (
-      <GridListTile key={index} cols={1} classes={{ tile: classes.gridListTile }}>
+      <GridListTile key={index} cols={cols} classes={{ tile: classes.gridListTile }}>
         <FormControl key={index} fullWidth>
           {display(filterList, this.handleCustomChange, index, column, filterData)}
         </FormControl>
