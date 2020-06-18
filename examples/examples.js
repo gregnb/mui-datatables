@@ -15,6 +15,7 @@ import CustomizeStyling from './customize-styling';
 import CustomizeToolbar from './customize-toolbar';
 import CustomizeToolbarSelect from './customize-toolbarselect';
 import DataAsObjects from './data-as-objects';
+import DraggableColumns from './draggable-columns';
 import ExpandableRows from './expandable-rows';
 import FixedHeader from './fixed-header';
 import HideColumnsPrint from './hide-columns-print';
@@ -53,18 +54,19 @@ export default {
   'Customize Toolbar': CustomizeToolbar,
   'Customize Toolbar Select': CustomizeToolbarSelect,
   'Data As Objects': DataAsObjects,
+  'Draggable Columns': DraggableColumns,
   'Expandable Rows': ExpandableRows,
   'Fixed Header': FixedHeader,
   'Hide Columns Print': HideColumnsPrint,
   'Large Data Set': LargeDataSet,
-  OnDownload: OnDownload,
-  OnTableInit: OnTableInit,
+  'OnDownload': OnDownload,
+  'OnTableInit': OnTableInit,
   'Resizable Columns': ResizableColumns,
   'Selectable Rows': SelectableRows,
   'ServerSide Filters': ServerSideFilters,
   'ServerSide Pagination': ServerSidePagination,
   'ServerSide Sorting': ServerSideSorting,
-  Simple: Simple,
+  'Simple': Simple,
   'Simple No Toolbar': SimpleNoToolbar,
   'Text Localization': TextLocalization,
   'Custom Components': CustomComponents,
