@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { findDOMNode } from 'react-dom';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import HelpIcon from '@material-ui/icons/Help';

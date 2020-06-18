@@ -32,7 +32,7 @@ function Example() {
       enabled: true,
       transitionTime
     },
-    resizableColumns: true,
+    //resizableColumns: true,
   };
 
   const data = [

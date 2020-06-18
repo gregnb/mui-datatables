@@ -2,7 +2,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import MuiTableHead from '@material-ui/core/TableHead';
 import classNames from 'classnames';
 import React, {useState} from 'react';
-import { findDOMNode } from 'react-dom';
 import TableHeadCell from './TableHeadCell';
 import TableHeadRow from './TableHeadRow';
 import TableSelectCell from './TableSelectCell';
@@ -99,7 +98,7 @@ function TableHead(props) {
       })}>
       <TableHeadRow>
         <TableSelectCell
-          ref={el => setCellRef(0, 0, findDOMNode(el))}
+          setHeadCellRef={setCellRef}
           onChange={handleRowSelect.bind(null)}
           indeterminate={isIndeterminate}
           checked={isChecked}
