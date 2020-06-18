@@ -145,7 +145,7 @@ The component accepts the following props:
 |:--:|:-----|:-----|
 |**`title`**|array|Title used to caption table
 |**`columns`**|array|Columns used to describe table. Must be either an array of simple strings or objects describing a column
-|**`data`**|array|Data used to describe table. Must be either an array containing objects of key/value pairs with values that are strings or numbers, or arrays of strings or numbers (Ex: data: [{"Name": "Joe", "Job Title": "Plumber", "Age": 30}, {"Name": "Jane", "Job Title": "Electrician", "Age": 45}] or data: [["Joe", "Plumber", 30], ["Jane", "Electrician", 45]])
+|**`data`**|array|Data used to describe table. Must be either an array containing objects of key/value pairs with values that are strings or numbers, or arrays of strings or numbers (Ex: data: [{"Name": "Joe", "Job Title": "Plumber", "Age": 30}, {"Name": "Jane", "Job Title": "Electrician", "Age": 45}] or data: [["Joe", "Plumber", 30], ["Jane", "Electrician", 45]]). The **customBodyRender** and **customBodyRenderLite** options can be used to control the data diaplay.
 |**`options`**|object|Options used to describe table
 |**`components`**|object|Custom components used to render the table
 
@@ -259,7 +259,8 @@ const columns = [
 #### Column Options:
 |Name|Type|Default|Description
 |:--:|:-----|:--|:-----|
-|**`customBodyRender`**|function||Function that returns a string or React component. Used as display data within all table cells of a given column. `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
+|**`customBodyRender`**|function||Function that returns a string or React component. Used to display data within all table cells of a given column. The value returned from this function will be used for filtering in the filter dialog. If this isn't need, you may want to consider customBodyRenderLite instead.  `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
+|**`customBodyRenderLite`**|function||Function that returns a string or React component. Used to display data within all table cells of a given column. This method performs better than customBodyRender but has the following caveats:  <p><ul><li>The value returned from this function is **not** used for filtering, so the filter dialog will use the raw data from the data array.</li><li>This method only gives you the dataIndex and rowIndex, leaving you to lookup the column value.</li></ul></p>`function(dataIndex, rowIndex) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/large-data-set/index.js)
 |**`customFilterListOptions`**|{render: function, update: function}|| (These options only affect the filter chips that display after filters are selected. To modify the filters themselves, see `filterOptions`) `render` returns a string or array of strings used as the chip label(s). `function(value) => string OR arrayOfStrings`, `update` returns a `filterList (see above)` allowing for custom filter updates when removing the filter chip [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(columnMeta, handleToggleColumn, sortOrder) => string`&#124;` React Component`
 |**`display`**|string|'true'|Display column in table. `enum('true', 'false', 'excluded')`
