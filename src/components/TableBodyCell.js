@@ -73,9 +73,18 @@ const useStyles = makeStyles(
   { name: 'MUIDataTableBodyCell' },
 );
 
-function TableBodyCell(props) {
+const TableBodyCell = ({
+  children,
+  className,
+  colIndex,
+  columnHeader,
+  dataIndex,
+  options,
+  print,
+  rowIndex,
+  ...otherProps
+}) => {
   const classes = useStyles();
-  const { children, colIndex, columnHeader, options, dataIndex, rowIndex, className, print, ...otherProps } = props;
   const onCellClick = options.onCellClick;
 
   const handleClick = useCallback(
@@ -85,71 +94,72 @@ function TableBodyCell(props) {
     [onCellClick, children, colIndex, rowIndex, dataIndex],
   );
 
-  // Event listeners. Avoid attaching them if they're not necessary.
-  let methods = {};
-  if (onCellClick) {
-    methods.onClick = handleClick;
-  }
+  const handleOnClick = event => {
+    // Event listeners. Avoid attaching them if they're not necessary.
+    if (onCellClick) {
+      handleClick(event);
+    }
+  };
 
-  let cells = [
-    <div
-      key={1}
-      className={classNames(
-        {
-          lastColumn: colIndex === 2,
-          [classes.root]: true,
-          [classes.cellHide]: true,
-          [classes.stackedHeader]: true,
-          [classes.stackedCommon]:
-            options.responsive === 'vertical' ||
-            options.responsive === 'stacked' ||
-            options.responsive === 'stackedFullWidth',
-          [classes.cellStackedSmall]:
-            options.responsive === 'stacked' ||
-            (options.responsive === 'stackedFullWidth' &&
-              (options.setTableProps().padding === 'none' || options.setTableProps().size === 'small')),
-          [classes.simpleHeader]: options.responsive === 'simple',
-          'datatables-noprint': !print,
-        },
-        className,
-      )}>
-      {columnHeader}
-    </div>,
-    <div
-      key={2}
-      className={classNames(
-        {
-          [classes.root]: true,
-          [classes.stackedCommon]:
-            options.responsive === 'vertical' ||
-            options.responsive === 'stacked' ||
-            options.responsive === 'stackedFullWidth',
-          [classes.responsiveStackedSmall]:
-            options.responsive === 'stacked' ||
-            (options.responsive === 'stackedFullWidth' &&
-              (options.setTableProps().padding === 'none' || options.setTableProps().size === 'small')),
-          [classes.simpleCell]: options.responsive === 'simple',
-          'datatables-noprint': !print,
-        },
-        className,
-      )}
-      {...otherProps}>
-      {typeof children === 'function' ? children(dataIndex, rowIndex) : children}
-    </div>,
-  ];
+  const getCells = () => {
+    return [
+      <div
+        key="TableBodyCell-1"
+        className={classNames(
+          {
+            lastColumn: colIndex === 2,
+            [classes.root]: true,
+            [classes.cellHide]: true,
+            [classes.stackedHeader]: true,
+            [classes.stackedCommon]:
+              options.responsive === 'vertical' ||
+              options.responsive === 'stacked' ||
+              options.responsive === 'stackedFullWidth',
+            [classes.cellStackedSmall]:
+              options.responsive === 'stacked' ||
+              (options.responsive === 'stackedFullWidth' &&
+                (options.setTableProps().padding === 'none' || options.setTableProps().size === 'small')),
+            [classes.simpleHeader]: options.responsive === 'simple',
+            'datatables-noprint': !print,
+          },
+          className,
+        )}>
+        {columnHeader}
+      </div>,
+      <div
+        key="TableBodyCell-2"
+        className={classNames(
+          {
+            [classes.root]: true,
+            [classes.stackedCommon]:
+              options.responsive === 'vertical' ||
+              options.responsive === 'stacked' ||
+              options.responsive === 'stackedFullWidth',
+            [classes.responsiveStackedSmall]:
+              options.responsive === 'stacked' ||
+              (options.responsive === 'stackedFullWidth' &&
+                (options.setTableProps().padding === 'none' || options.setTableProps().size === 'small')),
+            [classes.simpleCell]: options.responsive === 'simple',
+            'datatables-noprint': !print,
+          },
+          className,
+        )}
+        {...otherProps}>
+        {typeof children === 'function' ? children(dataIndex, rowIndex) : children}
+      </div>,
+    ];
+  };
 
-  var innerCells;
-  if (
-    ['standard', 'scrollMaxHeight', 'scrollFullHeight', 'scrollFullHeightFullWidth'].indexOf(options.responsive) !== -1
-  ) {
-    innerCells = cells.slice(1, 2);
+  let innerCells;
+  if (['standard', 'scrollMaxHeight', 'scrollFullHeight', 'scrollFullHeightFullWidth'].includes(options.responsive)) {
+    innerCells = getCells().slice(1, 2);
   } else {
-    innerCells = cells;
+    innerCells = getCells();
   }
 
   return (
     <TableCell
-      {...methods}
+      onClick={handleOnClick}
       data-colindex={colIndex}
       className={classNames(
         {
@@ -172,6 +182,6 @@ function TableBodyCell(props) {
       {innerCells}
     </TableCell>
   );
-}
+};
 
 export default TableBodyCell;
