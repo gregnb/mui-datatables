@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -13,115 +13,136 @@ import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import FilterIcon from '@material-ui/icons/FilterList';
 import ReactToPrint from 'react-to-print';
 import find from 'lodash.find';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { createCSVDownload, downloadCSV } from '../utils';
 import cloneDeep from 'lodash.clonedeep';
 import MuiTooltip from '@material-ui/core/Tooltip';
 
-export const defaultToolbarStyles = theme => ({
-  root: {
-    '@media print': {
-      display: 'none',
-    },
-  },
-  fullWidthRoot: {},
-  left: {
-    flex: '1 1 auto',
-  },
-  fullWidthLeft: {
-    flex: '1 1 auto',
-  },
-  actions: {
-    flex: '1 1 auto',
-    textAlign: 'right',
-  },
-  fullWidthActions: {
-    flex: '1 1 auto',
-    textAlign: 'right',
-  },
-  titleRoot: {},
-  titleText: {},
-  fullWidthTitleText: {
-    textAlign: 'left',
-  },
-  icon: {
-    '&:hover': {
-      color: theme.palette.primary.main,
-    },
-  },
-  iconActive: {
-    color: theme.palette.primary.main,
-  },
-  filterPaper: {
-    maxWidth: '50%',
-  },
-  filterCloseIcon: {
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    zIndex: 100,
-  },
-  searchIcon: {
-    display: 'inline-flex',
-    marginTop: '10px',
-    marginRight: '8px',
-  },
-  [theme.breakpoints.down('sm')]: {
-    titleRoot: {},
-    titleText: {
-      fontSize: '16px',
-    },
-    spacer: {
-      display: 'none',
-    },
-    left: {
-      // flex: "1 1 40%",
-      padding: '8px 0px',
-    },
-    actions: {
-      // flex: "1 1 60%",
-      textAlign: 'right',
-    },
-  },
-  [theme.breakpoints.down('xs')]: {
+const useStyles = makeStyles(
+  theme => ({
     root: {
-      display: 'block',
       '@media print': {
-        display: 'none !important',
+        display: 'none',
       },
     },
+    fullWidthRoot: {},
     left: {
-      padding: '8px 0px 0px 0px',
+      flex: '1 1 auto',
     },
-    titleText: {
-      textAlign: 'center',
+    fullWidthLeft: {
+      flex: '1 1 auto',
     },
     actions: {
-      textAlign: 'center',
+      flex: '1 1 auto',
+      textAlign: 'right',
     },
-  },
-  '@media screen and (max-width: 480px)': {},
-});
+    fullWidthActions: {
+      flex: '1 1 auto',
+      textAlign: 'right',
+    },
+    titleRoot: {},
+    titleText: {},
+    fullWidthTitleText: {
+      textAlign: 'left',
+    },
+    icon: {
+      '&:hover': {
+        color: theme.palette.primary.main,
+      },
+    },
+    iconActive: {
+      color: theme.palette.primary.main,
+    },
+    filterPaper: {
+      maxWidth: '50%',
+    },
+    filterCloseIcon: {
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      zIndex: 100,
+    },
+    searchIcon: {
+      display: 'inline-flex',
+      marginTop: '10px',
+      marginRight: '8px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      titleRoot: {},
+      titleText: {
+        fontSize: '16px',
+      },
+      spacer: {
+        display: 'none',
+      },
+      left: {
+        // flex: "1 1 40%",
+        padding: '8px 0px',
+      },
+      actions: {
+        // flex: "1 1 60%",
+        textAlign: 'right',
+      },
+    },
+    [theme.breakpoints.down('xs')]: {
+      root: {
+        display: 'block',
+        '@media print': {
+          display: 'none !important',
+        },
+      },
+      left: {
+        padding: '8px 0px 0px 0px',
+      },
+      titleText: {
+        textAlign: 'center',
+      },
+      actions: {
+        textAlign: 'center',
+      },
+    },
+    '@media screen and (max-width: 480px)': {},
+  }),
+  { name: 'MUIDataTableToolbar' },
+);
 
 const RESPONSIVE_FULL_WIDTH_NAME = 'scrollFullHeightFullWidth';
 
-class TableToolbar extends React.Component {
-  state = {
-    iconActive: null,
-    showSearch: Boolean(this.props.searchText || this.props.options.searchText || this.props.options.searchOpen),
-    searchText: this.props.searchText || null,
-  };
+const TableToolbar = ({
+  columns,
+  components = {},
+                        colOrder,
+  data,
+  displayData,
+  filterData,
+  filterList,
+  filterUpdate,
+  options,
+  resetFilters,
+  searchClose,
+  searchText,
+  searchTextUpdate,
+  setTableAction,
+  tableRef,
+  title,
+  toggleViewColumn,
+  updateFilterByType,
+}) => {
+  const classes = useStyles();
+  const [iconActiveState, setIconActive] = useState(null);
+  const [showSearchState, setShowSearch] = useState(Boolean(searchText || options.searchText || options.searchOpen));
+  const [searchTextState, setSearchText] = useState(searchText || null);
+  const [hideFilterPopover, setHideFilterPopover] = useState(null);
 
-  componentDidUpdate(prevProps) {
-    if (this.props.searchText !== prevProps.searchText) {
-      this.setState({ searchText: this.props.searchText });
+  useEffect(() => {
+    if (searchText !== searchTextState) {
+      setSearchText(searchText);
     }
-  }
+  }, [searchText, searchTextState]);
 
-  handleCSVDownload = () => {
-    const { data, displayData, columns, options, colOrder } = this.props;
-    let dataToDownload = [];//cloneDeep(data);
-    let columnsToDownload = [];
+  const handleCSVDownload = () => {
+    let dataToDownload = cloneDeep(data);
+    let columnsToDownload = columns;
     let columnOrder = Array.isArray(colOrder) ? columnOrder.slice(0) : [];
 
     if (columnOrder.length === 0) {
@@ -139,6 +160,7 @@ class TableToolbar extends React.Component {
     columnOrder.forEach( idx => {
       columnsToDownload.push( columns[idx] );
     });
+
 
     if (options.downloadOptions && options.downloadOptions.filterOptions) {
       // check rows first:
@@ -177,251 +199,212 @@ class TableToolbar extends React.Component {
     createCSVDownload(columnsToDownload, dataToDownload, options, downloadCSV);
   };
 
-  setActiveIcon = iconName => {
-    this.setState(
-      prevState => ({
-        showSearch: this.isSearchShown(iconName),
-        iconActive: iconName,
-        prevIconActive: prevState.iconActive,
-      }),
-      () => {
-        const { iconActive, prevIconActive } = this.state;
+  const setActiveIcon = iconName => {
+    setShowSearch(isSearchShown(iconName));
+    setIconActive(prevState => {
+      const prevIconActive = prevState;
 
-        if (iconActive === 'filter') {
-          this.props.setTableAction('onFilterDialogOpen');
-          if (this.props.options.onFilterDialogOpen) {
-            this.props.options.onFilterDialogOpen();
-          }
+      if (iconActiveState === 'filter') {
+        setTableAction('onFilterDialogOpen');
+        if (options.onFilterDialogOpen) {
+          options.onFilterDialogOpen();
         }
-        if (iconActive === undefined && prevIconActive === 'filter') {
-          this.props.setTableAction('onFilterDialogClose');
-          if (this.props.options.onFilterDialogClose) {
-            this.props.options.onFilterDialogClose();
-          }
+      }
+      if (iconActiveState === undefined && prevIconActive === 'filter') {
+        setTableAction('onFilterDialogClose');
+        if (options.onFilterDialogClose) {
+          options.onFilterDialogClose();
         }
-      },
-    );
+      }
+    });
   };
 
-  isSearchShown = iconName => {
+  const isSearchShown = iconName => {
     let nextVal = false;
-    if (this.state.showSearch) {
-      if (this.state.searchText) {
+    if (showSearchState) {
+      if (searchTextState) {
         nextVal = true;
       } else {
-        const { onSearchClose } = this.props.options;
-        this.props.setTableAction('onSearchClose');
+        const { onSearchClose } = options;
+        setTableAction('onSearchClose');
         if (onSearchClose) onSearchClose();
         nextVal = false;
       }
     } else if (iconName === 'search') {
-      nextVal = this.showSearch();
+      nextVal = showSearch();
     }
     return nextVal;
   };
 
-  getActiveIcon = (styles, iconName) => {
-    let isActive = this.state.iconActive === iconName;
+  const getActiveIcon = (styles, iconName) => {
+    let isActive = iconActiveState === iconName;
     if (iconName === 'search') {
-      const { showSearch, searchText } = this.state;
-      isActive = isActive || showSearch || searchText;
+      isActive = isActive || showSearchState || searchTextState;
     }
     return isActive ? styles.iconActive : styles.icon;
   };
 
-  showSearch = () => {
-    this.props.setTableAction('onSearchOpen');
-    !!this.props.options.onSearchOpen && this.props.options.onSearchOpen();
+  const showSearch = () => {
+    setTableAction('onSearchOpen');
+    !!options.onSearchOpen && options.onSearchOpen();
     return true;
   };
 
-  hideSearch = () => {
-    const { onSearchClose } = this.props.options;
+  const hideSearch = () => {
+    const { onSearchClose } = options;
 
-    this.props.setTableAction('onSearchClose');
+    setTableAction('onSearchClose');
     if (onSearchClose) onSearchClose();
-    this.props.searchClose();
+    searchClose();
 
-    this.setState(() => ({
-      iconActive: null,
-      showSearch: false,
-      searchText: null,
-    }));
+    setIconActive(null);
+    setShowSearch(false);
+    setSearchText(null);
   };
 
-  handleSearch = value => {
-    this.setState({ searchText: value });
-    this.props.searchTextUpdate(value);
+  const handleSearch = value => {
+    setSearchText(value);
+    searchTextUpdate(value);
   };
 
-  handleSearchIconClick = () => {
-    const { showSearch, searchText } = this.state;
-    if (showSearch && !searchText) {
-      this.hideSearch();
+  const handleSearchIconClick = () => {
+    if (showSearchState && !searchTextState) {
+      hideSearch();
     } else {
-      this.setActiveIcon('search');
+      setActiveIcon('search');
     }
   };
 
-  render() {
-    const {
-      data,
-      options,
-      classes,
-      columns,
-      filterData,
-      filterList,
-      filterUpdate,
-      resetFilters,
-      toggleViewColumn,
-      title,
-      components = {},
-      updateFilterByType,
-    } = this.props;
+  const Tooltip = components.Tooltip || MuiTooltip;
+  const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;
 
-    const Tooltip = components.Tooltip || MuiTooltip;
-    const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;
-    const { showSearch, searchText } = this.state;
+  const filterPopoverExit = () => {
+    setHideFilterPopover(false);
+    setActiveIcon();
+  };
 
-    const filterPopoverExit = () => {
-      this.setState({ hideFilterPopover: false });
-      this.setActiveIcon.bind(null);
-    };
+  const closeFilterPopover = () => {
+    setHideFilterPopover(true);
+  };
 
-    const closeFilterPopover = () => {
-      this.setState({ hideFilterPopover: true });
-    };
-
-    return (
-      <Toolbar
-        className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.root : classes.fullWidthRoot}
-        role={'toolbar'}
-        aria-label={'Table Toolbar'}>
-        <div className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.left : classes.fullWidthLeft}>
-          {showSearch === true ? (
-            options.customSearchRender ? (
-              options.customSearchRender(searchText, this.handleSearch, this.hideSearch, options)
-            ) : (
-              <TableSearch
-                searchText={searchText}
-                onSearch={this.handleSearch}
-                onHide={this.hideSearch}
-                options={options}
-              />
-            )
-          ) : typeof title !== 'string' ? (
-            title
+  return (
+    <Toolbar
+      className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.root : classes.fullWidthRoot}
+      role={'toolbar'}
+      aria-label={'Table Toolbar'}>
+      <div className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.left : classes.fullWidthLeft}>
+        {showSearchState === true ? (
+          options.customSearchRender ? (
+            options.customSearchRender(searchTextState, handleSearch, hideSearch, options)
           ) : (
-            <div className={classes.titleRoot} aria-hidden={'true'}>
-              <Typography
-                variant="h6"
-                className={
-                  options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.titleText : classes.fullWidthTitleText
-                }>
-                {title}
-              </Typography>
-            </div>
-          )}
-        </div>
-        <div className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.actions : classes.fullWidthActions}>
-          {options.search && (
-            <Tooltip title={search} disableFocusListener>
-              <IconButton
-                aria-label={search}
-                data-testid={search + '-iconButton'}
-                buttonRef={el => (this.searchButton = el)}
-                classes={{ root: this.getActiveIcon(classes, 'search') }}
-                onClick={this.handleSearchIconClick}>
-                <SearchIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-          {options.download && (
-            <Tooltip title={downloadCsv}>
-              <IconButton
-                data-testid={downloadCsv + '-iconButton'}
-                aria-label={downloadCsv}
-                classes={{ root: classes.icon }}
-                onClick={this.handleCSVDownload}>
-                <DownloadIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-          {options.print && (
-            <span>
-              <ReactToPrint
-                trigger={() => (
-                  <span>
-                    <Tooltip title={print}>
-                      <IconButton
-                        data-testid={print + '-iconButton'}
-                        aria-label={print}
-                        classes={{ root: classes.icon }}>
-                        <PrintIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </span>
-                )}
-                content={() => this.props.tableRef()}
+            <TableSearch searchText={searchTextState} onSearch={handleSearch} onHide={hideSearch} options={options} />
+          )
+        ) : typeof title !== 'string' ? (
+          title
+        ) : (
+          <div className={classes.titleRoot} aria-hidden={'true'}>
+            <Typography
+              variant="h6"
+              className={
+                options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.titleText : classes.fullWidthTitleText
+              }>
+              {title}
+            </Typography>
+          </div>
+        )}
+      </div>
+      <div className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.actions : classes.fullWidthActions}>
+        {options.search && (
+          <Tooltip title={search} disableFocusListener>
+            <IconButton
+              aria-label={search}
+              data-testid={search + '-iconButton'}
+              classes={{ root: getActiveIcon(classes, 'search') }}
+              onClick={handleSearchIconClick}>
+              <SearchIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+        {options.download && (
+          <Tooltip title={downloadCsv}>
+            <IconButton
+              data-testid={downloadCsv + '-iconButton'}
+              aria-label={downloadCsv}
+              classes={{ root: classes.icon }}
+              onClick={handleCSVDownload}>
+              <DownloadIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+        {options.print && (
+          <span>
+            <ReactToPrint
+              trigger={() => (
+                <span>
+                  <Tooltip title={print}>
+                    <IconButton data-testid={print + '-iconButton'} aria-label={print} classes={{ root: classes.icon }}>
+                      <PrintIcon />
+                    </IconButton>
+                  </Tooltip>
+                </span>
+              )}
+              content={() => tableRef()}
+            />
+          </span>
+        )}
+        {options.viewColumns && (
+          <Popover
+            refExit={() => setActiveIcon()}
+            classes={{ closeIcon: classes.filterCloseIcon }}
+            trigger={
+              <Tooltip title={viewColumns} disableFocusListener>
+                <IconButton
+                  data-testid={viewColumns + '-iconButton'}
+                  aria-label={viewColumns}
+                  classes={{ root: getActiveIcon(classes, 'viewcolumns') }}
+                  onClick={() => setActiveIcon('viewcolumns')}>
+                  <ViewColumnIcon />
+                </IconButton>
+              </Tooltip>
+            }
+            content={<TableViewCol data={data} columns={columns} options={options} onColumnUpdate={toggleViewColumn} />}
+          />
+        )}
+        {options.filter && (
+          <Popover
+            refExit={filterPopoverExit}
+            hide={hideFilterPopover}
+            classes={{ paper: classes.filterPaper, closeIcon: classes.filterCloseIcon }}
+            trigger={
+              <Tooltip title={filterTable} disableFocusListener>
+                <IconButton
+                  data-testid={filterTable + '-iconButton'}
+                  aria-label={filterTable}
+                  classes={{ root: getActiveIcon(classes, 'filter') }}
+                  onClick={() => setActiveIcon('filter')}>
+                  <FilterIcon />
+                </IconButton>
+              </Tooltip>
+            }
+            content={
+              <TableFilter
+                customFooter={options.customFilterDialogFooter}
+                columns={columns}
+                options={options}
+                filterList={filterList}
+                filterData={filterData}
+                onFilterUpdate={filterUpdate}
+                onFilterReset={resetFilters}
+                handleClose={closeFilterPopover}
+                updateFilterByType={updateFilterByType}
               />
-            </span>
-          )}
-          {options.viewColumns && (
-            <Popover
-              refExit={this.setActiveIcon.bind(null)}
-              classes={{ closeIcon: classes.filterCloseIcon }}
-              trigger={
-                <Tooltip title={viewColumns} disableFocusListener>
-                  <IconButton
-                    data-testid={viewColumns + '-iconButton'}
-                    aria-label={viewColumns}
-                    classes={{ root: this.getActiveIcon(classes, 'viewcolumns') }}
-                    onClick={this.setActiveIcon.bind(null, 'viewcolumns')}>
-                    <ViewColumnIcon />
-                  </IconButton>
-                </Tooltip>
-              }
-              content={
-                <TableViewCol data={data} columns={columns} options={options} onColumnUpdate={toggleViewColumn} />
-              }
-            />
-          )}
-          {options.filter && (
-            <Popover
-              refExit={filterPopoverExit}
-              hide={this.state.hideFilterPopover}
-              classes={{ paper: classes.filterPaper, closeIcon: classes.filterCloseIcon }}
-              trigger={
-                <Tooltip title={filterTable} disableFocusListener>
-                  <IconButton
-                    data-testid={filterTable + '-iconButton'}
-                    aria-label={filterTable}
-                    classes={{ root: this.getActiveIcon(classes, 'filter') }}
-                    onClick={this.setActiveIcon.bind(null, 'filter')}>
-                    <FilterIcon />
-                  </IconButton>
-                </Tooltip>
-              }
-              content={
-                <TableFilter
-                  customFooter={options.customFilterDialogFooter}
-                  columns={columns}
-                  options={options}
-                  filterList={filterList}
-                  filterData={filterData}
-                  onFilterUpdate={filterUpdate}
-                  onFilterReset={resetFilters}
-                  handleClose={closeFilterPopover}
-                  updateFilterByType={updateFilterByType}
-                />
-              }
-            />
-          )}
-          {options.customToolbar && options.customToolbar()}
-        </div>
-      </Toolbar>
-    );
-  }
-}
+            }
+          />
+        )}
+        {options.customToolbar && options.customToolbar()}
+      </div>
+    </Toolbar>
+  );
+};
 
-export default withStyles(defaultToolbarStyles, { name: 'MUIDataTableToolbar' })(TableToolbar);
+export default TableToolbar;
