@@ -2,6 +2,7 @@ import React from 'react';
 import MuiTable from '@material-ui/core/Table';
 import TablePagination from './TablePagination';
 import { makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(
   () => ({
@@ -50,6 +51,27 @@ const TableFooter = ({ options, rowCount, page, rowsPerPage, changeRowsPerPage, 
   }
 
   return <MuiTable className={classes.root} />;
+};
+
+TableFooter.propTypes = {
+  /** Total number of table rows */
+  rowCount: PropTypes.number.isRequired,
+  /** Options used to describe table */
+  options: PropTypes.shape({
+    customFooter: PropTypes.func,
+    pagination: PropTypes.bool,
+    textLabels: PropTypes.shape({
+      pagination: PropTypes.string,
+    }),
+  }),
+  /** Current page index */
+  page: PropTypes.number.isRequired,
+  /** Total number allowed of rows per page */
+  rowsPerPage: PropTypes.number.isRequired,
+  /** Callback to trigger rows per page change */
+  changeRowsPerPage: PropTypes.func.isRequired,
+  /** Callback to trigger page change */
+  changePage: PropTypes.func.isRequired,
 };
 
 export default TableFooter;
