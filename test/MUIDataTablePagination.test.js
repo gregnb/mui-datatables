@@ -1,9 +1,7 @@
 import React from 'react';
-import { spy, stub } from 'sinon';
+import { spy } from 'sinon';
 import { mount, shallow } from 'enzyme';
-import { assert, expect, should } from 'chai';
-import TableRow from '@material-ui/core/TableRow';
-import TableFooter from '@material-ui/core/TableFooter';
+import { assert } from 'chai';
 import MuiTablePagination from '@material-ui/core/TablePagination';
 import getTextLabels from '../src/textLabels';
 import TablePagination from '../src/components/TablePagination';
