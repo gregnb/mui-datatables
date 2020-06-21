@@ -65,4 +65,26 @@ describe('<TableFooter />', function() {
     const actualResult = mountWrapper.find(MuiTableFooter);
     assert.strictEqual(actualResult.length, 1);
   });
+
+  it('should not render a table footer', () => {
+    const nonPageOption = {
+      rowsPerPageOptions: [5, 10, 15],
+      textLabels: getTextLabels(),
+      pagination: false,
+    };
+
+    const mountWrapper = mount(
+      <TableFooter
+        options={nonPageOption}
+        rowCount={100}
+        page={1}
+        rowsPerPage={10}
+        changeRowsPerPage={changeRowsPerPage}
+        changePage={changePage}
+      />,
+    );
+
+    const actualResult = mountWrapper.find(MuiTableFooter);
+    assert.strictEqual(actualResult.length, 0);
+  });
 });
