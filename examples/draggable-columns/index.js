@@ -47,7 +47,6 @@ function Example() {
       transitionTime
     },
     selectableRows: selectableRows,
-    resizableColumns: true,
   };
 
   const data = [

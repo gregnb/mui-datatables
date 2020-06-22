@@ -125,7 +125,6 @@ class TableToolbar extends React.Component {
     let columnOrderCopy = Array.isArray(columnOrder) ? columnOrder.slice(0) : [];
 
     if (columnOrderCopy.length === 0) {
-      console.log('no column order');
       columnOrderCopy = columns.map((item, idx) => idx);
     }
 
@@ -144,7 +143,7 @@ class TableToolbar extends React.Component {
     if (options.downloadOptions && options.downloadOptions.filterOptions) {
       // check rows first:
       if (options.downloadOptions.filterOptions.useDisplayedRowsOnly) {
-        dataToDownload = displayData.map((row, index) => {
+        let filteredDataToDownload = displayData.map((row, index) => {
           let i = -1;
 
           // Help to preserve sort order in custom render columns
@@ -166,14 +165,23 @@ class TableToolbar extends React.Component {
             }),
           };
         });
+
+        dataToDownload = [];
+        filteredDataToDownload.forEach(row => {
+          let newRow = { index: row.index, data: [] };
+          columnOrderCopy.forEach(idx => {
+            newRow.data.push(row.data[idx]);
+          });
+          dataToDownload.push(newRow);
+        });
       }
 
       // now, check columns:
       if (options.downloadOptions.filterOptions.useDisplayedColumnsOnly) {
-        columnsToDownload = columns.filter(_ => _.display === 'true');
+        columnsToDownload = columnsToDownload.filter(_ => _.display === 'true');
 
         dataToDownload = dataToDownload.map(row => {
-          row.data = row.data.filter((_, index) => columns[index].display === 'true');
+          row.data = row.data.filter((_, index) => columns[columnOrderCopy[index]].display === 'true');
           return row;
         });
       }
