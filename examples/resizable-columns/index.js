@@ -90,6 +90,10 @@ function Example(props) {
       </FormControl>
       <div style={{marginLeft: marginLeft + 'px'}}>
         <MUIDataTable title={"ACME Employee list" + " [" + counter + "]"} data={data} columns={columns} options={options} />
+        <div>
+          <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+        </div>
+        <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
       </div>
     </>
   );

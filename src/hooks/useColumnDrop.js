@@ -30,7 +30,7 @@ const getColModel = (headCellRefs, columnOrder, columns) => {
   columnOrder.forEach((colIdx, idx) => {
     let col = headCellRefs[colIdx + 1];
     let cmIndx = colModel.length - 1;
-    if (columns[colIdx] && columns[colIdx].display === 'false') {
+    if (columns[colIdx] && (columns[colIdx].display === 'false' || columns[colIdx].display === 'excluded')) {
       // skip
     } else {
       colModel.push({
@@ -67,6 +67,8 @@ const useColumnDrop = opts => {
     hover: (item, mon) => {
       let hoverIdx = mon.getItem().colIndex;
 
+      if (headCellRefs !== mon.getItem().headCellRefs) return;
+
       if (hoverIdx !== index) {
         let reorderedCols = reorderColumns(columnOrder, mon.getItem().colIndex, index);
         let newColModel = getColModel(headCellRefs, reorderedCols, columns);
@@ -95,7 +97,7 @@ const useColumnDrop = opts => {
 
           for (let idx = 1; idx < columnOrder.length; idx++) {
             let colIndex = columnOrder[idx];
-            if (columns[colIndex] && columns[colIndex].display === 'false') {
+            if (columns[colIndex] && (columns[colIndex].display === 'false' || columns[colIndex].display === 'excluded')) {
               // skip
             } else {
               if (headCellRefs[idx]) headCellRefs[idx].style.transition = '280ms';

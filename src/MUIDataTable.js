@@ -1825,7 +1825,7 @@ class MUIDataTable extends React.Component {
               options={this.props.options}
             />
           )}
-          <DndProvider backend={HTML5Backend}>
+          <DndProvider backend={HTML5Backend} context={window}>
             <MuiTable
               ref={el => (this.tableRef = el)}
               tabIndex={'0'}

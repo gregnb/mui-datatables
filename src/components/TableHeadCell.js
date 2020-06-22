@@ -116,11 +116,14 @@ const TableHeadCell = ({
     item: {
       type: 'HEADER',
       colIndex: index,
+      headCellRefs: draggableHeadCellRefs
     },
     begin: monitor => {
-      setHintTooltipOpen(false);
-      setSortTooltipOpen(false);
-      setDragging(true);
+      setTimeout(() => {
+        setHintTooltipOpen(false);
+        setSortTooltipOpen(false);
+        setDragging(true);
+      }, 0);
       return null;
     },
     end: (item, monitor) => {
@@ -151,7 +154,6 @@ const TableHeadCell = ({
 
   const isDraggingEnabled = () => {
     if (!draggingHook) return false;
-
     return options.draggableColumns && options.draggableColumns.enabled && column.draggable !== false;
   };
 
@@ -216,7 +218,7 @@ const TableHeadCell = ({
                 className={classNames({
                   [classes.data]: true,
                   [classes.sortActive]: sortActive,
-                  [classes.dragCursor]: isDraggingEnabled,
+                  [classes.dragCursor]: isDraggingEnabled(),
                 })}>
                 {children}
               </div>
