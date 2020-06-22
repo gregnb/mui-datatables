@@ -116,7 +116,7 @@ const TableHeadCell = ({
     item: {
       type: 'HEADER',
       colIndex: index,
-      headCellRefs: draggableHeadCellRefs
+      headCellRefs: draggableHeadCellRefs,
     },
     begin: monitor => {
       setTimeout(() => {
