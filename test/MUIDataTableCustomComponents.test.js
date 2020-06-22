@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { assert } from 'chai';
 import MUIDataTable from '../src/MUIDataTable';
 import Chip from '@material-ui/core/Chip';
@@ -41,7 +41,7 @@ describe('<MUIDataTable /> with custom components', function() {
   });
 
   it('should render a table with custom Chip in TableFilterList', () => {
-    const shallowWrapper = shallow(
+    const wrapper = mount(
       <MUIDataTable
         columns={columns}
         data={data}
@@ -50,12 +50,9 @@ describe('<MUIDataTable /> with custom components', function() {
         }}
       />,
     );
-    const customFilterList = shallowWrapper.dive().find(CustomFilterList);
+    const customFilterList = wrapper.find(CustomFilterList);
     assert.lengthOf(customFilterList, 1);
     const customChip = customFilterList
-      .dive()
-      .dive()
-      .dive()
       .find(CustomChip);
     assert.lengthOf(customChip, 1);
   });

@@ -18,6 +18,7 @@ function Example(props) {
     {
       name: "Counter",
       options: {
+        sort: false,
         empty: true,
         customBodyRender: value => <button onClick={incrCount}>+</button>
       }
@@ -25,7 +26,6 @@ function Example(props) {
     {
       name: "Name",
       options: {
-        sort: false,
         hint: "?",
         setCellProps: () => ({style: {whiteSpace:'nowrap'}})
       }
@@ -78,6 +78,9 @@ function Example(props) {
     filter: true,
     filterType: 'dropdown',
     resizableColumns: true,
+    draggableColumns: {
+      enabled: true,
+    }
   };
 
   return (

@@ -36,9 +36,8 @@ class Example extends React.Component {
       {
         name: "Age",
         options: {
-          customBodyRender: (val, tableMeta) => {
-            console.log(val);
-            console.dir(tableMeta);
+          customBodyRenderLite: (dataIndex) => {
+            let val = data[dataIndex][3];
             return val;
           },
           filter: true,

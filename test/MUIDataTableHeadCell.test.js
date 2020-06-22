@@ -7,6 +7,8 @@ import TableHeadCell from '../src/components/TableHeadCell';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import HelpIcon from '@material-ui/icons/Help';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 describe('<TableHeadCell />', function() {
   let classes;
@@ -25,15 +27,17 @@ describe('<TableHeadCell />', function() {
     const toggleExpandRow = () => {};
 
     const mountWrapper = mount(
-      <TableHeadCell
-        cellHeaderProps={setCellHeaderProps}
-        options={options}
-        sortDirection={'asc'}
-        sort={true}
-        toggleSort={toggleSort}
-        classes={classes}>
-        some content
-      </TableHeadCell>,
+      <DndProvider backend={HTML5Backend}>
+        <TableHeadCell
+          cellHeaderProps={setCellHeaderProps}
+          options={options}
+          sortDirection={'asc'}
+          sort={true}
+          toggleSort={toggleSort}
+          classes={classes}>
+          some content
+        </TableHeadCell>
+      </DndProvider>,
     );
 
     const props = mountWrapper.find(TableCell).props();
@@ -48,13 +52,15 @@ describe('<TableHeadCell />', function() {
     const options = { sort: true, textLabels: getTextLabels() };
     const toggleSort = () => {};
 
-    const shallowWrapper = shallow(
-      <TableHeadCell options={options} sortDirection={'asc'} sort={true} toggleSort={toggleSort} classes={classes}>
-        some content
-      </TableHeadCell>,
-    ).dive();
+    const wrapper = mount(
+      <DndProvider backend={HTML5Backend}>
+        <TableHeadCell options={options} sortDirection={'asc'} sort={true} toggleSort={toggleSort} classes={classes}>
+          some content
+        </TableHeadCell>
+      </DndProvider>,
+    );
 
-    const actualResult = shallowWrapper.find(TableSortLabel);
+    const actualResult = wrapper.find(TableSortLabel);
     assert.strictEqual(actualResult.length, 1);
   });
 
@@ -63,9 +69,11 @@ describe('<TableHeadCell />', function() {
     const toggleSort = () => {};
 
     const shallowWrapper = shallow(
-      <TableHeadCell options={options} sortDirection={'asc'} sort={true} toggleSort={toggleSort} classes={classes}>
-        some content
-      </TableHeadCell>,
+      <DndProvider backend={HTML5Backend}>
+        <TableHeadCell options={options} sortDirection={'asc'} sort={true} toggleSort={toggleSort} classes={classes}>
+          some content
+        </TableHeadCell>
+      </DndProvider>,
     );
 
     const actualResult = shallowWrapper.find(TableSortLabel);
@@ -75,13 +83,15 @@ describe('<TableHeadCell />', function() {
   it('should render a table help icon when hint provided', () => {
     const options = { sort: true, textLabels: getTextLabels() };
 
-    const shallowWrapper = shallow(
-      <TableHeadCell options={options} hint={'hint text'} classes={classes}>
-        some content
-      </TableHeadCell>,
-    ).dive();
+    const wrapper = mount(
+      <DndProvider backend={HTML5Backend}>
+        <TableHeadCell options={options} hint={'hint text'} classes={classes}>
+          some content
+        </TableHeadCell>
+      </DndProvider>,
+    );
 
-    const actualResult = shallowWrapper.find(HelpIcon);
+    const actualResult = wrapper.find(HelpIcon);
     assert.strictEqual(actualResult.length, 1);
   });
 
@@ -89,9 +99,11 @@ describe('<TableHeadCell />', function() {
     const options = { sort: true, textLabels: getTextLabels() };
 
     const shallowWrapper = shallow(
-      <TableHeadCell options={options} classes={classes}>
-        some content
-      </TableHeadCell>,
+      <DndProvider backend={HTML5Backend}>
+        <TableHeadCell options={options} classes={classes}>
+          some content
+        </TableHeadCell>
+      </DndProvider>,
     ).dive();
 
     const actualResult = shallowWrapper.find(HelpIcon);
@@ -102,16 +114,26 @@ describe('<TableHeadCell />', function() {
     const options = { sort: true, textLabels: getTextLabels() };
     const toggleSort = spy();
 
-    const shallowWrapper = shallow(
-      <TableHeadCell options={options} index={0} sortDirection={'asc'} toggleSort={toggleSort} classes={classes}>
-        some content
-      </TableHeadCell>,
-    ).dive();
+    const wrapper = mount(
+      <DndProvider backend={HTML5Backend}>
+        <TableHeadCell
+          options={options}
+          sort={true}
+          index={0}
+          sortDirection={'asc'}
+          toggleSort={toggleSort}
+          classes={classes}>
+          some content
+        </TableHeadCell>
+      </DndProvider>,
+    );
 
-    const instance = shallowWrapper.instance();
-
+    const instance = wrapper
+      .find('td')
+      .at(0)
+      .childAt(0);
     const event = { target: { value: 'All' } };
-    instance.handleSortClick();
+    instance.simulate('click');
     assert.strictEqual(toggleSort.callCount, 1);
   });
 });
