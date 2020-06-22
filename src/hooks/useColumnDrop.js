@@ -30,7 +30,7 @@ const getColModel = (headCellRefs, columnOrder, columns) => {
   columnOrder.forEach((colIdx, idx) => {
     let col = headCellRefs[colIdx + 1];
     let cmIndx = colModel.length - 1;
-    if (columns[colIdx] && (columns[colIdx].display === 'false' || columns[colIdx].display === 'excluded')) {
+    if (columns[colIdx] && columns[colIdx].display !== 'true') {
       // skip
     } else {
       colModel.push({
@@ -99,7 +99,7 @@ const useColumnDrop = opts => {
             let colIndex = columnOrder[idx];
             if (
               columns[colIndex] &&
-              (columns[colIndex].display === 'false' || columns[colIndex].display === 'excluded')
+              (columns[colIndex].display !== 'true')
             ) {
               // skip
             } else {
