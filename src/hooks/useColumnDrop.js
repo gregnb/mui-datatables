@@ -6,10 +6,10 @@ import { useDrop } from 'react-dnd';
 
 const getColModel = (headCellRefs, columnOrder) => {
   let colModel = [];
-
+  let selectCellHead = headCellRefs[0] ? headCellRefs[0] : { offsetParent: 0, offsetWidth: 0, offsetLeft: 0 };
   let ii = 0,
     parentOffsetLeft = 0,
-    offsetParent = headCellRefs[0].offsetParent;
+    offsetParent = selectCellHead.offsetParent;
   while (offsetParent) {
     parentOffsetLeft = parentOffsetLeft + (offsetParent.offsetLeft || 0);
     offsetParent = offsetParent.offsetParent;
@@ -21,10 +21,10 @@ const getColModel = (headCellRefs, columnOrder) => {
   }
 
   colModel[0] = {
-    left: parentOffsetLeft + headCellRefs[0].offsetLeft,
-    width: headCellRefs[0].offsetWidth,
+    left: parentOffsetLeft + selectCellHead.offsetLeft,
+    width: selectCellHead.offsetWidth,
     columnIndex: null,
-    ref: headCellRefs[0],
+    ref: selectCellHead,
   };
 
   columnOrder.forEach((colIdx, idx) => {
