@@ -9,7 +9,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/gregnb/mui-datatables/badge.svg?branch=master)](https://coveralls.io/github/gregnb/mui-datatables?branch=master)
 [![npm version](https://badge.fury.io/js/mui-datatables.svg)](https://badge.fury.io/js/mui-datatables)
 
-MUI-Datatables is a responsive datatables component built on [Material-UI](https://www.material-ui.com).  It comes with features like filtering, [resizable columns](https://codesandbox.io/s/muidatatables-custom-toolbar-zomv5?file=/index.js), view/hide columns, search, export to CSV download, printing, selectable rows, expandable rows, pagination, and sorting. On top of the ability to customize styling on most views, there are three responsive modes "vertical", "standard", and "simple" for mobile/tablet devices.
+MUI-Datatables is a responsive datatables component built on [Material-UI](https://www.material-ui.com).  It comes with features like filtering, [resizable columns](https://codesandbox.io/s/muidatatables-custom-toolbar-zomv5?file=/index.js), view/hide columns, draggable columns, search, export to CSV download, printing, selectable rows, expandable rows, pagination, and sorting. On top of the ability to customize styling on most views, there are three responsive modes "vertical", "standard", and "simple" for mobile/tablet devices.
 
 Version 3 has been released! You can read about the [updates here](https://github.com/gregnb/mui-datatables/blob/master/docs/v2_to_v3_guide.md)!
 
