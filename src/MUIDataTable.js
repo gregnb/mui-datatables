@@ -374,7 +374,7 @@ class MUIDataTable extends React.Component {
     },
     draggableColumns: {
       enabled: false,
-      transitionTime: 300
+      transitionTime: 300,
     },
     elevation: 4,
     enableNestedDataAccess: '',
@@ -632,12 +632,12 @@ class MUIDataTable extends React.Component {
       filterList[colIndex] = [];
     });
 
-    if ( Array.isArray(newColumnOrder) ) {
+    if (Array.isArray(newColumnOrder)) {
       columnOrder = newColumnOrder;
-    } else if ( 
-      Array.isArray(prevColumnOrder) && 
-      Array.isArray(newColumns) && 
-      Array.isArray(prevColumns) && 
+    } else if (
+      Array.isArray(prevColumnOrder) &&
+      Array.isArray(newColumns) &&
+      Array.isArray(prevColumns) &&
       newColumns.length === prevColumns.length
     ) {
       columnOrder = prevColumnOrder;
@@ -679,7 +679,12 @@ class MUIDataTable extends React.Component {
 
   setTableData(props, status, dataUpdated, callback = () => {}) {
     let tableData = [];
-    let { columns, filterData, filterList, columnOrder } = this.buildColumns(props.columns, this.state.columns, this.options.columnOrder, this.state.columnOrder);
+    let { columns, filterData, filterList, columnOrder } = this.buildColumns(
+      props.columns,
+      this.state.columns,
+      this.options.columnOrder,
+      this.state.columnOrder,
+    );
     let sortIndex = null;
     let sortDirection = 'none';
     let tableMeta;
@@ -884,7 +889,7 @@ class MUIDataTable extends React.Component {
         data: tableData,
         sortOrder: sortOrder,
         displayData: this.getDisplayData(columns, tableData, filterList, searchText, tableMeta),
-        columnOrder
+        columnOrder,
       },
       callback,
     );
@@ -1821,61 +1826,61 @@ class MUIDataTable extends React.Component {
             />
           )}
           <DndProvider backend={HTML5Backend}>
-          <MuiTable
-            ref={el => (this.tableRef = el)}
-            tabIndex={'0'}
-            role={'grid'}
-            className={tableClassNames}
-            {...tableProps}>
-            <caption className={classes.caption}>{title}</caption>
-            <TableHeadComponent
-              columns={columns}
-              activeColumn={activeColumn}
-              data={displayData}
-              count={rowCount}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              selectedRows={selectedRows}
-              selectRowUpdate={this.selectRowUpdate}
-              toggleSort={this.toggleSortColumn}
-              setCellRef={this.setHeadCellRef}
-              expandedRows={expandedRows}
-              areAllRowsExpanded={this.areAllRowsExpanded}
-              toggleAllExpandableRows={this.toggleAllExpandableRows}
-              options={this.options}
-              sortOrder={sortOrder}
-              columnOrder={columnOrder}
-              updateColumnOrder={this.updateColumnOrder}
-              draggableHeadCellRefs={this.draggableHeadCellRefs}
-              tableRef={this.getTableContentRef}
-              timers={this.timers}
-              components={this.props.components}
-            />
-            <TableBodyComponent
-              data={displayData}
-              count={rowCount}
-              columns={columns}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              selectedRows={selectedRows}
-              selectRowUpdate={this.selectRowUpdate}
-              previousSelectedRow={previousSelectedRow}
-              expandedRows={expandedRows}
-              toggleExpandRow={this.toggleExpandRow}
-              options={this.options}
-              columnOrder={columnOrder}
-              filterList={filterList}
-            />
-            {this.options.customTableBodyFooterRender
-              ? this.options.customTableBodyFooterRender({
-                  data: displayData,
-                  count: rowCount,
-                  columns,
-                  selectedRows,
-                  selectableRows: this.options.selectableRows,
-                })
-              : null}
-          </MuiTable>
+            <MuiTable
+              ref={el => (this.tableRef = el)}
+              tabIndex={'0'}
+              role={'grid'}
+              className={tableClassNames}
+              {...tableProps}>
+              <caption className={classes.caption}>{title}</caption>
+              <TableHeadComponent
+                columns={columns}
+                activeColumn={activeColumn}
+                data={displayData}
+                count={rowCount}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                selectedRows={selectedRows}
+                selectRowUpdate={this.selectRowUpdate}
+                toggleSort={this.toggleSortColumn}
+                setCellRef={this.setHeadCellRef}
+                expandedRows={expandedRows}
+                areAllRowsExpanded={this.areAllRowsExpanded}
+                toggleAllExpandableRows={this.toggleAllExpandableRows}
+                options={this.options}
+                sortOrder={sortOrder}
+                columnOrder={columnOrder}
+                updateColumnOrder={this.updateColumnOrder}
+                draggableHeadCellRefs={this.draggableHeadCellRefs}
+                tableRef={this.getTableContentRef}
+                timers={this.timers}
+                components={this.props.components}
+              />
+              <TableBodyComponent
+                data={displayData}
+                count={rowCount}
+                columns={columns}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                selectedRows={selectedRows}
+                selectRowUpdate={this.selectRowUpdate}
+                previousSelectedRow={previousSelectedRow}
+                expandedRows={expandedRows}
+                toggleExpandRow={this.toggleExpandRow}
+                options={this.options}
+                columnOrder={columnOrder}
+                filterList={filterList}
+              />
+              {this.options.customTableBodyFooterRender
+                ? this.options.customTableBodyFooterRender({
+                    data: displayData,
+                    count: rowCount,
+                    columns,
+                    selectedRows,
+                    selectableRows: this.options.selectableRows,
+                  })
+                : null}
+            </MuiTable>
           </DndProvider>
         </div>
         <TableFooterComponent

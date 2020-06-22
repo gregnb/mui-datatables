@@ -103,7 +103,7 @@ describe('<TableHeadCell />', function() {
         <TableHeadCell options={options} classes={classes}>
           some content
         </TableHeadCell>
-      </DndProvider>
+      </DndProvider>,
     ).dive();
 
     const actualResult = shallowWrapper.find(HelpIcon);
@@ -116,13 +116,22 @@ describe('<TableHeadCell />', function() {
 
     const wrapper = mount(
       <DndProvider backend={HTML5Backend}>
-        <TableHeadCell options={options} sort={true} index={0} sortDirection={'asc'} toggleSort={toggleSort} classes={classes}>
+        <TableHeadCell
+          options={options}
+          sort={true}
+          index={0}
+          sortDirection={'asc'}
+          toggleSort={toggleSort}
+          classes={classes}>
           some content
         </TableHeadCell>
       </DndProvider>,
     );
 
-    const instance = wrapper.find('td').at(0).childAt(0);
+    const instance = wrapper
+      .find('td')
+      .at(0)
+      .childAt(0);
     const event = { target: { value: 'All' } };
     instance.simulate('click');
     assert.strictEqual(toggleSort.callCount, 1);

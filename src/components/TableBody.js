@@ -214,15 +214,21 @@ class TableBody extends React.Component {
     let ret = [];
     for (let ii = 0; ii < row.length; ii++) {
       ret.push({
-        value: row[ columnOrder[ii] ],
-        index: columnOrder[ii]
+        value: row[columnOrder[ii]],
+        index: columnOrder[ii],
       });
     }
     return ret;
   };
 
   render() {
-    const { classes, columns, toggleExpandRow, options, columnOrder = this.props.columns.map((item,idx) => idx) } = this.props;
+    const {
+      classes,
+      columns,
+      toggleExpandRow,
+      options,
+      columnOrder = this.props.columns.map((item, idx) => idx),
+    } = this.props;
     const tableRows = this.buildRows();
     const visibleColCnt = columns.filter(c => c.display === 'true').length;
 
@@ -283,7 +289,7 @@ class TableBody extends React.Component {
                     id={'MUIDataTableSelectCell-' + dataIndex}
                   />
                   {processedRow.map(
-                    (column) =>
+                    column =>
                       columns[column.index].display === 'true' && (
                         <TableBodyCell
                           {...(columns[column.index].setCellProps

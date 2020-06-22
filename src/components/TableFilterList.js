@@ -33,11 +33,11 @@ const TableFilterList = ({
 
   const removeFilter = (index, filterValue, columnName, filterType) => {
     let removedFilter = filterValue;
-    if ( Array.isArray(removedFilter) && removedFilter.length === 0) {
+    if (Array.isArray(removedFilter) && removedFilter.length === 0) {
       removedFilter = filterList[index];
     }
 
-    filterUpdate(index, filterValue, columnName, filterType, null, (filterList) => {
+    filterUpdate(index, filterValue, columnName, filterType, null, filterList => {
       if (options.onFilterChipClose) {
         options.onFilterChipClose(index, removedFilter, filterList);
       }
@@ -57,12 +57,7 @@ const TableFilterList = ({
       <ItemComponent
         label={customFilterItem}
         key={customFilterItemIndex}
-        onDelete={() => removeFilter(
-            index,
-            item[customFilterItemIndex] || [],
-            columnNames[index].name,
-            type
-        )}
+        onDelete={() => removeFilter(index, item[customFilterItemIndex] || [], columnNames[index].name, type)}
         className={classes.chip}
         itemKey={customFilterItemIndex}
         index={index}

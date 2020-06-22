@@ -24,7 +24,7 @@ const useStyles = makeStyles(
 );
 
 const TableHead = ({
-  columnOrder = columns ? columns.map((item, idx) => idx) : [],
+  columnOrder = null,
   columns,
   components = {},
   count,
@@ -43,6 +43,10 @@ const TableHead = ({
   updateColumnOrder,
 }) => {
   const classes = useStyles();
+
+  if (columnOrder === null) {
+    columnOrder = columns ? columns.map((item, idx) => idx) : [];
+  }
 
   const [dragging, setDragging] = useState(false);
 
@@ -88,7 +92,7 @@ const TableHead = ({
       colPos: idx,
     };
   });
-
+  
   return (
     <MuiTableHead
       className={classNames({
