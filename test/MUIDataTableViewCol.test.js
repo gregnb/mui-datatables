@@ -13,10 +13,10 @@ describe('<TableViewCol />', function() {
 
   before(() => {
     columns = [
-      { name: 'a', label: 'A' },
-      { name: 'b', label: 'B' },
-      { name: 'c', label: 'C' },
-      { name: 'd', label: 'D' },
+      { name: 'a', label: 'A', display: "true" },
+      { name: 'b', label: 'B', display: "true" },
+      { name: 'c', label: 'C', display: "true" },
+      { name: 'd', label: 'D', display: "true" },
     ];
     options = {
       textLabels: getTextLabels(),
