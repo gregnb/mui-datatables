@@ -19,6 +19,11 @@ function Example() {
   const [transitionTime, setTransitionTime] = useState(300);
   const [selectableRows, setSelectableRows] = useState('none');
 
+  const [treeData, setTreeData] = useState([
+        { title: 'Chicken', children: [{ title: 'Egg' }] },
+        { title: 'Fish', children: [{ title: 'fingerline'}] }
+      ]);
+
   const columns = [{
     name: 'hidden',
     options: {

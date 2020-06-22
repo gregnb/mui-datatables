@@ -97,10 +97,7 @@ const useColumnDrop = opts => {
 
           for (let idx = 1; idx < columnOrder.length; idx++) {
             let colIndex = columnOrder[idx];
-            if (
-              columns[colIndex] &&
-              (columns[colIndex].display !== 'true')
-            ) {
+            if (columns[colIndex] && columns[colIndex].display !== 'true') {
               // skip
             } else {
               if (headCellRefs[idx]) headCellRefs[idx].style.transition = '280ms';
