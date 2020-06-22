@@ -14,11 +14,13 @@ function Example() {
   const [tableBodyHeight, setTableBodyHeight] = useState("400px");
   const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState("");
   const [transitionTime, setTransitionTime] = useState(300);
+  const [selectableRows, setSelectableRows] = useState('none');
 
   const columns = ["Name", "Title", "Location", {
     name: 'No Drag',
     options: {
-      draggable: false
+      draggable: false,
+      display: 'false'
     }
   }, "Phone"];
 
@@ -32,7 +34,8 @@ function Example() {
       enabled: true,
       transitionTime
     },
-    //resizableColumns: true,
+    selectableRows: selectableRows,
+    resizableColumns: true,
   };
 
   const data = [
@@ -99,6 +102,20 @@ function Example() {
           <MenuItem value={"400px"}>400px</MenuItem>
           <MenuItem value={"800px"}>800px</MenuItem>
           <MenuItem value={"100%"}>100%</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl>
+        <InputLabel id="demo-simple-select-label">Selectable Rows:</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={selectableRows}
+          style={{width:'200px', marginBottom:'10px',marginRight:10}}
+          onChange={(e) => setSelectableRows(e.target.value)}
+        >
+          <MenuItem value={"none"}>none</MenuItem>
+          <MenuItem value={"single"}>single</MenuItem>
+          <MenuItem value={"multiple"}>multiple</MenuItem>
         </Select>
       </FormControl>
       <FormControl>
