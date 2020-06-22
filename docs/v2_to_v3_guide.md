@@ -49,6 +49,18 @@ If you were previously putting dots in your column names (ex: "phone.cell") to i
 
 Side note: For a full list of changes, bug fixes, etc, please see the [v3 PR](https://github.com/gregnb/mui-datatables/pull/1300), as it lists all of the changes. Below are simply a list of new features in v3.
 
+### Draggable Columns (v3.1.0)
+
+Columns can now be dragged to new positions. [example](https://codesandbox.io/s/muidatatables-resize-columns-example-tnrkc?file=/index.js)
+
+### Fixed Resizable Columns (v3.0.1)
+
+Resizable columns has been overhauled and now works a lot better. 
+
+### customBodyRenderLite
+
+A much better performing version of customBodyRender that does not cause issues with custom filters. See [here](https://github.com/gregnb/mui-datatables/pull/1339) for a detailed write-up.
+
 ### components prop
 
 The new [components prop](https://github.com/gregnb/mui-datatables/tree/v3#custom-components) allows developers to inject their own components into the table, allowing for more compartmentalized and reusable customization. For example, custom filter chips can be injected. Below you can see a short example on how to inject a custom tooltip component.
