@@ -157,9 +157,10 @@ class TableToolbar extends React.Component {
               // if we have a custom render, which will appear as a react element, we must grab the actual value from data
               // that matches the dataIndex and column
               // TODO: Create a utility function for checking whether or not something is a react object
-              let val = typeof column === 'object' && column !== null && !Array.isArray(column)
-                ? find(data, d => d.index === row.dataIndex).data[i]
-                : column;
+              let val =
+                typeof column === 'object' && column !== null && !Array.isArray(column)
+                  ? find(data, d => d.index === row.dataIndex).data[i]
+                  : column;
               val = typeof val === 'function' ? find(data, d => d.index === row.dataIndex).data[i] : val;
               return val;
             }),

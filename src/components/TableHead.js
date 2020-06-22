@@ -92,7 +92,7 @@ const TableHead = ({
       colPos: idx,
     };
   });
-  
+
   return (
     <MuiTableHead
       className={classNames({
