@@ -1,57 +1,54 @@
 import { makeStyles } from '@material-ui/core/styles';
 import MuiTableHead from '@material-ui/core/TableHead';
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import TableHeadCell from './TableHeadCell';
 import TableHeadRow from './TableHeadRow';
 import TableSelectCell from './TableSelectCell';
 
-const useStyles = makeStyles(
-  theme => ({
-    main: {},
-    responsiveStacked: {
-      [theme.breakpoints.down('sm')]: {
-        display: 'none',
-      },
+const useStyles = makeStyles(theme => ({
+  main: {},
+  responsiveStacked: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
     },
-    responsiveSimple: {
-      [theme.breakpoints.down('xs')]: {
-        display: 'none',
-      },
+  },
+  responsiveSimple: {
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
     },
-  }),
-  { name: 'MUIDataTableHead' },
-);
+  },
+}), {name: 'MUIDataTableHead'});
 
-const TableHead = ({
-  columnOrder = columns ? columns.map((item, idx) => idx) : [],
-  columns,
-  components = {},
-  count,
-  data,
-  draggableHeadCellRefs,
-  expandedRows,
-  options,
-  selectedRows,
-  selectRowUpdate,
-  setCellRef,
-  sortOrder = {},
-  tableRef,
-  timers,
-  toggleAllExpandableRows,
-  toggleSort,
-  updateColumnOrder,
-}) => {
+function TableHead(props) {
+  
+  const[dragging, setDragging] = useState(false);
+
+  const {
+    columns,
+    count,
+    options,
+    data,
+    setCellRef,
+    selectedRows,
+    expandedRows,
+    updateColumnOrder,
+    columnOrder = props.columns ? props.columns.map((item,idx) => idx) : [],
+    draggableHeadCellRefs,
+    timers,
+    toggleSort,
+    tableRef,
+    sortOrder = {},
+    components = {},
+  } = props;
   const classes = useStyles();
-
-  const [dragging, setDragging] = useState(false);
 
   const handleToggleColumn = index => {
     toggleSort(index);
   };
 
   const handleRowSelect = () => {
-    selectRowUpdate('head', null);
+    props.selectRowUpdate('head', null);
   };
 
   const numSelected = (selectedRows && selectedRows.data.length) || 0;
@@ -81,7 +78,7 @@ const TableHead = ({
     }
   }
 
-  let orderedColumns = columnOrder.map((colIndex, idx) => {
+  let orderedColumns = columnOrder.map( (colIndex, idx) => {
     return {
       column: columns[colIndex],
       index: colIndex,
@@ -113,11 +110,11 @@ const TableHead = ({
           fixedHeader={options.fixedHeader}
           fixedSelectColumn={options.fixedSelectColumn}
           selectableRowsHeader={options.selectableRowsHeader}
-          onExpand={toggleAllExpandableRows}
+          onExpand={props.toggleAllExpandableRows}
           isRowSelectable={true}
         />
         {orderedColumns.map(
-          ({ column, index, colPos }) =>
+          ({column, index, colPos}) =>
             column.display === 'true' &&
             (column.customHeadRender ? (
               column.customHeadRender({ index, ...column }, handleToggleColumn, sortOrder)
@@ -152,6 +149,6 @@ const TableHead = ({
       </TableHeadRow>
     </MuiTableHead>
   );
-};
+}
 
 export default TableHead;
