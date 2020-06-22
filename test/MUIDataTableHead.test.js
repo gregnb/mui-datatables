@@ -34,7 +34,7 @@ describe('<TableHead />', function() {
   it('should render a table head', () => {
     const options = {};
     const toggleSort = () => {};
-console.dir(columns);
+    console.dir(columns);
     const mountWrapper = mount(
       <DndProvider backend={HTML5Backend}>
         <TableHead

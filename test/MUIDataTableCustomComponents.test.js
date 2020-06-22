@@ -52,8 +52,7 @@ describe('<MUIDataTable /> with custom components', function() {
     );
     const customFilterList = wrapper.find(CustomFilterList);
     assert.lengthOf(customFilterList, 1);
-    const customChip = customFilterList
-      .find(CustomChip);
+    const customChip = customFilterList.find(CustomChip);
     assert.lengthOf(customChip, 1);
   });
 });
