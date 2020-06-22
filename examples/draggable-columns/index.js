@@ -8,6 +8,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
 function Example() {
 
   const [responsive, setResponsive] = useState("vertical");
@@ -16,11 +19,20 @@ function Example() {
   const [transitionTime, setTransitionTime] = useState(300);
   const [selectableRows, setSelectableRows] = useState('none');
 
-  const columns = ["Name", "Title", "Location", {
+  const [treeData, setTreeData] = useState([
+        { title: 'Chicken', children: [{ title: 'Egg' }] },
+        { title: 'Fish', children: [{ title: 'fingerline'}] }
+      ]);
+
+  const columns = [{
+    name: 'hidden',
+    options: {
+      display: 'excluded'
+    }
+  },"Name", "Title", "Location", {
     name: 'No Drag',
     options: {
       draggable: false,
-      display: 'false'
     }
   }, "Phone"];
 
@@ -35,22 +47,21 @@ function Example() {
       transitionTime
     },
     selectableRows: selectableRows,
-    resizableColumns: true,
   };
 
   const data = [
-    ["Gabby George", "Business Analyst", "Minneapolis","1","555-1234"],
-    ["Aiden Lloyd", "Business Consultant for an International Company and CEO of Tony's Burger Palace", "Dallas","2","555-1234"],
-    ["Jaden Collins", "Attorney", "Santa Ana","1","555-5555"],
-    ["Franky Rees", "Business Analyst", "St. Petersburg","1","555-3333"],
-    ["Aaren Rose", null, "Toledo","1","555-4444"],
-    ["Johnny Jones", "Business Analyst", "St. Petersburg","3","555-2468"],
-    ["Jimmy Johns", "Business Analyst", "Baltimore","1","555-1357"],
-    ["Jack Jackson", "Business Analyst", "El Paso","1","555-4321"],
-    ["Joe Jones", "Computer Programmer", "El Paso","1","555-4321"],
-    ["Jacky Jackson", "Business Consultant", "Baltimore","4","555-1234"],
-    ["Jo Jo", "Software Developer", "Washington DC","4","555-1122"],
-    ["Donna Marie", "Business Manager", "Annapolis","5","555-5555"],
+    ["1","Gabby George", "Business Analyst", "Minneapolis","1","555-1234"],
+    ["1","Aiden Lloyd", "Business Consultant for an International Company and CEO of Tony's Burger Palace", "Dallas","2","555-1234"],
+    ["1","Jaden Collins", "Attorney", "Santa Ana","1","555-5555"],
+    ["1","Franky Rees", "Business Analyst", "St. Petersburg","1","555-3333"],
+    ["1","Aaren Rose", null, "Toledo","1","555-4444"],
+    ["1","Johnny Jones", "Business Analyst", "St. Petersburg","3","555-2468"],
+    ["1","Jimmy Johns", "Business Analyst", "Baltimore","1","555-1357"],
+    ["1","Jack Jackson", "Business Analyst", "El Paso","1","555-4321"],
+    ["1","Joe Jones", "Computer Programmer", "El Paso","1","555-4321"],
+    ["1","Jacky Jackson", "Business Consultant", "Baltimore","4","555-1234"],
+    ["1","Jo Jo", "Software Developer", "Washington DC","4","555-1122"],
+    ["1","Donna Marie", "Business Manager", "Annapolis","5","555-5555"],
 
   ];
 
