@@ -19,7 +19,8 @@ function Example() {
   const columns = ["Name", "Title", "Location", {
     name: 'No Drag',
     options: {
-      draggable: false
+      draggable: false,
+      display: 'false'
     }
   }, "Phone"];
 

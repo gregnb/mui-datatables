@@ -92,7 +92,7 @@ const TableHead = ({
       colPos: idx,
     };
   });
-
+  
   return (
     <MuiTableHead
       className={classNames({
@@ -142,6 +142,7 @@ const TableHead = ({
                 print={column.print}
                 options={options}
                 column={column}
+                columns={columns}
                 updateColumnOrder={updateColumnOrder}
                 columnOrder={columnOrder}
                 timers={timers}

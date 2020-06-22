@@ -4,7 +4,7 @@
 
 import { useDrop } from 'react-dnd';
 
-const getColModel = (headCellRefs, columnOrder) => {
+const getColModel = (headCellRefs, columnOrder, columns) => {
   let colModel = [];
   let selectCellHead = headCellRefs[0] ? headCellRefs[0] : { offsetParent: 0, offsetWidth: 0, offsetLeft: 0 };
   let ii = 0,
@@ -30,12 +30,16 @@ const getColModel = (headCellRefs, columnOrder) => {
   columnOrder.forEach((colIdx, idx) => {
     let col = headCellRefs[colIdx + 1];
     let cmIndx = colModel.length - 1;
-    colModel.push({
-      left: colModel[cmIndx].left + colModel[cmIndx].width,
-      width: col.offsetWidth,
-      columnIndex: colIdx,
-      ref: col,
-    });
+    if ( columns[colIdx] && columns[colIdx].display === 'false' ) {
+      // skip
+    } else {
+      colModel.push({
+        left: colModel[cmIndx].left + colModel[cmIndx].width,
+        width: col.offsetWidth,
+        columnIndex: colIdx,
+        ref: col,
+      });
+    }
   });
 
   return colModel;
@@ -55,7 +59,7 @@ const reorderColumns = (prevColumnOrder, columnIndex, newPosition) => {
 };
 
 const useColumnDrop = opts => {
-  const { index, headCellRefs, updateColumnOrder, columnOrder, transitionTime = 300, tableRef, timers } = opts;
+  const { index, headCellRefs, updateColumnOrder, columnOrder, transitionTime = 300, tableRef, timers, columns } = opts;
 
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: 'HEADER',
@@ -65,7 +69,7 @@ const useColumnDrop = opts => {
 
       if (hoverIdx !== index) {
         let reorderedCols = reorderColumns(columnOrder, mon.getItem().colIndex, index);
-        let newColModel = getColModel(headCellRefs, reorderedCols);
+        let newColModel = getColModel(headCellRefs, reorderedCols, columns);
 
         let newX = mon.getClientOffset().x;
         let modelIdx = -1;
@@ -79,7 +83,7 @@ const useColumnDrop = opts => {
         if (modelIdx === mon.getItem().colIndex) {
           clearTimeout(timers.columnShift);
 
-          let curColModel = getColModel(headCellRefs, columnOrder);
+          let curColModel = getColModel(headCellRefs, columnOrder, columns);
 
           let transitions = [];
           newColModel.forEach(item => {
@@ -90,8 +94,13 @@ const useColumnDrop = opts => {
           });
 
           for (let idx = 1; idx < columnOrder.length; idx++) {
-            headCellRefs[idx].style.transition = '280ms';
-            headCellRefs[idx].style.transform = 'translateX(' + transitions[idx - 1] + 'px)';
+            let colIndex = columnOrder[idx];
+            if ( columns[colIndex] && columns[colIndex].display === 'false' ) {
+              // skip
+            } else {
+              if (headCellRefs[idx]) headCellRefs[idx].style.transition = '280ms';
+              if (headCellRefs[idx]) headCellRefs[idx].style.transform = 'translateX(' + transitions[idx - 1] + 'px)';
+            }
           }
 
           let allElms = [];

@@ -73,6 +73,9 @@ class Example extends React.Component {
       selectableRows: 'multiple',
       filterType: 'dropdown',
       responsive: 'vertical',
+      draggableColumns: {
+        enabled: true
+      },
       rowsPerPage: 10,
       downloadOptions: {
           filename: 'excel-format.csv',
@@ -84,7 +87,8 @@ class Example extends React.Component {
       },
       onDownload: (buildHead, buildBody, columns, data) => {
         if (this.state.downloadFile) {
-          return `${buildHead(columns)}${buildBody(data)}`.trim();
+          let val= `${buildHead(columns)}${buildBody(data)}`.trim();
+          return val;
         }
 
         return false;

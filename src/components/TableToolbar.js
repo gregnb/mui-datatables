@@ -119,24 +119,25 @@ class TableToolbar extends React.Component {
   }
 
   handleCSVDownload = () => {
-    const { data, displayData, columns, options, colOrder } = this.props;
+    const { data, displayData, columns, options, columnOrder } = this.props;
     let dataToDownload = []; //cloneDeep(data);
     let columnsToDownload = [];
-    let columnOrder = Array.isArray(colOrder) ? columnOrder.slice(0) : [];
+    let columnOrderCopy = Array.isArray(columnOrder) ? columnOrder.slice(0) : [];
 
-    if (columnOrder.length === 0) {
-      columnOrder = columns.map((item, idx) => idx);
+    if (columnOrderCopy.length === 0) {
+      console.log('no column order');
+      columnOrderCopy = columns.map((item, idx) => idx);
     }
 
     data.forEach(row => {
       let newRow = { index: row.index, data: [] };
-      columnOrder.forEach(idx => {
+      columnOrderCopy.forEach(idx => {
         newRow.data.push(row.data[idx]);
       });
       dataToDownload.push(newRow);
     });
 
-    columnOrder.forEach(idx => {
+    columnOrderCopy.forEach(idx => {
       columnsToDownload.push(columns[idx]);
     });
 
@@ -156,9 +157,11 @@ class TableToolbar extends React.Component {
               // if we have a custom render, which will appear as a react element, we must grab the actual value from data
               // that matches the dataIndex and column
               // TODO: Create a utility function for checking whether or not something is a react object
-              return typeof column === 'object' && column !== null && !Array.isArray(column)
+              let val = typeof column === 'object' && column !== null && !Array.isArray(column)
                 ? find(data, d => d.index === row.dataIndex).data[i]
                 : column;
+              val = typeof val === 'function' ? find(data, d => d.index === row.dataIndex).data[i] : val;
+              return val;
             }),
           };
         });
