@@ -1760,6 +1760,11 @@ class MUIDataTable extends React.Component {
     let tableClassNames = classnames(classes.tableRoot, tableProps.className);
     delete tableProps.className; // remove className from props to avoid the className being applied twice
 
+    let dndProps = {};
+    if (typeof window !== 'undefined') {
+      dndProps.context = window;
+    }
+
     return (
       <Paper elevation={this.options.elevation} ref={this.tableContent} className={paperClasses}>
         {selectedRows.data.length > 0 && this.options.selectToolbarPlacement !== STP.NONE && (
@@ -1825,7 +1830,7 @@ class MUIDataTable extends React.Component {
               options={this.props.options}
             />
           )}
-          <DndProvider backend={HTML5Backend} context={window}>
+          <DndProvider backend={HTML5Backend} {...dndProps}>
             <MuiTable
               ref={el => (this.tableRef = el)}
               tabIndex={'0'}
