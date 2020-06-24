@@ -25,6 +25,7 @@ Version 3 has been released! You can read about the [updates here](https://githu
 * [Customize Columns](#customize-columns)
 * [Plug-ins](#plug-ins)
 * [Customize Styling](#customize-styling)
+* [Custom Components](#custom-components)
 * [Remote Data](#remote-data)
 * [Localization](#localization)
 * [Contributing](#contributing)
