@@ -77,8 +77,12 @@ TableBodyRow.propTypes = {
   onClick: PropTypes.func,
   /** Current row selected or not */
   rowSelected: PropTypes.bool,
+  /** Pass and use className to style MUIDataTable as desired */
+  className: PropTypes.string,
   /** Table Row */
   children: PropTypes.node,
+  /** Enable/disable selection on certain rows with custom function */
+  isRowSelectable: PropTypes.bool,
 };
 
 export default TableBodyRow;
