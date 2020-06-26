@@ -87,6 +87,7 @@ class TableSelectCell extends React.Component {
       expandedRows,
       areAllRowsExpanded = () => false,
       selectableRowsHideCheckboxes,
+      setHeadCellRef,
       ...otherProps
     } = this.props;
     let fixedHeaderClasses;
@@ -114,6 +115,13 @@ class TableSelectCell extends React.Component {
       [classes.hide]: isHeaderCell && !expandableRowsHeader,
     });
 
+    let refProp = {};
+    if (setHeadCellRef) {
+      refProp.ref = el => {
+        setHeadCellRef(0, 0, el);
+      };
+    }
+
     const renderCheckBox = () => {
       if (isHeaderCell && (selectableOn !== 'multiple' || selectableRowsHeader === false)) {
         // only display the header checkbox for multiple selection.
@@ -134,7 +142,7 @@ class TableSelectCell extends React.Component {
     };
 
     return (
-      <TableCell className={cellClass} padding="checkbox">
+      <TableCell className={cellClass} padding="checkbox" {...refProp}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {expandableOn && (
             <React.Fragment>

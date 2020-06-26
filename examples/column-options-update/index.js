@@ -12,7 +12,7 @@ class Example extends React.Component {
       [],
       []
     ],
-    filterOptions: ['this', 'test', 'is', 'working'],
+    filterOptions: ['Franky Miles', 'this', 'test', 'is', 'working'],
     display: ['true', 'true', 'true', 'true', 'true'],
     data: [
       ["Gabby George", "Business Analyst", "Minneapolis", 30, 100000],
@@ -93,7 +93,10 @@ class Example extends React.Component {
         name: "Location",
         options: {
           display: this.state.display[2],
-          filter: false,
+          filter: true,
+          filterOptions: {
+            fullWidth: true,
+          },
           filterList: filterList[2].length ? filterList[2] : null,
         }
       },

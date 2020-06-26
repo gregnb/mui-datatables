@@ -19,6 +19,8 @@ import DefaultTableToolbarSelect from './components/TableToolbarSelect';
 import MuiTooltip from '@material-ui/core/Tooltip';
 import getTextLabels from './textLabels';
 import { buildMap, getCollatorComparator, sortCompare, getPageValue, warnDeprecated, warnInfo } from './utils';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const defaultTableStyles = theme => ({
   root: {},
@@ -138,6 +140,7 @@ class MUIDataTable extends React.Component {
             filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField', 'custom']),
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,
+            customBodyRenderLite: PropTypes.func,
             customFilterListOptions: PropTypes.oneOfType([
               PropTypes.shape({
                 render: PropTypes.func,
@@ -154,6 +157,7 @@ class MUIDataTable extends React.Component {
     /** Options used to describe table */
     options: PropTypes.shape({
       caseSensitive: PropTypes.bool,
+      columnOrder: PropTypes.array,
       count: PropTypes.number,
       confirmFilters: PropTypes.bool,
       consoleWarnings: PropTypes.bool,
@@ -165,6 +169,7 @@ class MUIDataTable extends React.Component {
       customSort: PropTypes.func,
       customToolbar: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
       customToolbarSelect: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+      draggableColumns: PropTypes.object,
       enableNestedDataAccess: PropTypes.string,
       expandableRows: PropTypes.bool,
       expandableRowsHeader: PropTypes.bool,
@@ -188,6 +193,8 @@ class MUIDataTable extends React.Component {
       isRowSelectable: PropTypes.func,
       onDownload: PropTypes.func,
       onFilterChange: PropTypes.func,
+      onFilterChipClose: PropTypes.func,
+      onFilterConfirm: PropTypes.func,
       onFilterDialogOpen: PropTypes.func,
       onFilterDialogClose: PropTypes.func,
       onRowClick: PropTypes.func,
@@ -282,7 +289,9 @@ class MUIDataTable extends React.Component {
     super();
     this.tableRef = React.createRef();
     this.tableContent = React.createRef();
-    this.headCellRefs = {};
+    this.draggableHeadCellRefs = {};
+    this.resizeHeadCellRefs = {};
+    this.timers = {};
     this.setHeadResizeable = () => {};
     this.updateDividers = () => {};
   }
@@ -292,7 +301,7 @@ class MUIDataTable extends React.Component {
   }
 
   componentDidMount() {
-    this.setHeadResizeable(this.headCellRefs, this.tableRef);
+    this.setHeadResizeable(this.resizeHeadCellRefs, this.tableRef);
 
     // When we have a search, we must reset page to view it unless on serverSide since paging is handled by the user.
     if (this.props.options.searchText && !this.props.options.serverSide) this.setState({ page: 0 });
@@ -325,7 +334,7 @@ class MUIDataTable extends React.Component {
       this.options.resizableColumns === true ||
       (this.options.resizableColumns && this.options.resizableColumns.enabled)
     ) {
-      this.setHeadResizeable(this.headCellRefs, this.tableRef);
+      this.setHeadResizeable(this.resizeHeadCellRefs, this.tableRef);
       this.updateDividers();
     }
   }
@@ -362,6 +371,10 @@ class MUIDataTable extends React.Component {
     downloadOptions: {
       filename: 'tableDownload.csv',
       separator: ',',
+    },
+    draggableColumns: {
+      enabled: false,
+      transitionTime: 300,
     },
     elevation: 4,
     enableNestedDataAccess: '',
@@ -536,8 +549,9 @@ class MUIDataTable extends React.Component {
     this.setState(optState);
   }
 
-  setHeadCellRef = (index, el) => {
-    this.headCellRefs[index] = el;
+  setHeadCellRef = (index, pos, el) => {
+    this.draggableHeadCellRefs[index] = el;
+    this.resizeHeadCellRefs[pos] = el;
   };
 
   // must be arrow function on local field to refer to the correct instance when passed around
@@ -546,12 +560,18 @@ class MUIDataTable extends React.Component {
 
   /*
    *  Build the source table data
+   *
+   *  newColumns - columns from the options object.
+   *  prevColumns - columns object saved onto ths state.
+   *  newColumnOrder - columnOrder from the options object.
+   *  prevColumnOrder - columnOrder object saved onto the state.
    */
 
-  buildColumns = (newColumns, prevColumns) => {
+  buildColumns = (newColumns, prevColumns, newColumnOrder, prevColumnOrder) => {
     let columnData = [];
     let filterData = [];
     let filterList = [];
+    let columnOrder = [];
 
     newColumns.forEach((column, colIndex) => {
       let columnOptions = {
@@ -565,6 +585,7 @@ class MUIDataTable extends React.Component {
         viewColumns: true,
       };
 
+      columnOrder.push(colIndex);
       const options = { ...column.options };
 
       if (typeof column === 'object') {
@@ -611,7 +632,18 @@ class MUIDataTable extends React.Component {
       filterList[colIndex] = [];
     });
 
-    return { columns: columnData, filterData, filterList };
+    if (Array.isArray(newColumnOrder)) {
+      columnOrder = newColumnOrder;
+    } else if (
+      Array.isArray(prevColumnOrder) &&
+      Array.isArray(newColumns) &&
+      Array.isArray(prevColumns) &&
+      newColumns.length === prevColumns.length
+    ) {
+      columnOrder = prevColumnOrder;
+    }
+
+    return { columns: columnData, filterData, filterList, columnOrder };
   };
 
   transformData = (columns, data) => {
@@ -642,22 +674,17 @@ class MUIDataTable extends React.Component {
         })
       : data.map(row => columns.map(col => leaf(row, col.name)));
 
-    // We need to determine if object data exists in the transformed structure, as this is currently not allowed and will cause errors if not handled by a custom renderer
-    const hasInvalidData =
-      transformedData.filter(
-        data => data.filter(d => typeof d === 'object' && d !== null && !Array.isArray(d)).length > 0,
-      ).length > 0;
-    if (hasInvalidData)
-      this.warnDep(
-        'Passing objects in as data is not supported. Consider using ids in your data and linking it to external objects if you want to access object data from custom render functions.',
-      );
-
     return transformedData;
   };
 
   setTableData(props, status, dataUpdated, callback = () => {}) {
     let tableData = [];
-    let { columns, filterData, filterList } = this.buildColumns(props.columns, this.state.columns);
+    let { columns, filterData, filterList, columnOrder } = this.buildColumns(
+      props.columns,
+      this.state.columns,
+      this.options.columnOrder,
+      this.state.columnOrder,
+    );
     let sortIndex = null;
     let sortDirection = 'none';
     let tableMeta;
@@ -697,26 +724,41 @@ class MUIDataTable extends React.Component {
           });
         }
 
-        if (typeof column.customBodyRender === 'function') {
-          const rowData = tableData[rowIndex].data;
-          tableMeta = this.getTableMeta(rowIndex, colIndex, rowData, column, data, this.state);
-          const funcResult = column.customBodyRender(value, tableMeta);
+        if (column.filter !== false) {
+          if (typeof column.customBodyRender === 'function') {
+            const rowData = tableData[rowIndex].data;
+            tableMeta = this.getTableMeta(rowIndex, colIndex, rowData, column, data, this.state);
+            const funcResult = column.customBodyRender(value, tableMeta);
 
-          if (React.isValidElement(funcResult) && funcResult.props.value) {
-            value = funcResult.props.value;
-          } else if (typeof funcResult === 'string') {
-            value = funcResult;
-          }
-        }
-
-        if (filterData[colIndex].indexOf(value) < 0 && !Array.isArray(value)) {
-          filterData[colIndex].push(value);
-        } else if (Array.isArray(value)) {
-          value.forEach(element => {
-            if (filterData[colIndex].indexOf(element) < 0) {
-              filterData[colIndex].push(element);
+            if (React.isValidElement(funcResult) && funcResult.props.value) {
+              value = funcResult.props.value;
+            } else if (typeof funcResult === 'string') {
+              value = funcResult;
             }
-          });
+          }
+
+          if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
+            // it's extremely rare but possible to create an object without a toString method, ex: var x = Object.create(null);
+            // so this check has to be made
+            value = value.toString ? value.toString() : '';
+          }
+
+          if (filterData[colIndex].indexOf(value) < 0 && !Array.isArray(value)) {
+            filterData[colIndex].push(value);
+          } else if (Array.isArray(value)) {
+            value.forEach(element => {
+              let elmVal;
+              if ((typeof element === 'object' && element !== null) || typeof element === 'function') {
+                elmVal = element.toString ? element.toString() : '';
+              } else {
+                elmVal = element;
+              }
+
+              if (filterData[colIndex].indexOf(elmVal) < 0) {
+                filterData[colIndex].push(elmVal);
+              }
+            });
+          }
         }
       }
 
@@ -847,6 +889,7 @@ class MUIDataTable extends React.Component {
         data: tableData,
         sortOrder: sortOrder,
         displayData: this.getDisplayData(columns, tableData, filterList, searchText, tableMeta),
+        columnOrder,
       },
       callback,
     );
@@ -865,7 +908,9 @@ class MUIDataTable extends React.Component {
       let columnValue = row[index];
       let column = columns[index];
 
-      if (column.customBodyRender) {
+      if (column.customBodyRenderLite) {
+        displayRow.push(column.customBodyRenderLite);
+      } else if (column.customBodyRender) {
         const tableMeta = this.getTableMeta(rowIndex, index, row, column, dataForTableMeta, {
           ...this.state,
           filterList: filterList,
@@ -886,9 +931,11 @@ class MUIDataTable extends React.Component {
             : funcResult.props && funcResult.props.value
             ? funcResult.props.value
             : columnValue;
-      }
 
-      displayRow.push(columnDisplay);
+        displayRow.push(columnDisplay);
+      } else {
+        displayRow.push(columnDisplay);
+      }
 
       const columnVal = columnValue === null || columnValue === undefined ? '' : columnValue.toString();
 
@@ -1323,6 +1370,22 @@ class MUIDataTable extends React.Component {
     return this.state.expandedRows.data.length === this.state.data.length;
   };
 
+  updateColumnOrder = (columnOrder, columnIndex, newPosition) => {
+    this.setState(
+      prevState => {
+        return {
+          columnOrder,
+        };
+      },
+      () => {
+        this.setTableAction('columnOrderChange');
+        if (this.options.onColumnOrderChange) {
+          this.options.onColumnOrderChange(this.state.columnOrder, columnIndex, newPosition);
+        }
+      },
+    );
+  };
+
   selectRowDelete = () => {
     const { selectedRows, data, filterList } = this.state;
 
@@ -1624,6 +1687,7 @@ class MUIDataTable extends React.Component {
       searchText,
       sortOrder,
       serverSideFilterList,
+      columnOrder,
     } = this.state;
 
     const TableBodyComponent = TableBody || DefaultTableBody;
@@ -1712,6 +1776,7 @@ class MUIDataTable extends React.Component {
           showToolbar && (
             <TableToolbarComponent
               columns={columns}
+              columnOrder={columnOrder}
               displayData={displayData}
               data={data}
               filterData={filterData}
@@ -1754,61 +1819,69 @@ class MUIDataTable extends React.Component {
             (this.options.resizableColumns && this.options.resizableColumns.enabled)) && (
             <TableResizeComponent
               key={rowCount}
+              columnOrder={columnOrder}
               updateDividers={fn => (this.updateDividers = fn)}
               setResizeable={fn => (this.setHeadResizeable = fn)}
               options={this.props.options}
             />
           )}
-          <MuiTable
-            ref={el => (this.tableRef = el)}
-            tabIndex={'0'}
-            role={'grid'}
-            className={tableClassNames}
-            {...tableProps}>
-            <caption className={classes.caption}>{title}</caption>
-            <TableHeadComponent
-              columns={columns}
-              activeColumn={activeColumn}
-              data={displayData}
-              count={rowCount}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              handleHeadUpdateRef={fn => (this.updateToolbarSelect = fn)}
-              selectedRows={selectedRows}
-              selectRowUpdate={this.selectRowUpdate}
-              toggleSort={this.toggleSortColumn}
-              setCellRef={this.setHeadCellRef}
-              expandedRows={expandedRows}
-              areAllRowsExpanded={this.areAllRowsExpanded}
-              toggleAllExpandableRows={this.toggleAllExpandableRows}
-              options={this.options}
-              sortOrder={sortOrder}
-              components={this.props.components}
-            />
-            <TableBodyComponent
-              data={displayData}
-              count={rowCount}
-              columns={columns}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              selectedRows={selectedRows}
-              selectRowUpdate={this.selectRowUpdate}
-              previousSelectedRow={previousSelectedRow}
-              expandedRows={expandedRows}
-              toggleExpandRow={this.toggleExpandRow}
-              options={this.options}
-              filterList={filterList}
-            />
-            {this.options.customTableBodyFooterRender
-              ? this.options.customTableBodyFooterRender({
-                  data: displayData,
-                  count: rowCount,
-                  columns,
-                  selectedRows,
-                  selectableRows: this.options.selectableRows,
-                })
-              : null}
-          </MuiTable>
+          <DndProvider backend={HTML5Backend}>
+            <MuiTable
+              ref={el => (this.tableRef = el)}
+              tabIndex={'0'}
+              role={'grid'}
+              className={tableClassNames}
+              {...tableProps}>
+              <caption className={classes.caption}>{title}</caption>
+              <TableHeadComponent
+                columns={columns}
+                activeColumn={activeColumn}
+                data={displayData}
+                count={rowCount}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                selectedRows={selectedRows}
+                selectRowUpdate={this.selectRowUpdate}
+                toggleSort={this.toggleSortColumn}
+                setCellRef={this.setHeadCellRef}
+                expandedRows={expandedRows}
+                areAllRowsExpanded={this.areAllRowsExpanded}
+                toggleAllExpandableRows={this.toggleAllExpandableRows}
+                options={this.options}
+                sortOrder={sortOrder}
+                columnOrder={columnOrder}
+                updateColumnOrder={this.updateColumnOrder}
+                draggableHeadCellRefs={this.draggableHeadCellRefs}
+                tableRef={this.getTableContentRef}
+                timers={this.timers}
+                components={this.props.components}
+              />
+              <TableBodyComponent
+                data={displayData}
+                count={rowCount}
+                columns={columns}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                selectedRows={selectedRows}
+                selectRowUpdate={this.selectRowUpdate}
+                previousSelectedRow={previousSelectedRow}
+                expandedRows={expandedRows}
+                toggleExpandRow={this.toggleExpandRow}
+                options={this.options}
+                columnOrder={columnOrder}
+                filterList={filterList}
+              />
+              {this.options.customTableBodyFooterRender
+                ? this.options.customTableBodyFooterRender({
+                    data: displayData,
+                    count: rowCount,
+                    columns,
+                    selectedRows,
+                    selectableRows: this.options.selectableRows,
+                  })
+                : null}
+            </MuiTable>
+          </DndProvider>
         </div>
         <TableFooterComponent
           options={this.options}

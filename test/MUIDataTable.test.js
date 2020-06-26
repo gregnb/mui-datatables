@@ -1938,4 +1938,81 @@ describe('<MUIDataTable />', function() {
       expect(getCollatorComparator()('testStringA', 'testStringB')).to.equal(-1);
     });
   });
+
+  it('should correctly execute customBodyRender methods based on filtering and data', () => {
+    let filteredData = [];
+    let customBodyRenderCb = spy();
+    let customBodyRenderLiteCb = spy();
+    let customBodyRenderNoFilterCb = spy();
+    const options = {
+      rowsPerPage: 5,
+      rowsPerPageOptions: [5],
+    };
+
+    const data = [
+      ['a', 'b'],
+      ['a', 'b'],
+      ['a', 'b'],
+      ['a', 'b'],
+      ['a', 'b'],
+
+      ['a', 'b'],
+      ['a', 'b'],
+      ['a', 'b'],
+      ['a', 'b'],
+      ['a', 'b'],
+
+      ['a', 'b'],
+      ['a', 'b'],
+      ['a', 'b'],
+      ['a', 'b'],
+      ['a', 'b'],
+    ];
+
+    const columns = [
+      {
+        name: 'firstName',
+        label: 'First Name',
+        options: {
+          customBodyRender: () => {
+            customBodyRenderCb();
+            return '';
+          },
+        },
+      },
+      {
+        name: 'lastName',
+        label: 'Last Name',
+        options: {
+          customBodyRenderLite: () => {
+            customBodyRenderLiteCb();
+            return '';
+          },
+        },
+      },
+      {
+        name: 'phone',
+        label: 'Phone',
+        options: {
+          filter: false,
+          customBodyRender: () => {
+            customBodyRenderNoFilterCb();
+            return '';
+          },
+        },
+      },
+    ];
+
+    const fullWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
+    fullWrapper.unmount();
+
+    // lite only gets executed for the 5 entries shown
+    assert.strictEqual(customBodyRenderLiteCb.callCount, 5);
+
+    // regular gets executed 15 times for filtering, and 15 more times for display
+    assert.strictEqual(customBodyRenderCb.callCount, 30);
+
+    // regular with no filtering gets executed 15 times for display
+    assert.strictEqual(customBodyRenderNoFilterCb.callCount, 15);
+  });
 });

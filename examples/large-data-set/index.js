@@ -51,7 +51,8 @@ class Example extends React.Component {
         label: "Name",
         options: {
           filter: true,
-          customBodyRender: (val) => {
+          customBodyRenderLite: (dataIndex) => {
+            let val = this.state.data[dataIndex].name;
             return val;
           }
         }
@@ -61,7 +62,8 @@ class Example extends React.Component {
         label: "Modified Title Label",
         options: {
           filter: true,
-          customBodyRender: (val, tableMeta) => {
+          customBodyRenderLite: (dataIndex) => {
+            let val = this.state.data[dataIndex].title;
             return val;
           }
         }
@@ -86,7 +88,8 @@ class Example extends React.Component {
         options: {
           filter: true,
           sort: false,
-          customBodyRender: (val) => {
+          customBodyRenderLite: (dataIndex) => {
+            let val = this.state.data[dataIndex].salary;
             return val;
           }
         }
@@ -97,7 +100,8 @@ class Example extends React.Component {
         options: {
           filter: true,
           sort: false,
-          customBodyRender: (val) => {
+          customBodyRenderLite: (dataIndex) => {
+            let val = this.state.data[dataIndex].phone;
             return val;
           }
         }
@@ -108,7 +112,8 @@ class Example extends React.Component {
         options: {
           filter: true,
           sort: false,
-          customBodyRender: (val) => {
+          customBodyRenderLite: (dataIndex) => {
+            let val = this.state.data[dataIndex].email;
             return val;
           }
         }

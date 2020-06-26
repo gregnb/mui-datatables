@@ -87,11 +87,18 @@ class Example extends React.Component {
       ['James Houston', 'Test Corp', 'Dallas', 'TX'],
     ];
 
+    let options = {
+      onFilterChipClose: (index, removedFilter, filterList) => {
+        console.log(index, removedFilter, filterList);
+      }
+    };
+
     return (
       <MUIDataTable
           title={"ACME Employee list"}
           data={data}
           columns={columns}
+          options={options}
           components={{
             TableFilterList: CustomFilterList,
             Tooltip: CustomTooltip,
