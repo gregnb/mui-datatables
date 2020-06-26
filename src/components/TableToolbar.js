@@ -111,7 +111,7 @@ const RESPONSIVE_FULL_WIDTH_NAME = 'scrollFullHeightFullWidth';
 const TableToolbar = ({
   columns,
   components = {},
-                        colOrder,
+  colOrder,
   data,
   displayData,
   filterData,
@@ -141,24 +141,25 @@ const TableToolbar = ({
   }, [searchText, searchTextState]);
 
   const handleCSVDownload = () => {
-    let dataToDownload = cloneDeep(data);
-    let columnsToDownload = columns;
+    let dataToDownload = []; //cloneDeep(data);
+    let columnsToDownload = [];
+
     let columnOrder = Array.isArray(colOrder) ? columnOrder.slice(0) : [];
 
     if (columnOrder.length === 0) {
-      columnOrder = columns.map( (item, idx) => (idx));
+      columnOrder = columns.map((item, idx) => idx);
     }
 
-    data.forEach( row => {
-      let newRow = {index: row.index, data: []};
-      columnOrder.forEach( idx => {
-        newRow.data.push( row.data[idx] );
+    data.forEach(row => {
+      let newRow = { index: row.index, data: [] };
+      columnOrder.forEach(idx => {
+        newRow.data.push(row.data[idx]);
       });
       dataToDownload.push(newRow);
     });
 
-    columnOrder.forEach( idx => {
-      columnsToDownload.push( columns[idx] );
+    columnOrder.forEach(idx => {
+      columnsToDownload.push(columns[idx]);
     });
 
 
