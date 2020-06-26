@@ -34,7 +34,7 @@ describe('<TableHead />', function() {
   it('should render a table head', () => {
     const options = {};
     const toggleSort = () => {};
-
+    console.dir(columns);
     const mountWrapper = mount(
       <DndProvider backend={HTML5Backend}>
         <TableHead
@@ -46,6 +46,7 @@ describe('<TableHead />', function() {
         />
       </DndProvider>,
     );
+    console.log(mountWrapper.html());
     const actualResult = mountWrapper.find(TableHeadCell);
     assert.strictEqual(actualResult.length, 4);
   });
@@ -104,7 +105,7 @@ describe('<TableHead />', function() {
         />
       </DndProvider>,
     );
-    
+
     const instance = wrapper.find('th span').at(0);
     instance.simulate('click');
 
@@ -138,7 +139,12 @@ describe('<TableHead />', function() {
 
     const mountWrapper = mount(
       <DndProvider backend={HTML5Backend}>
-        <TableHead columns={columns} options={options} setCellRef={() => {}} handleHeadUpdateRef={handleHeadUpdateRef} />
+        <TableHead
+          columns={columns}
+          options={options}
+          setCellRef={() => {}}
+          handleHeadUpdateRef={handleHeadUpdateRef}
+        />
       </DndProvider>,
     );
 
@@ -151,7 +157,12 @@ describe('<TableHead />', function() {
 
     const mountWrapper = mount(
       <DndProvider backend={HTML5Backend}>
-        <TableHead columns={columns} options={options} setCellRef={() => {}} handleHeadUpdateRef={handleHeadUpdateRef} />
+        <TableHead
+          columns={columns}
+          options={options}
+          setCellRef={() => {}}
+          handleHeadUpdateRef={handleHeadUpdateRef}
+        />
       </DndProvider>,
     );
 
@@ -164,7 +175,12 @@ describe('<TableHead />', function() {
 
     const mountWrapper = mount(
       <DndProvider backend={HTML5Backend}>
-        <TableHead columns={columns} options={options} setCellRef={() => {}} handleHeadUpdateRef={handleHeadUpdateRef} />
+        <TableHead
+          columns={columns}
+          options={options}
+          setCellRef={() => {}}
+          handleHeadUpdateRef={handleHeadUpdateRef}
+        />
       </DndProvider>,
     );
 
