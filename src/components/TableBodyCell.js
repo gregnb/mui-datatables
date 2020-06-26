@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import TableCell from '@material-ui/core/TableCell';
 import { makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(
   theme => ({
@@ -173,5 +174,24 @@ function TableBodyCell(props) {
     </TableCell>
   );
 }
+
+TableBodyCell.propTypes = {
+  /** Table Row */
+  children: PropTypes.node,
+  /** Pass and use className to style MUIDataTable as desired */
+  className: PropTypes.string,
+  /** column Index */
+  colIndex: PropTypes.number.isRequired,
+  /** Name of column */
+  columnHeader: PropTypes.string,
+  /** Data Row Index */
+  dataIndex: PropTypes.number,
+  /** Options used to describe table */
+  options: PropTypes.object.isRequired,
+  /** Display column when printing. */
+  print: PropTypes.bool,
+  /** Table Row Index */
+  rowIndex: PropTypes.number.isRequired,
+};
 
 export default TableBodyCell;
