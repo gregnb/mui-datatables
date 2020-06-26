@@ -207,6 +207,8 @@ const TableBody = ({
             const bodyClasses = options.setRowProps ? options.setRowProps(row, dataIndex, rowIndex) : {};
             const processedRows = createRow(row, columnOrder);
 
+            const processedRow = this.processRow(row, columnOrder);
+
             return (
                 <React.Fragment key={rowIndex}>
                   <TableBodyRow

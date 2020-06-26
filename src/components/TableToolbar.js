@@ -119,9 +119,26 @@ class TableToolbar extends React.Component {
   }
 
   handleCSVDownload = () => {
-    const { data, displayData, columns, options } = this.props;
-    let dataToDownload = cloneDeep(data);
-    let columnsToDownload = columns;
+    const { data, displayData, columns, options, colOrder } = this.props;
+    let dataToDownload = []; //cloneDeep(data);
+    let columnsToDownload = [];
+    let columnOrder = Array.isArray(colOrder) ? columnOrder.slice(0) : [];
+
+    if (columnOrder.length === 0) {
+      columnOrder = columns.map((item, idx) => idx);
+    }
+
+    data.forEach(row => {
+      let newRow = { index: row.index, data: [] };
+      columnOrder.forEach(idx => {
+        newRow.data.push(row.data[idx]);
+      });
+      dataToDownload.push(newRow);
+    });
+
+    columnOrder.forEach(idx => {
+      columnsToDownload.push(columns[idx]);
+    });
 
     if (options.downloadOptions && options.downloadOptions.filterOptions) {
       // check rows first:
