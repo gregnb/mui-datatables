@@ -11,44 +11,44 @@ import { getPageValue } from '../utils';
 import classNames from 'classnames';
 
 const useStyles = makeStyles(
-    theme => ({
-      root: {},
-      emptyTitle: {
-        textAlign: 'center',
-      },
-      lastStackedCell: {
-        [theme.breakpoints.down('sm')]: {
-          '& td:last-child': {
-            borderBottom: 'none',
-          },
+  theme => ({
+    root: {},
+    emptyTitle: {
+      textAlign: 'center',
+    },
+    lastStackedCell: {
+      [theme.breakpoints.down('sm')]: {
+        '& td:last-child': {
+          borderBottom: 'none',
         },
       },
-      lastSimpleCell: {
-        [theme.breakpoints.down('xs')]: {
-          '& td:last-child': {
-            borderBottom: 'none',
-          },
+    },
+    lastSimpleCell: {
+      [theme.breakpoints.down('xs')]: {
+        '& td:last-child': {
+          borderBottom: 'none',
         },
       },
-    }),
-    { name: "'MUIDataTableBody'" },
+    },
+  }),
+  { name: "'MUIDataTableBody'" },
 );
 
 const TableBody = ({
-                     columns,
-                     count,
-                     data,
-                     expandedRows,
-                     options,
-                     page,
-                     previousSelectedRow,
-                     rowsPerPage,
-                     selectableRows,
-                     selectableRowsOnClick,
-                     selectedRows,
-                     selectRowUpdate,
-                     toggleExpandRow = () => {},
-                   }) => {
+  columns,
+  count,
+  data,
+  expandedRows,
+  options,
+  page,
+  previousSelectedRow,
+  rowsPerPage,
+  selectableRows,
+  selectableRowsOnClick,
+  selectedRows,
+  selectRowUpdate,
+  toggleExpandRow = () => {},
+}) => {
   const classes = useStyles();
 
   const buildRows = () => {
@@ -153,8 +153,8 @@ const TableBody = ({
   const handleRowClick = (row, data, event) => {
     // Don't trigger onRowClick if the event was actually the expandable icon.
     if (
-        event.target.id === 'expandable-button' ||
-        (event.target.nodeName === 'path' && event.target.parentNode.id === 'expandable-button')
+      event.target.id === 'expandable-button' ||
+      (event.target.nodeName === 'path' && event.target.parentNode.id === 'expandable-button')
     ) {
       return;
     }
@@ -195,109 +195,107 @@ const TableBody = ({
 
   if (tableRows && tableRows.length > 0) {
     return (
-        <MuiTableBody>
-          {tableRows.map((data, rowIndex) => {
-            const columnOrder = columns.map((item, idx) => idx);
-            const { data: row, dataIndex } = data;
+      <MuiTableBody>
+        {tableRows.map((data, rowIndex) => {
+          const columnOrder = columns.map((item, idx) => idx);
+          const { data: row, dataIndex } = data;
 
-            if (options.customRowRender) {
-              return options.customRowRender(row, dataIndex, rowIndex);
-            }
+          if (options.customRowRender) {
+            return options.customRowRender(row, dataIndex, rowIndex);
+          }
 
-            const bodyClasses = options.setRowProps ? options.setRowProps(row, dataIndex, rowIndex) : {};
-            const processedRows = createRow(row, columnOrder);
+          const bodyClasses = options.setRowProps ? options.setRowProps(row, dataIndex, rowIndex) : {};
+          const processedRows = createRow(row, columnOrder);
 
-            const processedRow = this.processRow(row, columnOrder);
-
-            return (
-                <React.Fragment key={rowIndex}>
-                  <TableBodyRow
-                      {...bodyClasses}
-                      options={options}
-                      rowSelected={options.selectableRows !== 'none' ? isRowSelected(dataIndex) : false}
-                      isRowSelectable={isRowSelectable(dataIndex)}
-                      onClick={event => handleRowClick(row, { rowIndex, dataIndex }, event)}
-                      className={classNames({
-                        [classes.lastStackedCell]:
-                        options.responsive === 'vertical' ||
-                        options.responsive === 'stacked' ||
-                        options.responsive === 'stackedFullWidth',
-                        [classes.lastSimpleCell]: options.responsive === 'simple',
-                        [bodyClasses.className]: bodyClasses.className,
-                      })}
-                      data-testid={'MUIDataTableBodyRow-' + dataIndex}
-                      id={'MUIDataTableBodyRow-' + dataIndex}>
-                    <TableSelectCell
-                        onChange={event =>
-                            handleRowSelect(
-                                {
-                                  index: getRowIndex(rowIndex),
-                                  dataIndex: dataIndex,
-                                },
-                                event,
-                            )
-                        }
-                        onExpand={() =>
-                            toggleExpandRow({
-                              index: getRowIndex(rowIndex),
-                              dataIndex: dataIndex,
-                            })
-                        }
-                        fixedHeader={options.fixedHeader}
-                        fixedSelectColumn={options.fixedSelectColumn}
-                        checked={options.selectableRows !== 'none' ? isRowSelected(dataIndex) : false}
-                        expandableOn={options.expandableRows}
-                        // When rows are expandable, but this particular row isn't expandable, set this to true.
-                        // This will add a new class to the toggle button, MUIDataTableSelectCell-expandDisabled.
-                        hideExpandButton={!isRowExpandable(dataIndex) && options.expandableRows}
-                        selectableOn={options.selectableRows}
-                        selectableRowsHideCheckboxes={options.selectableRowsHideCheckboxes}
-                        isRowExpanded={() => isRowExpanded(dataIndex)}
-                        isRowSelectable={isRowSelectable(dataIndex)}
-                        id={'MUIDataTableSelectCell-' + dataIndex}
-                    />
-                    {processedRows.map(
-                        (column, columnIndex) =>
-                            columns[columnIndex].display === 'true' && (
-                                <TableBodyCell
-                                    {...(columns[columnIndex].setCellProps
-                                        ? columns[columnIndex].setCellProps(column, dataIndex, columnIndex)
-                                        : {})}
-                                    data-testid={`MuiDataTableBodyCell-${columnIndex}-${rowIndex}`}
-                                    dataIndex={dataIndex}
-                                    rowIndex={rowIndex}
-                                    colIndex={columnIndex}
-                                    columnHeader={columns[columnIndex].label}
-                                    print={columns[columnIndex].print}
-                                    options={options}
-                                    key={columnIndex}>
-                                  {column.value}
-                                </TableBodyCell>
-                            ),
-                    )}
-                  </TableBodyRow>
-                  {isRowExpanded(dataIndex) && options.renderExpandableRow(row, { rowIndex, dataIndex })}
-                </React.Fragment>
-            );
-          })}
-        </MuiTableBody>
+          return (
+            <React.Fragment key={rowIndex}>
+              <TableBodyRow
+                {...bodyClasses}
+                options={options}
+                rowSelected={options.selectableRows !== 'none' ? isRowSelected(dataIndex) : false}
+                isRowSelectable={isRowSelectable(dataIndex)}
+                onClick={event => handleRowClick(row, { rowIndex, dataIndex }, event)}
+                className={classNames({
+                  [classes.lastStackedCell]:
+                    options.responsive === 'vertical' ||
+                    options.responsive === 'stacked' ||
+                    options.responsive === 'stackedFullWidth',
+                  [classes.lastSimpleCell]: options.responsive === 'simple',
+                  [bodyClasses.className]: bodyClasses.className,
+                })}
+                data-testid={'MUIDataTableBodyRow-' + dataIndex}
+                id={'MUIDataTableBodyRow-' + dataIndex}>
+                <TableSelectCell
+                  onChange={event =>
+                    handleRowSelect(
+                      {
+                        index: getRowIndex(rowIndex),
+                        dataIndex: dataIndex,
+                      },
+                      event,
+                    )
+                  }
+                  onExpand={() =>
+                    toggleExpandRow({
+                      index: getRowIndex(rowIndex),
+                      dataIndex: dataIndex,
+                    })
+                  }
+                  fixedHeader={options.fixedHeader}
+                  fixedSelectColumn={options.fixedSelectColumn}
+                  checked={options.selectableRows !== 'none' ? isRowSelected(dataIndex) : false}
+                  expandableOn={options.expandableRows}
+                  // When rows are expandable, but this particular row isn't expandable, set this to true.
+                  // This will add a new class to the toggle button, MUIDataTableSelectCell-expandDisabled.
+                  hideExpandButton={!isRowExpandable(dataIndex) && options.expandableRows}
+                  selectableOn={options.selectableRows}
+                  selectableRowsHideCheckboxes={options.selectableRowsHideCheckboxes}
+                  isRowExpanded={() => isRowExpanded(dataIndex)}
+                  isRowSelectable={isRowSelectable(dataIndex)}
+                  id={'MUIDataTableSelectCell-' + dataIndex}
+                />
+                {processedRows.map(
+                  (column, columnIndex) =>
+                    columns[columnIndex].display === 'true' && (
+                      <TableBodyCell
+                        {...(columns[columnIndex].setCellProps
+                          ? columns[columnIndex].setCellProps(column, dataIndex, columnIndex)
+                          : {})}
+                        data-testid={`MuiDataTableBodyCell-${columnIndex}-${rowIndex}`}
+                        dataIndex={dataIndex}
+                        rowIndex={rowIndex}
+                        colIndex={columnIndex}
+                        columnHeader={columns[columnIndex].label}
+                        print={columns[columnIndex].print}
+                        options={options}
+                        key={columnIndex}>
+                        {column.value}
+                      </TableBodyCell>
+                    ),
+                )}
+              </TableBodyRow>
+              {isRowExpanded(dataIndex) && options.renderExpandableRow(row, { rowIndex, dataIndex })}
+            </React.Fragment>
+          );
+        })}
+      </MuiTableBody>
     );
   }
 
   return (
-      <MuiTableBody>
-        <TableBodyRow options={options}>
-          <TableBodyCell
-              colSpan={options.selectableRows !== 'none' || options.expandableRows ? visibleColCnt + 1 : visibleColCnt}
-              options={options}
-              colIndex={0}
-              rowIndex={0}>
-            <Typography variant="body1" className={classes.emptyTitle}>
-              {options.textLabels.body.noMatch}
-            </Typography>
-          </TableBodyCell>
-        </TableBodyRow>
-      </MuiTableBody>
+    <MuiTableBody>
+      <TableBodyRow options={options}>
+        <TableBodyCell
+          colSpan={options.selectableRows !== 'none' || options.expandableRows ? visibleColCnt + 1 : visibleColCnt}
+          options={options}
+          colIndex={0}
+          rowIndex={0}>
+          <Typography variant="body1" className={classes.emptyTitle}>
+            {options.textLabels.body.noMatch}
+          </Typography>
+        </TableBodyCell>
+      </TableBodyRow>
+    </MuiTableBody>
   );
 };
 
