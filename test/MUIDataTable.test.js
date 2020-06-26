@@ -1946,27 +1946,27 @@ describe('<MUIDataTable />', function() {
     let customBodyRenderNoFilterCb = spy();
     const options = {
       rowsPerPage: 5,
-      rowsPerPageOptions: [5]
+      rowsPerPageOptions: [5],
     };
 
     const data = [
-      ['a','b'],
-      ['a','b'],
-      ['a','b'],
-      ['a','b'],
-      ['a','b'],
+      ['a', 'b'],
+      ['a', 'b'],
+      ['a', 'b'],
+      ['a', 'b'],
+      ['a', 'b'],
 
-      ['a','b'],
-      ['a','b'],
-      ['a','b'],
-      ['a','b'],
-      ['a','b'],
+      ['a', 'b'],
+      ['a', 'b'],
+      ['a', 'b'],
+      ['a', 'b'],
+      ['a', 'b'],
 
-      ['a','b'],
-      ['a','b'],
-      ['a','b'],
-      ['a','b'],
-      ['a','b'],
+      ['a', 'b'],
+      ['a', 'b'],
+      ['a', 'b'],
+      ['a', 'b'],
+      ['a', 'b'],
     ];
 
     const columns = [
@@ -1977,8 +1977,8 @@ describe('<MUIDataTable />', function() {
           customBodyRender: () => {
             customBodyRenderCb();
             return '';
-          }
-        }
+          },
+        },
       },
       {
         name: 'lastName',
@@ -1987,7 +1987,7 @@ describe('<MUIDataTable />', function() {
           customBodyRenderLite: () => {
             customBodyRenderLiteCb();
             return '';
-          }
+          },
         },
       },
       {
@@ -1998,9 +1998,9 @@ describe('<MUIDataTable />', function() {
           customBodyRender: () => {
             customBodyRenderNoFilterCb();
             return '';
-          }
+          },
         },
-      }
+      },
     ];
 
     const fullWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);

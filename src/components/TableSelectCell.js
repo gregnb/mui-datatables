@@ -117,7 +117,7 @@ class TableSelectCell extends React.Component {
 
     let refProp = {};
     if (setHeadCellRef) {
-      refProp.ref = (el) => {
+      refProp.ref = el => {
         setHeadCellRef(0, 0, el);
       };
     }
