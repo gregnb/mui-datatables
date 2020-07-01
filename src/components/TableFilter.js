@@ -340,11 +340,10 @@ class TableFilter extends React.Component {
   };
 
   resetFilters = () => {
-    if (this.props.options.confirmFilters === true) {
-      this.setState({
-        filterList: this.props.columns.map(() => []),
-      });
-    } else {
+    this.setState({
+      filterList: this.props.columns.map(() => []),
+    });
+    if (this.props.options.confirmFilters !== true) {
       this.props.onFilterReset();
     }
   };

@@ -244,7 +244,7 @@ class TableBody extends React.Component {
 
             let isRowSelected = options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false;
             let isRowSelectable = this.isRowSelectable(dataIndex);
-            let bodyClasses = options.setRowProps ? options.setRowProps(row, dataIndex, rowIndex) : {};
+            let bodyClasses = options.setRowProps ? (options.setRowProps(row, dataIndex, rowIndex) || {}) : {};
 
             const processedRow = this.processRow(row, columnOrder);
 
@@ -293,7 +293,7 @@ class TableBody extends React.Component {
                       columns[column.index].display === 'true' && (
                         <TableBodyCell
                           {...(columns[column.index].setCellProps
-                            ? columns[column.index].setCellProps(column.value, dataIndex, column.index)
+                            ? (columns[column.index].setCellProps(column.value, dataIndex, column.index) || {})
                             : {})}
                           data-testid={`MuiDataTableBodyCell-${column.index}-${rowIndex}`}
                           dataIndex={dataIndex}

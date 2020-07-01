@@ -661,6 +661,38 @@ describe('<TableBody />', function() {
     assert(options.setRowProps.calledWith(data[1]));
   });
 
+  it("should not fail if 'setRowProps' returns undefined", () => {
+    const options = { setRowProps: stub().returns(undefined) };
+    const selectRowUpdate = stub();
+    const toggleExpandRow = () => {};
+
+    const mountWrapper = mount(
+      <TableBody
+        data={displayData}
+        count={displayData.length}
+        columns={columns}
+        page={0}
+        rowsPerPage={10}
+        selectedRows={[]}
+        selectRowUpdate={selectRowUpdate}
+        expandedRows={[]}
+        toggleExpandRow={toggleExpandRow}
+        options={options}
+        searchText={''}
+        filterList={[]}
+      />,
+    );
+
+    const props = mountWrapper
+      .find('#MUIDataTableBodyRow-1')
+      .first()
+      .props();
+
+    assert.notEqual(props.className, 'testClass');
+    assert.isAtLeast(options.setRowProps.callCount, 1);
+    assert(options.setRowProps.calledWith(data[1]));
+  });
+
   it("should use 'customRowRender' when provided", () => {
     const options = { customRowRender: () => <div>Test_Text</div> };
     const selectRowUpdate = stub();
