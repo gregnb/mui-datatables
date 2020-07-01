@@ -128,7 +128,7 @@ const TableHead = ({
             ) : (
               <TableHeadCell
                 cellHeaderProps={
-                  columns[index].setCellHeaderProps ? columns[index].setCellHeaderProps({ index, ...column }) : {}
+                  columns[index].setCellHeaderProps ? (columns[index].setCellHeaderProps({ index, ...column }) || {}) : {}
                 }
                 key={index}
                 index={index}
@@ -150,7 +150,7 @@ const TableHead = ({
                 draggableHeadCellRefs={draggableHeadCellRefs}
                 tableRef={tableRef}
                 components={components}>
-                {column.label}
+                {column.customHeadLabelRender ? column.customHeadLabelRender({index, colPos, ...column}) : column.label}
               </TableHeadCell>
             )),
         )}

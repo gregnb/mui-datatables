@@ -20,7 +20,11 @@ function Example() {
     filterType: 'dropdown',
     responsive,
     tableBodyHeight,
-    tableBodyMaxHeight
+    tableBodyMaxHeight,
+    onTableChange: (action, state) => {
+      console.log(action);
+      console.dir(state);
+    }
   };
 
   const data = [
