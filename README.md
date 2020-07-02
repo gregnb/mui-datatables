@@ -200,7 +200,7 @@ The component accepts the following props:
 |**`onSearchOpen`**|function||Callback function that triggers when the searchbox opens. `function() => void`
 |**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
 |**`onTableInit`**|function||Callback function that triggers when table state has been initialized. `function(action: string, tableState: object) => void`
-|**`onViewColumnsChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
+|**`onColumnViewChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
 |**`page`**|number||User provided starting page for pagination.
 |**`pagination`**|boolean|true|Enable/disable pagination.
 |**`print`**|boolean|true|Show/hide print  icon from toolbar.
