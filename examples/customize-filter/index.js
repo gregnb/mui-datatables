@@ -235,6 +235,14 @@ class Example extends React.Component {
       filter: true,
       filterType: 'multiselect',
       responsive: 'standard',
+      setFilterChipProps: (colIndex, colName, data) => {
+        //console.log(colIndex, colName, data);
+        return {
+          color: 'primary',
+          variant: 'outlined',
+          className: 'testClass123',
+        };
+      }
     };
     
     return (

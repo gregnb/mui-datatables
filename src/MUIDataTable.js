@@ -227,6 +227,7 @@ class MUIDataTable extends React.Component {
       searchOpen: PropTypes.bool,
       searchPlaceholder: PropTypes.string,
       searchText: PropTypes.string,
+      setFilterChipProps: PropTypes.func,
       setRowProps: PropTypes.func,
       selectToolbarPlacement: PropTypes.oneOfType([
         PropTypes.bool,
@@ -1756,7 +1757,7 @@ class MUIDataTable extends React.Component {
       tableHeightVal.height = this.options.tableBodyHeight;
     }
 
-    let tableProps = this.options.setTableProps ? (this.options.setTableProps() || {}) : {};
+    let tableProps = this.options.setTableProps ? this.options.setTableProps() || {} : {};
     let tableClassNames = classnames(classes.tableRoot, tableProps.className);
     delete tableProps.className; // remove className from props to avoid the className being applied twice
 
