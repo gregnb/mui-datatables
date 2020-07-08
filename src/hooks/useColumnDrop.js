@@ -6,10 +6,25 @@ import { useDrop } from 'react-dnd';
 
 const getColModel = (headCellRefs, columnOrder, columns) => {
   let colModel = [];
-  let selectCellHead = headCellRefs[0] ? headCellRefs[0] : { offsetParent: 0, offsetWidth: 0, offsetLeft: 0 };
+  let leftMostCell = headCellRefs[0] ? headCellRefs[0] : null; // left most cell is the select cell, if it exists
+
+  if (leftMostCell === null) {
+    leftMostCell = {offsetLeft: Infinity};
+    let headCells = Object.entries(headCellRefs);
+    headCells.forEach(([key, item], idx) => {
+      if (item && item.offsetLeft < leftMostCell.offsetLeft) {
+        leftMostCell = item;
+      }
+    });
+
+    if (leftMostCell.offsetLeft === Infinity) {
+      leftMostCell = { offsetParent: 0, offsetWidth: 0, offsetLeft: 0 };
+    }
+  }
+
   let ii = 0,
     parentOffsetLeft = 0,
-    offsetParent = selectCellHead.offsetParent;
+    offsetParent = leftMostCell.offsetParent;
   while (offsetParent) {
     parentOffsetLeft = parentOffsetLeft + (offsetParent.offsetLeft || 0);
     offsetParent = offsetParent.offsetParent;
@@ -20,12 +35,15 @@ const getColModel = (headCellRefs, columnOrder, columns) => {
     }
   }
 
-  colModel[0] = {
-    left: parentOffsetLeft + selectCellHead.offsetLeft,
-    width: selectCellHead.offsetWidth,
-    columnIndex: null,
-    ref: selectCellHead,
-  };
+  // if the select cell is present, make sure it is apart of the column model
+  if (headCellRefs[0]) {
+    colModel[0] = {
+      left: parentOffsetLeft + leftMostCell.offsetLeft,
+      width: leftMostCell.offsetWidth,
+      columnIndex: null,
+      ref: leftMostCell,
+    };
+  }
 
   columnOrder.forEach((colIdx, idx) => {
     let col = headCellRefs[colIdx + 1];
@@ -33,15 +51,16 @@ const getColModel = (headCellRefs, columnOrder, columns) => {
     if (columns[colIdx] && columns[colIdx].display !== 'true') {
       // skip
     } else {
+      let prevLeft = cmIndx !== -1 ? colModel[cmIndx].left + colModel[cmIndx].width : parentOffsetLeft + leftMostCell.offsetLeft;
       colModel.push({
-        left: colModel[cmIndx].left + colModel[cmIndx].width,
+        left: prevLeft,
         width: col.offsetWidth,
         columnIndex: colIdx,
         ref: col,
       });
     }
   });
-
+  
   return colModel;
 };
 
