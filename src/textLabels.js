@@ -11,6 +11,7 @@ const getTextLabels = () => ({
     previous: 'Previous Page',
     rowsPerPage: 'Rows per page:',
     displayRows: 'of',
+    jumpToPage: 'Jump to Page:',
   },
   toolbar: {
     search: 'Search',

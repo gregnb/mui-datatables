@@ -61,7 +61,7 @@ TableFooter.propTypes = {
     customFooter: PropTypes.func,
     pagination: PropTypes.bool,
     textLabels: PropTypes.shape({
-      pagination: PropTypes.string,
+      pagination: PropTypes.object,
     }),
   }),
   /** Current page index */

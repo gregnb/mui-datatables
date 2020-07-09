@@ -191,6 +191,7 @@ class MUIDataTable extends React.Component {
       getTextLabels: PropTypes.func,
       isRowExpandable: PropTypes.func,
       isRowSelectable: PropTypes.func,
+      jumpToPage: PropTypes.bool,
       onDownload: PropTypes.func,
       onFilterChange: PropTypes.func,
       onFilterChipClose: PropTypes.func,
@@ -1756,7 +1757,7 @@ class MUIDataTable extends React.Component {
       tableHeightVal.height = this.options.tableBodyHeight;
     }
 
-    let tableProps = this.options.setTableProps ? (this.options.setTableProps() || {}) : {};
+    let tableProps = this.options.setTableProps ? this.options.setTableProps() || {} : {};
     let tableClassNames = classnames(classes.tableRoot, tableProps.className);
     delete tableProps.className; // remove className from props to avoid the className being applied twice
 
