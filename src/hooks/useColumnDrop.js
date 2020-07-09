@@ -9,7 +9,7 @@ const getColModel = (headCellRefs, columnOrder, columns) => {
   let leftMostCell = headCellRefs[0] ? headCellRefs[0] : null; // left most cell is the select cell, if it exists
 
   if (leftMostCell === null) {
-    leftMostCell = {offsetLeft: Infinity};
+    leftMostCell = { offsetLeft: Infinity };
     let headCells = Object.entries(headCellRefs);
     headCells.forEach(([key, item], idx) => {
       if (item && item.offsetLeft < leftMostCell.offsetLeft) {
@@ -51,7 +51,8 @@ const getColModel = (headCellRefs, columnOrder, columns) => {
     if (columns[colIdx] && columns[colIdx].display !== 'true') {
       // skip
     } else {
-      let prevLeft = cmIndx !== -1 ? colModel[cmIndx].left + colModel[cmIndx].width : parentOffsetLeft + leftMostCell.offsetLeft;
+      let prevLeft =
+        cmIndx !== -1 ? colModel[cmIndx].left + colModel[cmIndx].width : parentOffsetLeft + leftMostCell.offsetLeft;
       colModel.push({
         left: prevLeft,
         width: col.offsetWidth,
@@ -60,7 +61,7 @@ const getColModel = (headCellRefs, columnOrder, columns) => {
       });
     }
   });
-  
+
   return colModel;
 };
 
