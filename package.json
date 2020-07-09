@@ -1,6 +1,6 @@
 {
   "name": "mui-datatables",
-  "version": "3.1.5-beta.0",
+  "version": "3.1.5",
   "description": "Datatables for React using Material-UI",
   "main": "dist/index.js",
   "files": [
@@ -77,6 +77,8 @@
     "prismjs": "^1.20.0",
     "raw-loader": "^4.0.1",
     "react": "^16.13.0",
+    "react-dnd-test-backend": "^11.1.3",
+    "react-dnd-test-utils": "^11.1.3",
     "react-dom": "^16.13.0",
     "react-router-dom": "^5.0.1",
     "react-waypoint": "^9.0.3",
