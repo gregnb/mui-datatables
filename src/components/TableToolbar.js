@@ -119,31 +119,31 @@ class TableToolbar extends React.Component {
   }
 
   handleCSVDownload = () => {
-    const { data, displayData, columns, options, colOrder } = this.props;
-    let dataToDownload = [];//cloneDeep(data);
+    const { data, displayData, columns, options, columnOrder } = this.props;
+    let dataToDownload = []; //cloneDeep(data);
     let columnsToDownload = [];
-    let columnOrder = Array.isArray(colOrder) ? columnOrder.slice(0) : [];
+    let columnOrderCopy = Array.isArray(columnOrder) ? columnOrder.slice(0) : [];
 
-    if (columnOrder.length === 0) {
-      columnOrder = columns.map( (item, idx) => (idx));
+    if (columnOrderCopy.length === 0) {
+      columnOrderCopy = columns.map((item, idx) => idx);
     }
 
-    data.forEach( row => {
-      let newRow = {index: row.index, data: []};
-      columnOrder.forEach( idx => {
-        newRow.data.push( row.data[idx] );
+    data.forEach(row => {
+      let newRow = { index: row.index, data: [] };
+      columnOrderCopy.forEach(idx => {
+        newRow.data.push(row.data[idx]);
       });
       dataToDownload.push(newRow);
     });
 
-    columnOrder.forEach( idx => {
-      columnsToDownload.push( columns[idx] );
+    columnOrderCopy.forEach(idx => {
+      columnsToDownload.push(columns[idx]);
     });
 
     if (options.downloadOptions && options.downloadOptions.filterOptions) {
       // check rows first:
       if (options.downloadOptions.filterOptions.useDisplayedRowsOnly) {
-        dataToDownload = displayData.map((row, index) => {
+        let filteredDataToDownload = displayData.map((row, index) => {
           let i = -1;
 
           // Help to preserve sort order in custom render columns
@@ -156,20 +156,32 @@ class TableToolbar extends React.Component {
               // if we have a custom render, which will appear as a react element, we must grab the actual value from data
               // that matches the dataIndex and column
               // TODO: Create a utility function for checking whether or not something is a react object
-              return typeof column === 'object' && column !== null && !Array.isArray(column)
-                ? find(data, d => d.index === row.dataIndex).data[i]
-                : column;
+              let val =
+                typeof column === 'object' && column !== null && !Array.isArray(column)
+                  ? find(data, d => d.index === row.dataIndex).data[i]
+                  : column;
+              val = typeof val === 'function' ? find(data, d => d.index === row.dataIndex).data[i] : val;
+              return val;
             }),
           };
+        });
+
+        dataToDownload = [];
+        filteredDataToDownload.forEach(row => {
+          let newRow = { index: row.index, data: [] };
+          columnOrderCopy.forEach(idx => {
+            newRow.data.push(row.data[idx]);
+          });
+          dataToDownload.push(newRow);
         });
       }
 
       // now, check columns:
       if (options.downloadOptions.filterOptions.useDisplayedColumnsOnly) {
-        columnsToDownload = columns.filter(_ => _.display === 'true');
+        columnsToDownload = columnsToDownload.filter(_ => _.display === 'true');
 
         dataToDownload = dataToDownload.map(row => {
-          row.data = row.data.filter((_, index) => columns[index].display === 'true');
+          row.data = row.data.filter((_, index) => columns[columnOrderCopy[index]].display === 'true');
           return row;
         });
       }

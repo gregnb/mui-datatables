@@ -1,54 +1,61 @@
 import { makeStyles } from '@material-ui/core/styles';
 import MuiTableHead from '@material-ui/core/TableHead';
 import classNames from 'classnames';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import TableHeadCell from './TableHeadCell';
 import TableHeadRow from './TableHeadRow';
 import TableSelectCell from './TableSelectCell';
 
-const useStyles = makeStyles(theme => ({
-  main: {},
-  responsiveStacked: {
-    [theme.breakpoints.down('sm')]: {
-      display: 'none',
+const useStyles = makeStyles(
+  theme => ({
+    main: {},
+    responsiveStacked: {
+      [theme.breakpoints.down('sm')]: {
+        display: 'none',
+      },
     },
-  },
-  responsiveSimple: {
-    [theme.breakpoints.down('xs')]: {
-      display: 'none',
+    responsiveSimple: {
+      [theme.breakpoints.down('xs')]: {
+        display: 'none',
+      },
     },
-  },
-}), {name: 'MUIDataTableHead'});
+  }),
+  { name: 'MUIDataTableHead' },
+);
 
-function TableHead(props) {
-  
-  const[dragging, setDragging] = useState(false);
-
-  const {
-    columns,
-    count,
-    options,
-    data,
-    setCellRef,
-    selectedRows,
-    expandedRows,
-    updateColumnOrder,
-    columnOrder = props.columns ? props.columns.map((item,idx) => idx) : [],
-    draggableHeadCellRefs,
-    timers,
-    toggleSort,
-    tableRef,
-    sortOrder = {},
-    components = {},
-  } = props;
+const TableHead = ({
+  columnOrder = null,
+  columns,
+  components = {},
+  count,
+  data,
+  draggableHeadCellRefs,
+  expandedRows,
+  options,
+  selectedRows,
+  selectRowUpdate,
+  setCellRef,
+  sortOrder = {},
+  tableRef,
+  timers,
+  toggleAllExpandableRows,
+  toggleSort,
+  updateColumnOrder,
+}) => {
   const classes = useStyles();
+
+  if (columnOrder === null) {
+    columnOrder = columns ? columns.map((item, idx) => idx) : [];
+  }
+
+  const [dragging, setDragging] = useState(false);
 
   const handleToggleColumn = index => {
     toggleSort(index);
   };
 
   const handleRowSelect = () => {
-    props.selectRowUpdate('head', null);
+    selectRowUpdate('head', null);
   };
 
   const numSelected = (selectedRows && selectedRows.data.length) || 0;
@@ -78,7 +85,7 @@ function TableHead(props) {
     }
   }
 
-  let orderedColumns = columnOrder.map( (colIndex, idx) => {
+  let orderedColumns = columnOrder.map((colIndex, idx) => {
     return {
       column: columns[colIndex],
       index: colIndex,
@@ -110,18 +117,18 @@ function TableHead(props) {
           fixedHeader={options.fixedHeader}
           fixedSelectColumn={options.fixedSelectColumn}
           selectableRowsHeader={options.selectableRowsHeader}
-          onExpand={props.toggleAllExpandableRows}
+          onExpand={toggleAllExpandableRows}
           isRowSelectable={true}
         />
         {orderedColumns.map(
-          ({column, index, colPos}) =>
+          ({ column, index, colPos }) =>
             column.display === 'true' &&
             (column.customHeadRender ? (
               column.customHeadRender({ index, ...column }, handleToggleColumn, sortOrder)
             ) : (
               <TableHeadCell
                 cellHeaderProps={
-                  columns[index].setCellHeaderProps ? columns[index].setCellHeaderProps({ index, ...column }) : {}
+                  columns[index].setCellHeaderProps ? (columns[index].setCellHeaderProps({ index, ...column }) || {}) : {}
                 }
                 key={index}
                 index={index}
@@ -135,6 +142,7 @@ function TableHead(props) {
                 print={column.print}
                 options={options}
                 column={column}
+                columns={columns}
                 updateColumnOrder={updateColumnOrder}
                 columnOrder={columnOrder}
                 timers={timers}
@@ -142,13 +150,13 @@ function TableHead(props) {
                 draggableHeadCellRefs={draggableHeadCellRefs}
                 tableRef={tableRef}
                 components={components}>
-                {column.label}
+                {column.customHeadLabelRender ? column.customHeadLabelRender({index, colPos, ...column}) : column.label}
               </TableHeadCell>
             )),
         )}
       </TableHeadRow>
     </MuiTableHead>
   );
-}
+};
 
 export default TableHead;

@@ -1,6 +1,6 @@
 {
   "name": "mui-datatables",
-  "version": "3.0.1",
+  "version": "3.1.5",
   "description": "Datatables for React using Material-UI",
   "main": "dist/index.js",
   "files": [
@@ -57,6 +57,7 @@
     "chai": "^4.2.0",
     "coveralls": "^3.1.0",
     "cross-env": "^7.0.2",
+    "css-loader": "^3.6.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^7.1.0",
@@ -76,12 +77,16 @@
     "prismjs": "^1.20.0",
     "raw-loader": "^4.0.1",
     "react": "^16.13.0",
+    "react-dnd-test-backend": "^11.1.3",
+    "react-dnd-test-utils": "^11.1.3",
     "react-dom": "^16.13.0",
     "react-router-dom": "^5.0.1",
+    "react-waypoint": "^9.0.3",
     "rollup": "^1.32.1",
     "rollup-plugin-uglify": "^6.0.3",
     "simulant": "^0.2.2",
     "sinon": "^7.4.2",
+    "style-loader": "^1.2.1",
     "webpack": "^4.43.0",
     "webpack-dev-server": "^3.11.0"
   },
@@ -105,6 +110,7 @@
     "prop-types": "^15.7.2",
     "react-dnd": "^11.1.3",
     "react-dnd-html5-backend": "^11.1.3",
+    "react-sortable-tree": "^2.7.1",
     "react-to-print": "^2.8.0",
     "webpack-cli": "^3.3.11"
   },

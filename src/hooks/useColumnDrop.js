@@ -2,15 +2,30 @@
   This hook handles the dragging and dropping effects that occur for columns.
 */
 
-import {useDrop} from 'react-dnd';
+import { useDrop } from 'react-dnd';
 
-const getColModel = (headCellRefs, columnOrder) => {
+const getColModel = (headCellRefs, columnOrder, columns) => {
   let colModel = [];
+  let leftMostCell = headCellRefs[0] ? headCellRefs[0] : null; // left most cell is the select cell, if it exists
+
+  if (leftMostCell === null) {
+    leftMostCell = { offsetLeft: Infinity };
+    let headCells = Object.entries(headCellRefs);
+    headCells.forEach(([key, item], idx) => {
+      if (item && item.offsetLeft < leftMostCell.offsetLeft) {
+        leftMostCell = item;
+      }
+    });
+
+    if (leftMostCell.offsetLeft === Infinity) {
+      leftMostCell = { offsetParent: 0, offsetWidth: 0, offsetLeft: 0 };
+    }
+  }
 
   let ii = 0,
     parentOffsetLeft = 0,
-    offsetParent = headCellRefs[0].offsetParent;
-  while (offsetParent){
+    offsetParent = leftMostCell.offsetParent;
+  while (offsetParent) {
     parentOffsetLeft = parentOffsetLeft + (offsetParent.offsetLeft || 0);
     offsetParent = offsetParent.offsetParent;
     ii++;
@@ -20,78 +35,78 @@ const getColModel = (headCellRefs, columnOrder) => {
     }
   }
 
-  colModel[0] = {
-    left: parentOffsetLeft + headCellRefs[0].offsetLeft,
-    width: headCellRefs[0].offsetWidth,
-    columnIndex: null,
-    ref: headCellRefs[0]
-  };
+  // if the select cell is present, make sure it is apart of the column model
+  if (headCellRefs[0]) {
+    colModel[0] = {
+      left: parentOffsetLeft + leftMostCell.offsetLeft,
+      width: leftMostCell.offsetWidth,
+      columnIndex: null,
+      ref: leftMostCell,
+    };
+  }
 
-  columnOrder.forEach( (colIdx, idx) => {
+  columnOrder.forEach((colIdx, idx) => {
     let col = headCellRefs[colIdx + 1];
     let cmIndx = colModel.length - 1;
-    colModel.push({
-      left: colModel[cmIndx].left + colModel[cmIndx].width,
-      width: col.offsetWidth,
-      columnIndex: colIdx,
-      ref: col
-    });
+    if (columns[colIdx] && columns[colIdx].display !== 'true') {
+      // skip
+    } else {
+      let prevLeft =
+        cmIndx !== -1 ? colModel[cmIndx].left + colModel[cmIndx].width : parentOffsetLeft + leftMostCell.offsetLeft;
+      colModel.push({
+        left: prevLeft,
+        width: col.offsetWidth,
+        columnIndex: colIdx,
+        ref: col,
+      });
+    }
   });
 
   return colModel;
 };
 
 const reorderColumns = (prevColumnOrder, columnIndex, newPosition) => {
-    let columnOrder = prevColumnOrder.slice();
-    let srcIndex = columnOrder.indexOf(columnIndex);
-    let targetIndex = columnOrder.indexOf(newPosition);
+  let columnOrder = prevColumnOrder.slice();
+  let srcIndex = columnOrder.indexOf(columnIndex);
+  let targetIndex = columnOrder.indexOf(newPosition);
 
-    if (srcIndex !== -1 && targetIndex !== -1) {
-      let newItem = columnOrder[srcIndex];
-      columnOrder = [...columnOrder.slice(0,srcIndex), ...columnOrder.slice(srcIndex+1)];
-      columnOrder = [...columnOrder.slice(0,targetIndex), newItem, ...columnOrder.slice(targetIndex)];
-    }
-    return columnOrder;
+  if (srcIndex !== -1 && targetIndex !== -1) {
+    let newItem = columnOrder[srcIndex];
+    columnOrder = [...columnOrder.slice(0, srcIndex), ...columnOrder.slice(srcIndex + 1)];
+    columnOrder = [...columnOrder.slice(0, targetIndex), newItem, ...columnOrder.slice(targetIndex)];
+  }
+  return columnOrder;
 };
 
-const useColumnDrop = (opts) => {
-
-  const {
-    index,
-    headCellRefs,
-    updateColumnOrder,
-    columnOrder,
-    transitionTime = 300,
-    tableRef,
-    timers,
-  } = opts;
+const useColumnDrop = opts => {
+  const { index, headCellRefs, updateColumnOrder, columnOrder, transitionTime = 300, tableRef, timers, columns } = opts;
 
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: 'HEADER',
     drop: opts.drop,
     hover: (item, mon) => {
-
       let hoverIdx = mon.getItem().colIndex;
 
-      if ( hoverIdx !== index ) {
+      if (headCellRefs !== mon.getItem().headCellRefs) return;
 
-        let reorderedCols = reorderColumns( columnOrder, mon.getItem().colIndex, index );
-        let newColModel = getColModel( headCellRefs, reorderedCols);
+      if (hoverIdx !== index) {
+        let reorderedCols = reorderColumns(columnOrder, mon.getItem().colIndex, index);
+        let newColModel = getColModel(headCellRefs, reorderedCols, columns);
 
         let newX = mon.getClientOffset().x;
         let modelIdx = -1;
         for (let ii = 0; ii < newColModel.length; ii++) {
-          if (newX > newColModel[ii].left && newX < (newColModel[ii].left + newColModel[ii].width) ) {
+          if (newX > newColModel[ii].left && newX < newColModel[ii].left + newColModel[ii].width) {
             modelIdx = newColModel[ii].columnIndex;
             break;
           }
         }
 
-        if (modelIdx === mon.getItem().colIndex ) {
-          clearTimeout( timers.columnShift );
+        if (modelIdx === mon.getItem().colIndex) {
+          clearTimeout(timers.columnShift);
 
-          let curColModel = getColModel( headCellRefs,  columnOrder );
-          
+          let curColModel = getColModel(headCellRefs, columnOrder, columns);
+
           let transitions = [];
           newColModel.forEach(item => {
             transitions[item.columnIndex] = item.left;
@@ -101,39 +116,44 @@ const useColumnDrop = (opts) => {
           });
 
           for (let idx = 1; idx < columnOrder.length; idx++) {
-            headCellRefs[idx].style.transition = '280ms';
-            headCellRefs[idx].style.transform = 'translateX(' + transitions[idx-1] + 'px)';
-          };
+            let colIndex = columnOrder[idx];
+            if (columns[colIndex] && columns[colIndex].display !== 'true') {
+              // skip
+            } else {
+              if (headCellRefs[idx]) headCellRefs[idx].style.transition = '280ms';
+              if (headCellRefs[idx]) headCellRefs[idx].style.transform = 'translateX(' + transitions[idx - 1] + 'px)';
+            }
+          }
 
           let allElms = [];
           let dividers = [];
-          for (let ii = 0; ii < columnOrder.length; ii++) { 
+          for (let ii = 0; ii < columnOrder.length; ii++) {
             let elms = tableRef ? tableRef.querySelectorAll('[data-colindex="' + ii + '"]') : [];
             for (let jj = 0; jj < elms.length; jj++) {
               elms[jj].style.transition = transitionTime + 'ms';
               elms[jj].style.transform = 'translateX(' + transitions[ii] + 'px)';
-              allElms.push( elms[jj] );
+              allElms.push(elms[jj]);
             }
 
-            let divider = tableRef ? tableRef.querySelectorAll('[data-divider-index="' + (ii+1) + '"]') : [];
+            let divider = tableRef ? tableRef.querySelectorAll('[data-divider-index="' + (ii + 1) + '"]') : [];
             for (let jj = 0; jj < divider.length; jj++) {
               divider[jj].style.transition = transitionTime + 'ms';
-              divider[jj].style.transform = 'translateX(' + transitions[ columnOrder[ii] ] + 'px)';
+              divider[jj].style.transform = 'translateX(' + transitions[columnOrder[ii]] + 'px)';
               dividers.push(divider[jj]);
             }
           }
 
           let newColIndex = mon.getItem().colIndex;
           timers.columnShift = setTimeout(() => {
-            allElms.forEach( item => {
+            allElms.forEach(item => {
               item.style.transition = '0s';
               item.style.transform = 'translateX(0)';
             });
-            dividers.forEach( item => {
+            dividers.forEach(item => {
               item.style.transition = '0s';
               item.style.transform = 'translateX(0)';
             });
-            updateColumnOrder( reorderedCols, newColIndex, index );
+            updateColumnOrder(reorderedCols, newColIndex, index);
           }, transitionTime);
         }
       }

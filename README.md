@@ -9,7 +9,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/gregnb/mui-datatables/badge.svg?branch=master)](https://coveralls.io/github/gregnb/mui-datatables?branch=master)
 [![npm version](https://badge.fury.io/js/mui-datatables.svg)](https://badge.fury.io/js/mui-datatables)
 
-MUI-Datatables is a responsive datatables component built on [Material-UI](https://www.material-ui.com).  It comes with features like filtering, [resizable columns](https://codesandbox.io/s/muidatatables-custom-toolbar-zomv5?file=/index.js), view/hide columns, search, export to CSV download, printing, selectable rows, expandable rows, pagination, and sorting. On top of the ability to customize styling on most views, there are three responsive modes "vertical", "standard", and "simple" for mobile/tablet devices.
+MUI-Datatables is a responsive datatables component built on [Material-UI](https://www.material-ui.com).  It comes with features like filtering, [resizable columns](https://codesandbox.io/s/muidatatables-custom-toolbar-zomv5?file=/index.js), view/hide columns, [draggable columns](https://codesandbox.io/s/muidatatables-resize-columns-example-tnrkc?file=/index.js), search, export to CSV download, printing, selectable rows, expandable rows, pagination, and sorting. On top of the ability to customize styling on most views, there are three responsive modes "vertical", "standard", and "simple" for mobile/tablet devices.
 
 Version 3 has been released! You can read about the [updates here](https://github.com/gregnb/mui-datatables/blob/master/docs/v2_to_v3_guide.md)!
 
@@ -25,6 +25,7 @@ Version 3 has been released! You can read about the [updates here](https://githu
 * [Customize Columns](#customize-columns)
 * [Plug-ins](#plug-ins)
 * [Customize Styling](#customize-styling)
+* [Custom Components](#custom-components)
 * [Remote Data](#remote-data)
 * [Localization](#localization)
 * [Contributing](#contributing)
@@ -166,7 +167,7 @@ The component accepts the following props:
 |**`customToolbar`**|function||Render a custom toolbar
 |**`customToolbarSelect`**|function||Render a custom selected rows toolbar. `function(selectedRows, displayData, setSelectedRows) => void`
 |**`download`**|boolean|true|Show/hide download icon from toolbar
-|**`downloadOptions`**|object|`{filename: 'tableDownload.csv', separator: ','}`|An object of options to change the output of the CSV file:<p><ul><li>`filename`: string</li><li>`separator`: string</li><li>`filterOptions`: object<ul><li>`useDisplayedColumnsOnly`: boolean</li><li>`useDisplayedRowsOnly`: boolean</li></ul></li></ul></p>
+|**`downloadOptions`**|object|see ->|An object of options to change the output of the CSV file:<p><ul><li>`filename`: string</li><li>`separator`: string</li><li>`filterOptions`: object<ul><li>`useDisplayedColumnsOnly`: boolean</li><li>`useDisplayedRowsOnly`: boolean</li></ul></li></ul></p><p>Default Value:`{filename: 'tableDownload.csv', separator: ','}`</p>
 |**`draggableColumns`**|object|{}|An object of options describing how dragging columns should work. The options are: <p><ul><li>`enabled:boolean`: Indicates if draggable columns are enabled. Defaults to false.</li><li>`transitionTime:number`: The time in milliseconds it takes for columns to swap positions. Defaults to 300.</li></ul></p>To disable the dragging of a particular column, see the "draggable" option in the columns options. Dragging a column to a new position updates the columnOrder array and triggers the onColumnOrderChange callback.
 |**`elevation`**|number|4|Shadow depth applied to Paper component. 
 |**`enableNestedDataAccess`**|string|""|If provided a non-empty string (ex: "."), it will use that value in the column's names to access nested data. For example, given a enableNestedDataAccess value of "." and a column name of "phone.cell", the column would use the value found in `phone:{cell:"555-5555"}`. Any amount of nesting will work. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/data-as-objects/index.js) demonstrates the functionality. 

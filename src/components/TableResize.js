@@ -75,6 +75,10 @@ class TableResize extends React.Component {
     const { width: tableWidth, height: tableHeight } = tableEl.getBoundingClientRect();
     const { resizeCoords } = this.state;
 
+    for (let prop in resizeCoords) {
+      delete resizeCoords[prop];
+    }
+
     let parentOffsetLeft = getParentOffsetLeft(tableEl);
     let finalCells = Object.entries(this.cellsRef);
     //finalCells.pop();
@@ -120,7 +124,7 @@ class TableResize extends React.Component {
 
     let finalCells = Object.entries(this.cellsRef);
     finalCells.forEach(([key, item], idx) => {
-      let elRect = item.getBoundingClientRect();
+      let elRect = item ? item.getBoundingClientRect() : { width: 0, left: 0 };
       this.minWidths[idx] = elRect.width;
     });
     tableEl.style.width = originalWidth;
@@ -158,6 +162,7 @@ class TableResize extends React.Component {
       };
 
       const handleMoveRight = (leftPos, resizeCoords, id, fixedMinWidth) => {
+        if (typeof resizeCoords[id + 1] === 'undefined') return leftPos;
         if (leftPos > resizeCoords[id + 1].left - fixedMinWidth) {
           return resizeCoords[id + 1].left - fixedMinWidth;
         }
@@ -165,6 +170,7 @@ class TableResize extends React.Component {
       };
 
       const handleMoveLeft = (leftPos, resizeCoords, id, fixedMinWidth) => {
+        if (typeof resizeCoords[id - 1] === 'undefined') return leftPos;
         if (leftPos < resizeCoords[id - 1].left + fixedMinWidth) {
           return resizeCoords[id - 1].left + fixedMinWidth;
         }

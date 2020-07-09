@@ -30,6 +30,7 @@ import Simple from './simple';
 import SimpleNoToolbar from './simple-no-toolbar';
 import TextLocalization from './text-localization';
 import CustomComponents from './custom-components';
+import InfiniteScrolling from './infinite-scrolling';
 import Themes from './themes';
 import LargeDataSet from './large-data-set';
 
@@ -58,6 +59,7 @@ export default {
   'Expandable Rows': ExpandableRows,
   'Fixed Header': FixedHeader,
   'Hide Columns Print': HideColumnsPrint,
+  'Infinite Scrolling': InfiniteScrolling,
   'Large Data Set': LargeDataSet,
   'OnDownload': OnDownload,
   'OnTableInit': OnTableInit,

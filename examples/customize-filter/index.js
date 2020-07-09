@@ -94,7 +94,11 @@ class Example extends React.Component {
         options: {
           filter: true,
           filterType: 'custom',
-          filterList: [25, 50],
+
+          // if the below value is set, these values will be used every time the table is rendered.
+          // it's best to let the table internally manage the filterList
+          //filterList: [25, 50],
+          
           customFilterListOptions: {
             render: v => {
               if (v[0] && v[1] && this.state.ageFilterChecked) {
@@ -232,7 +236,7 @@ class Example extends React.Component {
       filterType: 'multiselect',
       responsive: 'standard',
     };
-
+    
     return (
       <MUIDataTable title={'ACME Employee list - customizeFilter'} data={data} columns={columns} options={options} />
     );
