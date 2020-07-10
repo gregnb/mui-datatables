@@ -5,6 +5,7 @@ import { assert } from 'chai';
 import MuiTableFooter from '@material-ui/core/TableFooter';
 import getTextLabels from '../src/textLabels';
 import TableFooter from '../src/components/TableFooter';
+import JumpToPage from '../src/components/JumpToPage';
 
 describe('<TableFooter />', function() {
   let options;
@@ -86,5 +87,27 @@ describe('<TableFooter />', function() {
 
     const actualResult = mountWrapper.find(MuiTableFooter);
     assert.strictEqual(actualResult.length, 0);
+  });
+
+  it('should render a JumpToPage component', () => {
+    const options = {
+      rowsPerPageOptions: [5, 10, 15],
+      textLabels: getTextLabels(),
+      jumpToPage: true
+    };
+
+    const mountWrapper = mount(
+      <TableFooter
+        options={options}
+        rowCount={100}
+        page={1}
+        rowsPerPage={10}
+        changeRowsPerPage={changeRowsPerPage}
+        changePage={changePage}
+      />,
+    );
+
+    const actualResult = mountWrapper.find(JumpToPage);
+    assert.strictEqual(actualResult.length, 1);
   });
 });
