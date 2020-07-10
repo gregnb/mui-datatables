@@ -452,7 +452,7 @@ class MUIDataTable extends React.Component {
     }
     if (this.options.onRowsExpand) {
       this.warnDep(
-        'onRowsSelect has been renamed onRowExpansionChange. More info: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
+        'onRowsExpand has been renamed onRowExpansionChange. More info: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
       );
     }
     if (this.options.fixedHeaderOptions) {
