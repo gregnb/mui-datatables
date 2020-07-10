@@ -228,7 +228,7 @@ class TableBody extends React.Component {
       toggleExpandRow,
       options,
       columnOrder = this.props.columns.map((item, idx) => idx),
-      components = {}
+      components = {},
     } = this.props;
     const tableRows = this.buildRows();
     const visibleColCnt = columns.filter(c => c.display === 'true').length;

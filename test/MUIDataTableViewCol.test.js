@@ -39,11 +39,12 @@ describe('<TableViewCol />', function() {
   it('should trigger onColumnUpdate prop callback when calling method handleColChange', () => {
     const onColumnUpdate = spy();
 
-    const wrapper = mount(
-      <TableViewCol columns={columns} onColumnUpdate={onColumnUpdate} options={options} />,
-    );
+    const wrapper = mount(<TableViewCol columns={columns} onColumnUpdate={onColumnUpdate} options={options} />);
 
-    wrapper.find('input[type="checkbox"]').at(0).simulate('change', {target: {checked: false, value: false}});
+    wrapper
+      .find('input[type="checkbox"]')
+      .at(0)
+      .simulate('change', { target: { checked: false, value: false } });
     wrapper.unmount();
 
     assert.strictEqual(onColumnUpdate.callCount, 1);

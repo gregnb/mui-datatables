@@ -416,7 +416,7 @@ class MUIDataTable extends React.Component {
     warnInfo(msg, this.options.consoleWarnings);
   };
 
-  handleOptionDeprecation = (props) => {
+  handleOptionDeprecation = props => {
     if (typeof this.options.selectableRows === 'boolean') {
       this.warnDep(
         'Using a boolean for selectableRows has been deprecated. Please use string option: multiple | single | none',
@@ -680,7 +680,7 @@ class MUIDataTable extends React.Component {
       this.options.columnOrder,
       this.state.columnOrder,
     );
-    
+
     let sortIndex = null;
     let sortDirection = 'none';
     let tableMeta;
@@ -890,10 +890,7 @@ class MUIDataTable extends React.Component {
     if (fromConstructor) {
       this.state = Object.assign({}, this.state, stateUpdates);
     } else {
-      this.setState(
-        stateUpdates,
-        callback,
-      );
+      this.setState(stateUpdates, callback);
     }
   }
 
@@ -1038,7 +1035,14 @@ class MUIDataTable extends React.Component {
       return {
         data: changedData,
         filterData: filterData,
-        displayData: this.getDisplayData(prevState.columns, changedData, prevState.filterList, prevState.searchText, null, this.props),
+        displayData: this.getDisplayData(
+          prevState.columns,
+          changedData,
+          prevState.filterList,
+          prevState.searchText,
+          null,
+          this.props,
+        ),
       };
     });
   };
@@ -1070,7 +1074,7 @@ class MUIDataTable extends React.Component {
         searchText,
         dataForTableMeta,
         this.options,
-        props
+        props,
       );
 
       if (displayRow) {
@@ -1171,7 +1175,14 @@ class MUIDataTable extends React.Component {
           newState = {
             ...newState,
             data: sortedData.data,
-            displayData: this.getDisplayData(columns, sortedData.data, prevState.filterList, prevState.searchText, null, this.props),
+            displayData: this.getDisplayData(
+              columns,
+              sortedData.data,
+              prevState.filterList,
+              prevState.searchText,
+              null,
+              this.props,
+            ),
             selectedRows: sortedData.selectedRows,
             sortOrder: newSortOrder,
             previousSelectedRow: null,
@@ -1265,7 +1276,14 @@ class MUIDataTable extends React.Component {
           filterList: filterList,
           displayData: this.options.serverSide
             ? prevState.displayData
-            : this.getDisplayData(prevState.columns, prevState.data, filterList, prevState.searchText, null, this.props),
+            : this.getDisplayData(
+                prevState.columns,
+                prevState.data,
+                filterList,
+                prevState.searchText,
+                null,
+                this.props,
+              ),
         };
       },
       () => {
@@ -1316,7 +1334,14 @@ class MUIDataTable extends React.Component {
           filterList: filterList,
           displayData: this.options.serverSide
             ? prevState.displayData
-            : this.getDisplayData(prevState.columns, prevState.data, filterList, prevState.searchText, null, this.props),
+            : this.getDisplayData(
+                prevState.columns,
+                prevState.data,
+                filterList,
+                prevState.searchText,
+                null,
+                this.props,
+              ),
           previousSelectedRow: null,
         };
       },

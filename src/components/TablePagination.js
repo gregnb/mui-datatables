@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MuiTableCell from '@material-ui/core/TableCell'; 
+import MuiTableCell from '@material-ui/core/TableCell';
 import MuiTableRow from '@material-ui/core/TableRow';
 import MuiTableFooter from '@material-ui/core/TableFooter';
 import MuiTablePagination from '@material-ui/core/TablePagination';
@@ -8,31 +8,33 @@ import JumpToPage from './JumpToPage';
 import { makeStyles } from '@material-ui/core/styles';
 import { getPageValue } from '../utils';
 
-const useStyles = makeStyles(theme => ({
-  root: {},
-  tableCellContainer: {
-    padding: '0px 24px 0px 24px',
-  },
-  navContainer: {
-    display:'flex', 
-    justifyContent: 'flex-end',
-  },
-  toolbar: {},
-  selectRoot: {},
-  '@media screen and (max-width: 400px)': {
-    toolbar: {
-      '& span:nth-child(2)': {
-        display: 'none',
+const useStyles = makeStyles(
+  theme => ({
+    root: {},
+    tableCellContainer: {
+      padding: '0px 24px 0px 24px',
+    },
+    navContainer: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+    },
+    toolbar: {},
+    selectRoot: {},
+    '@media screen and (max-width: 400px)': {
+      toolbar: {
+        '& span:nth-child(2)': {
+          display: 'none',
+        },
+      },
+      selectRoot: {
+        marginRight: '8px',
       },
     },
-    selectRoot: {
-      marginRight: '8px',
-    },
-  },
-}), { name: 'MUIDataTablePagination'});
+  }),
+  { name: 'MUIDataTablePagination' },
+);
 
 function TablePagination(props) {
-
   const classes = useStyles();
 
   const handleRowChange = event => {
@@ -42,7 +44,7 @@ function TablePagination(props) {
   const handlePageChange = (_, page) => {
     props.changePage(page);
   };
-  
+
   const { count, options, rowsPerPage, page } = props;
   const textLabels = options.textLabels.pagination;
 
@@ -51,8 +53,8 @@ function TablePagination(props) {
       <MuiTableRow>
         <MuiTableCell colSpan="1000" className={classes.tableCellContainer}>
           <div className={classes.navContainer}>
-            {options.jumpToPage ? 
-              <JumpToPage 
+            {options.jumpToPage ? (
+              <JumpToPage
                 count={count}
                 page={page}
                 rowsPerPage={rowsPerPage}
@@ -60,9 +62,7 @@ function TablePagination(props) {
                 changePage={props.changePage}
                 changeRowsPerPage={props.changeRowsPerPage}
               />
-              :
-              null
-            }
+            ) : null}
             <MuiTablePagination
               component="div"
               className={classes.root}

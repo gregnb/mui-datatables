@@ -47,26 +47,25 @@ describe('<TableFilterList />', function() {
       filterType: column.filterType || options.filterType,
     }));
     const wrapper = mount(
-      <TableFilterList 
-          options={options}
-          filterListRenderers={columns.map(c => {
-            if (c.customFilterListOptions && c.customFilterListOptions.render) return c.customFilterListOptions.render;
-            if (c.customFilterListRender) return c.customFilterListRender;
-            return f => f;
-          })}
-          customFilterListUpdate={columns.map(c => {
-            return c.customFilterListOptions && c.customFilterListOptions.update
-              ? c.customFilterListOptions.update
-              : null;
-          })}
-          filterList={filterList}
-          filterUpdate={filterUpdate}
-          columnNames={columnNames}
-       />,
+      <TableFilterList
+        options={options}
+        filterListRenderers={columns.map(c => {
+          if (c.customFilterListOptions && c.customFilterListOptions.render) return c.customFilterListOptions.render;
+          if (c.customFilterListRender) return c.customFilterListRender;
+          return f => f;
+        })}
+        customFilterListUpdate={columns.map(c => {
+          return c.customFilterListOptions && c.customFilterListOptions.update
+            ? c.customFilterListOptions.update
+            : null;
+        })}
+        filterList={filterList}
+        filterUpdate={filterUpdate}
+        columnNames={columnNames}
+      />,
     );
 
-    let numChips = wrapper
-      .find(Chip).length;
+    let numChips = wrapper.find(Chip).length;
 
     assert.strictEqual(numChips, 1);
 
@@ -74,14 +73,14 @@ describe('<TableFilterList />', function() {
   });
 
   it('should place a class onto the filter chip', () => {
-    const options = { 
+    const options = {
       textLabels: getTextLabels(),
-      setFilterChipProps: (a,b,c) => {
-        console.log(a,b,c);
+      setFilterChipProps: (a, b, c) => {
+        console.log(a, b, c);
         return {
-          className: 'testClass123'
+          className: 'testClass123',
         };
-      }
+      },
     };
     const filterList = [['Joe James'], [], [], []];
     const filterUpdate = spy();
@@ -90,22 +89,22 @@ describe('<TableFilterList />', function() {
       filterType: column.filterType || options.filterType,
     }));
     const wrapper = mount(
-      <TableFilterList 
-          options={options}
-          filterListRenderers={columns.map(c => {
-            if (c.customFilterListOptions && c.customFilterListOptions.render) return c.customFilterListOptions.render;
-            if (c.customFilterListRender) return c.customFilterListRender;
-            return f => f;
-          })}
-          customFilterListUpdate={columns.map(c => {
-            return c.customFilterListOptions && c.customFilterListOptions.update
-              ? c.customFilterListOptions.update
-              : null;
-          })}
-          filterList={filterList}
-          filterUpdate={filterUpdate}
-          columnNames={columnNames}
-       />,
+      <TableFilterList
+        options={options}
+        filterListRenderers={columns.map(c => {
+          if (c.customFilterListOptions && c.customFilterListOptions.render) return c.customFilterListOptions.render;
+          if (c.customFilterListRender) return c.customFilterListRender;
+          return f => f;
+        })}
+        customFilterListUpdate={columns.map(c => {
+          return c.customFilterListOptions && c.customFilterListOptions.update
+            ? c.customFilterListOptions.update
+            : null;
+        })}
+        filterList={filterList}
+        filterUpdate={filterUpdate}
+        columnNames={columnNames}
+      />,
     );
 
     let numChips = wrapper.find('.testClass123').hostNodes().length;
@@ -113,9 +112,9 @@ describe('<TableFilterList />', function() {
   });
 
   it('should remove a filter chip and call onFilterChipClose when its X icon is clicked', () => {
-    const options = { 
+    const options = {
       textLabels: getTextLabels(),
-      onFilterChipClose: spy()
+      onFilterChipClose: spy(),
     };
     const filterList = [['Joe James'], [], [], []];
     const filterUpdateCall = spy();
@@ -128,25 +127,28 @@ describe('<TableFilterList />', function() {
       filterType: column.filterType || options.filterType,
     }));
     const wrapper = mount(
-      <TableFilterList 
-          options={options}
-          filterListRenderers={columns.map(c => {
-            if (c.customFilterListOptions && c.customFilterListOptions.render) return c.customFilterListOptions.render;
-            if (c.customFilterListRender) return c.customFilterListRender;
-            return f => f;
-          })}
-          customFilterListUpdate={columns.map(c => {
-            return c.customFilterListOptions && c.customFilterListOptions.update
-              ? c.customFilterListOptions.update
-              : null;
-          })}
-          filterList={filterList}
-          filterUpdate={filterUpdate}
-          columnNames={columnNames}
-       />,
+      <TableFilterList
+        options={options}
+        filterListRenderers={columns.map(c => {
+          if (c.customFilterListOptions && c.customFilterListOptions.render) return c.customFilterListOptions.render;
+          if (c.customFilterListRender) return c.customFilterListRender;
+          return f => f;
+        })}
+        customFilterListUpdate={columns.map(c => {
+          return c.customFilterListOptions && c.customFilterListOptions.update
+            ? c.customFilterListOptions.update
+            : null;
+        })}
+        filterList={filterList}
+        filterUpdate={filterUpdate}
+        columnNames={columnNames}
+      />,
     );
 
-    wrapper.find('.MuiChip-deleteIcon').at(0).simulate('click');
+    wrapper
+      .find('.MuiChip-deleteIcon')
+      .at(0)
+      .simulate('click');
 
     assert.strictEqual(filterUpdateCall.callCount, 1); // ensures the call to update the filters was made
     assert.strictEqual(options.onFilterChipClose.callCount, 1); // ensures the call to onFilterChipClose occurred

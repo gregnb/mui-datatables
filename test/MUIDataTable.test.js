@@ -1161,7 +1161,7 @@ describe('<MUIDataTable />', function() {
 
   it('should toggle provided column when calling toggleViewCol method', () => {
     const options = {
-      onViewColumnsChange: spy()
+      onViewColumnsChange: spy(),
     };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
     const instance = shallowWrapper.instance();
@@ -1247,7 +1247,7 @@ describe('<MUIDataTable />', function() {
 
   it('should update columns when calling updateColumns method', () => {
     const options = {
-      onViewColumnsChange: spy()
+      onViewColumnsChange: spy(),
     };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
     const instance = shallowWrapper.instance();
@@ -1336,7 +1336,7 @@ describe('<MUIDataTable />', function() {
     const shallowWrapper = wrapper.dive();
     const instance = shallowWrapper.instance();
     const state = shallowWrapper.state();
-    
+
     const actualResult = instance.getDisplayData(columns, tableData, state.filterList, '', null, wrapper.props());
     assert.deepEqual(JSON.stringify(actualResult), displayData);
   });

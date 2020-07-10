@@ -93,7 +93,7 @@ describe('<TableFooter />', function() {
     const options = {
       rowsPerPageOptions: [5, 10, 15],
       textLabels: getTextLabels(),
-      jumpToPage: true
+      jumpToPage: true,
     };
 
     const mountWrapper = mount(

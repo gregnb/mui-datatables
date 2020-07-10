@@ -396,7 +396,14 @@ class TableToolbar extends React.Component {
                 </Tooltip>
               }
               content={
-                <TableViewColComponent data={data} columns={columns} options={options} onColumnUpdate={toggleViewColumn} updateColumns={updateColumns} components={components} />
+                <TableViewColComponent
+                  data={data}
+                  columns={columns}
+                  options={options}
+                  onColumnUpdate={toggleViewColumn}
+                  updateColumns={updateColumns}
+                  components={components}
+                />
               }
             />
           )}

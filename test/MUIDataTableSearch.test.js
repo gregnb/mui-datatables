@@ -63,7 +63,10 @@ describe('<TableSearch />', function() {
 
     const wrapper = mount(<TableSearch onSearch={onSearch} onHide={onHide} options={options} />);
 
-    wrapper.find('input').at(0).simulate('change', { target: { value: '' } });
+    wrapper
+      .find('input')
+      .at(0)
+      .simulate('change', { target: { value: '' } });
     wrapper.unmount();
 
     assert.strictEqual(onSearch.callCount, 1);
