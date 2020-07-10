@@ -7,11 +7,11 @@ import { 
   Toolbar,  
   Typography
 } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { getPageValue } from '../utils.js';
 import classnames from 'classnames';
 
-const defaultStyles = theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
     color: theme.palette.text.primary,
   },
@@ -40,9 +40,11 @@ const defaultStyles = theme => ({
     fontSize: 'inhert',
     flexShrink: 0,
   }
-});
+}), { name: 'MUIDataTableJumpToPage'});
 
 function JumpToPage(props) {
+
+  const classes = useStyles();
 
   const handlePageChange = (event) => {
     props.changePage( parseInt(event.target.value,10));
@@ -50,7 +52,6 @@ function JumpToPage(props) {
 
   const {
     count, 
-    classes,
     textLabels,
     rowsPerPage,
     page,
@@ -59,7 +60,7 @@ function JumpToPage(props) {
 
   const textLabel = textLabels.pagination.jumpToPage;
 
-    let pages = [];
+  let pages = [];
   let lastPage = Math.min( 1000, getPageValue(count, rowsPerPage, 1000000));
 
   for (let ii = 0; ii <= lastPage; ii++) {
@@ -104,4 +105,4 @@ JumpToPage.propTypes = {
   textLabels: PropTypes.object.isRequired,
 };
 
-export default withStyles( defaultStyles, { name: 'MuiDataTableJumpToPage'} )(JumpToPage);
+export default JumpToPage;
