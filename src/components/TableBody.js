@@ -228,6 +228,7 @@ class TableBody extends React.Component {
       toggleExpandRow,
       options,
       columnOrder = this.props.columns.map((item, idx) => idx),
+      components = {}
     } = this.props;
     const tableRows = this.buildRows();
     const visibleColCnt = columns.filter(c => c.display === 'true').length;
@@ -244,7 +245,7 @@ class TableBody extends React.Component {
 
             let isRowSelected = options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false;
             let isRowSelectable = this.isRowSelectable(dataIndex);
-            let bodyClasses = options.setRowProps ? (options.setRowProps(row, dataIndex, rowIndex) || {}) : {};
+            let bodyClasses = options.setRowProps ? options.setRowProps(row, dataIndex, rowIndex) || {} : {};
 
             const processedRow = this.processRow(row, columnOrder);
 
@@ -287,13 +288,14 @@ class TableBody extends React.Component {
                     isRowExpanded={this.isRowExpanded(dataIndex)}
                     isRowSelectable={isRowSelectable}
                     id={'MUIDataTableSelectCell-' + dataIndex}
+                    components={components}
                   />
                   {processedRow.map(
                     column =>
                       columns[column.index].display === 'true' && (
                         <TableBodyCell
                           {...(columns[column.index].setCellProps
-                            ? (columns[column.index].setCellProps(column.value, dataIndex, column.index) || {})
+                            ? columns[column.index].setCellProps(column.value, dataIndex, column.index) || {}
                             : {})}
                           data-testid={`MuiDataTableBodyCell-${column.index}-${rowIndex}`}
                           dataIndex={dataIndex}

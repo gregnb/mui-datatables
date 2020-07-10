@@ -200,7 +200,7 @@ The component accepts the following props:
 |**`onSearchOpen`**|function||Callback function that triggers when the searchbox opens. `function() => void`
 |**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
 |**`onTableInit`**|function||Callback function that triggers when table state has been initialized. `function(action: string, tableState: object) => void`
-|**`onViewColumnsChange`**|function||Callback function that triggers when a column view has been changed. `function(changedColumn: string, action: string) => void`
+|**`onViewColumnsChange`**|function||Callback function that triggers when a column view has been changed. Previously known as onColumnViewChange. `function(changedColumn: string, action: string) => void`
 |**`page`**|number||User provided starting page for pagination.
 |**`pagination`**|boolean|true|Enable/disable pagination.
 |**`print`**|boolean|true|Show/hide print  icon from toolbar.
@@ -265,7 +265,7 @@ const columns = [
 |**`customBodyRenderLite`**|function||Function that returns a string or React component. Used to display data within all table cells of a given column. This method performs better than customBodyRender but has the following caveats:  <p><ul><li>The value returned from this function is **not** used for filtering, so the filter dialog will use the raw data from the data array.</li><li>This method only gives you the dataIndex and rowIndex, leaving you to lookup the column value.</li></ul></p>`function(dataIndex, rowIndex) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/large-data-set/index.js)
 |**`customFilterListOptions`**|{render: function, update: function}|| (These options only affect the filter chips that display after filters are selected. To modify the filters themselves, see `filterOptions`) `render` returns a string or array of strings used as the chip label(s). `function(value) => string OR arrayOfStrings`, `update` returns a `filterList (see above)` allowing for custom filter updates when removing the filter chip [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-filters/index.js)
 |**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(columnMeta, handleToggleColumn, sortOrder) => string`&#124;` React Component`
-|**`display`**|string|'true'|Display column in table. `enum('true', 'false', 'excluded')`
+|**`display`**|string|'true'|Display column in table. Possible values:<p><ul><li>true: Column is visible and toggleable via the View Columns popover in the Toolbar.</li><li>false: Column is not visible but can be made visible via the View Columns popover in the Toolbar.</li><li>excluded: Column is not visible and not toggleable via the View Columns popover in the Toolbar.</li></ul></p><p>See also: `viewColumns` and `filter` options.</p>
 |**`download`**|boolean|true|Display column in CSV download file.
 |**`draggable`**|boolean|true|Determines if a column can be dragged. The draggableColumns.enabled option must also be true.
 |**`empty`**|boolean|false|This denotes whether the column has data or not (for use with intentionally empty columns).
@@ -406,8 +406,10 @@ class CustomDataTable extends React.Component {
 }
 ```
 Supported customizable components:
+ * `Checkbox`
  * `TableBody`
- * `TableFilterList` - you can pass `ItemComponent` prop to render custom filter list item
+ * `TableViewCol` - The component that displays the view/hide list of columns on the toolbar.
+ * `TableFilterList` - You can pass `ItemComponent` prop to render custom filter list item.
  * `TableFooter`
  * `TableHead`
  * `TableResize`

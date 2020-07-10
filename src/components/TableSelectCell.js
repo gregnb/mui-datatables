@@ -88,11 +88,14 @@ class TableSelectCell extends React.Component {
       areAllRowsExpanded = () => false,
       selectableRowsHideCheckboxes,
       setHeadCellRef,
+      components = {},
       ...otherProps
     } = this.props;
     let fixedHeaderClasses;
 
     if (!expandableOn && selectableOn === 'none') return false;
+
+    const CheckboxComponent = components.Checkbox || Checkbox;
 
     const cellClass = classNames({
       [classes.root]: true,
@@ -128,7 +131,7 @@ class TableSelectCell extends React.Component {
         return null;
       }
       return (
-        <Checkbox
+        <CheckboxComponent
           classes={{
             root: classes.checkboxRoot,
             checked: classes.checked,

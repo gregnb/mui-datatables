@@ -6,6 +6,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TableFilterList from '../../src/components/TableFilterList';
 import MuiTooltip from '@material-ui/core/Tooltip';
 import Fade from "@material-ui/core/Fade";
+import Checkbox from '@material-ui/core/Checkbox';
+import TableViewCol from './TableViewCol';
 
 const CustomChip = (props) => {
   const { label, onDelete, columnNames, className, index } = props;
@@ -24,9 +26,15 @@ const CustomTooltip = (props) => {
       title={props.title} 
       interactive={true} 
       TransitionComponent={Fade}
-      TransitionProps={{ timeout: 500 }}
-      leaveDelay={500}>{props.children}</MuiTooltip>
+      TransitionProps={{ timeout: 250 }}
+      leaveDelay={250}>{props.children}</MuiTooltip>
   );
+};
+
+const CustomCheckbox = (props) => {
+  let newProps = Object.assign({}, props);
+  newProps.color = "secondary";
+  return (<Checkbox {...newProps} />);
 };
 
 const CustomFilterList = (props) => {
@@ -78,7 +86,16 @@ class Example extends React.Component {
       },
       { name: 'City', label: 'City Label', options: { filterList: ['Dallas'] } },
       { name: 'State' },
-      { name: 'Empty', options: { empty: true, filterType: 'checkbox' } },
+      { 
+        name: 'Empty', 
+        options: { 
+          empty: true, 
+          filterType: 'checkbox', 
+          filterOptions: {
+            renderValue: (val) => (val ? val : '(Empty)')
+          }
+        } 
+      },
     ];
     const data = [
       ['Joe James', 'Test Corp', 'Yonkers', 'NY'],
@@ -102,6 +119,8 @@ class Example extends React.Component {
           components={{
             TableFilterList: CustomFilterList,
             Tooltip: CustomTooltip,
+            Checkbox: CustomCheckbox,
+            TableViewCol: TableViewCol
           }}
       />
     );
