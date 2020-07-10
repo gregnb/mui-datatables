@@ -120,7 +120,7 @@ class MUIDataTable extends React.Component {
           label: PropTypes.string,
           name: PropTypes.string.isRequired,
           options: PropTypes.shape({
-            display: PropTypes.oneOf(['true', 'false', 'excluded']),
+            display: PropTypes.oneOf(['true', 'false', 'excluded', 'always']),
             empty: PropTypes.bool,
             filter: PropTypes.bool,
             sort: PropTypes.bool,
@@ -1099,11 +1099,23 @@ class MUIDataTable extends React.Component {
         if (cb) {
           cb(this.state.columns[index].name, this.state.columns[index].display === 'true' ? 'add' : 'remove');
         }
+      },
+    );
+  };
 
-        if (this.options.onColumnViewChange) {
-          this.warnDep(
-            'onColumnViewChange has been changed to onViewColumnsChange. More info: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
-          );
+  updateColumns = newColumns => {
+    this.setState(
+      prevState => {
+        return {
+          columns: newColumns,
+        };
+      },
+      () => {
+        this.setTableAction('viewColumnsChange');
+        var cb = this.options.onViewColumnsChange || this.options.onColumnViewChange;
+
+        if (cb) {
+          cb(null, 'update', newColumns);
         }
       },
     );
@@ -1799,6 +1811,7 @@ class MUIDataTable extends React.Component {
               tableRef={this.getTableContentRef}
               title={title}
               toggleViewColumn={this.toggleViewColumn}
+              updateColumns={this.updateColumns}
               setTableAction={this.setTableAction}
               components={this.props.components}
             />
@@ -1878,6 +1891,7 @@ class MUIDataTable extends React.Component {
                 options={this.options}
                 columnOrder={columnOrder}
                 filterList={filterList}
+                components={this.props.components}
               />
               {this.options.customTableBodyFooterRender
                 ? this.options.customTableBodyFooterRender({

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -50,12 +51,22 @@ const TableViewCol = ({ columns, options, components = {}, onColumnUpdate, updat
     onColumnUpdate(index);
   };
 
+  const selectAll = () => {
+    var newColumns = columns.map(col => {
+      var newCol = Object.assign({}, col);
+      newCol.display = "true";
+      return newCol;
+    });
+    updateColumns(newColumns);
+  };
+
   return (
     <FormControl component={'fieldset'} className={classes.root} aria-label={textLabels.titleAria}>
       <Typography variant="caption" className={classes.title}>
         {textLabels.title}
       </Typography>
       <FormGroup className={classes.formGroup}>
+      <Button onClick={selectAll}>Show All</Button>
         {columns.map((column, index) => {
           return (
             column.display !== 'excluded' &&

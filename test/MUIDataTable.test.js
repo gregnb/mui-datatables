@@ -1160,7 +1160,10 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should toggle provided column when calling toggleViewCol method', () => {
-    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
+    const options = {
+      onViewColumnsChange: spy()
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
     const instance = shallowWrapper.instance();
 
     instance.toggleViewColumn(0);
@@ -1239,6 +1242,93 @@ describe('<MUIDataTable />', function() {
     ];
 
     assert.deepEqual(state.columns, expectedResult);
+    assert.strictEqual(options.onViewColumnsChange.callCount, 1);
+  });
+
+  it('should update columns when calling updateColumns method', () => {
+    const options = {
+      onViewColumnsChange: spy()
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    const expectedResult = [
+      {
+        name: 'Name',
+        display: 'false',
+        empty: false,
+        print: true,
+        sort: true,
+        filter: true,
+        label: 'Name',
+        download: true,
+        searchable: true,
+        customBodyRender: renderName,
+        viewColumns: true,
+        customFilterListOptions: { render: renderCustomFilterList },
+      },
+      {
+        name: 'Company',
+        display: 'false',
+        empty: false,
+        print: true,
+        sort: true,
+        filter: true,
+        label: 'Company',
+        download: true,
+        searchable: true,
+        viewColumns: true,
+      },
+      {
+        name: 'City',
+        display: 'true',
+        empty: false,
+        print: true,
+        sort: true,
+        filter: true,
+        filterType: 'textField',
+        label: 'City Label',
+        download: true,
+        searchable: true,
+        customBodyRender: renderCities,
+        viewColumns: true,
+      },
+      {
+        name: 'State',
+        display: 'true',
+        empty: false,
+        print: true,
+        sort: true,
+        filter: true,
+        filterType: 'multiselect',
+        label: 'State',
+        download: true,
+        searchable: true,
+        viewColumns: true,
+        customBodyRender: renderState,
+        customHeadRender: renderHead,
+      },
+      {
+        name: 'Empty',
+        display: 'false',
+        empty: true,
+        print: true,
+        sort: true,
+        filter: true,
+        filterType: 'checkbox',
+        label: 'Empty',
+        download: true,
+        searchable: true,
+        viewColumns: true,
+      },
+    ];
+
+    instance.updateColumns(expectedResult);
+    shallowWrapper.update();
+    const state = shallowWrapper.state();
+
+    assert.deepEqual(state.columns, expectedResult);
+    assert.strictEqual(options.onViewColumnsChange.callCount, 1);
   });
 
   it('should get displayable data when calling getDisplayData method', () => {

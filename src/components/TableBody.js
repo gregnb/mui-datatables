@@ -228,6 +228,7 @@ class TableBody extends React.Component {
       toggleExpandRow,
       options,
       columnOrder = this.props.columns.map((item, idx) => idx),
+      components = {}
     } = this.props;
     const tableRows = this.buildRows();
     const visibleColCnt = columns.filter(c => c.display === 'true').length;
@@ -287,6 +288,7 @@ class TableBody extends React.Component {
                     isRowExpanded={this.isRowExpanded(dataIndex)}
                     isRowSelectable={isRowSelectable}
                     id={'MUIDataTableSelectCell-' + dataIndex}
+                    components={components}
                   />
                   {processedRow.map(
                     column =>
