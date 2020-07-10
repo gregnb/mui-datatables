@@ -191,6 +191,7 @@ class MUIDataTable extends React.Component {
       getTextLabels: PropTypes.func,
       isRowExpandable: PropTypes.func,
       isRowSelectable: PropTypes.func,
+      jumpToPage: PropTypes.bool,
       onDownload: PropTypes.func,
       onFilterChange: PropTypes.func,
       onFilterChipClose: PropTypes.func,

@@ -1,16 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import MuiTableCell from '@material-ui/core/TableCell'; 
 import MuiTableRow from '@material-ui/core/TableRow';
 import MuiTableFooter from '@material-ui/core/TableFooter';
 import MuiTablePagination from '@material-ui/core/TablePagination';
-import { withStyles } from '@material-ui/core/styles';
+import JumpToPage from './JumpToPage';
+import { makeStyles } from '@material-ui/core/styles';
 import { getPageValue } from '../utils';
 
-const defaultPaginationStyles = {
-  root: {
-    '&:last-child': {
-      padding: '0px 24px 0px 24px',
-    },
+const useStyles = makeStyles(theme => ({
+  root: {},
+  tableCellContainer: {
+    padding: '0px 24px 0px 24px',
+  },
+  navContainer: {
+    display:'flex', 
+    justifyContent: 'flex-end',
   },
   toolbar: {},
   selectRoot: {},
@@ -24,76 +29,94 @@ const defaultPaginationStyles = {
       marginRight: '8px',
     },
   },
-};
+}), { name: 'MUIDataTablePagination'});
 
-class TablePagination extends React.Component {
-  static propTypes = {
-    /** Total number of table rows */
-    count: PropTypes.number.isRequired,
-    /** Options used to describe table */
-    options: PropTypes.object.isRequired,
-    /** Current page index */
-    page: PropTypes.number.isRequired,
-    /** Total number allowed of rows per page */
-    rowsPerPage: PropTypes.number.isRequired,
-    /** Callback to trigger rows per page change */
-    changeRowsPerPage: PropTypes.func.isRequired,
+function TablePagination(props) {
+
+  const classes = useStyles();
+
+  const handleRowChange = event => {
+    props.changeRowsPerPage(event.target.value);
   };
 
-  handleRowChange = event => {
-    this.props.changeRowsPerPage(event.target.value);
+  const handlePageChange = (_, page) => {
+    props.changePage(page);
   };
+  
+  const { count, options, rowsPerPage, page } = props;
+  const textLabels = options.textLabels.pagination;
 
-  handlePageChange = (_, page) => {
-    this.props.changePage(page);
-  };
-
-  render() {
-    const { count, classes, options, rowsPerPage, page } = this.props;
-    const textLabels = options.textLabels.pagination;
-
-    return (
-      <MuiTableFooter>
-        <MuiTableRow>
-          <MuiTablePagination
-            className={classes.root}
-            classes={{
-              caption: classes.caption,
-              toolbar: classes.toolbar,
-              selectRoot: classes.selectRoot,
-            }}
-            count={count}
-            rowsPerPage={rowsPerPage}
-            page={getPageValue(count, rowsPerPage, page)}
-            labelRowsPerPage={textLabels.rowsPerPage}
-            labelDisplayedRows={({ from, to, count }) => `${from}-${to} ${textLabels.displayRows} ${count}`}
-            backIconButtonProps={{
-              id: 'pagination-back',
-              'data-testid': 'pagination-back',
-              'aria-label': textLabels.previous,
-            }}
-            nextIconButtonProps={{
-              id: 'pagination-next',
-              'data-testid': 'pagination-next',
-              'aria-label': textLabels.next,
-            }}
-            SelectProps={{
-              id: 'pagination-input',
-              SelectDisplayProps: { id: 'pagination-rows', 'data-testid': 'pagination-rows' },
-              MenuProps: {
-                id: 'pagination-menu',
-                'data-testid': 'pagination-menu',
-                MenuListProps: { id: 'pagination-menu-list', 'data-testid': 'pagination-menu-list' },
-              },
-            }}
-            rowsPerPageOptions={options.rowsPerPageOptions}
-            onChangePage={this.handlePageChange}
-            onChangeRowsPerPage={this.handleRowChange}
-          />
-        </MuiTableRow>
-      </MuiTableFooter>
-    );
-  }
+  return (
+    <MuiTableFooter>
+      <MuiTableRow>
+        <MuiTableCell colSpan="1000" className={classes.tableCellContainer}>
+          <div className={classes.navContainer}>
+            {options.jumpToPage ? 
+              <JumpToPage 
+                count={count}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                textLabels={options.textLabels}
+                changePage={props.changePage}
+                changeRowsPerPage={props.changeRowsPerPage}
+              />
+              :
+              null
+            }
+            <MuiTablePagination
+              component="div"
+              className={classes.root}
+              classes={{
+                caption: classes.caption,
+                toolbar: classes.toolbar,
+                selectRoot: classes.selectRoot,
+              }}
+              count={count}
+              rowsPerPage={rowsPerPage}
+              page={getPageValue(count, rowsPerPage, page)}
+              labelRowsPerPage={textLabels.rowsPerPage}
+              labelDisplayedRows={({ from, to, count }) => `${from}-${to} ${textLabels.displayRows} ${count}`}
+              backIconButtonProps={{
+                id: 'pagination-back',
+                'data-testid': 'pagination-back',
+                'aria-label': textLabels.previous,
+              }}
+              nextIconButtonProps={{
+                id: 'pagination-next',
+                'data-testid': 'pagination-next',
+                'aria-label': textLabels.next,
+              }}
+              SelectProps={{
+                id: 'pagination-input',
+                SelectDisplayProps: { id: 'pagination-rows', 'data-testid': 'pagination-rows' },
+                MenuProps: {
+                  id: 'pagination-menu',
+                  'data-testid': 'pagination-menu',
+                  MenuListProps: { id: 'pagination-menu-list', 'data-testid': 'pagination-menu-list' },
+                },
+              }}
+              rowsPerPageOptions={options.rowsPerPageOptions}
+              onChangePage={handlePageChange}
+              onChangeRowsPerPage={handleRowChange}
+            />
+          </div>
+        </MuiTableCell>
+      </MuiTableRow>
+    </MuiTableFooter>
+  );
 }
 
-export default withStyles(defaultPaginationStyles, { name: 'MUIDataTablePagination' })(TablePagination);
+TablePagination.propTypes = {
+  /** Total number of table rows */
+  count: PropTypes.number.isRequired,
+  /** Options used to describe table */
+  options: PropTypes.object.isRequired,
+  /** Current page index */
+  page: PropTypes.number.isRequired,
+  /** Total number allowed of rows per page */
+  rowsPerPage: PropTypes.number.isRequired,
+  /** Callback to trigger rows per page change */
+  changeRowsPerPage: PropTypes.func.isRequired,
+};
+
+export default TablePagination;

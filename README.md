@@ -177,9 +177,10 @@ The component accepts the following props:
 |**`filter`**|boolean|true|Show/hide filter icon from toolbar.
 |**`filterType`**|string||Choice of filtering view. `enum('checkbox', 'dropdown', 'multiselect', 'textField', 'custom')`
 |**`fixedHeader`**|boolean|true|Enable/disable a fixed header for the table [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
-|**`fixedSelectColumn`**|boolean|true|Enable/disable fixed select column [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
+|**`fixedSelectColumn`**|boolean|true|Enable/disable fixed select column. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
 |**`isRowExpandable`**|function||Enable/disable expansion or collapse on certain expandable rows with custom function. Will be considered true if not provided. `function(dataIndex: number, expandedRows: object(lookup: {dataIndex: number}, data: arrayOfObjects: {index: number, dataIndex: number})) => boolean`.
 |**`isRowSelectable`**|function||Enable/disable selection on certain rows with custom function. Returns true if not provided. `function(dataIndex: number, selectedRows: object(lookup: {dataindex: boolean}, data: arrayOfObjects: {index, dataIndex})) => boolean`.
+|**`jumpToPage`**|boolean|false|When true, this option adds a dropdown to the table's footer that allows a user to navigate to a specific page. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/large-data-set/index.js)
 |**`onCellClick`**|function||Callback function that triggers when a cell is clicked. `function(colData: any, cellMeta: { colIndex: number, rowIndex: number, dataIndex: number }) => void`
 |**`onChangePage`**|function||Callback function that triggers when a page has changed. `function(currentPage: number) => void`
 |**`onChangeRowsPerPage`**|function||Callback function that triggers when the number of rows per page has changed. `function(numberOfRows: number) => void`
