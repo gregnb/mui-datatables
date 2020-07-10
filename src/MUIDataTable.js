@@ -141,6 +141,7 @@ class MUIDataTable extends React.Component {
             customHeadRender: PropTypes.func,
             customBodyRender: PropTypes.func,
             customBodyRenderLite: PropTypes.func,
+            customHeadLabelRender: PropTypes.func,
             customFilterListOptions: PropTypes.oneOfType([
               PropTypes.shape({
                 render: PropTypes.func,
