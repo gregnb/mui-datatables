@@ -36,7 +36,7 @@ const TableFilterList = ({
     if (Array.isArray(removedFilter) && removedFilter.length === 0) {
       removedFilter = filterList[index];
     }
-
+    
     filterUpdate(index, filterValue, columnName, filterType, null, filterList => {
       if (options.onFilterChipClose) {
         options.onFilterChipClose(index, removedFilter, filterList);
@@ -63,6 +63,7 @@ const TableFilterList = ({
         index={index}
         data={item}
         columnNames={columnNames}
+        filterProps={options.setFilterChipProps ? options.setFilterChipProps(index, columnNames[index].name, item[customFilterItemIndex] || []) : {}}
       />
     );
   };
@@ -77,6 +78,7 @@ const TableFilterList = ({
       index={index}
       data={data}
       columnNames={columnNames}
+      filterProps={options.setFilterChipProps ? options.setFilterChipProps(index, columnNames[index].name, data) : {}}
     />
   );
 
