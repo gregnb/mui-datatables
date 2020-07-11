@@ -50,7 +50,7 @@ const TableFooter = ({ options, rowCount, page, rowsPerPage, changeRowsPerPage, 
     );
   }
 
-  return <MuiTable className={classes.root} />;
+  return null;
 };
 
 TableFooter.propTypes = {

@@ -312,7 +312,8 @@ function(value: any, tableMeta: {
   columnIndex: number,
   columnData: array, // Columns Options object
   rowData: array, // Full row data
-  tableData: array, Full table data
+  tableData: array, // Full table data - Please use currentTableData instead
+  currentTableData: array, // The current table data
   tableState: {
     announceText: null|string,
     page: number,

@@ -725,7 +725,7 @@ class MUIDataTable extends React.Component {
         if (column.filter !== false) {
           if (typeof column.customBodyRender === 'function') {
             const rowData = tableData[rowIndex].data;
-            tableMeta = this.getTableMeta(rowIndex, colIndex, rowData, column, data, this.state);
+            tableMeta = this.getTableMeta(rowIndex, colIndex, rowData, column, data, this.state, tableData);
             const funcResult = column.customBodyRender(value, tableMeta);
 
             if (React.isValidElement(funcResult) && funcResult.props.value) {
@@ -899,7 +899,7 @@ class MUIDataTable extends React.Component {
   /*
    *  Build the table data used to display to the user (ie: after filter/search applied)
    */
-  computeDisplayRow(columns, row, rowIndex, filterList, searchText, dataForTableMeta, options, props) {
+  computeDisplayRow(columns, row, rowIndex, filterList, searchText, dataForTableMeta, options, props, currentTableData) {
     let isFiltered = false;
     let isSearchFound = false;
     let displayRow = [];
@@ -916,7 +916,7 @@ class MUIDataTable extends React.Component {
           ...this.state,
           filterList: filterList,
           searchText: searchText,
-        });
+        }, currentTableData);
 
         const funcResult = column.customBodyRender(
           columnValue,
@@ -1016,9 +1016,9 @@ class MUIDataTable extends React.Component {
       let changedData = cloneDeep(prevState.data);
       let filterData = cloneDeep(prevState.filterData);
 
-      const tableMeta = this.getTableMeta(row, index, row, prevState.columns[index], prevState.data, prevState);
+      const tableMeta = this.getTableMeta(row, index, row, prevState.columns[index], prevState.data, prevState, prevState.data);
       const funcResult = prevState.columns[index].customBodyRender(value, tableMeta);
-
+      
       const filterValue =
         React.isValidElement(funcResult) && funcResult.props.value
           ? funcResult.props.value
@@ -1049,7 +1049,7 @@ class MUIDataTable extends React.Component {
     });
   };
 
-  getTableMeta = (rowIndex, colIndex, rowData, columnData, tableData, curState) => {
+  getTableMeta = (rowIndex, colIndex, rowData, columnData, tableData, curState, currentTableData) => {
     const { columns, data, displayData, filterData, ...tableState } = curState;
 
     return {
@@ -1059,6 +1059,7 @@ class MUIDataTable extends React.Component {
       rowData: rowData,
       tableData: tableData,
       tableState: tableState,
+      currentTableData: currentTableData
     };
   };
 
@@ -1077,6 +1078,7 @@ class MUIDataTable extends React.Component {
         dataForTableMeta,
         this.options,
         props,
+        data
       );
 
       if (displayRow) {
