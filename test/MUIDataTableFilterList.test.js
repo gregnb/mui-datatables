@@ -160,7 +160,12 @@ describe('<TableFilterList />', function() {
     const renderCall = spy();
     const updateCall = spy();
     const columnsWithCustomFilterListOptions = [
-      { name: 'name', label: 'Name', display: true, sort: true, filter: true, 
+      {
+        name: 'name',
+        label: 'Name',
+        display: true,
+        sort: true,
+        filter: true,
         // buildColumns in MUIDataTables spreads options over the column object, so no need to nest this within options
         filterType: 'custom',
         customFilterListOptions: {
@@ -194,7 +199,7 @@ describe('<TableFilterList />', function() {
       name: column.name,
       filterType: column.filterType || options.filterType,
     }));
-      
+
     const wrapper = mount(
       <TableFilterList
         options={options}

@@ -52,12 +52,20 @@ const TableFilterList = ({
     } else {
       type = columnNames[index].filterType;
     }
-    
+
     return (
       <ItemComponent
         label={customFilterItem}
         key={customFilterItemIndex}
-        onDelete={() => removeFilter(index, item[customFilterItemIndex] || [], columnNames[index].name, type, customFilterListUpdate[index])}
+        onDelete={() =>
+          removeFilter(
+            index,
+            item[customFilterItemIndex] || [],
+            columnNames[index].name,
+            type,
+            customFilterListUpdate[index],
+          )
+        }
         className={classes.chip}
         itemKey={customFilterItemIndex}
         index={index}
