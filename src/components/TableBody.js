@@ -8,7 +8,7 @@ import TableSelectCell from './TableSelectCell';
 import { withStyles } from '@material-ui/core/styles';
 import cloneDeep from 'lodash.clonedeep';
 import { getPageValue } from '../utils';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 const defaultBodyStyles = theme => ({
   root: {},
@@ -258,7 +258,7 @@ class TableBody extends React.Component {
                   rowSelected={isRowSelected}
                   isRowSelectable={isRowSelectable}
                   onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
-                  className={classNames({
+                  className={clsx({
                     [classes.lastStackedCell]:
                       options.responsive === 'vertical' ||
                       options.responsive === 'stacked' ||

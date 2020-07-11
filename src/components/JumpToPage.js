@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { InputBase, MenuItem, Select, Toolbar, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { getPageValue } from '../utils.js';
-import classnames from 'classnames';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(
   theme => ({
@@ -71,7 +71,7 @@ function JumpToPage(props) {
       </Typography>
       <Select
         classes={{ select: classes.select, icon: classes.selectIcon }}
-        input={<InputBase className={classnames(classes.input, classes.selectRoot)} />}
+        input={<InputBase className={clsx(classes.input, classes.selectRoot)} />}
         value={getPageValue(count, rowsPerPage, page)}
         onChange={handlePageChange}
         style={{ marginRight: 0 }}>

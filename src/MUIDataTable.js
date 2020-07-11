@@ -1,7 +1,7 @@
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import MuiTable from '@material-ui/core/Table';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import assignwith from 'lodash.assignwith';
 import cloneDeep from 'lodash.clonedeep';
 import find from 'lodash.find';
@@ -1163,7 +1163,7 @@ class MUIDataTable extends React.Component {
     const { classes } = this.props;
     const tableProps = this.options.setTableProps() || {};
 
-    tableProps.className = classnames(classes.tableRoot, tableProps.className);
+    tableProps.className = clsx(classes.tableRoot, tableProps.className);
 
     return tableProps;
   }
@@ -1826,11 +1826,11 @@ class MUIDataTable extends React.Component {
       tableHeightVal.height = this.options.tableBodyHeight;
     }
 
-    let tableProps = this.options.setTableProps ? this.options.setTableProps() || {} : {};
-    let tableClassNames = classnames(classes.tableRoot, tableProps.className);
+    const tableProps = this.options.setTableProps ? this.options.setTableProps() || {} : {};
+    const tableClassNames = clsx(classes.tableRoot, tableProps.className);
     delete tableProps.className; // remove className from props to avoid the className being applied twice
 
-    let dndProps = {};
+    const dndProps = {};
     if (typeof window !== 'undefined') {
       dndProps.context = window;
     }

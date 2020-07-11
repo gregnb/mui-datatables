@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import HelpIcon from '@material-ui/icons/Help';
 import MuiTooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
@@ -159,7 +159,7 @@ const TableHeadCell = ({
     return options.draggableColumns && options.draggableColumns.enabled && column.draggable !== false;
   };
 
-  const cellClass = classNames({
+  const cellClass = clsx({
     [classes.root]: true,
     [classes.fixedHeader]: options.fixedHeader,
     'datatables-noprint': !print,
@@ -218,7 +218,7 @@ const TableHeadCell = ({
             }}>
             <div className={classes.sortAction}>
               <div
-                className={classNames({
+                className={clsx({
                   [classes.data]: true,
                   [classes.sortActive]: sortActive,
                   [classes.dragCursor]: isDraggingEnabled(),

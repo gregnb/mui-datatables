@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import TableCell from '@material-ui/core/TableCell';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -105,7 +105,7 @@ function TableBodyCell(props) {
   let cells = [
     <div
       key={1}
-      className={classNames(
+      className={clsx(
         {
           lastColumn: colIndex === 2,
           [classes.root]: true,
@@ -128,7 +128,7 @@ function TableBodyCell(props) {
     </div>,
     <div
       key={2}
-      className={classNames(
+      className={clsx(
         {
           [classes.root]: true,
           [classes.stackedCommon]:
@@ -163,7 +163,7 @@ function TableBodyCell(props) {
       {...methods}
       data-colindex={colIndex}
       data-tableid={tableId}
-      className={classNames(
+      className={clsx(
         {
           [classes.root]: true,
           [classes.stackedParent]:
