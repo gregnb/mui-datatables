@@ -79,7 +79,17 @@ const reorderColumns = (prevColumnOrder, columnIndex, newPosition) => {
 };
 
 const useColumnDrop = opts => {
-  const { index, headCellRefs, updateColumnOrder, columnOrder, transitionTime = 300, tableRef, timers, columns } = opts;
+  const {
+    index,
+    headCellRefs,
+    updateColumnOrder,
+    columnOrder,
+    transitionTime = 300,
+    tableRef,
+    tableId,
+    timers,
+    columns,
+  } = opts;
 
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: 'HEADER',
@@ -128,14 +138,18 @@ const useColumnDrop = opts => {
           let allElms = [];
           let dividers = [];
           for (let ii = 0; ii < columnOrder.length; ii++) {
-            let elms = tableRef ? tableRef.querySelectorAll('[data-colindex="' + ii + '"]') : [];
+            let elms = tableRef
+              ? tableRef.querySelectorAll('[data-colindex="' + ii + '"][data-tableid="' + tableId + '"]')
+              : [];
             for (let jj = 0; jj < elms.length; jj++) {
               elms[jj].style.transition = transitionTime + 'ms';
               elms[jj].style.transform = 'translateX(' + transitions[ii] + 'px)';
               allElms.push(elms[jj]);
             }
 
-            let divider = tableRef ? tableRef.querySelectorAll('[data-divider-index="' + (ii + 1) + '"]') : [];
+            let divider = tableRef
+              ? tableRef.querySelectorAll('[data-divider-index="' + (ii + 1) + '"][data-tableid="' + tableId + '"]')
+              : [];
             for (let jj = 0; jj < divider.length; jj++) {
               divider[jj].style.transition = transitionTime + 'ms';
               divider[jj].style.transform = 'translateX(' + transitions[columnOrder[ii]] + 'px)';
