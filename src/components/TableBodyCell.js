@@ -75,7 +75,18 @@ const useStyles = makeStyles(
 
 function TableBodyCell(props) {
   const classes = useStyles();
-  const { children, colIndex, columnHeader, options, dataIndex, rowIndex, className, print, ...otherProps } = props;
+  const {
+    children,
+    colIndex,
+    columnHeader,
+    options,
+    dataIndex,
+    rowIndex,
+    className,
+    print,
+    tableId,
+    ...otherProps
+  } = props;
   const onCellClick = options.onCellClick;
 
   const handleClick = useCallback(
@@ -151,6 +162,7 @@ function TableBodyCell(props) {
     <TableCell
       {...methods}
       data-colindex={colIndex}
+      data-tableid={tableId}
       className={classNames(
         {
           [classes.root]: true,

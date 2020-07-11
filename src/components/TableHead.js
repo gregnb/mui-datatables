@@ -37,6 +37,7 @@ const TableHead = ({
   setCellRef,
   sortOrder = {},
   tableRef,
+  tableId,
   timers,
   toggleAllExpandableRows,
   toggleSort,
@@ -150,6 +151,7 @@ const TableHead = ({
                 draggingHook={[dragging, setDragging]}
                 draggableHeadCellRefs={draggableHeadCellRefs}
                 tableRef={tableRef}
+                tableId={tableId}
                 components={components}>
                 {column.customHeadLabelRender
                   ? column.customHeadLabelRender({ index, colPos, ...column })

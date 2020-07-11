@@ -264,6 +264,7 @@ class MUIDataTable extends React.Component {
 
   constructor(props) {
     super(props);
+    this.tableId = (Math.random() + '').replace(/\./, '');
     this.tableRef = React.createRef();
     this.tableContent = React.createRef();
     this.draggableHeadCellRefs = {};
@@ -1870,6 +1871,7 @@ class MUIDataTable extends React.Component {
               updateDividers={fn => (this.updateDividers = fn)}
               setResizeable={fn => (this.setHeadResizeable = fn)}
               options={this.props.options}
+              tableId={this.tableId}
             />
           )}
           <DndProvider backend={HTML5Backend} {...dndProps}>
@@ -1900,6 +1902,7 @@ class MUIDataTable extends React.Component {
                 updateColumnOrder={this.updateColumnOrder}
                 draggableHeadCellRefs={this.draggableHeadCellRefs}
                 tableRef={this.getTableContentRef}
+                tableId={this.tableId}
                 timers={this.timers}
                 components={this.props.components}
               />
@@ -1918,6 +1921,7 @@ class MUIDataTable extends React.Component {
                 columnOrder={columnOrder}
                 filterList={filterList}
                 components={this.props.components}
+                tableId={this.tableId}
               />
               {this.options.customTableBodyFooterRender
                 ? this.options.customTableBodyFooterRender({

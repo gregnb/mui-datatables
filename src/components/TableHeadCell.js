@@ -77,6 +77,7 @@ const TableHeadCell = ({
   sort,
   sortDirection,
   tableRef,
+  tableId,
   timers,
   toggleSort,
   updateColumnOrder,
@@ -149,6 +150,7 @@ const TableHeadCell = ({
     columns,
     transitionTime: options.draggableColumns ? options.draggableColumns.transitionTime : 300,
     tableRef: tableRef ? tableRef() : null,
+    tableId: tableId || 'none',
     timers,
   });
 
@@ -192,6 +194,7 @@ const TableHeadCell = ({
       scope={'col'}
       sortDirection={ariaSortDirection}
       data-colindex={index}
+      data-tableid={tableId}
       onMouseDown={closeTooltip}
       {...otherProps}>
       {options.sort && sort ? (

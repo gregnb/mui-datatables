@@ -229,6 +229,7 @@ class TableBody extends React.Component {
       options,
       columnOrder = this.props.columns.map((item, idx) => idx),
       components = {},
+      tableId,
     } = this.props;
     const tableRows = this.buildRows();
     const visibleColCnt = columns.filter(c => c.display === 'true').length;
@@ -304,6 +305,7 @@ class TableBody extends React.Component {
                           columnHeader={columns[column.index].label}
                           print={columns[column.index].print}
                           options={options}
+                          tableId={tableId}
                           key={column.index}>
                           {column.value}
                         </TableBodyCell>
@@ -321,7 +323,7 @@ class TableBody extends React.Component {
               options={options}
               colIndex={0}
               rowIndex={0}>
-              <Typography variant="body1" className={classes.emptyTitle} component={"div"}>
+              <Typography variant="body1" className={classes.emptyTitle} component={'div'}>
                 {options.textLabels.body.noMatch}
               </Typography>
             </TableBodyCell>
