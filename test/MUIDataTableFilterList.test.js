@@ -17,10 +17,10 @@ describe('<TableFilterList />', function() {
 
   beforeEach(() => {
     columns = [
-      { name: 'name', label: 'Name', display: true, sort: true, filter: true, sortDirection: 'desc' },
-      { name: 'company', label: 'Company', display: true, sort: true, filter: true, sortDirection: 'desc' },
-      { name: 'city', label: 'City Label', display: true, sort: true, filter: true, sortDirection: 'desc' },
-      { name: 'state', label: 'State', display: true, sort: true, filter: true, sortDirection: 'desc' },
+      { name: 'name', label: 'Name', display: true, sort: true, filter: true },
+      { name: 'company', label: 'Company', display: true, sort: true, filter: true },
+      { name: 'city', label: 'City Label', display: true, sort: true, filter: true },
+      { name: 'state', label: 'State', display: true, sort: true, filter: true },
     ];
 
     data = [
@@ -76,7 +76,6 @@ describe('<TableFilterList />', function() {
     const options = {
       textLabels: getTextLabels(),
       setFilterChipProps: (a, b, c) => {
-        console.log(a, b, c);
         return {
           className: 'testClass123',
         };
@@ -109,6 +108,7 @@ describe('<TableFilterList />', function() {
 
     let numChips = wrapper.find('.testClass123').hostNodes().length;
     assert.strictEqual(numChips, 1);
+    wrapper.unmount();
   });
 
   it('should remove a filter chip and call onFilterChipClose when its X icon is clicked', () => {
@@ -150,7 +150,81 @@ describe('<TableFilterList />', function() {
       .at(0)
       .simulate('click');
 
+    wrapper.unmount();
+
     assert.strictEqual(filterUpdateCall.callCount, 1); // ensures the call to update the filters was made
     assert.strictEqual(options.onFilterChipClose.callCount, 1); // ensures the call to onFilterChipClose occurred
+  });
+
+  it('should correctly call customFilterListOptions.render and customFilterListOptions.update', () => {
+    const renderCall = spy();
+    const updateCall = spy();
+    const columnsWithCustomFilterListOptions = [
+      { name: 'name', label: 'Name', display: true, sort: true, filter: true, 
+        // buildColumns in MUIDataTables spreads options over the column object, so no need to nest this within options
+        filterType: 'custom',
+        customFilterListOptions: {
+          render: () => {
+            renderCall();
+            return 'label!';
+          },
+          update: () => {
+            updateCall();
+            return [];
+          },
+        },
+      },
+      { name: 'company', label: 'Company', display: true, sort: true, filter: true, sortDirection: 'desc' },
+      { name: 'city', label: 'City Label', display: true, sort: true, filter: true, sortDirection: 'desc' },
+      { name: 'state', label: 'State', display: true, sort: true, filter: true, sortDirection: 'desc' },
+    ];
+
+    const options = {
+      textLabels: getTextLabels(),
+      onFilterChipClose: spy(),
+    };
+    const filterList = [['Joe James'], [], [], []];
+    const filterUpdateCall = spy();
+    const filterUpdate = (index, filterValue, columnName, filterType, customUpdate, next) => {
+      if (customUpdate) customUpdate();
+      filterUpdateCall();
+      next();
+    };
+    const columnNames = columnsWithCustomFilterListOptions.map(column => ({
+      name: column.name,
+      filterType: column.filterType || options.filterType,
+    }));
+      
+    const wrapper = mount(
+      <TableFilterList
+        options={options}
+        filterListRenderers={columnsWithCustomFilterListOptions.map(c => {
+          if (c.customFilterListOptions && c.customFilterListOptions.render) return c.customFilterListOptions.render;
+          if (c.customFilterListRender) return c.customFilterListRender;
+          return f => f;
+        })}
+        customFilterListUpdate={columnsWithCustomFilterListOptions.map(c => {
+          return c.customFilterListOptions && c.customFilterListOptions.update
+            ? c.customFilterListOptions.update
+            : null;
+        })}
+        filterList={filterList}
+        filterUpdate={filterUpdate}
+        columnNames={columnNames}
+      />,
+    );
+
+    assert.strictEqual(renderCall.callCount, 1);
+    assert.strictEqual(updateCall.callCount, 0);
+
+    wrapper
+      .find('.MuiChip-deleteIcon')
+      .at(0)
+      .simulate('click');
+
+    wrapper.unmount();
+
+    assert.strictEqual(renderCall.callCount, 1);
+    assert.strictEqual(updateCall.callCount, 1);
   });
 });
