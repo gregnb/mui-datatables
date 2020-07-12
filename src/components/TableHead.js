@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import MuiTableHead from '@material-ui/core/TableHead';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import React, { useState } from 'react';
 import TableHeadCell from './TableHeadCell';
 import TableHeadRow from './TableHeadRow';
@@ -96,7 +96,7 @@ const TableHead = ({
 
   return (
     <MuiTableHead
-      className={classNames({
+      className={clsx({
         [classes.responsiveStacked]:
           options.responsive === 'vertical' ||
           options.responsive === 'stacked' ||
