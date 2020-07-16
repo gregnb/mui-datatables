@@ -8,7 +8,7 @@ import TableSelectCell from './TableSelectCell';
 import { withStyles } from '@material-ui/core/styles';
 import cloneDeep from 'lodash.clonedeep';
 import { getPageValue } from '../utils';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 const defaultBodyStyles = theme => ({
   root: {},
@@ -228,6 +228,8 @@ class TableBody extends React.Component {
       toggleExpandRow,
       options,
       columnOrder = this.props.columns.map((item, idx) => idx),
+      components = {},
+      tableId,
     } = this.props;
     const tableRows = this.buildRows();
     const visibleColCnt = columns.filter(c => c.display === 'true').length;
@@ -244,7 +246,7 @@ class TableBody extends React.Component {
 
             let isRowSelected = options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false;
             let isRowSelectable = this.isRowSelectable(dataIndex);
-            let bodyClasses = options.setRowProps ? (options.setRowProps(row, dataIndex, rowIndex) || {}) : {};
+            let bodyClasses = options.setRowProps ? options.setRowProps(row, dataIndex, rowIndex) || {} : {};
 
             const processedRow = this.processRow(row, columnOrder);
 
@@ -256,7 +258,7 @@ class TableBody extends React.Component {
                   rowSelected={isRowSelected}
                   isRowSelectable={isRowSelectable}
                   onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
-                  className={classNames({
+                  className={clsx({
                     [classes.lastStackedCell]:
                       options.responsive === 'vertical' ||
                       options.responsive === 'stacked' ||
@@ -287,13 +289,14 @@ class TableBody extends React.Component {
                     isRowExpanded={this.isRowExpanded(dataIndex)}
                     isRowSelectable={isRowSelectable}
                     id={'MUIDataTableSelectCell-' + dataIndex}
+                    components={components}
                   />
                   {processedRow.map(
                     column =>
                       columns[column.index].display === 'true' && (
                         <TableBodyCell
                           {...(columns[column.index].setCellProps
-                            ? (columns[column.index].setCellProps(column.value, dataIndex, column.index) || {})
+                            ? columns[column.index].setCellProps(column.value, dataIndex, column.index) || {}
                             : {})}
                           data-testid={`MuiDataTableBodyCell-${column.index}-${rowIndex}`}
                           dataIndex={dataIndex}
@@ -302,6 +305,7 @@ class TableBody extends React.Component {
                           columnHeader={columns[column.index].label}
                           print={columns[column.index].print}
                           options={options}
+                          tableId={tableId}
                           key={column.index}>
                           {column.value}
                         </TableBodyCell>
@@ -319,7 +323,7 @@ class TableBody extends React.Component {
               options={options}
               colIndex={0}
               rowIndex={0}>
-              <Typography variant="body1" className={classes.emptyTitle}>
+              <Typography variant="body1" className={classes.emptyTitle} component={'div'}>
                 {options.textLabels.body.noMatch}
               </Typography>
             </TableBodyCell>

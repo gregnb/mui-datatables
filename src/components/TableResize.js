@@ -210,7 +210,7 @@ class TableResize extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, tableId } = this.props;
     const { id, isResize, resizeCoords, tableWidth, tableHeight } = this.state;
 
     return (
@@ -219,6 +219,7 @@ class TableResize extends React.Component {
           return (
             <div
               data-divider-index={key}
+              data-tableid={tableId}
               aria-hidden="true"
               key={key}
               onMouseMove={this.onResizeMove.bind(null, key)}

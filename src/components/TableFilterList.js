@@ -31,13 +31,13 @@ const TableFilterList = ({
   const classes = useStyles();
   const { serverSide } = options;
 
-  const removeFilter = (index, filterValue, columnName, filterType) => {
+  const removeFilter = (index, filterValue, columnName, filterType, customFilterListUpdate = null) => {
     let removedFilter = filterValue;
     if (Array.isArray(removedFilter) && removedFilter.length === 0) {
       removedFilter = filterList[index];
     }
 
-    filterUpdate(index, filterValue, columnName, filterType, null, filterList => {
+    filterUpdate(index, filterValue, columnName, filterType, customFilterListUpdate, filterList => {
       if (options.onFilterChipClose) {
         options.onFilterChipClose(index, removedFilter, filterList);
       }
@@ -57,12 +57,25 @@ const TableFilterList = ({
       <ItemComponent
         label={customFilterItem}
         key={customFilterItemIndex}
-        onDelete={() => removeFilter(index, item[customFilterItemIndex] || [], columnNames[index].name, type)}
+        onDelete={() =>
+          removeFilter(
+            index,
+            item[customFilterItemIndex] || [],
+            columnNames[index].name,
+            type,
+            customFilterListUpdate[index],
+          )
+        }
         className={classes.chip}
         itemKey={customFilterItemIndex}
         index={index}
         data={item}
         columnNames={columnNames}
+        filterProps={
+          options.setFilterChipProps
+            ? options.setFilterChipProps(index, columnNames[index].name, item[customFilterItemIndex] || [])
+            : {}
+        }
       />
     );
   };
@@ -77,6 +90,7 @@ const TableFilterList = ({
       index={index}
       data={data}
       columnNames={columnNames}
+      filterProps={options.setFilterChipProps ? options.setFilterChipProps(index, columnNames[index].name, data) : {}}
     />
   );
 
@@ -85,14 +99,12 @@ const TableFilterList = ({
       if (columnNames[index].filterType === 'custom' && filterList[index].length) {
         const filterListRenderersValue = filterListRenderers[index](item);
 
-        if (filterListRenderersValue) {
-          if (Array.isArray(filterListRenderersValue)) {
-            return filterListRenderersValue.map((customFilterItem, customFilterItemIndex) =>
-              customFilterChip(customFilterItem, index, customFilterItemIndex, item, true),
-            );
-          } else {
-            return customFilterChip(filterListRenderersValue, index, index, item, false);
-          }
+        if (Array.isArray(filterListRenderersValue)) {
+          return filterListRenderersValue.map((customFilterItem, customFilterItemIndex) =>
+            customFilterChip(customFilterItem, index, customFilterItemIndex, item, true),
+          );
+        } else {
+          return customFilterChip(filterListRenderersValue, index, index, item, false);
         }
       }
 

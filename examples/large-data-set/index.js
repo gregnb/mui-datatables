@@ -121,13 +121,14 @@ class Example extends React.Component {
     ];
 
     const options = {
-      rowsPerPage: 500,
+      rowsPerPage: 100,
       rowsPerPageOptions: [10, 100, 250, 500, 1000],
       filter: true,
       filterType: 'dropdown',
       responsive: 'vertical',
       tableBodyHeight:'500px',
       customSearchRender: debounceSearchRender(500),
+      jumpToPage: true,
 
       // These next two options allow you to make it so filters need to be confirmed.
       confirmFilters: true,

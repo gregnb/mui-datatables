@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { withStyles } from '@material-ui/core/styles';
 import cloneDeep from 'lodash.clonedeep';
 
@@ -75,11 +75,7 @@ export const defaultFilterStyles = theme => ({
     width: '32px',
     height: '32px',
   },
-  checkbox: {
-    '&$checked': {
-      color: theme.palette.primary.main,
-    },
-  },
+  checkbox: {},
   checked: {},
   gridListTile: {
     marginTop: '16px',
@@ -160,7 +156,9 @@ class TableFilter extends React.Component {
     }
   };
 
-  renderCheckbox(column, index) {
+  renderCheckbox(column, index, components = {}) {
+    const CheckboxComponent = components.Checkbox || Checkbox;
+
     const { classes, filterData } = this.props;
     const { filterList } = this.state;
     const renderItem =
@@ -184,7 +182,8 @@ class TableFilter extends React.Component {
                     label: classes.checkboxFormControlLabel,
                   }}
                   control={
-                    <Checkbox
+                    <CheckboxComponent
+                      color="primary"
                       className={classes.checkboxIcon}
                       onChange={this.handleCheckboxChange.bind(null, index, filterValue, column.name)}
                       checked={filterList[index].indexOf(filterValue) >= 0 ? true : false}
@@ -262,7 +261,9 @@ class TableFilter extends React.Component {
     );
   }
 
-  renderMultiselect(column, index) {
+  renderMultiselect(column, index, components = {}) {
+    const CheckboxComponent = components.Checkbox || Checkbox;
+
     const { classes, filterData } = this.props;
     const { filterList } = this.state;
     const renderItem =
@@ -282,7 +283,8 @@ class TableFilter extends React.Component {
             input={<Input name={column.name} id={column.name} />}>
             {filterData[index].map((filterValue, filterIndex) => (
               <MenuItem value={filterValue} key={filterIndex + 1}>
-                <Checkbox
+                <CheckboxComponent
+                  color="primary"
                   checked={filterList[index].indexOf(filterValue) >= 0 ? true : false}
                   value={filterValue != null ? filterValue.toString() : ''}
                   className={classes.checkboxIcon}
@@ -349,7 +351,7 @@ class TableFilter extends React.Component {
   };
 
   render() {
-    const { classes, columns, options, onFilterReset, customFooter, filterList } = this.props;
+    const { classes, columns, options, onFilterReset, customFooter, filterList, components = {} } = this.props;
     const textLabels = options.textLabels.filter;
     const filterGridColumns = columns.filter(col => col.filter).length === 1 ? 1 : 2;
 
@@ -359,7 +361,7 @@ class TableFilter extends React.Component {
           <div className={classes.reset}>
             <Typography
               variant="body2"
-              className={classNames({
+              className={clsx({
                 [classes.title]: true,
               })}>
               {textLabels.title}
@@ -381,9 +383,9 @@ class TableFilter extends React.Component {
             if (column.filter) {
               const filterType = column.filterType || options.filterType;
               return filterType === 'checkbox'
-                ? this.renderCheckbox(column, index)
+                ? this.renderCheckbox(column, index, components)
                 : filterType === 'multiselect'
-                ? this.renderMultiselect(column, index)
+                ? this.renderMultiselect(column, index, components)
                 : filterType === 'textField'
                 ? this.renderTextField(column, index)
                 : filterType === 'custom'

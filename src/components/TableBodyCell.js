@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import TableCell from '@material-ui/core/TableCell';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -42,6 +42,19 @@ const useStyles = makeStyles(
         },
       },
     },
+    stackedCommonAlways: {
+      display: 'inline-block',
+      fontSize: '16px',
+      height: 'auto',
+      width: 'calc(50%)',
+      boxSizing: 'border-box',
+      '&:last-child': {
+        borderBottom: 'none',
+      },
+      '&:nth-last-child(2)': {
+        borderBottom: 'none',
+      },
+    },
     stackedParent: {
       [theme.breakpoints.down('sm')]: {
         display: 'inline-block',
@@ -50,6 +63,13 @@ const useStyles = makeStyles(
         width: 'calc(100%)',
         boxSizing: 'border-box',
       },
+    },
+    stackedParentAlways: {
+      display: 'inline-block',
+      fontSize: '16px',
+      height: 'auto',
+      width: 'calc(100%)',
+      boxSizing: 'border-box',
     },
     cellStackedSmall: {
       [theme.breakpoints.down('sm')]: {
@@ -75,7 +95,18 @@ const useStyles = makeStyles(
 
 function TableBodyCell(props) {
   const classes = useStyles();
-  const { children, colIndex, columnHeader, options, dataIndex, rowIndex, className, print, ...otherProps } = props;
+  const {
+    children,
+    colIndex,
+    columnHeader,
+    options,
+    dataIndex,
+    rowIndex,
+    className,
+    print,
+    tableId,
+    ...otherProps
+  } = props;
   const onCellClick = options.onCellClick;
 
   const handleClick = useCallback(
@@ -94,7 +125,7 @@ function TableBodyCell(props) {
   let cells = [
     <div
       key={1}
-      className={classNames(
+      className={clsx(
         {
           lastColumn: colIndex === 2,
           [classes.root]: true,
@@ -104,6 +135,7 @@ function TableBodyCell(props) {
             options.responsive === 'vertical' ||
             options.responsive === 'stacked' ||
             options.responsive === 'stackedFullWidth',
+          [classes.stackedCommonAlways]: options.responsive === 'verticalAlways',
           [classes.cellStackedSmall]:
             options.responsive === 'stacked' ||
             (options.responsive === 'stackedFullWidth' &&
@@ -117,13 +149,14 @@ function TableBodyCell(props) {
     </div>,
     <div
       key={2}
-      className={classNames(
+      className={clsx(
         {
           [classes.root]: true,
           [classes.stackedCommon]:
             options.responsive === 'vertical' ||
             options.responsive === 'stacked' ||
             options.responsive === 'stackedFullWidth',
+          [classes.stackedCommonAlways]: options.responsive === 'verticalAlways',
           [classes.responsiveStackedSmall]:
             options.responsive === 'stacked' ||
             (options.responsive === 'stackedFullWidth' &&
@@ -132,8 +165,7 @@ function TableBodyCell(props) {
           'datatables-noprint': !print,
         },
         className,
-      )}
-      {...otherProps}>
+      )}>
       {typeof children === 'function' ? children(dataIndex, rowIndex) : children}
     </div>,
   ];
@@ -151,13 +183,15 @@ function TableBodyCell(props) {
     <TableCell
       {...methods}
       data-colindex={colIndex}
-      className={classNames(
+      data-tableid={tableId}
+      className={clsx(
         {
           [classes.root]: true,
           [classes.stackedParent]:
             options.responsive === 'vertical' ||
             options.responsive === 'stacked' ||
             options.responsive === 'stackedFullWidth',
+          [classes.stackedParentAlways]: options.responsive === 'verticalAlways',
           [classes.responsiveStackedSmallParent]:
             options.responsive === 'vertical' ||
             options.responsive === 'stacked' ||

@@ -34,7 +34,6 @@ describe('<TableHead />', function() {
   it('should render a table head', () => {
     const options = {};
     const toggleSort = () => {};
-    console.dir(columns);
     const mountWrapper = mount(
       <DndProvider backend={HTML5Backend}>
         <TableHead
@@ -46,7 +45,6 @@ describe('<TableHead />', function() {
         />
       </DndProvider>,
     );
-    console.log(mountWrapper.html());
     const actualResult = mountWrapper.find(TableHeadCell);
     assert.strictEqual(actualResult.length, 4);
   });

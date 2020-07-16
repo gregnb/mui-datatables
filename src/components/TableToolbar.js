@@ -286,12 +286,14 @@ class TableToolbar extends React.Component {
       filterUpdate,
       resetFilters,
       toggleViewColumn,
+      updateColumns,
       title,
       components = {},
       updateFilterByType,
     } = this.props;
 
     const Tooltip = components.Tooltip || MuiTooltip;
+    const TableViewColComponent = components.TableViewCol || TableViewCol;
     const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;
     const { showSearch, searchText } = this.state;
 
@@ -394,7 +396,14 @@ class TableToolbar extends React.Component {
                 </Tooltip>
               }
               content={
-                <TableViewCol data={data} columns={columns} options={options} onColumnUpdate={toggleViewColumn} />
+                <TableViewColComponent
+                  data={data}
+                  columns={columns}
+                  options={options}
+                  onColumnUpdate={toggleViewColumn}
+                  updateColumns={updateColumns}
+                  components={components}
+                />
               }
             />
           )}
@@ -425,6 +434,7 @@ class TableToolbar extends React.Component {
                   onFilterReset={resetFilters}
                   handleClose={closeFilterPopover}
                   updateFilterByType={updateFilterByType}
+                  components={components}
                 />
               }
             />

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import Checkbox from '@material-ui/core/Checkbox';
 import TableCell from '@material-ui/core/TableCell';
 import IconButton from '@material-ui/core/IconButton';
@@ -88,29 +88,32 @@ class TableSelectCell extends React.Component {
       areAllRowsExpanded = () => false,
       selectableRowsHideCheckboxes,
       setHeadCellRef,
+      components = {},
       ...otherProps
     } = this.props;
     let fixedHeaderClasses;
 
     if (!expandableOn && selectableOn === 'none') return false;
 
-    const cellClass = classNames({
+    const CheckboxComponent = components.Checkbox || Checkbox;
+
+    const cellClass = clsx({
       [classes.root]: true,
       [classes.fixedHeader]: fixedHeader && isHeaderCell,
       [classes.fixedLeft]: fixedSelectColumn,
       [classes.headerCell]: isHeaderCell,
     });
 
-    const buttonClass = classNames({
+    const buttonClass = clsx({
       [classes.expandDisabled]: hideExpandButton,
     });
 
-    const iconClass = classNames({
+    const iconClass = clsx({
       [classes.icon]: true,
       [classes.hide]: isHeaderCell && !expandableRowsHeader,
       [classes.expanded]: isRowExpanded || (isHeaderCell && areAllRowsExpanded()),
     });
-    const iconIndeterminateClass = classNames({
+    const iconIndeterminateClass = clsx({
       [classes.icon]: true,
       [classes.hide]: isHeaderCell && !expandableRowsHeader,
     });
@@ -128,7 +131,7 @@ class TableSelectCell extends React.Component {
         return null;
       }
       return (
-        <Checkbox
+        <CheckboxComponent
           classes={{
             root: classes.checkboxRoot,
             checked: classes.checked,

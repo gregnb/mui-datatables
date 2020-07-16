@@ -579,7 +579,7 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should not re-build internal table data and displayData structure with no prop change to data or columns', () => {
-    const initializeTableSpy = spy(MUIDataTable.Naked.prototype, 'initializeTable');
+    const setTableDataSpy = spy(MUIDataTable.Naked.prototype, 'setTableData');
     const mountWrapper = mount(shallow(<MUIDataTable columns={columns} data={data} />).get(0));
 
     let state = mountWrapper.state();
@@ -592,7 +592,7 @@ describe('<MUIDataTable />', function() {
     state = mountWrapper.state();
 
     assert.deepEqual(JSON.stringify(state.displayData), displayData);
-    assert.deepEqual(initializeTableSpy.callCount, 1);
+    assert.deepEqual(setTableDataSpy.callCount, 1);
   });
 
   it('should add custom props to table if setTableProps provided', () => {
@@ -793,7 +793,7 @@ describe('<MUIDataTable />', function() {
   it('should apply columns prop change for filterList', () => {
     const mountShallowWrapper = mount(shallow(<MUIDataTable columns={columns} data={data} />).get(0));
     const instance = mountShallowWrapper.instance();
-    instance.initializeTable(mountShallowWrapper.props());
+
     // now use updated columns props
     const newColumns = cloneDeep(columns);
     newColumns[0].options.filterList = ['Joe James'];
@@ -1160,7 +1160,10 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should toggle provided column when calling toggleViewCol method', () => {
-    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
+    const options = {
+      onViewColumnsChange: spy(),
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
     const instance = shallowWrapper.instance();
 
     instance.toggleViewColumn(0);
@@ -1239,14 +1242,102 @@ describe('<MUIDataTable />', function() {
     ];
 
     assert.deepEqual(state.columns, expectedResult);
+    assert.strictEqual(options.onViewColumnsChange.callCount, 1);
+  });
+
+  it('should update columns when calling updateColumns method', () => {
+    const options = {
+      onViewColumnsChange: spy(),
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    const expectedResult = [
+      {
+        name: 'Name',
+        display: 'false',
+        empty: false,
+        print: true,
+        sort: true,
+        filter: true,
+        label: 'Name',
+        download: true,
+        searchable: true,
+        customBodyRender: renderName,
+        viewColumns: true,
+        customFilterListOptions: { render: renderCustomFilterList },
+      },
+      {
+        name: 'Company',
+        display: 'false',
+        empty: false,
+        print: true,
+        sort: true,
+        filter: true,
+        label: 'Company',
+        download: true,
+        searchable: true,
+        viewColumns: true,
+      },
+      {
+        name: 'City',
+        display: 'true',
+        empty: false,
+        print: true,
+        sort: true,
+        filter: true,
+        filterType: 'textField',
+        label: 'City Label',
+        download: true,
+        searchable: true,
+        customBodyRender: renderCities,
+        viewColumns: true,
+      },
+      {
+        name: 'State',
+        display: 'true',
+        empty: false,
+        print: true,
+        sort: true,
+        filter: true,
+        filterType: 'multiselect',
+        label: 'State',
+        download: true,
+        searchable: true,
+        viewColumns: true,
+        customBodyRender: renderState,
+        customHeadRender: renderHead,
+      },
+      {
+        name: 'Empty',
+        display: 'false',
+        empty: true,
+        print: true,
+        sort: true,
+        filter: true,
+        filterType: 'checkbox',
+        label: 'Empty',
+        download: true,
+        searchable: true,
+        viewColumns: true,
+      },
+    ];
+
+    instance.updateColumns(expectedResult);
+    shallowWrapper.update();
+    const state = shallowWrapper.state();
+
+    assert.deepEqual(state.columns, expectedResult);
+    assert.strictEqual(options.onViewColumnsChange.callCount, 1);
   });
 
   it('should get displayable data when calling getDisplayData method', () => {
-    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
+    const wrapper = shallow(<MUIDataTable columns={columns} data={data} />);
+    const shallowWrapper = wrapper.dive();
     const instance = shallowWrapper.instance();
     const state = shallowWrapper.state();
 
-    const actualResult = instance.getDisplayData(columns, tableData, state.filterList, '');
+    const actualResult = instance.getDisplayData(columns, tableData, state.filterList, '', null, wrapper.props());
     assert.deepEqual(JSON.stringify(actualResult), displayData);
   });
 

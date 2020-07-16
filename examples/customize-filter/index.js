@@ -50,7 +50,13 @@ class Example extends React.Component {
           display: 'true',
           filterType: 'custom',
           customFilterListOptions: {
-            render: v => v.map(l => l.toUpperCase())
+            render: v => v.map(l => l.toUpperCase()),
+            update: (filterList, filterPos, index) => {
+              console.log('update');
+              console.log(filterList, filterPos, index);
+              filterList[index].splice(filterPos, 1);
+              return filterList;
+            }
           },
           filterOptions: {
             logic: (location, filters, row) => {
@@ -235,6 +241,14 @@ class Example extends React.Component {
       filter: true,
       filterType: 'multiselect',
       responsive: 'standard',
+      setFilterChipProps: (colIndex, colName, data) => {
+        //console.log(colIndex, colName, data);
+        return {
+          color: 'primary',
+          variant: 'outlined',
+          className: 'testClass123',
+        };
+      }
     };
     
     return (

@@ -61,11 +61,14 @@ describe('<TableSearch />', function() {
     const onSearch = spy();
     const onHide = () => {};
 
-    const shallowWrapper = shallow(<TableSearch onSearch={onSearch} onHide={onHide} options={options} />).dive();
+    const wrapper = mount(<TableSearch onSearch={onSearch} onHide={onHide} options={options} />);
 
-    const instance = shallowWrapper.instance();
+    wrapper
+      .find('input')
+      .at(0)
+      .simulate('change', { target: { value: '' } });
+    wrapper.unmount();
 
-    instance.handleTextChange({ target: { value: '' } });
     assert.strictEqual(onSearch.callCount, 1);
   });
 

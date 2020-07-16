@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import MuiTableHead from '@material-ui/core/TableHead';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import React, { useState } from 'react';
 import TableHeadCell from './TableHeadCell';
 import TableHeadRow from './TableHeadRow';
@@ -13,6 +13,9 @@ const useStyles = makeStyles(
       [theme.breakpoints.down('sm')]: {
         display: 'none',
       },
+    },
+    responsiveStackedAlways: {
+      display: 'none',
     },
     responsiveSimple: {
       [theme.breakpoints.down('xs')]: {
@@ -37,6 +40,7 @@ const TableHead = ({
   setCellRef,
   sortOrder = {},
   tableRef,
+  tableId,
   timers,
   toggleAllExpandableRows,
   toggleSort,
@@ -95,11 +99,12 @@ const TableHead = ({
 
   return (
     <MuiTableHead
-      className={classNames({
+      className={clsx({
         [classes.responsiveStacked]:
           options.responsive === 'vertical' ||
           options.responsive === 'stacked' ||
           options.responsive === 'stackedFullWidth',
+        [classes.responsiveStackedAlways]: options.responsive === 'verticalAlways',
         [classes.responsiveSimple]: options.responsive === 'simple',
         [classes.main]: true,
       })}>
@@ -119,6 +124,7 @@ const TableHead = ({
           selectableRowsHeader={options.selectableRowsHeader}
           onExpand={toggleAllExpandableRows}
           isRowSelectable={true}
+          components={components}
         />
         {orderedColumns.map(
           ({ column, index, colPos }) =>
@@ -128,7 +134,7 @@ const TableHead = ({
             ) : (
               <TableHeadCell
                 cellHeaderProps={
-                  columns[index].setCellHeaderProps ? (columns[index].setCellHeaderProps({ index, ...column }) || {}) : {}
+                  columns[index].setCellHeaderProps ? columns[index].setCellHeaderProps({ index, ...column }) || {} : {}
                 }
                 key={index}
                 index={index}
@@ -149,8 +155,11 @@ const TableHead = ({
                 draggingHook={[dragging, setDragging]}
                 draggableHeadCellRefs={draggableHeadCellRefs}
                 tableRef={tableRef}
+                tableId={tableId}
                 components={components}>
-                {column.customHeadLabelRender ? column.customHeadLabelRender({index, colPos, ...column}) : column.label}
+                {column.customHeadLabelRender
+                  ? column.customHeadLabelRender({ index, colPos, ...column })
+                  : column.label}
               </TableHeadCell>
             )),
         )}
