@@ -42,6 +42,19 @@ const useStyles = makeStyles(
         },
       },
     },
+    stackedCommonAlways: {
+      display: 'inline-block',
+      fontSize: '16px',
+      height: 'auto',
+      width: 'calc(50%)',
+      boxSizing: 'border-box',
+      '&:last-child': {
+        borderBottom: 'none',
+      },
+      '&:nth-last-child(2)': {
+        borderBottom: 'none',
+      },
+    },
     stackedParent: {
       [theme.breakpoints.down('sm')]: {
         display: 'inline-block',
@@ -50,6 +63,13 @@ const useStyles = makeStyles(
         width: 'calc(100%)',
         boxSizing: 'border-box',
       },
+    },
+    stackedParentAlways: {
+      display: 'inline-block',
+      fontSize: '16px',
+      height: 'auto',
+      width: 'calc(100%)',
+      boxSizing: 'border-box',
     },
     cellStackedSmall: {
       [theme.breakpoints.down('sm')]: {
@@ -115,6 +135,7 @@ function TableBodyCell(props) {
             options.responsive === 'vertical' ||
             options.responsive === 'stacked' ||
             options.responsive === 'stackedFullWidth',
+          [classes.stackedCommonAlways]: options.responsive === 'verticalAlways',
           [classes.cellStackedSmall]:
             options.responsive === 'stacked' ||
             (options.responsive === 'stackedFullWidth' &&
@@ -135,6 +156,7 @@ function TableBodyCell(props) {
             options.responsive === 'vertical' ||
             options.responsive === 'stacked' ||
             options.responsive === 'stackedFullWidth',
+          [classes.stackedCommonAlways]: options.responsive === 'verticalAlways',
           [classes.responsiveStackedSmall]:
             options.responsive === 'stacked' ||
             (options.responsive === 'stackedFullWidth' &&
@@ -143,8 +165,7 @@ function TableBodyCell(props) {
           'datatables-noprint': !print,
         },
         className,
-      )}
-      {...otherProps}>
+      )}>
       {typeof children === 'function' ? children(dataIndex, rowIndex) : children}
     </div>,
   ];
@@ -170,6 +191,7 @@ function TableBodyCell(props) {
             options.responsive === 'vertical' ||
             options.responsive === 'stacked' ||
             options.responsive === 'stackedFullWidth',
+          [classes.stackedParentAlways]: options.responsive === 'verticalAlways',
           [classes.responsiveStackedSmallParent]:
             options.responsive === 'vertical' ||
             options.responsive === 'stacked' ||

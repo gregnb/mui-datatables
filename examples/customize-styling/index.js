@@ -38,11 +38,6 @@ class Example extends React.Component {
             boxShadow: 'none',
           },
         },
-        MUIDataTableBodyCell: {
-          root: {
-            backgroundColor: '#FFF',
-          },
-        },
         MuiToolbar: {
           root: {
             backgroundColor: '#f00',
@@ -91,6 +86,9 @@ class Example extends React.Component {
               className: clsx({
                 [this.props.classes.NameCell]: value === 'Mel Brooks',
               }),
+              style: {
+                //borderRight: '2px solid blue'
+              }
             };
           },
           setCellHeaderProps: value => {

@@ -14,6 +14,9 @@ const useStyles = makeStyles(
         display: 'none',
       },
     },
+    responsiveStackedAlways: {
+      display: 'none',
+    },
     responsiveSimple: {
       [theme.breakpoints.down('xs')]: {
         display: 'none',
@@ -101,6 +104,7 @@ const TableHead = ({
           options.responsive === 'vertical' ||
           options.responsive === 'stacked' ||
           options.responsive === 'stackedFullWidth',
+        [classes.responsiveStackedAlways]: options.responsive === 'verticalAlways',
         [classes.responsiveSimple]: options.responsive === 'simple',
         [classes.main]: true,
       })}>
