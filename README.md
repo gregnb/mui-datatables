@@ -282,6 +282,7 @@ const columns = [
 |**`setCellHeaderProps`**|function||Is called for each header cell and allows you to return custom props for the header cell based on its data. `function(columnMeta: object) => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
 |**`setCellProps`**|function||Is called for each cell and allows to you return custom props for this cell based on its data. `function(cellValue: string, rowIndex: number, columnIndex: number) => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
 |**`sort`**|boolean|true|Enable/disable sorting on column.
+|**`sortFn`**|function||Custom sort function for that column: `(order) => ({data: val1}, {data: val2}) => number` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-sort/index.js). Note: currently doesn't work with table `customSort`
 |**`viewColumns`**|boolean|true|Allow user to toggle column visibility through 'View Column' list.
 
 `customHeadRender` is called with these arguments:
