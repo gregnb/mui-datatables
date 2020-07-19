@@ -4,7 +4,7 @@ import { mount, shallow } from 'enzyme';
 import { assert, expect, should } from 'chai';
 import Checkbox from '@material-ui/core/Checkbox';
 import TableViewCol from '../src/components/TableViewCol';
-import textLabels from '../src/textLabels';
+import getTextLabels from '../src/textLabels';
 import { FormControlLabel } from '@material-ui/core';
 
 describe('<TableViewCol />', function() {
@@ -13,13 +13,13 @@ describe('<TableViewCol />', function() {
 
   before(() => {
     columns = [
-      { name: 'a', label: 'A' },
-      { name: 'b', label: 'B' },
-      { name: 'c', label: 'C' },
-      { name: 'd', label: 'D' },
+      { name: 'a', label: 'A', display: 'true' },
+      { name: 'b', label: 'B', display: 'true' },
+      { name: 'c', label: 'C', display: 'true' },
+      { name: 'd', label: 'D', display: 'true' },
     ];
     options = {
-      textLabels,
+      textLabels: getTextLabels(),
     };
   });
 
@@ -39,13 +39,14 @@ describe('<TableViewCol />', function() {
   it('should trigger onColumnUpdate prop callback when calling method handleColChange', () => {
     const onColumnUpdate = spy();
 
-    const shallowWrapper = shallow(
-      <TableViewCol columns={columns} onColumnUpdate={onColumnUpdate} options={options} />,
-    ).dive();
+    const wrapper = mount(<TableViewCol columns={columns} onColumnUpdate={onColumnUpdate} options={options} />);
 
-    const instance = shallowWrapper.instance();
+    wrapper
+      .find('input[type="checkbox"]')
+      .at(0)
+      .simulate('change', { target: { checked: false, value: false } });
+    wrapper.unmount();
 
-    instance.handleColChange(0);
     assert.strictEqual(onColumnUpdate.callCount, 1);
   });
 });

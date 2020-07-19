@@ -44,9 +44,9 @@ class Example extends React.Component {
 
     const options = {
       filter: true,
-      selectableRows: true,
+      selectableRows: 'multiple',
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: 'vertical',
       rowsPerPage: 10,
       customSearchRender: (searchText, handleSearch, hideSearch, options) => {
         return (

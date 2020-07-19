@@ -1,83 +1,171 @@
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import MuiTableHead from '@material-ui/core/TableHead';
-import classNames from 'classnames';
-import React from 'react';
-import { findDOMNode } from 'react-dom';
+import clsx from 'clsx';
+import React, { useState } from 'react';
 import TableHeadCell from './TableHeadCell';
 import TableHeadRow from './TableHeadRow';
 import TableSelectCell from './TableSelectCell';
 
-const defaultHeadStyles = theme => ({
-  main: {},
-  responsiveStacked: {
-    [theme.breakpoints.down('sm')]: {
+const useStyles = makeStyles(
+  theme => ({
+    main: {},
+    responsiveStacked: {
+      [theme.breakpoints.down('sm')]: {
+        display: 'none',
+      },
+    },
+    responsiveStackedAlways: {
       display: 'none',
     },
-  },
-});
+    responsiveSimple: {
+      [theme.breakpoints.down('xs')]: {
+        display: 'none',
+      },
+    },
+  }),
+  { name: 'MUIDataTableHead' },
+);
 
-class TableHead extends React.Component {
-  componentDidMount() {
-    this.props.handleHeadUpdateRef(this.handleUpdateCheck);
+const TableHead = ({
+  columnOrder = null,
+  columns,
+  components = {},
+  count,
+  data,
+  draggableHeadCellRefs,
+  expandedRows,
+  options,
+  selectedRows,
+  selectRowUpdate,
+  setCellRef,
+  sortOrder = {},
+  tableRef,
+  tableId,
+  timers,
+  toggleAllExpandableRows,
+  toggleSort,
+  updateColumnOrder,
+}) => {
+  const classes = useStyles();
+
+  if (columnOrder === null) {
+    columnOrder = columns ? columns.map((item, idx) => idx) : [];
   }
 
-  handleToggleColumn = index => {
-    this.props.toggleSort(index);
+  const [dragging, setDragging] = useState(false);
+
+  const handleToggleColumn = index => {
+    toggleSort(index);
   };
 
-  handleRowSelect = () => {
-    this.props.selectRowUpdate('head', null);
+  const handleRowSelect = () => {
+    selectRowUpdate('head', null);
   };
 
-  render() {
-    const { classes, columns, count, options, data, page, setCellRef, selectedRows } = this.props;
+  const numSelected = (selectedRows && selectedRows.data.length) || 0;
+  let isIndeterminate = numSelected > 0 && numSelected < count;
+  let isChecked = numSelected > 0 && numSelected >= count;
 
-    const numSelected = (selectedRows && selectedRows.data.length) || 0;
-    const isDeterminate = numSelected > 0 && numSelected < count;
-    const isChecked = numSelected === count ? true : false;
-
-    return (
-      <MuiTableHead
-        className={classNames({ [classes.responsiveStacked]: options.responsive === 'stacked', [classes.main]: true })}>
-        <TableHeadRow>
-          <TableSelectCell
-            ref={el => setCellRef(0, findDOMNode(el))}
-            onChange={this.handleRowSelect.bind(null)}
-            indeterminate={isDeterminate}
-            checked={isChecked}
-            isHeaderCell={true}
-            expandableOn={options.expandableRows}
-            selectableOn={options.selectableRows}
-            fixedHeader={options.fixedHeader}
-            selectableRowsHeader={options.selectableRowsHeader}
-            isRowSelectable={true}
-          />
-          {columns.map(
-            (column, index) =>
-              column.display === 'true' &&
-              (column.customHeadRender ? (
-                column.customHeadRender({ index, ...column }, this.handleToggleColumn)
-              ) : (
-                <TableHeadCell
-                  key={index}
-                  index={index}
-                  type={'cell'}
-                  ref={el => setCellRef(index + 1, findDOMNode(el))}
-                  sort={column.sort}
-                  sortDirection={column.sortDirection}
-                  toggleSort={this.handleToggleColumn}
-                  hint={column.hint}
-                  print={column.print}
-                  options={options}
-                  column={column}>
-                  {column.label}
-                </TableHeadCell>
-              )),
-          )}
-        </TableHeadRow>
-      </MuiTableHead>
-    );
+  // When the disableToolbarSelect option is true, there can be
+  // selected items that aren't visible, so we need to be more
+  // precise when determining if the head checkbox should be checked.
+  if (
+    options.disableToolbarSelect === true ||
+    options.selectToolbarPlacement === 'none' ||
+    options.selectToolbarPlacement === 'above'
+  ) {
+    if (isChecked) {
+      for (let ii = 0; ii < data.length; ii++) {
+        if (!selectedRows.lookup[data[ii].dataIndex]) {
+          isChecked = false;
+          isIndeterminate = true;
+          break;
+        }
+      }
+    } else {
+      if (numSelected > count) {
+        isIndeterminate = true;
+      }
+    }
   }
-}
 
-export default withStyles(defaultHeadStyles, { name: 'MUIDataTableHead' })(TableHead);
+  let orderedColumns = columnOrder.map((colIndex, idx) => {
+    return {
+      column: columns[colIndex],
+      index: colIndex,
+      colPos: idx,
+    };
+  });
+
+  return (
+    <MuiTableHead
+      className={clsx({
+        [classes.responsiveStacked]:
+          options.responsive === 'vertical' ||
+          options.responsive === 'stacked' ||
+          options.responsive === 'stackedFullWidth',
+        [classes.responsiveStackedAlways]: options.responsive === 'verticalAlways',
+        [classes.responsiveSimple]: options.responsive === 'simple',
+        [classes.main]: true,
+      })}>
+      <TableHeadRow>
+        <TableSelectCell
+          setHeadCellRef={setCellRef}
+          onChange={handleRowSelect.bind(null)}
+          indeterminate={isIndeterminate}
+          checked={isChecked}
+          isHeaderCell={true}
+          expandedRows={expandedRows}
+          expandableRowsHeader={options.expandableRowsHeader}
+          expandableOn={options.expandableRows}
+          selectableOn={options.selectableRows}
+          fixedHeader={options.fixedHeader}
+          fixedSelectColumn={options.fixedSelectColumn}
+          selectableRowsHeader={options.selectableRowsHeader}
+          onExpand={toggleAllExpandableRows}
+          isRowSelectable={true}
+          components={components}
+        />
+        {orderedColumns.map(
+          ({ column, index, colPos }) =>
+            column.display === 'true' &&
+            (column.customHeadRender ? (
+              column.customHeadRender({ index, ...column }, handleToggleColumn, sortOrder)
+            ) : (
+              <TableHeadCell
+                cellHeaderProps={
+                  columns[index].setCellHeaderProps ? columns[index].setCellHeaderProps({ index, ...column }) || {} : {}
+                }
+                key={index}
+                index={index}
+                colPosition={colPos}
+                type={'cell'}
+                setCellRef={setCellRef}
+                sort={column.sort}
+                sortDirection={column.name === sortOrder.name ? sortOrder.direction : 'none'}
+                toggleSort={handleToggleColumn}
+                hint={column.hint}
+                print={column.print}
+                options={options}
+                column={column}
+                columns={columns}
+                updateColumnOrder={updateColumnOrder}
+                columnOrder={columnOrder}
+                timers={timers}
+                draggingHook={[dragging, setDragging]}
+                draggableHeadCellRefs={draggableHeadCellRefs}
+                tableRef={tableRef}
+                tableId={tableId}
+                components={components}>
+                {column.customHeadLabelRender
+                  ? column.customHeadLabelRender({ index, colPos, ...column })
+                  : column.label}
+              </TableHeadCell>
+            )),
+        )}
+      </TableHeadRow>
+    </MuiTableHead>
+  );
+};
+
+export default TableHead;

@@ -12,7 +12,7 @@ class Example extends React.Component {
         options: {
           filter: true,
           filterList: ['Franky Miles'],
-          customFilterListRender: v => `Name: ${v}`,
+          customFilterListOptions: { render: v => `Name: ${v}` },
           filterOptions: {
             names: ['a', 'b', 'c', 'Business Analyst']
           },
@@ -23,7 +23,7 @@ class Example extends React.Component {
         options: {
           filter: true,
           filterList: ['Business Analyst'],
-          customFilterListRender: v => `Title: ${v}`,
+          customFilterListOptions: { render: v => `Title: ${v}` },
           filterType: 'textField' // set filterType's at the column level
         }
       },
@@ -36,15 +36,19 @@ class Example extends React.Component {
       {
         name: "Age",
         options: {
+          customBodyRenderLite: (dataIndex) => {
+            let val = data[dataIndex][3];
+            return val;
+          },
           filter: true,
-          customFilterListRender: v => `Age: ${v}`,
+          customFilterListOptions: { render: v => `Age: ${v}` },
         }
       },
       {
         name: "Salary",
         options: {
           filter: true,
-          customFilterListRender: v => `Salary: ${v}`,
+          customFilterListOptions: { render: v => `Salary: ${v}` },
           sort: false
         }
       }
@@ -87,11 +91,10 @@ class Example extends React.Component {
       onFilterChange: (changedColumn, filterList) => {
         console.log(changedColumn, filterList);
       },
-      selectableRows: true,
+      selectableRows: 'multiple',
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: 'vertical',
       rowsPerPage: 10,
-      page: 1,
     };
 
     return (

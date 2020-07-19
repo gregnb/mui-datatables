@@ -10,7 +10,7 @@ import React from 'react';
 import { spy } from 'sinon';
 import TableSearch from '../src/components/TableSearch';
 import TableToolbar from '../src/components/TableToolbar';
-import textLabels from '../src/textLabels';
+import getTextLabels from '../src/textLabels';
 
 describe('<TableToolbar />', function() {
   let data;
@@ -25,7 +25,7 @@ describe('<TableToolbar />', function() {
       search: true,
       filter: true,
       viewColumns: true,
-      textLabels,
+      textLabels: getTextLabels(),
       downloadOptions: {
         separator: ',',
         filename: 'tableDownload.csv',
@@ -77,6 +77,16 @@ describe('<TableToolbar />', function() {
     const actualResult = mountWrapper.find(TableSearch);
     assert.strictEqual(actualResult.length, 1);
     assert.strictEqual(actualResult.props().options.searchText, 'searchText');
+  });
+
+  it('should render a toolbar with search if option.searchOpen = true', () => {
+    const newOptions = { ...options, searchOpen: true };
+    const mountWrapper = mount(
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    );
+    const actualResult = mountWrapper.find(TableSearch);
+    assert.strictEqual(actualResult.length, 1);
+    assert.strictEqual(actualResult.props().options.searchText, undefined);
   });
 
   it('should render a toolbar with no search icon if option.search = false', () => {
@@ -154,6 +164,7 @@ describe('<TableToolbar />', function() {
     const searchTextUpdate = () => {};
     const shallowWrapper = shallow(
       <TableToolbar
+        searchClose={() => {}}
         searchTextUpdate={searchTextUpdate}
         columns={columns}
         data={data}
@@ -182,6 +193,105 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(actualResult.length, 0);
   });
 
+  it('should hide search when search icon is clicked while search is open without content', () => {
+    const searchTextUpdate = () => {};
+    const shallowWrapper = shallow(
+      <TableToolbar
+        searchClose={() => {}}
+        searchTextUpdate={searchTextUpdate}
+        columns={columns}
+        data={data}
+        options={options}
+        setTableAction={setTableAction}
+      />,
+    ).dive();
+    const instance = shallowWrapper.instance();
+    instance.searchButton = {
+      focus: () => {},
+    };
+
+    // click search button to display search
+    shallowWrapper.find('[data-testid="Search-iconButton"]').simulate('click');
+    shallowWrapper.update();
+
+    assert.strictEqual(shallowWrapper.state('iconActive'), 'search');
+    let actualResult = shallowWrapper.find(TableSearch);
+    assert.strictEqual(actualResult.length, 1);
+
+    // now click search button again and test
+    shallowWrapper.find('[data-testid="Search-iconButton"]').simulate('click');
+    shallowWrapper.update();
+
+    assert.strictEqual(shallowWrapper.state('iconActive'), null);
+    actualResult = shallowWrapper.find(TableSearch);
+    assert.strictEqual(actualResult.length, 0);
+  });
+
+  it('should not hide search when search icon is clicked while search is open with content', () => {
+    const searchTextUpdate = () => {};
+    const shallowWrapper = shallow(
+      <TableToolbar
+        searchClose={() => {}}
+        searchTextUpdate={searchTextUpdate}
+        columns={columns}
+        data={data}
+        options={options}
+        setTableAction={setTableAction}
+      />,
+    ).dive();
+    const instance = shallowWrapper.instance();
+    instance.searchButton = {
+      focus: () => {},
+    };
+
+    // click search button to display search
+    shallowWrapper.find('[data-testid="Search-iconButton"]').simulate('click');
+    shallowWrapper.update();
+
+    assert.strictEqual(shallowWrapper.state('iconActive'), 'search');
+    let actualResult = shallowWrapper.find(TableSearch);
+    assert.strictEqual(actualResult.length, 1);
+
+    // now set searchText and click search button again and test
+    shallowWrapper.setState({ searchText: 'fakeSearchText' });
+    shallowWrapper.find('[data-testid="Search-iconButton"]').simulate('click');
+    shallowWrapper.update();
+
+    assert.strictEqual(shallowWrapper.state('iconActive'), 'search');
+    actualResult = shallowWrapper.find(TableSearch);
+    assert.strictEqual(actualResult.length, 1);
+  });
+
+  it('should call onFilterDialogOpen when opening filters via toolbar', () => {
+    const onFilterDialogOpen = spy();
+    const newOptions = { ...options, onFilterDialogOpen };
+    const shallowWrapper = shallow(
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    ).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.setActiveIcon('filter');
+    shallowWrapper.update();
+
+    assert.strictEqual(onFilterDialogOpen.callCount, 1);
+  });
+
+  it('should call onFilterDialogClose when closing filters dialog', () => {
+    const onFilterDialogClose = spy();
+    const newOptions = { ...options, onFilterDialogClose };
+    const shallowWrapper = shallow(
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    ).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.setActiveIcon('filter');
+    shallowWrapper.update();
+    instance.setActiveIcon(undefined);
+    shallowWrapper.update();
+
+    assert.strictEqual(onFilterDialogClose.callCount, 1);
+  });
+
   it('should set icon when calling method setActiveIcon', () => {
     const shallowWrapper = shallow(
       <TableToolbar columns={columns} data={data} options={options} setTableAction={setTableAction} />,
@@ -193,6 +303,24 @@ describe('<TableToolbar />', function() {
 
     const state = shallowWrapper.state();
     assert.strictEqual(state.iconActive, 'filter');
+  });
+
+  it('should render search icon as active if option.searchOpen = true', () => {
+    const newOptions = { ...options, search: true, searchOpen: true };
+    const shallowWrapper = shallow(
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    ).dive();
+    const actualResult = shallowWrapper.find('[data-testid="Search-iconButton"]');
+    assert.strictEqual(actualResult.prop('classes').root.indexOf('MUIDataTableToolbar-iconActive-'), 0);
+  });
+
+  it('should render search icon as active if option.searchText = some_text', () => {
+    const newOptions = { ...options, search: true, searchText: 'searchText' };
+    const shallowWrapper = shallow(
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    ).dive();
+    const actualResult = shallowWrapper.find('[data-testid="Search-iconButton"]');
+    assert.strictEqual(actualResult.prop('classes').root.indexOf('MUIDataTableToolbar-iconActive-'), 0);
   });
 
   it('should download CSV when calling method handleCSVDownload', () => {

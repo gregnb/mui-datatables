@@ -103,7 +103,7 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'scrollMaxHeight',
+      responsive: 'standard',
       onDownload: (buildHead, buildBody, columns, data) =>
         buildHead(headerNames) +
         buildBody(

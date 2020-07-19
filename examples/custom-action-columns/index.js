@@ -50,7 +50,7 @@ class Example extends React.Component {
           filter: false,
           sort: false,
           empty: true,
-          customBodyRender: (value, tableMeta, updateValue) => {
+          customBodyRenderLite: (dataIndex) => {
             return (
               <button onClick={() => {
                 const { data } = this.state;
@@ -69,9 +69,9 @@ class Example extends React.Component {
           filter: false,
           sort: false,
           empty: true,
-          customBodyRender: (value, tableMeta, updateValue) => {
+          customBodyRenderLite: (dataIndex, rowIndex) => {
             return (
-              <button onClick={() => window.alert(`Clicked "Edit" for row ${tableMeta.rowIndex}`)}>
+              <button onClick={() => window.alert(`Clicked "Edit" for row ${rowIndex} with dataIndex of ${dataIndex}`)}>
                 Edit
               </button>
             );
@@ -116,7 +116,7 @@ class Example extends React.Component {
           filter: false,
           sort: false,
           empty: true,
-          customBodyRender: (value, tableMeta, updateValue) => {
+          customBodyRenderLite: (dataIndex) => {
             return (
               <button onClick={() => {
                 const { data } = this.state;
@@ -167,8 +167,7 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'stacked',
-      page: 2,
+      responsive: 'vertical',
       onColumnSortChange: (changedColumn, direction) => console.log('changedColumn: ', changedColumn, 'direction: ', direction),
       onChangeRowsPerPage: numberOfRows => console.log('numberOfRows: ', numberOfRows),
       onChangePage: currentPage => console.log('currentPage: ', currentPage)

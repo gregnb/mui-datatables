@@ -1,16 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import TableRow from '@material-ui/core/TableRow';
 import { withStyles } from '@material-ui/core/styles';
 
 const defaultBodyRowStyles = theme => ({
-  root: {},
-  hover: {},
+  root: {
+    // material v4
+    '&.Mui-selected': {
+      backgroundColor: theme.palette.action.selected,
+    },
+
+    // material v3 workaround
+    '&.mui-row-selected': {
+      backgroundColor: theme.palette.action.selected,
+    },
+  },
   hoverCursor: { cursor: 'pointer' },
   responsiveStacked: {
     [theme.breakpoints.down('sm')]: {
-      border: 'solid 2px rgba(0, 0, 0, 0.15)',
+      borderTop: 'solid 2px rgba(0, 0, 0, 0.15)',
+      borderBottom: 'solid 2px rgba(0, 0, 0, 0.15)',
+      padding: 0,
+      margin: 0,
+    },
+  },
+  responsiveSimple: {
+    [theme.breakpoints.down('xs')]: {
+      borderTop: 'solid 2px rgba(0, 0, 0, 0.15)',
+      borderBottom: 'solid 2px rgba(0, 0, 0, 0.15)',
+      padding: 0,
+      margin: 0,
     },
   },
 });
@@ -28,18 +48,28 @@ class TableBodyRow extends React.Component {
   };
 
   render() {
-    const { classes, options, rowSelected, onClick, className, ...rest } = this.props;
+    const { classes, options, rowSelected, onClick, className, isRowSelectable, ...rest } = this.props;
+
+    var methods = {};
+    if (onClick) {
+      methods.onClick = onClick;
+    }
 
     return (
       <TableRow
         hover={options.rowHover ? true : false}
-        onClick={onClick}
-        className={classNames(
+        {...methods}
+        className={clsx(
           {
             [classes.root]: true,
             [classes.hover]: options.rowHover,
-            [classes.hoverCursor]: options.selectableRowsOnClick || options.expandableRowsOnClick,
-            [classes.responsiveStacked]: options.responsive === 'stacked',
+            [classes.hoverCursor]: (options.selectableRowsOnClick && isRowSelectable) || options.expandableRowsOnClick,
+            [classes.responsiveSimple]: options.responsive === 'simple',
+            [classes.responsiveStacked]:
+              options.responsive === 'vertical' ||
+              options.responsive === 'stacked' ||
+              options.responsive === 'stackedFullWidth',
+            'mui-row-selected': rowSelected,
           },
           className,
         )}

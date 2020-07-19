@@ -1,85 +1,211 @@
-import React from 'react';
-import classNames from 'classnames';
+import React, { useCallback } from 'react';
+import clsx from 'clsx';
 import TableCell from '@material-ui/core/TableCell';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-const defaultBodyCellStyles = theme => ({
-  root: {},
-  cellHide: {
-    display: 'none',
-  },
-  cellStacked: {
-    [theme.breakpoints.down('sm')]: {
+const useStyles = makeStyles(
+  theme => ({
+    root: {},
+    cellHide: {
+      display: 'none',
+    },
+    simpleHeader: {
+      [theme.breakpoints.down('xs')]: {
+        display: 'inline-block',
+        fontWeight: 'bold',
+        width: '100%',
+        boxSizing: 'border-box',
+      },
+    },
+    simpleCell: {
+      [theme.breakpoints.down('xs')]: {
+        display: 'inline-block',
+        width: '100%',
+        boxSizing: 'border-box',
+      },
+    },
+    stackedHeader: {
+      verticalAlign: 'top',
+    },
+    stackedCommon: {
+      [theme.breakpoints.down('sm')]: {
+        display: 'inline-block',
+        fontSize: '16px',
+        height: 'auto',
+        width: 'calc(50%)',
+        boxSizing: 'border-box',
+        '&:last-child': {
+          borderBottom: 'none',
+        },
+        '&:nth-last-child(2)': {
+          borderBottom: 'none',
+        },
+      },
+    },
+    stackedCommonAlways: {
       display: 'inline-block',
       fontSize: '16px',
-      height: '24px',
-      width: 'calc(50% - 80px)',
-      whiteSpace: 'nowrap',
+      height: 'auto',
+      width: 'calc(50%)',
+      boxSizing: 'border-box',
+      '&:last-child': {
+        borderBottom: 'none',
+      },
+      '&:nth-last-child(2)': {
+        borderBottom: 'none',
+      },
     },
-  },
-  responsiveStacked: {
-    [theme.breakpoints.down('sm')]: {
+    stackedParent: {
+      [theme.breakpoints.down('sm')]: {
+        display: 'inline-block',
+        fontSize: '16px',
+        height: 'auto',
+        width: 'calc(100%)',
+        boxSizing: 'border-box',
+      },
+    },
+    stackedParentAlways: {
       display: 'inline-block',
       fontSize: '16px',
-      width: 'calc(50% - 80px)',
-      whiteSpace: 'nowrap',
-      height: '24px',
+      height: 'auto',
+      width: 'calc(100%)',
+      boxSizing: 'border-box',
     },
-  },
-});
+    cellStackedSmall: {
+      [theme.breakpoints.down('sm')]: {
+        width: '50%',
+        boxSizing: 'border-box',
+      },
+    },
+    responsiveStackedSmall: {
+      [theme.breakpoints.down('sm')]: {
+        width: '50%',
+        boxSizing: 'border-box',
+      },
+    },
+    responsiveStackedSmallParent: {
+      [theme.breakpoints.down('sm')]: {
+        width: '100%',
+        boxSizing: 'border-box',
+      },
+    },
+  }),
+  { name: 'MUIDataTableBodyCell' },
+);
 
-class TableBodyCell extends React.Component {
-  handleClick = event => {
-    const { colIndex, options, children, dataIndex, rowIndex } = this.props;
-    if (options.onCellClick) {
-      options.onCellClick(children, { colIndex, rowIndex, dataIndex, event });
-    }
-  };
+function TableBodyCell(props) {
+  const classes = useStyles();
+  const {
+    children,
+    colIndex,
+    columnHeader,
+    options,
+    dataIndex,
+    rowIndex,
+    className,
+    print,
+    tableId,
+    ...otherProps
+  } = props;
+  const onCellClick = options.onCellClick;
 
-  render() {
-    const {
-      children,
-      classes,
-      colIndex,
-      columnHeader,
-      options,
-      dataIndex,
-      rowIndex,
-      className,
-      print,
-      ...otherProps
-    } = this.props;
+  const handleClick = useCallback(
+    event => {
+      onCellClick(children, { colIndex, rowIndex, dataIndex, event });
+    },
+    [onCellClick, children, colIndex, rowIndex, dataIndex],
+  );
 
-    return [
-      <TableCell
-        key={1}
-        className={classNames(
-          {
-            [classes.root]: true,
-            [classes.cellHide]: true,
-            [classes.cellStacked]: options.responsive === 'stacked',
-            'datatables-noprint': !print,
-          },
-          className,
-        )}>
-        {columnHeader}
-      </TableCell>,
-      <TableCell
-        key={2}
-        onClick={this.handleClick}
-        className={classNames(
-          {
-            [classes.root]: true,
-            [classes.responsiveStacked]: options.responsive === 'stacked',
-            'datatables-noprint': !print,
-          },
-          className,
-        )}
-        {...otherProps}>
-        {children}
-      </TableCell>,
-    ];
+  // Event listeners. Avoid attaching them if they're not necessary.
+  let methods = {};
+  if (onCellClick) {
+    methods.onClick = handleClick;
   }
+
+  let cells = [
+    <div
+      key={1}
+      className={clsx(
+        {
+          lastColumn: colIndex === 2,
+          [classes.root]: true,
+          [classes.cellHide]: true,
+          [classes.stackedHeader]: true,
+          [classes.stackedCommon]:
+            options.responsive === 'vertical' ||
+            options.responsive === 'stacked' ||
+            options.responsive === 'stackedFullWidth',
+          [classes.stackedCommonAlways]: options.responsive === 'verticalAlways',
+          [classes.cellStackedSmall]:
+            options.responsive === 'stacked' ||
+            (options.responsive === 'stackedFullWidth' &&
+              (options.setTableProps().padding === 'none' || options.setTableProps().size === 'small')),
+          [classes.simpleHeader]: options.responsive === 'simple',
+          'datatables-noprint': !print,
+        },
+        className,
+      )}>
+      {columnHeader}
+    </div>,
+    <div
+      key={2}
+      className={clsx(
+        {
+          [classes.root]: true,
+          [classes.stackedCommon]:
+            options.responsive === 'vertical' ||
+            options.responsive === 'stacked' ||
+            options.responsive === 'stackedFullWidth',
+          [classes.stackedCommonAlways]: options.responsive === 'verticalAlways',
+          [classes.responsiveStackedSmall]:
+            options.responsive === 'stacked' ||
+            (options.responsive === 'stackedFullWidth' &&
+              (options.setTableProps().padding === 'none' || options.setTableProps().size === 'small')),
+          [classes.simpleCell]: options.responsive === 'simple',
+          'datatables-noprint': !print,
+        },
+        className,
+      )}>
+      {typeof children === 'function' ? children(dataIndex, rowIndex) : children}
+    </div>,
+  ];
+
+  var innerCells;
+  if (
+    ['standard', 'scrollMaxHeight', 'scrollFullHeight', 'scrollFullHeightFullWidth'].indexOf(options.responsive) !== -1
+  ) {
+    innerCells = cells.slice(1, 2);
+  } else {
+    innerCells = cells;
+  }
+
+  return (
+    <TableCell
+      {...methods}
+      data-colindex={colIndex}
+      data-tableid={tableId}
+      className={clsx(
+        {
+          [classes.root]: true,
+          [classes.stackedParent]:
+            options.responsive === 'vertical' ||
+            options.responsive === 'stacked' ||
+            options.responsive === 'stackedFullWidth',
+          [classes.stackedParentAlways]: options.responsive === 'verticalAlways',
+          [classes.responsiveStackedSmallParent]:
+            options.responsive === 'vertical' ||
+            options.responsive === 'stacked' ||
+            (options.responsive === 'stackedFullWidth' &&
+              (options.setTableProps().padding === 'none' || options.setTableProps().size === 'small')),
+          [classes.simpleCell]: options.responsive === 'simple',
+          'datatables-noprint': !print,
+        },
+        className,
+      )}
+      {...otherProps}>
+      {innerCells}
+    </TableCell>
+  );
 }
 
-export default withStyles(defaultBodyCellStyles, { name: 'MUIDataTableBodyCell' })(TableBodyCell);
+export default TableBodyCell;

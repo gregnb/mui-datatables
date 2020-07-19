@@ -10,7 +10,6 @@ class Example extends React.Component {
                 options: {
                     filter: true,
                     filterList: ['Franky Miles'],
-                    filterOptions: ['a', 'b', 'c', 'Business Analyst'],
                 },
             },
             {
@@ -74,11 +73,10 @@ class Example extends React.Component {
 
         const options = {
             filter: true,
-            selectableRows: true,
+            selectableRows: 'multiple',
             filterType: 'dropdown',
-            responsive: 'stacked',
+            responsive: 'vertical',
             rowsPerPage: 10,
-            page: 1,
         };
 
         const theme = createMuiTheme({
@@ -86,9 +84,11 @@ class Example extends React.Component {
             typography: {useNextVariants: true},
         });
 
-        return <MuiThemeProvider theme={theme}>
-            <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options}/>;
-        </MuiThemeProvider>;
+        return (
+            <MuiThemeProvider theme={theme}>
+                <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options}/>
+            </MuiThemeProvider>
+        );
     }
 }
 

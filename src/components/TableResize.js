@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
 import { withStyles } from '@material-ui/core/styles';
 
 const defaultResizeStyles = {
@@ -17,6 +16,22 @@ const defaultResizeStyles = {
   },
 };
 
+function getParentOffsetLeft(tableEl) {
+  let ii = 0,
+    parentOffsetLeft = 0,
+    offsetParent = tableEl.offsetParent;
+  while (offsetParent) {
+    parentOffsetLeft = parentOffsetLeft + (offsetParent.offsetLeft || 0);
+    offsetParent = offsetParent.offsetParent;
+    ii++;
+    if (ii > 1000) {
+      console.warn('Table nested within 1000 divs. Maybe an error.');
+      break;
+    }
+  }
+  return parentOffsetLeft;
+}
+
 class TableResize extends React.Component {
   static propTypes = {
     /** Extend the style applied to components */
@@ -26,7 +41,6 @@ class TableResize extends React.Component {
   state = {
     resizeCoords: {},
     priorPosition: {},
-    startPosition: 0,
     tableWidth: '100%',
     tableHeight: '100%',
   };
@@ -39,6 +53,7 @@ class TableResize extends React.Component {
   };
 
   componentDidMount() {
+    this.minWidths = [];
     this.windowWidth = null;
     this.props.setResizeable(this.setCellRefs);
     this.props.updateDividers(() => this.setState({ updateCoords: true }, () => this.updateWidths));
@@ -56,28 +71,26 @@ class TableResize extends React.Component {
   };
 
   setDividers = () => {
-    const tableEl = findDOMNode(this.tableRef);
+    const tableEl = this.tableRef;
     const { width: tableWidth, height: tableHeight } = tableEl.getBoundingClientRect();
-    const { priorPosition, resizeCoords } = this.state;
+    const { resizeCoords } = this.state;
 
+    for (let prop in resizeCoords) {
+      delete resizeCoords[prop];
+    }
+
+    let parentOffsetLeft = getParentOffsetLeft(tableEl);
     let finalCells = Object.entries(this.cellsRef);
-
-    finalCells.forEach(([key, item]) => {
+    //finalCells.pop();
+    finalCells.forEach(([key, item], idx) => {
       if (!item) return;
-
-      const elRect = item.getBoundingClientRect();
+      let elRect = item.getBoundingClientRect();
+      let left = elRect.left;
+      left = (left || 0) - parentOffsetLeft;
       const elStyle = window.getComputedStyle(item, null);
-      const left = resizeCoords[key] !== undefined ? resizeCoords[key].left : undefined;
-      const oldLeft = priorPosition[key] || 0;
-      let newLeft = elRect.left + item.offsetWidth - parseInt(elStyle.paddingLeft) / 2;
-
-      if (left === oldLeft) return;
-
-      resizeCoords[key] = { left: newLeft };
-      priorPosition[key] = newLeft;
+      resizeCoords[key] = { left: left + item.offsetWidth };
     });
-
-    this.setState({ tableWidth, tableHeight, resizeCoords, priorPosition }, this.updateWidths);
+    this.setState({ tableWidth, tableHeight, resizeCoords }, this.updateWidths);
   };
 
   updateWidths = () => {
@@ -85,7 +98,18 @@ class TableResize extends React.Component {
     const { resizeCoords, tableWidth } = this.state;
 
     Object.entries(resizeCoords).forEach(([key, item]) => {
-      let newWidth = Number(((item.left - lastPosition) / tableWidth) * 100).toFixed(2);
+      let newWidth = Number(((item.left - lastPosition) / tableWidth) * 100);
+
+      /*
+        Using .toFixed(2) causes the columns to jitter when resized. On all browsers I (patrojk) have tested,
+        a width with a floating point decimal works fine. It's unclear to me why the numbers were being rouned.
+        However, I'm putting in an undocumented escape hatch to use toFixed in case the change introduces a bug.
+        The below code will be removed in a later release if no problems with non-rounded widths are reported.
+      */
+      if (typeof this.props.resizableColumns === 'object' && this.props.resizableColumns.roundWidthPercentages) {
+        newWidth = newWidth.toFixed(2);
+      }
+
       lastPosition = item.left;
 
       const thCell = this.cellsRef[key];
@@ -94,19 +118,90 @@ class TableResize extends React.Component {
   };
 
   onResizeStart = (id, e) => {
-    this.setState({ isResize: true, id, startPosition: e.clientX });
+    const tableEl = this.tableRef;
+    const originalWidth = tableEl.style.width;
+    tableEl.style.width = '1px';
+
+    let finalCells = Object.entries(this.cellsRef);
+    finalCells.forEach(([key, item], idx) => {
+      let elRect = item ? item.getBoundingClientRect() : { width: 0, left: 0 };
+      this.minWidths[idx] = elRect.width;
+    });
+    tableEl.style.width = originalWidth;
+
+    this.setState({ isResize: true, id });
   };
 
   onResizeMove = (id, e) => {
-    const { startPosition, isResize, resizeCoords } = this.state;
+    const { isResize, resizeCoords } = this.state;
+    const fixedMinWidth1 = this.minWidths[id];
+    const fixedMinWidth2 = this.minWidths[parseInt(id, 10) + 1] || this.minWidths[id];
+    const idNumber = parseInt(id, 10);
+    const finalCells = Object.entries(this.cellsRef);
+    const tableEl = this.tableRef;
+    const { width: tableWidth, height: tableHeight } = tableEl.getBoundingClientRect();
+    const { selectableRows } = this.props.options;
+
+    let parentOffsetLeft = getParentOffsetLeft(tableEl);
 
     if (isResize) {
-      const leftPos = startPosition - (startPosition - e.clientX);
+      let leftPos = e.clientX - parentOffsetLeft;
+
+      const handleMoveRightmostBoundary = (leftPos, tableWidth, fixedMinWidth) => {
+        if (leftPos > tableWidth - fixedMinWidth) {
+          return tableWidth - fixedMinWidth;
+        }
+        return leftPos;
+      };
+
+      const handleMoveLeftmostBoundary = (leftPos, fixedMinWidth) => {
+        if (leftPos < fixedMinWidth) {
+          return fixedMinWidth;
+        }
+        return leftPos;
+      };
+
+      const handleMoveRight = (leftPos, resizeCoords, id, fixedMinWidth) => {
+        if (typeof resizeCoords[id + 1] === 'undefined') return leftPos;
+        if (leftPos > resizeCoords[id + 1].left - fixedMinWidth) {
+          return resizeCoords[id + 1].left - fixedMinWidth;
+        }
+        return leftPos;
+      };
+
+      const handleMoveLeft = (leftPos, resizeCoords, id, fixedMinWidth) => {
+        if (typeof resizeCoords[id - 1] === 'undefined') return leftPos;
+        if (leftPos < resizeCoords[id - 1].left + fixedMinWidth) {
+          return resizeCoords[id - 1].left + fixedMinWidth;
+        }
+        return leftPos;
+      };
+
+      const isFirstColumn = (selectableRows, id) => {
+        return (selectableRows !== 'none' && id === 0) || (selectableRows === 'none' && id === 1);
+      };
+
+      const isLastColumn = (id, finalCells) => {
+        return id === finalCells.length - 2;
+      };
+
+      if (isFirstColumn(selectableRows, idNumber) && isLastColumn(idNumber, finalCells)) {
+        leftPos = handleMoveLeftmostBoundary(leftPos, fixedMinWidth1);
+        leftPos = handleMoveRightmostBoundary(leftPos, tableWidth, fixedMinWidth2);
+      } else if (!isFirstColumn(selectableRows, idNumber) && isLastColumn(idNumber, finalCells)) {
+        leftPos = handleMoveRightmostBoundary(leftPos, tableWidth, fixedMinWidth2);
+        leftPos = handleMoveLeft(leftPos, resizeCoords, idNumber, fixedMinWidth1);
+      } else if (isFirstColumn(selectableRows, idNumber) && !isLastColumn(idNumber, finalCells)) {
+        leftPos = handleMoveLeftmostBoundary(leftPos, fixedMinWidth1);
+        leftPos = handleMoveRight(leftPos, resizeCoords, idNumber, fixedMinWidth2);
+      } else if (!isFirstColumn(selectableRows, idNumber) && !isLastColumn(idNumber, finalCells)) {
+        leftPos = handleMoveLeft(leftPos, resizeCoords, idNumber, fixedMinWidth1);
+        leftPos = handleMoveRight(leftPos, resizeCoords, idNumber, fixedMinWidth2);
+      }
 
       const curCoord = { ...resizeCoords[id], left: leftPos };
       const newResizeCoords = { ...resizeCoords, [id]: curCoord };
-
-      this.setState({ resizeCoords: newResizeCoords }, this.updateWidths);
+      this.setState({ resizeCoords: newResizeCoords, tableHeight }, this.updateWidths);
     }
   };
 
@@ -115,7 +210,7 @@ class TableResize extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, tableId } = this.props;
     const { id, isResize, resizeCoords, tableWidth, tableHeight } = this.state;
 
     return (
@@ -123,6 +218,8 @@ class TableResize extends React.Component {
         {Object.entries(resizeCoords).map(([key, val]) => {
           return (
             <div
+              data-divider-index={key}
+              data-tableid={tableId}
               aria-hidden="true"
               key={key}
               onMouseMove={this.onResizeMove.bind(null, key)}
@@ -130,7 +227,8 @@ class TableResize extends React.Component {
               style={{
                 width: isResize && id == key ? tableWidth : 'auto',
                 position: 'absolute',
-                height: tableHeight,
+                height: tableHeight - 2,
+                cursor: 'ew-resize',
                 zIndex: 1000,
               }}>
               <div

@@ -5,11 +5,11 @@ import { mount, shallow } from 'enzyme';
 import { assert, expect, should } from 'chai';
 import TextField from '@material-ui/core/TextField';
 import TableSearch from '../src/components/TableSearch';
-import textLabels from '../src/textLabels';
+import getTextLabels from '../src/textLabels';
 
 describe('<TableSearch />', function() {
   it('should render a search bar', () => {
-    const options = { textLabels };
+    const options = { textLabels: getTextLabels() };
     const onSearch = () => {};
     const onHide = () => {};
 
@@ -20,7 +20,7 @@ describe('<TableSearch />', function() {
   });
 
   it('should render a search bar with text initialized', () => {
-    const options = { textLabels };
+    const options = { textLabels: getTextLabels() };
     const onSearch = () => {};
     const onHide = () => {};
 
@@ -33,7 +33,7 @@ describe('<TableSearch />', function() {
   });
 
   it('should change search bar text when searchText changes', () => {
-    const options = { textLabels };
+    const options = { textLabels: getTextLabels() };
     const onSearch = () => {};
     const onHide = () => {};
 
@@ -46,7 +46,7 @@ describe('<TableSearch />', function() {
   });
 
   it('should render a search bar with placeholder when searchPlaceholder is set', () => {
-    const options = { textLabels, searchPlaceholder: 'TestingPlaceholder' };
+    const options = { textLabels: getTextLabels(), searchPlaceholder: 'TestingPlaceholder' };
     const onSearch = () => {};
     const onHide = () => {};
 
@@ -57,20 +57,23 @@ describe('<TableSearch />', function() {
   });
 
   it('should trigger handleTextChange prop callback when calling method handleTextChange', () => {
-    const options = { onSearchChange: () => true, textLabels };
+    const options = { onSearchChange: () => true, textLabels: getTextLabels() };
     const onSearch = spy();
     const onHide = () => {};
 
-    const shallowWrapper = shallow(<TableSearch onSearch={onSearch} onHide={onHide} options={options} />).dive();
+    const wrapper = mount(<TableSearch onSearch={onSearch} onHide={onHide} options={options} />);
 
-    const instance = shallowWrapper.instance();
+    wrapper
+      .find('input')
+      .at(0)
+      .simulate('change', { target: { value: '' } });
+    wrapper.unmount();
 
-    instance.handleTextChange({ target: { value: '' } });
     assert.strictEqual(onSearch.callCount, 1);
   });
 
   it('should hide the search bar when hitting the ESCAPE key', () => {
-    const options = { textLabels };
+    const options = { textLabels: getTextLabels() };
     const onHide = spy();
 
     const mountWrapper = mount(<TableSearch onHide={onHide} options={options} />, { attachTo: document.body });
@@ -80,7 +83,7 @@ describe('<TableSearch />', function() {
   });
 
   it('should hide not hide search bar when entering anything but the ESCAPE key', () => {
-    const options = { textLabels };
+    const options = { textLabels: getTextLabels() };
     const onHide = spy();
 
     const mountWrapper = mount(<TableSearch onHide={onHide} options={options} />, { attachTo: document.body });

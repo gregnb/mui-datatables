@@ -48,13 +48,14 @@ class Example extends React.Component {
         options: {
             filter: true,
             filterType: 'multiselect',
-            customBodyRender: (value) => {
+            customBodyRenderLite: (dataIndex) => {
+                let value = data[dataIndex][5];
                 return value.map( (val, key) => {
                     return <Chip label={val} key={key} />;
                 });
-            }
+            },
         }
-      }      
+      },
     ];
 
 
@@ -94,7 +95,7 @@ class Example extends React.Component {
     const options = {
       filter: true,
       filterType: 'dropdown',
-      responsive: 'scrollMaxHeight',
+      responsive: 'standard',
     };
 
     return (

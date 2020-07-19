@@ -21,7 +21,10 @@ class Example extends React.Component {
       {
         name: 'Age',
         options: {
-          customBodyRender: value => <div><span>{value}</span></div>
+          customBodyRenderLite: (dataIndex) => {
+            let value = data[dataIndex][3];
+            return <div><span>{value}</span></div>;
+          }
         }
       },
       {
@@ -67,9 +70,12 @@ class Example extends React.Component {
 
     const options = {
       filter: true,
-      selectableRows: true,
+      selectableRows: 'multiple',
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: 'vertical',
+      draggableColumns: {
+        enabled: true
+      },
       rowsPerPage: 10,
       downloadOptions: {
           filename: 'excel-format.csv',
@@ -81,13 +87,14 @@ class Example extends React.Component {
       },
       onDownload: (buildHead, buildBody, columns, data) => {
         if (this.state.downloadFile) {
-          return `${buildHead(columns)}${buildBody(data)}`.trim();
+          let val= `${buildHead(columns)}${buildBody(data)}`.trim();
+          return val;
         }
 
         return false;
       },
-      onRowsSelect: (rowsSelected, allRows) => {
-        console.log(rowsSelected, allRows);
+      onRowSelectionChange: (currentRowsSelected, allRows, rowsSelected) => {
+        console.log(currentRowsSelected, allRows, rowsSelected);
       },
       onRowsDelete: rowsDeleted => {
         console.log(rowsDeleted, 'were deleted!');
@@ -101,7 +108,7 @@ class Example extends React.Component {
       onColumnSortChange: (column, direction) => {
         console.log(column, direction);
       },
-      onColumnViewChange: (column, action) => {
+      onViewColumnsChange: (column, action) => {
         console.log(column, action);
       },
       onFilterChange: (column, filters) => {

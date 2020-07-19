@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import prism from 'prismjs';
 import 'prismjs/components/prism-jsx';
 import 'prismjs/components/prism-bash';

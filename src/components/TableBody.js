@@ -7,13 +7,29 @@ import TableBodyRow from './TableBodyRow';
 import TableSelectCell from './TableSelectCell';
 import { withStyles } from '@material-ui/core/styles';
 import cloneDeep from 'lodash.clonedeep';
+import { getPageValue } from '../utils';
+import clsx from 'clsx';
 
-const defaultBodyStyles = {
+const defaultBodyStyles = theme => ({
   root: {},
   emptyTitle: {
     textAlign: 'center',
   },
-};
+  lastStackedCell: {
+    [theme.breakpoints.down('sm')]: {
+      '& td:last-child': {
+        borderBottom: 'none',
+      },
+    },
+  },
+  lastSimpleCell: {
+    [theme.breakpoints.down('xs')]: {
+      '& td:last-child': {
+        borderBottom: 'none',
+      },
+    },
+  },
+});
 
 class TableBody extends React.Component {
   static propTypes = {
@@ -29,6 +45,8 @@ class TableBody extends React.Component {
     filterList: PropTypes.array,
     /** Callback to execute when row is clicked */
     onRowClick: PropTypes.func,
+    /** Table rows expanded */
+    expandedRows: PropTypes.object,
     /** Table rows selected */
     selectedRows: PropTypes.object,
     /** Callback to trigger table row select */
@@ -53,12 +71,12 @@ class TableBody extends React.Component {
     if (this.props.options.serverSide) return data.length ? data : null;
 
     let rows = [];
-    const totalPages = Math.floor(count / rowsPerPage);
-    const fromIndex = page === 0 ? 0 : page * rowsPerPage;
-    const toIndex = Math.min(count, (page + 1) * rowsPerPage);
+    const highestPageInRange = getPageValue(count, rowsPerPage, page);
+    const fromIndex = highestPageInRange === 0 ? 0 : highestPageInRange * rowsPerPage;
+    const toIndex = Math.min(count, (highestPageInRange + 1) * rowsPerPage);
 
-    if (page > totalPages && totalPages !== 0) {
-      console.warn('Current page is out of range.');
+    if (page > highestPageInRange) {
+      console.warn('Current page is out of range, using the highest page that is in range instead.');
     }
 
     for (let rowIndex = fromIndex; rowIndex < count && rowIndex < toIndex; rowIndex++) {
@@ -95,6 +113,15 @@ class TableBody extends React.Component {
 
     if (options.isRowSelectable) {
       return options.isRowSelectable(dataIndex, selectedRows);
+    } else {
+      return true;
+    }
+  }
+
+  isRowExpandable(dataIndex) {
+    const { options, expandedRows } = this.props;
+    if (options.isRowExpandable) {
+      return options.isRowExpandable(dataIndex, expandedRows);
     } else {
       return true;
     }
@@ -152,15 +179,6 @@ class TableBody extends React.Component {
       event.target.id === 'expandable-button' ||
       (event.target.nodeName === 'path' && event.target.parentNode.id === 'expandable-button')
     ) {
-      // In a future release, onRowClick will no longer be called here (for consistency).
-      // For now, issue a deprecated warning.
-      if (this.props.options.onRowClick) {
-        console.warn(
-          'Deprecated: Clicks on expandable button will not trigger onRowClick in an upcoming release, see: https://github.com/gregnb/mui-datatables/issues/516.',
-        );
-        this.props.options.onRowClick(row, data, event);
-      }
-
       return;
     }
 
@@ -177,7 +195,11 @@ class TableBody extends React.Component {
       this.handleRowSelect(selectRow, event);
     }
     // Check if we should trigger row expand when row is clicked anywhere
-    if (this.props.options.expandableRowsOnClick && this.props.options.expandableRows) {
+    if (
+      this.props.options.expandableRowsOnClick &&
+      this.props.options.expandableRows &&
+      this.isRowExpandable(data.dataIndex, this.props.expandedRows)
+    ) {
       const expandRow = { index: data.rowIndex, dataIndex: data.dataIndex };
       this.props.toggleExpandRow(expandRow);
     }
@@ -188,8 +210,27 @@ class TableBody extends React.Component {
     this.props.options.onRowClick && this.props.options.onRowClick(row, data, event);
   };
 
+  processRow = (row, columnOrder) => {
+    let ret = [];
+    for (let ii = 0; ii < row.length; ii++) {
+      ret.push({
+        value: row[columnOrder[ii]],
+        index: columnOrder[ii],
+      });
+    }
+    return ret;
+  };
+
   render() {
-    const { classes, columns, toggleExpandRow, options } = this.props;
+    const {
+      classes,
+      columns,
+      toggleExpandRow,
+      options,
+      columnOrder = this.props.columns.map((item, idx) => idx),
+      components = {},
+      tableId,
+    } = this.props;
     const tableRows = this.buildRows();
     const visibleColCnt = columns.filter(c => c.display === 'true').length;
 
@@ -203,13 +244,28 @@ class TableBody extends React.Component {
               return options.customRowRender(row, dataIndex, rowIndex);
             }
 
+            let isRowSelected = options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false;
+            let isRowSelectable = this.isRowSelectable(dataIndex);
+            let bodyClasses = options.setRowProps ? options.setRowProps(row, dataIndex, rowIndex) || {} : {};
+
+            const processedRow = this.processRow(row, columnOrder);
+
             return (
               <React.Fragment key={rowIndex}>
                 <TableBodyRow
-                  {...(options.setRowProps ? options.setRowProps(row, dataIndex) : {})}
+                  {...bodyClasses}
                   options={options}
-                  rowSelected={options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false}
+                  rowSelected={isRowSelected}
+                  isRowSelectable={isRowSelectable}
                   onClick={this.handleRowClick.bind(null, row, { rowIndex, dataIndex })}
+                  className={clsx({
+                    [classes.lastStackedCell]:
+                      options.responsive === 'vertical' ||
+                      options.responsive === 'stacked' ||
+                      options.responsive === 'stackedFullWidth',
+                    [classes.lastSimpleCell]: options.responsive === 'simple',
+                    [bodyClasses.className]: bodyClasses.className,
+                  })}
                   data-testid={'MUIDataTableBodyRow-' + dataIndex}
                   id={'MUIDataTableBodyRow-' + dataIndex}>
                   <TableSelectCell
@@ -222,29 +278,36 @@ class TableBody extends React.Component {
                       dataIndex: dataIndex,
                     })}
                     fixedHeader={options.fixedHeader}
-                    checked={this.isRowSelected(dataIndex)}
+                    fixedSelectColumn={options.fixedSelectColumn}
+                    checked={isRowSelected}
                     expandableOn={options.expandableRows}
+                    // When rows are expandable, but this particular row isn't expandable, set this to true.
+                    // This will add a new class to the toggle button, MUIDataTableSelectCell-expandDisabled.
+                    hideExpandButton={!this.isRowExpandable(dataIndex) && options.expandableRows}
                     selectableOn={options.selectableRows}
+                    selectableRowsHideCheckboxes={options.selectableRowsHideCheckboxes}
                     isRowExpanded={this.isRowExpanded(dataIndex)}
-                    isRowSelectable={this.isRowSelectable(dataIndex)}
+                    isRowSelectable={isRowSelectable}
                     id={'MUIDataTableSelectCell-' + dataIndex}
+                    components={components}
                   />
-                  {row.map(
-                    (column, columnIndex) =>
-                      columns[columnIndex].display === 'true' && (
+                  {processedRow.map(
+                    column =>
+                      columns[column.index].display === 'true' && (
                         <TableBodyCell
-                          {...(columns[columnIndex].setCellProps
-                            ? columns[columnIndex].setCellProps(column, dataIndex, columnIndex)
+                          {...(columns[column.index].setCellProps
+                            ? columns[column.index].setCellProps(column.value, dataIndex, column.index) || {}
                             : {})}
-                          data-testid={`MuiDataTableBodyCell-${columnIndex}-${rowIndex}`}
+                          data-testid={`MuiDataTableBodyCell-${column.index}-${rowIndex}`}
                           dataIndex={dataIndex}
                           rowIndex={rowIndex}
-                          colIndex={columnIndex}
-                          columnHeader={columns[columnIndex].label}
-                          print={columns[columnIndex].print}
+                          colIndex={column.index}
+                          columnHeader={columns[column.index].label}
+                          print={columns[column.index].print}
                           options={options}
-                          key={columnIndex}>
-                          {column}
+                          tableId={tableId}
+                          key={column.index}>
+                          {column.value}
                         </TableBodyCell>
                       ),
                   )}
@@ -260,7 +323,7 @@ class TableBody extends React.Component {
               options={options}
               colIndex={0}
               rowIndex={0}>
-              <Typography variant="subtitle1" className={classes.emptyTitle}>
+              <Typography variant="body1" className={classes.emptyTitle} component={'div'}>
                 {options.textLabels.body.noMatch}
               </Typography>
             </TableBodyCell>

@@ -1,7 +1,7 @@
 /*
  * Default text labels.
  */
-const textLabels = {
+const getTextLabels = () => ({
   body: {
     noMatch: 'Sorry, no matching records found',
     toolTip: 'Sort',
@@ -11,6 +11,7 @@ const textLabels = {
     previous: 'Previous Page',
     rowsPerPage: 'Rows per page:',
     displayRows: 'of',
+    jumpToPage: 'Jump to Page:',
   },
   toolbar: {
     search: 'Search',
@@ -33,6 +34,6 @@ const textLabels = {
     delete: 'Delete',
     deleteAria: 'Delete Selected Rows',
   },
-};
+});
 
-export default textLabels;
+export default getTextLabels;

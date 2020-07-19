@@ -6,6 +6,8 @@ import TableHead from '../src/components/TableHead';
 import TableHeadCell from '../src/components/TableHeadCell';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 describe('<TableHead />', function() {
   let columns;
@@ -13,14 +15,14 @@ describe('<TableHead />', function() {
 
   before(() => {
     columns = [
-      { name: 'First Name', label: 'First Name', display: 'true', sort: null },
+      { name: 'First Name', label: 'First Name', display: 'true', sort: true },
       { name: 'Company', label: 'Company', display: 'true', sort: null },
       { name: 'City', label: 'City Label', display: 'true', sort: null },
       {
         name: 'State',
         label: 'State',
         display: 'true',
-        options: { fixedHeader: true },
+        options: { fixedHeaderOptions: { xAxis: true, yAxis: true }, selectableRows: 'multiple' },
         customHeadRender: columnMeta => <TableHeadCell {...columnMeta}>{columnMeta.name + 's'}</TableHeadCell>,
         sort: null,
       },
@@ -32,15 +34,16 @@ describe('<TableHead />', function() {
   it('should render a table head', () => {
     const options = {};
     const toggleSort = () => {};
-
     const mountWrapper = mount(
-      <TableHead
-        columns={columns}
-        options={options}
-        setCellRef={() => {}}
-        handleHeadUpdateRef={handleHeadUpdateRef}
-        toggleSort={toggleSort}
-      />,
+      <DndProvider backend={HTML5Backend}>
+        <TableHead
+          columns={columns}
+          options={options}
+          setCellRef={() => {}}
+          handleHeadUpdateRef={handleHeadUpdateRef}
+          toggleSort={toggleSort}
+        />
+      </DndProvider>,
     );
     const actualResult = mountWrapper.find(TableHeadCell);
     assert.strictEqual(actualResult.length, 4);
@@ -51,13 +54,15 @@ describe('<TableHead />', function() {
     const toggleSort = () => {};
 
     const mountWrapper = mount(
-      <TableHead
-        columns={columns}
-        options={options}
-        setCellRef={() => {}}
-        handleHeadUpdateRef={handleHeadUpdateRef}
-        toggleSort={toggleSort}
-      />,
+      <DndProvider backend={HTML5Backend}>
+        <TableHead
+          columns={columns}
+          options={options}
+          setCellRef={() => {}}
+          handleHeadUpdateRef={handleHeadUpdateRef}
+          toggleSort={toggleSort}
+        />
+      </DndProvider>,
     );
     const labels = mountWrapper.find(TableHeadCell).map(n => n.text());
     assert.deepEqual(labels, ['First Name', 'Company', 'City Label', 'States']);
@@ -69,13 +74,15 @@ describe('<TableHead />', function() {
 
     const newColumns = columns.map(column => ({ ...column, display: false }));
     const mountWrapper = mount(
-      <TableHead
-        columns={newColumns}
-        options={options}
-        setCellRef={() => {}}
-        handleHeadUpdateRef={handleHeadUpdateRef}
-        toggleSort={toggleSort}
-      />,
+      <DndProvider backend={HTML5Backend}>
+        <TableHead
+          columns={newColumns}
+          options={options}
+          setCellRef={() => {}}
+          handleHeadUpdateRef={handleHeadUpdateRef}
+          toggleSort={toggleSort}
+        />
+      </DndProvider>,
     );
     const actualResult = mountWrapper.find(TableHeadCell);
     assert.strictEqual(actualResult.length, 0);
@@ -85,42 +92,43 @@ describe('<TableHead />', function() {
     const options = { sort: true };
     const toggleSort = spy();
 
-    const shallowWrapper = shallow(
-      <TableHead
-        columns={columns}
-        options={options}
-        setCellRef={() => {}}
-        handleHeadUpdateRef={handleHeadUpdateRef}
-        toggleSort={toggleSort}
-      />,
-    ).dive();
+    const wrapper = mount(
+      <DndProvider backend={HTML5Backend}>
+        <TableHead
+          columns={columns}
+          options={options}
+          setCellRef={() => {}}
+          handleHeadUpdateRef={handleHeadUpdateRef}
+          toggleSort={toggleSort}
+        />
+      </DndProvider>,
+    );
 
-    const instance = shallowWrapper.instance();
-    instance.handleToggleColumn(2);
-    shallowWrapper.update();
+    const instance = wrapper.find('th span').at(0);
+    instance.simulate('click');
 
     assert.strictEqual(toggleSort.callCount, 1);
   });
 
   it('should trigger selectRowUpdate prop callback and selectChecked state update when calling method handleRowSelect', () => {
-    const options = { sort: true, selectableRows: true };
+    const options = { sort: true, selectableRows: 'multiple' };
     const rowSelectUpdate = spy();
 
-    const shallowWrapper = shallow(
-      <TableHead
-        columns={columns}
-        options={options}
-        setCellRef={() => {}}
-        handleHeadUpdateRef={handleHeadUpdateRef}
-        selectRowUpdate={rowSelectUpdate}
-      />,
-    ).dive();
+    const wrapper = mount(
+      <DndProvider backend={HTML5Backend}>
+        <TableHead
+          columns={columns}
+          options={options}
+          setCellRef={() => {}}
+          handleHeadUpdateRef={handleHeadUpdateRef}
+          selectRowUpdate={rowSelectUpdate}
+        />
+      </DndProvider>,
+    );
 
-    const instance = shallowWrapper.instance();
-    instance.handleRowSelect(2);
-    shallowWrapper.update();
+    const instance = wrapper.find('input[type="checkbox"]');
+    instance.simulate('change', { target: { value: 'checked' } });
 
-    let state = shallowWrapper.state();
     assert.strictEqual(rowSelectUpdate.callCount, 1);
   });
 
@@ -128,7 +136,14 @@ describe('<TableHead />', function() {
     const options = { selectableRows: 'multiple' };
 
     const mountWrapper = mount(
-      <TableHead columns={columns} options={options} setCellRef={() => {}} handleHeadUpdateRef={handleHeadUpdateRef} />,
+      <DndProvider backend={HTML5Backend}>
+        <TableHead
+          columns={columns}
+          options={options}
+          setCellRef={() => {}}
+          handleHeadUpdateRef={handleHeadUpdateRef}
+        />
+      </DndProvider>,
     );
 
     const actualResult = mountWrapper.find(Checkbox);
@@ -139,7 +154,14 @@ describe('<TableHead />', function() {
     const options = { selectableRows: 'single' };
 
     const mountWrapper = mount(
-      <TableHead columns={columns} options={options} setCellRef={() => {}} handleHeadUpdateRef={handleHeadUpdateRef} />,
+      <DndProvider backend={HTML5Backend}>
+        <TableHead
+          columns={columns}
+          options={options}
+          setCellRef={() => {}}
+          handleHeadUpdateRef={handleHeadUpdateRef}
+        />
+      </DndProvider>,
     );
 
     const actualResult = mountWrapper.find(Checkbox);
@@ -150,7 +172,14 @@ describe('<TableHead />', function() {
     const options = { selectableRows: 'none' };
 
     const mountWrapper = mount(
-      <TableHead columns={columns} options={options} setCellRef={() => {}} handleHeadUpdateRef={handleHeadUpdateRef} />,
+      <DndProvider backend={HTML5Backend}>
+        <TableHead
+          columns={columns}
+          options={options}
+          setCellRef={() => {}}
+          handleHeadUpdateRef={handleHeadUpdateRef}
+        />
+      </DndProvider>,
     );
 
     const actualResult = mountWrapper.find(Checkbox);

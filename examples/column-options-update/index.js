@@ -12,7 +12,7 @@ class Example extends React.Component {
       [],
       []
     ],
-    filterOptions: ['this', 'test', 'is', 'working'],
+    filterOptions: ['Franky Miles', 'this', 'test', 'is', 'working'],
     display: ['true', 'true', 'true', 'true', 'true'],
     data: [
       ["Gabby George", "Business Analyst", "Minneapolis", 30, 100000],
@@ -73,7 +73,7 @@ class Example extends React.Component {
           filter: true,
           display: this.state.display[0],
           filterList: filterList[0].length ? filterList[0] : null,
-          customFilterListRender: v => `Name: ${v}`,
+          customFilterListOptions: { render: v => `Name: ${v}` },
           filterOptions: {
             names: filterOptions
           },
@@ -85,7 +85,7 @@ class Example extends React.Component {
           display: this.state.display[1],
           filter: true,
           filterList: filterList[1].length ? filterList[1] : null,
-          customFilterListRender: v => `Title: ${v}`,
+          customFilterListOptions: { render: v => `Title: ${v}` },
           filterType: 'textField' // set filterType's at the column level
         }
       },
@@ -93,7 +93,10 @@ class Example extends React.Component {
         name: "Location",
         options: {
           display: this.state.display[2],
-          filter: false,
+          filter: true,
+          filterOptions: {
+            fullWidth: true,
+          },
           filterList: filterList[2].length ? filterList[2] : null,
         }
       },
@@ -103,7 +106,7 @@ class Example extends React.Component {
           display: this.state.display[3],
           filter: true,
           filterList: filterList[3].length ? filterList[3] : null,
-          customFilterListRender: v => `Age: ${v}`,
+          customFilterListOptions: { render: v => `Age: ${v}` },
         }
       },
       {
@@ -112,7 +115,7 @@ class Example extends React.Component {
           display: this.state.display[4],
           filter: true,
           filterList: filterList[4].length ? filterList[4] : null,
-          customFilterListRender: v => `Salary: ${v}`,
+          customFilterListOptions: { render: v => `Salary: ${v}` },
           sort: false
         }
       }
@@ -125,9 +128,8 @@ class Example extends React.Component {
       },
       selectableRows: 'multiple',
       filterType: 'dropdown',
-      responsive: 'stacked',
+      responsive: 'vertical',
       rowsPerPage: 10,
-      page: 1,
     };
 
     return (
