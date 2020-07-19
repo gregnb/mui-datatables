@@ -724,6 +724,26 @@ describe('<MUIDataTable />', function() {
     assert.lengthOf(actualResult2, 1);
   });
 
+  it('should not render select toolbar when selectToolbarPlacement="none" and rowsSelected is inputted', () => {
+    const options = { selectToolbarPlacement: 'none', rowsSelected: [] };
+
+    // make all rows selected
+    data.forEach( (item, idx) => {
+      options.rowsSelected.push(idx);
+    });
+    options.rowsSelected.pop(); // all but 1 row is selected
+
+    options.searchText = 'J';
+
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    const actualResult = shallowWrapper.find(TableToolbarSelect);
+    assert.lengthOf(actualResult, 0);
+    const actualResult2 = shallowWrapper.find(TableToolbar);
+    assert.lengthOf(actualResult2, 1);
+  });
+
   it('should render both select toolbar and toolbar when selectToolbarPlacement="above"', () => {
     const options = { selectToolbarPlacement: 'above' };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();

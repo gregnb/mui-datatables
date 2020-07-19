@@ -96,7 +96,14 @@ describe('<TableResize />', function() {
     const instance = shallowWrapper.dive().instance();
 
     let evt = {
-      clientX: 50
+      clientX: 48
+    };
+    instance.onResizeStart(0, evt);
+    instance.onResizeMove(0, evt);
+    instance.onResizeEnd(0, evt);
+
+    evt = {
+      clientX: 52
     };
     instance.onResizeStart(0, evt);
     instance.onResizeMove(0, evt);
