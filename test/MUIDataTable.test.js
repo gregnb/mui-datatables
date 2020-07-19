@@ -1591,6 +1591,25 @@ describe('<MUIDataTable />', function() {
     ];
 
     assert.deepEqual(state.expandedRows.data, expectedResult);
+
+    assert.equal(instance.areAllRowsExpanded(), true);
+
+    // collapse
+    instance.toggleAllExpandableRows();
+    const state2 = shallowWrapper.state();
+    assert.deepEqual(state2.expandedRows.data, []);
+  });
+
+  it('should call onColumnOrderChange when updateColumnOrder is called', () => {
+    const options = {
+      onColumnOrderChange: spy(),
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.updateColumnOrder();
+
+    assert.deepEqual(options.onColumnOrderChange.callCount, 1);
   });
 
   it('should correctly call consoleWarnings', () => {
@@ -1610,11 +1629,32 @@ describe('<MUIDataTable />', function() {
     newCols[0].options = Object.assign({}, newCols[0].options);
     newCols[0].options.sortDirection = 'asc';
     newCols[0].options.filterOptions = [];
+    newCols[0].options.customFilterListRender = () => {};
     
     const shallowWrapper = shallow(<MUIDataTable columns={newCols} data={data} options={options} />).dive();
     const instance = shallowWrapper.instance();
 
-    assert.strictEqual(options.consoleWarnings.callCount, 10);
+    assert.strictEqual(options.consoleWarnings.callCount, 11);
+
+    let warnCallback = spy();
+    let oldResponsiveOptions = [
+      'scrollMaxHeight',
+      'scrollFullHeight',
+      'scrollFullHeightFullWidth',
+      'stacked',
+      'stackedFullWidth'
+    ];
+
+    oldResponsiveOptions.forEach( responsive => {
+      const options2 = {
+        responsive, 
+        consoleWarnings: warnCallback
+      };
+      const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options2} />).dive();
+      const instance = shallowWrapper.instance();
+    });
+
+    assert.strictEqual(warnCallback.callCount, 5);
   });
 
   it('should remove selected data on selectRowDelete when type=cell', () => {
