@@ -1702,8 +1702,9 @@ class MUIDataTable extends React.Component {
     }
   };
 
-  sortTable(data, col, order, columnSortFn=null) {
-    let dataSrc = this.options.customSort ? this.options.customSort(data, col, order || 'desc') : data;
+  sortTable(data, col, order, columnSortFn = null) {
+    let hasCustomTableSort = this.options.customSort && !columnSortFn;
+    let dataSrc = hasCustomTableSort ? this.options.customSort(data, col, order || 'desc') : data;
 
     let sortedData = dataSrc.map((row, sIndex) => ({
       data: row.data[col],
@@ -1712,7 +1713,7 @@ class MUIDataTable extends React.Component {
       rowSelected: this.state.selectedRows.lookup[row.index] ? true : false,
     }));
 
-    if (!this.options.customSort) {
+    if (!hasCustomTableSort) {
       const sortFn = columnSortFn || sortCompare;
       sortedData.sort(sortFn(order));
     }

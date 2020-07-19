@@ -30,7 +30,7 @@ describe('<MUIDataTable />', function() {
   let defaultRenderCustomFilterList = f => f;
   let renderCustomFilterList = f => `Name: ${f}`;
 
-  beforeEach(() => {
+  before(() => {
     columns = [
       {
         name: 'Name',
@@ -1170,7 +1170,8 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should sort provided column with custom column sort function (sort by name length) in descending order', () => {
-    columns[0].options.sortFn = (order) => ({data: val1}, {data: val2}) => (val1.length - val2.length) * (order === 'asc' ? 1 : -1);
+    columns[0].options.sortFn = order => ({ data: val1 }, { data: val2 }) =>
+      (val1.length - val2.length) * (order === 'asc' ? -1 : 1);
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
     const instance = shallowWrapper.instance();
 
@@ -1178,14 +1179,16 @@ describe('<MUIDataTable />', function() {
     shallowWrapper.update();
     const state = shallowWrapper.state();
 
-    const expectedResult = JSON.stringify([            
+    const expectedResult = JSON.stringify([
       { data: ['Houston, James', 'Test Corp', renderCities('Dallas', { rowIndex: 0 }), 'TX', undefined], dataIndex: 3 },
-      { data: ['Walsh, John', 'Test Corp', renderCities('Hartford', { rowIndex: 1 }), null, undefined], dataIndex: 1 },      
+      { data: ['Walsh, John', 'Test Corp', renderCities('Hartford', { rowIndex: 1 }), null, undefined], dataIndex: 1 },
       { data: ['James, Joe', 'Test Corp', renderCities('Yonkers', { rowIndex: 2 }), 'NY', undefined], dataIndex: 0 },
       { data: ['Herm, Bob', 'Test Corp', renderCities('Tampa', { rowIndex: 3 }), 'FL', undefined], dataIndex: 2 },
     ]);
 
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
+
+    columns[0].options.sortFn = null;
   });
 
   it('should toggle provided column when calling toggleViewCol method', () => {
