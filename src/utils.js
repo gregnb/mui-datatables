@@ -16,14 +16,16 @@ function escapeDangerousCSVCharacters(data) {
 }
 
 function warnDeprecated(warning, consoleWarnings = true) {
+  let consoleWarn = typeof consoleWarnings === 'function' ? consoleWarnings : console.warn;
   if (consoleWarnings) {
-    console.warn(`Deprecation Notice:  ${warning}`);
+    consoleWarn(`Deprecation Notice:  ${warning}`);
   }
 }
 
 function warnInfo(warning, consoleWarnings = true) {
+  let consoleWarn = typeof consoleWarnings === 'function' ? consoleWarnings : console.warn;
   if (consoleWarnings) {
-    console.warn(`${warning}`);
+    consoleWarn(`${warning}`);
   }
 }
 

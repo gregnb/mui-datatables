@@ -1566,6 +1566,57 @@ describe('<MUIDataTable />', function() {
     assert.deepEqual(state.expandedRows.data, expectedResult);
   });
 
+  it('should expand all rows when toggleAllExpandableRows is called', () => {
+    const options = {
+      expandableRows: true,
+      rowsExpanded: [],
+      renderExpandableRow: () => (
+        <tr>
+          <td>opened</td>
+        </tr>
+      ),
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.toggleAllExpandableRows();
+
+    const state = shallowWrapper.state();
+    
+    const expectedResult = [
+      { index: 0, dataIndex: 0 },
+      { index: 1, dataIndex: 1 },
+      { index: 2, dataIndex: 2 },
+      { index: 3, dataIndex: 3 },
+    ];
+
+    assert.deepEqual(state.expandedRows.data, expectedResult);
+  });
+
+  it('should correctly call consoleWarnings', () => {
+    const options = {
+      consoleWarnings: spy(),
+      responsive: 'scroll',
+      selectableRows: true,
+      onRowsSelect: () => {},
+      onRowsExpand: () => {},
+      fixedHeaderOptions: {},
+      serverSideFilterList: [1],
+      selectToolbarPlacement: 'topoftheworld',
+      disableToolbarSelect: true,
+    };
+    let newCols = columns.slice();
+    newCols[0] = Object.assign({}, newCols[0]);
+    newCols[0].options = Object.assign({}, newCols[0].options);
+    newCols[0].options.sortDirection = 'asc';
+    newCols[0].options.filterOptions = [];
+    
+    const shallowWrapper = shallow(<MUIDataTable columns={newCols} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    assert.strictEqual(options.consoleWarnings.callCount, 10);
+  });
+
   it('should remove selected data on selectRowDelete when type=cell', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
     const instance = shallowWrapper.instance();
