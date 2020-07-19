@@ -1642,7 +1642,8 @@ describe('<MUIDataTable />', function() {
       'scrollFullHeight',
       'scrollFullHeightFullWidth',
       'stacked',
-      'stackedFullWidth'
+      'stackedFullWidth',
+      'invalid_option'
     ];
 
     oldResponsiveOptions.forEach( responsive => {
@@ -1654,7 +1655,7 @@ describe('<MUIDataTable />', function() {
       const instance = shallowWrapper.instance();
     });
 
-    assert.strictEqual(warnCallback.callCount, 5);
+    assert.strictEqual(warnCallback.callCount, 6);
   });
 
   it('should remove selected data on selectRowDelete when type=cell', () => {
