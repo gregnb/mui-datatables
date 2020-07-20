@@ -1675,6 +1675,12 @@ describe('<MUIDataTable />', function() {
       const instance = shallowWrapper.instance();
     });
 
+    const options3 = {
+      consoleWarnings: false
+    };
+    const shallowWrapper3 = shallow(<MUIDataTable columns={columns} data={data} options={options3} />).dive();
+    const instance3 = shallowWrapper3.instance();
+
     assert.strictEqual(warnCallback.callCount, 6);
   });
 

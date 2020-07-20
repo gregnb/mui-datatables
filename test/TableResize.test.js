@@ -46,6 +46,8 @@ describe('<TableResize />', function() {
       colCoordCount++;
     }
 
+    shallowWrapper.unmount();
+
     assert.strictEqual(colCoordCount, 5);
   });
 
@@ -94,6 +96,8 @@ describe('<TableResize />', function() {
        <TableResize options={options} updateDividers={updateDividers} setResizeable={setResizeable} />
     );
     const instance = shallowWrapper.dive().instance();
+
+    instance.handleResize();
 
     let evt = {
       clientX: 48
