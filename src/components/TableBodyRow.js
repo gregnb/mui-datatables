@@ -39,7 +39,7 @@ class TableBodyRow extends React.Component {
             [classes.root]: true,
             [classes.hover]: options.rowHover,
             [classes.hoverCursor]: options.selectableRowsOnClick || options.expandableRowsOnClick,
-            [classes.responsiveStacked]: options.responsive === 'stacked',
+            [classes.responsiveStacked]: options.responsive === 'stacked' || options.responsive === 'stackedFullWidth',
           },
           className,
         )}

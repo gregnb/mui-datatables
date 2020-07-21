@@ -15,6 +15,17 @@ const defaultSelectCellStyles = theme => ({
     left: '0px',
     zIndex: 100,
   },
+  fixedHeaderCommon: {
+    position: 'sticky',
+    zIndex: 100,
+    backgroundColor: theme.palette.background.paper,
+  },
+  fixedHeaderXAxis: {
+    left: '0px',
+  },
+  fixedHeaderYAxis: {
+    top: '0px',
+  },
   icon: {
     cursor: 'pointer',
     transition: 'transform 0.25s',
@@ -29,6 +40,7 @@ const defaultSelectCellStyles = theme => ({
     zIndex: 110,
     backgroundColor: theme.palette.background.paper,
   },
+  expandDisabled: {},
   checkboxRoot: {},
   checked: {},
   disabled: {},
@@ -39,13 +51,20 @@ class TableSelectCell extends React.Component {
     /** Select cell checked on/off */
     checked: PropTypes.bool.isRequired,
     /** Select cell part of fixed header */
-    fixedHeader: PropTypes.bool.isRequired,
+    fixedHeader: PropTypes.bool,
+    /** Select cell part of fixed header */
+    fixedHeaderOptions: PropTypes.shape({
+      xAxis: PropTypes.bool,
+      yAxis: PropTypes.bool,
+    }),
     /** Callback to trigger cell update */
     onChange: PropTypes.func,
     /** Extend the style applied to components */
     classes: PropTypes.object,
     /** Is expandable option enabled */
     expandableOn: PropTypes.bool,
+    /** Adds extra class, `expandDisabled` when the row is not expandable. */
+    hideExpandButton: PropTypes.bool,
     /** Is selectable option enabled */
     selectableOn: PropTypes.string,
     /** Select cell disabled on/off */
@@ -62,6 +81,7 @@ class TableSelectCell extends React.Component {
     const {
       classes,
       fixedHeader,
+      fixedHeaderOptions,
       isHeaderCell,
       expandableOn,
       selectableOn,
@@ -69,15 +89,30 @@ class TableSelectCell extends React.Component {
       onExpand,
       isRowSelectable,
       selectableRowsHeader,
+      hideExpandButton,
       ...otherProps
     } = this.props;
+    let fixedHeaderClasses;
 
     if (!expandableOn && selectableOn === 'none') return false;
 
+    // DEPRECATED, make sure to replace defaults with new options when removing
+    if (fixedHeader) fixedHeaderClasses = classes.fixedHeader;
+
+    if (fixedHeaderOptions) {
+      fixedHeaderClasses = classes.fixedHeaderCommon;
+      if (fixedHeaderOptions.xAxis) fixedHeaderClasses += ` ${classes.fixedHeaderXAxis}`;
+      if (fixedHeaderOptions.yAxis) fixedHeaderClasses += ` ${classes.fixedHeaderYAxis}`;
+    }
+
     const cellClass = classNames({
       [classes.root]: true,
-      [classes.fixedHeader]: fixedHeader,
+      [fixedHeaderClasses]: true,
       [classes.headerCell]: isHeaderCell,
+    });
+
+    const buttonClass = classNames({
+      [classes.expandDisabled]: hideExpandButton,
     });
 
     const iconClass = classNames({
@@ -109,7 +144,7 @@ class TableSelectCell extends React.Component {
       <TableCell className={cellClass} padding="checkbox">
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {expandableOn && (
-            <IconButton onClick={onExpand} disabled={isHeaderCell}>
+            <IconButton onClick={onExpand} disabled={isHeaderCell} className={buttonClass}>
               <KeyboardArrowRight id="expandable-button" className={iconClass} />
             </IconButton>
           )}
