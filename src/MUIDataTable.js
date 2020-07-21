@@ -1326,7 +1326,6 @@ class MUIDataTable extends React.Component {
 
   sortTable(data, col, order) {
     let dataSrc = this.options.customSort ? this.options.customSort(data, col, order || 'desc') : data;
-    let sortedData = [];
 
     // reset the order by index
     const noSortData = data.reduce((r, i) => {
@@ -1334,7 +1333,7 @@ class MUIDataTable extends React.Component {
       return r;
     }, []);
 
-    sortedData = dataSrc.map((row, sIndex) => ({
+    let sortedData = dataSrc.map((row, sIndex) => ({
       data: row.data[col],
       rowData: row.data,
       position: sIndex,
