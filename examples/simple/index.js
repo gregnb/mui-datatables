@@ -20,7 +20,6 @@ function Example() {
     responsive,
     tableBodyHeight,
     tableBodyMaxHeight,
-    sortOrder: {},
     onTableChange: (action, state) => {
       console.log(action);
       console.dir(state);
