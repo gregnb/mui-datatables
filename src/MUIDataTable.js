@@ -1156,7 +1156,17 @@ class MUIDataTable extends React.Component {
   };
 
   getSortDirectionLabel(sortOrder) {
-    return sortOrder.direction === 'asc' ? 'ascending' : 'descending';
+    switch (sortOrder.direction) {
+      case 'asc':
+        return 'ascending';
+      case 'desc':
+        return 'descending';
+      case 'none':
+        return 'none';
+      default:
+        return;
+    }
+    // return sortOrder.direction === 'asc' ? 'ascending' : 'descending';
   }
 
   getTableProps() {
@@ -1173,10 +1183,31 @@ class MUIDataTable extends React.Component {
       prevState => {
         let columns = cloneDeep(prevState.columns);
         let data = prevState.data;
-        const newOrder =
-          columns[index].name === this.state.sortOrder.name && this.state.sortOrder.direction !== 'desc'
-            ? 'desc'
-            : 'asc';
+        let newOrder = '';
+
+        // const newOrder =
+        //   columns[index].name === this.state.sortOrder.name && this.state.sortOrder.direction !== 'desc'
+        //     ? 'desc'
+        //     : 'asc';
+
+        switch (this.state.sortOrder.direction) {
+          case undefined:
+            newOrder = 'asc';
+            break;
+          case 'desc':
+            newOrder = 'none';
+            break;
+          case 'asc':
+            newOrder = 'desc';
+            break;
+          case 'none':
+            newOrder = 'asc';
+            break;
+
+          default:
+            break;
+        }
+
         const newSortOrder = {
           name: columns[index].name,
           direction: newOrder,
@@ -1223,6 +1254,7 @@ class MUIDataTable extends React.Component {
       },
       () => {
         this.setTableAction('sort');
+
         if (this.options.onColumnSortChange) {
           this.options.onColumnSortChange(this.state.sortOrder.name, this.state.sortOrder.direction);
         }
@@ -1704,6 +1736,12 @@ class MUIDataTable extends React.Component {
   sortTable(data, col, order) {
     let dataSrc = this.options.customSort ? this.options.customSort(data, col, order || 'desc') : data;
 
+    // reset the order by index
+    const noSortData = data.reduce((r, i) => {
+      r[i.index] = i;
+      return r;
+    }, []);
+
     let sortedData = dataSrc.map((row, sIndex) => ({
       data: row.data[col],
       rowData: row.data,
@@ -1727,7 +1765,7 @@ class MUIDataTable extends React.Component {
     }
 
     return {
-      data: tableData,
+      data: order === 'none' ? noSortData : tableData,
       selectedRows: {
         lookup: buildMap(selectedRows),
         data: selectedRows,
