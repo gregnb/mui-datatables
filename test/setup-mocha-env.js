@@ -58,6 +58,7 @@ function setupDom() {
   global.Element = global.window.Element;
   global.Event = global.window.Event;
   global.dispatchEvent = global.window.dispatchEvent;
+  global.window.getComputedStyle = () => ({});
 
   Object.defineProperty(global.window.URL, 'createObjectURL', { value: () => {} });
   global.Blob = () => '';

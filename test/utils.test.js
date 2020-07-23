@@ -9,6 +9,7 @@ describe('utils.js', () => {
       assert.strictEqual(escapeDangerousCSVCharacters('-SUM(1+1)'), "'-SUM(1+1)");
       assert.strictEqual(escapeDangerousCSVCharacters('=SUM(1+1)'), "'=SUM(1+1)");
       assert.strictEqual(escapeDangerousCSVCharacters('@SUM(1+1)'), "'@SUM(1+1)");
+      assert.equal(escapeDangerousCSVCharacters(123), 123);
     });
   });
 

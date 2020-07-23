@@ -460,13 +460,13 @@ class MUIDataTable extends React.Component {
     if (this.options.fixedHeaderOptions) {
       if (
         typeof this.options.fixedHeaderOptions.yAxis !== 'undefined' &&
-        typeof this.options.fixedHeader !== 'undefined'
+        typeof this.options.fixedHeader === 'undefined'
       ) {
         this.options.fixedHeader = this.options.fixedHeaderOptions.yAxis;
       }
       if (
         typeof this.options.fixedHeaderOptions.xAxis !== 'undefined' &&
-        typeof this.options.fixedSelectColumn !== 'undefined'
+        typeof this.options.fixedSelectColumn === 'undefined'
       ) {
         this.options.fixedSelectColumn = this.options.fixedHeaderOptions.xAxis;
       }
@@ -1525,10 +1525,9 @@ class MUIDataTable extends React.Component {
       },
       () => {
         this.setTableAction('rowExpansionChange');
-        if (this.options.onRowExpansionChange) {
-          this.options.onRowExpansionChange(this.state.curExpandedRows, this.state.expandedRows.data);
-        } else if (this.options.onRowsExpand) {
-          this.options.onRowsExpand(this.state.curExpandedRows, this.state.expandedRows.data);
+        if (this.options.onRowExpansionChange || this.options.onRowsExpand) {
+          let expandCallback = this.options.onRowExpansionChange || this.options.onRowsExpand;
+          expandCallback(this.state.curExpandedRows, this.state.expandedRows.data);
         }
       },
     );

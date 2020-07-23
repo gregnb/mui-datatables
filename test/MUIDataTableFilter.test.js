@@ -258,6 +258,59 @@ describe('<TableFilter />', function() {
     assert.strictEqual(actualResult.length, 1);
   });
 
+  it('should invoke applyFilters from customFooter callback', () => {
+    const CustomFooter = (filterList, applyFilters) => {
+      applyFilters();
+      return (<div id="custom-footer">customFooter</div>)
+    };
+    const options = { textLabels: getTextLabels(), onFilterConfirm: spy() };
+    const filterList = [[], [], [], []];
+    const onFilterUpdate = spy();
+    const handleClose = spy();
+
+    const shallowWrapper = shallow(
+      <TableFilter
+        customFooter={CustomFooter}
+        columns={columns}
+        onFilterUpdate={onFilterUpdate}
+        filterData={filterData}
+        filterList={filterList}
+        options={options}
+        handleClose={handleClose}
+      />,
+    ).dive();
+
+    assert.equal(options.onFilterConfirm.callCount, 1);
+    assert.equal(handleClose.callCount, 1);
+  });
+
+  it('should invoke onFilterReset when reset is pressed', () => {
+    const options = { textLabels: getTextLabels() };
+    const filterList = [[], [], [], []];
+    const onFilterUpdate = spy();
+    const handleClose = spy();
+    const onFilterReset = spy();
+
+    const wrapper = mount(
+      <TableFilter
+        columns={columns}
+        onFilterUpdate={onFilterUpdate}
+        filterData={filterData}
+        filterList={filterList}
+        options={options}
+        handleClose={handleClose}
+        onFilterReset={onFilterReset}
+      />,
+    );
+
+    wrapper.find('[data-testid="filterReset-button"]').at(0).simulate('click');
+
+    assert.equal(onFilterReset.callCount, 1);
+    assert.equal(handleClose.callCount, 0);
+
+    wrapper.unmount();
+  });
+
   it('should trigger onFilterUpdate prop callback when calling method handleCheckboxChange', () => {
     const options = { filterType: 'checkbox', textLabels: getTextLabels() };
     const filterList = [[], [], [], []];

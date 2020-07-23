@@ -734,6 +734,26 @@ describe('<MUIDataTable />', function() {
     assert.lengthOf(actualResult2, 1);
   });
 
+  it('should not render select toolbar when selectToolbarPlacement="none" and rowsSelected is inputted', () => {
+    const options = { selectToolbarPlacement: 'none', rowsSelected: [] };
+
+    // make all rows selected
+    data.forEach( (item, idx) => {
+      options.rowsSelected.push(idx);
+    });
+    options.rowsSelected.pop(); // all but 1 row is selected
+
+    options.searchText = 'J';
+
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    const actualResult = shallowWrapper.find(TableToolbarSelect);
+    assert.lengthOf(actualResult, 0);
+    const actualResult2 = shallowWrapper.find(TableToolbar);
+    assert.lengthOf(actualResult2, 1);
+  });
+
   it('should render both select toolbar and toolbar when selectToolbarPlacement="above"', () => {
     const options = { selectToolbarPlacement: 'above' };
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
@@ -1601,6 +1621,104 @@ describe('<MUIDataTable />', function() {
     ];
 
     assert.deepEqual(state.expandedRows.data, expectedResult);
+  });
+
+  it('should expand all rows when toggleAllExpandableRows is called', () => {
+    const options = {
+      expandableRows: true,
+      rowsExpanded: [],
+      renderExpandableRow: () => (
+        <tr>
+          <td>opened</td>
+        </tr>
+      ),
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.toggleAllExpandableRows();
+
+    const state = shallowWrapper.state();
+    
+    const expectedResult = [
+      { index: 0, dataIndex: 0 },
+      { index: 1, dataIndex: 1 },
+      { index: 2, dataIndex: 2 },
+      { index: 3, dataIndex: 3 },
+    ];
+
+    assert.deepEqual(state.expandedRows.data, expectedResult);
+
+    assert.equal(instance.areAllRowsExpanded(), true);
+
+    // collapse
+    instance.toggleAllExpandableRows();
+    const state2 = shallowWrapper.state();
+    assert.deepEqual(state2.expandedRows.data, []);
+  });
+
+  it('should call onColumnOrderChange when updateColumnOrder is called', () => {
+    const options = {
+      onColumnOrderChange: spy(),
+    };
+    const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    instance.updateColumnOrder();
+
+    assert.deepEqual(options.onColumnOrderChange.callCount, 1);
+  });
+
+  it('should correctly call consoleWarnings', () => {
+    const options = {
+      consoleWarnings: spy(),
+      responsive: 'scroll',
+      selectableRows: true,
+      onRowsSelect: () => {},
+      onRowsExpand: () => {},
+      fixedHeaderOptions: {},
+      serverSideFilterList: [1],
+      selectToolbarPlacement: 'topoftheworld',
+      disableToolbarSelect: true,
+    };
+    let newCols = columns.slice();
+    newCols[0] = Object.assign({}, newCols[0]);
+    newCols[0].options = Object.assign({}, newCols[0].options);
+    newCols[0].options.sortDirection = 'asc';
+    newCols[0].options.filterOptions = [];
+    newCols[0].options.customFilterListRender = () => {};
+    
+    const shallowWrapper = shallow(<MUIDataTable columns={newCols} data={data} options={options} />).dive();
+    const instance = shallowWrapper.instance();
+
+    assert.strictEqual(options.consoleWarnings.callCount, 11);
+
+    let warnCallback = spy();
+    let oldResponsiveOptions = [
+      'scrollMaxHeight',
+      'scrollFullHeight',
+      'scrollFullHeightFullWidth',
+      'stacked',
+      'stackedFullWidth',
+      'invalid_option'
+    ];
+
+    oldResponsiveOptions.forEach( responsive => {
+      const options2 = {
+        responsive, 
+        consoleWarnings: warnCallback
+      };
+      const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options2} />).dive();
+      const instance = shallowWrapper.instance();
+    });
+
+    const options3 = {
+      consoleWarnings: false
+    };
+    const shallowWrapper3 = shallow(<MUIDataTable columns={columns} data={data} options={options3} />).dive();
+    const instance3 = shallowWrapper3.instance();
+
+    assert.strictEqual(warnCallback.callCount, 6);
   });
 
   it('should remove selected data on selectRowDelete when type=cell', () => {
