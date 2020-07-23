@@ -112,7 +112,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         customFilterListOptions: { render: renderCustomFilterList },
         customBodyRender: renderName,
-        sortFn: null,
+        sortCompare: null,
       },
       {
         display: 'true',
@@ -125,7 +125,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortFn: null,
+        sortCompare: null,
       },
       {
         display: 'true',
@@ -140,7 +140,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         viewColumns: true,
         customBodyRender: renderCities,
-        sortFn: null,
+        sortCompare: null,
       },
       {
         display: 'true',
@@ -156,7 +156,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         customBodyRender: renderState,
         customHeadRender: renderHead,
-        sortFn: null,
+        sortCompare: null,
       },
       {
         display: 'true',
@@ -170,7 +170,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortFn: null,
+        sortCompare: null,
       },
     ];
 
@@ -217,7 +217,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         customFilterListOptions: { render: renderCustomFilterList },
         customBodyRender: renderName,
-        sortFn: null,
+        sortCompare: null,
       },
       {
         display: 'true',
@@ -230,7 +230,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortFn: null,
+        sortCompare: null,
       },
       {
         display: 'true',
@@ -245,7 +245,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         viewColumns: true,
         customBodyRender: renderCities,
-        sortFn: null,
+        sortCompare: null,
       },
       {
         display: 'true',
@@ -261,7 +261,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         customBodyRender: renderState,
         customHeadRender: renderHead,
-        sortFn: null,
+        sortCompare: null,
       },
       {
         display: 'true',
@@ -275,7 +275,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortFn: null,
+        sortCompare: null,
       },
     ];
 
@@ -1170,7 +1170,7 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should sort provided column with custom column sort function (sort by name length) in descending order', () => {
-    columns[0].options.sortFn = order => ({ data: val1 }, { data: val2 }) =>
+    columns[0].options.sortCompare = order => ({ data: val1 }, { data: val2 }) =>
       (val1.length - val2.length) * (order === 'asc' ? -1 : 1);
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />).dive();
     const instance = shallowWrapper.instance();
@@ -1188,7 +1188,7 @@ describe('<MUIDataTable />', function() {
 
     assert.deepEqual(JSON.stringify(state.displayData), expectedResult);
 
-    columns[0].options.sortFn = null;
+    columns[0].options.sortCompare = null;
   });
 
   it('should toggle provided column when calling toggleViewCol method', () => {
@@ -1215,7 +1215,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         customBodyRender: renderName,
         viewColumns: true,
-        sortFn: null,
+        sortCompare: null,
         customFilterListOptions: { render: renderCustomFilterList },
       },
       {
@@ -1229,7 +1229,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortFn: null,
+        sortCompare: null,
       },
       {
         name: 'City',
@@ -1244,7 +1244,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         customBodyRender: renderCities,
         viewColumns: true,
-        sortFn: null,
+        sortCompare: null,
       },
       {
         name: 'State',
@@ -1260,7 +1260,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         customBodyRender: renderState,
         customHeadRender: renderHead,
-        sortFn: null,
+        sortCompare: null,
       },
       {
         name: 'Empty',
@@ -1274,7 +1274,7 @@ describe('<MUIDataTable />', function() {
         download: true,
         searchable: true,
         viewColumns: true,
-        sortFn: null,
+        sortCompare: null,
       },
     ];
 

@@ -19,12 +19,12 @@ class Example extends React.Component {
         options: {
           /*
             In this case, age is a string, but we want to compare it as if it was a number.
-            If you comment out the sortFn method, you'll see how sorting as a string
+            If you comment out the sortCompare method, you'll see how sorting as a string
             is different than sorting as a number. Typically an age field would be a number
-            so we wouldn't need to write a function like this. But the sortFn is available
+            so we wouldn't need to write a function like this. But the sortCompare is available
             if you run into a situation like this.
           */
-          sortFn: (order) => {
+          sortCompare: (order) => {
             return (obj1, obj2) => {
               console.log(order);
               var val1 = parseInt(obj1.data, 10);
@@ -37,7 +37,7 @@ class Example extends React.Component {
       {
         name: "Hobbies",
         options: {
-          sortFn: (order) =>
+          sortCompare: (order) =>
             ({ data: hobbyList1 }, { data: hobbyList2 }) =>
               (hobbyList1.length - hobbyList2.length) * (order === 'asc' ? 1 : -1),
           hint: 'Sort by amount of hobbies',
