@@ -580,6 +580,7 @@ class MUIDataTable extends React.Component {
         searchable: true,
         download: true,
         viewColumns: true,
+        sortCompare: null,
       };
 
       columnOrder.push(colIndex);
@@ -870,7 +871,7 @@ class MUIDataTable extends React.Component {
     }
 
     if (!this.options.serverSide && sortIndex !== null) {
-      const sortedData = this.sortTable(tableData, sortIndex, sortDirection);
+      const sortedData = this.sortTable(tableData, sortIndex, sortDirection, columns[sortIndex].sortCompare);
       tableData = sortedData.data;
     }
 
@@ -1200,7 +1201,7 @@ class MUIDataTable extends React.Component {
             sortOrder: newSortOrder,
           };
         } else {
-          const sortedData = this.sortTable(data, index, newOrder);
+          const sortedData = this.sortTable(data, index, newOrder, columns[index].sortCompare);
 
           newState = {
             ...newState,
@@ -1701,8 +1702,9 @@ class MUIDataTable extends React.Component {
     }
   };
 
-  sortTable(data, col, order) {
-    let dataSrc = this.options.customSort ? this.options.customSort(data, col, order || 'desc') : data;
+  sortTable(data, col, order, columnSortCompare = null) {
+    let hasCustomTableSort = this.options.customSort && !columnSortCompare;
+    let dataSrc = hasCustomTableSort ? this.options.customSort(data, col, order || 'desc') : data;
 
     let sortedData = dataSrc.map((row, sIndex) => ({
       data: row.data[col],
@@ -1711,8 +1713,9 @@ class MUIDataTable extends React.Component {
       rowSelected: this.state.selectedRows.lookup[row.index] ? true : false,
     }));
 
-    if (!this.options.customSort) {
-      sortedData.sort(sortCompare(order));
+    if (!hasCustomTableSort) {
+      const sortFn = columnSortCompare || sortCompare;
+      sortedData.sort(sortFn(order));
     }
 
     let tableData = [];

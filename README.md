@@ -162,7 +162,7 @@ The component accepts the following props:
 |**`customRowRender `**|function||Override default row rendering with custom function. `customRowRender(data, dataIndex, rowIndex) => React Component`
 |**`customSearch `**|function||Override default search with custom function. `customSearch(searchQuery: string, currentRow: array, columns: array) => boolean`
 |**`customSearchRender `**|function||Render a custom table search. `customSearchRender(searchText: string, handleSearch, hideSearch, options) => React Component`
-|**`customSort`**|function||Override default sorting with custom function. `function(data: array, colIndex: number, order: string) => array`
+|**`customSort`**|function||Override default sorting with custom function. If you just need to override the sorting for a particular column, see the sortCompare method in the [column options](https://github.com/gregnb/mui-datatables#column-options). `function(data: array, colIndex: number, order: string) => array` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-sorting/index.js)
 |**`customTableBodyFooterRender`**|function||Render a footer under the table body but above the table's standard footer. This is useful for creating footers for individual columns. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-footer/index.js)
 |**`customToolbar`**|function||Render a custom toolbar
 |**`customToolbarSelect`**|function||Render a custom selected rows toolbar. `function(selectedRows, displayData, setSelectedRows) => void`
@@ -282,6 +282,7 @@ const columns = [
 |**`setCellHeaderProps`**|function||Is called for each header cell and allows you to return custom props for the header cell based on its data. `function(columnMeta: object) => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
 |**`setCellProps`**|function||Is called for each cell and allows to you return custom props for this cell based on its data. `function(cellValue: string, rowIndex: number, columnIndex: number) => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
 |**`sort`**|boolean|true|Enable/disable sorting on column.
+|**`sortCompare`**|function||Custom sort function for the column. Takes in an order string and returns a function that compares the two column values. If this method and options.customSort are both defined, this method will take precedence. `(order) => ({data: val1}, {data: val2}) => number` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-sort/index.js). Note: currently doesn't work with table `customSort`
 |**`viewColumns`**|boolean|true|Allow user to toggle column visibility through 'View Column' list.
 
 `customHeadRender` is called with these arguments:
