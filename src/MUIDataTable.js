@@ -151,6 +151,7 @@ class MUIDataTable extends React.Component {
             customFilterListRender: PropTypes.func,
             setCellProps: PropTypes.func,
             setCellHeaderProps: PropTypes.func,
+            sortThirdClickReset: PropTypes.bool,
           }),
         }),
       ]),
@@ -581,6 +582,7 @@ class MUIDataTable extends React.Component {
         download: true,
         viewColumns: true,
         sortCompare: null,
+        sortThirdClickReset: false,
       };
 
       columnOrder.push(colIndex);
@@ -645,15 +647,6 @@ class MUIDataTable extends React.Component {
   };
 
   transformData = (columns, data) => {
-    // deprecation warning for nested data parsing
-    columns.forEach(col => {
-      if (col.name && col.name.indexOf('.') !== -1 && !this.options.enableNestedDataAccess) {
-        this.warnInfo(
-          'Columns with a dot will no longer be treated as nested data by default. Please see the enableNestedDataAccess option for more information: https://github.com/gregnb/mui-datatables#options',
-        );
-      }
-    });
-
     const { enableNestedDataAccess } = this.options;
     const leaf = (obj, path) =>
       (enableNestedDataAccess ? path.split(enableNestedDataAccess) : path.split()).reduce(
@@ -1165,9 +1158,8 @@ class MUIDataTable extends React.Component {
       case 'none':
         return 'none';
       default:
-        return;
+        return '';
     }
-    // return sortOrder.direction === 'asc' ? 'ascending' : 'descending';
   }
 
   getTableProps() {
@@ -1184,29 +1176,20 @@ class MUIDataTable extends React.Component {
       prevState => {
         let columns = cloneDeep(prevState.columns);
         let data = prevState.data;
-        let newOrder = '';
+        let newOrder = 'asc'; // default
 
-        // const newOrder =
-        //   columns[index].name === this.state.sortOrder.name && this.state.sortOrder.direction !== 'desc'
-        //     ? 'desc'
-        //     : 'asc';
-
-        switch (this.state.sortOrder.direction) {
-          case undefined:
-            newOrder = 'asc';
-            break;
-          case 'desc':
-            newOrder = 'none';
-            break;
-          case 'asc':
-            newOrder = 'desc';
-            break;
-          case 'none':
-            newOrder = 'asc';
-            break;
-
-          default:
-            break;
+        if (columns[index].name === this.state.sortOrder.name) {
+          switch (this.state.sortOrder.direction) {
+            case 'desc':
+              newOrder = columns[index].sortThirdClickReset ? 'none' : 'asc';
+              break;
+            case 'asc':
+              newOrder = 'desc';
+              break;
+            case 'none':
+              newOrder = 'asc';
+              break;
+          }
         }
 
         const newSortOrder = {
@@ -1738,10 +1721,13 @@ class MUIDataTable extends React.Component {
     let dataSrc = hasCustomTableSort ? this.options.customSort(data, col, order || 'desc') : data;
 
     // reset the order by index
-    const noSortData = data.reduce((r, i) => {
-      r[i.index] = i;
-      return r;
-    }, []);
+    let noSortData;
+    if (order === 'none') {
+      noSortData = data.reduce((r, i) => {
+        r[i.index] = i;
+        return r;
+      }, []);
+    }
 
     let sortedData = dataSrc.map((row, sIndex) => ({
       data: row.data[col],

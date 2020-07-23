@@ -261,7 +261,7 @@ describe('<TableFilter />', function() {
   it('should invoke applyFilters from customFooter callback', () => {
     const CustomFooter = (filterList, applyFilters) => {
       applyFilters();
-      return (<div id="custom-footer">customFooter</div>)
+      return <div id="custom-footer">customFooter</div>;
     };
     const options = { textLabels: getTextLabels(), onFilterConfirm: spy() };
     const filterList = [[], [], [], []];
@@ -303,7 +303,10 @@ describe('<TableFilter />', function() {
       />,
     );
 
-    wrapper.find('[data-testid="filterReset-button"]').at(0).simulate('click');
+    wrapper
+      .find('[data-testid="filterReset-button"]')
+      .at(0)
+      .simulate('click');
 
     assert.equal(onFilterReset.callCount, 1);
     assert.equal(handleClose.callCount, 0);

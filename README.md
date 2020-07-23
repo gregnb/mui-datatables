@@ -282,7 +282,9 @@ const columns = [
 |**`setCellHeaderProps`**|function||Is called for each header cell and allows you to return custom props for the header cell based on its data. `function(columnMeta: object) => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
 |**`setCellProps`**|function||Is called for each cell and allows to you return custom props for this cell based on its data. `function(cellValue: string, rowIndex: number, columnIndex: number) => object` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-styling/index.js)
 |**`sort`**|boolean|true|Enable/disable sorting on column.
-|**`sortCompare`**|function||Custom sort function for the column. Takes in an order string and returns a function that compares the two column values. If this method and options.customSort are both defined, this method will take precedence. `(order) => ({data: val1}, {data: val2}) => number` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-sort/index.js). Note: currently doesn't work with table `customSort`
+|**`sortCompare`**|function||Custom sort function for the column. Takes in an order string and returns a function that compares the two column values. If this method and options.customSort are both defined, this method will take precedence. `(order) => ({data: val1}, {data: val2}) => number` 
+|**`sortThirdClickReset`**|boolean|false|Allows for a third click on a column header to undo any sorting on the column. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-columns/index.js)
+[Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-sort/index.js). Note: currently doesn't work with table `customSort`
 |**`viewColumns`**|boolean|true|Allow user to toggle column visibility through 'View Column' list.
 
 `customHeadRender` is called with these arguments:

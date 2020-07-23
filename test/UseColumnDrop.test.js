@@ -5,8 +5,7 @@ import { assert, expect, should } from 'chai';
 import { getColModel, reorderColumns, handleHover } from '../src/hooks/useColumnDrop';
 
 describe('useColumnDrop', function() {
-  before(() => {
-  });
+  before(() => {});
 
   it('should reorder columns when reorderColumns is called', () => {
     let prevColumnOrder = [1, 2, 3, 4];
@@ -23,31 +22,31 @@ describe('useColumnDrop', function() {
     let headCellRefs = {
       0: {
         offsetLeft: 0,
-        offsetParent: 0, 
-        offsetWidth: 0, 
+        offsetParent: 0,
+        offsetWidth: 0,
         offsetParent: offsetParent,
       },
       1: {
         offsetLeft: 0,
-        offsetParent: 0, 
-        offsetWidth: 0, 
+        offsetParent: 0,
+        offsetWidth: 0,
         offsetParent: null,
       },
       2: {
         offsetLeft: 0,
-        offsetParent: 0, 
-        offsetWidth: 0, 
+        offsetParent: 0,
+        offsetWidth: 0,
         offsetParent: null,
       },
     };
     let columnOrder = [0, 1];
     let columns = [
       {
-        display: 'true'
+        display: 'true',
       },
       {
-        display: 'true'
-      }
+        display: 'true',
+      },
     ];
 
     let newModel = getColModel(headCellRefs, columnOrder, columns);
@@ -63,25 +62,25 @@ describe('useColumnDrop', function() {
       0: null,
       1: {
         offsetLeft: 0,
-        offsetParent: 0, 
-        offsetWidth: 0, 
+        offsetParent: 0,
+        offsetWidth: 0,
         offsetParent: null,
       },
       2: {
         offsetLeft: 0,
-        offsetParent: 0, 
-        offsetWidth: 0, 
+        offsetParent: 0,
+        offsetWidth: 0,
         offsetParent: null,
       },
     };
     let columnOrder = [0, 1];
     let columns = [
       {
-        display: 'true'
+        display: 'true',
       },
       {
-        display: 'true'
-      }
+        display: 'true',
+      },
     ];
 
     let newModel = getColModel(headCellRefs, columnOrder, columns);
@@ -99,22 +98,22 @@ describe('useColumnDrop', function() {
     let headCellRefs = {
       0: {
         offsetLeft: 0,
-        offsetParent: 0, 
-        offsetWidth: 0, 
+        offsetParent: 0,
+        offsetWidth: 0,
         offsetParent: offsetParent,
         style: {},
       },
       1: {
         offsetLeft: 0,
-        offsetParent: 0, 
-        offsetWidth: 10, 
+        offsetParent: 0,
+        offsetWidth: 10,
         offsetParent: null,
         style: {},
       },
       2: {
         offsetLeft: 0,
-        offsetParent: 0, 
-        offsetWidth: 10, 
+        offsetParent: 0,
+        offsetWidth: 10,
         offsetParent: null,
         style: {},
       },
@@ -122,21 +121,21 @@ describe('useColumnDrop', function() {
     let columnOrder = [0, 1];
     let columns = [
       {
-        display: 'true'
+        display: 'true',
       },
       {
-        display: 'true'
-      }
+        display: 'true',
+      },
     ];
     let timers = {
-      columnShift: null
+      columnShift: null,
     };
 
     handleHover({
       item: {
         columnIndex: 0,
         left: 0,
-        style: {}
+        style: {},
       },
       mon: {
         getItem: () => ({
@@ -144,8 +143,8 @@ describe('useColumnDrop', function() {
           headCellRefs: headCellRefs,
         }),
         getClientOffset: () => ({
-          x: 15
-        })
+          x: 15,
+        }),
       },
       index: 0,
       headCellRefs,
@@ -153,16 +152,16 @@ describe('useColumnDrop', function() {
       columnOrder: [0, 1],
       transitionTime: 0,
       tableRef: {
-        querySelectorAll: () => (
-          [{
-            style: {}
-          }]
-        )
+        querySelectorAll: () => [
+          {
+            style: {},
+          },
+        ],
       },
       tableId: '123',
       timers,
       columns,
-    })
+    });
 
     expect(timers.columnShift).to.not.equal(null);
   });

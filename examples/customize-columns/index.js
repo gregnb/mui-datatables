@@ -12,6 +12,7 @@ class Example extends React.Component {
         options: {
           filter: true,
           display: 'excluded',
+          sortThirdClickReset: true,
         }
       },      
       {
@@ -19,12 +20,14 @@ class Example extends React.Component {
         name: "Title",
         options: {
           filter: true,
+          sortThirdClickReset: true,
         }
       },
       {
         name: "Location",
         options: {
           filter: false,
+          sortThirdClickReset: true,
           customHeadRender: (columnMeta, updateDirection) => (
             <th key={2} onClick={() => updateDirection(2)} style={{ cursor: 'pointer' }}>
               {columnMeta.name}
@@ -36,13 +39,15 @@ class Example extends React.Component {
         name: "Age",
         options: {
           filter: true,
+          sortThirdClickReset: true,
         }
       },
       {
         name: "Salary",
         options: {
           filter: true,
-          sort: false
+          sort: false,
+          sortThirdClickReset: true,
         }
       }      
     ];

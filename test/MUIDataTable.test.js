@@ -113,6 +113,7 @@ describe('<MUIDataTable />', function() {
         customFilterListOptions: { render: renderCustomFilterList },
         customBodyRender: renderName,
         sortCompare: null,
+        sortThirdClickReset: false,
       },
       {
         display: 'true',
@@ -126,6 +127,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         viewColumns: true,
         sortCompare: null,
+        sortThirdClickReset: false,
       },
       {
         display: 'true',
@@ -141,6 +143,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         customBodyRender: renderCities,
         sortCompare: null,
+        sortThirdClickReset: false,
       },
       {
         display: 'true',
@@ -157,6 +160,7 @@ describe('<MUIDataTable />', function() {
         customBodyRender: renderState,
         customHeadRender: renderHead,
         sortCompare: null,
+        sortThirdClickReset: false,
       },
       {
         display: 'true',
@@ -171,6 +175,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         viewColumns: true,
         sortCompare: null,
+        sortThirdClickReset: false,
       },
     ];
 
@@ -218,6 +223,7 @@ describe('<MUIDataTable />', function() {
         customFilterListOptions: { render: renderCustomFilterList },
         customBodyRender: renderName,
         sortCompare: null,
+        sortThirdClickReset: false,
       },
       {
         display: 'true',
@@ -231,6 +237,8 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         viewColumns: true,
         sortCompare: null,
+        sortThirdClickReset: false,
+
       },
       {
         display: 'true',
@@ -246,6 +254,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         customBodyRender: renderCities,
         sortCompare: null,
+        sortThirdClickReset: false,
       },
       {
         display: 'true',
@@ -262,6 +271,7 @@ describe('<MUIDataTable />', function() {
         customBodyRender: renderState,
         customHeadRender: renderHead,
         sortCompare: null,
+        sortThirdClickReset: false,
       },
       {
         display: 'true',
@@ -276,6 +286,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         viewColumns: true,
         sortCompare: null,
+        sortThirdClickReset: false,
       },
     ];
 
@@ -738,7 +749,7 @@ describe('<MUIDataTable />', function() {
     const options = { selectToolbarPlacement: 'none', rowsSelected: [] };
 
     // make all rows selected
-    data.forEach( (item, idx) => {
+    data.forEach((item, idx) => {
       options.rowsSelected.push(idx);
     });
     options.rowsSelected.pop(); // all but 1 row is selected
@@ -1236,6 +1247,7 @@ describe('<MUIDataTable />', function() {
         customBodyRender: renderName,
         viewColumns: true,
         sortCompare: null,
+        sortThirdClickReset: false,
         customFilterListOptions: { render: renderCustomFilterList },
       },
       {
@@ -1250,6 +1262,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         viewColumns: true,
         sortCompare: null,
+        sortThirdClickReset: false,
       },
       {
         name: 'City',
@@ -1265,6 +1278,7 @@ describe('<MUIDataTable />', function() {
         customBodyRender: renderCities,
         viewColumns: true,
         sortCompare: null,
+        sortThirdClickReset: false,
       },
       {
         name: 'State',
@@ -1281,6 +1295,7 @@ describe('<MUIDataTable />', function() {
         customBodyRender: renderState,
         customHeadRender: renderHead,
         sortCompare: null,
+        sortThirdClickReset: false,
       },
       {
         name: 'Empty',
@@ -1295,6 +1310,7 @@ describe('<MUIDataTable />', function() {
         searchable: true,
         viewColumns: true,
         sortCompare: null,
+        sortThirdClickReset: false,
       },
     ];
 
@@ -1639,7 +1655,7 @@ describe('<MUIDataTable />', function() {
     instance.toggleAllExpandableRows();
 
     const state = shallowWrapper.state();
-    
+
     const expectedResult = [
       { index: 0, dataIndex: 0 },
       { index: 1, dataIndex: 1 },
@@ -1687,7 +1703,7 @@ describe('<MUIDataTable />', function() {
     newCols[0].options.sortDirection = 'asc';
     newCols[0].options.filterOptions = [];
     newCols[0].options.customFilterListRender = () => {};
-    
+
     const shallowWrapper = shallow(<MUIDataTable columns={newCols} data={data} options={options} />).dive();
     const instance = shallowWrapper.instance();
 
@@ -1700,20 +1716,20 @@ describe('<MUIDataTable />', function() {
       'scrollFullHeightFullWidth',
       'stacked',
       'stackedFullWidth',
-      'invalid_option'
+      'invalid_option',
     ];
 
-    oldResponsiveOptions.forEach( responsive => {
+    oldResponsiveOptions.forEach(responsive => {
       const options2 = {
-        responsive, 
-        consoleWarnings: warnCallback
+        responsive,
+        consoleWarnings: warnCallback,
       };
       const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} options={options2} />).dive();
       const instance = shallowWrapper.instance();
     });
 
     const options3 = {
-      consoleWarnings: false
+      consoleWarnings: false,
     };
     const shallowWrapper3 = shallow(<MUIDataTable columns={columns} data={data} options={options3} />).dive();
     const instance3 = shallowWrapper3.instance();

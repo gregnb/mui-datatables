@@ -78,7 +78,7 @@ class TableResize extends React.Component {
 
     let parentOffsetLeft = getParentOffsetLeft(tableEl);
     let finalCells = Object.entries(this.cellsRef);
-    
+
     finalCells.forEach(([key, item], idx) => {
       if (!item) return;
       let elRect = item.getBoundingClientRect();

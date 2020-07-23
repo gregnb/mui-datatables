@@ -73,41 +73,41 @@ describe('<TableResize />', function() {
           height: 100,
         }),
         style: {},
-      }
+      },
     };
     let tableRef = {
       style: {
-        width: '100px'
+        width: '100px',
       },
       getBoundingClientRect: () => ({
         width: 100,
-        height: 100
+        height: 100,
       }),
       offsetParent: {
-        offsetLeft: 0
-      }
+        offsetLeft: 0,
+      },
     };
 
-    const setResizeable = (next) => {
+    const setResizeable = next => {
       next(cellsRef, tableRef);
     };
 
     const shallowWrapper = shallow(
-       <TableResize options={options} updateDividers={updateDividers} setResizeable={setResizeable} />
+      <TableResize options={options} updateDividers={updateDividers} setResizeable={setResizeable} />,
     );
     const instance = shallowWrapper.dive().instance();
 
     instance.handleResize();
 
     let evt = {
-      clientX: 48
+      clientX: 48,
     };
     instance.onResizeStart(0, evt);
     instance.onResizeMove(0, evt);
     instance.onResizeEnd(0, evt);
 
     evt = {
-      clientX: 52
+      clientX: 52,
     };
     instance.onResizeStart(0, evt);
     instance.onResizeMove(0, evt);

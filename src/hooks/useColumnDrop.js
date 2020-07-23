@@ -45,7 +45,7 @@ const getColModel = (headCellRefs, columnOrder, columns) => {
   columnOrder.forEach((colIdx, idx) => {
     let col = headCellRefs[colIdx + 1];
     let cmIndx = colModel.length - 1;
-    if ( !(columns[colIdx] && columns[colIdx].display !== 'true') ) {
+    if (!(columns[colIdx] && columns[colIdx].display !== 'true')) {
       let prevLeft =
         cmIndx !== -1 ? colModel[cmIndx].left + colModel[cmIndx].width : parentOffsetLeft + leftMostCell.offsetLeft;
       colModel.push({

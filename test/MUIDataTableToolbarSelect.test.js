@@ -116,8 +116,8 @@ describe('<TableToolbarSelect />', function() {
     const instance = wrapper.dive().instance();
 
     try {
-      instance.handleCustomSelectedRow([1,2]);
-    } catch(err) {
+      instance.handleCustomSelectedRow([1, 2]);
+    } catch (err) {
       catchErr();
     }
 
