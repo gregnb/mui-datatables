@@ -238,7 +238,6 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         sortCompare: null,
         sortThirdClickReset: false,
-
       },
       {
         display: 'true',

@@ -4,10 +4,14 @@ import MUIDataTable from "../../src/";
 
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
+import Switch from '@material-ui/core/Switch';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 function Example(props) {
 
   const [marginLeft, setMarginLeft] = useState(10);
+  const [selectableRows, setSelectableRows] = useState("multiple");
 
   const [counter, setCounter] = useState(1);
   const incrCount = () => { // We update an arbitrary value here to test table resizing on state updates
@@ -78,6 +82,7 @@ function Example(props) {
     filter: true,
     filterType: 'dropdown',
     resizableColumns: true,
+    selectableRows: selectableRows,
     draggableColumns: {
       enabled: true,
     }
@@ -85,9 +90,22 @@ function Example(props) {
 
   return (
     <>
-      <FormControl>
-        <TextField label="Left Margin" type="number" value={marginLeft} onChange={(e) => setMarginLeft(e.target.value)} />
-      </FormControl>
+      <FormGroup row>
+        <FormControl>
+          <TextField label="Left Margin" type="number" value={marginLeft} onChange={(e) => setMarginLeft(e.target.value)} />
+        </FormControl>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={selectableRows === "multiple"}
+              onChange={(e) => setSelectableRows(event.target.checked ? "multiple" : "none")}
+              value="true"
+              color="primary"
+            />
+          }
+          label="Selectable Rows"
+        />
+      </FormGroup>
       <div style={{marginLeft: marginLeft + 'px'}}>
         <MUIDataTable title={"ACME Employee list" + " [" + counter + "]"} data={data} columns={columns} options={options} />
         <div>

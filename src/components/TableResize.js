@@ -179,7 +179,8 @@ class TableResize extends React.Component {
       };
 
       const isLastColumn = (id, finalCells) => {
-        return id === finalCells.length - 2;
+        let len = (selectableRows === 'none') ? 1 : 2;
+        return id === finalCells.length - len;
       };
 
       if (isFirstColumn(selectableRows, idNumber) && isLastColumn(idNumber, finalCells)) {
