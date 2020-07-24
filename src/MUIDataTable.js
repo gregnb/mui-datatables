@@ -520,6 +520,9 @@ class MUIDataTable extends React.Component {
     if (options.expandableRows && options.renderExpandableRow === undefined) {
       throw Error('renderExpandableRow must be provided when using expandableRows option');
     }
+    if (options.rowsSelected && Array.isArray(options.rowsSelected) && options.rowsSelected.some(isNaN)) {
+      warnInfo('When using the rowsSelected option, must be provided an array of numbers only.');
+    }
   }
 
   setTableAction = action => {
@@ -799,19 +802,21 @@ class MUIDataTable extends React.Component {
     if (TABLE_LOAD.INITIAL) {
       // Multiple row selection customization
       if (this.options.rowsSelected && this.options.rowsSelected.length && this.options.selectableRows === 'multiple') {
-        this.options.rowsSelected.forEach(row => {
-          let rowPos = row;
+        this.options.rowsSelected
+          .filter(selectedRowIndex => selectedRowIndex === 0 || (Number(selectedRowIndex) && selectedRowIndex > 0))
+          .forEach(row => {
+            let rowPos = row;
 
-          for (let cIndex = 0; cIndex < this.state.displayData.length; cIndex++) {
-            if (this.state.displayData[cIndex].dataIndex === row) {
-              rowPos = cIndex;
-              break;
+            for (let cIndex = 0; cIndex < this.state.displayData.length; cIndex++) {
+              if (this.state.displayData[cIndex].dataIndex === row) {
+                rowPos = cIndex;
+                break;
+              }
             }
-          }
 
-          selectedRowsData.data.push({ index: rowPos, dataIndex: row });
-          selectedRowsData.lookup[row] = true;
-        });
+            selectedRowsData.data.push({ index: rowPos, dataIndex: row });
+            selectedRowsData.lookup[row] = true;
+          });
 
         // Single row selection customization
       } else if (

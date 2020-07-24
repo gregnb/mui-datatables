@@ -212,7 +212,7 @@ The component accepts the following props:
 |**`rowsExpanded`**|array||User provided expanded rows.
 |**`rowsPerPage`**|number|10|Number of rows allowed per page.
 |**`rowsPerPageOptions`**|array|[10,15,100]|Options to provide in pagination for number of rows a user can select.
-|**`rowsSelected`**|array||User provided selected rows.
+|**`rowsSelected`**|array||User provided selected rows (must be provided an array of numbers only)
 |**`search`**|boolean|true|Show/hide search icon from toolbar.
 |**`searchPlaceholder`**|string||Search text placeholder. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-search/index.js)
 |**`searchProps`**|object|{}|Props applied to the search text box. You can set method callbacks like onBlur, onKeyUp, etc, this way. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-search/index.js)
