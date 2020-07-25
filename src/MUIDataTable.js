@@ -1248,7 +1248,7 @@ class MUIDataTable extends React.Component {
       },
       () => {
         this.setTableAction('sort');
-        
+
         if (this.options.onColumnSortChange) {
           this.options.onColumnSortChange(this.state.sortOrder.name, this.state.sortOrder.direction);
         }
@@ -1728,8 +1728,10 @@ class MUIDataTable extends React.Component {
 
   sortTable(data, col, order, columnSortCompare = null) {
     let hasCustomTableSort = this.options.customSort && !columnSortCompare;
-    let meta = {selectedRows: this.state.selectedRows}; // meta for customSort    
-    let dataSrc = hasCustomTableSort ? this.options.customSort(data, col, order || (this.options.sortDescFirst ? 'desc' : 'asc'), meta ) : data;
+    let meta = { selectedRows: this.state.selectedRows }; // meta for customSort
+    let dataSrc = hasCustomTableSort
+      ? this.options.customSort(data, col, order || (this.options.sortDescFirst ? 'desc' : 'asc'), meta)
+      : data;
 
     // reset the order by index
     let noSortData;

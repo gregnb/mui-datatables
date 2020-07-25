@@ -507,10 +507,14 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should correctly sort', () => {
-    const columns = [{
-      name: 'Name',
-      options: {}
-    }, 'Company', 'Location'];
+    const columns = [
+      {
+        name: 'Name',
+        options: {},
+      },
+      'Company',
+      'Location',
+    ];
 
     const data = [
       { Name: 'Joe James', Company: 'Test Corp', Location: 'Las Cruces' },
@@ -531,20 +535,30 @@ describe('<MUIDataTable />', function() {
       { data: ['Bob Herm', 'Test Corp', 'Albuquerque'], dataIndex: 2 },
     ]);
 
-    const wrapper = mount(
-      <MUIDataTable columns={columns} data={data} options={{}} />,
-    );
-    
-    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    const wrapper = mount(<MUIDataTable columns={columns} data={data} options={{}} />);
+
+    wrapper
+      .find('[data-testid="headcol-0"]')
+      .at(0)
+      .simulate('click');
     const fetchedDD1 = JSON.stringify(wrapper.childAt(0).state('displayData'));
 
-    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    wrapper
+      .find('[data-testid="headcol-0"]')
+      .at(0)
+      .simulate('click');
     const fetchedDD2 = JSON.stringify(wrapper.childAt(0).state('displayData'));
 
-    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    wrapper
+      .find('[data-testid="headcol-0"]')
+      .at(0)
+      .simulate('click');
     const fetchedDD3 = JSON.stringify(wrapper.childAt(0).state('displayData'));
 
-    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    wrapper
+      .find('[data-testid="headcol-0"]')
+      .at(0)
+      .simulate('click');
     const fetchedDD4 = JSON.stringify(wrapper.childAt(0).state('displayData'));
 
     assert.deepEqual(fetchedDD1, displayData1);
@@ -554,12 +568,16 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should correctly sort when sortThirdClickReset is true', () => {
-    const columns = [{
-      name: 'Name',
-      options: {
-        sortThirdClickReset: true
-      }
-    }, 'Company', 'Location'];
+    const columns = [
+      {
+        name: 'Name',
+        options: {
+          sortThirdClickReset: true,
+        },
+      },
+      'Company',
+      'Location',
+    ];
 
     const data = [
       { Name: 'Joe James', Company: 'Test Corp', Location: 'Las Cruces' },
@@ -586,20 +604,30 @@ describe('<MUIDataTable />', function() {
       { data: ['James Houston', 'Test Corp', 'Santa Fe'], dataIndex: 3 },
     ]);
 
-    const wrapper = mount(
-      <MUIDataTable columns={columns} data={data} options={{}} />,
-    );
-    
-    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    const wrapper = mount(<MUIDataTable columns={columns} data={data} options={{}} />);
+
+    wrapper
+      .find('[data-testid="headcol-0"]')
+      .at(0)
+      .simulate('click');
     const fetchedDD1 = JSON.stringify(wrapper.childAt(0).state('displayData'));
 
-    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    wrapper
+      .find('[data-testid="headcol-0"]')
+      .at(0)
+      .simulate('click');
     const fetchedDD2 = JSON.stringify(wrapper.childAt(0).state('displayData'));
 
-    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    wrapper
+      .find('[data-testid="headcol-0"]')
+      .at(0)
+      .simulate('click');
     const fetchedDD3 = JSON.stringify(wrapper.childAt(0).state('displayData'));
 
-    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    wrapper
+      .find('[data-testid="headcol-0"]')
+      .at(0)
+      .simulate('click');
     const fetchedDD4 = JSON.stringify(wrapper.childAt(0).state('displayData'));
 
     assert.deepEqual(fetchedDD1, displayData1);
@@ -609,13 +637,17 @@ describe('<MUIDataTable />', function() {
   });
 
   it('should correctly sort when sortDescFirst and sortThirdClickReset are true', () => {
-    const columns = [{
-      name: 'Name',
-      options: {
-        sortDescFirst: true,
-        sortThirdClickReset: true
-      }
-    }, 'Company', 'Location'];
+    const columns = [
+      {
+        name: 'Name',
+        options: {
+          sortDescFirst: true,
+          sortThirdClickReset: true,
+        },
+      },
+      'Company',
+      'Location',
+    ];
 
     const data = [
       { Name: 'Joe James', Company: 'Test Corp', Location: 'Las Cruces' },
@@ -642,20 +674,30 @@ describe('<MUIDataTable />', function() {
       { data: ['James Houston', 'Test Corp', 'Santa Fe'], dataIndex: 3 },
     ]);
 
-    const wrapper = mount(
-      <MUIDataTable columns={columns} data={data} options={{}} />,
-    );
-    
-    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    const wrapper = mount(<MUIDataTable columns={columns} data={data} options={{}} />);
+
+    wrapper
+      .find('[data-testid="headcol-0"]')
+      .at(0)
+      .simulate('click');
     const fetchedDD1 = JSON.stringify(wrapper.childAt(0).state('displayData'));
 
-    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    wrapper
+      .find('[data-testid="headcol-0"]')
+      .at(0)
+      .simulate('click');
     const fetchedDD2 = JSON.stringify(wrapper.childAt(0).state('displayData'));
 
-    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    wrapper
+      .find('[data-testid="headcol-0"]')
+      .at(0)
+      .simulate('click');
     const fetchedDD3 = JSON.stringify(wrapper.childAt(0).state('displayData'));
 
-    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    wrapper
+      .find('[data-testid="headcol-0"]')
+      .at(0)
+      .simulate('click');
     const fetchedDD4 = JSON.stringify(wrapper.childAt(0).state('displayData'));
 
     assert.deepEqual(fetchedDD1, displayData1);
