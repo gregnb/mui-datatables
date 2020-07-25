@@ -11,7 +11,9 @@ class Example extends React.Component {
         name: "Name",
         options: {
           filter: true,
-          display: 'excluded',
+          //display: 'excluded',
+          sortThirdClickReset: true,
+          sortDescFirst: true,
         }
       },      
       {
@@ -19,12 +21,14 @@ class Example extends React.Component {
         name: "Title",
         options: {
           filter: true,
+          sortThirdClickReset: true,
         }
       },
       {
         name: "Location",
         options: {
           filter: false,
+          sortThirdClickReset: true,
           customHeadRender: (columnMeta, updateDirection) => (
             <th key={2} onClick={() => updateDirection(2)} style={{ cursor: 'pointer' }}>
               {columnMeta.name}
@@ -36,13 +40,23 @@ class Example extends React.Component {
         name: "Age",
         options: {
           filter: true,
+          sortThirdClickReset: true,
         }
       },
       {
         name: "Salary",
         options: {
           filter: true,
-          sort: false
+          sort: true,
+          sortThirdClickReset: true,
+          sortDescFirst: true,
+          sortCompare: (order) => {
+            return (obj1, obj2) => {
+              var val1 = parseInt(obj1.data.substr(1).replace(/,/g,''), 10);
+              var val2 = parseInt(obj2.data.substr(1).replace(/,/g,''), 10);
+              return (val1 - val2) * (order === 'asc' ? 1 : -1);
+            };
+          }
         }
       }      
     ];

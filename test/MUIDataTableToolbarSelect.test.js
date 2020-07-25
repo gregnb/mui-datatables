@@ -96,4 +96,31 @@ describe('<TableToolbarSelect />', function() {
 
     assert.strictEqual(selectRowUpdate.calledOnce, true);
   });
+
+  it('should throw an error when multiple rows are selected and selectableRows="single"', () => {
+    const onRowsDelete = () => {};
+    const selectRowUpdate = spy();
+    const selectedRows = { data: [1] };
+    const displayData = [1];
+    const catchErr = spy();
+
+    const wrapper = shallow(
+      <TableToolbarSelect
+        options={{ textLabels: getTextLabels(), selectableRows: 'single' }}
+        selectedRows={selectedRows}
+        onRowsDelete={onRowsDelete}
+        displayData={displayData}
+        selectRowUpdate={selectRowUpdate}
+      />,
+    );
+    const instance = wrapper.dive().instance();
+
+    try {
+      instance.handleCustomSelectedRow([1, 2]);
+    } catch (err) {
+      catchErr();
+    }
+
+    assert.strictEqual(catchErr.calledOnce, true);
+  });
 });

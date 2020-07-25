@@ -69,7 +69,7 @@ const Popover = ({ className, trigger, refExit, hide, content, ...providedProps 
           aria-label="Close"
           onClick={handleRequestClose}
           className={closeIconClass}
-          style={{ position: 'absolute', right: '4px', top: '4px' }}>
+          style={{ position: 'absolute', right: '4px', top: '4px', zIndex: '1000' }}>
           <CloseIcon />
         </IconButton>
         {content}

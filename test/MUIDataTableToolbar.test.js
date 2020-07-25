@@ -29,6 +29,10 @@ describe('<TableToolbar />', function() {
       downloadOptions: {
         separator: ',',
         filename: 'tableDownload.csv',
+        filterOptions: {
+          useDisplayedRowsOnly: true,
+          useDisplayedColumnsOnly: true,
+        },
       },
     };
     columns = ['First Name', 'Company', 'City', 'State'];

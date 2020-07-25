@@ -1,6 +1,7 @@
 import ArrayValueColumns from './array-value-columns';
 import ColumnFilters from './column-filters';
 import ColumnOptionsUpdate from './column-options-update';
+import ColumnSort from "./column-sort";
 import Component from './component';
 import CSVExport from './csv-export';
 import CustomActionColumns from './custom-action-columns';
@@ -41,6 +42,7 @@ export default {
   'Array Value Columns': ArrayValueColumns,
   'Column Filters': ColumnFilters,
   'Column Option Update': ColumnOptionsUpdate,
+  'Column Sort': ColumnSort,
   Component: Component,
   'CSV Export': CSVExport,
   'Custom Action Columns': CustomActionColumns,

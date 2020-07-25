@@ -24,10 +24,7 @@ function getParentOffsetLeft(tableEl) {
     parentOffsetLeft = parentOffsetLeft + (offsetParent.offsetLeft || 0);
     offsetParent = offsetParent.offsetParent;
     ii++;
-    if (ii > 1000) {
-      console.warn('Table nested within 1000 divs. Maybe an error.');
-      break;
-    }
+    if (ii > 1000) break;
   }
   return parentOffsetLeft;
 }
@@ -81,7 +78,7 @@ class TableResize extends React.Component {
 
     let parentOffsetLeft = getParentOffsetLeft(tableEl);
     let finalCells = Object.entries(this.cellsRef);
-    //finalCells.pop();
+
     finalCells.forEach(([key, item], idx) => {
       if (!item) return;
       let elRect = item.getBoundingClientRect();
@@ -182,7 +179,8 @@ class TableResize extends React.Component {
       };
 
       const isLastColumn = (id, finalCells) => {
-        return id === finalCells.length - 2;
+        let len = selectableRows === 'none' ? 1 : 2;
+        return id === finalCells.length - len;
       };
 
       if (isFirstColumn(selectableRows, idNumber) && isLastColumn(idNumber, finalCells)) {
