@@ -152,6 +152,7 @@ class MUIDataTable extends React.Component {
             setCellProps: PropTypes.func,
             setCellHeaderProps: PropTypes.func,
             sortThirdClickReset: PropTypes.bool,
+            sortDescFirst: PropTypes.bool,
           }),
         }),
       ]),
@@ -586,6 +587,7 @@ class MUIDataTable extends React.Component {
         viewColumns: true,
         sortCompare: null,
         sortThirdClickReset: false,
+        sortDescFirst: false,
       };
 
       columnOrder.push(colIndex);
@@ -1181,19 +1183,22 @@ class MUIDataTable extends React.Component {
       prevState => {
         let columns = cloneDeep(prevState.columns);
         let data = prevState.data;
-        let newOrder = 'asc'; // default
+        let newOrder = columns[index].sortDescFirst ? 'desc' : 'asc'; // default
+
+        let sequenceOrder = ['asc', 'desc'];
+        if (columns[index].sortDescFirst) {
+          sequenceOrder = ['desc', 'asc'];
+        }
+        if (columns[index].sortThirdClickReset) {
+          sequenceOrder.push('none');
+        }
 
         if (columns[index].name === this.state.sortOrder.name) {
-          switch (this.state.sortOrder.direction) {
-            case 'desc':
-              newOrder = columns[index].sortThirdClickReset ? 'none' : 'asc';
-              break;
-            case 'asc':
-              newOrder = 'desc';
-              break;
-            case 'none':
-              newOrder = 'asc';
-              break;
+          let pos = sequenceOrder.indexOf(this.state.sortOrder.direction);
+          if (pos !== -1) {
+            pos++;
+            if (pos >= sequenceOrder.length) pos = 0;
+            newOrder = sequenceOrder[pos];
           }
         }
 
@@ -1243,7 +1248,7 @@ class MUIDataTable extends React.Component {
       },
       () => {
         this.setTableAction('sort');
-
+        
         if (this.options.onColumnSortChange) {
           this.options.onColumnSortChange(this.state.sortOrder.name, this.state.sortOrder.direction);
         }
@@ -1723,7 +1728,8 @@ class MUIDataTable extends React.Component {
 
   sortTable(data, col, order, columnSortCompare = null) {
     let hasCustomTableSort = this.options.customSort && !columnSortCompare;
-    let dataSrc = hasCustomTableSort ? this.options.customSort(data, col, order || 'desc') : data;
+    let meta = {selectedRows: this.state.selectedRows}; // meta for customSort    
+    let dataSrc = hasCustomTableSort ? this.options.customSort(data, col, order || (this.options.sortDescFirst ? 'desc' : 'asc'), meta ) : data;
 
     // reset the order by index
     let noSortData;

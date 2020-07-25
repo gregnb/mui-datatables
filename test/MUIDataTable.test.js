@@ -114,6 +114,7 @@ describe('<MUIDataTable />', function() {
         customBodyRender: renderName,
         sortCompare: null,
         sortThirdClickReset: false,
+        sortDescFirst: false,
       },
       {
         display: 'true',
@@ -128,6 +129,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         sortCompare: null,
         sortThirdClickReset: false,
+        sortDescFirst: false,
       },
       {
         display: 'true',
@@ -144,6 +146,7 @@ describe('<MUIDataTable />', function() {
         customBodyRender: renderCities,
         sortCompare: null,
         sortThirdClickReset: false,
+        sortDescFirst: false,
       },
       {
         display: 'true',
@@ -161,6 +164,7 @@ describe('<MUIDataTable />', function() {
         customHeadRender: renderHead,
         sortCompare: null,
         sortThirdClickReset: false,
+        sortDescFirst: false,
       },
       {
         display: 'true',
@@ -176,6 +180,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         sortCompare: null,
         sortThirdClickReset: false,
+        sortDescFirst: false,
       },
     ];
 
@@ -224,6 +229,7 @@ describe('<MUIDataTable />', function() {
         customBodyRender: renderName,
         sortCompare: null,
         sortThirdClickReset: false,
+        sortDescFirst: false,
       },
       {
         display: 'true',
@@ -238,6 +244,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         sortCompare: null,
         sortThirdClickReset: false,
+        sortDescFirst: false,
       },
       {
         display: 'true',
@@ -254,6 +261,7 @@ describe('<MUIDataTable />', function() {
         customBodyRender: renderCities,
         sortCompare: null,
         sortThirdClickReset: false,
+        sortDescFirst: false,
       },
       {
         display: 'true',
@@ -271,6 +279,7 @@ describe('<MUIDataTable />', function() {
         customHeadRender: renderHead,
         sortCompare: null,
         sortThirdClickReset: false,
+        sortDescFirst: false,
       },
       {
         display: 'true',
@@ -286,6 +295,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         sortCompare: null,
         sortThirdClickReset: false,
+        sortDescFirst: false,
       },
     ];
 
@@ -494,6 +504,164 @@ describe('<MUIDataTable />', function() {
 
     assert.deepEqual(props.options, newOptions);
     fullWrapper.unmount();
+  });
+
+  it('should correctly sort', () => {
+    const columns = [{
+      name: 'Name',
+      options: {}
+    }, 'Company', 'Location'];
+
+    const data = [
+      { Name: 'Joe James', Company: 'Test Corp', Location: 'Las Cruces' },
+      { Name: 'John Walsh', Company: 'Test Corp', Location: 'El Paso' },
+      { Name: 'Bob Herm', Company: 'Test Corp', Location: 'Albuquerque' },
+      { Name: 'James Houston', Company: 'Test Corp', Location: 'Santa Fe' },
+    ];
+    const displayData1 = JSON.stringify([
+      { data: ['Bob Herm', 'Test Corp', 'Albuquerque'], dataIndex: 2 },
+      { data: ['James Houston', 'Test Corp', 'Santa Fe'], dataIndex: 3 },
+      { data: ['Joe James', 'Test Corp', 'Las Cruces'], dataIndex: 0 },
+      { data: ['John Walsh', 'Test Corp', 'El Paso'], dataIndex: 1 },
+    ]);
+    const displayData2 = JSON.stringify([
+      { data: ['John Walsh', 'Test Corp', 'El Paso'], dataIndex: 1 },
+      { data: ['Joe James', 'Test Corp', 'Las Cruces'], dataIndex: 0 },
+      { data: ['James Houston', 'Test Corp', 'Santa Fe'], dataIndex: 3 },
+      { data: ['Bob Herm', 'Test Corp', 'Albuquerque'], dataIndex: 2 },
+    ]);
+
+    const wrapper = mount(
+      <MUIDataTable columns={columns} data={data} options={{}} />,
+    );
+    
+    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    const fetchedDD1 = JSON.stringify(wrapper.childAt(0).state('displayData'));
+
+    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    const fetchedDD2 = JSON.stringify(wrapper.childAt(0).state('displayData'));
+
+    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    const fetchedDD3 = JSON.stringify(wrapper.childAt(0).state('displayData'));
+
+    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    const fetchedDD4 = JSON.stringify(wrapper.childAt(0).state('displayData'));
+
+    assert.deepEqual(fetchedDD1, displayData1);
+    assert.deepEqual(fetchedDD2, displayData2);
+    assert.deepEqual(fetchedDD3, displayData1);
+    assert.deepEqual(fetchedDD4, displayData2);
+  });
+
+  it('should correctly sort when sortThirdClickReset is true', () => {
+    const columns = [{
+      name: 'Name',
+      options: {
+        sortThirdClickReset: true
+      }
+    }, 'Company', 'Location'];
+
+    const data = [
+      { Name: 'Joe James', Company: 'Test Corp', Location: 'Las Cruces' },
+      { Name: 'John Walsh', Company: 'Test Corp', Location: 'El Paso' },
+      { Name: 'Bob Herm', Company: 'Test Corp', Location: 'Albuquerque' },
+      { Name: 'James Houston', Company: 'Test Corp', Location: 'Santa Fe' },
+    ];
+    const displayData1 = JSON.stringify([
+      { data: ['Bob Herm', 'Test Corp', 'Albuquerque'], dataIndex: 2 },
+      { data: ['James Houston', 'Test Corp', 'Santa Fe'], dataIndex: 3 },
+      { data: ['Joe James', 'Test Corp', 'Las Cruces'], dataIndex: 0 },
+      { data: ['John Walsh', 'Test Corp', 'El Paso'], dataIndex: 1 },
+    ]);
+    const displayData2 = JSON.stringify([
+      { data: ['John Walsh', 'Test Corp', 'El Paso'], dataIndex: 1 },
+      { data: ['Joe James', 'Test Corp', 'Las Cruces'], dataIndex: 0 },
+      { data: ['James Houston', 'Test Corp', 'Santa Fe'], dataIndex: 3 },
+      { data: ['Bob Herm', 'Test Corp', 'Albuquerque'], dataIndex: 2 },
+    ]);
+    const displayData3 = JSON.stringify([
+      { data: ['Joe James', 'Test Corp', 'Las Cruces'], dataIndex: 0 },
+      { data: ['John Walsh', 'Test Corp', 'El Paso'], dataIndex: 1 },
+      { data: ['Bob Herm', 'Test Corp', 'Albuquerque'], dataIndex: 2 },
+      { data: ['James Houston', 'Test Corp', 'Santa Fe'], dataIndex: 3 },
+    ]);
+
+    const wrapper = mount(
+      <MUIDataTable columns={columns} data={data} options={{}} />,
+    );
+    
+    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    const fetchedDD1 = JSON.stringify(wrapper.childAt(0).state('displayData'));
+
+    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    const fetchedDD2 = JSON.stringify(wrapper.childAt(0).state('displayData'));
+
+    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    const fetchedDD3 = JSON.stringify(wrapper.childAt(0).state('displayData'));
+
+    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    const fetchedDD4 = JSON.stringify(wrapper.childAt(0).state('displayData'));
+
+    assert.deepEqual(fetchedDD1, displayData1);
+    assert.deepEqual(fetchedDD2, displayData2);
+    assert.deepEqual(fetchedDD3, displayData3);
+    assert.deepEqual(fetchedDD4, displayData1);
+  });
+
+  it('should correctly sort when sortDescFirst and sortThirdClickReset are true', () => {
+    const columns = [{
+      name: 'Name',
+      options: {
+        sortDescFirst: true,
+        sortThirdClickReset: true
+      }
+    }, 'Company', 'Location'];
+
+    const data = [
+      { Name: 'Joe James', Company: 'Test Corp', Location: 'Las Cruces' },
+      { Name: 'John Walsh', Company: 'Test Corp', Location: 'El Paso' },
+      { Name: 'Bob Herm', Company: 'Test Corp', Location: 'Albuquerque' },
+      { Name: 'James Houston', Company: 'Test Corp', Location: 'Santa Fe' },
+    ];
+    const displayData1 = JSON.stringify([
+      { data: ['John Walsh', 'Test Corp', 'El Paso'], dataIndex: 1 },
+      { data: ['Joe James', 'Test Corp', 'Las Cruces'], dataIndex: 0 },
+      { data: ['James Houston', 'Test Corp', 'Santa Fe'], dataIndex: 3 },
+      { data: ['Bob Herm', 'Test Corp', 'Albuquerque'], dataIndex: 2 },
+    ]);
+    const displayData2 = JSON.stringify([
+      { data: ['Bob Herm', 'Test Corp', 'Albuquerque'], dataIndex: 2 },
+      { data: ['James Houston', 'Test Corp', 'Santa Fe'], dataIndex: 3 },
+      { data: ['Joe James', 'Test Corp', 'Las Cruces'], dataIndex: 0 },
+      { data: ['John Walsh', 'Test Corp', 'El Paso'], dataIndex: 1 },
+    ]);
+    const displayData3 = JSON.stringify([
+      { data: ['Joe James', 'Test Corp', 'Las Cruces'], dataIndex: 0 },
+      { data: ['John Walsh', 'Test Corp', 'El Paso'], dataIndex: 1 },
+      { data: ['Bob Herm', 'Test Corp', 'Albuquerque'], dataIndex: 2 },
+      { data: ['James Houston', 'Test Corp', 'Santa Fe'], dataIndex: 3 },
+    ]);
+
+    const wrapper = mount(
+      <MUIDataTable columns={columns} data={data} options={{}} />,
+    );
+    
+    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    const fetchedDD1 = JSON.stringify(wrapper.childAt(0).state('displayData'));
+
+    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    const fetchedDD2 = JSON.stringify(wrapper.childAt(0).state('displayData'));
+
+    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    const fetchedDD3 = JSON.stringify(wrapper.childAt(0).state('displayData'));
+
+    wrapper.find('[data-testid="headcol-0"]').at(0).simulate('click');
+    const fetchedDD4 = JSON.stringify(wrapper.childAt(0).state('displayData'));
+
+    assert.deepEqual(fetchedDD1, displayData1);
+    assert.deepEqual(fetchedDD2, displayData2);
+    assert.deepEqual(fetchedDD3, displayData3);
+    assert.deepEqual(fetchedDD4, displayData1);
   });
 
   it('should correctly pass the sorted column name and direction to onColumnSortChange', () => {
@@ -1247,6 +1415,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         sortCompare: null,
         sortThirdClickReset: false,
+        sortDescFirst: false,
         customFilterListOptions: { render: renderCustomFilterList },
       },
       {
@@ -1262,6 +1431,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         sortCompare: null,
         sortThirdClickReset: false,
+        sortDescFirst: false,
       },
       {
         name: 'City',
@@ -1278,6 +1448,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         sortCompare: null,
         sortThirdClickReset: false,
+        sortDescFirst: false,
       },
       {
         name: 'State',
@@ -1295,6 +1466,7 @@ describe('<MUIDataTable />', function() {
         customHeadRender: renderHead,
         sortCompare: null,
         sortThirdClickReset: false,
+        sortDescFirst: false,
       },
       {
         name: 'Empty',
@@ -1310,6 +1482,7 @@ describe('<MUIDataTable />', function() {
         viewColumns: true,
         sortCompare: null,
         sortThirdClickReset: false,
+        sortDescFirst: false,
       },
     ];
 

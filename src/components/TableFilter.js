@@ -342,7 +342,6 @@ class TableFilter extends React.Component {
   };
 
   resetFilters = () => {
-    console.log('resetFilters');
     this.setState({
       filterList: this.props.columns.map(() => []),
     });
