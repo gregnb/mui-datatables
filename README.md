@@ -285,7 +285,6 @@ const columns = [
 |**`sortCompare`**|function||Custom sort function for the column. Takes in an order string and returns a function that compares the two column values. If this method and options.customSort are both defined, this method will take precedence. `(order) => ({data: val1}, {data: val2}) => number` 
 |**`sortDescFirst`**|boolean|false|Causes the first click on a column to sort by desc rather than asc. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-columns/index.js)
 |**`sortThirdClickReset`**|boolean|false|Allows for a third click on a column header to undo any sorting on the column. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-columns/index.js)
-[Example](https://github.com/gregnb/mui-datatables/blob/master/examples/column-sort/index.js). Note: currently doesn't work with table `customSort`
 |**`viewColumns`**|boolean|true|Allow user to toggle column visibility through 'View Column' list.
 
 `customHeadRender` is called with these arguments:
