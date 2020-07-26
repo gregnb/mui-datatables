@@ -10,6 +10,7 @@ import merge from 'lodash.merge';
 import PropTypes from 'prop-types';
 import React from 'react';
 import DefaultTableBody from './components/TableBody';
+import TableBodyGroups from './components/TableBodyGroups';
 import DefaultTableFilterList from './components/TableFilterList';
 import DefaultTableFooter from './components/TableFooter';
 import DefaultTableHead from './components/TableHead';
@@ -192,6 +193,7 @@ class MUIDataTable extends React.Component {
       fixedHeader: PropTypes.bool,
       fixedSelectColumn: PropTypes.bool,
       getTextLabels: PropTypes.func,
+      grouping: PropTypes.object,
       isRowExpandable: PropTypes.func,
       isRowSelectable: PropTypes.func,
       jumpToPage: PropTypes.bool,
@@ -286,6 +288,7 @@ class MUIDataTable extends React.Component {
       },
       data: [],
       displayData: [],
+      groupingData: {},
       filterData: [],
       filterList: [],
       page: 0,
@@ -387,6 +390,7 @@ class MUIDataTable extends React.Component {
     filterType: 'dropdown',
     fixedHeader: true,
     fixedSelectColumn: true,
+    grouping: null,
     pagination: true,
     print: true,
     resizableColumns: false,
@@ -875,7 +879,26 @@ class MUIDataTable extends React.Component {
       tableData = sortedData.data;
     }
 
+    let grouping = {};
+    if (this.options.grouping) {
+      if (this.options.grouping.columnIndexes) {
+        grouping.columnIndexes = this.options.grouping.columnIndexes;
+      } else if (this.state.grouping && this.state.grouping.columnIndexes) {
+        grouping.columnIndexes = this.state.grouping.columnIndexes;
+      }
+      if (this.options.grouping.expanded) {
+        grouping.expanded = this.options.grouping.expanded;
+      } else if (this.state.grouping && this.state.grouping.expanded) {
+        grouping.expanded = this.state.grouping.expanded;
+      } else {
+        grouping.expanded = {};
+      }
+    } else if (this.state.grouping) {
+      grouping = this.state.grouping;
+    }
+
     /* set source data and display Data set source set */
+    let nextDisplayData = this.getDisplayData(columns, tableData, filterList, searchText, tableMeta, props);
     let stateUpdates = {
       columns: columns,
       filterData: filterData,
@@ -886,7 +909,9 @@ class MUIDataTable extends React.Component {
       count: this.options.count,
       data: tableData,
       sortOrder: sortOrder,
-      displayData: this.getDisplayData(columns, tableData, filterList, searchText, tableMeta, props),
+      displayData: nextDisplayData,
+      groupingData: this.getGroupingData(nextDisplayData, grouping),
+      grouping: grouping,
       columnOrder,
     };
 
@@ -1061,17 +1086,20 @@ class MUIDataTable extends React.Component {
         filterData[index].sort(comparator);
       }
 
+      let nextDisplayData = this.getDisplayData(
+        prevState.columns,
+        changedData,
+        prevState.filterList,
+        prevState.searchText,
+        null,
+        this.props,
+      );
+
       return {
         data: changedData,
         filterData: filterData,
-        displayData: this.getDisplayData(
-          prevState.columns,
-          changedData,
-          prevState.filterList,
-          prevState.searchText,
-          null,
-          this.props,
-        ),
+        displayData: nextDisplayData,
+        groupingData: this.getGroupingData(nextDisplayData, this.state.grouping),
       };
     });
   };
@@ -1089,6 +1117,106 @@ class MUIDataTable extends React.Component {
       currentTableData: currentTableData,
     };
   };
+
+  isGroupExpanded(grouping, group) {
+    let expanded = grouping.expanded || {};
+    let isExpanded = true;
+
+    for (let ii = 0; ii < group.length; ii++) {
+      expanded = expanded[group[ii]];
+      if (!expanded) {
+        isExpanded = false;
+        break;
+      }
+    }
+    isExpanded = isExpanded && expanded.open;
+
+    return isExpanded;
+  }
+
+  toggleGroupExpansion(group) {
+    let expanded = cloneDeep(this.state.grouping.expanded || {});
+    let exp = expanded;
+
+    for (let ii = 0; ii < group.length; ii++) {
+      exp[group[ii]] = exp[group[ii]] || {};
+      exp = exp[group[ii]];
+    }
+    exp.open = !exp.open;
+
+    let grouping = cloneDeep(this.state.grouping);
+    grouping.expanded = expanded;
+
+    this.setState(
+      prevState => ({
+        grouping: grouping,
+      }),
+      () => {
+        this.setTableAction('groupingExpansionChange');
+        var cb = this.options.onGroupExpansionChange;
+        if (cb) {
+          cb(group, expanded);
+        }
+      },
+    );
+  }
+
+  getGroups(grouping, colIndexes, data, level, group) {
+    let map = {};
+    let colIndex = colIndexes[0];
+    data.forEach(row => {
+      map[ row.data[colIndex] ] = map[ row.data[colIndex] ] || [];
+      map[ row.data[colIndex] ].push(row);
+    });
+
+    if (colIndexes.length > 1) {
+      for (let prop in map) {
+        let nextGroup = group.slice();
+        nextGroup.push(prop);
+        map[prop] = this.getGroups(grouping, colIndexes.slice(1), map[prop], level + 1, nextGroup);
+      }
+    } else {
+      for (let prop in map) {
+        let nextGroup = group.slice();
+        nextGroup.push(prop);
+        map[prop] = {
+          level: level,
+          group: nextGroup,
+          onExpansionChange: () => {
+            this.toggleGroupExpansion(nextGroup);
+          },
+          data: map[prop]
+        };
+      }
+    }
+
+    return {
+      groupColumnIndex: colIndex,
+      level: level,
+      groups: map,
+      onExpansionChange: () => {
+        this.toggleGroupExpansion(group);
+      },
+      group: group
+    };
+  }
+
+  getGroupingData(displayData, grouping) {
+
+    if (!grouping) return null;
+    
+    console.log('getGroupingData');
+    console.log(grouping);
+
+    let cols =  grouping.columnIndexes;
+
+    if (!cols || cols.length === 0) return null;
+
+    console.dir(displayData);
+    let groups = this.getGroups(grouping, cols, displayData, 1, []);
+    console.dir(groups);
+    return groups;
+  }
 
   getDisplayData(columns, data, filterList, searchText, tableMeta, props) {
     let newRows = [];
@@ -1227,17 +1355,20 @@ class MUIDataTable extends React.Component {
         } else {
           const sortedData = this.sortTable(data, index, newOrder, columns[index].sortCompare);
 
+          let nextDisplayData = this.getDisplayData(
+            columns,
+            sortedData.data,
+            prevState.filterList,
+            prevState.searchText,
+            null,
+            this.props,
+          );
+
           newState = {
             ...newState,
             data: sortedData.data,
-            displayData: this.getDisplayData(
-              columns,
-              sortedData.data,
-              prevState.filterList,
-              prevState.searchText,
-              null,
-              this.props,
-            ),
+            displayData: nextDisplayData,
+            groupingData: this.getGroupingData(nextDisplayData, this.state.grouping),
             selectedRows: sortedData.selectedRows,
             sortOrder: newSortOrder,
             previousSelectedRow: null,
@@ -1290,12 +1421,17 @@ class MUIDataTable extends React.Component {
 
   searchClose = () => {
     this.setState(
-      prevState => ({
-        searchText: null,
-        displayData: this.options.serverSide
+      prevState => {
+        let nextDisplayData = this.options.serverSide
           ? prevState.displayData
-          : this.getDisplayData(prevState.columns, prevState.data, prevState.filterList, null, null, this.props),
-      }),
+          : this.getDisplayData(prevState.columns, prevState.data, prevState.filterList, null, null, this.props);
+
+        return {
+          searchText: null,
+          displayData: nextDisplayData,
+          groupingData: this.getGroupingData(nextDisplayData, this.state.grouping),
+        };
+      },
       () => {
         this.setTableAction('search');
         if (this.options.onSearchChange) {
@@ -1307,13 +1443,18 @@ class MUIDataTable extends React.Component {
 
   searchTextUpdate = text => {
     this.setState(
-      prevState => ({
-        searchText: text && text.length ? text : null,
-        page: 0,
-        displayData: this.options.serverSide
+      prevState => {
+        let nextDisplayData = this.options.serverSide
           ? prevState.displayData
-          : this.getDisplayData(prevState.columns, prevState.data, prevState.filterList, text, null, this.props),
-      }),
+          : this.getDisplayData(prevState.columns, prevState.data, prevState.filterList, text, null, this.props);
+
+        return {
+          searchText: text && text.length ? text : null,
+          page: 0,
+          displayData: nextDisplayData,
+          groupingData: this.getGroupingData(nextDisplayData, this.state.grouping),
+        };
+      },
       () => {
         this.setTableAction('search');
         if (this.options.onSearchChange) {
@@ -1328,18 +1469,21 @@ class MUIDataTable extends React.Component {
       prevState => {
         const filterList = prevState.columns.map(() => []);
 
+        let nextDisplayData = this.options.serverSide
+          ? prevState.displayData
+          : this.getDisplayData(
+              prevState.columns,
+              prevState.data,
+              filterList,
+              prevState.searchText,
+              null,
+              this.props,
+            );
+
         return {
           filterList: filterList,
-          displayData: this.options.serverSide
-            ? prevState.displayData
-            : this.getDisplayData(
-                prevState.columns,
-                prevState.data,
-                filterList,
-                prevState.searchText,
-                null,
-                this.props,
-              ),
+          displayData: nextDisplayData,
+          groupingData: this.getGroupingData(nextDisplayData, this.state.grouping),
         };
       },
       () => {
@@ -1385,19 +1529,22 @@ class MUIDataTable extends React.Component {
         const filterList = cloneDeep(prevState.filterList);
         this.updateFilterByType(filterList, index, value, type, customUpdate);
 
+        let nextDisplayData = this.options.serverSide
+          ? prevState.displayData
+          : this.getDisplayData(
+              prevState.columns,
+              prevState.data,
+              filterList,
+              prevState.searchText,
+              null,
+              this.props,
+            );
+
         return {
           page: 0,
           filterList: filterList,
-          displayData: this.options.serverSide
-            ? prevState.displayData
-            : this.getDisplayData(
-                prevState.columns,
-                prevState.data,
-                filterList,
-                prevState.searchText,
-                null,
-                this.props,
-              ),
+          displayData: nextDisplayData,
+          groupingData: this.getGroupingData(nextDisplayData, this.state.grouping),
           previousSelectedRow: null,
         };
       },
@@ -1799,7 +1946,7 @@ class MUIDataTable extends React.Component {
       columnOrder,
     } = this.state;
 
-    const TableBodyComponent = TableBody || DefaultTableBody;
+    const TableBodyComponent = this.state.groupingData ? TableBodyGroups : (TableBody || DefaultTableBody);
     const TableFilterListComponent = TableFilterList || DefaultTableFilterList;
     const TableFooterComponent = TableFooter || DefaultTableFooter;
     const TableHeadComponent = TableHead || DefaultTableHead;
@@ -1975,6 +2122,9 @@ class MUIDataTable extends React.Component {
               />
               <TableBodyComponent
                 data={displayData}
+                groupingData={this.state.groupingData}
+                grouping={this.state.grouping}
+                isGroupExpanded={this.isGroupExpanded}
                 count={rowCount}
                 columns={columns}
                 page={page}
