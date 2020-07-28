@@ -26,7 +26,7 @@ const getColModel = (headCellRefs, columnOrder, columns) => {
     parentOffsetLeft = 0,
     offsetParent = leftMostCell.offsetParent;
   while (offsetParent) {
-    parentOffsetLeft = parentOffsetLeft + (offsetParent.offsetLeft || 0);
+    parentOffsetLeft = parentOffsetLeft + (offsetParent.offsetLeft || 0) - (offsetParent.scrollLeft || 0);
     offsetParent = offsetParent.offsetParent;
     ii++;
     if (ii > 1000) break;
