@@ -290,7 +290,7 @@ class MUIDataTable extends React.Component {
       filterList: [],
       page: 0,
       previousSelectedRow: null,
-      rowsPerPage: 0,
+      rowsPerPage: 10,
       searchProps: {},
       searchText: null,
       selectedRows: {
@@ -392,7 +392,7 @@ class MUIDataTable extends React.Component {
     resizableColumns: false,
     responsive: 'vertical',
     rowHover: true,
-    rowsPerPage: 10,
+    //rowsPerPage: 10,
     rowsPerPageOptions: [10, 15, 100],
     search: true,
     selectableRows: 'multiple',
@@ -427,7 +427,7 @@ class MUIDataTable extends React.Component {
       );
       this.options.selectableRows = this.options.selectableRows ? 'multiple' : 'none';
     }
-    if (!['standard', 'vertical', 'verticalAlways', 'simple'].includes(this.options.responsive)) {
+    if (['standard', 'vertical', 'verticalAlways', 'simple'].indexOf(this.options.responsive) === -1) {
       if (
         [
           'scrollMaxHeight',
@@ -436,7 +436,7 @@ class MUIDataTable extends React.Component {
           'stackedFullWidth',
           'scrollFullHeightFullWidth',
           'scroll',
-        ].includes(this.options.responsive)
+        ].indexOf(this.options.responsive) !== -1
       ) {
         this.warnDep(
           this.options.responsive +
@@ -496,10 +496,13 @@ class MUIDataTable extends React.Component {
       );
     }
 
-    if (Object.values(STP).indexOf(this.options.selectToolbarPlacement) === -1) {
-      this.warnDep(
-        'Invalid option value for selectToolbarPlacement. Please check the documentation: https://github.com/gregnb/mui-datatables#options',
-      );
+    // only give this warning message in newer browsers
+    if (Object.values) {
+      if (Object.values(STP).indexOf(this.options.selectToolbarPlacement) === -1) {
+        this.warnDep(
+          'Invalid option value for selectToolbarPlacement. Please check the documentation: https://github.com/gregnb/mui-datatables#options',
+        );
+      }
     }
   };
 
@@ -710,6 +713,11 @@ class MUIDataTable extends React.Component {
       searchText = this.state.searchText;
     }
 
+    let rowsPerPage = this.state.rowsPerPage;
+    if (typeof this.options.rowsPerPage === 'number') {
+      rowsPerPage = this.options.rowsPerPage;
+    }
+
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
         let value = status === TABLE_LOAD.INITIAL ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
@@ -886,6 +894,7 @@ class MUIDataTable extends React.Component {
       count: this.options.count,
       data: tableData,
       sortOrder: sortOrder,
+      rowsPerPage,
       displayData: this.getDisplayData(columns, tableData, filterList, searchText, tableMeta, props),
       columnOrder,
     };
@@ -1886,7 +1895,7 @@ class MUIDataTable extends React.Component {
             components={this.props.components}
           />
         )}
-        {(selectedRows.data.length === 0 || [STP.ABOVE, STP.NONE].includes(this.options.selectToolbarPlacement)) &&
+        {(selectedRows.data.length === 0 || [STP.ABOVE, STP.NONE].indexOf(this.options.selectToolbarPlacement) !== -1) &&
           showToolbar && (
             <TableToolbarComponent
               columns={columns}
