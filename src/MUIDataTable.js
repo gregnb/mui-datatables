@@ -718,6 +718,11 @@ class MUIDataTable extends React.Component {
       rowsPerPage = this.options.rowsPerPage;
     }
 
+    let page = this.state.page;
+    if (typeof this.options.page === 'number') {
+      page = this.options.page;
+    }
+
     columns.forEach((column, colIndex) => {
       for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
         let value = status === TABLE_LOAD.INITIAL ? data[rowIndex][colIndex] : data[rowIndex].data[colIndex];
@@ -895,6 +900,7 @@ class MUIDataTable extends React.Component {
       data: tableData,
       sortOrder: sortOrder,
       rowsPerPage,
+      page,
       displayData: this.getDisplayData(columns, tableData, filterList, searchText, tableMeta, props),
       columnOrder,
     };
