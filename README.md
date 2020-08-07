@@ -413,7 +413,7 @@ class CustomDataTable extends React.Component {
 }
 ```
 Supported customizable components:
- * `Checkbox` - A special 'data-description' props lets you differentiate checkboxes [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/custom-components/index.js). The dataIndex is also passed via the "data-index" prop.
+ * `Checkbox` - A special 'data-description' props lets you differentiate checkboxes [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/custom-components/index.js). Valid values: ['row-select', 'row-select-header', 'table-filter', 'table-view-col'].The dataIndex is also passed via the "data-index" prop.
  * `ExpandButton` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/expandable-rows/index.js)
  * `TableBody`
  * `TableViewCol` - The component that displays the view/hide list of columns on the toolbar.
