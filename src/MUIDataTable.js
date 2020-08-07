@@ -10,6 +10,7 @@ import merge from 'lodash.merge';
 import PropTypes from 'prop-types';
 import React from 'react';
 import DefaultTableBody from './components/TableBody';
+import DefaultTableFilter from './components/TableFilter';
 import DefaultTableFilterList from './components/TableFilterList';
 import DefaultTableFooter from './components/TableFooter';
 import DefaultTableHead from './components/TableHead';
@@ -254,6 +255,7 @@ class MUIDataTable extends React.Component {
     columns: [],
     components: {
       TableBody: DefaultTableBody,
+      TableFilter: DefaultTableFilter,
       TableFilterList: DefaultTableFilterList,
       TableFooter: DefaultTableFooter,
       TableHead: DefaultTableHead,
