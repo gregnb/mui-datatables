@@ -1901,7 +1901,8 @@ class MUIDataTable extends React.Component {
             components={this.props.components}
           />
         )}
-        {(selectedRows.data.length === 0 || [STP.ABOVE, STP.NONE].indexOf(this.options.selectToolbarPlacement) !== -1) &&
+        {(selectedRows.data.length === 0 ||
+          [STP.ABOVE, STP.NONE].indexOf(this.options.selectToolbarPlacement) !== -1) &&
           showToolbar && (
             <TableToolbarComponent
               columns={columns}

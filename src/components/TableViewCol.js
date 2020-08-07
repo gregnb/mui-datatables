@@ -69,6 +69,7 @@ const TableViewCol = ({ columns, options, components = {}, onColumnUpdate, updat
                 control={
                   <CheckboxComponent
                     color="primary"
+                    data-description="table-view-col"
                     className={classes.checkbox}
                     classes={{
                       root: classes.checkboxRoot,

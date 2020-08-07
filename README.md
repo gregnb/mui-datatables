@@ -171,7 +171,7 @@ The component accepts the following props:
 |**`draggableColumns`**|object|{}|An object of options describing how dragging columns should work. The options are: <p><ul><li>`enabled:boolean`: Indicates if draggable columns are enabled. Defaults to false.</li><li>`transitionTime:number`: The time in milliseconds it takes for columns to swap positions. Defaults to 300.</li></ul></p>To disable the dragging of a particular column, see the "draggable" option in the columns options. Dragging a column to a new position updates the columnOrder array and triggers the onColumnOrderChange callback.
 |**`elevation`**|number|4|Shadow depth applied to Paper component. 
 |**`enableNestedDataAccess`**|string|""|If provided a non-empty string (ex: "."), it will use that value in the column's names to access nested data. For example, given a enableNestedDataAccess value of "." and a column name of "phone.cell", the column would use the value found in `phone:{cell:"555-5555"}`. Any amount of nesting will work. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/data-as-objects/index.js) demonstrates the functionality. 
-|**`expandableRows`**|boolean|false|Enable/disable expandable rows.
+|**`expandableRows`**|boolean|false|Enable/disable expandable rows. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/expandable-rows/index.js)
 |**`expandableRowsHeader`**|boolean|true|Show/hide the expand all/collapse all row header for expandable rows.
 |**`expandableRowsOnClick`**|boolean|false|Enable/disable expand trigger when row is clicked. When False, only expand icon will trigger this action.
 |**`filter`**|boolean|true|Show/hide filter icon from toolbar.
@@ -413,7 +413,8 @@ class CustomDataTable extends React.Component {
 }
 ```
 Supported customizable components:
- * `Checkbox`
+ * `Checkbox` - A special 'data-description' props lets you differentiate checkboxes [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/custom-components/index.js). The dataIndex is also passed via the "data-index" prop.
+ * `ExpandButton` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/expandable-rows/index.js)
  * `TableBody`
  * `TableViewCol` - The component that displays the view/hide list of columns on the toolbar.
  * `TableFilterList` - You can pass `ItemComponent` prop to render custom filter list item.

@@ -1,6 +1,6 @@
  import React from "react";
 import ReactDOM from "react-dom";
-import MUIDataTable from "../../src/";
+import MUIDataTable, {ExpandButton} from "../../src/";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -85,6 +85,8 @@ class Example extends React.Component {
       expandableRowsHeader: false,
       expandableRowsOnClick: true,
       isRowExpandable: (dataIndex, expandedRows) => {
+        if (dataIndex === 3 || dataIndex === 4) return false;
+
         // Prevent expand/collapse of any row if there are 4 rows expanded already (but allow those already expanded to be collapsed)
         if (expandedRows.data.length > 4 && expandedRows.data.filter(d => d.dataIndex === dataIndex).length === 0) return false;
         return true;
@@ -114,9 +116,17 @@ class Example extends React.Component {
       },
     });
 
+    const components = {
+      ExpandButton: function(props) {
+        console.dir(props);
+        if (props.dataIndex === 3 || props.dataIndex === 4) return <div style={{width:'24px'}} />;
+        return <ExpandButton {...props} />;
+      }
+    };
+
     return (
       <MuiThemeProvider theme={theme}>
-        <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+        <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} components={components} />
       </MuiThemeProvider>
     );
 

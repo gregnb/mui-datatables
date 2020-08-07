@@ -185,6 +185,7 @@ class TableFilter extends React.Component {
                     <CheckboxComponent
                       color="primary"
                       className={classes.checkboxIcon}
+                      data-description="table-filter"
                       onChange={this.handleCheckboxChange.bind(null, index, filterValue, column.name)}
                       checked={filterList[index].indexOf(filterValue) >= 0 ? true : false}
                       classes={{
