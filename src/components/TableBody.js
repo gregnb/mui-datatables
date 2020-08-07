@@ -288,6 +288,7 @@ class TableBody extends React.Component {
                     selectableRowsHideCheckboxes={options.selectableRowsHideCheckboxes}
                     isRowExpanded={this.isRowExpanded(dataIndex)}
                     isRowSelectable={isRowSelectable}
+                    dataIndex={dataIndex}
                     id={'MUIDataTableSelectCell-' + dataIndex}
                     components={components}
                   />

@@ -7,6 +7,7 @@ import TableFilterList from '../../src/components/TableFilterList';
 import MuiTooltip from '@material-ui/core/Tooltip';
 import Fade from "@material-ui/core/Fade";
 import Checkbox from '@material-ui/core/Checkbox';
+import Radio from '@material-ui/core/Radio';
 import TableViewCol from './TableViewCol';
 
 const CustomChip = (props) => {
@@ -33,8 +34,13 @@ const CustomTooltip = (props) => {
 
 const CustomCheckbox = (props) => {
   let newProps = Object.assign({}, props);
-  newProps.color = "secondary";
-  return (<Checkbox {...newProps} />);
+  newProps.color = props['data-description'] === 'row-select' ? 'secondary' : 'primary';
+
+  if (props['data-description'] === 'row-select') {
+    return (<Radio {...newProps} />);
+  } else {
+    return (<Checkbox {...newProps} />);
+  }
 };
 
 const CustomFilterList = (props) => {
@@ -107,7 +113,9 @@ class Example extends React.Component {
     let options = {
       onFilterChipClose: (index, removedFilter, filterList) => {
         console.log(index, removedFilter, filterList);
-      }
+      },
+      selectableRows: 'single',
+      selectToolbarPlacement: 'none',
     };
 
     return (

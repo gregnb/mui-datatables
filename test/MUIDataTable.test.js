@@ -786,7 +786,7 @@ describe('<MUIDataTable />', function() {
       .find('#pagination-next')
       .at(0)
       .simulate('click');
-    assert.strictEqual(currentPage, 1);
+    assert.strictEqual(currentPage, 2);
 
     // grab pagination value to test whether or not `rowsPerPage` was reset
     inputValue = fullWrapper
