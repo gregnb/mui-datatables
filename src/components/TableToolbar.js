@@ -294,6 +294,7 @@ class TableToolbar extends React.Component {
 
     const Tooltip = components.Tooltip || MuiTooltip;
     const TableViewColComponent = components.TableViewCol || TableViewCol;
+    const TableFilterComponent = components.TableFilter || TableFilter;
     const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;
     const { showSearch, searchText } = this.state;
 
@@ -424,7 +425,7 @@ class TableToolbar extends React.Component {
                 </Tooltip>
               }
               content={
-                <TableFilter
+                <TableFilterComponent
                   customFooter={options.customFilterDialogFooter}
                   columns={columns}
                   options={options}
