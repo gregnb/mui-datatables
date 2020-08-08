@@ -150,17 +150,17 @@ class TableSelectCell extends React.Component {
       <TableCell className={cellClass} padding="checkbox" {...refProp}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {expandableOn && (
-              <ExpandButtonComponent
-                isHeaderCell={isHeaderCell}
-                areAllRowsExpanded={areAllRowsExpanded}
-                expandedRows={expandedRows}
-                onExpand={onExpand}
-                expandableRowsHeader={expandableRowsHeader}
-                buttonClass={buttonClass}
-                iconIndeterminateClass={iconIndeterminateClass}
-                iconClass={iconClass}
-                dataIndex={dataIndex}
-              />
+            <ExpandButtonComponent
+              isHeaderCell={isHeaderCell}
+              areAllRowsExpanded={areAllRowsExpanded}
+              expandedRows={expandedRows}
+              onExpand={onExpand}
+              expandableRowsHeader={expandableRowsHeader}
+              buttonClass={buttonClass}
+              iconIndeterminateClass={iconIndeterminateClass}
+              iconClass={iconClass}
+              dataIndex={dataIndex}
+            />
           )}
           {selectableOn !== 'none' && selectableRowsHideCheckboxes !== true && renderCheckBox()}
         </div>

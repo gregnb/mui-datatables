@@ -118,7 +118,6 @@ class Example extends React.Component {
 
     const components = {
       ExpandButton: function(props) {
-        console.dir(props);
         if (props.dataIndex === 3 || props.dataIndex === 4) return <div style={{width:'24px'}} />;
         return <ExpandButton {...props} />;
       }

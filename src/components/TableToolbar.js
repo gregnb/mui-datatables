@@ -307,7 +307,6 @@ class TableToolbar extends React.Component {
       this.setState({ hideFilterPopover: true });
     };
 
-
     return (
       <Toolbar
         className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.root : classes.fullWidthRoot}
