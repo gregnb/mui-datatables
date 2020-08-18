@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import assignwith from 'lodash.assignwith';
 import cloneDeep from 'lodash.clonedeep';
 import find from 'lodash.find';
+import isEqual from 'lodash.isequal';
 import isUndefined from 'lodash.isundefined';
 import merge from 'lodash.merge';
 import PropTypes from 'prop-types';
@@ -1369,7 +1370,7 @@ class MUIDataTable extends React.Component {
   };
 
   updateFilterByType = (filterList, index, value, type, customUpdate) => {
-    const filterPos = filterList[index].indexOf(value);
+    const filterPos = filterList[index].findIndex(filter => isEqual(filter, value));
 
     switch (type) {
       case 'checkbox':
