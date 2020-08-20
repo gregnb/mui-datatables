@@ -19,7 +19,7 @@ import DefaultTableToolbar from './components/TableToolbar';
 import DefaultTableToolbarSelect from './components/TableToolbarSelect';
 import MuiTooltip from '@material-ui/core/Tooltip';
 import getTextLabels from './textLabels';
-import { buildMap, getCollatorComparator, sortCompare, getPageValue, warnDeprecated, warnInfo } from './utils';
+import { buildMap, getCollatorComparator, getPageValue, sortCompare, warnDeprecated, warnInfo } from './utils';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -1004,6 +1004,7 @@ class MUIDataTable extends React.Component {
 
       if (
         searchText &&
+        column.display !== 'excluded' &&
         this.hasSearchText(columnVal, searchText, caseSensitive) &&
         column.display !== 'false' &&
         column.searchable
