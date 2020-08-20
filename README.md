@@ -230,6 +230,7 @@ The component accepts the following props:
 |**`sort`**|boolean|true|Enable/disable sort on all columns.
 |**`sortFilterList`**|boolean|true|Enable/disable alphanumeric sorting of filter lists.
 |**`sortOrder`**|object|{}|Sets the column to sort by and its sort direction. To remove/reset sorting, input in an empty object. The object options are the column name and the direction: `name: string, direction: enum('asc', 'desc')` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-columns/index.js)
+|**`tableId`**|string|auto generated|A string that is used internally for identifying the table. It's auto-generated, however, if you need it set to a custom value (ex: server-side rendering), you can set it via this property.
 |**`tableBodyHeight`**|string|'auto'|CSS string for the height of the table (ex: '500px', '100%', 'auto').
 |**`tableBodyMaxHeight`**|string||CSS string for the height of the table (ex: '500px', '100%', 'auto').
 |**`textLabels`**|object||User provided labels to localize text.

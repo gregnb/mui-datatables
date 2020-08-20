@@ -449,6 +449,11 @@ describe('<MUIDataTable />', function() {
     });
   });
 
+  it('should correctly set tableId', () => {
+    const fullWrapper = mount(<MUIDataTable columns={columns} data={[]} options={{ tableId: 'myTable123' }} />);
+    assert.strictEqual(fullWrapper.find('[data-tableid="myTable123"]').length, 12);
+  });
+
   it('should correctly re-build internal table data and displayData structure with prop change', () => {
     const shallowWrapper = shallow(<MUIDataTable columns={columns} data={data} />);
     let state = shallowWrapper.dive().state();

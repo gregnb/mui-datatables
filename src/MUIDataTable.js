@@ -360,7 +360,7 @@ class MUIDataTable extends React.Component {
     }
 
     // provide default tableId when draggableColumns is enabled and no tableId has been passed as prop
-    if (props.options.draggableColumns.enabled === true && !props.options.tableId) {
+    if ((props.options.draggableColumns && props.options.draggableColumns.enabled === true) && !props.options.tableId) {
       props.options.tableId = (Math.random() + '').replace(/\./, '');
     }
 
