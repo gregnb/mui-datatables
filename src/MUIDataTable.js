@@ -218,6 +218,7 @@ class MUIDataTable extends React.Component {
       selectableRowsHideCheckboxes: PropTypes.bool,
       selectableRowsOnClick: PropTypes.bool,
       serverSide: PropTypes.bool,
+      tableId: PropTypes.string,
       tableBodyHeight: PropTypes.string,
       tableBodyMaxHeight: PropTypes.string,
       renderExpandableRow: PropTypes.func,
@@ -268,7 +269,6 @@ class MUIDataTable extends React.Component {
 
   constructor(props) {
     super(props);
-    this.tableId = (Math.random() + '').replace(/\./, '');
     this.tableRef = React.createRef();
     this.tableContent = React.createRef();
     this.draggableHeadCellRefs = {};
@@ -356,6 +356,11 @@ class MUIDataTable extends React.Component {
     if (props.options.disableToolbarSelect === true && props.options.selectToolbarPlacement === undefined) {
       // if deprecated option disableToolbarSelect is set and selectToolbarPlacement is default then use it
       props.options.selectToolbarPlacement = STP.NONE;
+    }
+
+    // provide default tableId when draggableColumns is enabled and no tableId has been passed as prop
+    if (props.options.draggableColumns.enabled === true && !props.options.tableId) {
+      props.options.tableId = (Math.random() + '').replace(/\./, '');
     }
 
     this.options = assignwith(options, props.options, (objValue, srcValue, key) => {
@@ -1956,7 +1961,7 @@ class MUIDataTable extends React.Component {
               updateDividers={fn => (this.updateDividers = fn)}
               setResizeable={fn => (this.setHeadResizeable = fn)}
               options={this.props.options}
-              tableId={this.tableId}
+              tableId={this.options.tableId}
             />
           )}
           <DndProvider backend={HTML5Backend} {...dndProps}>
@@ -1987,7 +1992,7 @@ class MUIDataTable extends React.Component {
                 updateColumnOrder={this.updateColumnOrder}
                 draggableHeadCellRefs={this.draggableHeadCellRefs}
                 tableRef={this.getTableContentRef}
-                tableId={this.tableId}
+                tableId={this.options.tableId}
                 timers={this.timers}
                 components={this.props.components}
               />
@@ -2006,7 +2011,7 @@ class MUIDataTable extends React.Component {
                 columnOrder={columnOrder}
                 filterList={filterList}
                 components={this.props.components}
-                tableId={this.tableId}
+                tableId={this.options.tableId}
               />
               {this.options.customTableBodyFooterRender
                 ? this.options.customTableBodyFooterRender({
