@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import assignwith from 'lodash.assignwith';
 import cloneDeep from 'lodash.clonedeep';
 import find from 'lodash.find';
+import isEqual from 'lodash.isequal';
 import isUndefined from 'lodash.isundefined';
 import merge from 'lodash.merge';
 import PropTypes from 'prop-types';
@@ -19,7 +20,7 @@ import DefaultTableToolbar from './components/TableToolbar';
 import DefaultTableToolbarSelect from './components/TableToolbarSelect';
 import MuiTooltip from '@material-ui/core/Tooltip';
 import getTextLabels from './textLabels';
-import { buildMap, getCollatorComparator, sortCompare, getPageValue, warnDeprecated, warnInfo } from './utils';
+import { buildMap, getCollatorComparator, getPageValue, sortCompare, warnDeprecated, warnInfo } from './utils';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -218,6 +219,7 @@ class MUIDataTable extends React.Component {
       selectableRowsHideCheckboxes: PropTypes.bool,
       selectableRowsOnClick: PropTypes.bool,
       serverSide: PropTypes.bool,
+      tableId: PropTypes.string,
       tableBodyHeight: PropTypes.string,
       tableBodyMaxHeight: PropTypes.string,
       renderExpandableRow: PropTypes.func,
@@ -268,7 +270,6 @@ class MUIDataTable extends React.Component {
 
   constructor(props) {
     super(props);
-    this.tableId = (Math.random() + '').replace(/\./, '');
     this.tableRef = React.createRef();
     this.tableContent = React.createRef();
     this.draggableHeadCellRefs = {};
@@ -356,6 +357,11 @@ class MUIDataTable extends React.Component {
     if (props.options.disableToolbarSelect === true && props.options.selectToolbarPlacement === undefined) {
       // if deprecated option disableToolbarSelect is set and selectToolbarPlacement is default then use it
       props.options.selectToolbarPlacement = STP.NONE;
+    }
+
+    // provide default tableId when draggableColumns is enabled and no tableId has been passed as prop
+    if ((props.options.draggableColumns && props.options.draggableColumns.enabled === true) && !props.options.tableId) {
+      props.options.tableId = (Math.random() + '').replace(/\./, '');
     }
 
     this.options = assignwith(options, props.options, (objValue, srcValue, key) => {
@@ -1004,6 +1010,7 @@ class MUIDataTable extends React.Component {
 
       if (
         searchText &&
+        column.display !== 'excluded' &&
         this.hasSearchText(columnVal, searchText, caseSensitive) &&
         column.display !== 'false' &&
         column.searchable
@@ -1369,7 +1376,7 @@ class MUIDataTable extends React.Component {
   };
 
   updateFilterByType = (filterList, index, value, type, customUpdate) => {
-    const filterPos = filterList[index].indexOf(value);
+    const filterPos = filterList[index].findIndex(filter => isEqual(filter, value));
 
     switch (type) {
       case 'checkbox':
@@ -1956,7 +1963,7 @@ class MUIDataTable extends React.Component {
               updateDividers={fn => (this.updateDividers = fn)}
               setResizeable={fn => (this.setHeadResizeable = fn)}
               options={this.props.options}
-              tableId={this.tableId}
+              tableId={this.options.tableId}
             />
           )}
           <DndProvider backend={HTML5Backend} {...dndProps}>
@@ -1987,7 +1994,7 @@ class MUIDataTable extends React.Component {
                 updateColumnOrder={this.updateColumnOrder}
                 draggableHeadCellRefs={this.draggableHeadCellRefs}
                 tableRef={this.getTableContentRef}
-                tableId={this.tableId}
+                tableId={this.options.tableId}
                 timers={this.timers}
                 components={this.props.components}
               />
@@ -2006,7 +2013,7 @@ class MUIDataTable extends React.Component {
                 columnOrder={columnOrder}
                 filterList={filterList}
                 components={this.props.components}
-                tableId={this.tableId}
+                tableId={this.options.tableId}
               />
               {this.options.customTableBodyFooterRender
                 ? this.options.customTableBodyFooterRender({
