@@ -171,7 +171,7 @@ The component accepts the following props:
 |**`draggableColumns`**|object|{}|An object of options describing how dragging columns should work. The options are: <p><ul><li>`enabled:boolean`: Indicates if draggable columns are enabled. Defaults to false.</li><li>`transitionTime:number`: The time in milliseconds it takes for columns to swap positions. Defaults to 300.</li></ul></p>To disable the dragging of a particular column, see the "draggable" option in the columns options. Dragging a column to a new position updates the columnOrder array and triggers the onColumnOrderChange callback.
 |**`elevation`**|number|4|Shadow depth applied to Paper component. 
 |**`enableNestedDataAccess`**|string|""|If provided a non-empty string (ex: "."), it will use that value in the column's names to access nested data. For example, given a enableNestedDataAccess value of "." and a column name of "phone.cell", the column would use the value found in `phone:{cell:"555-5555"}`. Any amount of nesting will work. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/data-as-objects/index.js) demonstrates the functionality. 
-|**`expandableRows`**|boolean|false|Enable/disable expandable rows.
+|**`expandableRows`**|boolean|false|Enable/disable expandable rows. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/expandable-rows/index.js)
 |**`expandableRowsHeader`**|boolean|true|Show/hide the expand all/collapse all row header for expandable rows.
 |**`expandableRowsOnClick`**|boolean|false|Enable/disable expand trigger when row is clicked. When False, only expand icon will trigger this action.
 |**`filter`**|boolean|true|Show/hide filter icon from toolbar.
@@ -202,7 +202,7 @@ The component accepts the following props:
 |**`onTableChange`**|function||Callback function that triggers when table state has changed. `function(action: string, tableState: object) => void`
 |**`onTableInit`**|function||Callback function that triggers when table state has been initialized. `function(action: string, tableState: object) => void`
 |**`onViewColumnsChange`**|function||Callback function that triggers when a column view has been changed. Previously known as onColumnViewChange. `function(changedColumn: string, action: string) => void`
-|**`page`**|number||User provided starting page for pagination.
+|**`page`**|number||User provided page for pagination.
 |**`pagination`**|boolean|true|Enable/disable pagination.
 |**`print`**|boolean|true|Show/hide print  icon from toolbar.
 |**`renderExpandableRow`**|function||Render expandable row. `function(rowData, rowMeta) => React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/expandable-rows/index.js)
@@ -230,6 +230,7 @@ The component accepts the following props:
 |**`sort`**|boolean|true|Enable/disable sort on all columns.
 |**`sortFilterList`**|boolean|true|Enable/disable alphanumeric sorting of filter lists.
 |**`sortOrder`**|object|{}|Sets the column to sort by and its sort direction. To remove/reset sorting, input in an empty object. The object options are the column name and the direction: `name: string, direction: enum('asc', 'desc')` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-columns/index.js)
+|**`tableId`**|string|auto generated|A string that is used internally for identifying the table. It's auto-generated, however, if you need it set to a custom value (ex: server-side rendering), you can set it via this property.
 |**`tableBodyHeight`**|string|'auto'|CSS string for the height of the table (ex: '500px', '100%', 'auto').
 |**`tableBodyMaxHeight`**|string||CSS string for the height of the table (ex: '500px', '100%', 'auto').
 |**`textLabels`**|object||User provided labels to localize text.
@@ -268,7 +269,7 @@ const columns = [
 |**`customHeadLabelRender`**|function||Function that returns a string or React component. Used for creating a custom header to a column. This method only affects the display in the table's header, other areas of the table (such as the View Columns popover), will use the column's label. `function(columnMeta : object) => string`&#124;` React Component` 
 |**`customFilterListOptions`**|object|| (These options only affect the filter chips that display after filters are selected. To modify the filters themselves, see `filterOptions`) <p><ul><li>`render`: function that returns a string or array of strings used as the chip label(s). `function(value) => string OR arrayOfStrings` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js)</li><li>`update`: function that returns a `filterList (see above)` allowing for custom filter updates when removing the filter chip. filterType must be set to "custom". `function(filterList, filterPos, index) => filterList` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js)</li></ul></p>
 |**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(columnMeta, handleToggleColumn, sortOrder) => string`&#124;` React Component`
-|**`display`**|string|'true'|Display column in table. Possible values:<p><ul><li>true: Column is visible and toggleable via the View Columns popover in the Toolbar.</li><li>false: Column is not visible but can be made visible via the View Columns popover in the Toolbar.</li><li>excluded: Column is not visible and not toggleable via the View Columns popover in the Toolbar.</li></ul></p><p>See also: `viewColumns` and `filter` options.</p>
+|**`display`**|boolean or string|true|Display column in table. Possible values:<p><ul><li>true: Column is visible and toggleable via the View Columns popover in the Toolbar.</li><li>false: Column is not visible but can be made visible via the View Columns popover in the Toolbar.</li><li>excluded: Column is not visible and not toggleable via the View Columns popover in the Toolbar.</li></ul></p><p>See also: `viewColumns` and `filter` options.</p>
 |**`download`**|boolean|true|Display column in CSV download file.
 |**`draggable`**|boolean|true|Determines if a column can be dragged. The draggableColumns.enabled option must also be true.
 |**`empty`**|boolean|false|This denotes whether the column has data or not (for use with intentionally empty columns).
@@ -413,7 +414,8 @@ class CustomDataTable extends React.Component {
 }
 ```
 Supported customizable components:
- * `Checkbox`
+ * `Checkbox` - A special 'data-description' prop lets you differentiate checkboxes [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/custom-components/index.js). Valid values: ['row-select', 'row-select-header', 'table-filter', 'table-view-col'].The dataIndex is also passed via the "data-index" prop.
+ * `ExpandButton` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/expandable-rows/index.js)
  * `TableBody`
  * `TableViewCol` - The component that displays the view/hide list of columns on the toolbar.
  * `TableFilterList` - You can pass `ItemComponent` prop to render custom filter list item.

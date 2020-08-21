@@ -7,7 +7,7 @@ import Cities from './cities';
 class Example extends React.Component {
   state = {
     page: 0,
-    count: 100,
+    count: 26,
     data: [['Loading Data...']],
     sortOrder: {},
     loading: false,
@@ -179,6 +179,11 @@ class Example extends React.Component {
 
         this.sort(changedColumn, order);
       },
+      onChangePage: (page) => {
+        this.setState({page}, () => {
+          this.sort(this.state.sortOrder.name, this.state.sortOrder.direction);
+        });
+      }
     };
 
     return (

@@ -130,6 +130,8 @@ class Example extends React.Component {
       filterType: 'dropdown',
       responsive: 'standard',
       serverSide: true,
+      rowsPerPage: 50,
+      rowsPerPageOptions: [50],
 
       // makes it so filters have to be "confirmed" before being applied to the 
       // table's internal filterList

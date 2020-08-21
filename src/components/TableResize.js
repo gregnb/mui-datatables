@@ -21,7 +21,7 @@ function getParentOffsetLeft(tableEl) {
     parentOffsetLeft = 0,
     offsetParent = tableEl.offsetParent;
   while (offsetParent) {
-    parentOffsetLeft = parentOffsetLeft + (offsetParent.offsetLeft || 0);
+    parentOffsetLeft = parentOffsetLeft + (offsetParent.offsetLeft || 0) - (offsetParent.scrollLeft || 0);
     offsetParent = offsetParent.offsetParent;
     ii++;
     if (ii > 1000) break;
@@ -117,22 +117,42 @@ class TableResize extends React.Component {
   onResizeStart = (id, e) => {
     const tableEl = this.tableRef;
     const originalWidth = tableEl.style.width;
+    let lastColumn = 0;
     tableEl.style.width = '1px';
 
     let finalCells = Object.entries(this.cellsRef);
     finalCells.forEach(([key, item], idx) => {
       let elRect = item ? item.getBoundingClientRect() : { width: 0, left: 0 };
-      this.minWidths[idx] = elRect.width;
+      this.minWidths[key] = elRect.width;
+      lastColumn = Math.max(key, lastColumn);
     });
     tableEl.style.width = originalWidth;
 
-    this.setState({ isResize: true, id });
+    this.setState({ isResize: true, id, lastColumn });
   };
 
   onResizeMove = (id, e) => {
-    const { isResize, resizeCoords } = this.state;
+    const { isResize, resizeCoords, lastColumn } = this.state;
+
+    const prevCol = id => {
+      let nextId = id - 1;
+      while (typeof resizeCoords[nextId] === 'undefined' && nextId >= 0) {
+        nextId--;
+      }
+      return nextId;
+    };
+    const nextCol = id => {
+      let nextId = id + 1;
+      let tries = 0;
+      while (typeof resizeCoords[nextId] === 'undefined' && tries < 20) {
+        nextId++;
+        tries++;
+      }
+      return nextId;
+    };
+
     const fixedMinWidth1 = this.minWidths[id];
-    const fixedMinWidth2 = this.minWidths[parseInt(id, 10) + 1] || this.minWidths[id];
+    const fixedMinWidth2 = this.minWidths[nextCol(parseInt(id, 10))] || this.minWidths[id];
     const idNumber = parseInt(id, 10);
     const finalCells = Object.entries(this.cellsRef);
     const tableEl = this.tableRef;
@@ -140,6 +160,23 @@ class TableResize extends React.Component {
     const { selectableRows } = this.props.options;
 
     let parentOffsetLeft = getParentOffsetLeft(tableEl);
+
+    const nextCoord = id => {
+      let nextId = id + 1;
+      let tries = 0;
+      while (typeof resizeCoords[nextId] === 'undefined' && tries < 20) {
+        nextId++;
+        tries++;
+      }
+      return resizeCoords[nextId];
+    };
+    const prevCoord = id => {
+      let nextId = id - 1;
+      while (typeof resizeCoords[nextId] === 'undefined' && nextId >= 0) {
+        nextId--;
+      }
+      return resizeCoords[nextId];
+    };
 
     if (isResize) {
       let leftPos = e.clientX - parentOffsetLeft;
@@ -159,28 +196,32 @@ class TableResize extends React.Component {
       };
 
       const handleMoveRight = (leftPos, resizeCoords, id, fixedMinWidth) => {
-        if (typeof resizeCoords[id + 1] === 'undefined') return leftPos;
-        if (leftPos > resizeCoords[id + 1].left - fixedMinWidth) {
-          return resizeCoords[id + 1].left - fixedMinWidth;
+        if (typeof nextCoord(id) === 'undefined') return leftPos;
+        if (leftPos > nextCoord(id).left - fixedMinWidth) {
+          return nextCoord(id).left - fixedMinWidth;
         }
         return leftPos;
       };
 
       const handleMoveLeft = (leftPos, resizeCoords, id, fixedMinWidth) => {
-        if (typeof resizeCoords[id - 1] === 'undefined') return leftPos;
-        if (leftPos < resizeCoords[id - 1].left + fixedMinWidth) {
-          return resizeCoords[id - 1].left + fixedMinWidth;
+        if (typeof prevCoord(id) === 'undefined') return leftPos;
+        if (leftPos < prevCoord(id).left + fixedMinWidth) {
+          return prevCoord(id).left + fixedMinWidth;
         }
         return leftPos;
       };
 
       const isFirstColumn = (selectableRows, id) => {
-        return (selectableRows !== 'none' && id === 0) || (selectableRows === 'none' && id === 1);
+        let firstColumn = 1;
+        while (!resizeCoords[firstColumn] && firstColumn < 20) {
+          firstColumn++;
+        }
+
+        return (selectableRows !== 'none' && id === 0) || (selectableRows === 'none' && id === firstColumn);
       };
 
       const isLastColumn = (id, finalCells) => {
-        let len = selectableRows === 'none' ? 1 : 2;
-        return id === finalCells.length - len;
+        return id === prevCol(lastColumn);
       };
 
       if (isFirstColumn(selectableRows, idNumber) && isLastColumn(idNumber, finalCells)) {
