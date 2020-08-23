@@ -54,7 +54,6 @@ class ExamplesGrid extends React.Component {
 
     const examplesSortedKeys = Object.keys(examplesSorted).filter((item) => {
       if (this.state.searchVal === '') return true;
-      console.dir(item);
       return item.toLowerCase().indexOf( this.state.searchVal.toLowerCase() ) !== -1 ? true : false;
     });
 
