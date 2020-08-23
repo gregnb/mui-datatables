@@ -1189,8 +1189,8 @@ class MUIDataTable extends React.Component {
     let map = {};
     let colIndex = colIndexes[0];
     data.forEach(row => {
-      map[ row.data[colIndex] ] = map[ row.data[colIndex] ] || [];
-      map[ row.data[colIndex] ].push(row);
+      map[row.data[colIndex]] = map[row.data[colIndex]] || [];
+      map[row.data[colIndex]].push(row);
     });
 
     if (colIndexes.length > 1) {
@@ -1209,7 +1209,7 @@ class MUIDataTable extends React.Component {
           onExpansionChange: () => {
             this.toggleGroupExpansion(nextGroup);
           },
-          data: map[prop]
+          data: map[prop],
         };
       }
     }
@@ -1221,18 +1221,17 @@ class MUIDataTable extends React.Component {
       onExpansionChange: () => {
         this.toggleGroupExpansion(group);
       },
-      group: group
+      group: group,
     };
   }
 
   getGroupingData(displayData, grouping) {
-
     if (!grouping) return null;
-    
+
     console.log('getGroupingData');
     console.log(grouping);
 
-    let cols =  grouping.columnIndexes;
+    let cols = grouping.columnIndexes;
 
     if (!cols || cols.length === 0) return null;
 
@@ -1495,14 +1494,7 @@ class MUIDataTable extends React.Component {
 
         let nextDisplayData = this.options.serverSide
           ? prevState.displayData
-          : this.getDisplayData(
-              prevState.columns,
-              prevState.data,
-              filterList,
-              prevState.searchText,
-              null,
-              this.props,
-            );
+          : this.getDisplayData(prevState.columns, prevState.data, filterList, prevState.searchText, null, this.props);
 
         return {
           filterList: filterList,
@@ -1555,14 +1547,7 @@ class MUIDataTable extends React.Component {
 
         let nextDisplayData = this.options.serverSide
           ? prevState.displayData
-          : this.getDisplayData(
-              prevState.columns,
-              prevState.data,
-              filterList,
-              prevState.searchText,
-              null,
-              this.props,
-            );
+          : this.getDisplayData(prevState.columns, prevState.data, filterList, prevState.searchText, null, this.props);
 
         return {
           page: 0,
@@ -1970,7 +1955,7 @@ class MUIDataTable extends React.Component {
       columnOrder,
     } = this.state;
 
-    const TableBodyComponent = this.state.groupingData ? TableBodyGroups : (TableBody || DefaultTableBody);
+    const TableBodyComponent = this.state.groupingData ? TableBodyGroups : TableBody || DefaultTableBody;
     const TableFilterListComponent = TableFilterList || DefaultTableFilterList;
     const TableFooterComponent = TableFooter || DefaultTableFooter;
     const TableHeadComponent = TableHead || DefaultTableHead;

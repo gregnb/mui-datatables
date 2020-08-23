@@ -51,7 +51,6 @@ class TableBody extends React.Component {
   };
 
   flattenGroups(rows, rootGroup, columns, grouping, isGroupExpanded) {
-
     for (let prop in rootGroup.groups) {
       let group = rootGroup.groups[prop];
       if (group.data) {
@@ -72,10 +71,9 @@ class TableBody extends React.Component {
           rows.push({
             rowType: 'data',
             id: group.group.join('___GROUPJOIN___') + '_data',
-            data: group
+            data: group,
           });
         }
-
       } else {
         let isExpanded = isGroupExpanded(grouping, group.group);
         rows.push({
@@ -93,7 +91,6 @@ class TableBody extends React.Component {
         if (isExpanded) {
           this.flattenGroups(rows, rootGroup.groups[prop], columns, grouping, isGroupExpanded);
         }
-
       }
     }
 
@@ -106,13 +103,7 @@ class TableBody extends React.Component {
   }
 
   render() {
-    const {
-      grouping,
-      isGroupExpanded,
-      classes,
-      columns,
-      groupingData,
-    } = this.props;
+    const { grouping, isGroupExpanded, classes, columns, groupingData } = this.props;
     let tableData = this.props.data;
 
     let rows = this.buildRows(groupingData, columns, grouping, isGroupExpanded);
@@ -123,7 +114,7 @@ class TableBody extends React.Component {
     return (
       <MuiTableBody>
         {rows.map((data, rowIndex) => {
-          let RowComponent = (data.rowType === 'group') ? TableBodyGroupHeaderRow : TableBodyGroupDataRow;
+          let RowComponent = data.rowType === 'group' ? TableBodyGroupHeaderRow : TableBodyGroupDataRow;
           return (
             <RowComponent
               row={data}

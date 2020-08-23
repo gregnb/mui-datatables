@@ -29,23 +29,17 @@ const useStyles = makeStyles(
       transform: 'rotate(90deg)',
     },
     tableRow: {
-      padding: "4px 8px 8px 4px"
+      padding: '4px 8px 8px 4px',
     },
     expandButton: {
-      marginRight: "10px"
-    }
+      marginRight: '10px',
+    },
   }),
-  {name: 'MUIDataTableBodyGroupHeaderRow'}
+  { name: 'MUIDataTableBodyGroupHeaderRow' },
 );
 
 function TableBodyGroupHeaderRow(props) {
-  const {
-    columns,
-    options,
-    components = {},
-    tableId,
-    row,
-  } = props;
+  const { columns, options, components = {}, tableId, row } = props;
   const classes = useStyles();
 
   const onExpand = () => {};
@@ -55,8 +49,8 @@ function TableBodyGroupHeaderRow(props) {
     [classes.expanded]: row.expanded,
   });
 
-  const getLevelOffset = (level) => {
-    return ((level-1) * 32) + 'px';
+  const getLevelOffset = level => {
+    return (level - 1) * 32 + 'px';
   };
 
   let bodyClasses = options.setRowProps ? options.setRowProps(row, null, null) || {} : {};
@@ -68,18 +62,17 @@ function TableBodyGroupHeaderRow(props) {
         [bodyClasses.className]: bodyClasses.className,
         [classes.tableRow]: true,
       })}>
-      <TableCell
-        className={classes.tableRow}
-        colSpan={1000}>
+      <TableCell className={classes.tableRow} colSpan={1000}>
         <IconButton
           className={classes.expandButton}
           style={{
-            marginLeft: getLevelOffset(row.level)
+            marginLeft: getLevelOffset(row.level),
           }}
           onClick={row.onExpansionChange}>
           <KeyboardArrowRight id="expandable-button" className={iconClass} />
         </IconButton>
-        <div className={classes.columnName}>{row.columnLabel}:</div><div className={classes.columnValue}>{row.columnValue}</div>
+        <div className={classes.columnName}>{row.columnLabel}:</div>
+        <div className={classes.columnValue}>{row.columnValue}</div>
       </TableCell>
     </TableRow>
   );

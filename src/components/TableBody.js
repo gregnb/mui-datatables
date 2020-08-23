@@ -102,7 +102,7 @@ class TableBody extends React.Component {
     return (
       <MuiTableBody>
         <TableBodyRows
-          tableRows={tableRows} 
+          tableRows={tableRows}
           data={this.props.data}
           count={this.props.count}
           columns={this.props.columns}
