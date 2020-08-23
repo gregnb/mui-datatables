@@ -62,10 +62,19 @@ function Example() {
     },
     onTableChange: (action, state) => {
       console.log(action);
-      console.dir(state);
+      //console.dir(state);
+    },
+    onGroupExpansionChange: (group, expanded) => {
+      console.dir(group);
+      console.dir(expanded);
     },
     grouping: {
-      columnIndexes: [1, 3]
+      columnIndexes: [1, 3],
+      expanded: {
+        "Business Consultant": {
+          open: true
+        }
+      }
     }
   };
 
