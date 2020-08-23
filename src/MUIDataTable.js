@@ -1228,16 +1228,16 @@ class MUIDataTable extends React.Component {
   getGroupingData(displayData, grouping) {
     if (!grouping) return null;
 
-    console.log('getGroupingData');
-    console.log(grouping);
+    //console.log('getGroupingData');
+    //console.log(grouping);
 
     let cols = grouping.columnIndexes;
 
     if (!cols || cols.length === 0) return null;
 
-    console.dir(displayData);
+    //console.dir(displayData);
     let groups = this.getGroups(grouping, cols, displayData, 1, []);
-    console.dir(groups);
+    //console.dir(groups);
     return groups;
   }
 

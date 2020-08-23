@@ -4,6 +4,7 @@ import { mount, shallow } from 'enzyme';
 import { assert, expect, should } from 'chai';
 import getTextLabels from '../src/textLabels';
 import TableBody from '../src/components/TableBody';
+import TableBodyRows from '../src/components/TableBodyRows';
 import TableSelectCell from '../src/components/TableSelectCell';
 import Checkbox from '@material-ui/core/Checkbox';
 
@@ -123,7 +124,7 @@ describe('<TableBody />', function() {
     const toggleExpandRow = () => {};
 
     const shallowWrapper = shallow(
-      <TableBody
+      <TableBodyRows
         data={displayData}
         count={displayData.length}
         columns={columns}
@@ -151,7 +152,7 @@ describe('<TableBody />', function() {
     const toggleExpandRow = () => {};
 
     const shallowWrapper = shallow(
-      <TableBody
+      <TableBodyRows
         data={displayData}
         count={displayData.length}
         columns={columns}
@@ -179,7 +180,7 @@ describe('<TableBody />', function() {
     const toggleExpandRow = () => {};
 
     const shallowWrapper = shallow(
-      <TableBody
+      <TableBodyRows
         data={displayData}
         count={displayData.length}
         columns={columns}
