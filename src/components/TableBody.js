@@ -241,7 +241,10 @@ class TableBody extends React.Component {
             const { data: row, dataIndex } = data;
 
             if (options.customRowRender) {
-              return options.customRowRender(row, dataIndex, rowIndex);
+              const customRowRenderResult = options.customRowRender(row, dataIndex, rowIndex);
+              if (customRowRenderResult) {
+                return customRowRenderResult;
+              }
             }
 
             let isRowSelected = options.selectableRows !== 'none' ? this.isRowSelected(dataIndex) : false;
