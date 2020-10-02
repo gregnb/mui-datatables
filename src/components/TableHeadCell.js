@@ -106,6 +106,11 @@ const TableHeadCell = ({
   const sortActive = sortDirection !== 'none' && sortDirection !== undefined;
   const ariaSortDirection = sortDirection === 'none' ? false : sortDirection;
 
+  const isDraggingEnabled = () => {
+    if (!draggingHook) return false;
+    return options.draggableColumns && options.draggableColumns.enabled && column.draggable !== false;
+  };
+
   const sortLabelProps = {
     classes: { root: classes.sortLabelRoot },
     active: sortActive,
@@ -113,7 +118,7 @@ const TableHeadCell = ({
     ...(ariaSortDirection ? { direction: sortDirection } : {}),
   };
 
-  const [{ opacity }, dragRef, preview] = useDrag({
+  const [{ opacity }, dragRef, preview] = isDraggingEnabled()? useDrag({
     item: {
       type: 'HEADER',
       colIndex: index,
@@ -135,9 +140,9 @@ const TableHeadCell = ({
         opacity: monitor.isDragging() ? 1 : 0,
       };
     },
-  });
+  }) : [{}];
 
-  const [drop] = useColumnDrop({
+  const [drop] = isDraggingEnabled()? useColumnDrop({
     drop: (item, mon) => {
       setSortTooltipOpen(false);
       setHintTooltipOpen(false);
@@ -152,12 +157,7 @@ const TableHeadCell = ({
     tableRef: tableRef ? tableRef() : null,
     tableId: tableId || 'none',
     timers,
-  });
-
-  const isDraggingEnabled = () => {
-    if (!draggingHook) return false;
-    return options.draggableColumns && options.draggableColumns.enabled && column.draggable !== false;
-  };
+  }) : [];
 
   const cellClass = clsx({
     [classes.root]: true,
@@ -187,7 +187,7 @@ const TableHeadCell = ({
   return (
     <TableCell
       ref={ref => {
-        drop(ref);
+        drop && drop(ref);
         setCellRef && setCellRef(index + 1, colPosition + 1, ref);
       }}
       className={cellClass}
