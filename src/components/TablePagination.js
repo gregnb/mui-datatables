@@ -80,11 +80,13 @@ function TablePagination(props) {
                 id: 'pagination-back',
                 'data-testid': 'pagination-back',
                 'aria-label': textLabels.previous,
+                title: textLabels.previous,
               }}
               nextIconButtonProps={{
                 id: 'pagination-next',
                 'data-testid': 'pagination-next',
                 'aria-label': textLabels.next,
+                title: textLabels.next,
               }}
               SelectProps={{
                 id: 'pagination-input',
