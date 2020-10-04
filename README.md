@@ -175,6 +175,7 @@ The component accepts the following props:
 |**`expandableRowsHeader`**|boolean|true|Show/hide the expand all/collapse all row header for expandable rows.
 |**`expandableRowsOnClick`**|boolean|false|Enable/disable expand trigger when row is clicked. When False, only expand icon will trigger this action.
 |**`filter`**|boolean|true|Show/hide filter icon from toolbar.
+|**`filterArrayFullMatch`**|boolean|true|For array values, default checks if all the filter values are included in the array. If false, checks if at least one of the filter values is in the array.
 |**`filterType`**|string||Choice of filtering view. `enum('checkbox', 'dropdown', 'multiselect', 'textField', 'custom')`
 |**`fixedHeader`**|boolean|true|Enable/disable a fixed header for the table [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
 |**`fixedSelectColumn`**|boolean|true|Enable/disable fixed select column. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
