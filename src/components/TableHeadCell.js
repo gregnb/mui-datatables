@@ -118,7 +118,7 @@ const TableHeadCell = ({
     ...(ariaSortDirection ? { direction: sortDirection } : {}),
   };
 
-  const [{ opacity }, dragRef, preview] = isDraggingEnabled()? useDrag({
+  const [{ opacity }, dragRef, preview] = useDrag({
     item: {
       type: 'HEADER',
       colIndex: index,
@@ -140,9 +140,9 @@ const TableHeadCell = ({
         opacity: monitor.isDragging() ? 1 : 0,
       };
     },
-  }) : [{}];
+  });
 
-  const [drop] = isDraggingEnabled()? useColumnDrop({
+  const [drop] = useColumnDrop({
     drop: (item, mon) => {
       setSortTooltipOpen(false);
       setHintTooltipOpen(false);
@@ -157,7 +157,7 @@ const TableHeadCell = ({
     tableRef: tableRef ? tableRef() : null,
     tableId: tableId || 'none',
     timers,
-  }) : [];
+  });
 
   const cellClass = clsx({
     [classes.root]: true,

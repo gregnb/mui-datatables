@@ -51,7 +51,7 @@ class Example extends React.Component {
         },
         pagination:{
           next: "Following page",
-          privous: "Preceding page"
+          previous: "Preceding page"
         },
         filter: {
           all: "All Records",
