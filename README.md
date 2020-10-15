@@ -166,15 +166,15 @@ The component accepts the following props:
 |**`customTableBodyFooterRender`**|function||Render a footer under the table body but above the table's standard footer. This is useful for creating footers for individual columns. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-footer/index.js)
 |**`customToolbar`**|function||Render a custom toolbar
 |**`customToolbarSelect`**|function||Render a custom selected rows toolbar. `function(selectedRows, displayData, setSelectedRows) => void`
-|**`download`**|boolean|true|Show/hide download icon from toolbar
+|**`download`**|boolean or string|true|Show/hide download icon from toolbar.  Possible values:<p><ul><li>true: Button is visiable and clickable.</li><li>false: Button is not visible.</li><li>disabled: Button is visible, but not clickable.</li></ul></p>
 |**`downloadOptions`**|object|see ->|An object of options to change the output of the CSV file:<p><ul><li>`filename`: string</li><li>`separator`: string</li><li>`filterOptions`: object<ul><li>`useDisplayedColumnsOnly`: boolean</li><li>`useDisplayedRowsOnly`: boolean</li></ul></li></ul></p><p>Default Value:`{filename: 'tableDownload.csv', separator: ','}`</p>
 |**`draggableColumns`**|object|{}|An object of options describing how dragging columns should work. The options are: <p><ul><li>`enabled:boolean`: Indicates if draggable columns are enabled. Defaults to false.</li><li>`transitionTime:number`: The time in milliseconds it takes for columns to swap positions. Defaults to 300.</li></ul></p>To disable the dragging of a particular column, see the "draggable" option in the columns options. Dragging a column to a new position updates the columnOrder array and triggers the onColumnOrderChange callback.
-|**`elevation`**|number|4|Shadow depth applied to Paper component. 
-|**`enableNestedDataAccess`**|string|""|If provided a non-empty string (ex: "."), it will use that value in the column's names to access nested data. For example, given a enableNestedDataAccess value of "." and a column name of "phone.cell", the column would use the value found in `phone:{cell:"555-5555"}`. Any amount of nesting will work. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/data-as-objects/index.js) demonstrates the functionality. 
+|**`elevation`**|number|4|Shadow depth applied to Paper component.
+|**`enableNestedDataAccess`**|string|""|If provided a non-empty string (ex: "."), it will use that value in the column's names to access nested data. For example, given a enableNestedDataAccess value of "." and a column name of "phone.cell", the column would use the value found in `phone:{cell:"555-5555"}`. Any amount of nesting will work. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/data-as-objects/index.js) demonstrates the functionality.
 |**`expandableRows`**|boolean|false|Enable/disable expandable rows. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/expandable-rows/index.js)
 |**`expandableRowsHeader`**|boolean|true|Show/hide the expand all/collapse all row header for expandable rows.
 |**`expandableRowsOnClick`**|boolean|false|Enable/disable expand trigger when row is clicked. When False, only expand icon will trigger this action.
-|**`filter`**|boolean|true|Show/hide filter icon from toolbar.
+|**`filter`**|boolean or string|true|Show/hide filter icon from toolbar. Possible values:<p><ul><li>true: Button is visiable and clickable.</li><li>false: Button is not visible.</li><li>disabled: Button is visible, but not clickable.</li></ul></p>
 |**`filterArrayFullMatch`**|boolean|true|For array values, default checks if all the filter values are included in the array. If false, checks if at least one of the filter values is in the array.
 |**`filterType`**|string||Choice of filtering view. `enum('checkbox', 'dropdown', 'multiselect', 'textField', 'custom')`
 |**`fixedHeader`**|boolean|true|Enable/disable a fixed header for the table [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/fixed-header/index.js)
@@ -205,7 +205,7 @@ The component accepts the following props:
 |**`onViewColumnsChange`**|function||Callback function that triggers when a column view has been changed. Previously known as onColumnViewChange. `function(changedColumn: string, action: string) => void`
 |**`page`**|number||User provided page for pagination.
 |**`pagination`**|boolean|true|Enable/disable pagination.
-|**`print`**|boolean|true|Show/hide print  icon from toolbar.
+|**`print`**|boolean or string|true|Show/hide print  icon from toolbar. Possible values:<p><ul><li>true: Button is visiable and clickable.</li><li>false: Button is not visible.</li><li>disabled: Button is visible, but not clickable.</li></ul></p>
 |**`renderExpandableRow`**|function||Render expandable row. `function(rowData, rowMeta) => React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/expandable-rows/index.js)
 |**`resizableColumns`**|boolean|false|Enable/disable resizable columns.
 |**`responsive`**|string|'stacked'|Enable/disable responsive table views. Options: <p><ul><li>"vertical" (default value): In smaller views the table cells will collapse such that the heading is to the left of the cell value.</li><li>"standard": Table will stay in the standard mode but make small changes to better fit the allocated space.<li>"simple": On very small devices the table rows will collapse into simple display.</li></ul></p>[Example](https://github.com/gregnb/mui-datatables/blob/master/examples/simple/index.js)
@@ -214,7 +214,7 @@ The component accepts the following props:
 |**`rowsPerPage`**|number|10|Number of rows allowed per page.
 |**`rowsPerPageOptions`**|array|[10,15,100]|Options to provide in pagination for number of rows a user can select.
 |**`rowsSelected`**|array||User provided array of numbers (dataIndexes) which indicates the selected rows.
-|**`search`**|boolean|true|Show/hide search icon from toolbar.
+|**`search`**|boolean or string|true|Show/hide search icon from toolbar. Possible values:<p><ul><li>true: Button is visiable and clickable.</li><li>false: Button is not visible.</li><li>disabled: Button is visible, but not clickable.</li></ul></p>
 |**`searchPlaceholder`**|string||Search text placeholder. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-search/index.js)
 |**`searchProps`**|object|{}|Props applied to the search text box. You can set method callbacks like onBlur, onKeyUp, etc, this way. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-search/index.js)
 |**`searchOpen`**|boolean|false|Initially displays search bar.
@@ -235,7 +235,7 @@ The component accepts the following props:
 |**`tableBodyHeight`**|string|'auto'|CSS string for the height of the table (ex: '500px', '100%', 'auto').
 |**`tableBodyMaxHeight`**|string||CSS string for the height of the table (ex: '500px', '100%', 'auto').
 |**`textLabels`**|object||User provided labels to localize text.
-|**`viewColumns`**|boolean|true|Show/hide viewColumns icon from toolbar.
+|**`viewColumns`**|boolean or string|true|Show/hide viewColumns icon from toolbar. Possible values:<p><ul><li>true: Button is visiable and clickable.</li><li>false: Button is not visible.</li><li>disabled: Button is visible, but not clickable.</li></ul></p>
 
 ## Customize Columns
 
@@ -267,7 +267,7 @@ const columns = [
 |:--:|:-----|:--|:-----|
 |**`customBodyRender`**|function||Function that returns a string or React component. Used to display data within all table cells of a given column. The value returned from this function will be used for filtering in the filter dialog. If this isn't need, you may want to consider customBodyRenderLite instead.  `function(value, tableMeta, updateValue) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/component/index.js)
 |**`customBodyRenderLite`**|function||Function that returns a string or React component. Used to display data within all table cells of a given column. This method performs better than customBodyRender but has the following caveats:  <p><ul><li>The value returned from this function is **not** used for filtering, so the filter dialog will use the raw data from the data array.</li><li>This method only gives you the dataIndex and rowIndex, leaving you to lookup the column value.</li></ul></p>`function(dataIndex, rowIndex) => string`&#124;` React Component` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/large-data-set/index.js)
-|**`customHeadLabelRender`**|function||Function that returns a string or React component. Used for creating a custom header to a column. This method only affects the display in the table's header, other areas of the table (such as the View Columns popover), will use the column's label. `function(columnMeta : object) => string`&#124;` React Component` 
+|**`customHeadLabelRender`**|function||Function that returns a string or React component. Used for creating a custom header to a column. This method only affects the display in the table's header, other areas of the table (such as the View Columns popover), will use the column's label. `function(columnMeta : object) => string`&#124;` React Component`
 |**`customFilterListOptions`**|object|| (These options only affect the filter chips that display after filters are selected. To modify the filters themselves, see `filterOptions`) <p><ul><li>`render`: function that returns a string or array of strings used as the chip label(s). `function(value) => string OR arrayOfStrings` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js)</li><li>`update`: function that returns a `filterList (see above)` allowing for custom filter updates when removing the filter chip. filterType must be set to "custom". `function(filterList, filterPos, index) => filterList` [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-filter/index.js)</li></ul></p>
 |**`customHeadRender`**|function||Function that returns a string or React component. Used as display for column header. `function(columnMeta, handleToggleColumn, sortOrder) => string`&#124;` React Component`
 |**`display`**|boolean or string|true|Display column in table. Possible values:<p><ul><li>true: Column is visible and toggleable via the View Columns popover in the Toolbar.</li><li>false: Column is not visible but can be made visible via the View Columns popover in the Toolbar.</li><li>excluded: Column is not visible and not toggleable via the View Columns popover in the Toolbar.</li></ul></p><p>See also: `viewColumns` and `filter` options.</p>

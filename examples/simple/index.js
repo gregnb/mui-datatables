@@ -11,11 +11,20 @@ function Example() {
   const [responsive, setResponsive] = useState('vertical');
   const [tableBodyHeight, setTableBodyHeight] = useState('400px');
   const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState('');
+  const [searchBtn, setSearchBtn] = useState(true);
+  const [downloadBtn, setDownloadBtn] = useState(true);
+  const [printBtn, setPrintBtn] = useState(true);
+  const [viewColumnBtn, setViewColumnBtn] = useState(true);
+  const [filterBtn, setFilterBtn] = useState(true);
 
   const columns = ['Name', 'Title', 'Location'];
 
   const options = {
-    filter: true,
+    search: searchBtn,
+    download: downloadBtn,
+    print: printBtn,
+    viewColumns: viewColumnBtn,
+    filter: filterBtn,
     filterType: 'dropdown',
     responsive,
     tableBodyHeight,
@@ -86,6 +95,71 @@ function Example() {
           <MenuItem value={'400px'}>400px</MenuItem>
           <MenuItem value={'800px'}>800px</MenuItem>
           <MenuItem value={'100%'}>100%</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl>
+        <InputLabel id="demo-simple-select-label">Search Button</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={searchBtn}
+          style={{ width: '200px', marginBottom: '10px' }}
+          onChange={e => setSearchBtn(e.target.value)}>
+          <MenuItem value={'true'}>{'true'}</MenuItem>
+          <MenuItem value={'false'}>{'false'}</MenuItem>
+          <MenuItem value={'disabled'}>disabled</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl>
+        <InputLabel id="demo-simple-select-label">Download Button</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={downloadBtn}
+          style={{ width: '200px', marginBottom: '10px' }}
+          onChange={e => setDownloadBtn(e.target.value)}>
+          <MenuItem value={'true'}>{'true'}</MenuItem>
+          <MenuItem value={'false'}>{'false'}</MenuItem>
+          <MenuItem value={'disabled'}>disabled</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl>
+        <InputLabel id="demo-simple-select-label">Print Button</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={printBtn}
+          style={{ width: '200px', marginBottom: '10px' }}
+          onChange={e => setPrintBtn(e.target.value)}>
+          <MenuItem value={'true'}>{'true'}</MenuItem>
+          <MenuItem value={'false'}>{'false'}</MenuItem>
+          <MenuItem value={'disabled'}>disabled</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl>
+        <InputLabel id="demo-simple-select-label">View Column Button</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={viewColumnBtn}
+          style={{ width: '200px', marginBottom: '10px' }}
+          onChange={e => setViewColumnBtn(e.target.value)}>
+          <MenuItem value={'true'}>{'true'}</MenuItem>
+          <MenuItem value={'false'}>{'false'}</MenuItem>
+          <MenuItem value={'disabled'}>disabled</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl>
+        <InputLabel id="demo-simple-select-label">Filter Button</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={filterBtn}
+          style={{ width: '200px', marginBottom: '10px' }}
+          onChange={e => setFilterBtn(e.target.value)}>
+          <MenuItem value={'true'}>{'true'}</MenuItem>
+          <MenuItem value={'false'}>{'false'}</MenuItem>
+          <MenuItem value={'disabled'}>disabled</MenuItem>
         </Select>
       </FormControl>
       <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />
