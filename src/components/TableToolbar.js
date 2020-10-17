@@ -440,7 +440,7 @@ class TableToolbar extends React.Component {
               }
             />
           )}
-          {options.customToolbar && options.customToolbar()}
+          {options.customToolbar && options.customToolbar({ displayData: this.props.displayData })}
         </div>
       </Toolbar>
     );
