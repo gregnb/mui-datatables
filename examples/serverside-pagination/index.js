@@ -1,109 +1,103 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
 import { CircularProgress, Typography } from '@material-ui/core';
-import MUIDataTable from "../../src/";
+import MUIDataTable from '../../src/';
 
 class Example extends React.Component {
-
   state = {
     page: 0,
     count: 1,
     rowsPerPage: 5,
     sortOrder: {},
-    data: [["Loading Data..."]],
+    data: [['Loading Data...']],
     columns: [
       {
-        name: "fullName",
-        label: "Full Name",
+        name: 'fullName',
+        label: 'Full Name',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            
             // Here you can render a more complex display.
             // You're given access to tableMeta, which has
             // the rowData (as well as the original object data).
             // See the console for a detailed look at this object.
-            
+
             console.log('customBodyRender');
             console.dir(tableMeta);
             return value;
-          }
+          },
         },
       },
       {
-        name: "title",
-        label: "Title",
+        name: 'title',
+        label: 'Title',
         options: {},
       },
       {
-        name: "location",
-        label: "Location",
+        name: 'location',
+        label: 'Location',
         options: {},
       },
     ],
-    isLoading: false
+    isLoading: false,
   };
 
   componentDidMount() {
-    this.getData("", 0);
+    this.getData('', 0);
   }
 
   // get data
-  getData = (url, page) => {
+  getData = async (url, page) => {
     this.setState({ isLoading: true });
-    this.xhrRequest(url, page).then(res => {
-      this.setState({ data: res.data, isLoading: false, count: res.total });
-    });
-  }
+    const res = await this.xhrRequest(url, page);
+    this.setState({ data: res.data, isLoading: false, count: res.total });
+  };
 
   getSrcData = () => {
     return [
-      {fullName: "Gabby George", title: "Business Analyst", location: "Minneapolis"},
-      {fullName: "Aiden Lloyd", title: "Business Consultant", location: "Dallas"},
-      {fullName: "Jaden Collins", title: "Attorney", location: "Santa Ana"},
-      {fullName: "Franky Rees", title: "Business Analyst", location: "St. Petersburg"},
-      {fullName: "Aaren Rose", title: "Business Analyst", location: "Toledo"},
+      { fullName: 'Gabby George', title: 'Business Analyst', location: 'Minneapolis' },
+      { fullName: 'Aiden Lloyd', title: 'Business Consultant', location: 'Dallas' },
+      { fullName: 'Jaden Collins', title: 'Attorney', location: 'Santa Ana' },
+      { fullName: 'Franky Rees', title: 'Business Analyst', location: 'St. Petersburg' },
+      { fullName: 'Aaren Rose', title: 'Business Analyst', location: 'Toledo' },
 
-      {fullName: "John George", title: "Business Analyst", location: "Washington DC"},
-      {fullName: "Pat Lloyd", title: "Computer Programmer", location: "Baltimore"},
-      {fullName: "Joe Joe Collins", title: "Attorney", location: "Las Cruces"},
-      {fullName: "Franky Hershy", title: "Paper Boy", location: "El Paso"},
-      {fullName: "Aaren Smalls", title: "Business Analyst", location: "Tokyo"},
+      { fullName: 'John George', title: 'Business Analyst', location: 'Washington DC' },
+      { fullName: 'Pat Lloyd', title: 'Computer Programmer', location: 'Baltimore' },
+      { fullName: 'Joe Joe Collins', title: 'Attorney', location: 'Las Cruces' },
+      { fullName: 'Franky Hershy', title: 'Paper Boy', location: 'El Paso' },
+      { fullName: 'Aaren Smalls', title: 'Business Analyst', location: 'Tokyo' },
 
-      {fullName: "Boogie G", title: "Police Officer", location: "Unknown"},
-      {fullName: "James Roulf", title: "Business Consultant", location: "Video Game Land"},
-      {fullName: "Mike Moocow", title: "Burger King Employee", location: "New York"},
-      {fullName: "Mimi Gerock", title: "Business Analyst", location: "McCloud"},
-      {fullName: "Jason Evans", title: "Business Analyst", location: "Mt Shasta"},
+      { fullName: 'Boogie G', title: 'Police Officer', location: 'Unknown' },
+      { fullName: 'James Roulf', title: 'Business Consultant', location: 'Video Game Land' },
+      { fullName: 'Mike Moocow', title: 'Burger King Employee', location: 'New York' },
+      { fullName: 'Mimi Gerock', title: 'Business Analyst', location: 'McCloud' },
+      { fullName: 'Jason Evans', title: 'Business Analyst', location: 'Mt Shasta' },
 
-      {fullName: "Simple Sam", title: "Business Analyst", location: "Mt Shasta"},
-      {fullName: "Marky Mark", title: "Business Consultant", location: "Las Cruces"},
-      {fullName: "Jaden Jam", title: "Attorney", location: "El Paso"},
-      {fullName: "Holly Jo", title: "Business Analyst", location: "St. Petersburg"},
-      {fullName: "Suzie Q", title: "Business Analyst", location: "New York"},
+      { fullName: 'Simple Sam', title: 'Business Analyst', location: 'Mt Shasta' },
+      { fullName: 'Marky Mark', title: 'Business Consultant', location: 'Las Cruces' },
+      { fullName: 'Jaden Jam', title: 'Attorney', location: 'El Paso' },
+      { fullName: 'Holly Jo', title: 'Business Analyst', location: 'St. Petersburg' },
+      { fullName: 'Suzie Q', title: 'Business Analyst', location: 'New York' },
     ];
-  }
+  };
 
   sort = (page, sortOrder) => {
-
     this.setState({ isLoading: true });
-    this.xhrRequest("", page, sortOrder).then(res => {
-      this.setState({ 
-        data: res.data, 
-        page: res.page, 
+    this.xhrRequest('', page, sortOrder).then(res => {
+      this.setState({
+        data: res.data,
+        page: res.page,
         sortOrder,
-        isLoading: false, 
+        isLoading: false,
         count: res.total,
       });
     });
-  }
+  };
 
   // mock async function
   xhrRequest = (url, page, sortOrder = {}) => {
-
     return new Promise((resolve, reject) => {
       // mock page data
       let fullData = this.getSrcData();
-      const total = fullData.length;  // mock record count from server - normally this would be a number attached to the return data
+      const total = fullData.length; // mock record count from server - normally this would be a number attached to the return data
 
       let sortField = sortOrder.name;
       let sortDir = sortOrder.direction;
@@ -111,7 +105,7 @@ class Example extends React.Component {
       if (sortField) {
         fullData = fullData.sort((a, b) => {
           if (a[sortField] < b[sortField]) {
-            return  1 * (sortDir === 'asc' ? -1 : 1);
+            return 1 * (sortDir === 'asc' ? -1 : 1);
           } else if (a[sortField] > b[sortField]) {
             return -1 * (sortDir === 'asc' ? -1 : 1);
           } else {
@@ -120,18 +114,18 @@ class Example extends React.Component {
         });
       }
 
-      const srcData = fullData.slice(page * this.state.rowsPerPage, (page+1) * this.state.rowsPerPage);
+      const srcData = fullData.slice(page * this.state.rowsPerPage, (page + 1) * this.state.rowsPerPage);
       let data = srcData;
 
       setTimeout(() => {
         resolve({
-          data, total, page
+          data,
+          total,
+          page,
         });
       }, 500);
-
     });
-
-  }
+  };
 
   changePage = (page, sortOrder) => {
     this.setState({
@@ -149,7 +143,6 @@ class Example extends React.Component {
   };
 
   render() {
-
     const { data, page, count, isLoading, rowsPerPage, sortOrder } = this.state;
 
     const options = {
@@ -162,9 +155,8 @@ class Example extends React.Component {
       rowsPerPageOptions: [],
       sortOrder: sortOrder,
       onTableChange: (action, tableState) => {
-
         console.log(action, tableState);
-        
+
         // a developer could react to change on an action basis or
         // examine the state as a whole and do whatever they want
 
@@ -178,22 +170,27 @@ class Example extends React.Component {
           default:
             console.log('action not handled.');
         }
-      }
+      },
     };
 
     console.log('COLUMNS');
-    console.dir( JSON.parse(JSON.stringify(this.state.columns)) );
+    console.dir(JSON.parse(JSON.stringify(this.state.columns)));
 
     return (
       <div>
-        <MUIDataTable title={<Typography variant="h6">
-          ACME Employee list
-          {isLoading && <CircularProgress size={24} style={{marginLeft: 15, position: 'relative', top: 4}} />}
-          </Typography>
-          } data={data} columns={this.state.columns} options={options} />
+        <MUIDataTable
+          title={
+            <Typography variant="h6">
+              ACME Employee list
+              {isLoading && <CircularProgress size={24} style={{ marginLeft: 15, position: 'relative', top: 4 }} />}
+            </Typography>
+          }
+          data={data}
+          columns={this.state.columns}
+          options={options}
+        />
       </div>
     );
-
   }
 }
 

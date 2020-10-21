@@ -1,11 +1,18 @@
 {
   "parser": "babel-eslint",
   "settings": {
-    "import/extensions": [".js"],
+    "react": {
+      "version": "latest"
+    },
+    "import/extensions": [
+      ".js"
+    ],
     "import/parser": "babel-eslint",
     "import/resolver": {
       "node": {
-        "extensions": [".js"]
+        "extensions": [
+          ".js"
+        ]
       },
       "webpack": {
         "config": "webpack.config.js"
@@ -19,7 +26,7 @@
     "ecmaFeatures": {
       "jsx": true,
       "experimentalObjectRestSpread": true
-    },
+    }
   },
   "env": {
     "es6": true,
@@ -28,7 +35,7 @@
     "node": true
   },
   "extends": [
-   "plugin:jsx-a11y/recommended"
+    "plugin:jsx-a11y/recommended"
   ],
   "rules": {
     "no-console": "off",
@@ -41,9 +48,12 @@
     "react/jsx-no-duplicate-props": "warn",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "jsx-a11y/no-autofocus": [ 2, {
-      "ignoreNonDOM": true
-    }]
+    "jsx-a11y/no-autofocus": [
+      2,
+      {
+        "ignoreNonDOM": true
+      }
+    ]
   },
   "plugins": [
     "import",
