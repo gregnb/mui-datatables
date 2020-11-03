@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
 import MUIDataTable from '../../src/';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
@@ -17,7 +15,7 @@ function Example() {
   const [viewColumnBtn, setViewColumnBtn] = useState(true);
   const [filterBtn, setFilterBtn] = useState(true);
 
-  const columns = ['Name', 'Title', 'Location'];
+  const columns = [{ name: 'Name', options: { filterOptions: { fullWidth: true } } }, 'Title', 'Location'];
 
   const options = {
     search: searchBtn,
