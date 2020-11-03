@@ -15,7 +15,6 @@ import ReactToPrint, { PrintContextConsumer } from 'react-to-print';
 import find from 'lodash.find';
 import { withStyles } from '@material-ui/core/styles';
 import { createCSVDownload, downloadCSV } from '../utils';
-import cloneDeep from 'lodash.clonedeep';
 import MuiTooltip from '@material-ui/core/Tooltip';
 
 export const defaultToolbarStyles = theme => ({
@@ -300,7 +299,7 @@ class TableToolbar extends React.Component {
 
     const filterPopoverExit = () => {
       this.setState({ hideFilterPopover: false });
-      this.setActiveIcon.bind(null);
+      this.setActiveIcon();
     };
 
     const closeFilterPopover = () => {
