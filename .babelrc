@@ -19,7 +19,7 @@
           ],
           "node": "6.10"
         },
-        "useBuiltIns": "usage",
+        "useBuiltIns": "entry",
         "debug": false,
         "modules": false,
         "corejs": {

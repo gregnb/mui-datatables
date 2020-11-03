@@ -13,25 +13,8 @@ export default {
       include: ['node_modules/**'],
     }),
     babel({
-      presets: [
-        '@babel/react',
-        [
-          '@babel/env',
-          {
-            targets: {
-              browsers: ['last 2 versions', 'ie >= 10'],
-            },
-            debug: false,
-            modules: false,
-          },
-        ],
-      ],
-      plugins: [
-        '@babel/plugin-proposal-object-rest-spread',
-        '@babel/plugin-proposal-class-properties',
-        'transform-react-remove-prop-types',
-      ],
-      babelrc: false,
+      babelHelpers: 'runtime',
+      babelrc: true,
     }),
     uglify({
       compress: {
