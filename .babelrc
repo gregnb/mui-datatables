@@ -1,21 +1,53 @@
 {
   "env": {
     "test": {
-      "plugins": ["istanbul"]
+      "plugins": [
+        "istanbul"
+      ]
     }
   },
   "presets": [
-    "@babel/react",
-    ["@babel/env", {
-      "targets": {
-        "browsers": ["> 1%", "iOS >= 8", "Android >= 4"],
-        "node": "6.10"
-      },
-      "debug": false
-    }]
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": [
+            "ie >= 11",
+            "> 1%",
+            "iOS >= 8",
+            "Android >= 4"
+          ],
+          "node": "6.10"
+        },
+        "useBuiltIns": "usage",
+        "debug": false,
+        "modules": false,
+        "corejs": {
+          "version": 3,
+          "proposals": true
+        }
+      }
+    ],
+    [
+      "@babel/preset-react"
+    ]
   ],
   "plugins": [
-    "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-proposal-object-rest-spread"
+    [
+      "@babel/plugin-proposal-class-properties"
+    ],
+    [
+      "@babel/plugin-proposal-object-rest-spread"
+    ],
+    [
+      "@babel/plugin-transform-async-to-generator"
+    ],
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "corejs": 3,
+        "regenerator": true
+      }
+    ]
   ]
 }
