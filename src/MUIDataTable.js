@@ -1,6 +1,5 @@
-import Paper from '@material-ui/core/Paper';
+import { Paper, Table as MuiTable, Tooltip as MuiTooltip } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import MuiTable from '@material-ui/core/Table';
 import clsx from 'clsx';
 import assignwith from 'lodash.assignwith';
 import cloneDeep from 'lodash.clonedeep';
@@ -18,7 +17,6 @@ import DefaultTableHead from './components/TableHead';
 import DefaultTableResize from './components/TableResize';
 import DefaultTableToolbar from './components/TableToolbar';
 import DefaultTableToolbarSelect from './components/TableToolbarSelect';
-import MuiTooltip from '@material-ui/core/Tooltip';
 import getTextLabels from './textLabels';
 import { buildMap, getCollatorComparator, getPageValue, sortCompare, warnDeprecated, warnInfo } from './utils';
 import { DndProvider } from 'react-dnd';
@@ -122,7 +120,7 @@ class MUIDataTable extends React.Component {
           label: PropTypes.string,
           name: PropTypes.string.isRequired,
           options: PropTypes.shape({
-            display: PropTypes.oneOf(['true', 'false', 'excluded', 'always']),
+            display: PropTypes.oneOf(['true', 'false', 'excluded', 'always', true, false]),
             empty: PropTypes.bool,
             filter: PropTypes.bool,
             sort: PropTypes.bool,
