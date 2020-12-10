@@ -1,29 +1,38 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import IconButton from '@material-ui/core/IconButton';
-import Remove from '@material-ui/icons/Remove';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import { IconButton } from '@material-ui/core';
+import { KeyboardArrowRight, Remove } from '@material-ui/icons';
 
-export default function ExpandButton(props) {
+const ExpandButton = ({
+  areAllRowsExpanded,
+  buttonClass,
+  expandableRowsHeader,
+  expandedRows,
+  iconClass,
+  iconIndeterminateClass,
+  isHeaderCell,
+  onExpand,
+}) => {
   return (
-    <React.Fragment>
-      {props.isHeaderCell && !props.areAllRowsExpanded() && props.expandedRows && props.expandedRows.data.length > 0 ? (
+    <>
+      {isHeaderCell && !areAllRowsExpanded() && areAllRowsExpanded && expandedRows.data.length > 0 ? (
         <IconButton
-          onClick={props.onExpand}
+          onClick={onExpand}
           style={{ padding: 0 }}
-          disabled={props.expandableRowsHeader === false}
-          className={props.buttonClass}>
-          <Remove id="expandable-button" className={props.iconIndeterminateClass} />
+          disabled={expandableRowsHeader === false}
+          className={buttonClass}>
+          <Remove id="expandable-button" className={iconIndeterminateClass} />
         </IconButton>
       ) : (
         <IconButton
-          onClick={props.onExpand}
+          onClick={onExpand}
           style={{ padding: 0 }}
-          disabled={props.expandableRowsHeader === false}
-          className={props.buttonClass}>
-          <KeyboardArrowRight id="expandable-button" className={props.iconClass} />
+          disabled={expandableRowsHeader === false}
+          className={buttonClass}>
+          <KeyboardArrowRight id="expandable-button" className={iconClass} />
         </IconButton>
       )}
-    </React.Fragment>
+    </>
   );
-}
+};
+
+export default ExpandButton;

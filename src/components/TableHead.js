@@ -1,10 +1,11 @@
 import { makeStyles } from '@material-ui/core/styles';
-import MuiTableHead from '@material-ui/core/TableHead';
+import { TableHead as MuiTableHead } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import TableHeadCell from './TableHeadCell';
 import TableHeadRow from './TableHeadRow';
 import TableSelectCell from './TableSelectCell';
+
 
 const useStyles = makeStyles(
   theme => ({
@@ -122,6 +123,7 @@ const TableHead = ({
           fixedHeader={options.fixedHeader}
           fixedSelectColumn={options.fixedSelectColumn}
           selectableRowsHeader={options.selectableRowsHeader}
+          selectableRowsHideCheckboxes={options.selectableRowsHideCheckboxes}
           onExpand={toggleAllExpandableRows}
           isRowSelectable={true}
           components={components}
