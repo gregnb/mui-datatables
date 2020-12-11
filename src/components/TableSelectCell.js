@@ -160,7 +160,7 @@ TableSelectCell.propTypes = {
   /** Is selectable option enabled */
   selectableOn: PropTypes.string,
   /** Select cell disabled on/off */
-  isRowSelectable: PropTypes.func,
+  isRowSelectable: PropTypes.bool,
 };
 
 export default TableSelectCell;
