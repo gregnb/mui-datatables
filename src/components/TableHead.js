@@ -125,7 +125,7 @@ const TableHead = ({
           selectableRowsHeader={options.selectableRowsHeader}
           selectableRowsHideCheckboxes={options.selectableRowsHideCheckboxes}
           onExpand={toggleAllExpandableRows}
-          isRowSelectable={true}
+          isRowSelectable={() => true}
           components={components}
         />
         {orderedColumns.map(
