@@ -54,7 +54,6 @@ function TableBodyGroupHeaderRow(props) {
   };
 
   let bodyClasses = options.setRowProps ? options.setRowProps(row, null, null) || {} : {};
-  //console.dir(row);
   return (
     <TableRow
       {...bodyClasses}

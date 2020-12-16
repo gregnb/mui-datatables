@@ -277,8 +277,8 @@ class MUIDataTable extends React.Component {
     this.draggableHeadCellRefs = {};
     this.resizeHeadCellRefs = {};
     this.timers = {};
-    this.setHeadResizeable = () => {};
-    this.updateDividers = () => {};
+    this.setHeadResizeable = () => { };
+    this.updateDividers = () => { };
 
     let defaultState = {
       activeColumn: null,
@@ -452,12 +452,12 @@ class MUIDataTable extends React.Component {
       ) {
         this.warnDep(
           this.options.responsive +
-            ' has been deprecated, but will still work in version 3.x. Please use string option: standard | vertical | simple. More info: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
+          ' has been deprecated, but will still work in version 3.x. Please use string option: standard | vertical | simple. More info: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
         );
       } else {
         this.warnInfo(
           this.options.responsive +
-            ' is not recognized as a valid input for responsive option. Please use string option: standard | vertical | simple. More info: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
+          ' is not recognized as a valid input for responsive option. Please use string option: standard | vertical | simple. More info: https://github.com/gregnb/mui-datatables/tree/master/docs/v2_to_v3_guide.md',
         );
       }
     }
@@ -676,19 +676,19 @@ class MUIDataTable extends React.Component {
 
     const transformedData = Array.isArray(data[0])
       ? data.map(row => {
-          let i = -1;
+        let i = -1;
 
-          return columns.map(col => {
-            if (!col.empty) i++;
-            return col.empty ? undefined : row[i];
-          });
-        })
+        return columns.map(col => {
+          if (!col.empty) i++;
+          return col.empty ? undefined : row[i];
+        });
+      })
       : data.map(row => columns.map(col => leaf(row, col.name)));
 
     return transformedData;
   };
 
-  setTableData(props, status, dataUpdated, callback = () => {}, fromConstructor = false) {
+  setTableData(props, status, dataUpdated, callback = () => { }, fromConstructor = false) {
     let tableData = [];
     let { columns, filterData, filterList, columnOrder } = this.buildColumns(
       props.columns,
@@ -997,8 +997,8 @@ class MUIDataTable extends React.Component {
           typeof funcResult === 'string' || !funcResult
             ? funcResult
             : funcResult.props && funcResult.props.value
-            ? funcResult.props.value
-            : columnValue;
+              ? funcResult.props.value
+              : columnValue;
 
         displayRow.push(columnDisplay);
       } else {
@@ -1226,18 +1226,20 @@ class MUIDataTable extends React.Component {
   }
 
   getGroupingData(displayData, grouping) {
-    if (!grouping) return null;
 
-    //console.log('getGroupingData');
-    //console.log(grouping);
+    displayData = displayData.map(row => {
+      let fRow = { ...row };
+      fRow.data = row.data.map(fRow => { return fRow && fRow.props && fRow.props.value ? fRow.props.value : fRow; });
+      return fRow;
+    });
+
+    if (!grouping) return null;
 
     let cols = grouping.columnIndexes;
 
     if (!cols || cols.length === 0) return null;
 
-    //console.dir(displayData);
     let groups = this.getGroups(grouping, cols, displayData, 1, []);
-    //console.dir(groups);
     return groups;
   }
 
@@ -2089,15 +2091,15 @@ class MUIDataTable extends React.Component {
         <div style={{ position: 'relative', ...tableHeightVal }} className={responsiveClass}>
           {(this.options.resizableColumns === true ||
             (this.options.resizableColumns && this.options.resizableColumns.enabled)) && (
-            <TableResizeComponent
-              key={rowCount}
-              columnOrder={columnOrder}
-              updateDividers={fn => (this.updateDividers = fn)}
-              setResizeable={fn => (this.setHeadResizeable = fn)}
-              options={this.props.options}
-              tableId={this.options.tableId}
-            />
-          )}
+              <TableResizeComponent
+                key={rowCount}
+                columnOrder={columnOrder}
+                updateDividers={fn => (this.updateDividers = fn)}
+                setResizeable={fn => (this.setHeadResizeable = fn)}
+                options={this.props.options}
+                tableId={this.options.tableId}
+              />
+            )}
           <DndProvider backend={HTML5Backend} {...dndProps}>
             <MuiTable
               ref={el => (this.tableRef = el)}
@@ -2152,12 +2154,12 @@ class MUIDataTable extends React.Component {
               />
               {this.options.customTableBodyFooterRender
                 ? this.options.customTableBodyFooterRender({
-                    data: displayData,
-                    count: rowCount,
-                    columns,
-                    selectedRows,
-                    selectableRows: this.options.selectableRows,
-                  })
+                  data: displayData,
+                  count: rowCount,
+                  columns,
+                  selectedRows,
+                  selectableRows: this.options.selectableRows,
+                })
                 : null}
             </MuiTable>
           </DndProvider>

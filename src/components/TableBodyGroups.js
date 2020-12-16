@@ -47,7 +47,7 @@ class TableBody extends React.Component {
   };
 
   static defaultProps = {
-    toggleExpandRow: () => {},
+    toggleExpandRow: () => { },
   };
 
   flattenGroups(rows, rootGroup, columns, grouping, isGroupExpanded) {
