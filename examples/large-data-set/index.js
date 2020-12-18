@@ -77,7 +77,7 @@ class Example extends React.Component {
       },
       {
         name: "age",
-        Label: "Age",
+        label: "Age",
         options: {
           filter: true,
         }
