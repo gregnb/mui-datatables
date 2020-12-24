@@ -42,7 +42,7 @@ function TableBodyGroupHeaderRow(props) {
   const { columns, options, components = {}, tableId, row, grouping } = props;
   const classes = useStyles();
 
-  const onExpand = () => { };
+  const onExpand = () => {};
 
   const iconClass = clsx({
     [classes.icon]: true,
