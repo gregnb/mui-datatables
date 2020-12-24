@@ -914,6 +914,10 @@ class MUIDataTable extends React.Component {
       } else {
         grouping.expanded = {};
       }
+      if (this.options.grouping.rowHeaderVisible === undefined || this.options.grouping.rowHeaderVisible) {
+        grouping.rowHeaderVisible = true;
+      }
+
     } else if (this.state.grouping) {
       grouping = this.state.grouping;
     }

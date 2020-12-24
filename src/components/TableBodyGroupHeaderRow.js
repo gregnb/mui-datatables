@@ -39,10 +39,10 @@ const useStyles = makeStyles(
 );
 
 function TableBodyGroupHeaderRow(props) {
-  const { columns, options, components = {}, tableId, row } = props;
+  const { columns, options, components = {}, tableId, row, grouping } = props;
   const classes = useStyles();
 
-  const onExpand = () => {};
+  const onExpand = () => { };
 
   const iconClass = clsx({
     [classes.icon]: true,
@@ -70,7 +70,7 @@ function TableBodyGroupHeaderRow(props) {
           onClick={row.onExpansionChange}>
           <KeyboardArrowRight id="expandable-button" className={iconClass} />
         </IconButton>
-        <div className={classes.columnName}>{row.columnLabel}:</div>
+        {grouping && grouping.rowHeaderVisible && <div className={classes.columnName}>{row.columnLabel}:</div>}
         <div className={classes.columnValue}>{row.columnValue}</div>
       </TableCell>
     </TableRow>

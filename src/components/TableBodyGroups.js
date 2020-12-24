@@ -108,9 +108,6 @@ class TableBody extends React.Component {
 
     let rows = this.buildRows(groupingData, columns, grouping, isGroupExpanded);
 
-    console.log('rows');
-    console.dir(rows);
-
     return (
       <MuiTableBody>
         {rows.map((data, rowIndex) => {
@@ -134,6 +131,7 @@ class TableBody extends React.Component {
               components={this.props.components}
               tableId={this.props.tableId}
               key={data.id}
+              grouping={grouping}
             />
           );
         })}
