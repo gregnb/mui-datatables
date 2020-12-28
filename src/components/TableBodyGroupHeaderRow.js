@@ -38,11 +38,14 @@ const useStyles = makeStyles(
   { name: 'MUIDataTableBodyGroupHeaderRow' },
 );
 
+
+
 function TableBodyGroupHeaderRow(props) {
-  const { columns, options, components = {}, tableId, row, grouping } = props;
+  const { columns, options, components = {}, tableId, row, grouping, aggData } = props;
+
   const classes = useStyles();
 
-  const onExpand = () => {};
+  const onExpand = () => { };
 
   const iconClass = clsx({
     [classes.icon]: true,
@@ -61,7 +64,7 @@ function TableBodyGroupHeaderRow(props) {
         [bodyClasses.className]: bodyClasses.className,
         [classes.tableRow]: true,
       })}>
-      <TableCell className={classes.tableRow} colSpan={1000}>
+      <TableCell className={classes.tableRow} >
         <IconButton
           className={classes.expandButton}
           style={{
@@ -73,6 +76,16 @@ function TableBodyGroupHeaderRow(props) {
         {grouping && grouping.rowHeaderVisible && <div className={classes.columnName}>{row.columnLabel}:</div>}
         <div className={classes.columnValue}>{row.columnValue}</div>
       </TableCell>
+
+      {
+        columns.map(col => {
+          if (col.type !== 'prim-group' && col.display !== 'false') {
+            return <TableCell className={classes.tableRow} >
+              <div >{aggData[row.id] ? aggData[row.id][col.name] : ''}</div>
+            </TableCell>;
+          }
+        })
+      }
     </TableRow>
   );
 }

@@ -8,6 +8,7 @@ function Example() {
       "label": "Name",
       "name": "serviceName",
       options: {
+        "type": "prim-group",
         setCellHeaderProps: () => ({
           style: {
             width: '45%'
@@ -578,10 +579,77 @@ function Example() {
       "fCost": 58
     }
   ];
+  const aggData = [
+    {
+        "key": "Azure",
+        "data": {
+            "qty": 1.0,
+            "pRate": 42,
+            "pCost": 0.88,
+            "fRate": 29,
+            "fCost": 75
+        },
+        "childs": [
+            {
+                "key": "North",
+                "data": {
+                    "qty": 176.0,
+                    "pRate": 5467,
+                    "pCost": 0.45,
+                    "fRate": 343,
+                    "fCost": 11
+                },
+                "childs": [
+                    {
+                        "key": "domain-1",
+                        "data": {
+                            "qty": 1.0,
+                            "pRate": 75,
+                            "pCost": 1.1,
+                            "fRate": 3,
+                            "fCost": 84
+                        }
+                    },
+                    {
+                        "key": "domain-2",
+                        "data": {
+                            "qty": 1.0,
+                            "pRate": 9,
+                            "pCost": 0.94,
+                            "fRate": 28,
+                            "fCost": 89
+                        }
+                    }
+                ]
+            },
+            {
+                "key": "South",
+                "data": {
+                    "qty": 3.0,
+                    "pRate": 23,
+                    "pCost": 3.88,
+                    "fRate": 49,
+                    "fCost": 65
+                }
+            }
+        ]
+    },
+    {
+        "key": "AWS",
+        "data": {
+            "qty": 5.0,
+            "pRate": 77,
+            "pCost": 9.88,
+            "fRate": 33,
+            "fCost": 777
+        }
+    }
+];
+
 
   return (
     <React.Fragment>
-      <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />
+      <MUIDataTable title={'ACME Employee list'} data={data} aggData={aggData} columns={columns} options={options} />
     </React.Fragment>
   );
 }
