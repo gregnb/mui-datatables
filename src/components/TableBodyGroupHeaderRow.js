@@ -77,7 +77,7 @@ function TableBodyGroupHeaderRow(props) {
         if (col.type !== 'prim-group' && col.display !== 'false') {
           const value = aggData[row.id]
             ? customAggDataRender
-              ? customAggDataRender(aggData[row.id][col.name], col)
+              ? customAggDataRender(aggData[row.id], col)
               : aggData[row.id][col.name]
             : '';
 
