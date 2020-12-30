@@ -47,7 +47,7 @@ class TableBody extends React.Component {
   };
 
   static defaultProps = {
-    toggleExpandRow: () => {},
+    toggleExpandRow: () => { },
   };
 
   flattenGroups(rows, rootGroup, columns, grouping, isGroupExpanded) {
@@ -103,7 +103,7 @@ class TableBody extends React.Component {
   }
 
   render() {
-    const { grouping, isGroupExpanded, classes, columns, groupingData, aggData } = this.props;
+    const { grouping, isGroupExpanded, classes, columns, groupingData, aggData, customAggDataRender } = this.props;
     let tableData = this.props.data;
 
     let rows = this.buildRows(groupingData, columns, grouping, isGroupExpanded);
@@ -133,6 +133,7 @@ class TableBody extends React.Component {
               key={data.id}
               grouping={grouping}
               aggData={aggData}
+              customAggDataRender={customAggDataRender}
             />
           );
         })}

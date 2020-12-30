@@ -142,6 +142,7 @@ class MUIDataTable extends React.Component {
             ]),
             filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField', 'custom']),
             customHeadRender: PropTypes.func,
+            customAggDataRender: PropTypes.func,
             customBodyRender: PropTypes.func,
             customBodyRenderLite: PropTypes.func,
             customHeadLabelRender: PropTypes.func,
@@ -2158,6 +2159,7 @@ class MUIDataTable extends React.Component {
                 components={this.props.components}
                 tableId={this.options.tableId}
                 aggData={aggData}
+                customAggDataRender={this.props.customAggDataRender}
               />
               {this.options.customTableBodyFooterRender
                 ? this.options.customTableBodyFooterRender({

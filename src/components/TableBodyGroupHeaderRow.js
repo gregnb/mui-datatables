@@ -39,7 +39,7 @@ const useStyles = makeStyles(
 );
 
 function TableBodyGroupHeaderRow(props) {
-  const { columns, options, components = {}, tableId, row, grouping, aggData } = props;
+  const { columns, options, components = {}, tableId, row, grouping, aggData, customAggDataRender } = props;
 
   const classes = useStyles();
 
@@ -75,9 +75,12 @@ function TableBodyGroupHeaderRow(props) {
 
       {columns.map((col, colIndex) => {
         if (col.type !== 'prim-group' && col.display !== 'false') {
+
+          const value = aggData[row.id] ? (customAggDataRender ? customAggDataRender(aggData[row.id][col.name]) : aggData[row.id][col.name]) : '';
+
           return (
             <TableCell key={colIndex} className={classes.tableRow}>
-              <div className={`${col.type}-column-cell`}>{aggData[row.id] ? aggData[row.id][col.name] : ''}</div>
+              <div className={`${col.type}-column-cell`}>{value}</div>
             </TableCell>
           );
         }
