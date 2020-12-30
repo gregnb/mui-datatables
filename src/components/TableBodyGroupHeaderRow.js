@@ -75,8 +75,11 @@ function TableBodyGroupHeaderRow(props) {
 
       {columns.map((col, colIndex) => {
         if (col.type !== 'prim-group' && col.display !== 'false') {
-
-          const value = aggData[row.id] ? (customAggDataRender ? customAggDataRender(aggData[row.id][col.name]) : aggData[row.id][col.name]) : '';
+          const value = aggData[row.id]
+            ? customAggDataRender
+              ? customAggDataRender(aggData[row.id][col.name], col)
+              : aggData[row.id][col.name]
+            : '';
 
           return (
             <TableCell key={colIndex} className={classes.tableRow}>
