@@ -603,6 +603,7 @@ class MUIDataTable extends React.Component {
         sortCompare: null,
         sortThirdClickReset: false,
         sortDescFirst: false,
+        customBodyRender: column.customBodyRender,
       };
 
       columnOrder.push(colIndex);
