@@ -73,10 +73,10 @@ function TableBodyGroupHeaderRow(props) {
         <div className={classes.columnValue}>{row.columnValue}</div>
       </TableCell>
 
-      {columns.map(col => {
+      {columns.map((col, colIndex) => {
         if (col.type !== 'prim-group' && col.display !== 'false') {
           return (
-            <TableCell className={classes.tableRow}>
+            <TableCell key={colIndex} className={classes.tableRow}>
               <div className={`${col.type}-column-cell`}>{aggData[row.id] ? aggData[row.id][col.name] : ''}</div>
             </TableCell>
           );

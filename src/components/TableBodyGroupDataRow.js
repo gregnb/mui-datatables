@@ -12,7 +12,6 @@ const defaultBodyStyles = theme => ({
 
 function TableBodyGroupDataRow(props) {
   const { row } = props;
-  console.dir(props);
   return (
     <TableBodyRows
       tableRows={row.data.data}

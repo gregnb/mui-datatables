@@ -1,6 +1,6 @@
 {
   "name": "mui-datatables-vg",
-  "version": "3.5.1-beta.4",
+  "version": "3.5.1-beta.5",
   "description": "Datatables for React using Material-UI",
   "main": "dist/index.js",
   "files": [
@@ -20,7 +20,7 @@
     "lint": "eslint src",
     "build": "cross-env NODE_ENV=production npm run prettier && rollup -c",
     "prepare": "npm run build",
-    "publish": "npm publish --access public"
+    "publish-command": "npm publish --access public"
   },
   "keywords": [
     "material-ui",
