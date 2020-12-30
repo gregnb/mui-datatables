@@ -1,6 +1,7 @@
 import React from 'react';
 import { IconButton } from '@material-ui/core';
-import { KeyboardArrowRight, Remove } from '@material-ui/icons';
+import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 const ExpandButton = ({
   areAllRowsExpanded,
@@ -20,7 +21,7 @@ const ExpandButton = ({
           style={{ padding: 0 }}
           disabled={expandableRowsHeader === false}
           className={buttonClass}>
-          <Remove id="expandable-button" className={iconIndeterminateClass} />
+          <RemoveIcon id="expandable-button" className={iconIndeterminateClass} />
         </IconButton>
       ) : (
         <IconButton
@@ -28,7 +29,7 @@ const ExpandButton = ({
           style={{ padding: 0 }}
           disabled={expandableRowsHeader === false}
           className={buttonClass}>
-          <KeyboardArrowRight id="expandable-button" className={iconClass} />
+          <KeyboardArrowRightIcon id="expandable-button" className={iconClass} />
         </IconButton>
       )}
     </>
