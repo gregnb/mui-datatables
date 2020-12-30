@@ -43,8 +43,6 @@ function TableBodyGroupHeaderRow(props) {
 
   const classes = useStyles();
 
-  const onExpand = () => { };
-
   const iconClass = clsx({
     [classes.icon]: true,
     [classes.expanded]: row.expanded,
@@ -79,7 +77,7 @@ function TableBodyGroupHeaderRow(props) {
         if (col.type !== 'prim-group' && col.display !== 'false') {
           return (
             <TableCell className={classes.tableRow}>
-              <div className={`${col.type}-cell`}>{aggData[row.id] ? aggData[row.id][col.name] : ''}</div>
+              <div className={`${col.type}-column-cell`}>{aggData[row.id] ? aggData[row.id][col.name] : ''}</div>
             </TableCell>
           );
         }
