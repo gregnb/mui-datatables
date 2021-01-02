@@ -53,6 +53,8 @@ function TableBodyGroupHeaderRow(props) {
   };
 
   let bodyClasses = options.setRowProps ? options.setRowProps(row, null, null) || {} : {};
+  bodyClasses = options.setAggDataRowProps ? options.setAggDataRowProps(aggData[row.id]) || {} : {};
+
   return (
     <TableRow
       {...bodyClasses}

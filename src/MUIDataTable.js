@@ -239,6 +239,7 @@ class MUIDataTable extends React.Component {
       searchText: PropTypes.string,
       setFilterChipProps: PropTypes.func,
       setRowProps: PropTypes.func,
+      setAggDataRowProps: PropTypes.func,
       selectToolbarPlacement: PropTypes.oneOfType([
         PropTypes.bool,
         PropTypes.oneOf([STP.REPLACE, STP.ABOVE, STP.NONE]),
