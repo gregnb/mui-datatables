@@ -142,6 +142,7 @@ class MUIDataTable extends React.Component {
             ]),
             filterType: PropTypes.oneOf(['dropdown', 'checkbox', 'multiselect', 'textField', 'custom']),
             customHeadRender: PropTypes.func,
+            customAggDataRender: PropTypes.func,
             customBodyRender: PropTypes.func,
             customBodyRenderLite: PropTypes.func,
             customHeadLabelRender: PropTypes.func,
@@ -238,6 +239,7 @@ class MUIDataTable extends React.Component {
       searchText: PropTypes.string,
       setFilterChipProps: PropTypes.func,
       setRowProps: PropTypes.func,
+      setAggDataRowProps: PropTypes.func,
       selectToolbarPlacement: PropTypes.oneOfType([
         PropTypes.bool,
         PropTypes.oneOf([STP.REPLACE, STP.ABOVE, STP.NONE]),
@@ -603,6 +605,7 @@ class MUIDataTable extends React.Component {
         sortCompare: null,
         sortThirdClickReset: false,
         sortDescFirst: false,
+        customBodyRender: column.customBodyRender,
       };
 
       columnOrder.push(colIndex);
@@ -913,6 +916,9 @@ class MUIDataTable extends React.Component {
         grouping.expanded = this.state.grouping.expanded;
       } else {
         grouping.expanded = {};
+      }
+      if (this.options.grouping.rowHeaderVisible === undefined || this.options.grouping.rowHeaderVisible) {
+        grouping.rowHeaderVisible = true;
       }
     } else if (this.state.grouping) {
       grouping = this.state.grouping;
@@ -1226,18 +1232,21 @@ class MUIDataTable extends React.Component {
   }
 
   getGroupingData(displayData, grouping) {
-    if (!grouping) return null;
+    displayData = displayData.map(row => {
+      let fRow = { ...row };
+      fRow.data = row.data.map(fRow => {
+        return fRow && fRow.props && fRow.props.value ? fRow.props.value : fRow;
+      });
+      return fRow;
+    });
 
-    //console.log('getGroupingData');
-    //console.log(grouping);
+    if (!grouping) return null;
 
     let cols = grouping.columnIndexes;
 
     if (!cols || cols.length === 0) return null;
 
-    //console.dir(displayData);
     let groups = this.getGroups(grouping, cols, displayData, 1, []);
-    //console.dir(groups);
     return groups;
   }
 
@@ -1935,6 +1944,7 @@ class MUIDataTable extends React.Component {
       classes,
       className,
       title,
+      aggData,
       components: { TableBody, TableFilterList, TableFooter, TableHead, TableResize, TableToolbar, TableToolbarSelect },
     } = this.props;
     const {
@@ -2149,6 +2159,8 @@ class MUIDataTable extends React.Component {
                 filterList={filterList}
                 components={this.props.components}
                 tableId={this.options.tableId}
+                aggData={aggData}
+                customAggDataRender={this.props.customAggDataRender}
               />
               {this.options.customTableBodyFooterRender
                 ? this.options.customTableBodyFooterRender({

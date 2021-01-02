@@ -103,13 +103,10 @@ class TableBody extends React.Component {
   }
 
   render() {
-    const { grouping, isGroupExpanded, classes, columns, groupingData } = this.props;
+    const { grouping, isGroupExpanded, classes, columns, groupingData, aggData, customAggDataRender } = this.props;
     let tableData = this.props.data;
 
     let rows = this.buildRows(groupingData, columns, grouping, isGroupExpanded);
-
-    console.log('rows');
-    console.dir(rows);
 
     return (
       <MuiTableBody>
@@ -134,6 +131,9 @@ class TableBody extends React.Component {
               components={this.props.components}
               tableId={this.props.tableId}
               key={data.id}
+              grouping={grouping}
+              aggData={aggData}
+              customAggDataRender={customAggDataRender}
             />
           );
         })}

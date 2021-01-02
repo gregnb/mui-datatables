@@ -1,6 +1,6 @@
 {
-  "name": "mui-datatables",
-  "version": "3.5.0-beta.0",
+  "name": "mui-datatables-vg",
+  "version": "3.5.1-beta.10",
   "description": "Datatables for React using Material-UI",
   "main": "dist/index.js",
   "files": [
@@ -19,11 +19,8 @@
     "prettier": "find src/ docs/ test/ -type f -name \"*.js\" ! -path \"*/.next/*\" | xargs prettier --write",
     "lint": "eslint src",
     "build": "cross-env NODE_ENV=production npm run prettier && rollup -c",
-    "prepare": "npm run build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gregnb/mui-datatables.git"
+    "prepare": "npm run build",
+    "publish-command": "npm publish --access public"
   },
   "keywords": [
     "material-ui",

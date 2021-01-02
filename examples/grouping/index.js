@@ -1,123 +1,254 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
 import MUIDataTable from '../../src/';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 
 function Example() {
-  const [responsive, setResponsive] = useState('vertical');
-  const [tableBodyHeight, setTableBodyHeight] = useState('400px');
-  const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState('');
 
   const columns = [
     {
-      name: 'name',
-      label: 'Name',
+      "label": "Name",
+      "name": "serviceName",
       options: {
+        "type": "prim-group",
         setCellHeaderProps: () => ({
           style: {
-            width: '25%'
+            width: '45%'
           }
-        }),
+        })
       }
-    }, 
+    },
     {
-      name: 'title',
-      label: 'Title',
+      "label": "Region",
+      "name": "region",
       options: {
-        setCellHeaderProps: () => ({
-          style: {
-            width: '25%'
-          }
-        }),
+        display: false,
       }
-    }, 
+    },
     {
-      name: 'location',
-      label: 'Location',
+      "label": "Sub-Category",
+      "name": "subCat",
       options: {
-        setCellHeaderProps: () => ({
-          style: {
-            width: '25%'
-          }
-        }),
+        display: false,
       }
-    }, 
+    },
     {
-      name: 'gender',
-      label: 'Gender'
+      "label": "Quantity",
+      "name": "qty",
+      "display": true,
+      customBodyRender: (value, tableMeta, updateValue) => (
+        <div >{`#### ${value}`}</div>
+      )
+    },
+    {
+      "label": "Provider Rate",
+      "name": "pRate",
+      "display": true,
+      customBodyRender: (value, tableMeta, updateValue) => (
+        <div >{`#### ${value}`}</div>
+      )
+    },
+    {
+      "label": "Provider Cost",
+      "name": "pCost",
+      "display": true
+    },
+    {
+      "label": "Final Rate",
+      "name": "fRate",
+      "display": true
+    },
+    {
+      "label": "Final Cost",
+      "name": "fCost"
     }
   ];
 
   const options = {
-    filter: true,
+    filter: false,
     filterType: 'dropdown',
-    responsive,
+    selectableRows: false,
     pagination: false,
     draggableColumns: {
       enabled: true,
     },
     onTableChange: (action, state) => {
       console.log(action);
-      //console.dir(state);
     },
     onGroupExpansionChange: (group, expanded) => {
-      console.dir(group);
-      console.dir(expanded);
     },
     grouping: {
-      columnIndexes: [1, 3],
-      expanded: {
-        "Business Consultant": {
-          open: true
-        }
-      }
+      columnIndexes: [0,
+        1,
+        2],
+      rowHeaderVisible: false,
     }
   };
 
   const data = [
-    ['Gabby George', 'Business Analyst', 'Minneapolis', 'female'],
-    ['Aiden Lloyd', "Business Consultant", 'Dallas', 'male'],
-    ['Jaden Collins', 'Attorney', 'Santa Ana', 'male'],
-    ['Franky Rees', 'Business Analyst', 'St. Petersburg', 'male'],
-    ['Aaren Rose', null, 'Toledo', 'male'],
-    ['Johnny Jones', 'Business Analyst', 'St. Petersburg', 'male'],
-    ['Jimmy Johns', 'Business Analyst', 'Baltimore', 'male'],
-    ['Jack Jackson', 'Business Analyst', 'El Paso', 'male'],
-    ['Joe Jones', 'Computer Programmer', 'El Paso', 'male'],
-    ['Jacky Jackson', 'Business Consultant', 'Baltimore', 'female'],
-    ['Jo Jo', 'Software Developer', 'Washington DC', 'male'],
-    ['Donna Marie', 'Business Manager', 'Annapolis', 'female'],
-    ['Armin Tamzarian', 'Principal', 'Springfield', 'male'],
-    ['Gerald Strickland', 'Principal', 'Hill Valley', 'male'],
-    ['Doc Brown', 'Computer Programmer', 'Hill Valley', 'male'],
-    ['Angela Li', 'Principal', 'Lawndale', 'female'],
-    ['Jake Morgendorffer', 'Business Analyst', 'Lawndale', 'male'],
+    {
+      "key": "Azure",
+      "data": {
+        "serviceName": "Azure",
+        "qty": 1232,
+        "pRate": 422332.67,
+        "pCost": 4343.88,
+        "fRate": 29343433,
+        "fCost": 7434435
+      },
+      "childs": [
+        {
+          "key": "North",
+          "data": {
+            "serviceName": "Azure",
+            "region": "North",
+            "qty": 176.0,
+            "pRate": 5467,
+            "pCost": 0.45,
+            "fRate": 343,
+            "fCost": 11
+          },
+          "childs": [
+            {
+              "key": "domain-1",
+              "data": {
+                "qty": 1.0,
+                "pRate": 75,
+                "pCost": 1.1,
+                "fRate": 3,
+                "fCost": 84
+              },
+              "childs": [
+                {
+                  "isLeaf": true,
+                  "data": {
+                    "serviceName": "Azure",
+                    "region": "North",
+                    "subCat": "domain-1",
+                    "qty": 5.4,
+                    "pRate": 45,
+                    "pCost": 67.1,
+                    "fRate": 300,
+                    "fCost": 8004,
+                    "currency": "USD"
+                  }
+                }
+              ]
+            },
+            {
+              "key": "domain-2",
+              "data": {
+                "qty": 1.0,
+                "pRate": 9,
+                "pCost": 0.94,
+                "fRate": 28,
+                "fCost": 89
+              }
+            }
+          ]
+        },
+        {
+          "key": "South",
+          "data": {
+            "qty": 3008756,
+            "pRate": 23,
+            "pCost": 3.88,
+            "fRate": 49,
+            "fCost": 65
+          },
+          "childs": [
+            {
+              "key": "domain-1",
+              "data": {
+                "qty": 14,
+                "pRate": 75,
+                "pCost": 5.1,
+                "fRate": 66,
+                "fCost": 88
+              },
+              "childs": [
+                {
+                  "isLeaf": true,
+                  "data": {
+                    "serviceName": "Azure",
+                    "region": "South",
+                    "subCat": "domain-1",
+                    "qty": 73008756,
+                    "pRate": 77,
+                    "pCost": 77.1,
+                    "fRate": 770,
+                    "fCost": 7004,
+                    "currency": "USD"
+                  }
+                },
+                {
+                  "isLeaf": true,
+                  "data": {
+                    "serviceName": "Azure",
+                    "region": "South",
+                    "subCat": "domain-1",
+                    "qty": -5,
+                    "pRate": 66,
+                    "pCost": 888.1,
+                    "fRate": 8656,
+                    "fCost": 6574.43,
+                    "currency": "EUR"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "AWS",
+      "data": {
+        "qty": 5.0,
+        "pRate": 77,
+        "pCost": 9.88,
+        "fRate": 33,
+        "fCost": 777
+      }
+    }
   ];
+
+
+
+  function formAggDataForDataGrid(data, parent) {
+    let fData = {};
+
+    data.forEach(row => {
+      let key = parent ? `${parent}___GROUPJOIN___${row.key}` : row.key;
+      fData[key] = row.data;
+      if (Array.isArray(row.childs)) {
+        fData = { ...formAggDataForDataGrid(row.childs, key), ...fData };
+      }
+    });
+    return fData;
+  }
+
+  function formRootLevelDataForDataGrid(data, acc = []) {
+
+    data.forEach(row => {
+      if (row.isLeaf) {
+        acc = acc.concat(row.data);
+      } else if (Array.isArray(row.childs)) {
+        acc = formRootLevelDataForDataGrid(row.childs, acc);
+      }
+    });
+
+    return acc;
+  }
+
+  function customAggDataRender(value) {
+    return `custom-${value}`;
+  }
+
 
   return (
     <React.Fragment>
-      <FormControl>
-        <InputLabel id="demo-simple-select-label">Responsive Option</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={responsive}
-          style={{ width: '200px', marginBottom: '10px', marginRight: 10 }}
-          onChange={e => setResponsive(e.target.value)}>
-          <MenuItem value={'vertical'}>vertical</MenuItem>
-          <MenuItem value={'standard'}>standard</MenuItem>
-          <MenuItem value={'simple'}>simple</MenuItem>
-
-          <MenuItem value={'scroll'}>scroll (deprecated)</MenuItem>
-          <MenuItem value={'scrollMaxHeight'}>scrollMaxHeight (deprecated)</MenuItem>
-          <MenuItem value={'stacked'}>stacked (deprecated)</MenuItem>
-        </Select>
-      </FormControl>
-      <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />
+      <MUIDataTable title={'ACME Employee list'} data={formRootLevelDataForDataGrid(data)} aggData={formAggDataForDataGrid(data)} columns={columns} options={options}
+        customAggDataRender={customAggDataRender}
+      />
     </React.Fragment>
   );
 }

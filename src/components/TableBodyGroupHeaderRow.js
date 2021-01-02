@@ -39,10 +39,9 @@ const useStyles = makeStyles(
 );
 
 function TableBodyGroupHeaderRow(props) {
-  const { columns, options, components = {}, tableId, row } = props;
-  const classes = useStyles();
+  const { columns, options, components = {}, tableId, row, grouping, aggData, customAggDataRender } = props;
 
-  const onExpand = () => {};
+  const classes = useStyles();
 
   const iconClass = clsx({
     [classes.icon]: true,
@@ -54,7 +53,8 @@ function TableBodyGroupHeaderRow(props) {
   };
 
   let bodyClasses = options.setRowProps ? options.setRowProps(row, null, null) || {} : {};
-  //console.dir(row);
+  bodyClasses = options.setAggDataRowProps ? options.setAggDataRowProps(aggData[row.id]) || {} : {};
+
   return (
     <TableRow
       {...bodyClasses}
@@ -62,7 +62,7 @@ function TableBodyGroupHeaderRow(props) {
         [bodyClasses.className]: bodyClasses.className,
         [classes.tableRow]: true,
       })}>
-      <TableCell className={classes.tableRow} colSpan={1000}>
+      <TableCell className={classes.tableRow}>
         <IconButton
           className={classes.expandButton}
           style={{
@@ -71,9 +71,25 @@ function TableBodyGroupHeaderRow(props) {
           onClick={row.onExpansionChange}>
           <KeyboardArrowRight id="expandable-button" className={iconClass} />
         </IconButton>
-        <div className={classes.columnName}>{row.columnLabel}:</div>
+        {grouping && grouping.rowHeaderVisible && <div className={classes.columnName}>{row.columnLabel}:</div>}
         <div className={classes.columnValue}>{row.columnValue}</div>
       </TableCell>
+
+      {columns.map((col, colIndex) => {
+        if (col.type !== 'prim-group' && col.display !== 'false') {
+          const value = aggData[row.id]
+            ? customAggDataRender
+              ? customAggDataRender(aggData[row.id], col)
+              : aggData[row.id][col.name]
+            : '';
+
+          return (
+            <TableCell key={colIndex} className={classes.tableRow}>
+              <div className={`${col.type}-column-cell`}>{value}</div>
+            </TableCell>
+          );
+        }
+      })}
     </TableRow>
   );
 }
