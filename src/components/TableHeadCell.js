@@ -181,7 +181,6 @@ const TableHeadCell = ({
 
   const closeTooltip = () => {
     setSortTooltipOpen(false);
-    setDragging(true);
   };
 
   return (
