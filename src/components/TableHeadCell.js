@@ -113,6 +113,7 @@ const TableHeadCell = ({
 
   const sortLabelProps = {
     classes: { root: classes.sortLabelRoot },
+    tabindex: -1,
     active: sortActive,
     hideSortIcon: true,
     ...(ariaSortDirection ? { direction: sortDirection } : {}),
