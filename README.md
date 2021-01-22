@@ -427,7 +427,7 @@ Supported customizable components:
  * `TableToolbar`
  * `TableToolbarSelect`
  * `Tooltip`
- * `icons` - An object containing optional replacement toolbar icon classes.
+ * `icons` - An object containing optional replacement icon classes for the actions toolbar.
 	* `SearchIcon`
 	* `DownloadIcon`
 	* `PrintIcon`
