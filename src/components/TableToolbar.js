@@ -294,6 +294,11 @@ class TableToolbar extends React.Component {
     const Tooltip = components.Tooltip || MuiTooltip;
     const TableViewColComponent = components.TableViewCol || TableViewCol;
     const TableFilterComponent = components.TableFilter || TableFilter;
+    const SearchIconComponent = components.icons.SearchIcon || SearchIcon;
+    const DownloadIconComponent = components.icons.DownloadIcon || DownloadIcon;
+    const PrintIconComponent = components.icons.PrintIcon || PrintIcon;
+    const ViewColumnIconComponent = components.icons.ViewColumnIcon || ViewColumnIcon;
+    const FilterIconComponent = components.icons.FilterIcon || FilterIcon;
     const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;
     const { showSearch, searchText } = this.state;
 
@@ -347,7 +352,7 @@ class TableToolbar extends React.Component {
                 classes={{ root: this.getActiveIcon(classes, 'search') }}
                 disabled={options.search === 'disabled'}
                 onClick={this.handleSearchIconClick}>
-                <SearchIcon />
+                <SearchIconComponent />
               </IconButton>
             </Tooltip>
           )}
@@ -359,7 +364,7 @@ class TableToolbar extends React.Component {
                 classes={{ root: classes.icon }}
                 disabled={options.download === 'disabled'}
                 onClick={this.handleCSVDownload}>
-                <DownloadIcon />
+                <DownloadIconComponent />
               </IconButton>
             </Tooltip>
           )}
@@ -376,7 +381,7 @@ class TableToolbar extends React.Component {
                           disabled={options.print === 'disabled'}
                           onClick={handlePrint}
                           classes={{ root: classes.icon }}>
-                          <PrintIcon />
+                          <PrintIconComponent />
                         </IconButton>
                       </Tooltip>
                     </span>
@@ -398,7 +403,7 @@ class TableToolbar extends React.Component {
                     classes={{ root: this.getActiveIcon(classes, 'viewcolumns') }}
                     disabled={options.viewColumns === 'disabled'}
                     onClick={this.setActiveIcon.bind(null, 'viewcolumns')}>
-                    <ViewColumnIcon />
+                    <ViewColumnIconComponent />
                   </IconButton>
                 </Tooltip>
               }
@@ -427,7 +432,7 @@ class TableToolbar extends React.Component {
                     classes={{ root: this.getActiveIcon(classes, 'filter') }}
                     disabled={options.filter === 'disabled'}
                     onClick={this.setActiveIcon.bind(null, 'filter')}>
-                    <FilterIcon />
+                    <FilterIconComponent />
                   </IconButton>
                 </Tooltip>
               }
