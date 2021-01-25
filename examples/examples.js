@@ -14,6 +14,7 @@ import CustomizeSearchRender from './customize-search-render';
 import CustomizeSorting from './customize-sorting';
 import CustomizeStyling from './customize-styling';
 import CustomizeToolbar from './customize-toolbar';
+import CustomizeToolbarIcons from './customize-toolbar-icons';
 import CustomizeToolbarSelect from './customize-toolbarselect';
 import DataAsObjects from './data-as-objects';
 import DraggableColumns from './draggable-columns';
@@ -55,6 +56,7 @@ export default {
   'Customize Sorting': CustomizeSorting,
   'Customize Styling': CustomizeStyling,
   'Customize Toolbar': CustomizeToolbar,
+  'Customize Toolbar Icons': CustomizeToolbarIcons,
   'Customize Toolbar Select': CustomizeToolbarSelect,
   'Data As Objects': DataAsObjects,
   'Draggable Columns': DraggableColumns,
