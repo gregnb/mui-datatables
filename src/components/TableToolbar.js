@@ -290,15 +290,16 @@ class TableToolbar extends React.Component {
       components = {},
       updateFilterByType,
     } = this.props;
+    const { icons = {} } = components;
 
     const Tooltip = components.Tooltip || MuiTooltip;
     const TableViewColComponent = components.TableViewCol || TableViewCol;
     const TableFilterComponent = components.TableFilter || TableFilter;
-    const SearchIconComponent = components.icons.SearchIcon || SearchIcon;
-    const DownloadIconComponent = components.icons.DownloadIcon || DownloadIcon;
-    const PrintIconComponent = components.icons.PrintIcon || PrintIcon;
-    const ViewColumnIconComponent = components.icons.ViewColumnIcon || ViewColumnIcon;
-    const FilterIconComponent = components.icons.FilterIcon || FilterIcon;
+    const SearchIconComponent = icons.SearchIcon || SearchIcon;
+    const DownloadIconComponent = icons.DownloadIcon || DownloadIcon;
+    const PrintIconComponent = icons.PrintIcon || PrintIcon;
+    const ViewColumnIconComponent = icons.ViewColumnIcon || ViewColumnIcon;
+    const FilterIconComponent = icons.FilterIcon || FilterIcon;
     const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;
     const { showSearch, searchText } = this.state;
 

@@ -4,6 +4,7 @@ import FilterIcon from '@material-ui/icons/FilterList';
 import PrintIcon from '@material-ui/icons/Print';
 import SearchIcon from '@material-ui/icons/Search';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
+import Chip from '@material-ui/core/Chip';
 import { assert } from 'chai';
 import { mount } from 'enzyme';
 import React from 'react';
@@ -21,55 +22,45 @@ const icons = {
   ViewColumnIcon,
   FilterIcon,
 };
+let setTableAction = () => {};
+const options = {
+  print: true,
+  download: true,
+  search: true,
+  filter: true,
+  viewColumns: true,
+  textLabels: getTextLabels(),
+  downloadOptions: {
+    separator: ',',
+    filename: 'tableDownload.csv',
+    filterOptions: {
+      useDisplayedRowsOnly: true,
+      useDisplayedColumnsOnly: true,
+    },
+  },
+};
+const columns = ['First Name', 'Company', 'City', 'State'];
+const data = [
+  {
+    data: ['Joe James', 'Test Corp', 'Yonkers', 'NY'],
+    dataIndex: 0,
+  },
+  {
+    data: ['John Walsh', 'Test Corp', 'Hartford', 'CT'],
+    dataIndex: 1,
+  },
+  {
+    data: ['Bob Herm', 'Test Corp', 'Tampa', 'FL'],
+    dataIndex: 2,
+  },
+  {
+    data: ['James Houston', 'Test Corp', 'Dallas', 'TX'],
+    dataIndex: 3,
+  },
+];
 
 const testCustomIcon = iconName => {
-  let data;
-  let columns;
-  let options;
-  let setTableAction = () => {};
-
-  before(() => {
-    options = {
-      print: true,
-      download: true,
-      search: true,
-      filter: true,
-      viewColumns: true,
-      textLabels: getTextLabels(),
-      downloadOptions: {
-        separator: ',',
-        filename: 'tableDownload.csv',
-        filterOptions: {
-          useDisplayedRowsOnly: true,
-          useDisplayedColumnsOnly: true,
-        },
-      },
-    };
-    columns = ['First Name', 'Company', 'City', 'State'];
-    data = [
-      {
-        data: ['Joe James', 'Test Corp', 'Yonkers', 'NY'],
-        dataIndex: 0,
-      },
-      {
-        data: ['John Walsh', 'Test Corp', 'Hartford', 'CT'],
-        dataIndex: 1,
-      },
-      {
-        data: ['Bob Herm', 'Test Corp', 'Tampa', 'FL'],
-        dataIndex: 2,
-      },
-      {
-        data: ['James Houston', 'Test Corp', 'Dallas', 'TX'],
-        dataIndex: 3,
-      },
-    ];
-  });
-  const components = {
-    icons: {
-      [iconName]: icons[iconName]
-    }
-  };
+  const components = { icons: { [iconName]: CustomChip } };
   const wrapper = mount(<TableToolbar {...{columns, data, options, setTableAction, components}} />);
   assert.strictEqual(wrapper.find(IconButton).length, 5); // All icons show
   assert.strictEqual(wrapper.find(CustomChip).length, 1); // Custom chip shows once
