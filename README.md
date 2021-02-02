@@ -427,6 +427,12 @@ Supported customizable components:
  * `TableToolbar`
  * `TableToolbarSelect`
  * `Tooltip`
+ * `icons` - An object containing optional replacement icon classes for the actions toolbar.
+	* `SearchIcon`
+	* `DownloadIcon`
+	* `PrintIcon`
+	* `ViewColumnIcon`
+	* `FilterIcon`
 
 For more information, please see this [example](https://github.com/gregnb/mui-datatables/blob/master/examples/custom-components/index.js). Additionally, all examples can be viewed [live](https://codesandbox.io/s/github/gregnb/mui-datatables) at our CodeSandbox.
 

@@ -264,6 +264,7 @@ class MUIDataTable extends React.Component {
       TableToolbar: DefaultTableToolbar,
       TableToolbarSelect: DefaultTableToolbarSelect,
       Tooltip: MuiTooltip,
+      icons: {},
     },
   };
 
