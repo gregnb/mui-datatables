@@ -426,8 +426,9 @@ Supported customizable components:
  * `TableResize`
  * `TableToolbar`
  * `TableToolbarSelect`
- * `Tooltip`
- * `icons` - An object containing optional replacement icon classes for the actions toolbar.
+* `Tooltip`
+* `icons` - An object containing optional replacement icon classes for the actions
+  toolbar. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-toolbar-icons/index.js)
 	* `SearchIcon`
 	* `DownloadIcon`
 	* `PrintIcon`
