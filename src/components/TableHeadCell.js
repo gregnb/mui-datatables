@@ -118,7 +118,7 @@ const TableHeadCell = ({
 
   const sortLabelProps = {
     classes: { root: classes.sortLabelRoot },
-    tabindex: -1,
+    tabIndex: -1,
     active: sortActive,
     hideSortIcon: true,
     ...(ariaSortDirection ? { direction: sortDirection } : {}),
@@ -206,7 +206,7 @@ const TableHeadCell = ({
         <span className={classes.contentWrapper}>
           <Tooltip
             title={getTooltipTitle()}
-            placement="bottom-center"
+            placement="bottom"
             open={sortTooltipOpen}
             onOpen={() => (dragging ? setSortTooltipOpen(false) : setSortTooltipOpen(true))}
             onClose={() => setSortTooltipOpen(false)}
