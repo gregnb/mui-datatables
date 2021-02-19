@@ -359,8 +359,8 @@ class MUIDataTable extends React.Component {
       props.options.selectToolbarPlacement = STP.NONE;
     }
 
-    // provide default tableId when draggableColumns is enabled and no tableId has been passed as prop
-    if (props.options.draggableColumns && props.options.draggableColumns.enabled === true && !props.options.tableId) {
+    // provide default tableId when no tableId has been passed as prop
+    if (!props.options.tableId) {
       props.options.tableId = (Math.random() + '').replace(/\./, '');
     }
 
