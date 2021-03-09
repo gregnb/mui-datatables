@@ -97,8 +97,8 @@
   "peerDependencies": {
     "@material-ui/core": "^4.0.0",
     "@material-ui/icons": "^4.0.0",
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0"
+    "react": "^16.8.0 || ^17.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0"
   },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.12.1",
