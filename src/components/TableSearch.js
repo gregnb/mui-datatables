@@ -42,6 +42,8 @@ const TableSearch = ({ options, searchText, onSearch, onHide }) => {
     }
   };
 
+  const clearIconVisibility = options.searchAlwaysOpen ? 'hidden' : 'visible';
+
   return (
     <Grow appear in={true} timeout={300}>
       <div className={classes.main}>
@@ -62,7 +64,7 @@ const TableSearch = ({ options, searchText, onSearch, onHide }) => {
           placeholder={options.searchPlaceholder}
           {...(options.searchProps ? options.searchProps : {})}
         />
-        <IconButton className={classes.clearIcon} onClick={onHide}>
+        <IconButton className={classes.clearIcon} style={{ visibility: clearIconVisibility }} onClick={onHide}>
           <ClearIcon />
         </IconButton>
       </div>
