@@ -116,7 +116,7 @@ describe('<TableToolbar />', function() {
 
     // check that close icon is not rendered
     const actualCloseIconResult = mountWrapper.find(CloseIcon());
-    assert.strictEqual(actualCloseIconResult.length, 1);
+    assert.strictEqual(actualCloseIconResult.length, 0);
 
     // check that search icon is rendered
     const actualSearchIconResult = mountWrapper.find(SearchIcon);
