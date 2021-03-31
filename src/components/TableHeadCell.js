@@ -1,13 +1,14 @@
+import React, { useState } from 'react';
+
 import Button from '@material-ui/core/Button';
-import clsx from 'clsx';
 import HelpIcon from '@material-ui/icons/Help';
 import MuiTooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import useColumnDrop from '../hooks/useColumnDrop.js';
+import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
+import useColumnDrop from '../hooks/useColumnDrop.js';
 import { useDrag } from 'react-dnd';
 
 const useStyles = makeStyles(
@@ -64,7 +65,7 @@ const useStyles = makeStyles(
   { name: 'MUIDataTableHeadCell' },
 );
 
-const TableHeadCell = ({
+const TableHeadCell = React.memo(({
   cellHeaderProps = {},
   children,
   colPosition,
@@ -189,6 +190,14 @@ const TableHeadCell = ({
     setSortTooltipOpen(false);
   };
 
+  const handleSortTooltipOpen = (open) => () => {
+    setSortTooltipOpen(open); 
+  };
+
+  const handleHintTooltipOpen = (open) => () => {
+    setHintTooltipOpen(open); 
+  };
+
   return (
     <TableCell
       ref={ref => {
@@ -208,8 +217,8 @@ const TableHeadCell = ({
             title={getTooltipTitle()}
             placement="bottom"
             open={sortTooltipOpen}
-            onOpen={() => (dragging ? setSortTooltipOpen(false) : setSortTooltipOpen(true))}
-            onClose={() => setSortTooltipOpen(false)}
+            onOpen={handleSortTooltipOpen(!dragging)}
+            onClose={handleSortTooltipOpen(false)}
             classes={{
               tooltip: classes.tooltip,
               popper: classes.mypopper,
@@ -253,8 +262,8 @@ const TableHeadCell = ({
               title={hint}
               placement={'bottom-end'}
               open={hintTooltipOpen}
-              onOpen={() => showHintTooltip()}
-              onClose={() => setHintTooltipOpen(false)}
+              onOpen={showHintTooltip}
+              onClose={handleHintTooltipOpen(false)}
               classes={{
                 tooltip: classes.tooltip,
                 popper: classes.mypopper,
@@ -267,7 +276,7 @@ const TableHeadCell = ({
       )}
     </TableCell>
   );
-};
+});
 
 TableHeadCell.propTypes = {
   /** Options used to describe table */
