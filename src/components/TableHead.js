@@ -3,6 +3,7 @@ import { TableHead as MuiTableHead } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import TableHeadCell from './TableHeadCell';
+import TableHeadCellNoDnD from './TableHeadCellNoDnD';
 import TableHeadRow from './TableHeadRow';
 import TableSelectCell from './TableSelectCell';
 
@@ -48,6 +49,10 @@ const TableHead = ({
   updateColumnOrder,
 }) => {
   const classes = useStyles();
+
+  const isDraggingEnabled = () => {
+    return options.draggableColumns && options.draggableColumns.enabled;
+  };
 
   if (columnOrder === null) {
     columnOrder = columns ? columns.map((item, idx) => idx) : [];
@@ -134,35 +139,60 @@ const TableHead = ({
             (column.customHeadRender ? (
               column.customHeadRender({ index, ...column }, handleToggleColumn, sortOrder)
             ) : (
-              <TableHeadCell
-                cellHeaderProps={
-                  columns[index].setCellHeaderProps ? columns[index].setCellHeaderProps({ index, ...column }) || {} : {}
-                }
-                key={index}
-                index={index}
-                colPosition={colPos}
-                type={'cell'}
-                setCellRef={setCellRef}
-                sort={column.sort}
-                sortDirection={column.name === sortOrder.name ? sortOrder.direction : 'none'}
-                toggleSort={handleToggleColumn}
-                hint={column.hint}
-                print={column.print}
-                options={options}
-                column={column}
-                columns={columns}
-                updateColumnOrder={updateColumnOrder}
-                columnOrder={columnOrder}
-                timers={timers}
-                draggingHook={[dragging, setDragging]}
-                draggableHeadCellRefs={draggableHeadCellRefs}
-                tableRef={tableRef}
-                tableId={tableId}
-                components={components}>
-                {column.customHeadLabelRender
-                  ? column.customHeadLabelRender({ index, colPos, ...column })
-                  : column.label}
-              </TableHeadCell>
+              (isDraggingEnabled()) ? (
+                <TableHeadCell
+                  cellHeaderProps={
+                    columns[index].setCellHeaderProps ? columns[index].setCellHeaderProps({ index, ...column }) || {} : {}
+                  }
+                  key={index}
+                  index={index}
+                  colPosition={colPos}
+                  type={'cell'}
+                  setCellRef={setCellRef}
+                  sort={column.sort}
+                  sortDirection={column.name === sortOrder.name ? sortOrder.direction : 'none'}
+                  toggleSort={handleToggleColumn}
+                  hint={column.hint}
+                  print={column.print}
+                  options={options}
+                  column={column}
+                  columns={columns}
+                  updateColumnOrder={updateColumnOrder}
+                  columnOrder={columnOrder}
+                  timers={timers}
+                  draggingHook={[dragging, setDragging]}
+                  draggableHeadCellRefs={draggableHeadCellRefs}
+                  tableRef={tableRef}
+                  tableId={tableId}
+                  components={components}>
+                  {column.customHeadLabelRender
+                    ? column.customHeadLabelRender({ index, colPos, ...column })
+                    : column.label}
+                </TableHeadCell>
+              ) : (
+                <TableHeadCellNoDnD
+                  cellHeaderProps={
+                    columns[index].setCellHeaderProps ? columns[index].setCellHeaderProps({ index, ...column }) || {} : {}
+                  }
+                  key={index}
+                  index={index}
+                  colPosition={colPos}
+                  type={'cell'}
+                  setCellRef={setCellRef}
+                  sort={column.sort}
+                  sortDirection={column.name === sortOrder.name ? sortOrder.direction : 'none'}
+                  toggleSort={handleToggleColumn}
+                  hint={column.hint}
+                  print={column.print}
+                  options={options}
+                  column={column}
+                  tableId={tableId}
+                  components={components}>
+                  {column.customHeadLabelRender
+                    ? column.customHeadLabelRender({ index, colPos, ...column })
+                    : column.label}
+                </TableHeadCellNoDnD>
+              )
             )),
         )}
       </TableHeadRow>

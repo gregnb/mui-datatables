@@ -35,6 +35,7 @@ import CustomComponents from './custom-components';
 import InfiniteScrolling from './infinite-scrolling';
 import Themes from './themes';
 import LargeDataSet from './large-data-set';
+import NoDND from './no-drag-and-drop';
 
 /**
  * Here you can add any extra examples with the Card label as the key, and the component to render as the value
@@ -65,6 +66,7 @@ export default {
   'Hide Columns Print': HideColumnsPrint,
   'Infinite Scrolling': InfiniteScrolling,
   'Large Data Set': LargeDataSet,
+  'No Drag and Drop': NoDND,
   'OnDownload': OnDownload,
   'OnTableInit': OnTableInit,
   'Resizable Columns': ResizableColumns,
