@@ -233,6 +233,7 @@ class MUIDataTable extends React.Component {
       rowsSelected: PropTypes.array,
       search: PropTypes.oneOf([true, false, 'true', 'false', 'disabled']),
       searchOpen: PropTypes.bool,
+      searchAlwaysOpen: PropTypes.bool,
       searchPlaceholder: PropTypes.string,
       searchText: PropTypes.string,
       setFilterChipProps: PropTypes.func,

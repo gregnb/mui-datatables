@@ -107,7 +107,12 @@ const RESPONSIVE_FULL_WIDTH_NAME = 'scrollFullHeightFullWidth';
 class TableToolbar extends React.Component {
   state = {
     iconActive: null,
-    showSearch: Boolean(this.props.searchText || this.props.options.searchText || this.props.options.searchOpen),
+    showSearch: Boolean(
+      this.props.searchText ||
+        this.props.options.searchText ||
+        this.props.options.searchOpen ||
+        this.props.options.searchAlwaysOpen,
+    ),
     searchText: this.props.searchText || null,
   };
 
@@ -344,7 +349,7 @@ class TableToolbar extends React.Component {
           )}
         </div>
         <div className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.actions : classes.fullWidthActions}>
-          {!(options.search === false || options.search === 'false') && (
+          {!(options.search === false || options.search === 'false' || options.searchAlwaysOpen === true) && (
             <Tooltip title={search} disableFocusListener>
               <IconButton
                 aria-label={search}
