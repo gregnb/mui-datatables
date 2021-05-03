@@ -55,8 +55,8 @@ function Example() {
     responsive: "vertical",
     rowsPerPage: 10,
     selectToolbarPlacement: stp,
-    customToolbarSelect: (selectedRows, displayData, setSelectedRows) => (
-      <CustomToolbarSelect selectedRows={selectedRows} displayData={displayData} setSelectedRows={setSelectedRows} />
+    customToolbarSelect: (selectedRows, displayData, setSelectedRows, onRowsDelete) => (
+      <CustomToolbarSelect selectedRows={selectedRows} displayData={displayData} setSelectedRows={setSelectedRows} onRowsDelete={onRowsDelete} />
     ),
   };
 

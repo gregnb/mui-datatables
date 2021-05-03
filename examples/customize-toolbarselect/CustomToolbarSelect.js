@@ -5,6 +5,7 @@ import CompareArrowsIcon from "@material-ui/icons/CompareArrows";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
 import BlockIcon from "@material-ui/icons/Block";
 import { withStyles } from "@material-ui/core/styles";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const defaultToolbarSelectStyles = {
   iconButton: {
@@ -38,6 +39,10 @@ class CustomToolbarSelect extends React.Component {
     console.log(`block users with dataIndexes: ${this.props.selectedRows.data.map(row => row.dataIndex)}`);
   };
 
+  handleDelete = () => {
+    this.props.onRowsDelete();
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -56,6 +61,11 @@ class CustomToolbarSelect extends React.Component {
         <Tooltip title={"Block selected"}>
           <IconButton className={classes.iconButton} onClick={this.handleClickBlockSelected}>
             <BlockIcon className={classes.icon} />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={"Delete selected"}>
+          <IconButton className={classes.iconButton} onClick={this.handleDelete}>
+            <DeleteIcon className={classes.icon} />
           </IconButton>
         </Tooltip>
       </div>
