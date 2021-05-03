@@ -75,7 +75,7 @@ class TableToolbarSelect extends React.Component {
           </Typography>
         </div>
         {options.customToolbarSelect ? (
-          options.customToolbarSelect(selectedRows, displayData, this.handleCustomSelectedRows)
+          options.customToolbarSelect(selectedRows, displayData, this.handleCustomSelectedRows, onRowsDelete)
         ) : (
           <Tooltip title={textLabels.delete}>
             <IconButton className={classes.iconButton} onClick={onRowsDelete} aria-label={textLabels.deleteAria}>
