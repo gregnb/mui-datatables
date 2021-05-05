@@ -38,7 +38,10 @@ describe('<TableToolbarSelect />', function() {
       />,
     );
 
-    assert.strictEqual(customToolbarSelect.calledWith(selectedRows, displayData, match.typeOf('function'), match.typeOf('function')), true);
+    assert.strictEqual(
+      customToolbarSelect.calledWith(selectedRows, displayData, match.typeOf('function'), match.typeOf('function')),
+      true,
+    );
   });
 
   it('should throw TypeError if selectedRows is not an array of numbers', done => {
