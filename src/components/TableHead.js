@@ -6,7 +6,6 @@ import TableHeadCell from './TableHeadCell';
 import TableHeadRow from './TableHeadRow';
 import TableSelectCell from './TableSelectCell';
 
-
 const useStyles = makeStyles(
   theme => ({
     main: {},
