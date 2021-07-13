@@ -59,8 +59,7 @@ const Popover = ({ className, trigger, refExit, hide, content, ...providedProps 
       <MuiPopover
         elevation={2}
         open={isOpen}
-        onClose={handleRequestClose}
-        onExited={handleOnExit}
+        TransitionProps={{ onExited: handleOnExit, onClose: handleRequestClose }}
         anchorEl={anchorEl.current}
         anchorOrigin={anchorOriginSpecs}
         transformOrigin={transformOriginSpecs}

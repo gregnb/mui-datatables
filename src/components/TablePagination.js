@@ -98,8 +98,8 @@ function TablePagination(props) {
                 },
               }}
               rowsPerPageOptions={options.rowsPerPageOptions}
-              onChangePage={handlePageChange}
-              onChangeRowsPerPage={handleRowChange}
+              onPageChange={handlePageChange}
+              onRowsPerPageChange={handleRowChange}
             />
           </div>
         </MuiTableCell>
