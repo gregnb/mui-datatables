@@ -267,7 +267,7 @@ class TableBody extends React.Component {
                     [bodyClasses.className]: bodyClasses.className,
                   })}
                   data-testid={'MUIDataTableBodyRow-' + dataIndex}
-                  id={'MUIDataTableBodyRow-' + dataIndex}>
+                  id={`MUIDataTableBodyRow-${tableId}-${dataIndex}`}>
                   <TableSelectCell
                     onChange={this.handleRowSelect.bind(null, {
                       index: this.getRowIndex(rowIndex),
@@ -289,7 +289,7 @@ class TableBody extends React.Component {
                     isRowExpanded={this.isRowExpanded(dataIndex)}
                     isRowSelectable={isRowSelectable}
                     dataIndex={dataIndex}
-                    id={'MUIDataTableSelectCell-' + dataIndex}
+                    id={`MUIDataTableSelectCell-${tableId}-${dataIndex}`}
                     components={components}
                   />
                   {processedRow.map(

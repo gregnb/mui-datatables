@@ -17,6 +17,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 
 describe('<MUIDataTable />', function() {
+  const tableId = 'tableID';
   let data;
   let displayData;
   let columns;
@@ -1988,10 +1989,10 @@ describe('<MUIDataTable />', function() {
       expandableRowsOnClick: true,
       onRowExpansionChange: spy(),
     };
-    const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
+    const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} tableId={tableId} />);
 
     mountWrapper
-      .find('#MUIDataTableBodyRow-2')
+      .find(`#MUIDataTableBodyRow-${tableId}-2`)
       .first()
       .simulate('click');
 
@@ -1999,7 +2000,7 @@ describe('<MUIDataTable />', function() {
     assert(options.onRowExpansionChange.calledWith([{ index: 2, dataIndex: 2 }], [{ index: 2, dataIndex: 2 }]));
 
     mountWrapper
-      .find('#MUIDataTableBodyRow-2')
+      .find(`#MUIDataTableBodyRow-${tableId}-2`)
       .first()
       .simulate('click');
 
@@ -2013,10 +2014,10 @@ describe('<MUIDataTable />', function() {
       selectableRowsOnClick: true,
       onRowSelectionChange: spy(),
     };
-    const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} />);
+    const mountWrapper = mount(<MUIDataTable columns={columns} data={data} options={options} tableId={tableId} />);
 
     mountWrapper
-      .find('#MUIDataTableBodyRow-2')
+      .find(`#MUIDataTableBodyRow-${tableId}-2`)
       .first()
       .simulate('click');
 
@@ -2024,7 +2025,7 @@ describe('<MUIDataTable />', function() {
     assert(options.onRowSelectionChange.calledWith([{ index: 2, dataIndex: 2 }], [{ index: 2, dataIndex: 2 }]));
 
     mountWrapper
-      .find('#MUIDataTableBodyRow-2')
+      .find(`#MUIDataTableBodyRow-${tableId}-2`)
       .first()
       .simulate('click');
 
