@@ -218,6 +218,7 @@ The component accepts the following props:
 |**`searchPlaceholder`**|string||Search text placeholder. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-search/index.js)
 |**`searchProps`**|object|{}|Props applied to the search text box. You can set method callbacks like onBlur, onKeyUp, etc, this way. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-search/index.js)
 |**`searchOpen`**|boolean|false|Initially displays search bar.
+|**`searchAlwaysOpen`**|boolean|false|Always displays search bar, and hides search icon in toolbar.
 |**`searchText`**|string||Search text for the table.
 |**`selectableRows`**|string|'multiple'|Indicates if rows can be selected. Options are "multiple", "single", "none".
 |**`selectableRowsHeader`**|boolean|true|Show/hide the select all/deselect all checkbox header for selectable rows.

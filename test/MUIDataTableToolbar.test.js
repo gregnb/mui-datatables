@@ -3,6 +3,7 @@ import DownloadIcon from '@material-ui/icons/CloudDownload';
 import FilterIcon from '@material-ui/icons/FilterList';
 import PrintIcon from '@material-ui/icons/Print';
 import SearchIcon from '@material-ui/icons/Search';
+import CloseIcon from "@material-ui/icons/Close";
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import { assert } from 'chai';
 import { mount, shallow } from 'enzyme';
@@ -100,6 +101,26 @@ describe('<TableToolbar />', function() {
     );
     const actualResult = mountWrapper.find(SearchIcon);
     assert.strictEqual(actualResult.length, 0);
+  });
+
+  it('should render a toolbar with search box and no search icon if option.searchAlwaysOpen = true', () => {
+    const newOptions = { ...options, searchAlwaysOpen: true };
+    const mountWrapper = mount(
+        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    );
+
+    // check that textfield is rendered
+    const actualTextfieldResult = mountWrapper.find(TableSearch);
+    assert.strictEqual(actualTextfieldResult.length, 1);
+    assert.strictEqual(actualTextfieldResult.props().options.searchText, undefined);
+
+    // check that close icon is not rendered
+    const actualCloseIconResult = mountWrapper.find(CloseIcon());
+    assert.strictEqual(actualCloseIconResult.length, 0);
+
+    // check that search icon is rendered
+    const actualSearchIconResult = mountWrapper.find(SearchIcon);
+    assert.strictEqual(actualSearchIconResult.length, 0);
   });
 
   it('should render a toolbar with no download icon if option.download = false', () => {
