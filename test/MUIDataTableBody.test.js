@@ -11,6 +11,7 @@ describe('<TableBody />', function() {
   let data;
   let displayData;
   let columns;
+  const tableId = 'tableID';
 
   before(() => {
     columns = [{ name: 'First Name' }, { name: 'Company' }, { name: 'City' }, { name: 'State' }];
@@ -227,11 +228,12 @@ describe('<TableBody />', function() {
         options={options}
         searchText={''}
         filterList={[]}
+        tableId={tableId}
       />,
     );
 
     mountWrapper
-      .find('#MUIDataTableBodyRow-3')
+      .find(`#MUIDataTableBodyRow-${tableId}-3`)
       .first()
       .simulate('click', { nativeEvent: { shiftKey: true } });
 
@@ -258,11 +260,12 @@ describe('<TableBody />', function() {
         options={options}
         searchText={''}
         filterList={[]}
+        tableId={tableId}
       />,
     );
 
     mountWrapper
-      .find('#MUIDataTableBodyRow-2')
+      .find(`#MUIDataTableBodyRow-${tableId}-2`)
       .first()
       .simulate('click');
 
@@ -295,11 +298,12 @@ describe('<TableBody />', function() {
         options={options}
         searchText={''}
         filterList={[]}
+        tableId={tableId}
       />,
     );
 
     mountWrapper
-      .find('#MUIDataTableBodyRow-2')
+      .find(`#MUIDataTableBodyRow-${tableId}-2`)
       .first()
       .simulate('click');
 
@@ -334,11 +338,12 @@ describe('<TableBody />', function() {
         options={options}
         searchText={''}
         filterList={[]}
+        tableId={tableId}
       />,
     );
 
     mountWrapper
-      .find('#MUIDataTableBodyRow-2')
+      .find(`#MUIDataTableBodyRow-${tableId}-2`)
       .first()
       .simulate('click');
 
@@ -374,11 +379,12 @@ describe('<TableBody />', function() {
         options={options}
         searchText={''}
         filterList={[]}
+        tableId={tableId}
       />,
     );
 
     mountWrapper
-      .find('#MUIDataTableBodyRow-2')
+      .find(`#MUIDataTableBodyRow-${tableId}-2`)
       .first()
       .simulate('click');
 
@@ -414,11 +420,12 @@ describe('<TableBody />', function() {
         options={options}
         searchText={''}
         filterList={[]}
+        tableId={tableId}
       />,
     );
 
     mountWrapper
-      .find('#MUIDataTableBodyRow-1')
+      .find(`#MUIDataTableBodyRow-${tableId}-1`)
       .first()
       .simulate('click');
 
@@ -453,11 +460,12 @@ describe('<TableBody />', function() {
         options={options}
         searchText={''}
         filterList={[]}
+        tableId={tableId}
       />,
     );
 
     mountWrapper
-      .find('#MUIDataTableBodyRow-2')
+      .find(`#MUIDataTableBodyRow-${tableId}-2`)
       .first()
       .simulate('click');
 
@@ -485,11 +493,12 @@ describe('<TableBody />', function() {
         options={options}
         searchText={''}
         filterList={[]}
+        tableId={tableId}
       />,
     );
 
     mountWrapper
-      .find('#MUIDataTableBodyRow-2')
+      .find(`#MUIDataTableBodyRow-${tableId}-2`)
       .first()
       .simulate('click');
 
@@ -524,11 +533,12 @@ describe('<TableBody />', function() {
         options={options}
         searchText={''}
         filterList={[]}
+        tableId={tableId}
       />,
     );
 
     mountWrapper
-      .find('#MUIDataTableBodyRow-2')
+      .find(`#MUIDataTableBodyRow-${tableId}-2`)
       .first()
       .simulate('click');
 
@@ -617,11 +627,12 @@ describe('<TableBody />', function() {
         options={options}
         searchText={''}
         filterList={[]}
+        tableId={tableId}
       />,
     );
 
     mountWrapper
-      .find('#MUIDataTableBodyRow-2')
+      .find(`#MUIDataTableBodyRow-${tableId}-2`)
       .first()
       .simulate('click');
 
@@ -648,11 +659,12 @@ describe('<TableBody />', function() {
         options={options}
         searchText={''}
         filterList={[]}
+        tableId={tableId}
       />,
     );
 
     const props = mountWrapper
-      .find('#MUIDataTableBodyRow-1')
+      .find(`#MUIDataTableBodyRow-${tableId}-1`)
       .first()
       .props();
 
@@ -680,11 +692,12 @@ describe('<TableBody />', function() {
         options={options}
         searchText={''}
         filterList={[]}
+        tableId={tableId}
       />,
     );
 
     const props = mountWrapper
-      .find('#MUIDataTableBodyRow-1')
+      .find(`#MUIDataTableBodyRow-${tableId}-1`)
       .first()
       .props();
 
