@@ -360,7 +360,7 @@ class TableToolbar extends React.Component {
           {!(options.download === false || options.download === 'false') && (
             <Tooltip title={downloadCsv}>
               <IconButton
-                data-testid={downloadCsv + '-iconButton'}
+                data-testid={downloadCsv.replace(/\s/g, '') + '-iconButton'}
                 aria-label={downloadCsv}
                 classes={{ root: classes.icon }}
                 disabled={options.download === 'disabled'}
