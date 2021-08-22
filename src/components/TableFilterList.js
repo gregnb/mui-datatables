@@ -1,7 +1,7 @@
-import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TableFilterListItem from './TableFilterListItem';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(
   () => ({
@@ -18,7 +18,7 @@ const useStyles = makeStyles(
   { name: 'MUIDataTableFilterList' },
 );
 
-const TableFilterList = ({
+const TableFilterList = React.memo(({
   options,
   filterList,
   filterUpdate,
@@ -31,7 +31,7 @@ const TableFilterList = ({
   const classes = useStyles();
   const { serverSide } = options;
 
-  const removeFilter = (index, filterValue, columnName, filterType, customFilterListUpdate = null) => {
+  const removeFilter = (index, filterValue, columnName, filterType, customFilterListUpdate = null) => () => {
     let removedFilter = filterValue;
     if (Array.isArray(removedFilter) && removedFilter.length === 0) {
       removedFilter = filterList[index];
@@ -57,7 +57,7 @@ const TableFilterList = ({
       <ItemComponent
         label={customFilterItem}
         key={customFilterItemIndex}
-        onDelete={() =>
+        onDelete={
           removeFilter(
             index,
             item[customFilterItemIndex] || [],
@@ -84,7 +84,7 @@ const TableFilterList = ({
     <ItemComponent
       label={filterListRenderers[index](data)}
       key={colIndex}
-      onDelete={() => removeFilter(index, data, columnNames[index].name, 'chip')}
+      onDelete={removeFilter(index, data, columnNames[index].name, 'chip')}
       className={classes.chip}
       itemKey={colIndex}
       index={index}
@@ -117,7 +117,7 @@ const TableFilterList = ({
       {serverSide && serverSideFilterList ? getFilterList(serverSideFilterList) : getFilterList(filterList)}
     </div>
   );
-};
+});
 
 TableFilterList.propTypes = {
   /** Data used to filter table against */

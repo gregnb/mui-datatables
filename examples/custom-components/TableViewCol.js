@@ -1,11 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Checkbox from '@material-ui/core/Checkbox';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
 import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import PropTypes from 'prop-types';
+import React from 'react';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(
@@ -42,12 +42,12 @@ const useStyles = makeStyles(
   { name: 'MUIDataTableViewCol' },
 );
 
-const TableViewCol = ({ columns, options, components = {}, onColumnUpdate, updateColumns }) => {
+const TableViewCol = React.memo(({ columns, options, components = {}, onColumnUpdate, updateColumns }) => {
   const classes = useStyles();
   const textLabels = options.textLabels.viewColumns;
   const CheckboxComponent = components.Checkbox || Checkbox;
 
-  const handleColChange = index => {
+  const handleColChange = index => () => {
     onColumnUpdate(index);
   };
 
@@ -85,7 +85,7 @@ const TableViewCol = ({ columns, options, components = {}, onColumnUpdate, updat
                       root: classes.checkboxRoot,
                       checked: classes.checked,
                     }}
-                    onChange={() => handleColChange(index)}
+                    onChange={handleColChange(index)}
                     checked={column.display === 'true'}
                     value={column.name}
                   />
@@ -98,7 +98,7 @@ const TableViewCol = ({ columns, options, components = {}, onColumnUpdate, updat
       </FormGroup>
     </FormControl>
   );
-};
+});
 
 TableViewCol.propTypes = {
   /** Columns used to describe table */
