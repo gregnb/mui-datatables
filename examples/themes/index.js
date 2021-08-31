@@ -1,6 +1,7 @@
 import React from 'react';
 import MUIDataTable from '../../src/';
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core';
+import {ThemeProvider} from '@material-ui/styles';
+import {createTheme} from '@material-ui/core/styles';
 
 class Example extends React.Component {
     render() {
@@ -79,15 +80,15 @@ class Example extends React.Component {
             rowsPerPage: 10,
         };
 
-        const theme = createMuiTheme({
+        const theme = createTheme({
             palette: {type: 'dark'},
             typography: {useNextVariants: true},
         });
 
         return (
-            <MuiThemeProvider theme={theme}>
+            <ThemeProvider theme={theme}>
                 <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options}/>
-            </MuiThemeProvider>
+            </ThemeProvider>
         );
     }
 }

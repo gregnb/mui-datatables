@@ -2,7 +2,7 @@ import {Link} from "react-router-dom";
 import {Card, CardContent, Grid, Typography} from "@material-ui/core";
 import React from "react";
 import examples from "../examples";
-import {withStyles} from "@material-ui/core/styles/index";
+import {withStyles} from "@material-ui/styles";
 import TextField from '@material-ui/core/TextField';
 
 const styles = {

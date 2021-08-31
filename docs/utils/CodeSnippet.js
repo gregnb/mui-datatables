@@ -5,7 +5,7 @@ import prism from 'prismjs';
 import 'prismjs/components/prism-jsx';
 import 'prismjs/components/prism-bash';
 import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 
 const styles = theme => ({});
 

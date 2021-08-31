@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import MUIDataTable from '../../src/';
 import CustomFooter from './CustomFooter';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';

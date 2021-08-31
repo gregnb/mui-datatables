@@ -5,7 +5,7 @@ import MuiTableBody from '@material-ui/core/TableBody';
 import TableBodyCell from './TableBodyCell';
 import TableBodyRow from './TableBodyRow';
 import TableSelectCell from './TableSelectCell';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import cloneDeep from 'lodash.clonedeep';
 import { getPageValue } from '../utils';
 import clsx from 'clsx';

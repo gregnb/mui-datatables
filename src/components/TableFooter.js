@@ -1,7 +1,7 @@
 import React from 'react';
 import MuiTable from '@material-ui/core/Table';
 import TablePagination from './TablePagination';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(

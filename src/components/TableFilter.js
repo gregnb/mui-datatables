@@ -14,7 +14,7 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import cloneDeep from 'lodash.clonedeep';
 
 export const defaultFilterStyles = theme => ({

@@ -8,7 +8,7 @@ import BuildIcon from '@material-ui/icons/Build'; // eslint-disable-line import/
 import CodeSnippet from '../utils/CodeSnippet';
 import Layout from '../utils/layout';
 import withRoot from '../utils/withRoot';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 
 const styles = theme => ({
   stepIcon: {

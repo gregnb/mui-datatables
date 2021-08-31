@@ -5,7 +5,7 @@ import MuiTableRow from '@material-ui/core/TableRow';
 import MuiTableFooter from '@material-ui/core/TableFooter';
 import MuiTablePagination from '@material-ui/core/TablePagination';
 import JumpToPage from './JumpToPage';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import { getPageValue } from '../utils';
 
 const useStyles = makeStyles(

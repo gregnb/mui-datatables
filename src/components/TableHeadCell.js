@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import useColumnDrop from '../hooks/useColumnDrop.js';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import { useDrag } from 'react-dnd';
 
 const useStyles = makeStyles(

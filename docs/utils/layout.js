@@ -9,7 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Tooltip from '@material-ui/core/Tooltip';
 import GitHub from '../icons/GitHub';
 import withRoot from '../utils/withRoot';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Menu from './Menu';
 
 /* eslint-disable import/no-webpack-loader-syntax  */

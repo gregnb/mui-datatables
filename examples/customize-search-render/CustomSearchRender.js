@@ -3,7 +3,7 @@ import Grow from '@material-ui/core/Grow';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 
 const defaultSearchStyles = theme => ({
   main: {

@@ -2,9 +2,9 @@ import React, { Fragment, Component } from "react";
 import { Waypoint } from "react-waypoint";
 import PropTypes from "prop-types";
 import MUIDataTable from "../../src/";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
+import { createTheme } from "@material-ui/core/styles";
 import {
-  withStyles,
   Table,
   TableBody,
   TableCell,
@@ -12,6 +12,7 @@ import {
   TableRow,
   Paper
 } from "@material-ui/core";
+import { withStyles } from "@material-ui/styles";
 
 const styles = theme => ({
   root: {
@@ -148,7 +149,7 @@ class MessageManager extends Component {
   }
 
   getMuiTheme = () =>
-    createMuiTheme({
+    createTheme({
       typography: {
         useNextVariants: true
       },

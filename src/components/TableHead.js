@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import clsx from 'clsx';
 import MuiTableHead from '@material-ui/core/TableHead';
 import React, { useState } from 'react';

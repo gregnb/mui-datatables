@@ -13,7 +13,7 @@ import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import FilterIcon from '@material-ui/icons/FilterList';
 import ReactToPrint, { PrintContextConsumer } from 'react-to-print';
 import find from 'lodash.find';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import { createCSVDownload, downloadCSV } from '../utils';
 import MuiTooltip from '@material-ui/core/Tooltip';
 

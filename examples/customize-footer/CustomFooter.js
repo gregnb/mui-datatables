@@ -3,7 +3,7 @@ import TableFooter from "@material-ui/core/TableFooter";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import MuiTablePagination from "@material-ui/core/TablePagination";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/styles";
 
 const defaultFooterStyles = {
 };
