@@ -2,7 +2,7 @@ import React from 'react';
 import { spy, stub } from 'sinon';
 import { mount, shallow } from 'enzyme';
 import { assert, expect, should } from 'chai';
-import Checkbox from '@material-ui/core/Checkbox';
+import Checkbox from '@mui/material/Checkbox';
 import TableSelectCell from '../src/components/TableSelectCell';
 
 describe('<TableSelectCell />', function() {

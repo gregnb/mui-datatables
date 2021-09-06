@@ -4,8 +4,8 @@ import { mount, shallow } from 'enzyme';
 import { assert, expect, should } from 'chai';
 import TableHead from '../src/components/TableHead';
 import TableHeadCell from '../src/components/TableHeadCell';
-import Checkbox from '@material-ui/core/Checkbox';
-import Tooltip from '@material-ui/core/Tooltip';
+import Checkbox from '@mui/material/Checkbox';
+import Tooltip from '@mui/material/Tooltip';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 

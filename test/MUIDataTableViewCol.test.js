@@ -2,10 +2,10 @@ import React from 'react';
 import { spy, stub } from 'sinon';
 import { mount, shallow } from 'enzyme';
 import { assert, expect, should } from 'chai';
-import Checkbox from '@material-ui/core/Checkbox';
+import Checkbox from '@mui/material/Checkbox';
 import TableViewCol from '../src/components/TableViewCol';
 import getTextLabels from '../src/textLabels';
-import { FormControlLabel } from '@material-ui/core';
+import { FormControlLabel } from '@mui/material';
 
 describe('<TableViewCol />', function() {
   let columns;

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import clsx from 'clsx';
-import TableCell from '@material-ui/core/TableCell';
-import { makeStyles } from '@material-ui/styles';
+import TableCell from '@mui/material/TableCell';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(
   theme => ({

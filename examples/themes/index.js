@@ -1,7 +1,7 @@
 import React from 'react';
 import MUIDataTable from '../../src/';
-import {ThemeProvider} from '@material-ui/styles';
-import {createTheme} from '@material-ui/core/styles';
+import {ThemeProvider} from '@mui/styles';
+import {createTheme} from '@mui/material/styles';
 
 class Example extends React.Component {
     render() {

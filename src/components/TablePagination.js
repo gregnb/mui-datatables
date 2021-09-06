@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MuiTableCell from '@material-ui/core/TableCell';
-import MuiTableRow from '@material-ui/core/TableRow';
-import MuiTableFooter from '@material-ui/core/TableFooter';
-import MuiTablePagination from '@material-ui/core/TablePagination';
+import MuiTableCell from '@mui/material/TableCell';
+import MuiTableRow from '@mui/material/TableRow';
+import MuiTableFooter from '@mui/material/TableFooter';
+import MuiTablePagination from '@mui/material/TablePagination';
 import JumpToPage from './JumpToPage';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 import { getPageValue } from '../utils';
 
 const useStyles = makeStyles(

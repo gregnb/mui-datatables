@@ -1,10 +1,10 @@
 import React from 'react';
 import MUIDataTable from '../../src/';
-import { ThemeProvider, withStyles } from '@material-ui/styles';
-import { createTheme } from '@material-ui/core/styles';
-import Switch from '@material-ui/core/Switch';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { ThemeProvider, withStyles } from '@mui/styles';
+import { createTheme } from '@mui/material/styles';
+import Switch from '@mui/material/Switch';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import clsx from 'clsx';
 
 const customStyles = theme => ({

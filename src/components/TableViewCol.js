@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Checkbox from '@material-ui/core/Checkbox';
-import Typography from '@material-ui/core/Typography';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { makeStyles } from '@material-ui/styles';
+import Checkbox from '@mui/material/Checkbox';
+import Typography from '@mui/material/Typography';
+import FormControl from '@mui/material/FormControl';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(
   theme => ({

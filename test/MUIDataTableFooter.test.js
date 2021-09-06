@@ -2,7 +2,7 @@ import React from 'react';
 import { spy } from 'sinon';
 import { mount } from 'enzyme';
 import { assert } from 'chai';
-import MuiTableFooter from '@material-ui/core/TableFooter';
+import MuiTableFooter from '@mui/material/TableFooter';
 import getTextLabels from '../src/textLabels';
 import TableFooter from '../src/components/TableFooter';
 import JumpToPage from '../src/components/JumpToPage';

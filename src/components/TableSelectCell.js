@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import Checkbox from '@material-ui/core/Checkbox';
-import TableCell from '@material-ui/core/TableCell';
-import { makeStyles } from '@material-ui/styles';
+import Checkbox from '@mui/material/Checkbox';
+import TableCell from '@mui/material/TableCell';
+import { makeStyles } from '@mui/styles';
 import ExpandButton from './ExpandButton';
 
 const useStyles = makeStyles(

@@ -1,20 +1,20 @@
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import Grid from '@material-ui/core/Grid';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuItem from '@material-ui/core/MenuItem';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Grid from '@mui/material/Grid';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
+import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
-import { withStyles } from '@material-ui/styles';
+import { withStyles } from '@mui/styles';
 import cloneDeep from 'lodash.clonedeep';
 
 export const defaultFilterStyles = theme => ({

@@ -4,8 +4,8 @@ import clsx from 'clsx';
 import prism from 'prismjs';
 import 'prismjs/components/prism-jsx';
 import 'prismjs/components/prism-bash';
-import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/styles';
+import Paper from '@mui/material/Paper';
+import { withStyles } from '@mui/styles';
 
 const styles = theme => ({});
 

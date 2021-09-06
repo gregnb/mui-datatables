@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import DownloadIcon from '@material-ui/icons/CloudDownload';
-import BuildIcon from '@material-ui/icons/Build'; // eslint-disable-line import/no-unresolved
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import DownloadIcon from '@mui/icons-material/CloudDownload';
+import BuildIcon from '@mui/icons-material/Build'; // eslint-disable-line import/no-unresolved
 import CodeSnippet from '../utils/CodeSnippet';
 import Layout from '../utils/layout';
 import withRoot from '../utils/withRoot';
-import { withStyles } from '@material-ui/styles';
+import { withStyles } from '@mui/styles';
 
 const styles = theme => ({
   stepIcon: {

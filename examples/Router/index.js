@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
-import { withStyles } from '@material-ui/styles';
+import { withStyles } from '@mui/styles';
 import ExamplesGrid from './ExamplesGrid';
 import examples from '../examples';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { withRouter } from 'react-router-dom';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const styles = {
   root: {

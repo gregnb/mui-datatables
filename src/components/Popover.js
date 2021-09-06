@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import MuiPopover from '@material-ui/core/Popover';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import MuiPopover from '@mui/material/Popover';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Popover = ({ className, trigger, refExit, hide, content, ...providedProps }) => {
   const [isOpen, open] = useState(false);

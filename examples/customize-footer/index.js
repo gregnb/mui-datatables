@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import MUIDataTable from '../../src/';
 import CustomFooter from './CustomFooter';
-import { makeStyles } from '@material-ui/styles';
-import TableFooter from '@material-ui/core/TableFooter';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
-import Switch from '@material-ui/core/Switch';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { makeStyles } from '@mui/styles';
+import TableFooter from '@mui/material/TableFooter';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import Switch from '@mui/material/Switch';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({

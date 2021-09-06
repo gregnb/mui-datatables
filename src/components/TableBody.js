@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Typography from '@material-ui/core/Typography';
-import MuiTableBody from '@material-ui/core/TableBody';
+import Typography from '@mui/material/Typography';
+import MuiTableBody from '@mui/material/TableBody';
 import TableBodyCell from './TableBodyCell';
 import TableBodyRow from './TableBodyRow';
 import TableSelectCell from './TableSelectCell';
-import { withStyles } from '@material-ui/styles';
+import { withStyles } from '@mui/styles';
 import cloneDeep from 'lodash.clonedeep';
 import { getPageValue } from '../utils';
 import clsx from 'clsx';

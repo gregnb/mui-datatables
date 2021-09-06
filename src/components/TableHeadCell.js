@@ -1,13 +1,13 @@
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import clsx from 'clsx';
-import HelpIcon from '@material-ui/icons/Help';
-import MuiTooltip from '@material-ui/core/Tooltip';
+import HelpIcon from '@mui/icons-material/Help';
+import MuiTooltip from '@mui/material/Tooltip';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import TableCell from '@material-ui/core/TableCell';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
+import TableCell from '@mui/material/TableCell';
+import TableSortLabel from '@mui/material/TableSortLabel';
 import useColumnDrop from '../hooks/useColumnDrop.js';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 import { useDrag } from 'react-dnd';
 
 const useStyles = makeStyles(

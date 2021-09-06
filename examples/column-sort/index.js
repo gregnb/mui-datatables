@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Chip } from "@material-ui/core";
+import { Chip } from "@mui/material";
 import MUIDataTable from "../../src/";
 
 class Example extends React.Component {

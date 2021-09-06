@@ -1,9 +1,9 @@
 import React from "react";
-import TableFooter from "@material-ui/core/TableFooter";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-import MuiTablePagination from "@material-ui/core/TablePagination";
-import { withStyles } from "@material-ui/styles";
+import TableFooter from "@mui/material/TableFooter";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import MuiTablePagination from "@mui/material/TablePagination";
+import { withStyles } from "@mui/styles";
 
 const defaultFooterStyles = {
 };
