@@ -17,6 +17,7 @@ class Example extends React.Component {
           filter: false,
           customBodyRender: (value, tableMeta, updateValue) => (
             <FormControlLabel
+              label=""
               value={value}
               control={<TextField value={value} />}
               onChange={event => updateValue(event.target.value)}
@@ -51,6 +52,7 @@ class Example extends React.Component {
           filter: false,
           customBodyRender: (value, tableMeta, updateValue) => (
             <FormControlLabel
+              label=""
               control={<TextField value={value || ''} type='number' />}
               onChange={event => updateValue(event.target.value)}
             />
