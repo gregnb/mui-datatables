@@ -311,7 +311,7 @@ describe('<TableToolbar />', function() {
 
     let actualResult = shallowWrapper.find(TableSearch);
     assert.strictEqual(actualResult.length, 1);
-  })
+  });
 
   it('should call onFilterDialogOpen when opening filters via toolbar', () => {
     const onFilterDialogOpen = spy();
