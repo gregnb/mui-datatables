@@ -220,6 +220,10 @@ class TableToolbar extends React.Component {
   };
 
   isSearchShown = iconName => {
+    if (this.props.options.searchAlwaysOpen) {
+      return true;
+    }
+
     let nextVal = false;
     if (this.state.showSearch) {
       if (this.state.searchText) {
