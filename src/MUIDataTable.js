@@ -1527,7 +1527,7 @@ class MUIDataTable extends React.Component {
     const cleanRows = data.filter(({ index }) => !selectedMap[index]);
 
     // return row data to get ids on event to execute server side delections
-    selectedRows.data = selectedRows.data.map( m => { return {...m.data, data: data[ m.index ].data}; } );
+    selectedRows.data = selectedRows.data.map( m => { return {...m, data: data[ m.index ].data}; } );
     
     if (this.options.onRowsDelete) {
       if (
