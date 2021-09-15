@@ -123,7 +123,7 @@ class TableToolbar extends React.Component {
   }
 
   handleCSVDownload = () => {
-    const { data, displayData, columns, options, columnOrder } = this.props;
+    const { data, displayData, columns, options, columnOrder, selectedRows } = this.props;
     let dataToDownload = []; //cloneDeep(data);
     let columnsToDownload = [];
     let columnOrderCopy = Array.isArray(columnOrder) ? columnOrder.slice(0) : [];
@@ -147,12 +147,30 @@ class TableToolbar extends React.Component {
     if (options.downloadOptions && options.downloadOptions.filterOptions) {
       // check rows first:
       if (options.downloadOptions.filterOptions.useDisplayedRowsOnly) {
-        let filteredDataToDownload = displayData.map((row, index) => {
+        // check if the selectedRows filter is set
+        // and if there are any selected rows
+        // or else use displayed data
+        
+        let selected = 
+          options.downloadOptions.filterOptions.useSelectedRowsWhenSelected &&
+          selectedRows &&
+          selectedRows.data && 
+          selectedRows.data.length > 0
+          ? displayData.filter(row => !!find(selectedRows.data, d => d.dataIndex === row.dataIndex))
+          : displayData;
+
+        // if all of the selected rows fall outside of displayedRows
+        // then displayedRows are the dataset and not selected rows
+        if(selected.length === 0 && displayData.length > 0){
+          selected = displayData;
+        }
+
+
+        let filteredDataToDownload = selected.map((row, index) => {
           let i = -1;
 
           // Help to preserve sort order in custom render columns
           row.index = index;
-
           return {
             data: row.data.map(column => {
               i += 1;
@@ -178,6 +196,18 @@ class TableToolbar extends React.Component {
           });
           dataToDownload.push(newRow);
         });
+      } else if (options.downloadOptions.filterOptions.useSelectedRowsWhenSelected) {
+        if (selectedRows && selectedRows.data && selectedRows.data.length > 0){
+          // filtered data for selectedRows
+          dataToDownload = [];
+
+          selectedRows.data.forEach(row => {
+            if(data[row.index]) {
+              dataToDownload.push(data[row.index]);
+            }
+          });
+        }
+
       }
 
       // now, check columns:

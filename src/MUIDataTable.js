@@ -187,6 +187,7 @@ class MUIDataTable extends React.Component {
         filterOptions: PropTypes.shape({
           useDisplayedColumnsOnly: PropTypes.bool,
           useDisplayedRowsOnly: PropTypes.bool,
+          useSelectedRowsWhenSelected: PropTypes.bool,
         }),
       }),
       filter: PropTypes.oneOf([true, false, 'true', 'false', 'disabled']),
@@ -1950,6 +1951,7 @@ class MUIDataTable extends React.Component {
               searchText={searchText}
               searchTextUpdate={this.searchTextUpdate}
               searchClose={this.searchClose}
+              selectedRows={selectedRows}
               tableRef={this.getTableContentRef}
               title={title}
               toggleViewColumn={this.toggleViewColumn}
