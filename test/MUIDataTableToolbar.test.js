@@ -3,7 +3,7 @@ import DownloadIcon from '@material-ui/icons/CloudDownload';
 import FilterIcon from '@material-ui/icons/FilterList';
 import PrintIcon from '@material-ui/icons/Print';
 import SearchIcon from '@material-ui/icons/Search';
-import CloseIcon from "@material-ui/icons/Close";
+import CloseIcon from '@material-ui/icons/Close';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import { assert } from 'chai';
 import { mount, shallow } from 'enzyme';
@@ -106,7 +106,7 @@ describe('<TableToolbar />', function() {
   it('should render a toolbar with search box and no search icon if option.searchAlwaysOpen = true', () => {
     const newOptions = { ...options, searchAlwaysOpen: true };
     const mountWrapper = mount(
-        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
     );
 
     // check that textfield is rendered

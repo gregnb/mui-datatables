@@ -45,12 +45,15 @@ function TablePagination(props) {
     props.changePage(page);
   };
 
-  const { count, options, rowsPerPage, page } = props;
+  const { count, options, rowsPerPage, page, toolbar } = props;
   const textLabels = options.textLabels.pagination;
 
   return (
     <MuiTableFooter>
       <MuiTableRow>
+        {toolbar && <MuiTableCell colSpan="1000" className={classes.tableCellContainer}>
+          {toolbar}
+        </MuiTableCell>}
         <MuiTableCell colSpan="1000" className={classes.tableCellContainer}>
           <div className={classes.navContainer}>
             {options.jumpToPage ? (

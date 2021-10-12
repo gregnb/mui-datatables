@@ -14,7 +14,6 @@ import CustomizeSearchRender from './customize-search-render';
 import CustomizeSorting from './customize-sorting';
 import CustomizeStyling from './customize-styling';
 import CustomizeToolbar from './customize-toolbar';
-import CustomizeToolbarIcons from './customize-toolbar-icons';
 import CustomizeToolbarSelect from './customize-toolbarselect';
 import DataAsObjects from './data-as-objects';
 import DraggableColumns from './draggable-columns';
@@ -35,6 +34,7 @@ import CustomComponents from './custom-components';
 import InfiniteScrolling from './infinite-scrolling';
 import Themes from './themes';
 import LargeDataSet from './large-data-set';
+import ToolbarPosition from './toolbar-position';
 
 /**
  * Here you can add any extra examples with the Card label as the key, and the component to render as the value
@@ -56,7 +56,6 @@ export default {
   'Customize Sorting': CustomizeSorting,
   'Customize Styling': CustomizeStyling,
   'Customize Toolbar': CustomizeToolbar,
-  'Customize Toolbar Icons': CustomizeToolbarIcons,
   'Customize Toolbar Select': CustomizeToolbarSelect,
   'Data As Objects': DataAsObjects,
   'Draggable Columns': DraggableColumns,
@@ -77,4 +76,5 @@ export default {
   'Text Localization': TextLocalization,
   'Custom Components': CustomComponents,
   Themes: Themes,
+  'Toolbar Position': ToolbarPosition,
 };
