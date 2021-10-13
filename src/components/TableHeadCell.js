@@ -48,6 +48,8 @@ const useStyles = makeStyles(
       marginLeft: '-8px',
       minWidth: 0,
       marginRight: '8px',
+      paddingLeft: '8px',
+      paddingRight: '8px',
     },
     contentWrapper: {
       display: 'flex',
