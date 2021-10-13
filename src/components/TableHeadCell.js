@@ -215,7 +215,7 @@ const TableHeadCell = ({
               popper: classes.mypopper,
             }}>
             <Button
-              variant="text"
+              variant=""
               onKeyUp={handleKeyboardSortInput}
               onClick={handleSortClick}
               className={classes.toolButton}
