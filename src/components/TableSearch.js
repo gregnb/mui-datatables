@@ -11,10 +11,10 @@ const useStyles = makeStyles(
     main: {
       display: 'flex',
       flex: '1 0 auto',
+      alignItems: "center"
     },
     searchIcon: {
       color: theme.palette.text.secondary,
-      marginTop: '10px',
       marginRight: '8px',
     },
     searchText: {
