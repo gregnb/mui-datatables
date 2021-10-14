@@ -26,10 +26,10 @@ const defaultStyles = theme => ({
   main: {
     display: 'flex',
     flex: '1 0 auto',
+    alignItems: "center"
   },
   searchIcon: {
     color: theme.palette.text.secondary,
-    marginTop: '10px',
     marginRight: '8px',
   },
   searchText: {
@@ -75,6 +75,7 @@ class _DebounceTableSearch extends React.Component {
         <div className={classes.main}>
           <SearchIcon className={classes.searchIcon} />
           <TextField
+            variant={'standard'}
             className={classes.searchText}
             autoFocus={true}
             InputProps={{

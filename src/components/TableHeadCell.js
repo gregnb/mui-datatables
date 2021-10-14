@@ -48,6 +48,8 @@ const useStyles = makeStyles(
       marginLeft: '-8px',
       minWidth: 0,
       marginRight: '8px',
+      paddingLeft: '8px',
+      paddingRight: '8px',
     },
     contentWrapper: {
       display: 'flex',
@@ -215,7 +217,7 @@ const TableHeadCell = ({
               popper: classes.mypopper,
             }}>
             <Button
-              variant="text"
+              variant=""
               onKeyUp={handleKeyboardSortInput}
               onClick={handleSortClick}
               className={classes.toolButton}
