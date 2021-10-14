@@ -221,7 +221,7 @@ class TableFilter extends React.Component {
         key={index}
         xs={width}
         classes={{ 'grid-xs-12': classes.gridListTile, 'grid-xs-6': classes.gridListTile }}>
-        <FormControl key={index} fullWidth>
+        <FormControl key={index} variant={'standard'} fullWidth>
           <InputLabel htmlFor={column.name}>{column.label}</InputLabel>
           <Select
             fullWidth
@@ -260,6 +260,7 @@ class TableFilter extends React.Component {
         <FormControl key={index} fullWidth>
           <TextField
             fullWidth
+            variant={'standard'}
             label={column.label}
             value={filterList[index].toString() || ''}
             data-testid={'filtertextfield-' + column.name}
@@ -284,7 +285,7 @@ class TableFilter extends React.Component {
         key={index}
         xs={width}
         classes={{ 'grid-xs-12': classes.gridListTile, 'grid-xs-6': classes.gridListTile }}>
-        <FormControl key={index} fullWidth>
+        <FormControl key={index} variant={'standard'} fullWidth>
           <InputLabel htmlFor={column.name}>{column.label}</InputLabel>
           <Select
             multiple

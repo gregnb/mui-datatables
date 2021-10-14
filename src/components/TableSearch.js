@@ -51,6 +51,7 @@ const TableSearch = ({ options, searchText, onSearch, onHide }) => {
         <TextField
           className={classes.searchText}
           autoFocus={true}
+          variant={'standard'}
           InputProps={{
             'data-test-id': options.textLabels.toolbar.search,
           }}

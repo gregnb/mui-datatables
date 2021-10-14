@@ -75,6 +75,7 @@ class _DebounceTableSearch extends React.Component {
         <div className={classes.main}>
           <SearchIcon className={classes.searchIcon} />
           <TextField
+            variant={'standard'}
             className={classes.searchText}
             autoFocus={true}
             InputProps={{
