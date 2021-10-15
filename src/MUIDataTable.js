@@ -57,7 +57,7 @@ const defaultTableStyles = theme => ({
   // deprecated, but continuing support through v3.x
   responsiveStacked: {
     overflow: 'auto',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       overflow: 'hidden',
     },
   },

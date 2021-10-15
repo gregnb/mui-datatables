@@ -10,7 +10,7 @@ const useStyles = makeStyles(
   theme => ({
     main: {},
     responsiveStacked: {
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('md')]: {
         display: 'none',
       },
     },
@@ -18,7 +18,7 @@ const useStyles = makeStyles(
       display: 'none',
     },
     responsiveSimple: {
-      [theme.breakpoints.down('xs')]: {
+      [theme.breakpoints.down('sm')]: {
         display: 'none',
       },
     },

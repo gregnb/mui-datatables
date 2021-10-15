@@ -65,7 +65,7 @@ export const defaultToolbarStyles = theme => ({
     marginTop: '10px',
     marginRight: '8px',
   },
-  [theme.breakpoints.down('sm')]: {
+  [theme.breakpoints.down('md')]: {
     titleRoot: {},
     titleText: {
       fontSize: '16px',
@@ -82,7 +82,7 @@ export const defaultToolbarStyles = theme => ({
       textAlign: 'right',
     },
   },
-  [theme.breakpoints.down('xs')]: {
+  [theme.breakpoints.down('sm')]: {
     root: {
       display: 'block',
       '@media print': {

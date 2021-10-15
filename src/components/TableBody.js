@@ -16,14 +16,14 @@ const defaultBodyStyles = theme => ({
     textAlign: 'center',
   },
   lastStackedCell: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       '& td:last-child': {
         borderBottom: 'none',
       },
     },
   },
   lastSimpleCell: {
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       '& td:last-child': {
         borderBottom: 'none',
       },
