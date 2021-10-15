@@ -18,7 +18,7 @@ const defaultBodyRowStyles = theme => ({
   },
   hoverCursor: { cursor: 'pointer' },
   responsiveStacked: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       borderTop: 'solid 2px rgba(0, 0, 0, 0.15)',
       borderBottom: 'solid 2px rgba(0, 0, 0, 0.15)',
       padding: 0,
@@ -26,7 +26,7 @@ const defaultBodyRowStyles = theme => ({
     },
   },
   responsiveSimple: {
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       borderTop: 'solid 2px rgba(0, 0, 0, 0.15)',
       borderBottom: 'solid 2px rgba(0, 0, 0, 0.15)',
       padding: 0,
