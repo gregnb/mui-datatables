@@ -60,7 +60,9 @@ const Popover = ({ className, trigger, refExit, hide, content, ...providedProps 
         elevation={2}
         open={isOpen}
         onClose={handleRequestClose}
-        onExited={handleOnExit}
+        TransitionProps={{
+          onExited: handleOnExit,
+        }}
         anchorEl={anchorEl.current}
         anchorOrigin={anchorOriginSpecs}
         transformOrigin={transformOriginSpecs}

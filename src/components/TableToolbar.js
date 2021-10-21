@@ -354,7 +354,7 @@ class TableToolbar extends React.Component {
               <IconButton
                 aria-label={search}
                 data-testid={search + '-iconButton'}
-                buttonRef={el => (this.searchButton = el)}
+                ref={el => (this.searchButton = el)}
                 classes={{ root: this.getActiveIcon(classes, 'search') }}
                 disabled={options.search === 'disabled'}
                 onClick={this.handleSearchIconClick}>
