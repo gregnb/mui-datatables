@@ -287,6 +287,32 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(actualResult.length, 1);
   });
 
+  it('should render a toolbar with a search when searchAlwaysOpen is set to true', () => {
+    const newOptions = { ...options, searchAlwaysOpen: true }
+    const shallowWrapper = shallow(
+        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    ).dive();
+
+    const actualResult = shallowWrapper.find(TableSearch);
+    assert.strictEqual(actualResult.length, 1);
+  });
+
+  it('should not hide search when opening another dialog when searchAlwaysOpen is set to true', () => {
+    const newOptions = { ...options, searchAlwaysOpen: true }
+    const shallowWrapper = shallow(
+        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    ).dive();
+
+    const instance = shallowWrapper.instance();
+
+    instance.setActiveIcon('filter');
+    shallowWrapper.find('[data-testid="Filter Table-iconButton"]').simulate('click');
+    shallowWrapper.update();
+
+    let actualResult = shallowWrapper.find(TableSearch);
+    assert.strictEqual(actualResult.length, 1);
+  });
+
   it('should call onFilterDialogOpen when opening filters via toolbar', () => {
     const onFilterDialogOpen = spy();
     const newOptions = { ...options, onFilterDialogOpen };
