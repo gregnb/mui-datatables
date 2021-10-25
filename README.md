@@ -20,6 +20,7 @@ Version 3 has been released! You can read about the [updates here](https://githu
 # Table of contents
 * [Install](#install)
 * [Demo](#demo)
+* [Compatibility](#compatibility)
 * [Usage](#usage)
 * [API](#api)
 * [Customize Columns](#customize-columns)
@@ -43,6 +44,14 @@ If your project doesn't already use them, you need to install `@material-ui/core
 [![Edit react-to-print](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/muidatatables-custom-toolbar-rvmcj?file=/index.js)
 
 Browse live demos of all examples in this repo in [here](https://codesandbox.io/s/github/gregnb/mui-datatables)!
+
+## compatibility
+
+| mui-datatables  | material-ui/core |
+| ------------- | ------------- |
+| ^2.0.0  | ^3.0.0  |
+| ^3.0.0  | ^4.10.0  |
+| ^3.8.0  | ^4.12.0  |
 
 ## Usage
 
