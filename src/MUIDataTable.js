@@ -1,7 +1,6 @@
 import Paper from '@material-ui/core/Paper';
-import MuiTable from '@material-ui/core/Table';
-import MuiTooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
+import MuiTable from '@material-ui/core/Table';
 import clsx from 'clsx';
 import assignwith from 'lodash.assignwith';
 import cloneDeep from 'lodash.clonedeep';
@@ -19,6 +18,7 @@ import DefaultTableHead from './components/TableHead';
 import DefaultTableResize from './components/TableResize';
 import DefaultTableToolbar from './components/TableToolbar';
 import DefaultTableToolbarSelect from './components/TableToolbarSelect';
+import MuiTooltip from '@material-ui/core/Tooltip';
 import getTextLabels from './textLabels';
 import { buildMap, getCollatorComparator, getPageValue, sortCompare, warnDeprecated, warnInfo } from './utils';
 import { DndProvider } from 'react-dnd';
@@ -122,7 +122,7 @@ class MUIDataTable extends React.Component {
           label: PropTypes.string,
           name: PropTypes.string.isRequired,
           options: PropTypes.shape({
-            display: PropTypes.oneOf(['true', 'false', 'excluded', 'always', true, false]),
+            display: PropTypes.oneOf(['true', 'false', 'excluded', 'always']),
             empty: PropTypes.bool,
             filter: PropTypes.bool,
             sort: PropTypes.bool,
@@ -155,6 +155,7 @@ class MUIDataTable extends React.Component {
             setCellHeaderProps: PropTypes.func,
             sortThirdClickReset: PropTypes.bool,
             sortDescFirst: PropTypes.bool,
+            toolbarPosition: PropTypes.string,
           }),
         }),
       ]),
@@ -233,7 +234,6 @@ class MUIDataTable extends React.Component {
       rowsSelected: PropTypes.array,
       search: PropTypes.oneOf([true, false, 'true', 'false', 'disabled']),
       searchOpen: PropTypes.bool,
-      searchAlwaysOpen: PropTypes.bool,
       searchPlaceholder: PropTypes.string,
       searchText: PropTypes.string,
       setFilterChipProps: PropTypes.func,
@@ -267,7 +267,6 @@ class MUIDataTable extends React.Component {
       TableToolbar: DefaultTableToolbar,
       TableToolbarSelect: DefaultTableToolbarSelect,
       Tooltip: MuiTooltip,
-      icons: {},
     },
   };
 
@@ -362,8 +361,8 @@ class MUIDataTable extends React.Component {
       props.options.selectToolbarPlacement = STP.NONE;
     }
 
-    // provide default tableId when no tableId has been passed as prop
-    if (!props.options.tableId) {
+    // provide default tableId when draggableColumns is enabled and no tableId has been passed as prop
+    if (props.options.draggableColumns && props.options.draggableColumns.enabled === true && !props.options.tableId) {
       props.options.tableId = (Math.random() + '').replace(/\./, '');
     }
 
@@ -422,6 +421,7 @@ class MUIDataTable extends React.Component {
     textLabels: getTextLabels(),
     viewColumns: true,
     selectToolbarPlacement: STP.REPLACE,
+    toolbarPosition: 'top'
   });
 
   warnDep = (msg, consoleWarnings) => {
@@ -1935,7 +1935,7 @@ class MUIDataTable extends React.Component {
         )}
         {(selectedRows.data.length === 0 ||
           [STP.ABOVE, STP.NONE].indexOf(this.options.selectToolbarPlacement) !== -1) &&
-          showToolbar && (
+          showToolbar && this.options.toolbarPosition != 'bottom' && (
             <TableToolbarComponent
               columns={columns}
               columnOrder={columnOrder}
@@ -2068,6 +2068,27 @@ class MUIDataTable extends React.Component {
           rowsPerPage={rowsPerPage}
           changeRowsPerPage={this.changeRowsPerPage}
           changePage={this.changePage}
+          toolbar={ this.options.toolbarPosition == 'bottom' && <TableToolbarComponent
+              columns={columns}
+              columnOrder={columnOrder}
+              displayData={displayData}
+              data={data}
+              filterData={filterData}
+              filterList={filterList}
+              filterUpdate={this.filterUpdate}
+              updateFilterByType={this.updateFilterByType}
+              options={this.options}
+              resetFilters={this.resetFilters}
+              searchText={searchText}
+              searchTextUpdate={this.searchTextUpdate}
+              searchClose={this.searchClose}
+              tableRef={this.getTableContentRef}
+              toggleViewColumn={this.toggleViewColumn}
+              updateColumns={this.updateColumns}
+              setTableAction={this.setTableAction}
+              components={this.props.components}
+              bottom
+            /> }
         />
         <div className={classes.liveAnnounce} aria-live={'polite'}>
           {announceText}

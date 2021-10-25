@@ -15,6 +15,7 @@ import ReactToPrint, { PrintContextConsumer } from 'react-to-print';
 import find from 'lodash.find';
 import { withStyles } from '@material-ui/core/styles';
 import { createCSVDownload, downloadCSV } from '../utils';
+import cloneDeep from 'lodash.clonedeep';
 import MuiTooltip from '@material-ui/core/Tooltip';
 
 export const defaultToolbarStyles = theme => ({
@@ -33,6 +34,10 @@ export const defaultToolbarStyles = theme => ({
   actions: {
     flex: '1 1 auto',
     textAlign: 'right',
+  },
+  actionsLeft: {
+    flex: '1 1 auto',
+    textAlign: 'left',
   },
   fullWidthActions: {
     flex: '1 1 auto',
@@ -107,12 +112,7 @@ const RESPONSIVE_FULL_WIDTH_NAME = 'scrollFullHeightFullWidth';
 class TableToolbar extends React.Component {
   state = {
     iconActive: null,
-    showSearch: Boolean(
-      this.props.searchText ||
-        this.props.options.searchText ||
-        this.props.options.searchOpen ||
-        this.props.options.searchAlwaysOpen,
-    ),
+    showSearch: Boolean(this.props.searchText || this.props.options.searchText || this.props.options.searchOpen),
     searchText: this.props.searchText || null,
   };
 
@@ -299,22 +299,16 @@ class TableToolbar extends React.Component {
       components = {},
       updateFilterByType,
     } = this.props;
-    const { icons = {} } = components;
 
     const Tooltip = components.Tooltip || MuiTooltip;
     const TableViewColComponent = components.TableViewCol || TableViewCol;
     const TableFilterComponent = components.TableFilter || TableFilter;
-    const SearchIconComponent = icons.SearchIcon || SearchIcon;
-    const DownloadIconComponent = icons.DownloadIcon || DownloadIcon;
-    const PrintIconComponent = icons.PrintIcon || PrintIcon;
-    const ViewColumnIconComponent = icons.ViewColumnIcon || ViewColumnIcon;
-    const FilterIconComponent = icons.FilterIcon || FilterIcon;
     const { search, downloadCsv, print, viewColumns, filterTable } = options.textLabels.toolbar;
     const { showSearch, searchText } = this.state;
 
     const filterPopoverExit = () => {
       this.setState({ hideFilterPopover: false });
-      this.setActiveIcon();
+      this.setActiveIcon.bind(null);
     };
 
     const closeFilterPopover = () => {
@@ -325,8 +319,8 @@ class TableToolbar extends React.Component {
       <Toolbar
         className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.root : classes.fullWidthRoot}
         role={'toolbar'}
-        aria-label={'Table Toolbar'}>
-        <div className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.left : classes.fullWidthLeft}>
+        aria-label={'Table Toolbar'} disableGutters={this.props.bottom ? true : false}>
+        {!this.props.bottom && <div className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.left : classes.fullWidthLeft}>
           {showSearch === true ? (
             options.customSearchRender ? (
               options.customSearchRender(searchText, this.handleSearch, this.hideSearch, options)
@@ -351,9 +345,9 @@ class TableToolbar extends React.Component {
               </Typography>
             </div>
           )}
-        </div>
-        <div className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.actions : classes.fullWidthActions}>
-          {!(options.search === false || options.search === 'false' || options.searchAlwaysOpen === true) && (
+        </div>}
+        <div className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? (this.props.bottom ? classes.actionsLeft : classes.actions) : classes.fullWidthActions}>
+          {!(options.search === false || options.search === 'false') && (
             <Tooltip title={search} disableFocusListener>
               <IconButton
                 aria-label={search}
@@ -362,19 +356,19 @@ class TableToolbar extends React.Component {
                 classes={{ root: this.getActiveIcon(classes, 'search') }}
                 disabled={options.search === 'disabled'}
                 onClick={this.handleSearchIconClick}>
-                <SearchIconComponent />
+                <SearchIcon />
               </IconButton>
             </Tooltip>
           )}
           {!(options.download === false || options.download === 'false') && (
             <Tooltip title={downloadCsv}>
               <IconButton
-                data-testid={downloadCsv.replace(/\s/g, '') + '-iconButton'}
+                data-testid={downloadCsv + '-iconButton'}
                 aria-label={downloadCsv}
                 classes={{ root: classes.icon }}
                 disabled={options.download === 'disabled'}
                 onClick={this.handleCSVDownload}>
-                <DownloadIconComponent />
+                <DownloadIcon />
               </IconButton>
             </Tooltip>
           )}
@@ -391,7 +385,7 @@ class TableToolbar extends React.Component {
                           disabled={options.print === 'disabled'}
                           onClick={handlePrint}
                           classes={{ root: classes.icon }}>
-                          <PrintIconComponent />
+                          <PrintIcon />
                         </IconButton>
                       </Tooltip>
                     </span>
@@ -413,7 +407,7 @@ class TableToolbar extends React.Component {
                     classes={{ root: this.getActiveIcon(classes, 'viewcolumns') }}
                     disabled={options.viewColumns === 'disabled'}
                     onClick={this.setActiveIcon.bind(null, 'viewcolumns')}>
-                    <ViewColumnIconComponent />
+                    <ViewColumnIcon />
                   </IconButton>
                 </Tooltip>
               }
@@ -442,7 +436,7 @@ class TableToolbar extends React.Component {
                     classes={{ root: this.getActiveIcon(classes, 'filter') }}
                     disabled={options.filter === 'disabled'}
                     onClick={this.setActiveIcon.bind(null, 'filter')}>
-                    <FilterIconComponent />
+                    <FilterIcon />
                   </IconButton>
                 </Tooltip>
               }
@@ -464,6 +458,32 @@ class TableToolbar extends React.Component {
           )}
           {options.customToolbar && options.customToolbar({ displayData: this.props.displayData })}
         </div>
+        {this.props.bottom && <div className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.left : classes.fullWidthLeft}>
+          {showSearch === true ? (
+            options.customSearchRender ? (
+              options.customSearchRender(searchText, this.handleSearch, this.hideSearch, options)
+            ) : (
+              <TableSearch
+                searchText={searchText}
+                onSearch={this.handleSearch}
+                onHide={this.hideSearch}
+                options={options}
+              />
+            )
+          ) : typeof title !== 'string' ? (
+            title
+          ) : (
+            <div className={classes.titleRoot} aria-hidden={'true'}>
+              <Typography
+                variant="h6"
+                className={
+                  options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.titleText : classes.fullWidthTitleText
+                }>
+                {title}
+              </Typography>
+            </div>
+          )}
+        </div>}
       </Toolbar>
     );
   }

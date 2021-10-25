@@ -15,7 +15,7 @@ const useStyles = makeStyles(
   { name: 'MUIDataTableFooter' },
 );
 
-const TableFooter = ({ options, rowCount, page, rowsPerPage, changeRowsPerPage, changePage }) => {
+const TableFooter = ({ options, rowCount, page, rowsPerPage, changeRowsPerPage, changePage, toolbar }) => {
   const classes = useStyles();
   const { customFooter, pagination = true } = options;
 
@@ -45,6 +45,7 @@ const TableFooter = ({ options, rowCount, page, rowsPerPage, changeRowsPerPage, 
           changePage={changePage}
           component={'div'}
           options={options}
+          toolbar={toolbar}
         />
       </MuiTable>
     );
