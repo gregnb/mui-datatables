@@ -361,11 +361,11 @@ Using Material-UI theme overrides will allow you to customize styling to your li
 ```js
 import React from "react";
 import MUIDataTable from "mui-datatables";
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 class BodyCellExample extends React.Component {
 
-  getMuiTheme = () => createMuiTheme({
+  getMuiTheme = () => createTheme({
     overrides: {
       MUIDataTableBodyCell: {
         root: {
@@ -378,9 +378,9 @@ class BodyCellExample extends React.Component {
   render() {
 
     return (
-      <MuiThemeProvider theme={this.getMuiTheme()}>
+      <ThemeProvider theme={this.getMuiTheme()}>
         <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
-      </MuiThemeProvider>
+      </ThemeProvider>
     );
 
   }

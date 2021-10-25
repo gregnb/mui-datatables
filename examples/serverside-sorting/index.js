@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import MUIDataTable from '../../src';
-import { CircularProgress, Typography } from '@material-ui/core';
+import { CircularProgress, Typography } from '@mui/material';
 import Cities from './cities';
 
 class Example extends React.Component {

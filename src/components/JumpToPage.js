@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import InputBase from '@material-ui/core/InputBase';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import InputBase from '@mui/material/InputBase';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/styles';
 import { getPageValue } from '../utils.js';
 import clsx from 'clsx';
 

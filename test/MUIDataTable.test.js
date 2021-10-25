@@ -9,12 +9,12 @@ import TablePagination from '../src/components/TablePagination';
 import TableToolbar from '../src/components/TableToolbar';
 import TableToolbarSelect from '../src/components/TableToolbarSelect';
 import getTextLabels from '../src/textLabels';
-import Chip from '@material-ui/core/Chip';
+import Chip from '@mui/material/Chip';
 import Cities from '../examples/component/cities';
 import { getCollatorComparator } from '../src/utils';
-import TableFooter from '@material-ui/core/TableFooter';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
+import TableFooter from '@mui/material/TableFooter';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
 
 describe('<MUIDataTable />', function() {
   const tableId = 'tableID';

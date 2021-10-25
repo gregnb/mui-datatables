@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles/index';
+import { withStyles } from '@mui/styles';
 import ExamplesGrid from './ExamplesGrid';
 import examples from '../examples';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { withRouter } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const styles = {
   root: {
@@ -27,31 +28,35 @@ class Examples extends React.Component {
 
     var returnHomeStyle = { padding: '0px', margin: '20px 0 20px 0' };
 
+    const defaultTheme = createTheme();
+
     return (
-      <main className={classes.root}>
-        <div className={classes.contentWrapper}>
-          <Switch>
-            <Route path="/" exact render={() => <ExamplesGrid examples={examples} />} />
-            {Object.keys(examples).map((label, index) => (
-              <Route
-                key={index}
-                path={`/${label.replace(/\s+/g, '-').toLowerCase()}`}
-                exact
-                component={examples[label]}
-              />
-            ))}
-          </Switch>
-          <div>
-            {this.props.location.pathname !== '/' && (
-              <div style={returnHomeStyle}>
-                <Button color="primary" onClick={this.returnHome}>
-                  Back to Example Index
-                </Button>
-              </div>
-            )}
+      <ThemeProvider theme={defaultTheme}>
+        <main className={classes.root}>
+          <div className={classes.contentWrapper}>
+            <Switch>
+              <Route path="/" exact render={() => <ExamplesGrid examples={examples} />} />
+              {Object.keys(examples).map((label, index) => (
+                <Route
+                  key={index}
+                  path={`/${label.replace(/\s+/g, '-').toLowerCase()}`}
+                  exact
+                  component={examples[label]}
+                />
+              ))}
+            </Switch>
+            <div>
+              {this.props.location.pathname !== '/' && (
+                <div style={returnHomeStyle}>
+                  <Button color="primary" onClick={this.returnHome}>
+                    Back to Example Index
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </ThemeProvider>
     );
   }
 }

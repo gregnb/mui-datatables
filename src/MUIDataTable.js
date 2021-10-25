@@ -1,7 +1,7 @@
-import Paper from '@material-ui/core/Paper';
-import MuiTable from '@material-ui/core/Table';
-import MuiTooltip from '@material-ui/core/Tooltip';
-import { withStyles } from '@material-ui/core/styles';
+import Paper from '@mui/material/Paper';
+import MuiTable from '@mui/material/Table';
+import MuiTooltip from '@mui/material/Tooltip';
+import { withStyles } from '@mui/styles';
 import clsx from 'clsx';
 import assignwith from 'lodash.assignwith';
 import cloneDeep from 'lodash.clonedeep';
@@ -58,7 +58,7 @@ const defaultTableStyles = theme => ({
   // deprecated, but continuing support through v3.x
   responsiveStacked: {
     overflow: 'auto',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       overflow: 'hidden',
     },
   },

@@ -1,13 +1,13 @@
 import React from "react";
 import MUIDataTable from "../../src/";
-import Chip from '@material-ui/core/Chip';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import Chip from '@mui/material/Chip';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import TableFilterList from '../../src/components/TableFilterList';
-import MuiTooltip from '@material-ui/core/Tooltip';
-import Fade from "@material-ui/core/Fade";
-import Checkbox from '@material-ui/core/Checkbox';
-import Radio from '@material-ui/core/Radio';
+import MuiTooltip from '@mui/material/Tooltip';
+import Fade from "@mui/material/Fade";
+import Checkbox from '@mui/material/Checkbox';
+import Radio from '@mui/material/Radio';
 import TableViewCol from './TableViewCol';
 
 const CustomChip = (props) => {

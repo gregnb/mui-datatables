@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
-import Switch from '@material-ui/core/Switch';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 const data = [
   ["Gabby George", "Business Analyst", "Minneapolis", 30, 100000],

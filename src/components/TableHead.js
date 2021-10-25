@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/styles';
 import clsx from 'clsx';
-import MuiTableHead from '@material-ui/core/TableHead';
+import MuiTableHead from '@mui/material/TableHead';
 import React, { useState } from 'react';
 import TableHeadCell from './TableHeadCell';
 import TableHeadRow from './TableHeadRow';
@@ -10,7 +10,7 @@ const useStyles = makeStyles(
   theme => ({
     main: {},
     responsiveStacked: {
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('md')]: {
         display: 'none',
       },
     },
@@ -18,7 +18,7 @@ const useStyles = makeStyles(
       display: 'none',
     },
     responsiveSimple: {
-      [theme.breakpoints.down('xs')]: {
+      [theme.breakpoints.down('sm')]: {
         display: 'none',
       },
     },
