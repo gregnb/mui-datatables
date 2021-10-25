@@ -47,11 +47,12 @@ Browse live demos of all examples in this repo in [here](https://codesandbox.io/
 
 ## compatibility
 
-| mui-datatables  | material-ui/core |
+| mui-datatables  | material |
 | ------------- | ------------- |
 | ^2.0.0  | ^3.0.0  |
 | ^3.0.0  | ^4.10.0  |
 | ^3.8.0  | ^4.12.0  |
+| ^4.0.0  | ^5.0.0  |
 
 ## Usage
 
