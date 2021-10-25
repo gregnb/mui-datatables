@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import MuiPopover from '@material-ui/core/Popover';
 import IconButton from '@material-ui/core/IconButton';
@@ -59,7 +59,8 @@ const Popover = ({ className, trigger, refExit, hide, content, ...providedProps 
       <MuiPopover
         elevation={2}
         open={isOpen}
-        TransitionProps={{ onExited: handleOnExit, onClose: handleRequestClose }}
+        TransitionProps={{ onExited: handleOnExit }}
+        onClose={handleRequestClose}
         anchorEl={anchorEl.current}
         anchorOrigin={anchorOriginSpecs}
         transformOrigin={transformOriginSpecs}
