@@ -1,10 +1,10 @@
-import IconButton from '@material-ui/core/IconButton';
-import DownloadIcon from '@material-ui/icons/CloudDownload';
-import FilterIcon from '@material-ui/icons/FilterList';
-import PrintIcon from '@material-ui/icons/Print';
-import SearchIcon from '@material-ui/icons/Search';
-import ViewColumnIcon from '@material-ui/icons/ViewColumn';
-import Chip from '@material-ui/core/Chip';
+import IconButton from '@mui/material/IconButton';
+import DownloadIcon from '@mui/icons-material/CloudDownload';
+import FilterIcon from '@mui/icons-material/FilterList';
+import PrintIcon from '@mui/icons-material/Print';
+import SearchIcon from '@mui/icons-material/Search';
+import ViewColumnIcon from '@mui/icons-material/ViewColumn';
+import Chip from '@mui/material/Chip';
 import { assert } from 'chai';
 import { mount } from 'enzyme';
 import React from 'react';

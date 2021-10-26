@@ -1,21 +1,21 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
+import Typography from '@mui/material/Typography';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
 import Popover from './Popover';
 import TableFilter from './TableFilter';
 import TableViewCol from './TableViewCol';
 import TableSearch from './TableSearch';
-import SearchIcon from '@material-ui/icons/Search';
-import DownloadIcon from '@material-ui/icons/CloudDownload';
-import PrintIcon from '@material-ui/icons/Print';
-import ViewColumnIcon from '@material-ui/icons/ViewColumn';
-import FilterIcon from '@material-ui/icons/FilterList';
+import SearchIcon from '@mui/icons-material/Search';
+import DownloadIcon from '@mui/icons-material/CloudDownload';
+import PrintIcon from '@mui/icons-material/Print';
+import ViewColumnIcon from '@mui/icons-material/ViewColumn';
+import FilterIcon from '@mui/icons-material/FilterList';
 import ReactToPrint, { PrintContextConsumer } from 'react-to-print';
 import find from 'lodash.find';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@mui/styles';
 import { createCSVDownload, downloadCSV } from '../utils';
-import MuiTooltip from '@material-ui/core/Tooltip';
+import MuiTooltip from '@mui/material/Tooltip';
 
 export const defaultToolbarStyles = theme => ({
   root: {
@@ -65,7 +65,7 @@ export const defaultToolbarStyles = theme => ({
     marginTop: '10px',
     marginRight: '8px',
   },
-  [theme.breakpoints.down('sm')]: {
+  [theme.breakpoints.down('md')]: {
     titleRoot: {},
     titleText: {
       fontSize: '16px',
@@ -82,7 +82,7 @@ export const defaultToolbarStyles = theme => ({
       textAlign: 'right',
     },
   },
-  [theme.breakpoints.down('xs')]: {
+  [theme.breakpoints.down('sm')]: {
     root: {
       display: 'block',
       '@media print': {
@@ -107,7 +107,12 @@ const RESPONSIVE_FULL_WIDTH_NAME = 'scrollFullHeightFullWidth';
 class TableToolbar extends React.Component {
   state = {
     iconActive: null,
-    showSearch: Boolean(this.props.searchText || this.props.options.searchText || this.props.options.searchOpen),
+    showSearch: Boolean(
+      this.props.searchText ||
+        this.props.options.searchText ||
+        this.props.options.searchOpen ||
+        this.props.options.searchAlwaysOpen,
+    ),
     searchText: this.props.searchText || null,
   };
 
@@ -215,6 +220,10 @@ class TableToolbar extends React.Component {
   };
 
   isSearchShown = iconName => {
+    if (this.props.options.searchAlwaysOpen) {
+      return true;
+    }
+
     let nextVal = false;
     if (this.state.showSearch) {
       if (this.state.searchText) {
@@ -344,12 +353,12 @@ class TableToolbar extends React.Component {
           )}
         </div>
         <div className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.actions : classes.fullWidthActions}>
-          {!(options.search === false || options.search === 'false') && (
+          {!(options.search === false || options.search === 'false' || options.searchAlwaysOpen === true) && (
             <Tooltip title={search} disableFocusListener>
               <IconButton
                 aria-label={search}
                 data-testid={search + '-iconButton'}
-                buttonRef={el => (this.searchButton = el)}
+                ref={el => (this.searchButton = el)}
                 classes={{ root: this.getActiveIcon(classes, 'search') }}
                 disabled={options.search === 'disabled'}
                 onClick={this.handleSearchIconClick}>
@@ -360,7 +369,7 @@ class TableToolbar extends React.Component {
           {!(options.download === false || options.download === 'false') && (
             <Tooltip title={downloadCsv}>
               <IconButton
-                data-testid={downloadCsv + '-iconButton'}
+                data-testid={downloadCsv.replace(/\s/g, '') + '-iconButton'}
                 aria-label={downloadCsv}
                 classes={{ root: classes.icon }}
                 disabled={options.download === 'disabled'}

@@ -2,7 +2,7 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { assert } from 'chai';
 import MUIDataTable from '../src/MUIDataTable';
-import Chip from '@material-ui/core/Chip';
+import Chip from '@mui/material/Chip';
 import TableFilterList from '../src/components/TableFilterList';
 
 const CustomChip = props => {

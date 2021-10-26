@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import clsx from 'clsx';
-import TableCell from '@material-ui/core/TableCell';
-import { makeStyles } from '@material-ui/core/styles';
+import TableCell from '@mui/material/TableCell';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(
   theme => ({
@@ -10,7 +10,7 @@ const useStyles = makeStyles(
       display: 'none',
     },
     simpleHeader: {
-      [theme.breakpoints.down('xs')]: {
+      [theme.breakpoints.down('sm')]: {
         display: 'inline-block',
         fontWeight: 'bold',
         width: '100%',
@@ -18,7 +18,7 @@ const useStyles = makeStyles(
       },
     },
     simpleCell: {
-      [theme.breakpoints.down('xs')]: {
+      [theme.breakpoints.down('sm')]: {
         display: 'inline-block',
         width: '100%',
         boxSizing: 'border-box',
@@ -28,7 +28,7 @@ const useStyles = makeStyles(
       verticalAlign: 'top',
     },
     stackedCommon: {
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('md')]: {
         display: 'inline-block',
         fontSize: '16px',
         height: 'auto',
@@ -56,7 +56,7 @@ const useStyles = makeStyles(
       },
     },
     stackedParent: {
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('md')]: {
         display: 'inline-block',
         fontSize: '16px',
         height: 'auto',
@@ -72,19 +72,19 @@ const useStyles = makeStyles(
       boxSizing: 'border-box',
     },
     cellStackedSmall: {
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('md')]: {
         width: '50%',
         boxSizing: 'border-box',
       },
     },
     responsiveStackedSmall: {
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('md')]: {
         width: '50%',
         boxSizing: 'border-box',
       },
     },
     responsiveStackedSmallParent: {
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('md')]: {
         width: '100%',
         boxSizing: 'border-box',
       },

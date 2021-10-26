@@ -20,6 +20,7 @@ Version 3 has been released! You can read about the [updates here](https://githu
 # Table of contents
 * [Install](#install)
 * [Demo](#demo)
+* [Compatibility](#compatibility)
 * [Usage](#usage)
 * [API](#api)
 * [Customize Columns](#customize-columns)
@@ -40,9 +41,18 @@ If your project doesn't already use them, you need to install `@material-ui/core
 
 ## Demo
 
-[![Edit react-to-print](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/muidatatables-custom-toolbar-rvmcj?file=/index.js)
+[![Edit react-to-print](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/muidatatables-custom-toolbar-forked-j002q?file=/index.js)
 
 Browse live demos of all examples in this repo in [here](https://codesandbox.io/s/github/gregnb/mui-datatables)!
+
+## compatibility
+
+| mui-datatables  | material |
+| ------------- | ------------- |
+| ^2.0.0  | ^3.0.0  |
+| ^3.0.0  | ^4.10.0  |
+| ^3.8.0  | ^4.12.0  |
+| ^4.0.0  | ^5.0.0  |
 
 ## Usage
 
@@ -218,6 +228,7 @@ The component accepts the following props:
 |**`searchPlaceholder`**|string||Search text placeholder. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-search/index.js)
 |**`searchProps`**|object|{}|Props applied to the search text box. You can set method callbacks like onBlur, onKeyUp, etc, this way. [Example](https://github.com/gregnb/mui-datatables/blob/master/examples/customize-search/index.js)
 |**`searchOpen`**|boolean|false|Initially displays search bar.
+|**`searchAlwaysOpen`**|boolean|false|Always displays search bar, and hides search icon in toolbar.
 |**`searchText`**|string||Search text for the table.
 |**`selectableRows`**|string|'multiple'|Indicates if rows can be selected. Options are "multiple", "single", "none".
 |**`selectableRowsHeader`**|boolean|true|Show/hide the select all/deselect all checkbox header for selectable rows.
@@ -236,6 +247,7 @@ The component accepts the following props:
 |**`tableBodyMaxHeight`**|string||CSS string for the height of the table (ex: '500px', '100%', 'auto').
 |**`textLabels`**|object||User provided labels to localize text.
 |**`viewColumns`**|boolean or string|true|Show/hide viewColumns icon from toolbar. Possible values:<p><ul><li>true: Button is visiable and clickable.</li><li>false: Button is not visible.</li><li>disabled: Button is visible, but not clickable.</li></ul></p>
+|**`storageKey`**|string|| ave current state to local storage.
 
 ## Customize Columns
 
@@ -350,11 +362,11 @@ Using Material-UI theme overrides will allow you to customize styling to your li
 ```js
 import React from "react";
 import MUIDataTable from "mui-datatables";
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 class BodyCellExample extends React.Component {
 
-  getMuiTheme = () => createMuiTheme({
+  getMuiTheme = () => createTheme({
     overrides: {
       MUIDataTableBodyCell: {
         root: {
@@ -367,9 +379,9 @@ class BodyCellExample extends React.Component {
   render() {
 
     return (
-      <MuiThemeProvider theme={this.getMuiTheme()}>
+      <ThemeProvider theme={this.getMuiTheme()}>
         <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
-      </MuiThemeProvider>
+      </ThemeProvider>
     );
 
   }

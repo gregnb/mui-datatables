@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
-import SearchIcon from '@material-ui/icons/YoutubeSearchedFor';
-import PrintIcon from '@material-ui/icons/Receipt';
-import DownloadIcon from '@material-ui/icons/GetApp';
-import ViewColumnIcon from '@material-ui/icons/DynamicFeed';
-import FilterIcon from '@material-ui/icons/GroupWork';
+import SearchIcon from '@mui/icons-material/YoutubeSearchedFor';
+import PrintIcon from '@mui/icons-material/Receipt';
+import DownloadIcon from '@mui/icons-material/GetApp';
+import ViewColumnIcon from '@mui/icons-material/DynamicFeed';
+import FilterIcon from '@mui/icons-material/GroupWork';
 
 class Example extends React.Component {
 

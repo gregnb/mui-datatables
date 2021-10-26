@@ -1,9 +1,10 @@
-import IconButton from '@material-ui/core/IconButton';
-import DownloadIcon from '@material-ui/icons/CloudDownload';
-import FilterIcon from '@material-ui/icons/FilterList';
-import PrintIcon from '@material-ui/icons/Print';
-import SearchIcon from '@material-ui/icons/Search';
-import ViewColumnIcon from '@material-ui/icons/ViewColumn';
+import IconButton from '@mui/material/IconButton';
+import DownloadIcon from '@mui/icons-material/CloudDownload';
+import FilterIcon from '@mui/icons-material/FilterList';
+import PrintIcon from '@mui/icons-material/Print';
+import SearchIcon from '@mui/icons-material/Search';
+import CloseIcon from '@mui/icons-material/Close';
+import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 import { assert } from 'chai';
 import { mount, shallow } from 'enzyme';
 import React from 'react';
@@ -100,6 +101,26 @@ describe('<TableToolbar />', function() {
     );
     const actualResult = mountWrapper.find(SearchIcon);
     assert.strictEqual(actualResult.length, 0);
+  });
+
+  it('should render a toolbar with search box and no search icon if option.searchAlwaysOpen = true', () => {
+    const newOptions = { ...options, searchAlwaysOpen: true };
+    const mountWrapper = mount(
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    );
+
+    // check that textfield is rendered
+    const actualTextfieldResult = mountWrapper.find(TableSearch);
+    assert.strictEqual(actualTextfieldResult.length, 1);
+    assert.strictEqual(actualTextfieldResult.props().options.searchText, undefined);
+
+    // check that close icon is not rendered
+    const actualCloseIconResult = mountWrapper.find(CloseIcon());
+    assert.strictEqual(actualCloseIconResult.length, 0);
+
+    // check that search icon is rendered
+    const actualSearchIconResult = mountWrapper.find(SearchIcon);
+    assert.strictEqual(actualSearchIconResult.length, 0);
   });
 
   it('should render a toolbar with no download icon if option.download = false', () => {
@@ -263,6 +284,32 @@ describe('<TableToolbar />', function() {
 
     assert.strictEqual(shallowWrapper.state('iconActive'), 'search');
     actualResult = shallowWrapper.find(TableSearch);
+    assert.strictEqual(actualResult.length, 1);
+  });
+
+  it('should render a toolbar with a search when searchAlwaysOpen is set to true', () => {
+    const newOptions = { ...options, searchAlwaysOpen: true }
+    const shallowWrapper = shallow(
+        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    ).dive();
+
+    const actualResult = shallowWrapper.find(TableSearch);
+    assert.strictEqual(actualResult.length, 1);
+  });
+
+  it('should not hide search when opening another dialog when searchAlwaysOpen is set to true', () => {
+    const newOptions = { ...options, searchAlwaysOpen: true }
+    const shallowWrapper = shallow(
+        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+    ).dive();
+
+    const instance = shallowWrapper.instance();
+
+    instance.setActiveIcon('filter');
+    shallowWrapper.find('[data-testid="Filter Table-iconButton"]').simulate('click');
+    shallowWrapper.update();
+
+    let actualResult = shallowWrapper.find(TableSearch);
     assert.strictEqual(actualResult.length, 1);
   });
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@mui/styles';
 
 const defaultResizeStyles = {
   root: {
@@ -78,8 +78,9 @@ class TableResize extends React.Component {
 
     let parentOffsetLeft = getParentOffsetLeft(tableEl);
     let finalCells = Object.entries(this.cellsRef);
+    let cellMinusOne = finalCells.filter((_item, ix) => ix + 1 < finalCells.length);
 
-    finalCells.forEach(([key, item], idx) => {
+    cellMinusOne.forEach(([key, item], idx) => {
       if (!item) return;
       let elRect = item.getBoundingClientRect();
       let left = elRect.left;
