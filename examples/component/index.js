@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import TextField from '@material-ui/core/TextField';
-import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import TextField from '@mui/material/TextField';
+import Switch from '@mui/material/Switch';
 import MUIDataTable from "../../src/";
 import Cities from "./cities";
 
@@ -17,6 +17,7 @@ class Example extends React.Component {
           filter: false,
           customBodyRender: (value, tableMeta, updateValue) => (
             <FormControlLabel
+              label=""
               value={value}
               control={<TextField value={value} />}
               onChange={event => updateValue(event.target.value)}
@@ -51,6 +52,7 @@ class Example extends React.Component {
           filter: false,
           customBodyRender: (value, tableMeta, updateValue) => (
             <FormControlLabel
+              label=""
               control={<TextField value={value || ''} type='number' />}
               onChange={event => updateValue(event.target.value)}
             />

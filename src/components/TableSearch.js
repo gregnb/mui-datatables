@@ -1,20 +1,20 @@
 import React from 'react';
-import Grow from '@material-ui/core/Grow';
-import TextField from '@material-ui/core/TextField';
-import SearchIcon from '@material-ui/icons/Search';
-import IconButton from '@material-ui/core/IconButton';
-import ClearIcon from '@material-ui/icons/Clear';
-import { makeStyles } from '@material-ui/core/styles';
+import Grow from '@mui/material/Grow';
+import TextField from '@mui/material/TextField';
+import SearchIcon from '@mui/icons-material/Search';
+import IconButton from '@mui/material/IconButton';
+import ClearIcon from '@mui/icons-material/Clear';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(
   theme => ({
     main: {
       display: 'flex',
       flex: '1 0 auto',
+      alignItems: "center"
     },
     searchIcon: {
       color: theme.palette.text.secondary,
-      marginTop: '10px',
       marginRight: '8px',
     },
     searchText: {
@@ -42,6 +42,8 @@ const TableSearch = ({ options, searchText, onSearch, onHide }) => {
     }
   };
 
+  const clearIconVisibility = options.searchAlwaysOpen ? 'hidden' : 'visible';
+
   return (
     <Grow appear in={true} timeout={300}>
       <div className={classes.main}>
@@ -49,6 +51,7 @@ const TableSearch = ({ options, searchText, onSearch, onHide }) => {
         <TextField
           className={classes.searchText}
           autoFocus={true}
+          variant={'standard'}
           InputProps={{
             'data-test-id': options.textLabels.toolbar.search,
           }}
@@ -62,7 +65,7 @@ const TableSearch = ({ options, searchText, onSearch, onHide }) => {
           placeholder={options.searchPlaceholder}
           {...(options.searchProps ? options.searchProps : {})}
         />
-        <IconButton className={classes.clearIcon} onClick={onHide}>
+        <IconButton className={classes.clearIcon} style={{ visibility: clearIconVisibility }} onClick={onHide}>
           <ClearIcon />
         </IconButton>
       </div>

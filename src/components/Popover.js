@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import MuiPopover from '@material-ui/core/Popover';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import MuiPopover from '@mui/material/Popover';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Popover = ({ className, trigger, refExit, hide, content, ...providedProps }) => {
   const [isOpen, open] = useState(false);
@@ -59,8 +59,8 @@ const Popover = ({ className, trigger, refExit, hide, content, ...providedProps 
       <MuiPopover
         elevation={2}
         open={isOpen}
+        TransitionProps={{ onExited: handleOnExit }}
         onClose={handleRequestClose}
-        onExited={handleOnExit}
         anchorEl={anchorEl.current}
         anchorOrigin={anchorOriginSpecs}
         transformOrigin={transformOriginSpecs}

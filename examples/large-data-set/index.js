@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import MUIDataTable from "../../src/";
 import { debounceSearchRender } from "../../src/";
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 
 class Example extends React.Component {
 

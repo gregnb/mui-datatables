@@ -1,7 +1,7 @@
-import Paper from '@material-ui/core/Paper';
-import MuiTable from '@material-ui/core/Table';
-import MuiTooltip from '@material-ui/core/Tooltip';
-import { withStyles } from '@material-ui/core/styles';
+import Paper from '@mui/material/Paper';
+import MuiTable from '@mui/material/Table';
+import MuiTooltip from '@mui/material/Tooltip';
+import { withStyles } from '@mui/styles';
 import clsx from 'clsx';
 import assignwith from 'lodash.assignwith';
 import cloneDeep from 'lodash.clonedeep';
@@ -23,6 +23,7 @@ import getTextLabels from './textLabels';
 import { buildMap, getCollatorComparator, getPageValue, sortCompare, warnDeprecated, warnInfo } from './utils';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { load, save } from './localStorage';
 
 const defaultTableStyles = theme => ({
   root: {},
@@ -57,7 +58,7 @@ const defaultTableStyles = theme => ({
   // deprecated, but continuing support through v3.x
   responsiveStacked: {
     overflow: 'auto',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       overflow: 'hidden',
     },
   },
@@ -233,6 +234,7 @@ class MUIDataTable extends React.Component {
       rowsSelected: PropTypes.array,
       search: PropTypes.oneOf([true, false, 'true', 'false', 'disabled']),
       searchOpen: PropTypes.bool,
+      searchAlwaysOpen: PropTypes.bool,
       searchPlaceholder: PropTypes.string,
       searchText: PropTypes.string,
       setFilterChipProps: PropTypes.func,
@@ -244,6 +246,7 @@ class MUIDataTable extends React.Component {
       setTableProps: PropTypes.func,
       sort: PropTypes.bool,
       sortOrder: PropTypes.object,
+      storageKey: PropTypes.string,
       viewColumns: PropTypes.oneOf([true, false, 'true', 'false', 'disabled']),
     }),
     /** Pass and use className to style MUIDataTable as desired */
@@ -307,7 +310,10 @@ class MUIDataTable extends React.Component {
     };
 
     this.mergeDefaultOptions(props);
-    this.state = Object.assign(defaultState, this.getInitTableOptions());
+
+    const restoredState = load(props.options.storageKey);
+    this.state = Object.assign(defaultState, restoredState ? restoredState : this.getInitTableOptions());
+
     this.setTableData = this.setTableData.bind(this);
 
     this.setTableData(props, TABLE_LOAD.INITIAL, true, null, true);
@@ -361,8 +367,8 @@ class MUIDataTable extends React.Component {
       props.options.selectToolbarPlacement = STP.NONE;
     }
 
-    // provide default tableId when draggableColumns is enabled and no tableId has been passed as prop
-    if (props.options.draggableColumns && props.options.draggableColumns.enabled === true && !props.options.tableId) {
+    // provide default tableId when no tableId has been passed as prop
+    if (!props.options.tableId) {
       props.options.tableId = (Math.random() + '').replace(/\./, '');
     }
 
@@ -543,6 +549,9 @@ class MUIDataTable extends React.Component {
   setTableAction = action => {
     if (typeof this.options.onTableChange === 'function') {
       this.options.onTableChange(action, this.state);
+    }
+    if (this.options.storageKey) {
+      save(this.options.storageKey, this.state);
     }
   };
 

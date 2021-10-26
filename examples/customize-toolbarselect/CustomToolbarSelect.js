@@ -1,11 +1,11 @@
 import React from "react";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import CompareArrowsIcon from "@material-ui/icons/CompareArrows";
-import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
-import BlockIcon from "@material-ui/icons/Block";
-import { withStyles } from "@material-ui/core/styles";
-import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
+import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
+import BlockIcon from "@mui/icons-material/Block";
+import { withStyles } from "@mui/styles";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const defaultToolbarSelectStyles = {
   iconButton: {

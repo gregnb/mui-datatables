@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import Grow from '@material-ui/core/Grow';
-import TextField from '@material-ui/core/TextField';
-import SearchIcon from '@material-ui/icons/Search';
-import IconButton from '@material-ui/core/IconButton';
-import ClearIcon from '@material-ui/icons/Clear';
-import { withStyles } from '@material-ui/core/styles';
+import Grow from '@mui/material/Grow';
+import TextField from '@mui/material/TextField';
+import SearchIcon from '@mui/icons-material/Search';
+import IconButton from '@mui/material/IconButton';
+import ClearIcon from '@mui/icons-material/Clear';
+import { withStyles } from '@mui/styles';
 
 function debounce(func, wait, immediate) {
   var timeout;
@@ -26,10 +26,10 @@ const defaultStyles = theme => ({
   main: {
     display: 'flex',
     flex: '1 0 auto',
+    alignItems: "center"
   },
   searchIcon: {
     color: theme.palette.text.secondary,
-    marginTop: '10px',
     marginRight: '8px',
   },
   searchText: {
@@ -75,6 +75,7 @@ class _DebounceTableSearch extends React.Component {
         <div className={classes.main}>
           <SearchIcon className={classes.searchIcon} />
           <TextField
+            variant={'standard'}
             className={classes.searchText}
             autoFocus={true}
             InputProps={{

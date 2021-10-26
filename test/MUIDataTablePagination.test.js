@@ -2,7 +2,7 @@ import React from 'react';
 import { spy } from 'sinon';
 import { mount, shallow } from 'enzyme';
 import { assert } from 'chai';
-import MuiTablePagination from '@material-ui/core/TablePagination';
+import MuiTablePagination from '@mui/material/TablePagination';
 import getTextLabels from '../src/textLabels';
 import TablePagination from '../src/components/TablePagination';
 

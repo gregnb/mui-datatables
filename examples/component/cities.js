@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 class Cities extends React.Component {
   static propTypes = {
