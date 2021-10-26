@@ -5,7 +5,7 @@ import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import BlockIcon from "@mui/icons-material/Block";
 import { withStyles } from "@mui/styles";
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const defaultToolbarSelectStyles = {
   iconButton: {

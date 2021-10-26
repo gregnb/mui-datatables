@@ -26,7 +26,7 @@ const defaultStyles = theme => ({
   main: {
     display: 'flex',
     flex: '1 0 auto',
-    alignItems: "center"
+    alignItems: 'center',
   },
   searchIcon: {
     color: theme.palette.text.secondary,
