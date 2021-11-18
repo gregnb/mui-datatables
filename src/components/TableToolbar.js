@@ -154,6 +154,7 @@ class TableToolbar extends React.Component {
           row.index = index;
 
           return {
+            index: row.dataIndex,
             data: row.data.map(column => {
               i += 1;
 
