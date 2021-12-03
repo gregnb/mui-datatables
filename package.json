@@ -1,41 +1,35 @@
 {
-  "name": "mui-datatables",
-  "version": "4.0.0",
-  "description": "Datatables for React using Material-UI",
+  "name": "rs-mui-datatables",
+  "version": "0.1.0",
+  "description": "Datatables for React using Material-UI. Forked from https://github.com/gregnb/mui-datatables",
   "main": "dist/index.js",
+  "packageManager": "yarn@3.1.1",
   "files": [
     "dist"
   ],
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server -d --progress --colors",
     "test": "cross-env NODE_ENV=test mocha --require @babel/register test/**/*.test.js",
-    "docs:dev": "next docs",
-    "docs:build": "cross-env NODE_ENV=production next build docs",
-    "docs:export": "next export docs -o docs/export",
-    "docs:deploy": "npm run docs:build && npm run docs:export && firebase deploy",
-    "docs:start": "next start docs",
     "coverage": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha --require @babel/register test/*.js && nyc report --reporter=html | cat coverage/lcov.info | coveralls",
     "coverage:html": "cross-env NODE_ENV=test nyc check-coverage --lines 55 --reporter=html --reporter=text mocha --require @babel/register test/*.js && nyc report --reporter=html",
     "prettier": "find src/ docs/ test/ -type f -name \"*.js\" ! -path \"*/.next/*\" | xargs prettier --write",
     "lint": "eslint src",
-    "build": "cross-env NODE_ENV=production npm run prettier && rollup -c",
-    "prepare": "npm run build"
+    "build": "cross-env NODE_ENV=production yarn run prettier && rollup -c",
+    "build:dev": "cross-env NODE_ENV=development yarn run prettier && rollup -c",
+    "prepare": "yarn run build"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gregnb/mui-datatables.git"
+    "url": "git+https://github.com/ramsoft-inc/rs-mui-datatables"
   },
   "keywords": [
     "material-ui",
     "datatables",
     "react"
   ],
-  "author": "gregnb <gregnb@gmail.com>",
+  "author": "RamSoft Inc.",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/gregnb/mui-datatables/issues"
-  },
-  "homepage": "https://github.com/gregnb/mui-datatables#readme",
+  "homepage": "https://github.com/ramsoft-inc/rs-mui-datatables#readme",
   "devDependencies": {
     "@babel/core": "^7.10.2",
     "@babel/plugin-external-helpers": "^7.10.1",

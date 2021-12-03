@@ -66,8 +66,3 @@ docs/export/*
 
 # Yarn Integrity file
 .yarn-integrity
-
-# Yarn lock
-# Note: 
-# Remove the line below when we switched to Yarn
-yarn.lock
