@@ -5,11 +5,11 @@ import { assert, expect, should } from 'chai';
 import MUIDataTable from '../src/MUIDataTable';
 import TableBodyCell from '../src/components/TableBodyCell';
 
-describe('<TableBodyCell />', function() {
+describe('<TableBodyCell />', () => {
   let data;
   let columns;
 
-  before(() => {
+  beforeAll(() => {
     columns = [
       {
         name: 'Name',

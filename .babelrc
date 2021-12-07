@@ -33,21 +33,15 @@
     ]
   ],
   "plugins": [
-    [
-      "@babel/plugin-proposal-class-properties"
-    ],
-    [
-      "@babel/plugin-proposal-object-rest-spread"
-    ],
-    [
-      "@babel/plugin-transform-async-to-generator"
-    ],
-    [
-      "@babel/plugin-transform-runtime",
-      {
-        "corejs": 3,
-        "regenerator": true
-      }
+
+      "@babel/plugin-proposal-class-properties",    
+      "@babel/plugin-proposal-object-rest-spread",
+      "@babel/plugin-transform-async-to-generator",
+      ["@babel/plugin-transform-runtime",
+        {
+          "corejs": 3,
+          "regenerator": true
+        }
+      ]
     ]
-  ]
 }

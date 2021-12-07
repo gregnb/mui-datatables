@@ -7,11 +7,11 @@ import getTextLabels from '../src/textLabels';
 import TableFooter from '../src/components/TableFooter';
 import JumpToPage from '../src/components/JumpToPage';
 
-describe('<TableFooter />', function() {
+describe('<TableFooter />', () => {
   let options;
   const changeRowsPerPage = spy();
   const changePage = spy();
-  before(() => {
+  beforeAll(() => {
     options = {
       rowsPerPageOptions: [5, 10, 15],
       textLabels: getTextLabels(),

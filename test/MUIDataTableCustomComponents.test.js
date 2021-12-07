@@ -13,11 +13,11 @@ const CustomFilterList = props => {
   return <TableFilterList {...props} ItemComponent={CustomChip} />;
 };
 
-describe('<MUIDataTable /> with custom components', function() {
+describe('<MUIDataTable /> with custom components', () => {
   let data;
   let columns;
 
-  before(() => {
+  beforeAll(() => {
     columns = [
       { name: 'Name' },
       {

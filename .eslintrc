@@ -42,7 +42,6 @@
     "semi": 2,
     "no-undef": 2,
     "no-undef-init": 2,
-    "no-tabs": 2,
     "react/self-closing-comp": 2,
     "react/no-typos": 2,
     "react/jsx-no-duplicate-props": "warn",

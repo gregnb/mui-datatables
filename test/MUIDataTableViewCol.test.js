@@ -7,11 +7,11 @@ import TableViewCol from '../src/components/TableViewCol';
 import getTextLabels from '../src/textLabels';
 import { FormControlLabel } from '@mui/material';
 
-describe('<TableViewCol />', function() {
+describe('<TableViewCol />', () => {
   let columns;
   let options;
 
-  before(() => {
+  beforeAll(() => {
     columns = [
       { name: 'a', label: 'A', display: 'true' },
       { name: 'b', label: 'B', display: 'true' },
@@ -36,17 +36,20 @@ describe('<TableViewCol />', function() {
     assert.deepEqual(labels, ['A', 'B', 'C', 'D']);
   });
 
-  it('should trigger onColumnUpdate prop callback when calling method handleColChange', () => {
-    const onColumnUpdate = spy();
+  it(
+    'should trigger onColumnUpdate prop callback when calling method handleColChange',
+    () => {
+      const onColumnUpdate = spy();
 
-    const wrapper = mount(<TableViewCol columns={columns} onColumnUpdate={onColumnUpdate} options={options} />);
+      const wrapper = mount(<TableViewCol columns={columns} onColumnUpdate={onColumnUpdate} options={options} />);
 
-    wrapper
-      .find('input[type="checkbox"]')
-      .at(0)
-      .simulate('change', { target: { checked: false, value: false } });
-    wrapper.unmount();
+      wrapper
+        .find('input[type="checkbox"]')
+        .at(0)
+        .simulate('change', { target: { checked: false, value: false } });
+      wrapper.unmount();
 
-    assert.strictEqual(onColumnUpdate.callCount, 1);
-  });
+      assert.strictEqual(onColumnUpdate.callCount, 1);
+    }
+  );
 });

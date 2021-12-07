@@ -35,40 +35,13 @@ const defaultTableStyles = theme => ({
     outline: 'none',
   },
   responsiveBase: {
-    overflow: 'auto',
+    overflowY: 'scroll',
+    overflowX: 'auto',
+    borderRadius: '8px',
     '@media print': {
       height: 'auto !important',
     },
   },
-
-  // deprecated, but continuing support through v3.x
-  responsiveScroll: {
-    overflow: 'auto',
-    height: '100%',
-  },
-  // deprecated, but continuing support through v3.x
-  responsiveScrollMaxHeight: {
-    overflow: 'auto',
-    height: '100%',
-  },
-  // deprecated, but continuing support through v3.x
-  responsiveScrollFullHeight: {
-    height: '100%',
-  },
-  // deprecated, but continuing support through v3.x
-  responsiveStacked: {
-    overflow: 'auto',
-    [theme.breakpoints.down('md')]: {
-      overflow: 'hidden',
-    },
-  },
-  // deprecated, but continuing support through v3.x
-  responsiveStackedFullWidth: {},
-  caption: {
-    position: 'absolute',
-    left: '-3000px',
-  },
-
   liveAnnounce: {
     border: '0',
     clip: 'rect(0 0 0 0)',
@@ -1874,43 +1847,7 @@ class MUIDataTable extends React.Component {
     let maxHeight = this.options.tableBodyMaxHeight;
     let responsiveClass;
 
-    switch (responsiveOption) {
-      // deprecated
-      case 'scroll':
-        responsiveClass = classes.responsiveScroll;
-        maxHeight = '499px';
-        break;
-      // deprecated
-      case 'scrollMaxHeight':
-        responsiveClass = classes.responsiveScrollMaxHeight;
-        maxHeight = '499px';
-        break;
-      // deprecated
-      case 'scrollFullHeight':
-        responsiveClass = classes.responsiveScrollFullHeight;
-        maxHeight = 'none';
-        break;
-      // deprecated
-      case 'scrollFullHeightFullWidth':
-        responsiveClass = classes.responsiveScrollFullHeight;
-        paperClasses = `${classes.paperResponsiveScrollFullHeightFullWidth} ${className}`;
-        break;
-      // deprecated
-      case 'stacked':
-        responsiveClass = classes.responsiveStacked;
-        maxHeight = 'none';
-        break;
-      // deprecated
-      case 'stackedFullWidth':
-        responsiveClass = classes.responsiveStackedFullWidth;
-        paperClasses = `${classes.paperResponsiveScrollFullHeightFullWidth} ${className}`;
-        maxHeight = 'none';
-        break;
-
-      default:
-        responsiveClass = classes.responsiveBase;
-        break;
-    }
+    responsiveClass = classes.responsiveBase;
 
     var tableHeightVal = {};
     if (maxHeight) {
@@ -2005,7 +1942,7 @@ class MUIDataTable extends React.Component {
                 role={'grid'}
                 className={tableClassNames}
                 {...tableProps}>
-                <caption className={classes.caption}>{title}</caption>
+                <caption className="caption">{title}</caption>
                 <TableHeadComponent
                   columns={columns}
                   activeColumn={activeColumn}

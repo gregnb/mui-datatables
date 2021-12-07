@@ -6,10 +6,10 @@ import MuiTablePagination from '@mui/material/TablePagination';
 import getTextLabels from '../src/textLabels';
 import TablePagination from '../src/components/TablePagination';
 
-describe('<TablePagination />', function() {
+describe('<TablePagination />', () => {
   let options;
 
-  before(() => {
+  beforeAll(() => {
     options = {
       rowsPerPageOptions: [5, 10, 15],
       textLabels: getTextLabels(),
@@ -38,12 +38,15 @@ describe('<TablePagination />', function() {
     assert.strictEqual(changePage.callCount, 1);
   });
 
-  it('should correctly change page to be in bounds if out of bounds page was set', () => {
-    // Set a page that is too high for the count and rowsPerPage
-    const mountWrapper = mount(<TablePagination options={options} count={5} page={1} rowsPerPage={10} />);
-    const actualResult = mountWrapper.find(MuiTablePagination).props().page;
+  it(
+    'should correctly change page to be in bounds if out of bounds page was set',
+    () => {
+      // Set a page that is too high for the count and rowsPerPage
+      const mountWrapper = mount(<TablePagination options={options} count={5} page={1} rowsPerPage={10} />);
+      const actualResult = mountWrapper.find(MuiTablePagination).props().page;
 
-    // material-ui v3 does some internal calculations to protect against out of bounds pages, but material v4 does not
-    assert.strictEqual(actualResult, 0);
-  });
+      // material-ui v3 does some internal calculations to protect against out of bounds pages, but material v4 does not
+      assert.strictEqual(actualResult, 0);
+    }
+  );
 });

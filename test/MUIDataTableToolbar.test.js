@@ -13,13 +13,13 @@ import TableSearch from '../src/components/TableSearch';
 import TableToolbar from '../src/components/TableToolbar';
 import getTextLabels from '../src/textLabels';
 
-describe('<TableToolbar />', function() {
+describe('<TableToolbar />', () => {
   let data;
   let columns;
   let options;
   let setTableAction = () => {};
 
-  before(() => {
+  beforeAll(() => {
     options = {
       print: true,
       download: true,
@@ -65,24 +65,30 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(actualResult.length, 5);
   });
 
-  it('should render a toolbar with custom title if title is not string', () => {
-    const title = <h1>custom title</h1>;
-    const mountWrapper = mount(
-      <TableToolbar title={title} columns={columns} data={data} options={options} setTableAction={setTableAction} />,
-    );
-    const actualResult = mountWrapper.find('h1');
-    assert.strictEqual(actualResult.length, 1);
-  });
+  it(
+    'should render a toolbar with custom title if title is not string',
+    () => {
+      const title = <h1>custom title</h1>;
+      const mountWrapper = mount(
+        <TableToolbar title={title} columns={columns} data={data} options={options} setTableAction={setTableAction} />,
+      );
+      const actualResult = mountWrapper.find('h1');
+      assert.strictEqual(actualResult.length, 1);
+    }
+  );
 
-  it('should render a toolbar with search text initialized if option.searchText = some_text', () => {
-    const newOptions = { ...options, search: true, searchText: 'searchText' };
-    const mountWrapper = mount(
-      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
-    );
-    const actualResult = mountWrapper.find(TableSearch);
-    assert.strictEqual(actualResult.length, 1);
-    assert.strictEqual(actualResult.props().options.searchText, 'searchText');
-  });
+  it(
+    'should render a toolbar with search text initialized if option.searchText = some_text',
+    () => {
+      const newOptions = { ...options, search: true, searchText: 'searchText' };
+      const mountWrapper = mount(
+        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+      );
+      const actualResult = mountWrapper.find(TableSearch);
+      assert.strictEqual(actualResult.length, 1);
+      assert.strictEqual(actualResult.props().options.searchText, 'searchText');
+    }
+  );
 
   it('should render a toolbar with search if option.searchOpen = true', () => {
     const newOptions = { ...options, searchOpen: true };
@@ -94,83 +100,104 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(actualResult.props().options.searchText, undefined);
   });
 
-  it('should render a toolbar with no search icon if option.search = false', () => {
-    const newOptions = { ...options, search: false };
-    const mountWrapper = mount(
-      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
-    );
-    const actualResult = mountWrapper.find(SearchIcon);
-    assert.strictEqual(actualResult.length, 0);
-  });
+  it(
+    'should render a toolbar with no search icon if option.search = false',
+    () => {
+      const newOptions = { ...options, search: false };
+      const mountWrapper = mount(
+        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+      );
+      const actualResult = mountWrapper.find(SearchIcon);
+      assert.strictEqual(actualResult.length, 0);
+    }
+  );
 
-  it('should render a toolbar with search box and no search icon if option.searchAlwaysOpen = true', () => {
-    const newOptions = { ...options, searchAlwaysOpen: true };
-    const mountWrapper = mount(
-      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
-    );
+  it(
+    'should render a toolbar with search box and no search icon if option.searchAlwaysOpen = true',
+    () => {
+      const newOptions = { ...options, searchAlwaysOpen: true };
+      const mountWrapper = mount(
+        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+      );
 
-    // check that textfield is rendered
-    const actualTextfieldResult = mountWrapper.find(TableSearch);
-    assert.strictEqual(actualTextfieldResult.length, 1);
-    assert.strictEqual(actualTextfieldResult.props().options.searchText, undefined);
+      // check that textfield is rendered
+      const actualTextfieldResult = mountWrapper.find(TableSearch);
+      assert.strictEqual(actualTextfieldResult.length, 1);
+      assert.strictEqual(actualTextfieldResult.props().options.searchText, undefined);
 
-    // check that close icon is not rendered
-    const actualCloseIconResult = mountWrapper.find(CloseIcon());
-    assert.strictEqual(actualCloseIconResult.length, 0);
+      // check that close icon is not rendered
+      const actualCloseIconResult = mountWrapper.find(CloseIcon());
+      assert.strictEqual(actualCloseIconResult.length, 0);
 
-    // check that search icon is rendered
-    const actualSearchIconResult = mountWrapper.find(SearchIcon);
-    assert.strictEqual(actualSearchIconResult.length, 0);
-  });
+      // check that search icon is rendered
+      const actualSearchIconResult = mountWrapper.find(SearchIcon);
+      assert.strictEqual(actualSearchIconResult.length, 0);
+    }
+  );
 
-  it('should render a toolbar with no download icon if option.download = false', () => {
-    const newOptions = { ...options, download: false };
-    const mountWrapper = mount(
-      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
-    );
-    const actualResult = mountWrapper.find(DownloadIcon);
-    assert.strictEqual(actualResult.length, 0);
-  });
+  it(
+    'should render a toolbar with no download icon if option.download = false',
+    () => {
+      const newOptions = { ...options, download: false };
+      const mountWrapper = mount(
+        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+      );
+      const actualResult = mountWrapper.find(DownloadIcon);
+      assert.strictEqual(actualResult.length, 0);
+    }
+  );
 
-  it('should render a toolbar with no print icon if option.print = false', () => {
-    const newOptions = { ...options, print: false };
-    const mountWrapper = mount(
-      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
-    );
-    const actualResult = mountWrapper.find(PrintIcon);
-    assert.strictEqual(actualResult.length, 0);
-  });
+  it(
+    'should render a toolbar with no print icon if option.print = false',
+    () => {
+      const newOptions = { ...options, print: false };
+      const mountWrapper = mount(
+        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+      );
+      const actualResult = mountWrapper.find(PrintIcon);
+      assert.strictEqual(actualResult.length, 0);
+    }
+  );
 
-  it('should render a toolbar with no view columns icon if option.viewColumns = false', () => {
-    const newOptions = { ...options, viewColumns: false };
-    const mountWrapper = mount(
-      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
-    );
-    const actualResult = mountWrapper.find(ViewColumnIcon);
-    assert.strictEqual(actualResult.length, 0);
-  });
+  it(
+    'should render a toolbar with no view columns icon if option.viewColumns = false',
+    () => {
+      const newOptions = { ...options, viewColumns: false };
+      const mountWrapper = mount(
+        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+      );
+      const actualResult = mountWrapper.find(ViewColumnIcon);
+      assert.strictEqual(actualResult.length, 0);
+    }
+  );
 
-  it('should render a toolbar with no filter icon if option.filter = false', () => {
-    const newOptions = { ...options, filter: false };
-    const mountWrapper = mount(
-      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
-    );
-    const actualResult = mountWrapper.find(FilterIcon);
-    assert.strictEqual(actualResult.length, 0);
-  });
+  it(
+    'should render a toolbar with no filter icon if option.filter = false',
+    () => {
+      const newOptions = { ...options, filter: false };
+      const mountWrapper = mount(
+        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+      );
+      const actualResult = mountWrapper.find(FilterIcon);
+      assert.strictEqual(actualResult.length, 0);
+    }
+  );
 
-  it('should render a toolbar with custom search when option.customSearchRender is provided', () => {
-    const CustomSearchRender = () => <h1>customSearchRender</h1>;
-    const newOptions = { ...options, customSearchRender: CustomSearchRender };
-    const shallowWrapper = shallow(
-      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
-    ).dive();
-    const instance = shallowWrapper.instance();
-    instance.setActiveIcon('search');
-    shallowWrapper.update();
-    const actualResult = shallowWrapper.find('h1');
-    assert.strictEqual(actualResult.length, 1);
-  });
+  it(
+    'should render a toolbar with custom search when option.customSearchRender is provided',
+    () => {
+      const CustomSearchRender = () => <h1>customSearchRender</h1>;
+      const newOptions = { ...options, customSearchRender: CustomSearchRender };
+      const shallowWrapper = shallow(
+        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+      ).dive();
+      const instance = shallowWrapper.instance();
+      instance.setActiveIcon('search');
+      shallowWrapper.update();
+      const actualResult = shallowWrapper.find('h1');
+      assert.strictEqual(actualResult.length, 1);
+    }
+  );
 
   it('should render a toolbar with a search clicking search icon', () => {
     const shallowWrapper = shallow(
@@ -218,100 +245,112 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(actualResult.length, 0);
   });
 
-  it('should hide search when search icon is clicked while search is open without content', () => {
-    const searchTextUpdate = () => {};
-    const shallowWrapper = shallow(
-      <TableToolbar
-        searchClose={() => {}}
-        searchTextUpdate={searchTextUpdate}
-        columns={columns}
-        data={data}
-        options={options}
-        setTableAction={setTableAction}
-      />,
-    ).dive();
-    const instance = shallowWrapper.instance();
-    instance.searchButton = {
-      focus: () => {},
-    };
+  it(
+    'should hide search when search icon is clicked while search is open without content',
+    () => {
+      const searchTextUpdate = () => {};
+      const shallowWrapper = shallow(
+        <TableToolbar
+          searchClose={() => {}}
+          searchTextUpdate={searchTextUpdate}
+          columns={columns}
+          data={data}
+          options={options}
+          setTableAction={setTableAction}
+        />,
+      ).dive();
+      const instance = shallowWrapper.instance();
+      instance.searchButton = {
+        focus: () => {},
+      };
 
-    // click search button to display search
-    shallowWrapper.find('[data-testid="Search-iconButton"]').simulate('click');
-    shallowWrapper.update();
+      // click search button to display search
+      shallowWrapper.find('[data-testid="Search-iconButton"]').simulate('click');
+      shallowWrapper.update();
 
-    assert.strictEqual(shallowWrapper.state('iconActive'), 'search');
-    let actualResult = shallowWrapper.find(TableSearch);
-    assert.strictEqual(actualResult.length, 1);
+      assert.strictEqual(shallowWrapper.state('iconActive'), 'search');
+      let actualResult = shallowWrapper.find(TableSearch);
+      assert.strictEqual(actualResult.length, 1);
 
-    // now click search button again and test
-    shallowWrapper.find('[data-testid="Search-iconButton"]').simulate('click');
-    shallowWrapper.update();
+      // now click search button again and test
+      shallowWrapper.find('[data-testid="Search-iconButton"]').simulate('click');
+      shallowWrapper.update();
 
-    assert.strictEqual(shallowWrapper.state('iconActive'), null);
-    actualResult = shallowWrapper.find(TableSearch);
-    assert.strictEqual(actualResult.length, 0);
-  });
+      assert.strictEqual(shallowWrapper.state('iconActive'), null);
+      actualResult = shallowWrapper.find(TableSearch);
+      assert.strictEqual(actualResult.length, 0);
+    }
+  );
 
-  it('should not hide search when search icon is clicked while search is open with content', () => {
-    const searchTextUpdate = () => {};
-    const shallowWrapper = shallow(
-      <TableToolbar
-        searchClose={() => {}}
-        searchTextUpdate={searchTextUpdate}
-        columns={columns}
-        data={data}
-        options={options}
-        setTableAction={setTableAction}
-      />,
-    ).dive();
-    const instance = shallowWrapper.instance();
-    instance.searchButton = {
-      focus: () => {},
-    };
+  it(
+    'should not hide search when search icon is clicked while search is open with content',
+    () => {
+      const searchTextUpdate = () => {};
+      const shallowWrapper = shallow(
+        <TableToolbar
+          searchClose={() => {}}
+          searchTextUpdate={searchTextUpdate}
+          columns={columns}
+          data={data}
+          options={options}
+          setTableAction={setTableAction}
+        />,
+      ).dive();
+      const instance = shallowWrapper.instance();
+      instance.searchButton = {
+        focus: () => {},
+      };
 
-    // click search button to display search
-    shallowWrapper.find('[data-testid="Search-iconButton"]').simulate('click');
-    shallowWrapper.update();
+      // click search button to display search
+      shallowWrapper.find('[data-testid="Search-iconButton"]').simulate('click');
+      shallowWrapper.update();
 
-    assert.strictEqual(shallowWrapper.state('iconActive'), 'search');
-    let actualResult = shallowWrapper.find(TableSearch);
-    assert.strictEqual(actualResult.length, 1);
+      assert.strictEqual(shallowWrapper.state('iconActive'), 'search');
+      let actualResult = shallowWrapper.find(TableSearch);
+      assert.strictEqual(actualResult.length, 1);
 
-    // now set searchText and click search button again and test
-    shallowWrapper.setState({ searchText: 'fakeSearchText' });
-    shallowWrapper.find('[data-testid="Search-iconButton"]').simulate('click');
-    shallowWrapper.update();
+      // now set searchText and click search button again and test
+      shallowWrapper.setState({ searchText: 'fakeSearchText' });
+      shallowWrapper.find('[data-testid="Search-iconButton"]').simulate('click');
+      shallowWrapper.update();
 
-    assert.strictEqual(shallowWrapper.state('iconActive'), 'search');
-    actualResult = shallowWrapper.find(TableSearch);
-    assert.strictEqual(actualResult.length, 1);
-  });
+      assert.strictEqual(shallowWrapper.state('iconActive'), 'search');
+      actualResult = shallowWrapper.find(TableSearch);
+      assert.strictEqual(actualResult.length, 1);
+    }
+  );
 
-  it('should render a toolbar with a search when searchAlwaysOpen is set to true', () => {
-    const newOptions = { ...options, searchAlwaysOpen: true }
-    const shallowWrapper = shallow(
-        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
-    ).dive();
+  it(
+    'should render a toolbar with a search when searchAlwaysOpen is set to true',
+    () => {
+      const newOptions = { ...options, searchAlwaysOpen: true }
+      const shallowWrapper = shallow(
+          <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+      ).dive();
 
-    const actualResult = shallowWrapper.find(TableSearch);
-    assert.strictEqual(actualResult.length, 1);
-  });
+      const actualResult = shallowWrapper.find(TableSearch);
+      assert.strictEqual(actualResult.length, 1);
+    }
+  );
 
-  it('should not hide search when opening another dialog when searchAlwaysOpen is set to true', () => {
-    const newOptions = { ...options, searchAlwaysOpen: true }
-    const shallowWrapper = shallow(
-        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
-    ).dive();
+  it(
+    'should not hide search when opening another dialog when searchAlwaysOpen is set to true',
+    () => {
+      const newOptions = { ...options, searchAlwaysOpen: true }
+      const shallowWrapper = shallow(
+          <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+      ).dive();
 
-    const instance = shallowWrapper.instance();
+      const instance = shallowWrapper.instance();
 
-    instance.setActiveIcon('filter');
-    shallowWrapper.find('[data-testid="Filter Table-iconButton"]').simulate('click');
-    shallowWrapper.update();
+      instance.setActiveIcon('filter');
+      shallowWrapper.find('[data-testid="Filter Table-iconButton"]').simulate('click');
+      shallowWrapper.update();
 
-    let actualResult = shallowWrapper.find(TableSearch);
-    assert.strictEqual(actualResult.length, 1);
-  });
+      let actualResult = shallowWrapper.find(TableSearch);
+      assert.strictEqual(actualResult.length, 1);
+    }
+  );
 
   it('should call onFilterDialogOpen when opening filters via toolbar', () => {
     const onFilterDialogOpen = spy();
@@ -365,14 +404,17 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(actualResult.prop('classes').root.indexOf('MUIDataTableToolbar-iconActive-'), 0);
   });
 
-  it('should render search icon as active if option.searchText = some_text', () => {
-    const newOptions = { ...options, search: true, searchText: 'searchText' };
-    const shallowWrapper = shallow(
-      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
-    ).dive();
-    const actualResult = shallowWrapper.find('[data-testid="Search-iconButton"]');
-    assert.strictEqual(actualResult.prop('classes').root.indexOf('MUIDataTableToolbar-iconActive-'), 0);
-  });
+  it(
+    'should render search icon as active if option.searchText = some_text',
+    () => {
+      const newOptions = { ...options, search: true, searchText: 'searchText' };
+      const shallowWrapper = shallow(
+        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+      ).dive();
+      const actualResult = shallowWrapper.find('[data-testid="Search-iconButton"]');
+      assert.strictEqual(actualResult.prop('classes').root.indexOf('MUIDataTableToolbar-iconActive-'), 0);
+    }
+  );
 
   it('should download CSV when calling method handleCSVDownload', () => {
     const shallowWrapper = shallow(
@@ -394,25 +436,28 @@ describe('<TableToolbar />', function() {
     assert.strictEqual(removeSpy.callCount, 1);
   });
 
-  it('should trigger onDownload prop callback when calling method handleCSVDownload', () => {
-    const onDownload = spy();
+  it(
+    'should trigger onDownload prop callback when calling method handleCSVDownload',
+    () => {
+      const onDownload = spy();
 
-    const newOptions = { ...options, onDownload };
+      const newOptions = { ...options, onDownload };
 
-    const shallowWrapper = shallow(
-      <TableToolbar
-        columns={columns}
-        displayData={data}
-        data={data}
-        options={newOptions}
-        setTableAction={setTableAction}
-      />,
-    );
+      const shallowWrapper = shallow(
+        <TableToolbar
+          columns={columns}
+          displayData={data}
+          data={data}
+          options={newOptions}
+          setTableAction={setTableAction}
+        />,
+      );
 
-    const instance = shallowWrapper.dive().instance();
+      const instance = shallowWrapper.dive().instance();
 
-    instance.handleCSVDownload();
+      instance.handleCSVDownload();
 
-    assert.strictEqual(onDownload.callCount, 1);
-  });
+      assert.strictEqual(onDownload.callCount, 1);
+    }
+  );
 });

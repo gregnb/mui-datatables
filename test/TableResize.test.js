@@ -5,10 +5,10 @@ import { assert, expect, should } from 'chai';
 import TableResize from '../src/components/TableResize';
 import MUIDataTable from '../src/MUIDataTable';
 
-describe('<TableResize />', function() {
+describe('<TableResize />', () => {
   let options;
 
-  before(() => {
+  beforeAll(() => {
     options = {
       resizableColumns: true,
       tableBodyHeight: '500px',

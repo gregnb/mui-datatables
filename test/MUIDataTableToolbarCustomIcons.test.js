@@ -70,24 +70,39 @@ const testCustomIcon = iconName => {
   });
 };
 
-describe('<TableToolbar /> with custom icons', function() {
-  it('should render a toolbar with a custom chip in place of the search icon', () => {
-    testCustomIcon('SearchIcon');
-  });
+describe('<TableToolbar /> with custom icons', () => {
+  it(
+    'should render a toolbar with a custom chip in place of the search icon',
+    () => {
+      testCustomIcon('SearchIcon');
+    }
+  );
 
-  it('should render a toolbar with a custom chip in place of the download icon', () => {
-    testCustomIcon('DownloadIcon');
-  });
+  it(
+    'should render a toolbar with a custom chip in place of the download icon',
+    () => {
+      testCustomIcon('DownloadIcon');
+    }
+  );
 
-  it('should render a toolbar with a custom chip in place of the print icon', () => {
-    testCustomIcon('PrintIcon');
-  });
+  it(
+    'should render a toolbar with a custom chip in place of the print icon',
+    () => {
+      testCustomIcon('PrintIcon');
+    }
+  );
 
-  it('should render a toolbar with a custom chip in place of the view columns icon', () => {
-    testCustomIcon('ViewColumnIcon');
-  });
+  it(
+    'should render a toolbar with a custom chip in place of the view columns icon',
+    () => {
+      testCustomIcon('ViewColumnIcon');
+    }
+  );
 
-  it('should render a toolbar with a custom chip in place of the filter icon', () => {
-    testCustomIcon('FilterIcon');
-  });
+  it(
+    'should render a toolbar with a custom chip in place of the filter icon',
+    () => {
+      testCustomIcon('FilterIcon');
+    }
+  );
 });
