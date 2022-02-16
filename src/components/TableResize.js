@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@mui/styles';
+import { withStyles } from "tss-react/mui";
 
 const defaultResizeStyles = {
   root: {
@@ -285,4 +285,4 @@ class TableResize extends React.Component {
   }
 }
 
-export default withStyles(defaultResizeStyles, { name: 'MUIDataTableResize' })(TableResize);
+export default withStyles(TableResize, defaultResizeStyles, { name: 'MUIDataTableResize' });

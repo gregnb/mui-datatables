@@ -5,7 +5,7 @@ import prism from 'prismjs';
 import 'prismjs/components/prism-jsx';
 import 'prismjs/components/prism-bash';
 import Paper from '@mui/material/Paper';
-import { withStyles } from '@mui/styles';
+import { withStyles } from "tss-react/mui";
 
 const styles = theme => ({});
 
@@ -34,4 +34,4 @@ class CodeSnippet extends React.Component {
   }
 }
 
-export default withStyles(styles)(CodeSnippet);
+export default withStyles(CodeSnippet, styles);

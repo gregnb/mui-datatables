@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Checkbox from '@mui/material/Checkbox';
 import TableCell from '@mui/material/TableCell';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "tss-react/mui";
 import ExpandButton from './ExpandButton';
 
-const useStyles = makeStyles(
+const useStyles = makeStyles()(
   theme => ({
     root: {
       '@media print': {
@@ -66,7 +66,7 @@ const TableSelectCell = ({
   components = {},
   ...otherProps
 }) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const CheckboxComponent = components.Checkbox || Checkbox;
   const ExpandButtonComponent = components.ExpandButton || ExpandButton;
 

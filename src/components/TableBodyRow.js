@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import TableRow from '@mui/material/TableRow';
-import { withStyles } from '@mui/styles';
+import { withStyles } from "tss-react/mui";
 
 const defaultBodyRowStyles = theme => ({
   root: {
@@ -81,4 +81,4 @@ class TableBodyRow extends React.Component {
   }
 }
 
-export default withStyles(defaultBodyRowStyles, { name: 'MUIDataTableBodyRow' })(TableBodyRow);
+export default withStyles(TableBodyRow, defaultBodyRowStyles, { name: 'MUIDataTableBodyRow' });

@@ -4,7 +4,7 @@ import Tooltip from "@mui/material/Tooltip";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import BlockIcon from "@mui/icons-material/Block";
-import { withStyles } from "@mui/styles";
+import { withStyles } from "tss-react/mui";
 
 const defaultToolbarSelectStyles = {
   iconButton: {
@@ -63,4 +63,4 @@ class CustomToolbarSelect extends React.Component {
   }
 }
 
-export default withStyles(defaultToolbarSelectStyles, { name: "CustomToolbarSelect" })(CustomToolbarSelect);
+export default withStyles(CustomToolbarSelect, defaultToolbarSelectStyles, { name: "CustomToolbarSelect" });

@@ -5,10 +5,10 @@ import MuiTableRow from '@mui/material/TableRow';
 import MuiTableFooter from '@mui/material/TableFooter';
 import MuiTablePagination from '@mui/material/TablePagination';
 import JumpToPage from './JumpToPage';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "tss-react/mui";
 import { getPageValue } from '../utils';
 
-const useStyles = makeStyles(
+const useStyles = makeStyles()(
   theme => ({
     root: {},
     tableCellContainer: {
@@ -35,7 +35,7 @@ const useStyles = makeStyles(
 );
 
 function TablePagination(props) {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const handleRowChange = event => {
     props.changeRowsPerPage(event.target.value);

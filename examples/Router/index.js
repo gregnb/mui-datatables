@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
-import { withStyles } from '@mui/styles';
+import { withStyles } from "tss-react/mui";
 import ExamplesGrid from './ExamplesGrid';
 import examples from '../examples';
 import Button from '@mui/material/Button';
@@ -61,7 +61,7 @@ class Examples extends React.Component {
   }
 }
 
-const StyledExamples = withRouter(withStyles(styles)(Examples));
+const StyledExamples = withRouter(withStyles(Examples, styles));
 
 function App() {
   return (

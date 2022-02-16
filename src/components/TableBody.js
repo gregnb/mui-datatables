@@ -5,7 +5,7 @@ import MuiTableBody from '@mui/material/TableBody';
 import TableBodyCell from './TableBodyCell';
 import TableBodyRow from './TableBodyRow';
 import TableSelectCell from './TableSelectCell';
-import { withStyles } from '@mui/styles';
+import { withStyles } from "tss-react/mui";
 import cloneDeep from 'lodash.clonedeep';
 import { getPageValue } from '../utils';
 import clsx from 'clsx';
@@ -335,4 +335,4 @@ class TableBody extends React.Component {
   }
 }
 
-export default withStyles(defaultBodyStyles, { name: 'MUIDataTableBody' })(TableBody);
+export default withStyles(TableBody, defaultBodyStyles, { name: 'MUIDataTableBody' });

@@ -1,9 +1,9 @@
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "tss-react/mui";
 import PropTypes from 'prop-types';
 import React from 'react';
 import TableFilterListItem from './TableFilterListItem';
 
-const useStyles = makeStyles(
+const useStyles = makeStyles()(
   () => ({
     root: {
       display: 'flex',
@@ -28,7 +28,7 @@ const TableFilterList = ({
   customFilterListUpdate,
   ItemComponent = TableFilterListItem,
 }) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { serverSide } = options;
 
   const removeFilter = (index, filterValue, columnName, filterType, customFilterListUpdate = null) => {

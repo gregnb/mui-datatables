@@ -4,7 +4,7 @@ import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { withStyles } from '@mui/styles';
+import { withStyles } from "tss-react/mui";
 import MuiTooltip from '@mui/material/Tooltip';
 
 const defaultToolbarSelectStyles = theme => ({
@@ -88,4 +88,4 @@ class TableToolbarSelect extends React.Component {
   }
 }
 
-export default withStyles(defaultToolbarSelectStyles, { name: 'MUIDataTableToolbarSelect' })(TableToolbarSelect);
+export default withStyles(TableToolbarSelect, defaultToolbarSelectStyles, { name: 'MUIDataTableToolbarSelect' });

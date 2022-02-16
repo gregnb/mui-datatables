@@ -3,7 +3,7 @@ import TableFooter from "@mui/material/TableFooter";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import MuiTablePagination from "@mui/material/TablePagination";
-import { withStyles } from "@mui/styles";
+import { withStyles } from "tss-react/mui";
 
 const defaultFooterStyles = {
 };
@@ -58,4 +58,4 @@ class CustomFooter extends React.Component {
 
 }
 
-export default withStyles(defaultFooterStyles, { name: "CustomFooter" })(CustomFooter);
+export default withStyles(CustomFooter, defaultFooterStyles, { name: "CustomFooter" });

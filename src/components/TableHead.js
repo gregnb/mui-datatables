@@ -1,4 +1,4 @@
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "tss-react/mui";
 import clsx from 'clsx';
 import MuiTableHead from '@mui/material/TableHead';
 import React, { useState } from 'react';
@@ -6,7 +6,7 @@ import TableHeadCell from './TableHeadCell';
 import TableHeadRow from './TableHeadRow';
 import TableSelectCell from './TableSelectCell';
 
-const useStyles = makeStyles(
+const useStyles = makeStyles()(
   theme => ({
     main: {},
     responsiveStacked: {
@@ -46,7 +46,7 @@ const TableHead = ({
   toggleSort,
   updateColumnOrder,
 }) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   if (columnOrder === null) {
     columnOrder = columns ? columns.map((item, idx) => idx) : [];

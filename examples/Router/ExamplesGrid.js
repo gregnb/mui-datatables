@@ -2,7 +2,7 @@ import {Link} from "react-router-dom";
 import {Card, CardContent, Grid, Typography} from "@mui/material";
 import React from "react";
 import examples from "../examples";
-import {withStyles} from "@mui/styles";
+import { withStyles } from "tss-react/mui";
 import TextField from '@mui/material/TextField';
 
 const styles = {
@@ -85,4 +85,4 @@ class ExamplesGrid extends React.Component {
   }
 }
 
-export default withStyles(styles)(ExamplesGrid);
+export default withStyles(ExamplesGrid, styles);

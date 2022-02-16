@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import MUIDataTable from '../../src/';
 import CustomFooter from './CustomFooter';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "tss-react/mui";
+
 import TableFooter from '@mui/material/TableFooter';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
@@ -10,7 +11,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import clsx from 'clsx';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles()(theme => ({
   footerCell: {
     backgroundColor: theme.palette.background.paper,
     borderBottom: 'none',
@@ -25,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 function Example() {
   const [resizableColumns, setResizableColumns] = useState(false);
   const [stickyFooter, setStickyFooter] = useState(true);
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const columns = ['Name', 'Title', 'Location', 'Age', 'Salary'];
 
