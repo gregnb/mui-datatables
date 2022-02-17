@@ -37,7 +37,7 @@ Version 3 has been released! You can read about the [updates here](https://githu
 
 `npm install mui-datatables --save`
 
-If your project doesn't already use them, you need to install `@material-ui/core` and `@material-ui/icons` as well.
+If your project doesn't already use them, you need to install `@mui/material`, `@mui/icons-material` as well.
 
 ## Demo
 
@@ -367,10 +367,12 @@ import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 class BodyCellExample extends React.Component {
 
   getMuiTheme = () => createTheme({
-    overrides: {
+    components: {
       MUIDataTableBodyCell: {
-        root: {
-          backgroundColor: "#FF0000"
+        styleOverrides:{
+          root: {
+              backgroundColor: "#FF0000"
+          }
         }
       }
     }
