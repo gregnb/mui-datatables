@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from "tss-react/mui";
+import { withStyles } from 'tss-react/mui';
 
 const defaultResizeStyles = {
   root: {

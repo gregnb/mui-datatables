@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import TableRow from '@mui/material/TableRow';
-import { makeStyles } from "tss-react/mui";
+import { makeStyles } from 'tss-react/mui';
 
 const useStyles = makeStyles()(
   () => ({

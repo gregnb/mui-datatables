@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from "tss-react/mui";
+import { makeStyles } from 'tss-react/mui';
 import { getPageValue } from '../utils.js';
 import clsx from 'clsx';
 

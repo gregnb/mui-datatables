@@ -5,7 +5,7 @@ import MuiTableBody from '@mui/material/TableBody';
 import TableBodyCell from './TableBodyCell';
 import TableBodyRow from './TableBodyRow';
 import TableSelectCell from './TableSelectCell';
-import { withStyles } from "tss-react/mui";
+import { withStyles } from 'tss-react/mui';
 import cloneDeep from 'lodash.clonedeep';
 import { getPageValue } from '../utils';
 import clsx from 'clsx';

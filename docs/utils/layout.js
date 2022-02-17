@@ -9,7 +9,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Tooltip from '@mui/material/Tooltip';
 import GitHub from '../icons/GitHub';
 import withRoot from '../utils/withRoot';
-import { withStyles } from "tss-react/mui";
+import { withStyles } from 'tss-react/mui';
 import Menu from './Menu';
 
 /* eslint-disable import/no-webpack-loader-syntax  */

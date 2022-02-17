@@ -5,7 +5,7 @@ import prism from 'prismjs';
 import 'prismjs/components/prism-jsx';
 import 'prismjs/components/prism-bash';
 import Paper from '@mui/material/Paper';
-import { withStyles } from "tss-react/mui";
+import { withStyles } from 'tss-react/mui';
 
 const styles = theme => ({});
 

@@ -1,4 +1,4 @@
-import { makeStyles } from "tss-react/mui";
+import { makeStyles } from 'tss-react/mui';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TableFilterListItem from './TableFilterListItem';

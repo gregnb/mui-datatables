@@ -5,7 +5,7 @@ import MuiTableRow from '@mui/material/TableRow';
 import MuiTableFooter from '@mui/material/TableFooter';
 import MuiTablePagination from '@mui/material/TablePagination';
 import JumpToPage from './JumpToPage';
-import { makeStyles } from "tss-react/mui";
+import { makeStyles } from 'tss-react/mui';
 import { getPageValue } from '../utils';
 
 const useStyles = makeStyles()(

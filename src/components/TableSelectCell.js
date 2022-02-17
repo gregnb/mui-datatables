@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Checkbox from '@mui/material/Checkbox';
 import TableCell from '@mui/material/TableCell';
-import { makeStyles } from "tss-react/mui";
+import { makeStyles } from 'tss-react/mui';
 import ExpandButton from './ExpandButton';
 
 const useStyles = makeStyles()(

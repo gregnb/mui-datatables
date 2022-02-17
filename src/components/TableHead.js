@@ -1,4 +1,4 @@
-import { makeStyles } from "tss-react/mui";
+import { makeStyles } from 'tss-react/mui';
 import clsx from 'clsx';
 import MuiTableHead from '@mui/material/TableHead';
 import React, { useState } from 'react';

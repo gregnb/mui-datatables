@@ -14,7 +14,7 @@ import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
-import { withStyles } from "tss-react/mui";
+import { withStyles } from 'tss-react/mui';
 import cloneDeep from 'lodash.clonedeep';
 
 export const defaultFilterStyles = theme => ({
@@ -420,4 +420,4 @@ class TableFilter extends React.Component {
   }
 }
 
-export default withStyles(TableFilter,defaultFilterStyles, { name: 'MUIDataTableFilter' });
+export default withStyles(TableFilter, defaultFilterStyles, { name: 'MUIDataTableFilter' });

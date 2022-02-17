@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Grow from '@mui/material/Grow';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
-import { withStyles } from "tss-react/mui";
+import { withStyles } from 'tss-react/mui';
 
 function debounce(func, wait, immediate) {
   var timeout;
