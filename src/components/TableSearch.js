@@ -4,14 +4,14 @@ import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-const useStyles = makeStyles(
+const useStyles = makeStyles()(
   theme => ({
     main: {
       display: 'flex',
       flex: '1 0 auto',
-      alignItems: "center"
+      alignItems: 'center',
     },
     searchIcon: {
       color: theme.palette.text.secondary,
@@ -30,7 +30,7 @@ const useStyles = makeStyles(
 );
 
 const TableSearch = ({ options, searchText, onSearch, onHide }) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const handleTextChange = event => {
     onSearch(event.target.value);

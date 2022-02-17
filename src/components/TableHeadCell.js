@@ -7,10 +7,10 @@ import React, { useState } from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import useColumnDrop from '../hooks/useColumnDrop.js';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { useDrag } from 'react-dnd';
 
-const useStyles = makeStyles(
+const useStyles = makeStyles()(
   theme => ({
     root: {},
     fixedHeader: {
@@ -92,7 +92,7 @@ const TableHeadCell = ({
   const [sortTooltipOpen, setSortTooltipOpen] = useState(false);
   const [hintTooltipOpen, setHintTooltipOpen] = useState(false);
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const handleKeyboardSortInput = e => {
     if (e.key === 'Enter') {

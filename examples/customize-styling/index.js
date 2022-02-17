@@ -1,6 +1,7 @@
 import React from 'react';
 import MUIDataTable from '../../src/';
-import { ThemeProvider, withStyles } from '@mui/styles';
+import { ThemeProvider } from '@mui/material/styles';
+import { withStyles } from "tss-react/mui";
 import { createTheme } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
@@ -218,4 +219,4 @@ class Example extends React.Component {
   }
 }
 
-export default withStyles(customStyles, { name: 'ExampleCard.js' })(Example);
+export default withStyles(Example, customStyles, { name: 'ExampleCardjs' });
