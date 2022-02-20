@@ -2,8 +2,8 @@ import React from 'react';
 import MUIDataTable, { ExpandButton } from '../../src/';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
-import { ThemeProvider } from '@mui/styles';
-import { createTheme } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import createCache from '@emotion/cache';
 
 const muiCache = createCache({
   key: 'mui-datatables',
@@ -126,15 +126,17 @@ class Example extends React.Component {
     };
 
     return (
-      <ThemeProvider theme={theme}>
-        <MUIDataTable
-          title={'ACME Employee list'}
-          data={data}
-          columns={columns}
-          options={options}
-          components={components}
-        />
-      </ThemeProvider>
+      <CacheProvider value={muiCache}>
+        <ThemeProvider theme={theme}>
+          <MUIDataTable
+            title={'ACME Employee list'}
+            data={data}
+            columns={columns}
+            options={options}
+            components={components}
+          />
+        </ThemeProvider>
+      </CacheProvider>
     );
   }
 }

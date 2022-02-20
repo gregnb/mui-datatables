@@ -5,6 +5,8 @@ import { HashRouter as Router, Route, Switch, withRouter } from 'react-router-do
 import ExamplesGrid from './ExamplesGrid';
 import examples from '../examples';
 import Button from '@mui/material/Button';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
 
 const PREFIX = 'index';
 
