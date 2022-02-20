@@ -1,12 +1,18 @@
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { withStyles } from 'tss-react/mui';
+const PREFIX = 'MUIDataTableResize';
 
-const defaultResizeStyles = {
-  root: {
+const classes = {
+  root: `${PREFIX}-root`,
+  resizer: `${PREFIX}-resizer`
+};
+
+const Root = styled('div')({
+  [`&.${classes.root}`]: {
     position: 'absolute',
   },
-  resizer: {
+  [`& .${classes.resizer}`]: {
     position: 'absolute',
     width: '1px',
     height: '100%',
@@ -14,7 +20,7 @@ const defaultResizeStyles = {
     cursor: 'ew-resize',
     border: '0.1px solid rgba(224, 224, 224, 1)',
   },
-};
+});
 
 function getParentOffsetLeft(tableEl) {
   let ii = 0,
@@ -250,11 +256,11 @@ class TableResize extends React.Component {
   };
 
   render() {
-    const { classes, tableId } = this.props;
+    const {  tableId } = this.props;
     const { id, isResize, resizeCoords, tableWidth, tableHeight } = this.state;
 
     return (
-      <div className={classes.root} style={{ width: tableWidth }}>
+      <Root className={classes.root} style={{ width: tableWidth }}>
         {Object.entries(resizeCoords).map(([key, val]) => {
           return (
             <div
@@ -280,9 +286,9 @@ class TableResize extends React.Component {
             </div>
           );
         })}
-      </div>
+      </Root>
     );
   }
 }
 
-export default withStyles(TableResize, defaultResizeStyles, { name: 'MUIDataTableResize' });
+export default (TableResize);

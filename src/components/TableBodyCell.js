@@ -1,14 +1,36 @@
 import React, { useCallback } from 'react';
+import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import TableCell from '@mui/material/TableCell';
-import { makeStyles } from 'tss-react/mui';
+const PREFIX = 'MUIDataTableBodyCell';
 
-const useStyles = makeStyles({ name: 'MUIDataTableBodyCell' })(theme => ({
-  root: {},
-  cellHide: {
+const classes = {
+  root: `${PREFIX}-root`,
+  cellHide: `${PREFIX}-cellHide`,
+  simpleHeader: `${PREFIX}-simpleHeader`,
+  simpleCell: `${PREFIX}-simpleCell`,
+  stackedHeader: `${PREFIX}-stackedHeader`,
+  stackedCommon: `${PREFIX}-stackedCommon`,
+  stackedCommonAlways: `${PREFIX}-stackedCommonAlways`,
+  stackedParent: `${PREFIX}-stackedParent`,
+  stackedParentAlways: `${PREFIX}-stackedParentAlways`,
+  cellStackedSmall: `${PREFIX}-cellStackedSmall`,
+  responsiveStackedSmall: `${PREFIX}-responsiveStackedSmall`,
+  responsiveStackedSmallParent: `${PREFIX}-responsiveStackedSmallParent`
+};
+
+const StyledTableCell = styled(TableCell)((
+  {
+    theme
+  }
+) => ({
+  [`&.${classes.root}`]: {},
+
+  [`& .${classes.cellHide}`]: {
     display: 'none',
   },
-  simpleHeader: {
+
+  [`& .${classes.simpleHeader}`]: {
     [theme.breakpoints.down('sm')]: {
       display: 'inline-block',
       fontWeight: 'bold',
@@ -16,17 +38,20 @@ const useStyles = makeStyles({ name: 'MUIDataTableBodyCell' })(theme => ({
       boxSizing: 'border-box',
     },
   },
-  simpleCell: {
+
+  [`&.${classes.simpleCell}`]: {
     [theme.breakpoints.down('sm')]: {
       display: 'inline-block',
       width: '100%',
       boxSizing: 'border-box',
     },
   },
-  stackedHeader: {
+
+  [`& .${classes.stackedHeader}`]: {
     verticalAlign: 'top',
   },
-  stackedCommon: {
+
+  [`& .${classes.stackedCommon}`]: {
     [theme.breakpoints.down('md')]: {
       display: 'inline-block',
       fontSize: '16px',
@@ -41,7 +66,8 @@ const useStyles = makeStyles({ name: 'MUIDataTableBodyCell' })(theme => ({
       },
     },
   },
-  stackedCommonAlways: {
+
+  [`& .${classes.stackedCommonAlways}`]: {
     display: 'inline-block',
     fontSize: '16px',
     height: 'auto',
@@ -50,11 +76,12 @@ const useStyles = makeStyles({ name: 'MUIDataTableBodyCell' })(theme => ({
     '&:last-child': {
       borderBottom: 'none',
     },
-    '&:nth-last-of-type(2)': {
+    '&:nth-last-child(2)': {
       borderBottom: 'none',
     },
   },
-  stackedParent: {
+
+  [`&.${classes.stackedParent}`]: {
     [theme.breakpoints.down('md')]: {
       display: 'inline-block',
       fontSize: '16px',
@@ -63,35 +90,39 @@ const useStyles = makeStyles({ name: 'MUIDataTableBodyCell' })(theme => ({
       boxSizing: 'border-box',
     },
   },
-  stackedParentAlways: {
+
+  [`&.${classes.stackedParentAlways}`]: {
     display: 'inline-block',
     fontSize: '16px',
     height: 'auto',
     width: 'calc(100%)',
     boxSizing: 'border-box',
   },
-  cellStackedSmall: {
+
+  [`& .${classes.cellStackedSmall}`]: {
     [theme.breakpoints.down('md')]: {
       width: '50%',
       boxSizing: 'border-box',
     },
   },
-  responsiveStackedSmall: {
+
+  [`& .${classes.responsiveStackedSmall}`]: {
     [theme.breakpoints.down('md')]: {
       width: '50%',
       boxSizing: 'border-box',
     },
   },
-  responsiveStackedSmallParent: {
+
+  [`&.${classes.responsiveStackedSmallParent}`]: {
     [theme.breakpoints.down('md')]: {
       width: '100%',
       boxSizing: 'border-box',
     },
-  },
+  }
 }));
 
 function TableBodyCell(props) {
-  const { classes } = useStyles();
+
   const {
     children,
     colIndex,
@@ -177,7 +208,7 @@ function TableBodyCell(props) {
   }
 
   return (
-    <TableCell
+    <StyledTableCell
       {...methods}
       data-colindex={colIndex}
       data-tableid={tableId}
@@ -201,7 +232,7 @@ function TableBodyCell(props) {
       )}
       {...otherProps}>
       {innerCells}
-    </TableCell>
+    </StyledTableCell>
   );
 }
 

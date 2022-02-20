@@ -1,11 +1,23 @@
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import TableRow from '@mui/material/TableRow';
-import { withStyles } from 'tss-react/mui';
+const PREFIX = 'MUIDataTableBodyRow';
 
-const defaultBodyRowStyles = theme => ({
-  root: {
+const classes = {
+  root: `${PREFIX}-root`,
+  hoverCursor: `${PREFIX}-hoverCursor`,
+  responsiveStacked: `${PREFIX}-responsiveStacked`,
+  responsiveSimple: `${PREFIX}-responsiveSimple`
+};
+
+const StyledTableRow = styled(TableRow)((
+  {
+    theme
+  }
+) => ({
+  [`&.${classes.root}`]: {
     // material v4
     '&.Mui-selected': {
       backgroundColor: theme.palette.action.selected,
@@ -16,8 +28,10 @@ const defaultBodyRowStyles = theme => ({
       backgroundColor: theme.palette.action.selected,
     },
   },
-  hoverCursor: { cursor: 'pointer' },
-  responsiveStacked: {
+
+  [`&.${classes.hoverCursor}`]: { cursor: 'pointer' },
+
+  [`&.${classes.responsiveStacked}`]: {
     [theme.breakpoints.down('md')]: {
       borderTop: 'solid 2px rgba(0, 0, 0, 0.15)',
       borderBottom: 'solid 2px rgba(0, 0, 0, 0.15)',
@@ -25,15 +39,16 @@ const defaultBodyRowStyles = theme => ({
       margin: 0,
     },
   },
-  responsiveSimple: {
+
+  [`&.${classes.responsiveSimple}`]: {
     [theme.breakpoints.down('sm')]: {
       borderTop: 'solid 2px rgba(0, 0, 0, 0.15)',
       borderBottom: 'solid 2px rgba(0, 0, 0, 0.15)',
       padding: 0,
       margin: 0,
     },
-  },
-});
+  }
+}));
 
 class TableBodyRow extends React.Component {
   static propTypes = {
@@ -48,7 +63,7 @@ class TableBodyRow extends React.Component {
   };
 
   render() {
-    const { classes, options, rowSelected, onClick, className, isRowSelectable, ...rest } = this.props;
+    const {  options, rowSelected, onClick, className, isRowSelectable, ...rest } = this.props;
 
     var methods = {};
     if (onClick) {
@@ -56,7 +71,7 @@ class TableBodyRow extends React.Component {
     }
 
     return (
-      <TableRow
+      <StyledTableRow
         hover={options.rowHover ? true : false}
         {...methods}
         className={clsx(
@@ -76,9 +91,9 @@ class TableBodyRow extends React.Component {
         selected={rowSelected}
         {...rest}>
         {this.props.children}
-      </TableRow>
+      </StyledTableRow>
     );
   }
 }
 
-export default withStyles(TableBodyRow, defaultBodyRowStyles, { name: 'MUIDataTableBodyRow' });
+export default (TableBodyRow);

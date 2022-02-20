@@ -1,35 +1,51 @@
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import MuiTableBody from '@mui/material/TableBody';
 import TableBodyCell from './TableBodyCell';
 import TableBodyRow from './TableBodyRow';
 import TableSelectCell from './TableSelectCell';
-import { withStyles } from 'tss-react/mui';
 import cloneDeep from 'lodash.clonedeep';
 import { getPageValue } from '../utils';
 import clsx from 'clsx';
 
-const defaultBodyStyles = theme => ({
-  root: {},
-  emptyTitle: {
+const PREFIX = 'MUIDataTableBody';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  emptyTitle: `${PREFIX}-emptyTitle`,
+  lastStackedCell: `${PREFIX}-lastStackedCell`,
+  lastSimpleCell: `${PREFIX}-lastSimpleCell`
+};
+
+const StyledMuiTableBody = styled(MuiTableBody)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.root}`]: {},
+
+  [`& .${classes.emptyTitle}`]: {
     textAlign: 'center',
   },
-  lastStackedCell: {
+
+  [`& .${classes.lastStackedCell}`]: {
     [theme.breakpoints.down('md')]: {
       '& td:last-child': {
         borderBottom: 'none',
       },
     },
   },
-  lastSimpleCell: {
+
+  [`& .${classes.lastSimpleCell}`]: {
     [theme.breakpoints.down('sm')]: {
       '& td:last-child': {
         borderBottom: 'none',
       },
     },
-  },
-});
+  }
+}));
 
 class TableBody extends React.Component {
   static propTypes = {
@@ -235,7 +251,7 @@ class TableBody extends React.Component {
     const visibleColCnt = columns.filter(c => c.display === 'true').length;
 
     return (
-      <MuiTableBody>
+      <StyledMuiTableBody>
         {tableRows && tableRows.length > 0 ? (
           tableRows.map((data, rowIndex) => {
             const { data: row, dataIndex } = data;
@@ -330,9 +346,9 @@ class TableBody extends React.Component {
             </TableBodyCell>
           </TableBodyRow>
         )}
-      </MuiTableBody>
+      </StyledMuiTableBody>
     );
   }
 }
 
-export default withStyles(TableBody, defaultBodyStyles, { name: 'MUIDataTableBody' });
+export default (TableBody);

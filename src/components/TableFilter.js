@@ -1,4 +1,5 @@
 import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -14,45 +15,75 @@ import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
-import { withStyles } from 'tss-react/mui';
 import cloneDeep from 'lodash.clonedeep';
 
-export const defaultFilterStyles = theme => ({
-  root: {
+const PREFIX = 'MUIDataTableFilter';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  header: `${PREFIX}-header`,
+  title: `${PREFIX}-title`,
+  noMargin: `${PREFIX}-noMargin`,
+  reset: `${PREFIX}-reset`,
+  resetLink: `${PREFIX}-resetLink`,
+  filtersSelected: `${PREFIX}-filtersSelected`,
+  checkboxListTitle: `${PREFIX}-checkboxListTitle`,
+  checkboxFormGroup: `${PREFIX}-checkboxFormGroup`,
+  checkboxFormControl: `${PREFIX}-checkboxFormControl`,
+  checkboxFormControlLabel: `${PREFIX}-checkboxFormControlLabel`,
+  checkboxIcon: `${PREFIX}-checkboxIcon`,
+  checkbox: `${PREFIX}-checkbox`,
+  checked: `${PREFIX}-checked`,
+  gridListTile: `${PREFIX}-gridListTile`
+};
+
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`&.${classes.root}`]: {
     backgroundColor: theme.palette.background.default,
     padding: '24px 24px 36px 24px',
     fontFamily: 'Roboto',
   },
-  header: {
+
+  [`& .${classes.header}`]: {
     flex: '0 0 auto',
     marginBottom: '16px',
     width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
   },
-  title: {
+
+  [`& .${classes.title}`]: {
     display: 'inline-block',
     marginLeft: '7px',
     color: theme.palette.text.primary,
     fontSize: '14px',
     fontWeight: 500,
   },
-  noMargin: {
+
+  [`& .${classes.noMargin}`]: {
     marginLeft: '0px',
   },
-  reset: {
+
+  [`& .${classes.reset}`]: {
     alignSelf: 'left',
   },
-  resetLink: {
+
+  [`& .${classes.resetLink}`]: {
     marginLeft: '16px',
     fontSize: '12px',
     cursor: 'pointer',
   },
-  filtersSelected: {
+
+  [`& .${classes.filtersSelected}`]: {
     alignSelf: 'right',
   },
+
   /* checkbox */
-  checkboxListTitle: {
+  [`& .${classes.checkboxListTitle}`]: {
     marginLeft: '7px',
     marginBottom: '8px',
     fontSize: '14px',
@@ -60,27 +91,35 @@ export const defaultFilterStyles = theme => ({
     textAlign: 'left',
     fontWeight: 500,
   },
-  checkboxFormGroup: {
+
+  [`& .${classes.checkboxFormGroup}`]: {
     marginTop: '8px',
   },
-  checkboxFormControl: {
+
+  [`& .${classes.checkboxFormControl}`]: {
     margin: '0px',
   },
-  checkboxFormControlLabel: {
+
+  [`& .${classes.checkboxFormControlLabel}`]: {
     fontSize: '15px',
     marginLeft: '8px',
     color: theme.palette.text.primary,
   },
-  checkboxIcon: {
+
+  [`& .${classes.checkboxIcon}`]: {
     width: '32px',
     height: '32px',
   },
-  checkbox: {},
-  checked: {},
-  gridListTile: {
+
+  [`& .${classes.checkbox}`]: {},
+  [`& .${classes.checked}`]: {},
+
+  [`& .${classes.gridListTile}`]: {
     marginTop: '16px',
-  },
-});
+  }
+}));
+
+export {};
 
 class TableFilter extends React.Component {
   static propTypes = {
@@ -159,7 +198,7 @@ class TableFilter extends React.Component {
   renderCheckbox(column, index, components = {}) {
     const CheckboxComponent = components.Checkbox || Checkbox;
 
-    const { classes, filterData } = this.props;
+    const {  filterData } = this.props;
     const { filterList } = this.state;
     const renderItem =
       column.filterOptions && column.filterOptions.renderValue ? column.filterOptions.renderValue : v => v;
@@ -206,7 +245,7 @@ class TableFilter extends React.Component {
   }
 
   renderSelect(column, index) {
-    const { classes, filterData, options } = this.props;
+    const {  filterData, options } = this.props;
     const { filterList } = this.state;
     const textLabels = options.textLabels.filter;
     const renderItem =
@@ -244,7 +283,7 @@ class TableFilter extends React.Component {
   }
 
   renderTextField(column, index) {
-    const { classes } = this.props;
+    const { } = this.props;
     const { filterList } = this.state;
     if (column.filterOptions && column.filterOptions.renderValue) {
       console.warn('Custom renderValue not supported for textField filters');
@@ -274,7 +313,7 @@ class TableFilter extends React.Component {
   renderMultiselect(column, index, components = {}) {
     const CheckboxComponent = components.Checkbox || Checkbox;
 
-    const { classes, filterData } = this.props;
+    const {  filterData } = this.props;
     const { filterList } = this.state;
     const renderItem =
       column.filterOptions && column.filterOptions.renderValue ? column.filterOptions.renderValue : v => v;
@@ -318,7 +357,7 @@ class TableFilter extends React.Component {
   }
 
   renderCustomField(column, index) {
-    const { classes, filterData, options } = this.props;
+    const {  filterData, options } = this.props;
     const { filterList } = this.state;
     const width = (column.filterOptions && column.filterOptions.fullWidth) === true ? 12 : 6;
     const display =
@@ -370,11 +409,11 @@ class TableFilter extends React.Component {
   };
 
   render() {
-    const { classes, columns, options, customFooter, filterList, components = {} } = this.props;
+    const {  columns, options, customFooter, filterList, components = {} } = this.props;
     const textLabels = options.textLabels.filter;
 
     return (
-      <div className={classes.root}>
+      <Root className={classes.root}>
         <div className={classes.header}>
           <div className={classes.reset}>
             <Typography
@@ -413,9 +452,9 @@ class TableFilter extends React.Component {
           })}
         </Grid>
         {customFooter ? customFooter(filterList, this.applyFilters) : ''}
-      </div>
+      </Root>
     );
   }
 }
 
-export default withStyles(TableFilter, defaultFilterStyles, { name: 'MUIDataTableFilter' });
+export default (TableFilter);

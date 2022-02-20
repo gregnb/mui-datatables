@@ -1,24 +1,30 @@
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import MuiTable from '@mui/material/Table';
 import TablePagination from './TablePagination';
-import { makeStyles } from 'tss-react/mui';
 import PropTypes from 'prop-types';
 
-const useStyles = makeStyles({ name: 'MUIDataTableFooter' })(() => ({
-  root: {
+const PREFIX = 'MUIDataTableFooter';
+
+const classes = {
+  root: `${PREFIX}-root`
+};
+
+const StyledMuiTable = styled(MuiTable)(() => ({
+  [`&.${classes.root}`]: {
     '@media print': {
       display: 'none',
     },
-  },
+  }
 }));
 
 const TableFooter = ({ options, rowCount, page, rowsPerPage, changeRowsPerPage, changePage }) => {
-  const { classes } = useStyles();
+
   const { customFooter, pagination = true } = options;
 
   if (customFooter) {
     return (
-      <MuiTable className={classes.root}>
+      <StyledMuiTable className={classes.root}>
         {options.customFooter(
           rowCount,
           page,
@@ -27,7 +33,7 @@ const TableFooter = ({ options, rowCount, page, rowsPerPage, changeRowsPerPage, 
           changePage,
           options.textLabels.pagination,
         )}
-      </MuiTable>
+      </StyledMuiTable>
     );
   }
 

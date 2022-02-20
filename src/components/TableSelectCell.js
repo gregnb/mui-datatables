@@ -1,45 +1,72 @@
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Checkbox from '@mui/material/Checkbox';
 import TableCell from '@mui/material/TableCell';
-import { makeStyles } from 'tss-react/mui';
 import ExpandButton from './ExpandButton';
 
-const useStyles = makeStyles({ name: 'MUIDataTableSelectCell' })(theme => ({
-  root: {
+const PREFIX = 'MUIDataTableSelectCell';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  fixedHeader: `${PREFIX}-fixedHeader`,
+  fixedLeft: `${PREFIX}-fixedLeft`,
+  icon: `${PREFIX}-icon`,
+  expanded: `${PREFIX}-expanded`,
+  hide: `${PREFIX}-hide`,
+  headerCell: `${PREFIX}-headerCell`,
+  expandDisabled: `${PREFIX}-expandDisabled`,
+  checkboxRoot: `${PREFIX}-checkboxRoot`,
+  checked: `${PREFIX}-checked`,
+  disabled: `${PREFIX}-disabled`
+};
+
+const StyledTableCell = styled(TableCell)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.root}`]: {
     '@media print': {
       display: 'none',
     },
   },
-  fixedHeader: {
+
+  [`& .${classes.fixedHeader}`]: {
     position: 'sticky',
     top: '0px',
     zIndex: 100,
   },
-  fixedLeft: {
+
+  [`& .${classes.fixedLeft}`]: {
     position: 'sticky',
     left: '0px',
     zIndex: 100,
   },
-  icon: {
+
+  [`& .${classes.icon}`]: {
     cursor: 'pointer',
     transition: 'transform 0.25s',
   },
-  expanded: {
+
+  [`& .${classes.expanded}`]: {
     transform: 'rotate(90deg)',
   },
-  hide: {
+
+  [`& .${classes.hide}`]: {
     visibility: 'hidden',
   },
-  headerCell: {
+
+  [`& .${classes.headerCell}`]: {
     zIndex: 110,
     backgroundColor: theme.palette.background.paper,
   },
-  expandDisabled: {},
-  checkboxRoot: {},
-  checked: {},
-  disabled: {},
+
+  [`& .${classes.expandDisabled}`]: {},
+  [`& .${classes.checkboxRoot}`]: {},
+  [`& .${classes.checked}`]: {},
+  [`& .${classes.disabled}`]: {}
 }));
 
 const TableSelectCell = ({
@@ -62,7 +89,7 @@ const TableSelectCell = ({
   components = {},
   ...otherProps
 }) => {
-  const { classes } = useStyles();
+
   const CheckboxComponent = components.Checkbox || Checkbox;
   const ExpandButtonComponent = components.ExpandButton || ExpandButton;
 
@@ -120,7 +147,7 @@ const TableSelectCell = ({
   };
 
   return (
-    <TableCell className={cellClass} padding="checkbox" {...refProp}>
+    <StyledTableCell className={cellClass} padding="checkbox" {...refProp}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {expandableOn && (
           <ExpandButtonComponent
@@ -137,7 +164,7 @@ const TableSelectCell = ({
         )}
         {selectableOn !== 'none' && selectableRowsHideCheckboxes !== true && renderCheckBox()}
       </div>
-    </TableCell>
+    </StyledTableCell>
   );
 };
 

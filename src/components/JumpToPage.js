@@ -1,27 +1,45 @@
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import InputBase from '@mui/material/InputBase';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from 'tss-react/mui';
 import { getPageValue } from '../utils.js';
 import clsx from 'clsx';
 
-const useStyles = makeStyles({ name: 'MUIDataTableJumpToPage' })(theme => ({
-  root: {
+const PREFIX = 'MUIDataTableJumpToPage';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  caption: `${PREFIX}-caption`,
+  selectRoot: `${PREFIX}-selectRoot`,
+  select: `${PREFIX}-select`,
+  selectIcon: `${PREFIX}-selectIcon`,
+  input: `${PREFIX}-input`
+};
+
+const StyledToolbar = styled(Toolbar)((
+  {
+    theme
+  }
+) => ({
+  [`&.${classes.root}`]: {
     color: theme.palette.text.primary,
   },
-  caption: {
+
+  [`& .${classes.caption}`]: {
     flexShrink: 0,
   },
+
   /*  Styles applied to the Select component root element */
-  selectRoot: {
+  [`& .${classes.selectRoot}`]: {
     marginRight: 32,
     marginLeft: 8,
   },
-  select: {
+
+  [`& .${classes.select}`]: {
     paddingTop: 6,
     paddingBottom: 7,
     paddingLeft: 8,
@@ -30,18 +48,20 @@ const useStyles = makeStyles({ name: 'MUIDataTableJumpToPage' })(theme => ({
     textAlignLast: 'right',
     fontSize: theme.typography.pxToRem(14),
   },
+
   /* Styles applied to Select component icon class */
-  selectIcon: {},
+  [`& .${classes.selectIcon}`]: {},
+
   /* Styles applied to InputBase component */
-  input: {
+  [`& .${classes.input}`]: {
     color: 'inhert',
     fontSize: 'inhert',
     flexShrink: 0,
-  },
+  }
 }));
 
 function JumpToPage(props) {
-  const { classes } = useStyles();
+
 
   const handlePageChange = event => {
     props.changePage(parseInt(event.target.value, 10));
@@ -66,7 +86,7 @@ function JumpToPage(props) {
   };
 
   return (
-    <Toolbar style={myStyle} className={classes.root}>
+    <StyledToolbar style={myStyle} className={classes.root}>
       <Typography color="inherit" variant="body2" className={classes.caption}>
         {textLabel}
       </Typography>
@@ -82,7 +102,7 @@ function JumpToPage(props) {
           </MenuItemComponent>
         ))}
       </Select>
-    </Toolbar>
+    </StyledToolbar>
   );
 }
 

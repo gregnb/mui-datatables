@@ -1,4 +1,4 @@
-import { makeStyles } from 'tss-react/mui';
+import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import MuiTableHead from '@mui/material/TableHead';
 import React, { useState } from 'react';
@@ -6,21 +6,37 @@ import TableHeadCell from './TableHeadCell';
 import TableHeadRow from './TableHeadRow';
 import TableSelectCell from './TableSelectCell';
 
-const useStyles = makeStyles({ name: 'MUIDataTableHead' })(theme => ({
-  main: {},
-  responsiveStacked: {
+const PREFIX = 'MUIDataTableHead';
+
+const classes = {
+  main: `${PREFIX}-main`,
+  responsiveStacked: `${PREFIX}-responsiveStacked`,
+  responsiveStackedAlways: `${PREFIX}-responsiveStackedAlways`,
+  responsiveSimple: `${PREFIX}-responsiveSimple`
+};
+
+const StyledMuiTableHead = styled(MuiTableHead)((
+  {
+    theme
+  }
+) => ({
+  [`&.${classes.main}`]: {},
+
+  [`&.${classes.responsiveStacked}`]: {
     [theme.breakpoints.down('md')]: {
       display: 'none',
     },
   },
-  responsiveStackedAlways: {
+
+  [`&.${classes.responsiveStackedAlways}`]: {
     display: 'none',
   },
-  responsiveSimple: {
+
+  [`&.${classes.responsiveSimple}`]: {
     [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
-  },
+  }
 }));
 
 const TableHead = ({
@@ -43,7 +59,7 @@ const TableHead = ({
   toggleSort,
   updateColumnOrder,
 }) => {
-  const { classes } = useStyles();
+
 
   if (columnOrder === null) {
     columnOrder = columns ? columns.map((item, idx) => idx) : [];
@@ -95,7 +111,7 @@ const TableHead = ({
   });
 
   return (
-    <MuiTableHead
+    <StyledMuiTableHead
       className={clsx({
         [classes.responsiveStacked]:
           options.responsive === 'vertical' ||
@@ -162,7 +178,7 @@ const TableHead = ({
             )),
         )}
       </TableHeadRow>
-    </MuiTableHead>
+    </StyledMuiTableHead>
   );
 };
 

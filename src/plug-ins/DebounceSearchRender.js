@@ -1,10 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { styled } from '@mui/material/styles';
 import Grow from '@mui/material/Grow';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
-import { withStyles } from 'tss-react/mui';
+const PREFIX = 'MUIDataTableSearch';
+
+const classes = {
+  main: `${PREFIX}-main`,
+  searchIcon: `${PREFIX}-searchIcon`,
+  searchText: `${PREFIX}-searchText`,
+  clearIcon: `${PREFIX}-clearIcon`
+};
+
+const StyledDebounceTableSearch
+ = styled(DebounceTableSearch
+)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.main}`]: {
+    display: 'flex',
+    flex: '1 0 auto',
+    alignItems: 'center',
+  },
+
+  [`& .${classes.searchIcon}`]: {
+    color: theme.palette.text.secondary,
+    marginRight: '8px',
+  },
+
+  [`& .${classes.searchText}`]: {
+    flex: '0.8 0',
+  },
+
+  [`& .${classes.clearIcon}`]: {
+    '&:hover': {
+      color: theme.palette.error.main,
+    },
+  }
+}));
 
 function debounce(func, wait, immediate) {
   var timeout;
@@ -21,26 +58,6 @@ function debounce(func, wait, immediate) {
     if (callNow) func.apply(context, args);
   };
 }
-
-const defaultStyles = theme => ({
-  main: {
-    display: 'flex',
-    flex: '1 0 auto',
-    alignItems: 'center',
-  },
-  searchIcon: {
-    color: theme.palette.text.secondary,
-    marginRight: '8px',
-  },
-  searchText: {
-    flex: '0.8 0',
-  },
-  clearIcon: {
-    '&:hover': {
-      color: theme.palette.error.main,
-    },
-  },
-});
 
 class _DebounceTableSearch extends React.Component {
   handleTextChangeWrapper = debouncedSearch => {
@@ -65,7 +82,7 @@ class _DebounceTableSearch extends React.Component {
 
 
   render() {
-    const { classes, options, onHide, searchText, debounceWait } = this.props;
+    const {  options, onHide, searchText, debounceWait } = this.props;
 
     const debouncedSearch = debounce(value => {
       this.props.onSearch(value);
@@ -102,7 +119,7 @@ class _DebounceTableSearch extends React.Component {
   }
 }
 
-var DebounceTableSearch = withStyles(_DebounceTableSearch, defaultStyles, { name: 'MUIDataTableSearch' });
+var DebounceTableSearch = _DebounceTableSearch;
 export { DebounceTableSearch };
 
 export function debounceSearchRender(debounceWait = 200) {

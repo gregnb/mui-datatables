@@ -1,14 +1,27 @@
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { withStyles } from 'tss-react/mui';
 import MuiTooltip from '@mui/material/Tooltip';
 
-const defaultToolbarSelectStyles = theme => ({
-  root: {
+const PREFIX = 'MUIDataTableToolbarSelect';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  title: `${PREFIX}-title`,
+  iconButton: `${PREFIX}-iconButton`,
+  deleteIcon: `${PREFIX}-deleteIcon`
+};
+
+const StyledPaper = styled(Paper)((
+  {
+    theme
+  }
+) => ({
+  [`&.${classes.root}`]: {
     backgroundColor: theme.palette.background.default,
     flex: '1 1 100%',
     display: 'flex',
@@ -22,14 +35,17 @@ const defaultToolbarSelectStyles = theme => ({
       display: 'none',
     },
   },
-  title: {
+
+  [`& .${classes.title}`]: {
     paddingLeft: '26px',
   },
-  iconButton: {
+
+  [`& .${classes.iconButton}`]: {
     marginRight: '24px',
   },
-  deleteIcon: {},
-});
+
+  [`& .${classes.deleteIcon}`]: {}
+}));
 
 class TableToolbarSelect extends React.Component {
   static propTypes = {
@@ -63,12 +79,12 @@ class TableToolbarSelect extends React.Component {
   };
 
   render() {
-    const { classes, onRowsDelete, selectedRows, options, displayData, components = {} } = this.props;
+    const {  onRowsDelete, selectedRows, options, displayData, components = {} } = this.props;
     const textLabels = options.textLabels.selectedRows;
     const Tooltip = components.Tooltip || MuiTooltip;
 
     return (
-      <Paper className={classes.root}>
+      <StyledPaper className={classes.root}>
         <div>
           <Typography variant="subtitle1" className={classes.title}>
             {selectedRows.data.length} {textLabels.text}
@@ -83,9 +99,9 @@ class TableToolbarSelect extends React.Component {
             </IconButton>
           </Tooltip>
         )}
-      </Paper>
+      </StyledPaper>
     );
   }
 }
 
-export default withStyles(TableToolbarSelect, defaultToolbarSelectStyles, { name: 'MUIDataTableToolbarSelect' });
+export default (TableToolbarSelect);
