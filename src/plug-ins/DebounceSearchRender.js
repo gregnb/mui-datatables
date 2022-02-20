@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { styled } from '@mui/material/styles';
 import Grow from '@mui/material/Grow';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
+
 const PREFIX = 'MUIDataTableSearch';
 
 const classes = {
@@ -14,13 +15,7 @@ const classes = {
   clearIcon: `${PREFIX}-clearIcon`
 };
 
-const StyledDebounceTableSearch
- = styled(DebounceTableSearch
-)((
-  {
-    theme
-  }
-) => ({
+const StyledDebounceTableSearch = styled(Grow)(({ theme }) => ({
   [`& .${classes.main}`]: {
     display: 'flex',
     flex: '1 0 auto',
@@ -92,7 +87,7 @@ class _DebounceTableSearch extends React.Component {
 
 
     return (
-      <Grow appear in={true} timeout={300}>
+      <StyledDebounceTableSearch appear in={true} timeout={300}>
         <div className={classes.main}>
           <SearchIcon className={classes.searchIcon} />
           <TextField
@@ -114,7 +109,7 @@ class _DebounceTableSearch extends React.Component {
             <ClearIcon />
           </IconButton>
         </div>
-      </Grow>
+      </StyledDebounceTableSearch>
     );
   }
 }

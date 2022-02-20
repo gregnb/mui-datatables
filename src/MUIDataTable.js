@@ -1,7 +1,6 @@
 import Paper from '@mui/material/Paper';
 import MuiTable from '@mui/material/Table';
 import MuiTooltip from '@mui/material/Tooltip';
-import { withStyles } from 'tss-react/mui';
 import clsx from 'clsx';
 import assignwith from 'lodash.assignwith';
 import cloneDeep from 'lodash.clonedeep';
