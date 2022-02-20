@@ -1,12 +1,14 @@
 import React from "react";
+import { styled } from '@mui/material/styles';
 import TableFooter from "@mui/material/TableFooter";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import MuiTablePagination from "@mui/material/TablePagination";
-import { withStyles } from "tss-react/mui";
+const PREFIX = 'CustomFooter';
+const classes = {};
 
-const defaultFooterStyles = {
-};
+const StyledTableFooter = styled(TableFooter)({
+});
 
 class CustomFooter extends React.Component {
 
@@ -19,7 +21,7 @@ class CustomFooter extends React.Component {
   };
 
   render() {
-    const { count, classes, textLabels, rowsPerPage, page } = this.props;
+    const { count,  textLabels, rowsPerPage, page } = this.props;
 
     const footerStyle = {
       display:'flex', 
@@ -28,7 +30,7 @@ class CustomFooter extends React.Component {
     };
 
     return (
-      <TableFooter>
+      <StyledTableFooter>
         <TableRow>
           <TableCell style={footerStyle} colSpan={1000}>
             <button>Custom Option</button>
@@ -52,10 +54,10 @@ class CustomFooter extends React.Component {
             />
           </TableCell>
         </TableRow>
-      </TableFooter>
+      </StyledTableFooter>
     );
   }
 
 }
 
-export default withStyles(CustomFooter, defaultFooterStyles, { name: "CustomFooter" });
+export default (CustomFooter);

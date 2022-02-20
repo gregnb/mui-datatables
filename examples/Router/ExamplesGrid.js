@@ -1,35 +1,46 @@
 import {Link} from "react-router-dom";
+import { styled } from '@mui/material/styles';
 import {Card, CardContent, Grid, Typography} from "@mui/material";
 import React from "react";
 import examples from "../examples";
-import { withStyles } from "tss-react/mui";
 import TextField from '@mui/material/TextField';
 
-const styles = {
-    container: {
+const PREFIX = 'ExamplesGrid';
+
+const classes = {
+  container: `${PREFIX}-container`,
+  card: `${PREFIX}-card`,
+  cardContent: `${PREFIX}-cardContent`,
+  link: `${PREFIX}-link`,
+  label: `${PREFIX}-label`
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')({
+    [`& .${classes.container}`]: {
         flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 16,
     },
-    card: {
+    [`& .${classes.card}`]: {
         '&:hover': {
             background: 'lightgrey',
             fontWeight: 500,
         }
     },
-    cardContent: {
+    [`& .${classes.cardContent}`]: {
         '&:last-child': {
             padding: 8,
         }
     },
-    link: {
+    [`& .${classes.link}`]: {
         textDecoration: 'none',
     },
-    label: {
+    [`& .${classes.label}`]: {
         fontWeight: 'inherit'
     }
-};
+});
 
 class ExamplesGrid extends React.Component {
 
@@ -59,7 +70,7 @@ class ExamplesGrid extends React.Component {
     });
 
     return (
-      <React.Fragment>
+      <Root>
         <Typography variant="h5" align="center">Choose an Example</Typography>
         <Typography variant="subtitle2" align="center">({examplesSortedKeys.length}) Examples</Typography>
 
@@ -80,9 +91,9 @@ class ExamplesGrid extends React.Component {
             </Grid>
           ))}
         </Grid>
-      </React.Fragment>
+      </Root>
     );
   }
 }
 
-export default withStyles(ExamplesGrid, styles);
+export default (ExamplesGrid);

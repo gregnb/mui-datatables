@@ -1,7 +1,7 @@
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import MUIDataTable from '../../src/';
-import { ThemeProvider } from '@mui/material/styles';
-import { withStyles } from 'tss-react/mui';
+import { ThemeProvider } from '@mui/styles';
 import { createTheme } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
@@ -10,22 +10,31 @@ import clsx from 'clsx';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 
-const muiCache = createCache({
-  key: 'mui-datatables',
-  prepend: true,
-});
+const PREFIX = 'ExampleCard.js';
 
-const customStyles = theme => ({
-  BusinessAnalystRow: {
+const classes = {
+  BusinessAnalystRow: `${PREFIX}-BusinessAnalystRow`,
+  GreyLine: `${PREFIX}-GreyLine`,
+  NameCell: `${PREFIX}-NameCell`
+};
+
+const StyledThemeProvider = styled(ThemeProvider)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.BusinessAnalystRow}`]: {
     '& td': { backgroundColor: '#FAA' },
   },
-  GreyLine: {
+
+  [`& .${classes.GreyLine}`]: {
     '& td': { backgroundColor: theme.palette.grey[200] },
   },
-  NameCell: {
+
+  [`& .${classes.NameCell}`]: {
     fontWeight: 900,
-  },
-});
+  }
+}));
 
 class Example extends React.Component {
   constructor(props) {
@@ -210,37 +219,30 @@ class Example extends React.Component {
     };
 
     return (
-      <CacheProvider value={muiCache}>
-        <ThemeProvider theme={this.getMuiTheme()}>
-          <FormGroup row>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={this.state.denseTable}
-                  onChange={this.toggleDenseTable}
-                  value="denseTable"
-                  color="primary"
-                />
-              }
-              label="Dense Table"
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={this.state.vertical}
-                  onChange={this.toggleResponsive}
-                  value="vertical"
-                  color="primary"
-                />
-              }
-              label="Responsive Vertical Table"
-            />
-          </FormGroup>
-          <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />
-        </ThemeProvider>
-      </CacheProvider>
+      <StyledThemeProvider theme={this.getMuiTheme()}>
+        <FormGroup row>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={this.state.denseTable}
+                onChange={this.toggleDenseTable}
+                value="denseTable"
+                color="primary"
+              />
+            }
+            label="Dense Table"
+          />
+          <FormControlLabel
+            control={
+              <Switch checked={this.state.vertical} onChange={this.toggleResponsive} value="vertical" color="primary" />
+            }
+            label="Responsive Vertical Table"
+          />
+        </FormGroup>
+        <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />
+      </StyledThemeProvider>
     );
   }
 }
 
-export default withStyles(Example, customStyles, { name: 'ExampleCardjs' });
+export default (Example);

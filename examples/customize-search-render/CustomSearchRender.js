@@ -1,24 +1,37 @@
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import Grow from '@mui/material/Grow';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
-import { withStyles } from "tss-react/mui";
+const PREFIX = 'CustomSearchRender';
 
-const defaultSearchStyles = theme => ({
-  main: {
+const classes = {
+  main: `${PREFIX}-main`,
+  searchText: `${PREFIX}-searchText`,
+  clearIcon: `${PREFIX}-clearIcon`
+};
+
+const StyledGrow = styled(Grow)((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.main}`]: {
     display: 'flex',
     flex: '1 0 auto',
   },
-  searchText: {
+
+  [`& .${classes.searchText}`]: {
     flex: '0.8 0',
   },
-  clearIcon: {
+
+  [`& .${classes.clearIcon}`]: {
     '&:hover': {
       color: theme.palette.error.main,
     },
-  },
-});
+  }
+}));
 
 class CustomSearchRender extends React.Component {
   handleTextChange = event => {
@@ -40,10 +53,10 @@ class CustomSearchRender extends React.Component {
   };
 
   render() {
-    const { classes, options, onHide, searchText } = this.props;
+    const {  options, onHide, searchText } = this.props;
 
     return (
-      <Grow appear in={true} timeout={300}>
+      <StyledGrow appear in={true} timeout={300}>
         <div className={classes.main} ref={el => (this.rootRef = el)}>
           <TextField
             placeholder={'Custom TableSearch without search icon'}
@@ -60,9 +73,9 @@ class CustomSearchRender extends React.Component {
             <ClearIcon />
           </IconButton>
         </div>
-      </Grow>
+      </StyledGrow>
     );
   }
 }
 
-export default withStyles(CustomSearchRender, defaultSearchStyles, { name: 'CustomSearchRender' });
+export default (CustomSearchRender);

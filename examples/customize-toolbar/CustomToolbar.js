@@ -1,12 +1,19 @@
 import React from "react";
+import { styled } from '@mui/material/styles';
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import AddIcon from "@mui/icons-material/Add";
-import { withStyles } from "tss-react/mui";
-const defaultToolbarStyles = {
-  iconButton: {
-  },
+const PREFIX = 'CustomToolbar';
+
+const classes = {
+  iconButton: `${PREFIX}-iconButton`
 };
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')({
+  [`& .${classes.iconButton}`]: {
+  },
+});
 
 class CustomToolbar extends React.Component {
   
@@ -15,19 +22,19 @@ class CustomToolbar extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { } = this.props;
 
     return (
-      <React.Fragment>
+      <Root>
         <Tooltip title={"custom icon"}>
           <IconButton className={classes.iconButton} onClick={this.handleClick}>
             <AddIcon className={classes.deleteIcon} />
           </IconButton>
         </Tooltip>
-      </React.Fragment>
+      </Root>
     );
   }
 
 }
 
-export default withStyles(CustomToolbar, defaultToolbarStyles, { name: "CustomToolbar" });
+export default (CustomToolbar);

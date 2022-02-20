@@ -1,4 +1,5 @@
 import React, { Fragment, Component } from "react";
+import { styled } from '@mui/material/styles';
 import { Waypoint } from "react-waypoint";
 import PropTypes from "prop-types";
 import MUIDataTable from "../../src/";
@@ -11,30 +12,45 @@ import {
   TableRow,
   Paper
 } from "@mui/material";
-import { withStyles } from "tss-react/mui";
+const PREFIX = 'index';
 
-const styles = theme => ({
-  root: {
+const classes = {
+  root: `${PREFIX}-root`,
+  head: `${PREFIX}-head`,
+  table: `${PREFIX}-table`,
+  tableCell: `${PREFIX}-tableCell`
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.root}`]: {
     width: "100%",
     overflowX: "auto",
     height: 300,
     flexGrow: 1
   },
-  head: {
+
+  [`& .${classes.head}`]: {
     backgroundColor: theme.palette.primary.main,
     color: "#fff",
     position: "sticky",
     fontSize: ".6rem",
     top: 0
   },
-  table: {
+
+  [`& .${classes.table}`]: {
     minWidth: 700,
     height: 200
   },
-  tableCell: {
+
+  [`& .${classes.tableCell}`]: {
     fontSize: ".6rem"
   }
-});
+}));
 
 class MessageManager extends Component {
   constructor(props) {
@@ -62,7 +78,7 @@ class MessageManager extends Component {
           
           if (rowIndex === filteredMessages.length - 10) {
             return (
-              <Fragment>
+              <Root>
                 <Waypoint
                   onEnter={() => {
                     console.log("WAYPOINT REACHED");
@@ -77,7 +93,7 @@ class MessageManager extends Component {
                   }}
                 />
                 {value}*
-              </Fragment>
+              </Root>
             );
           } else {
             return <Fragment>{value}</Fragment>;
@@ -169,7 +185,7 @@ class MessageManager extends Component {
 
   // eslint-disable-next-line max-lines-per-function
   render() {
-    const { classes } = this.props;
+    const { } = this.props;
     const { filteredMessages } = this.state;
     return (
       <Fragment>
@@ -186,4 +202,4 @@ MessageManager.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(MessageManager, styles);
+export default (MessageManager);

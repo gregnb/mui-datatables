@@ -1,21 +1,28 @@
 import React from "react";
+import { styled } from '@mui/material/styles';
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import BlockIcon from "@mui/icons-material/Block";
-import { withStyles } from "tss-react/mui";
+const PREFIX = 'CustomToolbarSelect';
 
-const defaultToolbarSelectStyles = {
-  iconButton: {
+const classes = {
+  iconButton: `${PREFIX}-iconButton`,
+  iconContainer: `${PREFIX}-iconContainer`,
+  inverseIcon: `${PREFIX}-inverseIcon`
+};
+
+const Root = styled('div')({
+  [`& .${classes.iconButton}`]: {
   },
-  iconContainer: {
+  [`&.${classes.iconContainer}`]: {
     marginRight: "24px",
   },
-  inverseIcon: {
+  [`& .${classes.inverseIcon}`]: {
     transform: "rotate(90deg)",
   },
-};
+});
 
 class CustomToolbarSelect extends React.Component {
   handleClickInverseSelection = () => {
@@ -39,10 +46,10 @@ class CustomToolbarSelect extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { } = this.props;
 
     return (
-      <div className={classes.iconContainer}>
+      <Root className={classes.iconContainer}>
         <Tooltip title={"Deselect ALL"}>
           <IconButton className={classes.iconButton} onClick={this.handleClickDeselectAll}>
             <IndeterminateCheckBoxIcon className={classes.icon} />
@@ -58,9 +65,9 @@ class CustomToolbarSelect extends React.Component {
             <BlockIcon className={classes.icon} />
           </IconButton>
         </Tooltip>
-      </div>
+      </Root>
     );
   }
 }
 
-export default withStyles(CustomToolbarSelect, defaultToolbarSelectStyles, { name: "CustomToolbarSelect" });
+export default (CustomToolbarSelect);

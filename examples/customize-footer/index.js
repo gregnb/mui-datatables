@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
+import { styled } from '@mui/material/styles';
 import MUIDataTable from '../../src/';
 import CustomFooter from './CustomFooter';
-import { makeStyles } from "tss-react/mui";
-
 import TableFooter from '@mui/material/TableFooter';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
@@ -11,22 +10,35 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import clsx from 'clsx';
 
-const useStyles = makeStyles()(theme => ({
-  footerCell: {
+const PREFIX = 'Example';
+
+const classes = {
+  footerCell: `${PREFIX}-footerCell`,
+  stickyFooterCell: `${PREFIX}-stickyFooterCell`
+};
+
+// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
+const Root = styled('div')((
+  {
+    theme
+  }
+) => ({
+  [`& .${classes.footerCell}`]: {
     backgroundColor: theme.palette.background.paper,
     borderBottom: 'none',
   },
-  stickyFooterCell: {
+
+  [`& .${classes.stickyFooterCell}`]: {
     position: 'sticky',
     bottom: 0,
     zIndex: 100,
-  },
+  }
 }));
 
 function Example() {
   const [resizableColumns, setResizableColumns] = useState(false);
   const [stickyFooter, setStickyFooter] = useState(true);
-  const { classes } = useStyles();
+
 
   const columns = ['Name', 'Title', 'Location', 'Age', 'Salary'];
 
@@ -134,7 +146,7 @@ function Example() {
   };
 
   return (
-    <>
+    (<Root>
       <FormGroup row>
         <FormControlLabel
           control={
@@ -160,7 +172,7 @@ function Example() {
         />
       </FormGroup>
       <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />
-    </>
+    </Root>)
   );
 }
 

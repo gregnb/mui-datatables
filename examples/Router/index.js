@@ -1,7 +1,7 @@
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import ReactDOM from 'react-dom';
-import { HashRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
-import { withStyles } from 'tss-react/mui';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import ExamplesGrid from './ExamplesGrid';
 import examples from '../examples';
 import Button from '@mui/material/Button';
@@ -9,15 +9,22 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 
-const styles = {
-  root: {
+const PREFIX = 'index';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  contentWrapper: `${PREFIX}-contentWrapper`
+};
+
+const StyledApp = styled(App)({
+  [`& .${classes.root}`]: {
     display: 'flex',
     justifyContent: 'center',
   },
-  contentWrapper: {
+  [`& .${classes.contentWrapper}`]: {
     width: '100%',
   },
-};
+});
 
 const muiCache = createCache({
   key: 'mui-datatables',
@@ -30,7 +37,7 @@ class Examples extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { } = this.props;
 
     var returnHomeStyle = { padding: '0px', margin: '20px 0 20px 0' };
 
@@ -69,7 +76,7 @@ class Examples extends React.Component {
   }
 }
 
-const StyledExamples = withRouter(withStyles(Examples, styles));
+const StyledExamples = withRouter((Examples));
 
 function App() {
   return (
@@ -79,4 +86,4 @@ function App() {
   );
 }
 
-ReactDOM.render(<App />, document.getElementById('app-root'));
+ReactDOM.render(<StyledApp />, document.getElementById('app-root'));
