@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Grow from '@mui/material/Grow';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
-import { withStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
 
 function debounce(func, wait, immediate) {
   var timeout;
@@ -26,7 +26,7 @@ const defaultStyles = theme => ({
   main: {
     display: 'flex',
     flex: '1 0 auto',
-    alignItems: "center"
+    alignItems: 'center',
   },
   searchIcon: {
     color: theme.palette.text.secondary,
@@ -63,12 +63,16 @@ class _DebounceTableSearch extends React.Component {
     }
   };
 
+
   render() {
     const { classes, options, onHide, searchText, debounceWait } = this.props;
 
     const debouncedSearch = debounce(value => {
       this.props.onSearch(value);
     }, debounceWait);
+
+    const clearIconVisibility = options.searchAlwaysOpen ? 'hidden' : 'visible';
+
 
     return (
       <Grow appear in={true} timeout={300}>
@@ -89,7 +93,7 @@ class _DebounceTableSearch extends React.Component {
             placeholder={options.searchPlaceholder}
             {...(options.searchProps ? options.searchProps : {})}
           />
-          <IconButton className={classes.clearIcon} onClick={onHide}>
+          <IconButton className={classes.clearIcon} style={{ visibility: clearIconVisibility }}  onClick={onHide}>
             <ClearIcon />
           </IconButton>
         </div>
@@ -98,7 +102,7 @@ class _DebounceTableSearch extends React.Component {
   }
 }
 
-var DebounceTableSearch = withStyles(defaultStyles, { name: 'MUIDataTableSearch' })(_DebounceTableSearch);
+var DebounceTableSearch = withStyles(_DebounceTableSearch, defaultStyles, { name: 'MUIDataTableSearch' });
 export { DebounceTableSearch };
 
 export function debounceSearchRender(debounceWait = 200) {

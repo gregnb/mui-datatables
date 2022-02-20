@@ -5,9 +5,9 @@ import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-const useStyles = makeStyles(
+const useStyles = makeStyles()(
   theme => ({
     root: {
       padding: '16px 24px 16px 24px',
@@ -42,7 +42,7 @@ const useStyles = makeStyles(
 );
 
 const TableViewCol = ({ columns, options, components = {}, onColumnUpdate, updateColumns }) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const textLabels = options.textLabels.viewColumns;
   const CheckboxComponent = components.Checkbox || Checkbox;
 

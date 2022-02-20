@@ -2,7 +2,6 @@ import React, { Fragment, Component } from "react";
 import { Waypoint } from "react-waypoint";
 import PropTypes from "prop-types";
 import MUIDataTable from "../../src/";
-import { ThemeProvider } from "@mui/styles";
 import { createTheme } from "@mui/material/styles";
 import {
   Table,
@@ -12,7 +11,7 @@ import {
   TableRow,
   Paper
 } from "@mui/material";
-import { withStyles } from "@mui/styles";
+import { withStyles } from "tss-react/mui";
 
 const styles = theme => ({
   root: {
@@ -187,4 +186,4 @@ MessageManager.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(MessageManager);
+export default withStyles(MessageManager, styles);

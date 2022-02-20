@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import clsx from 'clsx';
 import TableCell from '@mui/material/TableCell';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-const useStyles = makeStyles(
+const useStyles = makeStyles()(
   theme => ({
     root: {},
     cellHide: {
@@ -94,7 +94,7 @@ const useStyles = makeStyles(
 );
 
 function TableBodyCell(props) {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const {
     children,
     colIndex,

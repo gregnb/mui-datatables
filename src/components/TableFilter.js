@@ -14,7 +14,7 @@ import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
-import { withStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
 import cloneDeep from 'lodash.clonedeep';
 
 export const defaultFilterStyles = theme => ({
@@ -373,6 +373,8 @@ class TableFilter extends React.Component {
     const { classes, columns, options, customFooter, filterList, components = {} } = this.props;
     const textLabels = options.textLabels.filter;
 
+    console.log('classes', classes);
+
     return (
       <div className={classes.root}>
         <div className={classes.header}>
@@ -418,4 +420,4 @@ class TableFilter extends React.Component {
   }
 }
 
-export default withStyles(defaultFilterStyles, { name: 'MUIDataTableFilter' })(TableFilter);
+export default withStyles(TableFilter, defaultFilterStyles, { name: 'MUIDataTableFilter' });

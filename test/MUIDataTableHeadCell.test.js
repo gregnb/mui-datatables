@@ -1,7 +1,7 @@
 import React from 'react';
 import { spy, stub } from 'sinon';
 import { mount, shallow } from 'enzyme';
-import { assert, expect, should } from 'chai';
+import { assert } from 'chai';
 import getTextLabels from '../src/textLabels';
 import TableHeadCell from '../src/components/TableHeadCell';
 import TableCell from '@mui/material/TableCell';

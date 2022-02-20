@@ -37,22 +37,22 @@ Version 3 has been released! You can read about the [updates here](https://githu
 
 `npm install mui-datatables --save`
 
-If your project doesn't already use them, you need to install `@material-ui/core` and `@material-ui/icons` as well.
+If your project doesn't already use them, you need to install `@mui/material`,  `@mui/icons-material` and `tss-react` as well.
+
+## Compatibility
+
+| mui-datatables | material-ui | Required Dependencies                                |                                         
+|----------------|-------------|------------------------------------------------------|
+| ^2.0.0         | ^3.0.0      | `@material-ui/core`,`@material-ui/icons`             |
+| ^3.0.0         | ^4.10.0     | `@material-ui/core`,`@material-ui/icons`             |
+| ^3.8.0         | ^4.12.0     | `@material-ui/core`,`@material-ui/icons`             |
+| ^4.0.0         | ^5.0.0      | `@mui/material`,`@mui/icons-material`, `@mui/styles` |
 
 ## Demo
 
 [![Edit react-to-print](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/muidatatables-custom-toolbar-forked-j002q?file=/index.js)
 
 Browse live demos of all examples in this repo in [here](https://codesandbox.io/s/github/gregnb/mui-datatables)!
-
-## compatibility
-
-| mui-datatables  | material |
-| ------------- | ------------- |
-| ^2.0.0  | ^3.0.0  |
-| ^3.0.0  | ^4.10.0  |
-| ^3.8.0  | ^4.12.0  |
-| ^4.0.0  | ^5.0.0  |
 
 ## Usage
 
@@ -247,7 +247,7 @@ The component accepts the following props:
 |**`tableBodyMaxHeight`**|string||CSS string for the height of the table (ex: '500px', '100%', 'auto').
 |**`textLabels`**|object||User provided labels to localize text.
 |**`viewColumns`**|boolean or string|true|Show/hide viewColumns icon from toolbar. Possible values:<p><ul><li>true: Button is visiable and clickable.</li><li>false: Button is not visible.</li><li>disabled: Button is visible, but not clickable.</li></ul></p>
-|**`storageKey`**|string|| ave current state to local storage.
+|**`storageKey`**|string|| save current state to local storage.
 
 ## Customize Columns
 
@@ -367,10 +367,12 @@ import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 class BodyCellExample extends React.Component {
 
   getMuiTheme = () => createTheme({
-    overrides: {
+    components: {
       MUIDataTableBodyCell: {
-        root: {
-          backgroundColor: "#FF0000"
+        styleOverrides:{
+          root: {
+              backgroundColor: "#FF0000"
+          }
         }
       }
     }
