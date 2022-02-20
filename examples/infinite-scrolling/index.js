@@ -1,55 +1,43 @@
-import React, { Fragment, Component } from "react";
-import { styled } from '@mui/material/styles';
-import { Waypoint } from "react-waypoint";
-import PropTypes from "prop-types";
-import MUIDataTable from "../../src/";
-import { createTheme } from "@mui/material/styles";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Paper
-} from "@mui/material";
+import React, { Component, Fragment } from 'react';
+import { createTheme, styled } from '@mui/material/styles';
+import { Waypoint } from 'react-waypoint';
+import PropTypes from 'prop-types';
+import MUIDataTable from '../../src/';
+
 const PREFIX = 'index';
 
 const classes = {
   root: `${PREFIX}-root`,
   head: `${PREFIX}-head`,
   table: `${PREFIX}-table`,
-  tableCell: `${PREFIX}-tableCell`
+  tableCell: `${PREFIX}-tableCell`,
 };
 
 // TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
-const Root = styled('div')((
-  {
-    theme
-  }
-) => ({
+const Root = styled('div')(({ theme }) => ({
   [`& .${classes.root}`]: {
-    width: "100%",
-    overflowX: "auto",
+    width: '100%',
+    overflowX: 'auto',
     height: 300,
-    flexGrow: 1
+    flexGrow: 1,
   },
 
   [`& .${classes.head}`]: {
     backgroundColor: theme.palette.primary.main,
-    color: "#fff",
-    position: "sticky",
-    fontSize: ".6rem",
-    top: 0
+    color: '#fff',
+    position: 'sticky',
+    fontSize: '.6rem',
+    top: 0,
   },
 
   [`& .${classes.table}`]: {
     minWidth: 700,
-    height: 200
+    height: 200,
   },
 
   [`& .${classes.tableCell}`]: {
-    fontSize: ".6rem"
-  }
+    fontSize: '.6rem',
+  },
 }));
 
 class MessageManager extends Component {
@@ -58,7 +46,7 @@ class MessageManager extends Component {
     this.props = props;
 
     this.state = {
-      filteredMessages: []
+      filteredMessages: [],
     };
   }
 
@@ -68,27 +56,24 @@ class MessageManager extends Component {
 
   columns = [
     {
-      name: "Id",
+      name: 'Id',
       options: {
         filter: false,
         sort: false,
         customBodyRenderLite: (dataIndex, rowIndex) => {
           const { filteredMessages } = this.state;
           let value = filteredMessages[dataIndex][0];
-          
+
           if (rowIndex === filteredMessages.length - 10) {
             return (
               <Root>
                 <Waypoint
                   onEnter={() => {
-                    console.log("WAYPOINT REACHED");
-                    const newData = this.buildTestData(
-                      30,
-                      filteredMessages.length
-                    );
-                    
+                    console.log('WAYPOINT REACHED');
+                    const newData = this.buildTestData(30, filteredMessages.length);
+
                     this.setState({
-                      filteredMessages: [...filteredMessages, ...newData]
+                      filteredMessages: [...filteredMessages, ...newData],
                     });
                   }}
                 />
@@ -98,46 +83,46 @@ class MessageManager extends Component {
           } else {
             return <Fragment>{value}</Fragment>;
           }
-        }
-      }
+        },
+      },
     },
     {
-      name: "Message",
-      options:{
+      name: 'Message',
+      options: {
         sort: false,
-      }
+      },
     },
     {
-      name: "Requester",
-      options:{
+      name: 'Requester',
+      options: {
         sort: false,
-      }
-    }
+      },
+    },
   ];
 
   options = {
     filter: false,
     fixedHeader: true,
-    filterType: "dropdown",
-    responsive: "standard",
-    selectableRows: "none",
+    filterType: 'dropdown',
+    responsive: 'standard',
+    selectableRows: 'none',
     pagination: false,
-    tableBodyHeight:'500px',
+    tableBodyHeight: '500px',
     onRowClick(rowNode) {
       console.log(rowNode);
-    }
+    },
   };
 
   /*eslint-disable */
   buildTestData(count, startingIndex) {
     const data = [
-      ["Template 1", "Requester Jerry"],
-      ["Template 2", "Test user 1"],
-      ["Order66", "Test user 2"],
-      ["Live Message", "Another Person"],
-      ["Future Message", "John Doe"],
-      ["Expired Message", "Jane Doe"],
-      ["Retired Message", "Some Guy"]
+      ['Template 1', 'Requester Jerry'],
+      ['Template 2', 'Test user 1'],
+      ['Order66', 'Test user 2'],
+      ['Live Message', 'Another Person'],
+      ['Future Message', 'John Doe'],
+      ['Expired Message', 'Jane Doe'],
+      ['Retired Message', 'Some Guy'],
     ];
 
     function createData(id, message, requester) {
@@ -153,53 +138,51 @@ class MessageManager extends Component {
     }
     return rows;
   }
+
   /* eslint-enable */
 
   getMessages(pageNum) {
     const THIRTYROWS = 30;
     const messages = this.buildTestData(THIRTYROWS, 0);
     this.setState({
-      filteredMessages: messages
+      filteredMessages: messages,
     });
   }
 
   getMuiTheme = () =>
     createTheme({
       typography: {
-        useNextVariants: true
+        useNextVariants: true,
       },
       overrides: {
         MUIDataTable: {
-          root: {}
+          root: {},
         },
         MUIDataTableBodyRow: {
           root: {
-            "&:nth-child(odd)": {
-              backgroundColor: "#f6f6f6"
-            }
-          }
+            '&:nth-child(odd)': {
+              backgroundColor: '#f6f6f6',
+            },
+          },
         },
-        MUIDataTableBodyCell: {}
-      }
+        MUIDataTableBodyCell: {},
+      },
     });
 
   // eslint-disable-next-line max-lines-per-function
   render() {
-    const { } = this.props;
+    const {} = this.props;
     const { filteredMessages } = this.state;
     return (
       <Fragment>
-            <MUIDataTable
-              data={filteredMessages}
-              columns={this.columns}
-              options={this.options}
-            />
+        <MUIDataTable data={filteredMessages} columns={this.columns} options={this.options} />
       </Fragment>
     );
   }
 }
+
 MessageManager.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
-export default (MessageManager);
+export default MessageManager;

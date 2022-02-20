@@ -1,6 +1,5 @@
 import Button from '@mui/material/Button';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import MUIDataTable from '../../src/';
 
 class Example extends React.Component {
@@ -15,17 +14,21 @@ class Example extends React.Component {
       {
         name: 'Location',
         options: {
-          display: 'false'
-        }
+          display: 'false',
+        },
       },
       {
         name: 'Age',
         options: {
-          customBodyRenderLite: (dataIndex) => {
+          customBodyRenderLite: dataIndex => {
             let value = data[dataIndex][3];
-            return <div><span>{value}</span></div>;
-          }
-        }
+            return (
+              <div>
+                <span>{value}</span>
+              </div>
+            );
+          },
+        },
       },
       {
         name: 'Salary',
@@ -74,20 +77,20 @@ class Example extends React.Component {
       filterType: 'dropdown',
       responsive: 'vertical',
       draggableColumns: {
-        enabled: true
+        enabled: true,
       },
       rowsPerPage: 10,
       downloadOptions: {
-          filename: 'excel-format.csv',
-          separator: ';',
-          filterOptions: {
-            useDisplayedColumnsOnly: true,
-            useDisplayedRowsOnly: true,
-          }
+        filename: 'excel-format.csv',
+        separator: ';',
+        filterOptions: {
+          useDisplayedColumnsOnly: true,
+          useDisplayedRowsOnly: true,
+        },
       },
       onDownload: (buildHead, buildBody, columns, data) => {
         if (this.state.downloadFile) {
-          let val= `${buildHead(columns)}${buildBody(data)}`.trim();
+          let val = `${buildHead(columns)}${buildBody(data)}`.trim();
           return val;
         }
 

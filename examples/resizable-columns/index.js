@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import ReactDOM from "react-dom";
-import MUIDataTable from "../../src/";
+import React, { useState } from 'react';
+import MUIDataTable from '../../src/';
 
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
@@ -9,36 +8,36 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 function Example(props) {
-
   const [marginLeft, setMarginLeft] = useState(10);
-  const [selectableRows, setSelectableRows] = useState("multiple");
+  const [selectableRows, setSelectableRows] = useState('multiple');
 
   const [counter, setCounter] = useState(1);
-  const incrCount = () => { // We update an arbitrary value here to test table resizing on state updates
+  const incrCount = () => {
+    // We update an arbitrary value here to test table resizing on state updates
     setCounter(counter + 1);
   };
 
   const columns = [
     {
-      name: "Counter",
+      name: 'Counter',
       options: {
         sort: false,
         empty: true,
-        customBodyRender: value => <button onClick={incrCount}>+</button>
-      }
+        customBodyRender: value => <button onClick={incrCount}>+</button>,
+      },
     },
     {
-      name: "Name",
+      name: 'Name',
       options: {
-        hint: "?",
-        setCellProps: () => ({style: {whiteSpace:'nowrap'}})
-      }
+        hint: '?',
+        setCellProps: () => ({ style: { whiteSpace: 'nowrap' } }),
+      },
     },
     {
-      name: "Business Title",
+      name: 'Business Title',
       options: {
-        hint: "?",
-        customBodyRender: (val) => {
+        hint: '?',
+        customBodyRender: val => {
           let parentStyle = {
             position: 'absolute',
             top: 0,
@@ -56,26 +55,24 @@ function Example(props) {
             whiteSpace: 'nowrap',
           };
           return (
-            <div style={{position:'relative', height: '20px'}}>
+            <div style={{ position: 'relative', height: '20px' }}>
               <div style={parentStyle}>
-                <div style={cellStyle}>
-                  {val}
-                </div>
+                <div style={cellStyle}>{val}</div>
               </div>
             </div>
           );
-        }
-      }
+        },
+      },
     },
-    "Location"
+    'Location',
   ];
 
   const data = [
-    ["Gabby George ", "Business Analyst", "Minneapolis"],
-    ["Aiden Lloyd", "Business Consultant at Tony's Burger Palace and CEO of Johnny's Blueberry Sundaes", "Dallas"],
-    ["Jaden Collins", "Attorney", "Santa Ana"],
-    ["Franky Rees", "Business Analyst", "St. Petersburg"],
-    ["Aaren Rose", null, "Toledo"]
+    ['Gabby George ', 'Business Analyst', 'Minneapolis'],
+    ['Aiden Lloyd', "Business Consultant at Tony's Burger Palace and CEO of Johnny's Blueberry Sundaes", 'Dallas'],
+    ['Jaden Collins', 'Attorney', 'Santa Ana'],
+    ['Franky Rees', 'Business Analyst', 'St. Petersburg'],
+    ['Aaren Rose', null, 'Toledo'],
   ];
 
   const options = {
@@ -85,20 +82,25 @@ function Example(props) {
     selectableRows: selectableRows,
     draggableColumns: {
       enabled: true,
-    }
+    },
   };
 
   return (
     <>
       <FormGroup row>
         <FormControl>
-          <TextField label="Left Margin" type="number" value={marginLeft} onChange={(e) => setMarginLeft(e.target.value)} />
+          <TextField
+            label="Left Margin"
+            type="number"
+            value={marginLeft}
+            onChange={e => setMarginLeft(e.target.value)}
+          />
         </FormControl>
         <FormControlLabel
           control={
             <Switch
-              checked={selectableRows === "multiple"}
-              onChange={(e) => setSelectableRows(event.target.checked ? "multiple" : "none")}
+              checked={selectableRows === 'multiple'}
+              onChange={e => setSelectableRows(event.target.checked ? 'multiple' : 'none')}
               value="true"
               color="primary"
             />
@@ -106,12 +108,17 @@ function Example(props) {
           label="Selectable Rows"
         />
       </FormGroup>
-      <div style={{marginLeft: marginLeft + 'px'}}>
-        <MUIDataTable title={"ACME Employee list" + " [" + counter + "]"} data={data} columns={columns} options={options} />
+      <div style={{ marginLeft: marginLeft + 'px' }}>
+        <MUIDataTable
+          title={'ACME Employee list' + ' [' + counter + ']'}
+          data={data}
+          columns={columns}
+          options={options}
+        />
         <div>
-          <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+          <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />
         </div>
-        <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+        <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />
       </div>
     </>
   );

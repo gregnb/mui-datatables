@@ -1,6 +1,5 @@
 import { Button, CircularProgress } from '@mui/material';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import MUIDataTable from '../../src';
 
 const theData = [
@@ -39,45 +38,41 @@ const theData = [
 class Example extends React.Component {
   state = {
     isLoading: false,
-    data: theData
+    data: theData,
   };
 
   // mock async function
   xhrRequest = (url, filterList) => {
     return new Promise(resolve => {
-      window.setTimeout(
-        () => {
-          const data = theData;
+      window.setTimeout(() => {
+        const data = theData;
 
-          if (
-            filterList.reduce( (accu, cur) => accu + cur.length, 0) === 0
-          ) {
-            resolve({ data });
-          } else {
-
-            /*
+        if (filterList.reduce((accu, cur) => accu + cur.length, 0) === 0) {
+          resolve({ data });
+        } else {
+          /*
               This code simulates filtering that would occur on the back-end
             */
-            var filteredData = data.filter(row => {
-              var ret = true;
+          var filteredData = data.filter(row => {
+            var ret = true;
 
-              for (var ii = 0; ii <= 4; ii++) {
-                if (filterList[ii] && filterList[ii].length) {
-                  ret = ret && filterList[ii].filter(ff => {
+            for (var ii = 0; ii <= 4; ii++) {
+              if (filterList[ii] && filterList[ii].length) {
+                ret =
+                  ret &&
+                  filterList[ii].filter(ff => {
                     return row[ii] == ff;
                   }).length > 0;
-                }
               }
-              return ret;
-            });
+            }
+            return ret;
+          });
 
-            resolve({ data: filteredData });
-          }
-        },
-        2000
-      );
+          resolve({ data: filteredData });
+        }
+      }, 2000);
     });
-  }
+  };
 
   handleFilterSubmit = applyFilters => {
     let filterList = applyFilters();
@@ -133,21 +128,23 @@ class Example extends React.Component {
       rowsPerPage: 50,
       rowsPerPageOptions: [50],
 
-      // makes it so filters have to be "confirmed" before being applied to the 
+      // makes it so filters have to be "confirmed" before being applied to the
       // table's internal filterList
-      confirmFilters: true, 
+      confirmFilters: true,
 
-      // Calling the applyNewFilters parameter applies the selected filters to the table 
+      // Calling the applyNewFilters parameter applies the selected filters to the table
       customFilterDialogFooter: (currentFilterList, applyNewFilters) => {
         return (
           <div style={{ marginTop: '40px' }}>
-            <Button variant="contained" onClick={() => this.handleFilterSubmit(applyNewFilters)}>Apply Filters</Button>
+            <Button variant="contained" onClick={() => this.handleFilterSubmit(applyNewFilters)}>
+              Apply Filters
+            </Button>
           </div>
         );
       },
 
       // callback that gets executed when filters are confirmed
-      onFilterConfirm: (filterList) => {
+      onFilterConfirm: filterList => {
         console.log('onFilterConfirm');
         console.dir(filterList);
       },
@@ -160,7 +157,7 @@ class Example extends React.Component {
       },
       onFilterChange: (column, filterList, type) => {
         if (type === 'chip') {
-          var newFilters = () => (filterList);
+          var newFilters = () => filterList;
           console.log('updating filters via chip');
           this.handleFilterSubmit(newFilters);
         }

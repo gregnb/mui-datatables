@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import MUIDataTable from '../../src';
 import { CircularProgress, Typography } from '@mui/material';
 import Cities from './cities';
@@ -76,8 +75,8 @@ class Example extends React.Component {
 
         if (order === 'asc') {
           var tempData = srcData.sort((a, b) => {
-            if ( a[sortCol] < b[sortCol] ) return -1;
-            if ( a[sortCol] > b[sortCol] ) return 1;
+            if (a[sortCol] < b[sortCol]) return -1;
+            if (a[sortCol] > b[sortCol]) return 1;
             return 0;
           });
 
@@ -87,8 +86,8 @@ class Example extends React.Component {
               : tempData.slice(offset, offset + 10);
         } else {
           tempData = srcData.sort((a, b) => {
-            if ( a[sortCol] < b[sortCol] ) return 1;
-            if ( a[sortCol] > b[sortCol] ) return -1;
+            if (a[sortCol] < b[sortCol]) return 1;
+            if (a[sortCol] > b[sortCol]) return -1;
             return 0;
           });
 
@@ -97,7 +96,6 @@ class Example extends React.Component {
               ? tempData.slice(offset, srcData.length)
               : tempData.slice(offset, offset + 10);
         }
-
       } else {
         data =
           offset + 10 >= srcData.length ? srcData.slice(offset, srcData.length) : srcData.slice(offset, offset + 10);
@@ -120,8 +118,8 @@ class Example extends React.Component {
         data,
         sortOrder: {
           name: column,
-          direction: order
-        }
+          direction: order,
+        },
       });
     });
   };
@@ -133,7 +131,7 @@ class Example extends React.Component {
         options: {
           customFilterListOptions: {
             render: v => `Name: ${v}`,
-          }
+          },
         },
       },
       {
@@ -141,7 +139,7 @@ class Example extends React.Component {
         options: {
           customFilterListOptions: {
             render: v => `Title: ${v}`,
-          }
+          },
         },
       },
       {
@@ -179,11 +177,11 @@ class Example extends React.Component {
 
         this.sort(changedColumn, order);
       },
-      onChangePage: (page) => {
-        this.setState({page}, () => {
+      onChangePage: page => {
+        this.setState({ page }, () => {
           this.sort(this.state.sortOrder.name, this.state.sortOrder.direction);
         });
-      }
+      },
     };
 
     return (

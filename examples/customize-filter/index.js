@@ -1,22 +1,21 @@
 import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
   FormGroup,
   FormLabel,
-  FormControl,
-  ListItemText,
-  TextField,
-  Checkbox,
-  FormControlLabel,
-  Grid,
-  Select,
   InputLabel,
-  MenuItem
+  ListItemText,
+  MenuItem,
+  Select,
+  TextField,
 } from '@mui/material';
 import React from 'react';
 import MUIDataTable from '../../src';
 
 class Example extends React.Component {
   state = {
-    ageFilterChecked: false
+    ageFilterChecked: false,
   };
 
   render() {
@@ -26,10 +25,10 @@ class Example extends React.Component {
         options: {
           filter: true,
           filterOptions: {
-            renderValue: v => v ? v.replace(/^(\w).* (.*)$/, '$1. $2') : ''
+            renderValue: v => (v ? v.replace(/^(\w).* (.*)$/, '$1. $2') : ''),
           },
           //display: 'excluded',
-          filterType: 'dropdown'
+          filterType: 'dropdown',
         },
       },
       {
@@ -38,7 +37,7 @@ class Example extends React.Component {
         options: {
           filter: true,
           customFilterListOptions: {
-            render: v => v.toLowerCase()
+            render: v => v.toLowerCase(),
           },
         },
       },
@@ -56,7 +55,7 @@ class Example extends React.Component {
               console.log(filterList, filterPos, index);
               filterList[index].splice(filterPos, 1);
               return filterList;
-            }
+            },
           },
           filterOptions: {
             logic: (location, filters, row) => {
@@ -67,9 +66,7 @@ class Example extends React.Component {
               const optionValues = ['Minneapolis', 'New York', 'Seattle'];
               return (
                 <FormControl>
-                  <InputLabel htmlFor='select-multiple-chip'>
-                    Location
-                  </InputLabel>
+                  <InputLabel htmlFor="select-multiple-chip">Location</InputLabel>
                   <Select
                     multiple
                     value={filterList[index]}
@@ -77,23 +74,19 @@ class Example extends React.Component {
                     onChange={event => {
                       filterList[index] = event.target.value;
                       onChange(filterList[index], index, column);
-                    }}
-                  >
+                    }}>
                     {optionValues.map(item => (
                       <MenuItem key={item} value={item}>
-                        <Checkbox
-                          color='primary'
-                          checked={filterList[index].indexOf(item) > -1}
-                        />
+                        <Checkbox color="primary" checked={filterList[index].indexOf(item) > -1} />
                         <ListItemText primary={item} />
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
               );
-            }
-          }
-        }
+            },
+          },
+        },
       },
       {
         name: 'Age',
@@ -104,7 +97,7 @@ class Example extends React.Component {
           // if the below value is set, these values will be used every time the table is rendered.
           // it's best to let the table internally manage the filterList
           //filterList: [25, 50],
-          
+
           customFilterListOptions: {
             render: v => {
               if (v[0] && v[1] && this.state.ageFilterChecked) {
@@ -149,7 +142,7 @@ class Example extends React.Component {
                 <FormLabel>Age</FormLabel>
                 <FormGroup row>
                   <TextField
-                    label='min'
+                    label="min"
                     value={filterList[index][0] || ''}
                     onChange={event => {
                       filterList[index][0] = event.target.value;
@@ -158,7 +151,7 @@ class Example extends React.Component {
                     style={{ width: '45%', marginRight: '5%' }}
                   />
                   <TextField
-                    label='max'
+                    label="max"
                     value={filterList[index][1] || ''}
                     onChange={event => {
                       filterList[index][1] = event.target.value;
@@ -173,7 +166,7 @@ class Example extends React.Component {
                         onChange={event => this.setState({ ageFilterChecked: event.target.checked })}
                       />
                     }
-                    label='Separate Values'
+                    label="Separate Values"
                     style={{ marginLeft: '0px' }}
                   />
                 </FormGroup>
@@ -248,9 +241,9 @@ class Example extends React.Component {
           variant: 'outlined',
           className: 'testClass123',
         };
-      }
+      },
     };
-    
+
     return (
       <MUIDataTable title={'ACME Employee list - customizeFilter'} data={data} columns={columns} options={options} />
     );

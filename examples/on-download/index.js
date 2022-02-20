@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import MUIDataTable from '../../src';
 
 class Example extends React.Component {

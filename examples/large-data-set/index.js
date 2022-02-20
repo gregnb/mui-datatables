@@ -1,40 +1,72 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import MUIDataTable from "../../src/";
-import { debounceSearchRender } from "../../src/";
+import React from 'react';
+import MUIDataTable, { debounceSearchRender } from '../../src/';
 import { Button } from '@mui/material';
 
 class Example extends React.Component {
-
   constructor(props) {
     super(props);
 
-    const rand = (size) => {
-      return Math.floor( Math.random() * size );
+    const rand = size => {
+      return Math.floor(Math.random() * size);
     };
 
-    const firstNames = ['Adam', 'Jack', 'Edward', 'Donna', 'Sarah', 'Suzie', 'Sam', 'RJ', 'Henry', 'Ryan', 'Ricky', 'James'];
-    const lastNames  = ['Ronson', 'Johnson', 'Jackson', 'Campo', 'Edwards', 'Brown', 'Green', 'White', 'Simmons', 'Gates', 'Jobs'];
-    const titles = ['Owner', 'Unemployed', 'Burger Flipper', 'Coder', 'Business Analyst', 'Attorney', 'Consultant', 'Singer','Painter'];
-    const locations = ['New York', 'El Paso', 'DC', 'Dallas', 'Santa Ana','St. Petersburg', 'London','Paris'];
+    const firstNames = [
+      'Adam',
+      'Jack',
+      'Edward',
+      'Donna',
+      'Sarah',
+      'Suzie',
+      'Sam',
+      'RJ',
+      'Henry',
+      'Ryan',
+      'Ricky',
+      'James',
+    ];
+    const lastNames = [
+      'Ronson',
+      'Johnson',
+      'Jackson',
+      'Campo',
+      'Edwards',
+      'Brown',
+      'Green',
+      'White',
+      'Simmons',
+      'Gates',
+      'Jobs',
+    ];
+    const titles = [
+      'Owner',
+      'Unemployed',
+      'Burger Flipper',
+      'Coder',
+      'Business Analyst',
+      'Attorney',
+      'Consultant',
+      'Singer',
+      'Painter',
+    ];
+    const locations = ['New York', 'El Paso', 'DC', 'Dallas', 'Santa Ana', 'St. Petersburg', 'London', 'Paris'];
     const salarys = ['$100,000', '$50,000', '$75,000', '$80,000'];
     var data = [];
     var name = '';
 
     for (var ii = 0; ii < 5000; ii++) {
-      name = firstNames[ rand(firstNames.length)] + ' ' + lastNames[ rand(lastNames.length) ];
+      name = firstNames[rand(firstNames.length)] + ' ' + lastNames[rand(lastNames.length)];
       data.push({
         name: name,
-        title: titles[ rand(titles.length)],
-        location: locations[ rand(locations.length) ],
-        salary: salarys[ rand(salarys.length )],
+        title: titles[rand(titles.length)],
+        location: locations[rand(locations.length)],
+        salary: salarys[rand(salarys.length)],
         phone: '555-5555',
         email: name.replace(/ /g, '_').toLowerCase() + '@example.com',
       });
     }
 
     this.state = {
-      data: data
+      data: data,
     };
     console.time('Render Time');
   }
@@ -44,80 +76,79 @@ class Example extends React.Component {
   }
 
   render() {
-
     const columns = [
       {
-        name: "name",
-        label: "Name",
+        name: 'name',
+        label: 'Name',
         options: {
           filter: true,
-          customBodyRenderLite: (dataIndex) => {
+          customBodyRenderLite: dataIndex => {
             let val = this.state.data[dataIndex].name;
             return val;
-          }
-        }
-      },      
+          },
+        },
+      },
       {
-        name: "title",
-        label: "Modified Title Label",
+        name: 'title',
+        label: 'Modified Title Label',
         options: {
           filter: true,
-          customBodyRenderLite: (dataIndex) => {
+          customBodyRenderLite: dataIndex => {
             let val = this.state.data[dataIndex].title;
             return val;
-          }
-        }
+          },
+        },
       },
-      {        
-        name: "location",
-        label: "Location",
+      {
+        name: 'location',
+        label: 'Location',
         options: {
           filter: false,
-        }
+        },
       },
       {
-        name: "age",
-        label: "Age",
+        name: 'age',
+        label: 'Age',
         options: {
           filter: true,
-        }
+        },
       },
       {
-        name: "salary",
-        label: "Salary",
+        name: 'salary',
+        label: 'Salary',
         options: {
           filter: true,
           sort: false,
-          customBodyRenderLite: (dataIndex) => {
+          customBodyRenderLite: dataIndex => {
             let val = this.state.data[dataIndex].salary;
             return val;
-          }
-        }
+          },
+        },
       },
       {
-        name: "phone",
-        label: "Phone",
+        name: 'phone',
+        label: 'Phone',
         options: {
           filter: true,
           sort: false,
-          customBodyRenderLite: (dataIndex) => {
+          customBodyRenderLite: dataIndex => {
             let val = this.state.data[dataIndex].phone;
             return val;
-          }
-        }
+          },
+        },
       },
       {
-        name: "email",
-        label: "E-mail",
+        name: 'email',
+        label: 'E-mail',
         options: {
           filter: true,
           sort: false,
-          customBodyRenderLite: (dataIndex) => {
+          customBodyRenderLite: dataIndex => {
             let val = this.state.data[dataIndex].email;
             return val;
-          }
-        }
-      }
+          },
+        },
+      },
     ];
 
     const options = {
@@ -126,7 +157,7 @@ class Example extends React.Component {
       filter: true,
       filterType: 'dropdown',
       responsive: 'vertical',
-      tableBodyHeight:'500px',
+      tableBodyHeight: '500px',
       customSearchRender: debounceSearchRender(500),
       jumpToPage: true,
 
@@ -137,16 +168,15 @@ class Example extends React.Component {
       customFilterDialogFooter: (currentFilterList, applyNewFilters) => {
         return (
           <div style={{ marginTop: '40px' }}>
-            <Button variant="contained" onClick={applyNewFilters}>Apply Filters</Button>
+            <Button variant="contained" onClick={applyNewFilters}>
+              Apply Filters
+            </Button>
           </div>
         );
-      }
+      },
     };
 
-    return (
-      <MUIDataTable title={"ACME Employee list"} data={this.state.data} columns={columns} options={options} />
-    );
-
+    return <MUIDataTable title={'ACME Employee list'} data={this.state.data} columns={columns} options={options} />;
   }
 }
 

@@ -1,7 +1,7 @@
 import ArrayValueColumns from './array-value-columns';
 import ColumnFilters from './column-filters';
 import ColumnOptionsUpdate from './column-options-update';
-import ColumnSort from "./column-sort";
+import ColumnSort from './column-sort';
 import Component from './component';
 import CSVExport from './csv-export';
 import CustomActionColumns from './custom-action-columns';
@@ -65,14 +65,14 @@ export default {
   'Hide Columns Print': HideColumnsPrint,
   'Infinite Scrolling': InfiniteScrolling,
   'Large Data Set': LargeDataSet,
-  'OnDownload': OnDownload,
-  'OnTableInit': OnTableInit,
+  OnDownload: OnDownload,
+  OnTableInit: OnTableInit,
   'Resizable Columns': ResizableColumns,
   'Selectable Rows': SelectableRows,
   'ServerSide Filters': ServerSideFilters,
   'ServerSide Pagination': ServerSidePagination,
   'ServerSide Sorting': ServerSideSorting,
-  'Simple': Simple,
+  Simple: Simple,
   'Simple No Toolbar': SimpleNoToolbar,
   'Text Localization': TextLocalization,
   'Custom Components': CustomComponents,

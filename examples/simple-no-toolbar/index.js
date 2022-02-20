@@ -1,17 +1,16 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import MUIDataTable from "../../src/";
+import React from 'react';
+import MUIDataTable from '../../src/';
 
 class Example extends React.Component {
   render() {
-    const columns = ["Name", "Title", "Location"];
+    const columns = ['Name', 'Title', 'Location'];
 
     const data = [
-      ["Gabby George", "Business Analyst", "Minneapolis"],
-      ["Aiden Lloyd", "Business Consultant", "Dallas"],
-      ["Jaden Collins", "Attorney", "Santa Ana"],
-      ["Franky Rees", "Business Analyst", "St. Petersburg"],
-      ["Aaren Rose", null, "Toledo"]
+      ['Gabby George', 'Business Analyst', 'Minneapolis'],
+      ['Aiden Lloyd', 'Business Consultant', 'Dallas'],
+      ['Jaden Collins', 'Attorney', 'Santa Ana'],
+      ['Franky Rees', 'Business Analyst', 'St. Petersburg'],
+      ['Aaren Rose', null, 'Toledo'],
     ];
 
     const options = {
@@ -21,12 +20,10 @@ class Example extends React.Component {
       download: false,
       viewColumns: false,
       customToolbar: null,
-      responsive: 'vertical'
+      responsive: 'vertical',
     };
 
-    return (
-      <MUIDataTable title={""} data={data} columns={columns} options={options} />
-    );
+    return <MUIDataTable title={''} data={data} columns={columns} options={options} />;
   }
 }
 

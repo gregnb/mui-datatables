@@ -1,19 +1,16 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
+import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 import ReactDOM from 'react-dom';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
 import ExamplesGrid from './ExamplesGrid';
 import examples from '../examples';
 import Button from '@mui/material/Button';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { CacheProvider } from '@emotion/react';
-import createCache from '@emotion/cache';
 
 const PREFIX = 'index';
 
 const classes = {
   root: `${PREFIX}-root`,
-  contentWrapper: `${PREFIX}-contentWrapper`
+  contentWrapper: `${PREFIX}-contentWrapper`,
 };
 
 const StyledApp = styled(App)({
@@ -37,7 +34,7 @@ class Examples extends React.Component {
   };
 
   render() {
-    const { } = this.props;
+    const {} = this.props;
 
     var returnHomeStyle = { padding: '0px', margin: '20px 0 20px 0' };
 
@@ -76,7 +73,7 @@ class Examples extends React.Component {
   }
 }
 
-const StyledExamples = withRouter((Examples));
+const StyledExamples = withRouter(Examples);
 
 function App() {
   return (

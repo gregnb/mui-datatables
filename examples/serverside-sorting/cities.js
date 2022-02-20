@@ -398,6 +398,7 @@ class Cities extends React.Component {
       'Yakima',
       'Yonkers',
       'York',
+
       'Youngstown',
     ];
 

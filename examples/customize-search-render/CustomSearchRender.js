@@ -4,19 +4,16 @@ import Grow from '@mui/material/Grow';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
+
 const PREFIX = 'CustomSearchRender';
 
 const classes = {
   main: `${PREFIX}-main`,
   searchText: `${PREFIX}-searchText`,
-  clearIcon: `${PREFIX}-clearIcon`
+  clearIcon: `${PREFIX}-clearIcon`,
 };
 
-const StyledGrow = styled(Grow)((
-  {
-    theme
-  }
-) => ({
+const StyledGrow = styled(Grow)(({ theme }) => ({
   [`& .${classes.main}`]: {
     display: 'flex',
     flex: '1 0 auto',
@@ -30,7 +27,7 @@ const StyledGrow = styled(Grow)((
     '&:hover': {
       color: theme.palette.error.main,
     },
-  }
+  },
 }));
 
 class CustomSearchRender extends React.Component {
@@ -53,7 +50,7 @@ class CustomSearchRender extends React.Component {
   };
 
   render() {
-    const {  options, onHide, searchText } = this.props;
+    const { options, onHide, searchText } = this.props;
 
     return (
       <StyledGrow appear in={true} timeout={300}>
@@ -78,4 +75,4 @@ class CustomSearchRender extends React.Component {
   }
 }
 
-export default (CustomSearchRender);
+export default CustomSearchRender;

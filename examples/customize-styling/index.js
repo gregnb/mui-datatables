@@ -1,28 +1,21 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
+import { createTheme, styled } from '@mui/material/styles';
 import MUIDataTable from '../../src/';
 import { ThemeProvider } from '@mui/styles';
-import { createTheme } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import clsx from 'clsx';
-import { CacheProvider } from '@emotion/react';
-import createCache from '@emotion/cache';
 
 const PREFIX = 'ExampleCard.js';
 
 const classes = {
   BusinessAnalystRow: `${PREFIX}-BusinessAnalystRow`,
   GreyLine: `${PREFIX}-GreyLine`,
-  NameCell: `${PREFIX}-NameCell`
+  NameCell: `${PREFIX}-NameCell`,
 };
 
-const StyledThemeProvider = styled(ThemeProvider)((
-  {
-    theme
-  }
-) => ({
+const StyledThemeProvider = styled(ThemeProvider)(({ theme }) => ({
   [`& .${classes.BusinessAnalystRow}`]: {
     '& td': { backgroundColor: '#FAA' },
   },
@@ -33,7 +26,7 @@ const StyledThemeProvider = styled(ThemeProvider)((
 
   [`& .${classes.NameCell}`]: {
     fontWeight: 900,
-  }
+  },
 }));
 
 class Example extends React.Component {
@@ -115,7 +108,7 @@ class Example extends React.Component {
                 [this.props.classes.NameCell]: value === 'Mel Brooks',
               }),
               style: {
-                borderRight: '2px solid blue',
+                //borderRight: '2px solid blue'
               },
             };
           },
@@ -245,4 +238,4 @@ class Example extends React.Component {
   }
 }
 
-export default (Example);
+export default Example;

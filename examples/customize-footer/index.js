@@ -14,15 +14,11 @@ const PREFIX = 'Example';
 
 const classes = {
   footerCell: `${PREFIX}-footerCell`,
-  stickyFooterCell: `${PREFIX}-stickyFooterCell`
+  stickyFooterCell: `${PREFIX}-stickyFooterCell`,
 };
 
 // TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
-const Root = styled('div')((
-  {
-    theme
-  }
-) => ({
+const Root = styled('div')(({ theme }) => ({
   [`& .${classes.footerCell}`]: {
     backgroundColor: theme.palette.background.paper,
     borderBottom: 'none',
@@ -32,13 +28,12 @@ const Root = styled('div')((
     position: 'sticky',
     bottom: 0,
     zIndex: 100,
-  }
+  },
 }));
 
 function Example() {
   const [resizableColumns, setResizableColumns] = useState(false);
   const [stickyFooter, setStickyFooter] = useState(true);
-
 
   const columns = ['Name', 'Title', 'Location', 'Age', 'Salary'];
 
@@ -146,7 +141,7 @@ function Example() {
   };
 
   return (
-    (<Root>
+    <Root>
       <FormGroup row>
         <FormControlLabel
           control={
@@ -172,7 +167,7 @@ function Example() {
         />
       </FormGroup>
       <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />
-    </Root>)
+    </Root>
   );
 }
 

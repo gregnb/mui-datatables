@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import MUIDataTable from '../../src';
 
 class Example extends React.Component {
@@ -7,7 +6,7 @@ class Example extends React.Component {
     super(props);
 
     this.state = {
-      table: {}
+      table: {},
     };
     this.handleTableInit = this.handleTableInit.bind(this);
     this.handleTableChange = this.handleTableChange.bind(this);
