@@ -54,8 +54,6 @@ class ExamplesGrid extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
-
     // Sort Examples alphabetically
     const examplesSorted = {};
     Object.keys(examples)

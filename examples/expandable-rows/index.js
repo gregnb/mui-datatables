@@ -3,6 +3,7 @@ import MUIDataTable, { ExpandButton } from '../../src/';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 
 const muiCache = createCache({
