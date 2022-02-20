@@ -21,7 +21,7 @@ const useStyles = makeStyles({ name: 'MUIDataTablePagination' })(theme => ({
   selectRoot: {},
   '@media screen and (max-width: 400px)': {
     toolbar: {
-      '& span:nth-child(2)': {
+      '& span:nth-of-type(2)': {
         display: 'none',
       },
     },

@@ -36,7 +36,7 @@ const useStyles = makeStyles({ name: 'MUIDataTableBodyCell' })(theme => ({
       '&:last-child': {
         borderBottom: 'none',
       },
-      '&:nth-last-child(2)': {
+      '&:nth-last-of-type(2)': {
         borderBottom: 'none',
       },
     },
@@ -50,7 +50,7 @@ const useStyles = makeStyles({ name: 'MUIDataTableBodyCell' })(theme => ({
     '&:last-child': {
       borderBottom: 'none',
     },
-    '&:nth-last-child(2)': {
+    '&:nth-last-of-type(2)': {
       borderBottom: 'none',
     },
   },
