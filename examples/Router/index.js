@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
-import { withStyles } from "tss-react/mui";
+import { HashRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
+import { withStyles } from 'tss-react/mui';
 import ExamplesGrid from './ExamplesGrid';
 import examples from '../examples';
 import Button from '@mui/material/Button';
-import { withRouter } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
 
 const styles = {
   root: {
@@ -17,6 +18,11 @@ const styles = {
     width: '100%',
   },
 };
+
+const muiCache = createCache({
+  key: 'mui-datatables',
+  prepend: true,
+});
 
 class Examples extends React.Component {
   returnHome = () => {
@@ -31,32 +37,34 @@ class Examples extends React.Component {
     const defaultTheme = createTheme();
 
     return (
-      <ThemeProvider theme={defaultTheme}>
-        <main className={classes.root}>
-          <div className={classes.contentWrapper}>
-            <Switch>
-              <Route path="/" exact render={() => <ExamplesGrid examples={examples} />} />
-              {Object.keys(examples).map((label, index) => (
-                <Route
-                  key={index}
-                  path={`/${label.replace(/\s+/g, '-').toLowerCase()}`}
-                  exact
-                  component={examples[label]}
-                />
-              ))}
-            </Switch>
-            <div>
-              {this.props.location.pathname !== '/' && (
-                <div style={returnHomeStyle}>
-                  <Button color="primary" onClick={this.returnHome}>
-                    Back to Example Index
-                  </Button>
-                </div>
-              )}
+      <CacheProvider value={muiCache}>
+        <ThemeProvider theme={defaultTheme}>
+          <main className={classes.root}>
+            <div className={classes.contentWrapper}>
+              <Switch>
+                <Route path="/" exact render={() => <ExamplesGrid examples={examples} />} />
+                {Object.keys(examples).map((label, index) => (
+                  <Route
+                    key={index}
+                    path={`/${label.replace(/\s+/g, '-').toLowerCase()}`}
+                    exact
+                    component={examples[label]}
+                  />
+                ))}
+              </Switch>
+              <div>
+                {this.props.location.pathname !== '/' && (
+                  <div style={returnHomeStyle}>
+                    <Button color="primary" onClick={this.returnHome}>
+                      Back to Example Index
+                    </Button>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        </main>
-      </ThemeProvider>
+          </main>
+        </ThemeProvider>
+      </CacheProvider>
     );
   }
 }
