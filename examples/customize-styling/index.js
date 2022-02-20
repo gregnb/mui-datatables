@@ -13,7 +13,7 @@ const muiCache = createCache({
   prepend: true,
 });
 
-const PREFIX = 'ExampleCard.js';
+const PREFIX = 'customize-styling';
 
 const classes = {
   BusinessAnalystRow: `${PREFIX}-BusinessAnalystRow`,
@@ -21,7 +21,7 @@ const classes = {
   NameCell: `${PREFIX}-NameCell`,
 };
 
-const StyledThemeProvider = styled(ThemeProvider)(({ theme }) => ({
+const StyledThemeProvider = styled(`div`)(({ theme }) => ({
   [`& .${classes.BusinessAnalystRow}`]: {
     '& td': { backgroundColor: '#FAA' },
   },
@@ -44,8 +44,20 @@ class Example extends React.Component {
     };
   }
 
-  getMuiTheme = () =>
-    createTheme({
+  toggleDenseTable = event => {
+    this.setState({
+      denseTable: event.target.checked,
+    });
+  };
+
+  toggleResponsive = event => {
+    this.setState({
+      vertical: !!event.target.checked,
+    });
+  };
+
+  render() {
+    const theme = createTheme({
       components: {
         MUIDataTable: {
           styleOverrides: {
@@ -90,19 +102,6 @@ class Example extends React.Component {
       },
     });
 
-  toggleDenseTable = event => {
-    this.setState({
-      denseTable: event.target.checked,
-    });
-  };
-
-  toggleResponsive = event => {
-    this.setState({
-      vertical: !!event.target.checked,
-    });
-  };
-
-  render() {
     const columns = [
       {
         name: 'Name',
@@ -111,17 +110,17 @@ class Example extends React.Component {
           setCellProps: value => {
             return {
               className: clsx({
-                [this.props.classes.NameCell]: value === 'Mel Brooks',
+                [classes.NameCell]: value === 'Mel Brooks',
               }),
               style: {
-                //borderRight: '2px solid blue'
+                // borderRight: '2px solid blue',
               },
             };
           },
           setCellHeaderProps: value => {
             return {
               className: clsx({
-                [this.props.classes.NameCell]: true,
+                [classes.NameCell]: true,
               }),
               style: {
                 textDecoration: 'underline',
@@ -201,8 +200,8 @@ class Example extends React.Component {
       setRowProps: (row, dataIndex, rowIndex) => {
         return {
           className: clsx({
-            [this.props.classes.BusinessAnalystRow]: row[1] === 'Business Analyst',
-            [this.props.classes.GreyLine]: rowIndex % 2 === 0 && row[1] !== 'Business Analyst',
+            [classes.BusinessAnalystRow]: row[1] === 'Business Analyst',
+            [classes.GreyLine]: rowIndex % 2 === 0 && row[1] !== 'Business Analyst',
           }),
           style: { border: '3px solid blue' },
         };
@@ -219,7 +218,7 @@ class Example extends React.Component {
 
     return (
       <CacheProvider value={muiCache}>
-        <StyledThemeProvider theme={this.getMuiTheme()}>
+        <StyledThemeProvider theme={theme}>
           <FormGroup row>
             <FormControlLabel
               control={

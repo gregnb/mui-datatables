@@ -91,9 +91,7 @@ class Example extends React.Component {
         if (dataIndex === 3 || dataIndex === 4) return false;
 
         // Prevent expand/collapse of any row if there are 4 rows expanded already (but allow those already expanded to be collapsed)
-        if (expandedRows.data.length > 4 && expandedRows.data.filter(d => d.dataIndex === dataIndex).length === 0)
-          return false;
-        return true;
+        return !(expandedRows.data.length > 4 && expandedRows.data.filter(d => d.dataIndex === dataIndex).length === 0);
       },
       rowsExpanded: [0, 1],
       renderExpandableRow: (rowData, rowMeta) => {
@@ -109,11 +107,13 @@ class Example extends React.Component {
     };
 
     const theme = createTheme({
-      overrides: {
+      components: {
         MUIDataTableSelectCell: {
-          expandDisabled: {
-            // Soft hide the button.
-            visibility: 'hidden',
+          styleOverrides: {
+            expandDisabled: {
+              // Soft hide the button.
+              visibility: 'hidden',
+            },
           },
         },
       },
