@@ -10,8 +10,7 @@ const classes = {
   iconButton: `${PREFIX}-iconButton`,
 };
 
-// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
-const Root = styled('div')({
+const StyledTooltip = styled(Tooltip)({
   [`& .${classes.iconButton}`]: {},
 });
 
@@ -24,13 +23,11 @@ class CustomToolbar extends React.Component {
     const {} = this.props;
 
     return (
-      <Root>
-        <Tooltip title={'custom icon'}>
-          <IconButton className={classes.iconButton} onClick={this.handleClick}>
-            <AddIcon className={classes.deleteIcon} />
-          </IconButton>
-        </Tooltip>
-      </Root>
+      <StyledTooltip title={'custom icon'}>
+        <IconButton className={classes.iconButton} onClick={this.handleClick}>
+          <AddIcon className={classes.deleteIcon} />
+        </IconButton>
+      </StyledTooltip>
     );
   }
 }
