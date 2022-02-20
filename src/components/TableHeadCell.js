@@ -120,7 +120,7 @@ const TableHeadCell = ({
     classes: { root: classes.sortLabelRoot },
     tabIndex: -1,
     active: sortActive,
-    hideSortIcon: true,
+    hideSortIcon: false,
     ...(ariaSortDirection ? { direction: sortDirection } : {}),
   };
 

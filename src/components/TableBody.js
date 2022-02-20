@@ -320,6 +320,7 @@ class TableBody extends React.Component {
         ) : (
           <TableBodyRow options={options}>
             <TableBodyCell
+              isEmpty={true}
               colSpan={options.selectableRows !== 'none' || options.expandableRows ? visibleColCnt + 1 : visibleColCnt}
               options={options}
               colIndex={0}
