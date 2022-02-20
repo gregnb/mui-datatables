@@ -288,9 +288,9 @@ describe('<TableToolbar />', function() {
   });
 
   it('should render a toolbar with a search when searchAlwaysOpen is set to true', () => {
-    const newOptions = { ...options, searchAlwaysOpen: true }
+    const newOptions = { ...options, searchAlwaysOpen: true };
     const shallowWrapper = shallow(
-        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
     ).dive();
 
     const actualResult = shallowWrapper.find(TableSearch);
@@ -298,9 +298,9 @@ describe('<TableToolbar />', function() {
   });
 
   it('should not hide search when opening another dialog when searchAlwaysOpen is set to true', () => {
-    const newOptions = { ...options, searchAlwaysOpen: true }
+    const newOptions = { ...options, searchAlwaysOpen: true };
     const shallowWrapper = shallow(
-        <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
+      <TableToolbar columns={columns} data={data} options={newOptions} setTableAction={setTableAction} />,
     ).dive();
 
     const instance = shallowWrapper.instance();

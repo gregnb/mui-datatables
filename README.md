@@ -37,7 +37,7 @@ Version 3 has been released! You can read about the [updates here](https://githu
 
 `npm install mui-datatables --save`
 
-If your project doesn't already use them, you need to install `@mui/material`, `@mui/icons-material` as well.
+If your project doesn't already use them, you need to install `@mui/material`,  `@mui/icons-material` and `tss-react` as well.
 
 ## Compatibility
 

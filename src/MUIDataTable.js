@@ -1,7 +1,7 @@
 import Paper from '@mui/material/Paper';
 import MuiTable from '@mui/material/Table';
 import MuiTooltip from '@mui/material/Tooltip';
-import { withStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
 import clsx from 'clsx';
 import assignwith from 'lodash.assignwith';
 import cloneDeep from 'lodash.clonedeep';
@@ -2085,4 +2085,4 @@ class MUIDataTable extends React.Component {
   }
 }
 
-export default withStyles(defaultTableStyles, { name: 'MUIDataTable' })(MUIDataTable);
+export default withStyles(MUIDataTable, defaultTableStyles, { name: 'MUIDataTable' });

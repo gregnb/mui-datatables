@@ -8,7 +8,7 @@ import BuildIcon from '@mui/icons-material/Build'; // eslint-disable-line import
 import CodeSnippet from '../utils/CodeSnippet';
 import Layout from '../utils/layout';
 import withRoot from '../utils/withRoot';
-import { withStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
 
 const styles = theme => ({
   stepIcon: {
@@ -85,4 +85,4 @@ const options = {
   }
 }
 
-export default withRoot(withStyles(styles)(Homepage));
+export default withRoot(withStyles(Homepage, styles));
