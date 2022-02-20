@@ -63,12 +63,16 @@ class _DebounceTableSearch extends React.Component {
     }
   };
 
+
   render() {
     const { classes, options, onHide, searchText, debounceWait } = this.props;
 
     const debouncedSearch = debounce(value => {
       this.props.onSearch(value);
     }, debounceWait);
+
+    const clearIconVisibility = options.searchAlwaysOpen ? 'hidden' : 'visible';
+
 
     return (
       <Grow appear in={true} timeout={300}>
@@ -89,7 +93,7 @@ class _DebounceTableSearch extends React.Component {
             placeholder={options.searchPlaceholder}
             {...(options.searchProps ? options.searchProps : {})}
           />
-          <IconButton className={classes.clearIcon} onClick={onHide}>
+          <IconButton className={classes.clearIcon} style={{ visibility: clearIconVisibility }}  onClick={onHide}>
             <ClearIcon />
           </IconButton>
         </div>
