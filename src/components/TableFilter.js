@@ -34,14 +34,10 @@ const classes = {
   checkboxIcon: `${PREFIX}-checkboxIcon`,
   checkbox: `${PREFIX}-checkbox`,
   checked: `${PREFIX}-checked`,
-  gridListTile: `${PREFIX}-gridListTile`
+  gridListTile: `${PREFIX}-gridListTile`,
 };
 
-const Root = styled('div')((
-  {
-    theme
-  }
-) => ({
+const Root = styled('div')(({ theme }) => ({
   [`&.${classes.root}`]: {
     backgroundColor: theme.palette.background.default,
     padding: '24px 24px 36px 24px',
@@ -116,7 +112,7 @@ const Root = styled('div')((
 
   [`& .${classes.gridListTile}`]: {
     marginTop: '16px',
-  }
+  },
 }));
 
 export {};
@@ -198,7 +194,7 @@ class TableFilter extends React.Component {
   renderCheckbox(column, index, components = {}) {
     const CheckboxComponent = components.Checkbox || Checkbox;
 
-    const {  filterData } = this.props;
+    const { filterData } = this.props;
     const { filterList } = this.state;
     const renderItem =
       column.filterOptions && column.filterOptions.renderValue ? column.filterOptions.renderValue : v => v;
@@ -245,7 +241,7 @@ class TableFilter extends React.Component {
   }
 
   renderSelect(column, index) {
-    const {  filterData, options } = this.props;
+    const { filterData, options } = this.props;
     const { filterList } = this.state;
     const textLabels = options.textLabels.filter;
     const renderItem =
@@ -283,7 +279,7 @@ class TableFilter extends React.Component {
   }
 
   renderTextField(column, index) {
-    const { } = this.props;
+    const {} = this.props;
     const { filterList } = this.state;
     if (column.filterOptions && column.filterOptions.renderValue) {
       console.warn('Custom renderValue not supported for textField filters');
@@ -313,7 +309,7 @@ class TableFilter extends React.Component {
   renderMultiselect(column, index, components = {}) {
     const CheckboxComponent = components.Checkbox || Checkbox;
 
-    const {  filterData } = this.props;
+    const { filterData } = this.props;
     const { filterList } = this.state;
     const renderItem =
       column.filterOptions && column.filterOptions.renderValue ? column.filterOptions.renderValue : v => v;
@@ -357,7 +353,7 @@ class TableFilter extends React.Component {
   }
 
   renderCustomField(column, index) {
-    const {  filterData, options } = this.props;
+    const { filterData, options } = this.props;
     const { filterList } = this.state;
     const width = (column.filterOptions && column.filterOptions.fullWidth) === true ? 12 : 6;
     const display =
@@ -409,7 +405,7 @@ class TableFilter extends React.Component {
   };
 
   render() {
-    const {  columns, options, customFooter, filterList, components = {} } = this.props;
+    const { columns, options, customFooter, filterList, components = {} } = this.props;
     const textLabels = options.textLabels.filter;
 
     return (
@@ -457,4 +453,4 @@ class TableFilter extends React.Component {
   }
 }
 
-export default (TableFilter);
+export default TableFilter;

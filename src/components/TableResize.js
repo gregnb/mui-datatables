@@ -1,11 +1,12 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
+
 const PREFIX = 'MUIDataTableResize';
 
 const classes = {
   root: `${PREFIX}-root`,
-  resizer: `${PREFIX}-resizer`
+  resizer: `${PREFIX}-resizer`,
 };
 
 const Root = styled('div')({
@@ -256,7 +257,7 @@ class TableResize extends React.Component {
   };
 
   render() {
-    const {  tableId } = this.props;
+    const { tableId } = this.props;
     const { id, isResize, resizeCoords, tableWidth, tableHeight } = this.state;
 
     return (
@@ -291,4 +292,4 @@ class TableResize extends React.Component {
   }
 }
 
-export default (TableResize);
+export default TableResize;

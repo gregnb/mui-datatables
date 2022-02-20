@@ -17,14 +17,10 @@ const classes = {
   selectRoot: `${PREFIX}-selectRoot`,
   select: `${PREFIX}-select`,
   selectIcon: `${PREFIX}-selectIcon`,
-  input: `${PREFIX}-input`
+  input: `${PREFIX}-input`,
 };
 
-const StyledToolbar = styled(Toolbar)((
-  {
-    theme
-  }
-) => ({
+const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   [`&.${classes.root}`]: {
     color: theme.palette.text.primary,
   },
@@ -57,12 +53,10 @@ const StyledToolbar = styled(Toolbar)((
     color: 'inhert',
     fontSize: 'inhert',
     flexShrink: 0,
-  }
+  },
 }));
 
 function JumpToPage(props) {
-
-
   const handlePageChange = event => {
     props.changePage(parseInt(event.target.value, 10));
   };

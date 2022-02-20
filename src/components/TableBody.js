@@ -16,14 +16,10 @@ const classes = {
   root: `${PREFIX}-root`,
   emptyTitle: `${PREFIX}-emptyTitle`,
   lastStackedCell: `${PREFIX}-lastStackedCell`,
-  lastSimpleCell: `${PREFIX}-lastSimpleCell`
+  lastSimpleCell: `${PREFIX}-lastSimpleCell`,
 };
 
-const StyledMuiTableBody = styled(MuiTableBody)((
-  {
-    theme
-  }
-) => ({
+const StyledMuiTableBody = styled(MuiTableBody)(({ theme }) => ({
   [`& .${classes.root}`]: {},
 
   [`& .${classes.emptyTitle}`]: {
@@ -44,7 +40,7 @@ const StyledMuiTableBody = styled(MuiTableBody)((
         borderBottom: 'none',
       },
     },
-  }
+  },
 }));
 
 class TableBody extends React.Component {
@@ -350,4 +346,4 @@ class TableBody extends React.Component {
   }
 }
 
-export default (TableBody);
+export default TableBody;

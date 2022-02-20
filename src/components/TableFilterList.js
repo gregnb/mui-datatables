@@ -7,7 +7,7 @@ const PREFIX = 'MUIDataTableFilterList';
 
 const classes = {
   root: `${PREFIX}-root`,
-  chip: `${PREFIX}-chip`
+  chip: `${PREFIX}-chip`,
 };
 
 const Root = styled('div')(() => ({
@@ -20,7 +20,7 @@ const Root = styled('div')(() => ({
 
   [`& .${classes.chip}`]: {
     margin: '8px 8px 0px 0px',
-  }
+  },
 }));
 
 const TableFilterList = ({
@@ -33,7 +33,6 @@ const TableFilterList = ({
   customFilterListUpdate,
   ItemComponent = TableFilterListItem,
 }) => {
-
   const { serverSide } = options;
 
   const removeFilter = (index, filterValue, columnName, filterType, customFilterListUpdate = null) => {

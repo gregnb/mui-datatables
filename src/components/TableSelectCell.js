@@ -19,14 +19,10 @@ const classes = {
   expandDisabled: `${PREFIX}-expandDisabled`,
   checkboxRoot: `${PREFIX}-checkboxRoot`,
   checked: `${PREFIX}-checked`,
-  disabled: `${PREFIX}-disabled`
+  disabled: `${PREFIX}-disabled`,
 };
 
-const StyledTableCell = styled(TableCell)((
-  {
-    theme
-  }
-) => ({
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`& .${classes.root}`]: {
     '@media print': {
       display: 'none',
@@ -66,7 +62,7 @@ const StyledTableCell = styled(TableCell)((
   [`& .${classes.expandDisabled}`]: {},
   [`& .${classes.checkboxRoot}`]: {},
   [`& .${classes.checked}`]: {},
-  [`& .${classes.disabled}`]: {}
+  [`& .${classes.disabled}`]: {},
 }));
 
 const TableSelectCell = ({
@@ -89,7 +85,6 @@ const TableSelectCell = ({
   components = {},
   ...otherProps
 }) => {
-
   const CheckboxComponent = components.Checkbox || Checkbox;
   const ExpandButtonComponent = components.ExpandButton || ExpandButton;
 

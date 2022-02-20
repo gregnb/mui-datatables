@@ -12,14 +12,10 @@ const classes = {
   main: `${PREFIX}-main`,
   responsiveStacked: `${PREFIX}-responsiveStacked`,
   responsiveStackedAlways: `${PREFIX}-responsiveStackedAlways`,
-  responsiveSimple: `${PREFIX}-responsiveSimple`
+  responsiveSimple: `${PREFIX}-responsiveSimple`,
 };
 
-const StyledMuiTableHead = styled(MuiTableHead)((
-  {
-    theme
-  }
-) => ({
+const StyledMuiTableHead = styled(MuiTableHead)(({ theme }) => ({
   [`&.${classes.main}`]: {},
 
   [`&.${classes.responsiveStacked}`]: {
@@ -36,7 +32,7 @@ const StyledMuiTableHead = styled(MuiTableHead)((
     [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
-  }
+  },
 }));
 
 const TableHead = ({
@@ -59,8 +55,6 @@ const TableHead = ({
   toggleSort,
   updateColumnOrder,
 }) => {
-
-
   if (columnOrder === null) {
     columnOrder = columns ? columns.map((item, idx) => idx) : [];
   }

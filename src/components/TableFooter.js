@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 const PREFIX = 'MUIDataTableFooter';
 
 const classes = {
-  root: `${PREFIX}-root`
+  root: `${PREFIX}-root`,
 };
 
 const StyledMuiTable = styled(MuiTable)(() => ({
@@ -15,11 +15,10 @@ const StyledMuiTable = styled(MuiTable)(() => ({
     '@media print': {
       display: 'none',
     },
-  }
+  },
 }));
 
 const TableFooter = ({ options, rowCount, page, rowsPerPage, changeRowsPerPage, changePage }) => {
-
   const { customFooter, pagination = true } = options;
 
   if (customFooter) {

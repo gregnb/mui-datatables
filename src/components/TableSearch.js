@@ -5,20 +5,17 @@ import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
+
 const PREFIX = 'MUIDataTableSearch';
 
 const classes = {
   main: `${PREFIX}-main`,
   searchIcon: `${PREFIX}-searchIcon`,
   searchText: `${PREFIX}-searchText`,
-  clearIcon: `${PREFIX}-clearIcon`
+  clearIcon: `${PREFIX}-clearIcon`,
 };
 
-const StyledGrow = styled(Grow)((
-  {
-    theme
-  }
-) => ({
+const StyledGrow = styled(Grow)(({ theme }) => ({
   [`& .${classes.main}`]: {
     display: 'flex',
     flex: '1 0 auto',
@@ -38,12 +35,10 @@ const StyledGrow = styled(Grow)((
     '&:hover': {
       color: theme.palette.error.main,
     },
-  }
+  },
 }));
 
 const TableSearch = ({ options, searchText, onSearch, onHide }) => {
-
-
   const handleTextChange = event => {
     onSearch(event.target.value);
   };

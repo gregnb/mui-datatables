@@ -25,14 +25,10 @@ const classes = {
   toolButton: `${PREFIX}-toolButton`,
   contentWrapper: `${PREFIX}-contentWrapper`,
   hintIconAlone: `${PREFIX}-hintIconAlone`,
-  hintIconWithSortIcon: `${PREFIX}-hintIconWithSortIcon`
+  hintIconWithSortIcon: `${PREFIX}-hintIconWithSortIcon`,
 };
 
-const StyledTableCell = styled(TableCell)((
-  {
-    theme
-  }
-) => ({
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`& .${classes.root}`]: {},
 
   [`& .${classes.fixedHeader}`]: {
@@ -94,7 +90,7 @@ const StyledTableCell = styled(TableCell)((
 
   [`& .${classes.hintIconWithSortIcon}`]: {
     marginTop: '-3px',
-  }
+  },
 }));
 
 const TableHeadCell = ({
@@ -122,8 +118,6 @@ const TableHeadCell = ({
 }) => {
   const [sortTooltipOpen, setSortTooltipOpen] = useState(false);
   const [hintTooltipOpen, setHintTooltipOpen] = useState(false);
-
-
 
   const handleKeyboardSortInput = e => {
     if (e.key === 'Enter') {

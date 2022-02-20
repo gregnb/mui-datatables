@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
+
 const PREFIX = 'MUIDataTableViewCol';
 
 const classes = {
@@ -16,14 +17,10 @@ const classes = {
   checkbox: `${PREFIX}-checkbox`,
   checkboxRoot: `${PREFIX}-checkboxRoot`,
   checked: `${PREFIX}-checked`,
-  label: `${PREFIX}-label`
+  label: `${PREFIX}-label`,
 };
 
-const StyledFormControl = styled(FormControl)((
-  {
-    theme
-  }
-) => ({
+const StyledFormControl = styled(FormControl)(({ theme }) => ({
   [`&.${classes.root}`]: {
     padding: '16px 24px 16px 24px',
     fontFamily: 'Roboto',
@@ -57,11 +54,10 @@ const StyledFormControl = styled(FormControl)((
     fontSize: '15px',
     marginLeft: '8px',
     color: theme.palette.text.primary,
-  }
+  },
 }));
 
 const TableViewCol = ({ columns, options, components = {}, onColumnUpdate, updateColumns }) => {
-
   const textLabels = options.textLabels.viewColumns;
   const CheckboxComponent = components.Checkbox || Checkbox;
 

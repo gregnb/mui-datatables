@@ -13,14 +13,10 @@ const classes = {
   root: `${PREFIX}-root`,
   title: `${PREFIX}-title`,
   iconButton: `${PREFIX}-iconButton`,
-  deleteIcon: `${PREFIX}-deleteIcon`
+  deleteIcon: `${PREFIX}-deleteIcon`,
 };
 
-const StyledPaper = styled(Paper)((
-  {
-    theme
-  }
-) => ({
+const StyledPaper = styled(Paper)(({ theme }) => ({
   [`&.${classes.root}`]: {
     backgroundColor: theme.palette.background.default,
     flex: '1 1 100%',
@@ -44,7 +40,7 @@ const StyledPaper = styled(Paper)((
     marginRight: '24px',
   },
 
-  [`& .${classes.deleteIcon}`]: {}
+  [`& .${classes.deleteIcon}`]: {},
 }));
 
 class TableToolbarSelect extends React.Component {
@@ -79,7 +75,7 @@ class TableToolbarSelect extends React.Component {
   };
 
   render() {
-    const {  onRowsDelete, selectedRows, options, displayData, components = {} } = this.props;
+    const { onRowsDelete, selectedRows, options, displayData, components = {} } = this.props;
     const textLabels = options.textLabels.selectedRows;
     const Tooltip = components.Tooltip || MuiTooltip;
 
@@ -104,4 +100,4 @@ class TableToolbarSelect extends React.Component {
   }
 }
 
-export default (TableToolbarSelect);
+export default TableToolbarSelect;

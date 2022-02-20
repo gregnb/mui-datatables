@@ -12,7 +12,7 @@ const classes = {
   main: `${PREFIX}-main`,
   searchIcon: `${PREFIX}-searchIcon`,
   searchText: `${PREFIX}-searchText`,
-  clearIcon: `${PREFIX}-clearIcon`
+  clearIcon: `${PREFIX}-clearIcon`,
 };
 
 const StyledDebounceTableSearch = styled(Grow)(({ theme }) => ({
@@ -35,7 +35,7 @@ const StyledDebounceTableSearch = styled(Grow)(({ theme }) => ({
     '&:hover': {
       color: theme.palette.error.main,
     },
-  }
+  },
 }));
 
 function debounce(func, wait, immediate) {
@@ -75,16 +75,14 @@ class _DebounceTableSearch extends React.Component {
     }
   };
 
-
   render() {
-    const {  options, onHide, searchText, debounceWait } = this.props;
+    const { options, onHide, searchText, debounceWait } = this.props;
 
     const debouncedSearch = debounce(value => {
       this.props.onSearch(value);
     }, debounceWait);
 
     const clearIconVisibility = options.searchAlwaysOpen ? 'hidden' : 'visible';
-
 
     return (
       <StyledDebounceTableSearch appear in={true} timeout={300}>
@@ -105,7 +103,7 @@ class _DebounceTableSearch extends React.Component {
             placeholder={options.searchPlaceholder}
             {...(options.searchProps ? options.searchProps : {})}
           />
-          <IconButton className={classes.clearIcon} style={{ visibility: clearIconVisibility }}  onClick={onHide}>
+          <IconButton className={classes.clearIcon} style={{ visibility: clearIconVisibility }} onClick={onHide}>
             <ClearIcon />
           </IconButton>
         </div>
