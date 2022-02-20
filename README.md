@@ -246,7 +246,7 @@ The component accepts the following props:
 |**`tableBodyMaxHeight`**|string||CSS string for the height of the table (ex: '500px', '100%', 'auto').
 |**`textLabels`**|object||User provided labels to localize text.
 |**`viewColumns`**|boolean or string|true|Show/hide viewColumns icon from toolbar. Possible values:<p><ul><li>true: Button is visiable and clickable.</li><li>false: Button is not visible.</li><li>disabled: Button is visible, but not clickable.</li></ul></p>
-|**`storageKey`**|string|| ave current state to local storage.
+|**`storageKey`**|string|| ave current state to local storage.(Only browser)
 
 ## Customize Columns
 
