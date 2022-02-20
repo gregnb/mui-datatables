@@ -13,94 +13,114 @@ import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 import FilterIcon from '@mui/icons-material/FilterList';
 import ReactToPrint, { PrintContextConsumer } from 'react-to-print';
 import find from 'lodash.find';
-import { withStyles } from 'tss-react/mui';
 import { createCSVDownload, downloadCSV } from '../utils';
 import MuiTooltip from '@mui/material/Tooltip';
+import { styled } from '@mui/material/styles';
 
-export const defaultToolbarStyles = theme => ({
-  root: {
+const PREFIX = 'MUIDataTableToolbar';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  fullWidthRoot: `${PREFIX}-fullWidthRoot`,
+  left: `${PREFIX}-left`,
+  fullWidthLeft: `${PREFIX}-fullWidthLeft`,
+  actions: `${PREFIX}-actions`,
+  fullWidthActions: `${PREFIX}-fullWidthActions`,
+  titleRoot: `${PREFIX}-titleRoot`,
+  titleText: `${PREFIX}-titleText`,
+  fullWidthTitleText: `${PREFIX}-fullWidthTitleText`,
+  icon: `${PREFIX}-icon`,
+  iconActive: `${PREFIX}-iconActive`,
+  filterPaper: `${PREFIX}-filterPaper`,
+  filterCloseIcon: `${PREFIX}-filterCloseIcon`,
+  searchIcon: `${PREFIX}-searchIcon`,
+  spacer: `${PREFIX}-spacer`,
+};
+
+const StyledMuiTableToolbar = styled(Toolbar)(({ theme }) => ({
+  [`& .${classes.root}`]: {
     '@media print': {
       display: 'none',
     },
   },
-  fullWidthRoot: {},
-  left: {
+  [`& .${classes.fullWidthRoot}`]: {},
+  [`& .${classes.left}`]: {
     flex: '1 1 auto',
   },
-  fullWidthLeft: {
+  [`& .${classes.fullWidthLeft}`]: {
     flex: '1 1 auto',
   },
-  actions: {
-    flex: '1 1 auto',
-    textAlign: 'right',
-  },
-  fullWidthActions: {
+  [`& .${classes.actions}`]: {
     flex: '1 1 auto',
     textAlign: 'right',
   },
-  titleRoot: {},
-  titleText: {},
-  fullWidthTitleText: {
+  [`& .${classes.fullWidthActions}`]: {
+    flex: '1 1 auto',
+    textAlign: 'right',
+  },
+  [`& .${classes.titleRoot}`]: {},
+  [`& .${classes.titleText}`]: {},
+  [`& .${classes.fullWidthTitleText}`]: {
     textAlign: 'left',
   },
-  icon: {
+  [`& .${classes.icon}`]: {
     '&:hover': {
       color: theme.palette.primary.main,
     },
   },
-  iconActive: {
+  [`& .${classes.iconActive}`]: {
     color: theme.palette.primary.main,
   },
-  filterPaper: {
+  [`& .${classes.filterPaper}`]: {
     maxWidth: '50%',
   },
-  filterCloseIcon: {
+  [`& .${classes.filterCloseIcon}`]: {
     position: 'absolute',
     right: 0,
     top: 0,
     zIndex: 100,
   },
-  searchIcon: {
+  [`& .${classes.searchIcon}`]: {
     display: 'inline-flex',
     marginTop: '10px',
     marginRight: '8px',
   },
   [theme.breakpoints.down('md')]: {
-    titleRoot: {},
-    titleText: {
+    [`& .${classes.titleRoot}`]: {},
+    [`& .${classes.titleText}`]: {
       fontSize: '16px',
     },
-    spacer: {
+    [`& .${classes.spacer}`]: {
       display: 'none',
     },
-    left: {
+    [`& .${classes.left}`]: {
       // flex: "1 1 40%",
       padding: '8px 0px',
     },
-    actions: {
+    [`& .${classes.actions}`]: {
       // flex: "1 1 60%",
       textAlign: 'right',
     },
   },
   [theme.breakpoints.down('sm')]: {
-    root: {
+    [`& .${classes.root}`]: {
       display: 'block',
       '@media print': {
         display: 'none !important',
       },
     },
-    left: {
+    [`& .${classes.left}`]: {
       padding: '8px 0px 0px 0px',
     },
-    titleText: {
+    [`& .${classes.titleText}`]: {
       textAlign: 'center',
     },
-    actions: {
+    [`& .${classes.actions}`]: {
       textAlign: 'center',
     },
   },
   '@media screen and (max-width: 480px)': {},
-});
+}));
 
 const RESPONSIVE_FULL_WIDTH_NAME = 'scrollFullHeightFullWidth';
 
@@ -287,7 +307,6 @@ class TableToolbar extends React.Component {
     const {
       data,
       options,
-      classes,
       columns,
       filterData,
       filterList,
@@ -322,7 +341,7 @@ class TableToolbar extends React.Component {
     };
 
     return (
-      <Toolbar
+      <StyledMuiTableToolbar
         className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.root : classes.fullWidthRoot}
         role={'toolbar'}
         aria-label={'Table Toolbar'}>
@@ -464,9 +483,9 @@ class TableToolbar extends React.Component {
           )}
           {options.customToolbar && options.customToolbar({ displayData: this.props.displayData })}
         </div>
-      </Toolbar>
+      </StyledMuiTableToolbar>
     );
   }
 }
 
-export default withStyles(TableToolbar, defaultToolbarStyles, { name: 'MUIDataTableToolbar' });
+export default TableToolbar;

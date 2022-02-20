@@ -5,35 +5,44 @@ import MuiTableRow from '@mui/material/TableRow';
 import MuiTableFooter from '@mui/material/TableFooter';
 import MuiTablePagination from '@mui/material/TablePagination';
 import JumpToPage from './JumpToPage';
-import { makeStyles } from 'tss-react/mui';
 import { getPageValue } from '../utils';
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles({ name: 'MUIDataTablePagination' })(theme => ({
-  root: {},
-  tableCellContainer: {
+const PREFIX = 'MUIDataTablePagination';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  tableCellContainer: `${PREFIX}-tableCellContainer`,
+  paperResponsiveScrollFullHeightFullWidth: `${PREFIX}-paperResponsiveScrollFullHeightFullWidth`,
+  navContainer: `${PREFIX}-navContainer`,
+  toolbar: `${PREFIX}-toolbar`,
+  selectRoot: `${PREFIX}-selectRoot`,
+};
+
+const StyledMuiTablePagination = styled(`div`)(({ theme }) => ({
+  [`& .${classes.root}`]: {},
+  [`& .${classes.tableCellContainer}`]: {
     padding: '0px 24px 0px 24px',
   },
-  navContainer: {
+  [`& .${classes.navContainer}`]: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
-  toolbar: {},
-  selectRoot: {},
+  [`& .${classes.toolbar}`]: {},
+  [`& .${classes.selectRoot}`]: {},
   '@media screen and (max-width: 400px)': {
-    toolbar: {
+    [`& .${classes.toolbar}`]: {
       '& span:nth-of-type(2)': {
         display: 'none',
       },
     },
-    selectRoot: {
+    [`& .${classes.selectRoot}`]: {
       marginRight: '8px',
     },
   },
 }));
 
 function TablePagination(props) {
-  const { classes } = useStyles();
-
   const handleRowChange = event => {
     props.changeRowsPerPage(event.target.value);
   };
@@ -46,62 +55,64 @@ function TablePagination(props) {
   const textLabels = options.textLabels.pagination;
 
   return (
-    <MuiTableFooter>
-      <MuiTableRow>
-        <MuiTableCell colSpan="1000" className={classes.tableCellContainer}>
-          <div className={classes.navContainer}>
-            {options.jumpToPage ? (
-              <JumpToPage
+    <StyledMuiTablePagination>
+      <MuiTableFooter>
+        <MuiTableRow>
+          <MuiTableCell colSpan="1000" sx={{ p: '0px 24px' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              {options.jumpToPage ? (
+                <JumpToPage
+                  count={count}
+                  page={page}
+                  rowsPerPage={rowsPerPage}
+                  textLabels={options.textLabels}
+                  changePage={props.changePage}
+                  changeRowsPerPage={props.changeRowsPerPage}
+                />
+              ) : null}
+              <MuiTablePagination
+                component="div"
+                className={classes.root}
+                classes={{
+                  caption: classes.caption,
+                  toolbar: classes.toolbar,
+                  selectRoot: classes.selectRoot,
+                }}
                 count={count}
-                page={page}
                 rowsPerPage={rowsPerPage}
-                textLabels={options.textLabels}
-                changePage={props.changePage}
-                changeRowsPerPage={props.changeRowsPerPage}
+                page={getPageValue(count, rowsPerPage, page)}
+                labelRowsPerPage={textLabels.rowsPerPage}
+                labelDisplayedRows={({ from, to, count }) => `${from}-${to} ${textLabels.displayRows} ${count}`}
+                backIconButtonProps={{
+                  id: 'pagination-back',
+                  'data-testid': 'pagination-back',
+                  'aria-label': textLabels.previous,
+                  title: textLabels.previous || '',
+                }}
+                nextIconButtonProps={{
+                  id: 'pagination-next',
+                  'data-testid': 'pagination-next',
+                  'aria-label': textLabels.next,
+                  title: textLabels.next || '',
+                }}
+                SelectProps={{
+                  id: 'pagination-input',
+                  SelectDisplayProps: { id: 'pagination-rows', 'data-testid': 'pagination-rows' },
+                  MenuProps: {
+                    id: 'pagination-menu',
+                    'data-testid': 'pagination-menu',
+                    MenuListProps: { id: 'pagination-menu-list', 'data-testid': 'pagination-menu-list' },
+                  },
+                }}
+                rowsPerPageOptions={options.rowsPerPageOptions}
+                onPageChange={handlePageChange}
+                onRowsPerPageChange={handleRowChange}
               />
-            ) : null}
-            <MuiTablePagination
-              component="div"
-              className={classes.root}
-              classes={{
-                caption: classes.caption,
-                toolbar: classes.toolbar,
-                selectRoot: classes.selectRoot,
-              }}
-              count={count}
-              rowsPerPage={rowsPerPage}
-              page={getPageValue(count, rowsPerPage, page)}
-              labelRowsPerPage={textLabels.rowsPerPage}
-              labelDisplayedRows={({ from, to, count }) => `${from}-${to} ${textLabels.displayRows} ${count}`}
-              backIconButtonProps={{
-                id: 'pagination-back',
-                'data-testid': 'pagination-back',
-                'aria-label': textLabels.previous,
-                title: textLabels.previous || '',
-              }}
-              nextIconButtonProps={{
-                id: 'pagination-next',
-                'data-testid': 'pagination-next',
-                'aria-label': textLabels.next,
-                title: textLabels.next || '',
-              }}
-              SelectProps={{
-                id: 'pagination-input',
-                SelectDisplayProps: { id: 'pagination-rows', 'data-testid': 'pagination-rows' },
-                MenuProps: {
-                  id: 'pagination-menu',
-                  'data-testid': 'pagination-menu',
-                  MenuListProps: { id: 'pagination-menu-list', 'data-testid': 'pagination-menu-list' },
-                },
-              }}
-              rowsPerPageOptions={options.rowsPerPageOptions}
-              onPageChange={handlePageChange}
-              onRowsPerPageChange={handleRowChange}
-            />
-          </div>
-        </MuiTableCell>
-      </MuiTableRow>
-    </MuiTableFooter>
+            </div>
+          </MuiTableCell>
+        </MuiTableRow>
+      </MuiTableFooter>
+    </StyledMuiTablePagination>
   );
 }
 

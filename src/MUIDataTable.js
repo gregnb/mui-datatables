@@ -10,6 +10,7 @@ import isEqual from 'lodash.isequal';
 import isUndefined from 'lodash.isundefined';
 import merge from 'lodash.merge';
 import PropTypes from 'prop-types';
+import { styled } from '@mui/material/styles';
 import React from 'react';
 import DefaultTableBody from './components/TableBody';
 import DefaultTableFilter from './components/TableFilter';
@@ -24,6 +25,89 @@ import { buildMap, getCollatorComparator, getPageValue, sortCompare, warnDepreca
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { load, save } from './localStorage';
+
+
+const PREFIX = 'MUIDataTable';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  paper: `${PREFIX}-paper`,
+  paperResponsiveScrollFullHeightFullWidth: `${PREFIX}-paperResponsiveScrollFullHeightFullWidth`,
+  tableRoot: `${PREFIX}-tableRoot`,
+  responsiveBase: `${PREFIX}-responsiveBase`,
+  responsiveScroll: `${PREFIX}-responsiveScroll`,
+  responsiveScrollMaxHeight: `${PREFIX}-responsiveScrollMaxHeight`,
+  responsiveScrollFullHeight: `${PREFIX}-responsiveScrollFullHeight`,
+  responsiveStacked: `${PREFIX}-responsiveStacked`,
+  responsiveStackedFullWidth: `${PREFIX}-responsiveStackedFullWidth`,
+  caption: `${PREFIX}-caption`,
+  liveAnnounce: `${PREFIX}-liveAnnounce`,
+};
+
+const StyledMuiTable = styled(Paper)(({theme}) => ({
+  [`& .${classes.root}`]: {},
+  [`& .${classes.paper}`]: {},
+  [`& .${classes.paperResponsiveScrollFullHeightFullWidth}`]: {
+    position: 'absolute',
+  },
+  [`& .${classes.tableRoot}`]: {
+    outline: 'none',
+  },
+  [`& .${classes.responsiveBase}`]: {
+    overflow: 'auto',
+    '@media print': {
+      height: 'auto !important',
+    },
+  },
+
+  // deprecated, but continuing support through v3.x
+  [`& .${classes.responsiveScroll}`]: {
+    overflow: 'auto',
+    height: '100%',
+  },
+  // deprecated, but continuing support through v3.x
+  [`& .${classes.responsiveScrollMaxHeight}`]: {
+    overflow: 'auto',
+    height: '100%',
+  },
+  // deprecated, but continuing support through v3.x
+  [`& .${classes.responsiveScrollFullHeight}`]: {
+    height: '100%',
+  },
+  // deprecated, but continuing support through v3.x
+  [`& .${classes.responsiveStacked}`]: {
+    overflow: 'auto',
+    [theme.breakpoints.down('md')]: {
+      overflow: 'hidden',
+    },
+  },
+  // deprecated, but continuing support through v3.x
+  [`& .${classes.responsiveStackedFullWidth}`]: {},
+
+  [`& .${classes.caption}`]: {
+    position: 'absolute',
+    left: '-3000px',
+  },
+
+  [`& .${classes.liveAnnounce}`]: {
+    border: '0',
+    clip: 'rect(0 0 0 0)',
+    height: '1px',
+    margin: '-1px',
+    overflow: 'hidden',
+    padding: '0',
+    position: 'absolute',
+    width: '1px',
+  },
+  '@global': {
+    '@media print': {
+      '.datatables-noprint': {
+        display: 'none',
+      },
+    },
+  },
+}));
+
 
 const defaultTableStyles = theme => ({
   root: {},
@@ -1216,7 +1300,6 @@ class MUIDataTable extends React.Component {
   }
 
   getTableProps() {
-    const { classes } = this.props;
     const tableProps = this.options.setTableProps() || {};
 
     tableProps.className = clsx(classes.tableRoot, tableProps.className);
@@ -1822,7 +1905,6 @@ class MUIDataTable extends React.Component {
 
   render() {
     const {
-      classes,
       className,
       title,
       components: {
@@ -1930,7 +2012,7 @@ class MUIDataTable extends React.Component {
     }
 
     return (
-      <Paper elevation={this.options.elevation} ref={this.tableContent} className={paperClasses}>
+      <StyledMuiTable elevation={this.options.elevation} ref={this.tableContent} className={paperClasses}>
         {selectedRows.data.length > 0 && this.options.selectToolbarPlacement !== STP.NONE && (
           <TableToolbarSelectComponent
             options={this.options}
@@ -2080,9 +2162,10 @@ class MUIDataTable extends React.Component {
         <div className={classes.liveAnnounce} aria-live={'polite'}>
           {announceText}
         </div>
-      </Paper>
+      </StyledMuiTable>
     );
   }
 }
 
-export default withStyles(MUIDataTable, defaultTableStyles, { name: 'MUIDataTable' });
+export default (MUIDataTable);
+

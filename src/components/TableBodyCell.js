@@ -16,14 +16,10 @@ const classes = {
   stackedParentAlways: `${PREFIX}-stackedParentAlways`,
   cellStackedSmall: `${PREFIX}-cellStackedSmall`,
   responsiveStackedSmall: `${PREFIX}-responsiveStackedSmall`,
-  responsiveStackedSmallParent: `${PREFIX}-responsiveStackedSmallParent`
+  responsiveStackedSmallParent: `${PREFIX}-responsiveStackedSmallParent`,
 };
 
-const StyledTableCell = styled(TableCell)((
-  {
-    theme
-  }
-) => ({
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${classes.root}`]: {},
 
   [`& .${classes.cellHide}`]: {
@@ -76,7 +72,7 @@ const StyledTableCell = styled(TableCell)((
     '&:last-child': {
       borderBottom: 'none',
     },
-    '&:nth-last-child(2)': {
+    '&:nth-last-of-type(2)': {
       borderBottom: 'none',
     },
   },
@@ -118,11 +114,10 @@ const StyledTableCell = styled(TableCell)((
       width: '100%',
       boxSizing: 'border-box',
     },
-  }
+  },
 }));
 
 function TableBodyCell(props) {
-
   const {
     children,
     colIndex,
