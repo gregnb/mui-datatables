@@ -307,13 +307,18 @@ class TableBody extends React.Component {
                           print={columns[column.index].print}
                           options={options}
                           tableId={tableId}
+                          isEmpty={false}
                           key={column.index}>
                           {column.value}
                         </TableBodyCell>
                       ),
                   )}
                 </TableBodyRow>
-                {this.isRowExpanded(dataIndex) && options.renderExpandableRow(row, { rowIndex, dataIndex })}
+                {this.isRowExpanded(dataIndex) &&
+                  options.renderExpandableRow(row, {
+                    rowIndex,
+                    dataIndex,
+                  })}
               </React.Fragment>
             );
           })

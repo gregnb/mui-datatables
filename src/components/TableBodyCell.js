@@ -32,7 +32,7 @@ const useStyles = makeStyles(
         display: 'inline-block',
         fontSize: '16px',
         height: 'auto',
-        width: props=>props.isEmpty?'calc(100%)':'calc(50%)',
+        width: props => (props.isEmpty ? 'calc(100%)' : 'calc(50%)'),
         boxSizing: 'border-box',
         '&:last-child': {
           borderBottom: 'none',
@@ -107,6 +107,7 @@ function TableBodyCell(props) {
     tableId,
     ...otherProps
   } = props;
+  console.log(props);
   const onCellClick = options.onCellClick;
 
   const handleClick = useCallback(
@@ -169,10 +170,12 @@ function TableBodyCell(props) {
       {typeof children === 'function' ? children(dataIndex, rowIndex) : children}
     </div>,
   ];
-
+  console.log('isEmty' + props.isEmpty);
   var innerCells;
   if (
-    ['standard', 'scrollMaxHeight', 'scrollFullHeight', 'scrollFullHeightFullWidth'].indexOf(options.responsive) !== -1||props.isEmpty
+    ['standard', 'scrollMaxHeight', 'scrollFullHeight', 'scrollFullHeightFullWidth'].indexOf(options.responsive) !==
+      -1 ||
+    props.isEmpty
   ) {
     innerCells = cells.slice(1, 2);
   } else {
