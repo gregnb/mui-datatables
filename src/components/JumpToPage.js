@@ -9,39 +9,36 @@ import { makeStyles } from 'tss-react/mui';
 import { getPageValue } from '../utils.js';
 import clsx from 'clsx';
 
-const useStyles = makeStyles()(
-  theme => ({
-    root: {
-      color: theme.palette.text.primary,
-    },
-    caption: {
-      flexShrink: 0,
-    },
-    /*  Styles applied to the Select component root element */
-    selectRoot: {
-      marginRight: 32,
-      marginLeft: 8,
-    },
-    select: {
-      paddingTop: 6,
-      paddingBottom: 7,
-      paddingLeft: 8,
-      paddingRight: 24,
-      textAlign: 'right',
-      textAlignLast: 'right',
-      fontSize: theme.typography.pxToRem(14),
-    },
-    /* Styles applied to Select component icon class */
-    selectIcon: {},
-    /* Styles applied to InputBase component */
-    input: {
-      color: 'inhert',
-      fontSize: 'inhert',
-      flexShrink: 0,
-    },
-  }),
-  { name: 'MUIDataTableJumpToPage' },
-);
+const useStyles = makeStyles({ name: 'MUIDataTableJumpToPage' })(theme => ({
+  root: {
+    color: theme.palette.text.primary,
+  },
+  caption: {
+    flexShrink: 0,
+  },
+  /*  Styles applied to the Select component root element */
+  selectRoot: {
+    marginRight: 32,
+    marginLeft: 8,
+  },
+  select: {
+    paddingTop: 6,
+    paddingBottom: 7,
+    paddingLeft: 8,
+    paddingRight: 24,
+    textAlign: 'right',
+    textAlignLast: 'right',
+    fontSize: theme.typography.pxToRem(14),
+  },
+  /* Styles applied to Select component icon class */
+  selectIcon: {},
+  /* Styles applied to InputBase component */
+  input: {
+    color: 'inhert',
+    fontSize: 'inhert',
+    flexShrink: 0,
+  },
+}));
 
 function JumpToPage(props) {
   const { classes } = useStyles();

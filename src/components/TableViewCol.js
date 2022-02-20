@@ -7,39 +7,36 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { makeStyles } from 'tss-react/mui';
 
-const useStyles = makeStyles()(
-  theme => ({
-    root: {
-      padding: '16px 24px 16px 24px',
-      fontFamily: 'Roboto',
-    },
-    title: {
-      marginLeft: '-7px',
-      marginRight: '24px',
-      fontSize: '14px',
-      color: theme.palette.text.secondary,
-      textAlign: 'left',
-      fontWeight: 500,
-    },
-    formGroup: {
-      marginTop: '8px',
-    },
-    formControl: {},
-    checkbox: {
-      padding: '0px',
-      width: '32px',
-      height: '32px',
-    },
-    checkboxRoot: {},
-    checked: {},
-    label: {
-      fontSize: '15px',
-      marginLeft: '8px',
-      color: theme.palette.text.primary,
-    },
-  }),
-  { name: 'MUIDataTableViewCol' },
-);
+const useStyles = makeStyles({ name: 'MUIDataTableViewCol' })(theme => ({
+  root: {
+    padding: '16px 24px 16px 24px',
+    fontFamily: 'Roboto',
+  },
+  title: {
+    marginLeft: '-7px',
+    marginRight: '24px',
+    fontSize: '14px',
+    color: theme.palette.text.secondary,
+    textAlign: 'left',
+    fontWeight: 500,
+  },
+  formGroup: {
+    marginTop: '8px',
+  },
+  formControl: {},
+  checkbox: {
+    padding: '0px',
+    width: '32px',
+    height: '32px',
+  },
+  checkboxRoot: {},
+  checked: {},
+  label: {
+    fontSize: '15px',
+    marginLeft: '8px',
+    color: theme.palette.text.primary,
+  },
+}));
 
 const TableViewCol = ({ columns, options, components = {}, onColumnUpdate, updateColumns }) => {
   const { classes } = useStyles();

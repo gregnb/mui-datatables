@@ -6,25 +6,22 @@ import TableHeadCell from './TableHeadCell';
 import TableHeadRow from './TableHeadRow';
 import TableSelectCell from './TableSelectCell';
 
-const useStyles = makeStyles()(
-  theme => ({
-    main: {},
-    responsiveStacked: {
-      [theme.breakpoints.down('md')]: {
-        display: 'none',
-      },
-    },
-    responsiveStackedAlways: {
+const useStyles = makeStyles({ name: 'MUIDataTableHead' })(theme => ({
+  main: {},
+  responsiveStacked: {
+    [theme.breakpoints.down('md')]: {
       display: 'none',
     },
-    responsiveSimple: {
-      [theme.breakpoints.down('sm')]: {
-        display: 'none',
-      },
+  },
+  responsiveStackedAlways: {
+    display: 'none',
+  },
+  responsiveSimple: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
     },
-  }),
-  { name: 'MUIDataTableHead' },
-);
+  },
+}));
 
 const TableHead = ({
   columnOrder = null,

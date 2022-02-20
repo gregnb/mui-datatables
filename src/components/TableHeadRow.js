@@ -4,12 +4,9 @@ import clsx from 'clsx';
 import TableRow from '@mui/material/TableRow';
 import { makeStyles } from 'tss-react/mui';
 
-const useStyles = makeStyles()(
-  () => ({
-    root: {},
-  }),
-  { name: 'MUIDataTableHeadRow' },
-);
+const useStyles = makeStyles({ name: 'MUIDataTableHeadRow' })(() => ({
+  root: {},
+}));
 
 const TableHeadRow = ({ children }) => {
   const { classes } = useStyles();

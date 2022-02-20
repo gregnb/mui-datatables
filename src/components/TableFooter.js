@@ -4,16 +4,13 @@ import TablePagination from './TablePagination';
 import { makeStyles } from 'tss-react/mui';
 import PropTypes from 'prop-types';
 
-const useStyles = makeStyles()(
-  () => ({
-    root: {
-      '@media print': {
-        display: 'none',
-      },
+const useStyles = makeStyles({ name: 'MUIDataTableFooter' })(() => ({
+  root: {
+    '@media print': {
+      display: 'none',
     },
-  }),
-  { name: 'MUIDataTableFooter' },
-);
+  },
+}));
 
 const TableFooter = ({ options, rowCount, page, rowsPerPage, changeRowsPerPage, changePage }) => {
   const { classes } = useStyles();

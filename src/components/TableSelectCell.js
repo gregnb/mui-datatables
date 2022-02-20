@@ -6,45 +6,41 @@ import TableCell from '@mui/material/TableCell';
 import { makeStyles } from 'tss-react/mui';
 import ExpandButton from './ExpandButton';
 
-const useStyles = makeStyles()(
-  theme => ({
-    root: {
-      '@media print': {
-        display: 'none',
-      },
+const useStyles = makeStyles({ name: 'MUIDataTableSelectCell' })(theme => ({
+  root: {
+    '@media print': {
+      display: 'none',
     },
-    fixedHeader: {
-      position: 'sticky',
-      top: '0px',
-      zIndex: 100,
-    },
-    fixedLeft: {
-      position: 'sticky',
-      left: '0px',
-      zIndex: 100,
-    },
-    icon: {
-      cursor: 'pointer',
-      transition: 'transform 0.25s',
-    },
-    expanded: {
-      transform: 'rotate(90deg)',
-    },
-    hide: {
-      visibility: 'hidden',
-    },
-    headerCell: {
-      zIndex: 110,
-      backgroundColor: theme.palette.background.paper,
-    },
-    expandDisabled: {},
-    checkboxRoot: {},
-    checked: {},
-    disabled: {},
-  }),
-
-  { name: 'MUIDataTableSelectCell' },
-);
+  },
+  fixedHeader: {
+    position: 'sticky',
+    top: '0px',
+    zIndex: 100,
+  },
+  fixedLeft: {
+    position: 'sticky',
+    left: '0px',
+    zIndex: 100,
+  },
+  icon: {
+    cursor: 'pointer',
+    transition: 'transform 0.25s',
+  },
+  expanded: {
+    transform: 'rotate(90deg)',
+  },
+  hide: {
+    visibility: 'hidden',
+  },
+  headerCell: {
+    zIndex: 110,
+    backgroundColor: theme.palette.background.paper,
+  },
+  expandDisabled: {},
+  checkboxRoot: {},
+  checked: {},
+  disabled: {},
+}));
 
 const TableSelectCell = ({
   fixedHeader,

@@ -8,31 +8,28 @@ import JumpToPage from './JumpToPage';
 import { makeStyles } from 'tss-react/mui';
 import { getPageValue } from '../utils';
 
-const useStyles = makeStyles()(
-  theme => ({
-    root: {},
-    tableCellContainer: {
-      padding: '0px 24px 0px 24px',
-    },
-    navContainer: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-    },
-    toolbar: {},
-    selectRoot: {},
-    '@media screen and (max-width: 400px)': {
-      toolbar: {
-        '& span:nth-child(2)': {
-          display: 'none',
-        },
-      },
-      selectRoot: {
-        marginRight: '8px',
+const useStyles = makeStyles({ name: 'MUIDataTablePagination' })(theme => ({
+  root: {},
+  tableCellContainer: {
+    padding: '0px 24px 0px 24px',
+  },
+  navContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  toolbar: {},
+  selectRoot: {},
+  '@media screen and (max-width: 400px)': {
+    toolbar: {
+      '& span:nth-child(2)': {
+        display: 'none',
       },
     },
-  }),
-  { name: 'MUIDataTablePagination' },
-);
+    selectRoot: {
+      marginRight: '8px',
+    },
+  },
+}));
 
 function TablePagination(props) {
   const { classes } = useStyles();

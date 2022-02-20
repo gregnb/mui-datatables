@@ -373,8 +373,6 @@ class TableFilter extends React.Component {
     const { classes, columns, options, customFooter, filterList, components = {} } = this.props;
     const textLabels = options.textLabels.filter;
 
-    console.log('classes', classes);
-
     return (
       <div className={classes.root}>
         <div className={classes.header}>

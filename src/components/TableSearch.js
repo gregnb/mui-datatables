@@ -6,28 +6,25 @@ import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
 import { makeStyles } from 'tss-react/mui';
 
-const useStyles = makeStyles()(
-  theme => ({
-    main: {
-      display: 'flex',
-      flex: '1 0 auto',
-      alignItems: 'center',
+const useStyles = makeStyles({ name: 'MUIDataTableSearch' })(theme => ({
+  main: {
+    display: 'flex',
+    flex: '1 0 auto',
+    alignItems: 'center',
+  },
+  searchIcon: {
+    color: theme.palette.text.secondary,
+    marginRight: '8px',
+  },
+  searchText: {
+    flex: '0.8 0',
+  },
+  clearIcon: {
+    '&:hover': {
+      color: theme.palette.error.main,
     },
-    searchIcon: {
-      color: theme.palette.text.secondary,
-      marginRight: '8px',
-    },
-    searchText: {
-      flex: '0.8 0',
-    },
-    clearIcon: {
-      '&:hover': {
-        color: theme.palette.error.main,
-      },
-    },
-  }),
-  { name: 'MUIDataTableSearch' },
-);
+  },
+}));
 
 const TableSearch = ({ options, searchText, onSearch, onHide }) => {
   const { classes } = useStyles();
