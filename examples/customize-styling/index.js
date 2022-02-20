@@ -38,34 +38,44 @@ class Example extends React.Component {
 
   getMuiTheme = () =>
     createTheme({
-      overrides: {
+      components: {
         MUIDataTable: {
-          root: {
-            backgroundColor: '#AAF',
-          },
-          paper: {
-            boxShadow: 'none',
+          styleOverrides: {
+            root: {
+              backgroundColor: '#red',
+            },
+            paper: {
+              boxShadow: 'none',
+            },
           },
         },
         MuiToolbar: {
-          root: {
-            backgroundColor: '#f00',
+          styleOverrides: {
+            root: {
+              backgroundColor: '#f00',
+            },
           },
         },
         MuiTableCell: {
-          head: {
-            backgroundColor: 'purple',
+          styleOverrides: {
+            head: {
+              backgroundColor: 'purple',
+            },
           },
         },
         MUIDataTableSelectCell: {
-          headerCell: {
-            backgroundColor: 'blue',
+          styleOverrides: {
+            headerCell: {
+              backgroundColor: 'blue',
+            },
           },
         },
         MuiTableFooter: {
-          root: {
-            '& .MuiToolbar-root': {
-              backgroundColor: 'white',
+          styleOverrides: {
+            root: {
+              '& .MuiToolbar-root': {
+                backgroundColor: 'white',
+              },
             },
           },
         },
@@ -96,7 +106,7 @@ class Example extends React.Component {
                 [this.props.classes.NameCell]: value === 'Mel Brooks',
               }),
               style: {
-                //borderRight: '2px solid blue'
+                borderRight: '2px solid blue',
               },
             };
           },
