@@ -41,12 +41,12 @@ If your project doesn't already use them, you need to install `@mui/material`,  
 
 ## Compatibility
 
-| mui-datatables | material-ui | Required Dependencies                                |                                         
-|----------------|-------------|------------------------------------------------------|
-| ^2.0.0         | ^3.0.0      | `@material-ui/core`,`@material-ui/icons`             |
-| ^3.0.0         | ^4.10.0     | `@material-ui/core`,`@material-ui/icons`             |
-| ^3.8.0         | ^4.12.0     | `@material-ui/core`,`@material-ui/icons`             |
-| ^4.0.0         | ^5.0.0      | `@mui/material`,`@mui/icons-material`, `@mui/styles` |
+| mui-datatables | material-ui | Required Dependencies                               |                                         
+|----------------|-------------|-----------------------------------------------------|
+| ^2.0.0         | ^3.0.0      | `@material-ui/core`,`@material-ui/icons`            |
+| ^3.0.0         | ^4.10.0     | `@material-ui/core`,`@material-ui/icons`            |
+| ^3.8.0         | ^4.12.0     | `@material-ui/core`,`@material-ui/icons`            |
+| ^4.0.0         | ^5.0.0      | `@mui/material`,`@mui/icons-material` |
 
 ## Demo
 
@@ -363,6 +363,13 @@ Using Material-UI theme overrides will allow you to customize styling to your li
 import React from "react";
 import MUIDataTable from "mui-datatables";
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
+
+const muiCache = createCache({
+	"key": "mui",
+	"prepend": true
+});
 
 class BodyCellExample extends React.Component {
 
@@ -381,9 +388,11 @@ class BodyCellExample extends React.Component {
   render() {
 
     return (
-      <ThemeProvider theme={this.getMuiTheme()}>
-        <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
-      </ThemeProvider>
+		<CacheProvider value={muiCache}>
+		  <ThemeProvider theme={this.getMuiTheme()}>
+			<MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+		  </ThemeProvider>
+		</CacheProvider>
     );
 
   }
