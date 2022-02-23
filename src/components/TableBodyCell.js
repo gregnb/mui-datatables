@@ -107,7 +107,6 @@ function TableBodyCell(props) {
     tableId,
     ...otherProps
   } = props;
-  console.log(props);
   const onCellClick = options.onCellClick;
 
   const handleClick = useCallback(
@@ -170,7 +169,6 @@ function TableBodyCell(props) {
       {typeof children === 'function' ? children(dataIndex, rowIndex) : children}
     </div>,
   ];
-  console.log('isEmty' + props.isEmpty);
   var innerCells;
   if (
     ['standard', 'scrollMaxHeight', 'scrollFullHeight', 'scrollFullHeightFullWidth'].indexOf(options.responsive) !==
