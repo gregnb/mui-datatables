@@ -107,7 +107,7 @@
   "dependencies": {
     "@babel/runtime-corejs3": "^7.12.1",
     "@emotion/cache": "^11.7.1",
-    "tss-react": "3.5.2",
+    "tss-react": "^3.6.0",
     "clsx": "^1.1.1",
     "lodash.assignwith": "^4.2.0",
     "lodash.clonedeep": "^4.5.0",
