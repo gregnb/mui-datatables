@@ -89,6 +89,7 @@ Or customize columns:
 
 ```js
 
+import React from "react"
 import MUIDataTable from "mui-datatables";
 
 const columns = [
