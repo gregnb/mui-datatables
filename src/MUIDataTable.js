@@ -29,7 +29,7 @@ const defaultTableStyles = theme => ({
   root: {
     '& .datatables-noprint': {
       '@media print': {
-        display: 'none !important',
+        display: 'none',
       },
     },
   },
