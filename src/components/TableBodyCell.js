@@ -28,7 +28,6 @@ const useStyles = makeStyles({ name: 'MUIDataTableBodyCell' })(theme => ({
   },
   stackedCommon: {
     [theme.breakpoints.down('md')]: {
-      display: 'inline-block',
       fontSize: '16px',
       height: 'auto',
       width: 'calc(50%)',
