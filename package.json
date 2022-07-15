@@ -101,8 +101,8 @@
     "@mui/icons-material": "^5.0.1",
     "@mui/material": "^5.0.1",
     "@emotion/react": "^11.4.1",
-    "react": "^16.8.0 || ^17.0.2",
-    "react-dom": "^16.8.0 || ^17.0.2"
+    "react": "^16.8.0 || ^17.0.2 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.2 || ^18.0.0"
   },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.12.1",
