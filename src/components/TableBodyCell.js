@@ -105,6 +105,7 @@ function TableBodyCell(props) {
     className,
     print,
     tableId,
+    isEmpty,
     ...otherProps
   } = props;
   const onCellClick = options.onCellClick;
@@ -173,7 +174,7 @@ function TableBodyCell(props) {
   if (
     ['standard', 'scrollMaxHeight', 'scrollFullHeight', 'scrollFullHeightFullWidth'].indexOf(options.responsive) !==
       -1 ||
-    props.isEmpty
+    isEmpty
   ) {
     innerCells = cells.slice(1, 2);
   } else {
