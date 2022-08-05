@@ -2,7 +2,7 @@
   <img src="https://user-images.githubusercontent.com/19170080/34070522-e15d32e2-e235-11e7-8af5-fa704cdcad56.png" />
 </div>
 
-# MUI-Datatables - Datatables for Material-UI
+# MUI-Datatables - Datatables for MUI (formerly Material-UI)
 
 [![Build Status](https://travis-ci.org/gregnb/mui-datatables.svg?branch=master)](https://travis-ci.org/gregnb/mui-datatables)
 [![NPM Downloads](https://img.shields.io/npm/dt/mui-datatables.svg?style=flat)](https://npmcharts.com/compare/mui-datatables?minimal=true)
@@ -364,7 +364,7 @@ Using Material-UI theme overrides will allow you to customize styling to your li
 ```js
 import React from "react";
 import MUIDataTable from "mui-datatables";
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 
@@ -407,7 +407,7 @@ class BodyCellExample extends React.Component {
 You can pass custom components to further customize the table:
 ```js
 import React from "react";
-import Chip from '@material-ui/core/Chip';
+import Chip from '@mui/material/Chip';
 import MUIDataTable, { TableFilterList } from "mui-datatables";
 
 const CustomChip = ({ label, onDelete }) => {
