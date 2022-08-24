@@ -1,6 +1,6 @@
 {
   "name": "mui-datatables",
-  "version": "4.2.2",
+  "version": "4.3.0",
   "description": "Datatables for React using Material-UI",
   "main": "dist/index.js",
   "files": [
@@ -48,7 +48,7 @@
     "@babel/register": "^7.10.1",
     "@lopatnov/rollup-plugin-uglify": "^2.1.1",
     "@mui/icons-material": "^5.0.1",
-    "@mui/material": "^5.0.1",
+    "@mui/material": "^5.10.2",
     "@rollup/plugin-babel": "5.0.2",
     "@rollup/plugin-commonjs": "^12.0.0",
     "@rollup/plugin-node-resolve": "^8.0.0",
@@ -99,7 +99,7 @@
   },
   "peerDependencies": {
     "@mui/icons-material": "^5.0.1",
-    "@mui/material": "^5.0.1",
+    "@mui/material": "^5.9.3",
     "@emotion/react": "^11.4.1",
     "react": "^16.8.0 || ^17.0.2",
     "react-dom": "^16.8.0 || ^17.0.2"
@@ -107,7 +107,7 @@
   "dependencies": {
     "@babel/runtime-corejs3": "^7.12.1",
     "@emotion/cache": "^11.7.1",
-    "tss-react": "^3.6.0",
+    "tss-react": "^4.0.0",
     "clsx": "^1.1.1",
     "lodash.assignwith": "^4.2.0",
     "lodash.clonedeep": "^4.5.0",

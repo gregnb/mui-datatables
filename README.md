@@ -18,20 +18,27 @@ Version 3 has been released! You can read about the [updates here](https://githu
 </div>
 
 # Table of contents
-* [Install](#install)
-* [Demo](#demo)
-* [Compatibility](#compatibility)
-* [Usage](#usage)
-* [API](#api)
-* [Customize Columns](#customize-columns)
-* [Plug-ins](#plug-ins)
-* [Customize Styling](#customize-styling)
-* [Custom Components](#custom-components)
-* [Remote Data](#remote-data)
-* [Localization](#localization)
-* [Contributing](#contributing)
-* [License](#licence)
-* [Thanks](#thanks)
+- [MUI-Datatables - Datatables for MUI (formerly Material-UI)](#mui-datatables---datatables-for-mui-formerly-material-ui)
+- [Table of contents](#table-of-contents)
+  - [Install](#install)
+  - [Compatibility](#compatibility)
+  - [Demo](#demo)
+  - [Usage](#usage)
+  - [API](#api)
+      - [&lt;MUIDataTable />](#muidatatable-)
+      - [Options:](#options)
+  - [Customize Columns](#customize-columns)
+      - [Column:](#column)
+      - [Column Options:](#column-options)
+  - [Plug-ins](#plug-ins)
+      - [Available Plug-ins:](#available-plug-ins)
+  - [Customize Styling](#customize-styling)
+  - [Custom Components](#custom-components)
+  - [Remote Data](#remote-data)
+  - [Localization](#localization)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Thanks](#thanks)
 
 ## Install
 
@@ -47,7 +54,7 @@ If your project doesn't already use them, you need to install mui v5 and it's ic
 | ^2.0.0         | ^3.0.0      | `@material-ui/core`,`@material-ui/icons`            |
 | ^3.0.0         | ^4.10.0     | `@material-ui/core`,`@material-ui/icons`            |
 | ^3.8.0         | ^4.12.0     | `@material-ui/core`,`@material-ui/icons`            |
-| ^4.0.0         | ^5.0.0      | `@mui/material`,`@mui/icons-material` |
+| ^4.0.0         | ^5.9.3      | `@mui/material`,`@mui/icons-material`               |
 
 ## Demo
 
@@ -365,13 +372,6 @@ Using Material-UI theme overrides will allow you to customize styling to your li
 import React from "react";
 import MUIDataTable from "mui-datatables";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { CacheProvider } from "@emotion/react";
-import createCache from "@emotion/cache";
-
-const muiCache = createCache({
-	"key": "mui",
-	"prepend": true
-});
 
 class BodyCellExample extends React.Component {
 
@@ -390,11 +390,9 @@ class BodyCellExample extends React.Component {
   render() {
 
     return (
-		<CacheProvider value={muiCache}>
 		  <ThemeProvider theme={this.getMuiTheme()}>
-			<MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
+			  <MUIDataTable title={"ACME Employee list"} data={data} columns={columns} options={options} />
 		  </ThemeProvider>
-		</CacheProvider>
     );
 
   }
