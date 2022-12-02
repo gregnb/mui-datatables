@@ -27,7 +27,9 @@ import { load, save } from './localStorage';
 
 const defaultTableStyles = theme => ({
   root: {},
-  paper: {},
+  paper: {
+    isolation: 'isolate',
+  },
   paperResponsiveScrollFullHeightFullWidth: {
     position: 'absolute',
   },
