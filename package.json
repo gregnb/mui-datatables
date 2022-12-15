@@ -46,9 +46,11 @@
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.12.1",
     "@babel/register": "^7.10.1",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "@lopatnov/rollup-plugin-uglify": "^2.1.1",
-    "@mui/icons-material": "^5.0.1",
-    "@mui/material": "^5.0.1",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/material": "^5.11.0",
     "@rollup/plugin-babel": "5.0.2",
     "@rollup/plugin-commonjs": "^12.0.0",
     "@rollup/plugin-node-resolve": "^8.0.0",
@@ -80,10 +82,10 @@
     "prettier": "^1.18.2",
     "prismjs": "^1.20.0",
     "raw-loader": "^4.0.1",
-    "react": "^17.0.2",
+    "react": "^18.2.0",
     "react-dnd-test-backend": "^11.1.3",
     "react-dnd-test-utils": "^11.1.3",
-    "react-dom": "^17.0.2",
+    "react-dom": "^18.2.0",
     "react-router-dom": "^5.0.1",
     "react-waypoint": "^10.1.0",
     "rollup": "^2.3.4",
@@ -93,21 +95,18 @@
     "style-loader": "^1.2.1",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.11.0",
-    "@emotion/react": "^11.4.1",
-    "@emotion/styled": "^11.3.0"
+    "webpack-dev-server": "^3.11.0"
   },
   "peerDependencies": {
-    "@mui/icons-material": "^5.0.1",
-    "@mui/material": "^5.0.1",
-    "@emotion/react": "^11.4.1",
-    "react": "^16.8.0 || ^17.0.2",
-    "react-dom": "^16.8.0 || ^17.0.2"
+    "@emotion/react": "^11.10.5",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/material": "^5.11.0",
+    "react": "^16.8.0 || ^17.0.2 || ^18.2.0",
+    "react-dom": "^16.8.0 || ^17.0.2 || ^18.2.0"
   },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.12.1",
     "@emotion/cache": "^11.7.1",
-    "tss-react": "^3.6.0",
     "clsx": "^1.1.1",
     "lodash.assignwith": "^4.2.0",
     "lodash.clonedeep": "^4.5.0",
@@ -122,7 +121,8 @@
     "react-dnd": "^11.1.3",
     "react-dnd-html5-backend": "^11.1.3",
     "react-sortable-tree-patch-react-17": "^2.9.0",
-    "react-to-print": "^2.8.0"
+    "react-to-print": "^2.8.0",
+    "tss-react": "^3.6.0"
   },
   "side-effects": false,
   "nyc": {
