@@ -108,6 +108,7 @@ const STP = {
   REPLACE: 'replace',
   ABOVE: 'above',
   NONE: 'none',
+  ALWAYS: 'always'
 };
 
 class MUIDataTable extends React.Component {
@@ -242,7 +243,7 @@ class MUIDataTable extends React.Component {
       setRowProps: PropTypes.func,
       selectToolbarPlacement: PropTypes.oneOfType([
         PropTypes.bool,
-        PropTypes.oneOf([STP.REPLACE, STP.ABOVE, STP.NONE]),
+        PropTypes.oneOf([STP.REPLACE, STP.ABOVE, STP.NONE, STP.ALWAYS]),
       ]),
       setTableProps: PropTypes.func,
       sort: PropTypes.bool,
@@ -1932,7 +1933,7 @@ class MUIDataTable extends React.Component {
 
     return (
       <Paper elevation={this.options.elevation} ref={this.tableContent} className={paperClasses}>
-        {selectedRows.data.length > 0 && this.options.selectToolbarPlacement !== STP.NONE && (
+        {(this.options.selectToolbarPlacement === STP.ALWAYS || selectedRows.data.length > 0 && this.options.selectToolbarPlacement !== STP.NONE) && (
           <TableToolbarSelectComponent
             options={this.options}
             selectedRows={selectedRows}
