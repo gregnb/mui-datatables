@@ -26,7 +26,13 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { load, save } from './localStorage';
 
 const defaultTableStyles = theme => ({
-  root: {},
+  root: {
+    '& .datatables-noprint': {
+      '@media print': {
+        display: 'none',
+      },
+    },
+  },
   paper: {
     isolation: 'isolate',
   },
@@ -80,13 +86,6 @@ const defaultTableStyles = theme => ({
     padding: '0',
     position: 'absolute',
     width: '1px',
-  },
-  '@global': {
-    '@media print': {
-      '.datatables-noprint': {
-        display: 'none',
-      },
-    },
   },
 });
 
