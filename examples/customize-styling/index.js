@@ -7,13 +7,6 @@ import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import clsx from 'clsx';
-import { CacheProvider } from '@emotion/react';
-import createCache from '@emotion/cache';
-
-const muiCache = createCache({
-  key: 'mui-datatables',
-  prepend: true,
-});
 
 const customStyles = theme => ({
   BusinessAnalystRow: {
@@ -210,35 +203,33 @@ class Example extends React.Component {
     };
 
     return (
-      <CacheProvider value={muiCache}>
-        <ThemeProvider theme={this.getMuiTheme()}>
-          <FormGroup row>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={this.state.denseTable}
-                  onChange={this.toggleDenseTable}
-                  value="denseTable"
-                  color="primary"
-                />
-              }
-              label="Dense Table"
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={this.state.vertical}
-                  onChange={this.toggleResponsive}
-                  value="vertical"
-                  color="primary"
-                />
-              }
-              label="Responsive Vertical Table"
-            />
-          </FormGroup>
-          <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />
-        </ThemeProvider>
-      </CacheProvider>
+      <ThemeProvider theme={this.getMuiTheme()}>
+        <FormGroup row>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={this.state.denseTable}
+                onChange={this.toggleDenseTable}
+                value="denseTable"
+                color="primary"
+              />
+            }
+            label="Dense Table"
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={this.state.vertical}
+                onChange={this.toggleResponsive}
+                value="vertical"
+                color="primary"
+              />
+            }
+            label="Responsive Vertical Table"
+          />
+        </FormGroup>
+        <MUIDataTable title={'ACME Employee list'} data={data} columns={columns} options={options} />
+      </ThemeProvider>
     );
   }
 }
