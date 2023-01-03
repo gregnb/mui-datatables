@@ -33,7 +33,9 @@ const defaultTableStyles = theme => ({
       },
     },
   },
-  paper: {},
+  paper: {
+    isolation: 'isolate',
+  },
   paperResponsiveScrollFullHeightFullWidth: {
     position: 'absolute',
   },
