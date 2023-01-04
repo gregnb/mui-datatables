@@ -76,7 +76,7 @@
     "ignore-styles": "^5.0.1",
     "jsdom": "^16.2.2",
     "jsdom-global": "^3.0.2",
-    "mocha": "^7.2.0",
+    "mocha": "^10.2.0",
     "next": "^11.1.2",
     "nyc": "^15.0.1",
     "prettier": "^1.18.2",
