@@ -548,9 +548,18 @@ class MUIDataTable extends React.Component {
     }
   }
 
+  resetSelectedRows = () => {
+    this.setState({
+      selectedRows: {
+        data: [],
+        lookup: {},
+      },
+    });
+  };
+
   setTableAction = action => {
     if (typeof this.options.onTableChange === 'function') {
-      this.options.onTableChange(action, this.state);
+      this.options.onTableChange(action, this.state, resetSelectedRows);
     }
     if (this.options.storageKey) {
       save(this.options.storageKey, this.state);
