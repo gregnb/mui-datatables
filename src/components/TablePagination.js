@@ -116,6 +116,8 @@ TablePagination.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
   /** Callback to trigger rows per page change */
   changeRowsPerPage: PropTypes.func.isRequired,
+  /** Callback to trigger page change */
+  changePage: PropTypes.func.isRequired,
 };
 
 export default TablePagination;
