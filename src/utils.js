@@ -88,7 +88,7 @@ function buildCSV(columns, data, options) {
           soFar +
           '"' +
           row.data
-            .filter((_, index) => columns[index].download)
+            .filter((_, index) => columns[index] ? columns[index].download : true)
             .map(columnData => escapeDangerousCSVCharacters(replaceDoubleQuoteInString(columnData)))
             .join('"' + options.downloadOptions.separator + '"') +
           '"\r\n',
