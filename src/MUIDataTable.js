@@ -11,6 +11,7 @@ import isUndefined from 'lodash.isundefined';
 import merge from 'lodash.merge';
 import PropTypes from 'prop-types';
 import React from 'react';
+import DefaultReactiveWrapper from './components/ReactiveWrapper';
 import DefaultTableBody from './components/TableBody';
 import DefaultTableFilter from './components/TableFilter';
 import DefaultTableFilterList from './components/TableFilterList';
@@ -262,6 +263,7 @@ class MUIDataTable extends React.Component {
     data: [],
     columns: [],
     components: {
+      ReactiveWrapper: DefaultReactiveWrapper,
       TableBody: DefaultTableBody,
       TableFilter: DefaultTableFilter,
       TableFilterList: DefaultTableFilterList,
@@ -1828,6 +1830,7 @@ class MUIDataTable extends React.Component {
       className,
       title,
       components: {
+        ReactiveWrapper,
         TableBody,
         TableFilterList,
         TableFooter,
@@ -1856,6 +1859,7 @@ class MUIDataTable extends React.Component {
       columnOrder,
     } = this.state;
 
+    const ReactiveWrapperComponent = ReactiveWrapper || DefaultReactiveWrapper;
     const TableBodyComponent = TableBody || DefaultTableBody;
     const TableFilterListComponent = TableFilterList || DefaultTableFilterList;
     const TableFooterComponent = TableFooter || DefaultTableFooter;
@@ -1987,7 +1991,7 @@ class MUIDataTable extends React.Component {
           filterUpdate={this.filterUpdate}
           columnNames={columnNames}
         />
-        <div style={{ position: 'relative', ...tableHeightVal }} className={responsiveClass}>
+        <ReactiveWrapperComponent style={{ position: 'relative', ...tableHeightVal }} className={responsiveClass}>
           {(this.options.resizableColumns === true ||
             (this.options.resizableColumns && this.options.resizableColumns.enabled)) && (
             <TableResizeComponent
@@ -2070,7 +2074,7 @@ class MUIDataTable extends React.Component {
 
             return components;
           })()}
-        </div>
+        </ReactiveWrapperComponent>
         <TableFooterComponent
           options={this.options}
           page={page}
