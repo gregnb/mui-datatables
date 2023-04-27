@@ -91,14 +91,6 @@ const TableHeadCell = ({
 
   const { classes } = useStyles();
 
-  const handleKeyboardSortInput = e => {
-    if (e.key === 'Enter') {
-      toggleSort(index);
-    }
-
-    return false;
-  };
-
   const handleSortClick = () => {
     toggleSort(index);
   };
@@ -215,7 +207,6 @@ const TableHeadCell = ({
             }}>
             <Button
               variant=""
-              onKeyUp={handleKeyboardSortInput}
               onClick={handleSortClick}
               className={classes.toolButton}
               data-testid={`headcol-${index}`}
