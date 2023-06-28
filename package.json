@@ -3,6 +3,7 @@
   "version": "4.3.0",
   "description": "Datatables for React using Material-UI",
   "main": "dist/index.js",
+  "module": "dist/esm/index.js",
   "files": [
     "dist"
   ],
@@ -18,7 +19,7 @@
     "coverage:html": "cross-env NODE_ENV=test nyc check-coverage --lines 55 --reporter=html --reporter=text mocha --require @babel/register test/*.js && nyc report --reporter=html",
     "prettier": "find src/ docs/ test/ -type f -name \"*.js\" ! -path \"*/.next/*\" | xargs prettier --write",
     "lint": "eslint src",
-    "build": "cross-env NODE_ENV=production npm run prettier && rollup -c",
+    "build": "cross-env NODE_ENV=production npm run prettier && rollup -c && rollup -c rollup.esm.config.js",
     "prepare": "npm run build"
   },
   "repository": {
@@ -122,8 +123,7 @@
     "react-dnd": "^11.1.3",
     "react-dnd-html5-backend": "^11.1.3",
     "react-sortable-tree-patch-react-17": "^2.9.0",
-    "react-to-print": "^2.8.0",
-    "tss-react": "^3.6.0"
+    "react-to-print": "^2.8.0"
   },
   "side-effects": false,
   "nyc": {
