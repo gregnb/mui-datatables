@@ -1,18 +1,20 @@
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
 import Grid from '@mui/material/Grid';
-import Input from '@mui/material/Input';
-import InputLabel from '@mui/material/InputLabel';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+import {
+  TextField,
+  Select,
+  Typography,
+  Button,
+  Checkbox,
+  Input,
+  InputLabel,
+  FormGroup,
+  FormControl,
+  FormControlLabel,
+} from '@cumplo/design-system';
 import clsx from 'clsx';
 import { withStyles } from 'tss-react/mui';
 import cloneDeep from 'lodash.clonedeep';
@@ -221,7 +223,7 @@ class TableFilter extends React.Component {
         key={index}
         xs={width}
         classes={{ 'grid-xs-12': classes.gridListTile, 'grid-xs-6': classes.gridListTile }}>
-        <FormControl key={index} variant={'standard'} fullWidth>
+        <FormControl key={index} fullWidth>
           <InputLabel htmlFor={column.name}>{column.label}</InputLabel>
           <Select
             fullWidth
@@ -260,7 +262,6 @@ class TableFilter extends React.Component {
         <FormControl key={index} fullWidth>
           <TextField
             fullWidth
-            variant={'standard'}
             label={column.label}
             value={filterList[index].toString() || ''}
             data-testid={'filtertextfield-' + column.name}
@@ -285,7 +286,7 @@ class TableFilter extends React.Component {
         key={index}
         xs={width}
         classes={{ 'grid-xs-12': classes.gridListTile, 'grid-xs-6': classes.gridListTile }}>
-        <FormControl key={index} variant={'standard'} fullWidth>
+        <FormControl key={index} fullWidth>
           <InputLabel htmlFor={column.name}>{column.label}</InputLabel>
           <Select
             multiple

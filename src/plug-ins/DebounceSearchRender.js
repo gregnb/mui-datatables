@@ -1,6 +1,6 @@
 import React from 'react';
 import Grow from '@mui/material/Grow';
-import TextField from '@mui/material/TextField';
+import TextField from '@cumplo/design-system';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
