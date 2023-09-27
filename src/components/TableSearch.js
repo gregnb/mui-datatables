@@ -1,7 +1,6 @@
 import React from 'react';
 import Grow from '@mui/material/Grow';
-import TextField from '@cumplo/design-system';
-import SearchIcon from '@mui/icons-material/Search';
+import { TextField } from '@cumplo/design-system';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
 import { makeStyles } from 'tss-react/mui';
@@ -20,8 +19,9 @@ const useStyles = makeStyles({ name: 'MUIDataTableSearch' })(theme => ({
     flex: '0.8 0',
   },
   clearIcon: {
+    background: 'transparent !important',
     '&:hover': {
-      color: theme.palette.error.main,
+      color: theme.palette.primary.main,
     },
   },
 }));
@@ -44,11 +44,11 @@ const TableSearch = ({ options, searchText, onSearch, onHide }) => {
   return (
     <Grow appear in={true} timeout={300}>
       <div className={classes.main}>
-        <SearchIcon className={classes.searchIcon} />
         <TextField
           className={classes.searchText}
           autoFocus={true}
-          variant={'standard'}
+          label={'Buscar'}
+          search={true}
           InputProps={{
             'data-test-id': options.textLabels.toolbar.search,
           }}

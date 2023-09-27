@@ -1,9 +1,8 @@
 import React from 'react';
 import Grow from '@mui/material/Grow';
-import TextField from '@cumplo/design-system';
+import { TextField } from '@cumplo/design-system';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
-import ClearIcon from '@mui/icons-material/Clear';
 import { withStyles } from 'tss-react/mui';
 
 function debounce(func, wait, immediate) {
@@ -36,8 +35,9 @@ const defaultStyles = theme => ({
     flex: '0.8 0',
   },
   clearIcon: {
+    background: 'transparent !important',
     '&:hover': {
-      color: theme.palette.error.main,
+      color: theme.palette.primary.main,
     },
   },
 });
@@ -75,11 +75,12 @@ class _DebounceTableSearch extends React.Component {
     return (
       <Grow appear in={true} timeout={300}>
         <div className={classes.main}>
-          <SearchIcon className={classes.searchIcon} />
           <TextField
             variant={'standard'}
             className={classes.searchText}
             autoFocus={true}
+            label={'Buscar'}
+            search={true}
             InputProps={{
               'data-test-id': options.textLabels.toolbar.search,
               'aria-label': options.textLabels.toolbar.search,

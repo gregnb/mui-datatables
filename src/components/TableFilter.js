@@ -224,13 +224,12 @@ class TableFilter extends React.Component {
         xs={width}
         classes={{ 'grid-xs-12': classes.gridListTile, 'grid-xs-6': classes.gridListTile }}>
         <FormControl key={index} fullWidth>
-          <InputLabel htmlFor={column.name}>{column.label}</InputLabel>
           <Select
+            label={column.label}
             fullWidth
             value={filterList[index].length ? filterList[index].toString() : textLabels.all}
             name={column.name}
-            onChange={event => this.handleDropdownChange(event, index, column.name)}
-            input={<Input name={column.name} id={column.name} />}>
+            onChange={event => this.handleDropdownChange(event, index, column.name)}>
             <MenuItem value={textLabels.all} key={0}>
               {textLabels.all}
             </MenuItem>
@@ -286,7 +285,7 @@ class TableFilter extends React.Component {
         key={index}
         xs={width}
         classes={{ 'grid-xs-12': classes.gridListTile, 'grid-xs-6': classes.gridListTile }}>
-        <FormControl key={index} fullWidth>
+        <FormControl key={index} variant={'outlined'} fullWidth>
           <InputLabel htmlFor={column.name}>{column.label}</InputLabel>
           <Select
             multiple
@@ -387,6 +386,7 @@ class TableFilter extends React.Component {
             </Typography>
             <Button
               color="primary"
+              variant="text"
               className={classes.resetLink}
               tabIndex={0}
               aria-label={textLabels.reset}
